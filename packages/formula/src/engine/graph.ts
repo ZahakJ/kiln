@@ -40,6 +40,8 @@ export class FormulaCell {
   evaluating = false;
   volatile = false;
   circular = false;
+  /** Target of a HYPERLINK evaluated by this formula, if any. */
+  hyperlink: string | undefined = undefined;
   // graph bookkeeping
   precCells: number[] = [];
   precRanges: RangeNode[] = [];

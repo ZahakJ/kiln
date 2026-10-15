@@ -42,6 +42,10 @@ export interface EngineHost {
   applyStructuralEdit?(sheet: number, edit: StructuralEdit): void;
   /** Notified when a sheet is removed. */
   removeSheet?(sheet: number): void;
+  /** True when a row is hidden for any reason (manually, by an outline or by a filter). */
+  isRowHidden?(sheet: number, row: number): boolean;
+  /** True when a row is hidden by a filter (SUBTOTAL 1–11 skips only these). */
+  isRowFiltered?(sheet: number, row: number): boolean;
 }
 
 const SHEET_STRIDE = 17_179_869_184; // 2^34
@@ -64,6 +68,7 @@ export class MemoryHost implements EngineHost {
   private readonly cells = new Map<number, Scalar>();
   private readonly bounds = new Map<number, { rows: number; cols: number }>();
   private readonly tables = new Map<string, TableDef>();
+  private readonly hiddenRows = new Map<number, 'hidden' | 'filtered'>();
 
   getCellValue(sheet: number, row: number, col: number): Scalar | undefined {
     return this.cells.get(cellKey(sheet, row, col));
@@ -86,6 +91,21 @@ export class MemoryHost implements EngineHost {
 
   getUsedBounds(sheet: number): { rows: number; cols: number } {
     return this.bounds.get(sheet) ?? { rows: 0, cols: 0 };
+  }
+
+  /** Hides or shows a row; `filtered` marks it as hidden by a filter rather than manually. */
+  setRowHidden(sheet: number, row: number, hidden: boolean, filtered = false): void {
+    const k = cellKey(sheet, row, 0);
+    if (hidden) this.hiddenRows.set(k, filtered ? 'filtered' : 'hidden');
+    else this.hiddenRows.delete(k);
+  }
+
+  isRowHidden(sheet: number, row: number): boolean {
+    return this.hiddenRows.has(cellKey(sheet, row, 0));
+  }
+
+  isRowFiltered(sheet: number, row: number): boolean {
+    return this.hiddenRows.get(cellKey(sheet, row, 0)) === 'filtered';
   }
 
   addTable(table: TableDef): void {

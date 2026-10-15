@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { CORE_FUNCTIONS } from '../../src/engine/functions/core.ts';
 import {
   getFunction,
   listFunctions,
@@ -377,7 +378,8 @@ describe('function registry', () => {
 
   it('every documented example evaluates to its stated result', () => {
     const e = sheet();
-    for (const f of listFunctions()) {
+    // The engine's own inline docs; the WP-09 library's JSON docs are checked in test/functions/docs.test.ts.
+    for (const f of CORE_FUNCTIONS) {
       for (const ex of f.docs?.examples ?? []) {
         const v = e.evaluate(ex.formula);
         const shown =

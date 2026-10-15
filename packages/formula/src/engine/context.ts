@@ -41,7 +41,20 @@ export interface CallContext {
   /** Area clamped to the used extent (at least one cell). */
   clampArea(area: Area): Area;
   sheetName(sheet: number): string | undefined;
+  /** Sheet id for a sheet name (case-insensitive), or undefined. */
+  sheetIdOf(name: string): number | undefined;
+  /** Sheet ids in workbook order (SHEET, SHEETS). */
+  sheetIds(): number[];
   getTable(name: string): TableDef | undefined;
   /** True when the cell holds a formula. */
   isFormulaCell(sheet: number, row: number, col: number): boolean;
+  /** Formula text of a cell (with `=`), or undefined for literal and empty cells. */
+  formulaText(sheet: number, row: number, col: number): string | undefined;
+  /**
+   * Visibility of a row for SUBTOTAL/AGGREGATE: `filtered` when hidden by an AutoFilter or advanced
+   * filter, `hidden` when hidden manually (or collapsed by an outline), otherwise `visible`.
+   */
+  rowVisibility(sheet: number, row: number): 'visible' | 'hidden' | 'filtered';
+  /** Records a hyperlink target for the cell being calculated (HYPERLINK). */
+  setHyperlink(target: string): void;
 }

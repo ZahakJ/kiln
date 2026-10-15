@@ -62,9 +62,29 @@ argument indices arrive unevaluated, `lift` indices are applied element-wise ove
 ships a native core set: SUM, AVERAGE, COUNT, COUNTA, MIN, MAX, IF, IFS, AND, OR, NOT, IFERROR, ROUND,
 ABS, INT, MOD, LEN, LEFT, RIGHT, MID, CONCAT, TEXTJOIN, VLOOKUP, XLOOKUP, INDEX, MATCH, ROW, COLUMN,
 OFFSET, INDIRECT, TODAY, NOW, DATE, SEQUENCE, FILTER, SORT, UNIQUE, TRANSPOSE, LET, LAMBDA, ISOMITTED,
-MAP, REDUCE, SCAN, BYROW, BYCOL and MAKEARRAY. The full library is added by WP-09.
+MAP, REDUCE, SCAN, BYROW, BYCOL and MAKEARRAY.
 
-Scripts: `pnpm lint`, `pnpm typecheck`, `pnpm test` (700+ tests), `pnpm bench` (a 100,000-cell
+The function library (`src/functions/`) brings the registry to 484 Excel functions in twelve families
+(financial, logical, text, date and time, lookup and reference, math and trigonometry, statistical,
+engineering, information, database, web and compatibility), all implemented natively against the
+engine's value model: Excel criteria strings with wildcards for the `*IF(S)` and database functions,
+lookup match and search modes with binary search, SUBTOTAL/AGGREGATE that skip hidden or filtered rows
+through the host (`isRowHidden`, `isRowFiltered`), TEXT/VALUE through numfmt, financial functions with
+Excel's day-count bases, and CELL, INFO, ENCODEURL and HYPERLINK (`Engine.getHyperlink`).
+
+Every function has a documentation entry in `src/functions/docs/<FAMILY>.json` (summary, syntax,
+arguments, examples, the Excel version that introduced it), available through `functionDoc(name)`,
+`listFunctionDocs()` and `DOC_FAMILIES` for autocomplete, the Insert Function dialog and the Formula
+Lab; a test evaluates every documented example.
+
+**Conformance.** `test/conformance/*.csv` holds about 4,600 cases: `curated-*` rows from Microsoft's
+documented examples and Excel edge cases, and `generated-*` rows recorded from LibreOffice by
+`node tools/gen-conformance.mjs` (needs `/usr/bin/soffice`), minus a deny-list of known
+LibreOffice/Excel differences (`tools/conformance-deny.mjs`, excluded rows listed in
+`oracle-exclusions.csv`). Known deviations from Excel are documented in
+[`docs/formula-deviations.md`](../../docs/formula-deviations.md).
+
+Scripts: `pnpm lint`, `pnpm typecheck`, `pnpm test` (6,000+ tests including the conformance suite), `pnpm bench` (a 100,000-cell
 dependent chain recalculates in about 0.2 s; the target is under 1.5 s).
 
 Licence: AGPL-3.0-or-later.

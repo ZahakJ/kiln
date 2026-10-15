@@ -53,6 +53,12 @@ export interface EvalHost {
   getTableAt(sheet: number, row: number, col: number): TableDef | undefined;
   /** Spill area of the formula anchored at the cell (evaluating it first if needed). */
   spillArea(sheet: number, row: number, col: number): Area | ErrorValue;
+  /** Formula text of a cell, if it holds a formula. */
+  formulaText?(sheet: number, row: number, col: number): string | undefined;
+  /** Sheet ids in workbook order. */
+  sheetOrderIds?(): number[];
+  isRowHidden?(sheet: number, row: number): boolean;
+  isRowFiltered?(sheet: number, row: number): boolean;
 }
 
 export interface TraceEntry {
@@ -65,6 +71,8 @@ const MAX_NAME_DEPTH = 32;
 
 export class Evaluator implements CallContext {
   scope: Scope | null = null;
+  /** Hyperlink target recorded by HYPERLINK while evaluating this cell. */
+  hyperlink: string | undefined;
   private lambdaDepth = 0;
   private nameDepth = 0;
   readonly coercion: CoercionOptions;
@@ -441,12 +449,33 @@ export class Evaluator implements CallContext {
     return this.host.isFormulaCell(sheet, row, col);
   }
 
+  formulaText(sheet: number, row: number, col: number): string | undefined {
+    return this.host.formulaText?.(sheet, row, col);
+  }
+
+  rowVisibility(sheet: number, row: number): 'visible' | 'hidden' | 'filtered' {
+    if (!this.host.isRowHidden?.(sheet, row)) return 'visible';
+    return this.host.isRowFiltered?.(sheet, row) ? 'filtered' : 'hidden';
+  }
+
+  setHyperlink(target: string): void {
+    this.hyperlink = target;
+  }
+
   usedBounds(sheet: number): { rows: number; cols: number } {
     return this.host.usedBounds(sheet);
   }
 
   sheetName(sheet: number): string | undefined {
     return this.host.sheetName(sheet);
+  }
+
+  sheetIdOf(name: string): number | undefined {
+    return this.host.sheetId(name);
+  }
+
+  sheetIds(): number[] {
+    return this.host.sheetOrderIds?.() ?? [this.sheet];
   }
 
   getTable(name: string): TableDef | undefined {

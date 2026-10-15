@@ -41,5 +41,8 @@ All notable changes to Officina are recorded here. The format follows
 - Fast, incremental recalculation: only what changed is recalculated (a 100,000-cell chain in about 0.2 s), with circular reference detection and optional iterative calculation.
 - Dynamic arrays that spill into neighbouring cells, with `#SPILL!` when something is in the way, plus LET, LAMBDA (including named and recursive lambdas), MAP, REDUCE, SCAN, BYROW, BYCOL and MAKEARRAY.
 - A core set of 47 native functions (SUM, IF, XLOOKUP, FILTER, SORT, UNIQUE, SEQUENCE, TEXTJOIN, INDIRECT…) with Excel-compatible text-to-number, date and comparison rules, and a step-by-step evaluation tree for the upcoming Formula Lab.
+- 484 Excel functions across financial, logical, text, date and time, lookup, math, statistical, engineering, information, database, web and compatibility families — including SUMIFS/COUNTIFS/AVERAGEIFS/MAXIFS/MINIFS with Excel criteria and wildcards, XLOOKUP/XMATCH match modes, SUBTOTAL and AGGREGATE that skip hidden and filtered rows, TEXT with Excel number formats, DATEDIF, NETWORKDAYS.INTL, the bond and depreciation functions, statistical distributions, Bessel and complex-number functions, CONVERT, TEXTSPLIT/TEXTBEFORE/TEXTAFTER, REGEX functions, CELL, INFO, ENCODEURL and HYPERLINK.
+- Every function has built-in documentation (summary, syntax, arguments, worked examples) for formula autocomplete, the Insert Function dialog and the Formula Lab.
+- A formula conformance suite of about 4,600 cases from Microsoft's documented examples and LibreOffice-recorded results; the places where Officina differs from Excel are listed in `docs/formula-deviations.md`.
 
 [Unreleased]: https://github.com/ZahakJ/officina/commits/main

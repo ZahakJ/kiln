@@ -1,0 +1,1070 @@
+[
+  {
+    "name": "ADDRESS",
+    "category": "Lookup & Reference",
+    "summary": "Returns a cell address as text from row and column numbers.",
+    "syntax": "ADDRESS(row_num, column_num, [abs_num], [a1], [sheet_text])",
+    "args": [
+      {
+        "name": "row_num",
+        "description": "The row number."
+      },
+      {
+        "name": "column_num",
+        "description": "The column number."
+      },
+      {
+        "name": "abs_num",
+        "description": "1 absolute (default), 2 absolute row, 3 absolute column, 4 relative.",
+        "optional": true
+      },
+      {
+        "name": "a1",
+        "description": "TRUE (default) for A1 style, FALSE for R1C1.",
+        "optional": true
+      },
+      {
+        "name": "sheet_text",
+        "description": "A sheet name to prefix.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ADDRESS(2,3)",
+        "result": "\"$C$2\""
+      },
+      {
+        "formula": "=ADDRESS(2,3,2)",
+        "result": "\"C$2\""
+      },
+      {
+        "formula": "=ADDRESS(2,3,2,FALSE)",
+        "result": "\"R2C[3]\""
+      },
+      {
+        "formula": "=ADDRESS(2,3,1,FALSE,\"[Book1]Sheet1\")",
+        "result": "\"[Book1]Sheet1!R2C3\""
+      },
+      {
+        "formula": "=ADDRESS(2,3,1,FALSE,\"EXCEL SHEET\")",
+        "result": "\"'EXCEL SHEET'!R2C3\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "AREAS",
+    "category": "Lookup & Reference",
+    "summary": "Returns the number of areas in a reference.",
+    "syntax": "AREAS(reference)",
+    "args": [
+      {
+        "name": "reference",
+        "description": "A reference to cells or ranges."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=AREAS(B2:D4)",
+        "result": "1"
+      },
+      {
+        "formula": "=AREAS((B2:D4,E5,F6:I9))",
+        "result": "3"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "CHOOSE",
+    "category": "Lookup & Reference",
+    "summary": "Chooses a value from a list by index.",
+    "syntax": "CHOOSE(index_num, value1, [value2], ...)",
+    "args": [
+      {
+        "name": "index_num",
+        "description": "Which value to return (1 is the first)."
+      },
+      {
+        "name": "value1",
+        "description": "The first value."
+      },
+      {
+        "name": "value2",
+        "description": "Further values.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CHOOSE(2,\"1st\",\"2nd\",\"3rd\",\"Finished\")",
+        "result": "\"2nd\""
+      },
+      {
+        "formula": "=CHOOSE(4,\"a\",\"b\",\"c\",\"Finished\")",
+        "result": "\"Finished\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "CHOOSECOLS",
+    "category": "Lookup & Reference",
+    "summary": "Returns the specified columns of an array.",
+    "syntax": "CHOOSECOLS(array, col_num1, [col_num2], ...)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      },
+      {
+        "name": "col_num1",
+        "description": "The first column (negative counts from the end)."
+      },
+      {
+        "name": "col_num2",
+        "description": "Further columns.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CHOOSECOLS({1,2,3;4,5,6},1,3)",
+        "result": "{1,3;4,6}"
+      },
+      {
+        "formula": "=CHOOSECOLS({1,2,3;4,5,6},-1)",
+        "result": "{3;6}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "CHOOSEROWS",
+    "category": "Lookup & Reference",
+    "summary": "Returns the specified rows of an array.",
+    "syntax": "CHOOSEROWS(array, row_num1, [row_num2], ...)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      },
+      {
+        "name": "row_num1",
+        "description": "The first row (negative counts from the end)."
+      },
+      {
+        "name": "row_num2",
+        "description": "Further rows.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CHOOSEROWS({1,2;3,4;5,6},1,3)",
+        "result": "{1,2;5,6}"
+      },
+      {
+        "formula": "=CHOOSEROWS({1,2;3,4;5,6},-1)",
+        "result": "{5,6}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "COLUMN",
+    "category": "Lookup & Reference",
+    "summary": "Returns the column number of a reference (or of the formula cell).",
+    "syntax": "COLUMN([reference])",
+    "args": [
+      {
+        "name": "reference",
+        "description": "A cell or range.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COLUMN(D10)",
+        "result": "4"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COLUMNS",
+    "category": "Lookup & Reference",
+    "summary": "Returns the number of columns in a reference or array.",
+    "syntax": "COLUMNS(array)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COLUMNS(C1:E4)",
+        "result": "3"
+      },
+      {
+        "formula": "=COLUMNS({1,2,3;4,5,6})",
+        "result": "3"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DROP",
+    "category": "Lookup & Reference",
+    "summary": "Drops rows or columns from the start or end of an array.",
+    "syntax": "DROP(array, rows, [columns])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      },
+      {
+        "name": "rows",
+        "description": "Rows to drop (negative drops from the end)."
+      },
+      {
+        "name": "columns",
+        "description": "Columns to drop.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DROP({1,2,3;4,5,6;7,8,9},2)",
+        "result": "{7,8,9}"
+      },
+      {
+        "formula": "=DROP({1,2,3;4,5,6;7,8,9},-2,1)",
+        "result": "{2,3}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "EXPAND",
+    "category": "Lookup & Reference",
+    "summary": "Expands an array to the given rows and columns, padding with a value.",
+    "syntax": "EXPAND(array, rows, [columns], [pad_with])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      },
+      {
+        "name": "rows",
+        "description": "The number of rows."
+      },
+      {
+        "name": "columns",
+        "description": "The number of columns.",
+        "optional": true
+      },
+      {
+        "name": "pad_with",
+        "description": "The padding value (default #N/A).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=EXPAND({1,2;3,4},3,3,0)",
+        "result": "{1,2,0;3,4,0;0,0,0}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "FILTER",
+    "category": "Lookup & Reference",
+    "summary": "Filters a range or array by a condition.",
+    "syntax": "FILTER(array, include, [if_empty])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      },
+      {
+        "name": "include",
+        "description": "A row or column of TRUE/FALSE values, one per row (or column)."
+      },
+      {
+        "name": "if_empty",
+        "description": "Returned when nothing passes the filter.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FILTER({1;2;3},{1;2;3}>1)",
+        "result": "{2;3}"
+      },
+      {
+        "formula": "=FILTER({1;2;3},{1;2;3}>5,\"none\")",
+        "result": "\"none\""
+      }
+    ],
+    "since": "2021"
+  },
+  {
+    "name": "HLOOKUP",
+    "category": "Lookup & Reference",
+    "summary": "Looks for a value in the top row of a table and returns a value from the same column.",
+    "syntax": "HLOOKUP(lookup_value, table_array, row_index_num, [range_lookup])",
+    "args": [
+      {
+        "name": "lookup_value",
+        "description": "The value to find in the first row."
+      },
+      {
+        "name": "table_array",
+        "description": "The table to search."
+      },
+      {
+        "name": "row_index_num",
+        "description": "Row of the table to return (1 is the first)."
+      },
+      {
+        "name": "range_lookup",
+        "description": "FALSE for an exact match; TRUE or omitted for the closest match in sorted data.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=HLOOKUP(\"Bearings\",{\"Axles\",\"Bearings\",\"Bolts\";4,4,9;5,7,10;6,8,11},3,FALSE)",
+        "result": "7"
+      },
+      {
+        "formula": "=HLOOKUP(\"B\",{\"Axles\",\"Bearings\",\"Bolts\";4,4,9;5,7,10;6,8,11},3,TRUE)",
+        "result": "5"
+      },
+      {
+        "formula": "=HLOOKUP(3,{1,2,3;\"a\",\"b\",\"c\";\"d\",\"e\",\"f\"},2,TRUE)",
+        "result": "\"c\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "HSTACK",
+    "category": "Lookup & Reference",
+    "summary": "Appends arrays horizontally.",
+    "syntax": "HSTACK(array1, [array2], ...)",
+    "args": [
+      {
+        "name": "array1",
+        "description": "The first array."
+      },
+      {
+        "name": "array2",
+        "description": "Further arrays.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=HSTACK({1,2},{3,4})",
+        "result": "{1,2,3,4}"
+      },
+      {
+        "formula": "=HSTACK({1;2},{3})",
+        "result": "{1,3;2,#N/A}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "HYPERLINK",
+    "category": "Lookup & Reference",
+    "summary": "Creates a link: the cell shows the friendly name and opens the link when clicked.",
+    "syntax": "HYPERLINK(link_location, [friendly_name])",
+    "args": [
+      {
+        "name": "link_location",
+        "description": "The URL or path."
+      },
+      {
+        "name": "friendly_name",
+        "description": "The text to display (default: link_location).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=HYPERLINK(\"https://example.com\",\"Example\")",
+        "result": "\"Example\""
+      },
+      {
+        "formula": "=HYPERLINK(\"https://example.com\")",
+        "result": "\"https://example.com\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "INDEX",
+    "category": "Lookup & Reference",
+    "summary": "Returns the value or reference at a row and column of a range or array.",
+    "syntax": "INDEX(array, row_num, [column_num], [area_num])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      },
+      {
+        "name": "row_num",
+        "description": "Row to return (0 for the whole column)."
+      },
+      {
+        "name": "column_num",
+        "description": "Column to return (0 for the whole row).",
+        "optional": true
+      },
+      {
+        "name": "area_num",
+        "description": "Which area of a multi-area reference.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=INDEX({1,2;3,4},2,1)",
+        "result": "3"
+      },
+      {
+        "formula": "=INDEX({1,2;3,4},0,2)",
+        "result": "{2;4}"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "INDIRECT",
+    "category": "Lookup & Reference",
+    "summary": "Returns the reference named by a text string.",
+    "syntax": "INDIRECT(ref_text, [a1])",
+    "args": [
+      {
+        "name": "ref_text",
+        "description": "Text such as \"B2\", \"Sheet2!A1:A10\" or a defined name."
+      },
+      {
+        "name": "a1",
+        "description": "TRUE or omitted for A1 style, FALSE for R1C1.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ROW(INDIRECT(\"C5\"))",
+        "result": "5"
+      },
+      {
+        "formula": "=COLUMN(INDIRECT(\"R1C3\",FALSE))",
+        "result": "3"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LOOKUP",
+    "category": "Lookup & Reference",
+    "summary": "Looks up a value in a sorted row or column (or the first row/column of an array) and returns the matching value.",
+    "syntax": "LOOKUP(lookup_value, lookup_vector, [result_vector])",
+    "args": [
+      {
+        "name": "lookup_value",
+        "description": "The value to search for."
+      },
+      {
+        "name": "lookup_vector",
+        "description": "The sorted row or column (or array) to search."
+      },
+      {
+        "name": "result_vector",
+        "description": "The row or column to return from.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LOOKUP(4.19,{4.14,4.19,5.17,5.77,6.39},{\"red\",\"orange\",\"yellow\",\"green\",\"blue\"})",
+        "result": "\"orange\""
+      },
+      {
+        "formula": "=LOOKUP(5,{4.14,4.19,5.17,5.77,6.39},{\"red\",\"orange\",\"yellow\",\"green\",\"blue\"})",
+        "result": "\"orange\""
+      },
+      {
+        "formula": "=LOOKUP(\"C\",{\"a\",\"b\",\"c\",\"d\";1,2,3,4})",
+        "result": "3"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MATCH",
+    "category": "Lookup & Reference",
+    "summary": "Returns the relative position of a value in a row or column.",
+    "syntax": "MATCH(lookup_value, lookup_array, [match_type])",
+    "args": [
+      {
+        "name": "lookup_value",
+        "description": "The value to find."
+      },
+      {
+        "name": "lookup_array",
+        "description": "The row or column to search."
+      },
+      {
+        "name": "match_type",
+        "description": "1 (default) largest value ≤ lookup_value in ascending data, 0 exact, -1 smallest value ≥ in descending data.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MATCH(39,{25,38,40,41})",
+        "result": "2"
+      },
+      {
+        "formula": "=MATCH(41,{25,38,40,41},0)",
+        "result": "4"
+      },
+      {
+        "formula": "=MATCH(40,{25,38,40,41},-1)",
+        "result": "#N/A"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "OFFSET",
+    "category": "Lookup & Reference",
+    "summary": "Returns a reference offset from a starting reference by rows and columns.",
+    "syntax": "OFFSET(reference, rows, cols, [height], [width])",
+    "args": [
+      {
+        "name": "reference",
+        "description": "The starting reference."
+      },
+      {
+        "name": "rows",
+        "description": "Rows to move down (negative moves up)."
+      },
+      {
+        "name": "cols",
+        "description": "Columns to move right (negative moves left)."
+      },
+      {
+        "name": "height",
+        "description": "Height of the result (default: as reference).",
+        "optional": true
+      },
+      {
+        "name": "width",
+        "description": "Width of the result (default: as reference).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ROW(OFFSET(D3,3,-2,1,1))",
+        "result": "6"
+      },
+      {
+        "formula": "=COLUMNS(OFFSET(D3,0,0,3,4))",
+        "result": "4"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ROW",
+    "category": "Lookup & Reference",
+    "summary": "Returns the row number of a reference (or of the formula cell).",
+    "syntax": "ROW([reference])",
+    "args": [
+      {
+        "name": "reference",
+        "description": "A cell or range.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ROW(C10)",
+        "result": "10"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ROWS",
+    "category": "Lookup & Reference",
+    "summary": "Returns the number of rows in a reference or array.",
+    "syntax": "ROWS(array)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ROWS(C1:E4)",
+        "result": "4"
+      },
+      {
+        "formula": "=ROWS({1,2,3;4,5,6})",
+        "result": "2"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SORT",
+    "category": "Lookup & Reference",
+    "summary": "Sorts the contents of a range or array.",
+    "syntax": "SORT(array, [sort_index], [sort_order], [by_col])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      },
+      {
+        "name": "sort_index",
+        "description": "Column (or row) to sort by (default 1).",
+        "optional": true
+      },
+      {
+        "name": "sort_order",
+        "description": "1 ascending (default), -1 descending.",
+        "optional": true
+      },
+      {
+        "name": "by_col",
+        "description": "TRUE to sort columns instead of rows.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SORT({3;1;2})",
+        "result": "{1;2;3}"
+      },
+      {
+        "formula": "=SORT({\"b\",2;\"a\",1;\"c\",3},2,-1)",
+        "result": "{\"c\",3;\"b\",2;\"a\",1}"
+      }
+    ],
+    "since": "2021"
+  },
+  {
+    "name": "SORTBY",
+    "category": "Lookup & Reference",
+    "summary": "Sorts a range or array by the values in corresponding ranges or arrays.",
+    "syntax": "SORTBY(array, by_array1, [sort_order1], [by_array2, sort_order2], ...)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      },
+      {
+        "name": "by_array1",
+        "description": "The values to sort by."
+      },
+      {
+        "name": "sort_order1",
+        "description": "1 ascending (default), -1 descending.",
+        "optional": true
+      },
+      {
+        "name": "by_array2, sort_order2",
+        "description": "Further keys.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SORTBY({\"Tom\";\"Fred\";\"Amy\"},{52;65;22})",
+        "result": "{\"Amy\";\"Tom\";\"Fred\"}"
+      },
+      {
+        "formula": "=SORTBY({\"Tom\";\"Fred\";\"Amy\"},{52;65;22},-1)",
+        "result": "{\"Fred\";\"Tom\";\"Amy\"}"
+      }
+    ],
+    "since": "2021"
+  },
+  {
+    "name": "TAKE",
+    "category": "Lookup & Reference",
+    "summary": "Returns rows or columns from the start or end of an array.",
+    "syntax": "TAKE(array, rows, [columns])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      },
+      {
+        "name": "rows",
+        "description": "Rows to take (negative takes from the end)."
+      },
+      {
+        "name": "columns",
+        "description": "Columns to take.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TAKE({1,2,3;4,5,6;7,8,9},2)",
+        "result": "{1,2,3;4,5,6}"
+      },
+      {
+        "formula": "=TAKE({1,2,3;4,5,6;7,8,9},-1,2)",
+        "result": "{7,8}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "TOCOL",
+    "category": "Lookup & Reference",
+    "summary": "Returns the array as one column.",
+    "syntax": "TOCOL(array, [ignore], [scan_by_column])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      },
+      {
+        "name": "ignore",
+        "description": "0 keep all (default), 1 ignore blanks, 2 ignore errors, 3 ignore both.",
+        "optional": true
+      },
+      {
+        "name": "scan_by_column",
+        "description": "TRUE to read column by column.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TOCOL({1,2;3,4})",
+        "result": "{1;2;3;4}"
+      },
+      {
+        "formula": "=TOCOL({1,2;3,4},0,TRUE)",
+        "result": "{1;3;2;4}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "TOROW",
+    "category": "Lookup & Reference",
+    "summary": "Returns the array as one row.",
+    "syntax": "TOROW(array, [ignore], [scan_by_column])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      },
+      {
+        "name": "ignore",
+        "description": "0 keep all (default), 1 ignore blanks, 2 ignore errors, 3 ignore both.",
+        "optional": true
+      },
+      {
+        "name": "scan_by_column",
+        "description": "TRUE to read column by column.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TOROW({1,2;3,4})",
+        "result": "{1,2,3,4}"
+      },
+      {
+        "formula": "=TOROW({1,#N/A;3,4},2)",
+        "result": "{1,3,4}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "TRANSPOSE",
+    "category": "Lookup & Reference",
+    "summary": "Swaps the rows and columns of a range or array.",
+    "syntax": "TRANSPOSE(array)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TRANSPOSE({1,2,3})",
+        "result": "{1;2;3}"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "UNIQUE",
+    "category": "Lookup & Reference",
+    "summary": "Returns the unique rows (or columns) of a range or array.",
+    "syntax": "UNIQUE(array, [by_col], [exactly_once])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The range or array."
+      },
+      {
+        "name": "by_col",
+        "description": "TRUE to compare columns instead of rows.",
+        "optional": true
+      },
+      {
+        "name": "exactly_once",
+        "description": "TRUE to return only items that occur once.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=UNIQUE({1;2;2;3})",
+        "result": "{1;2;3}"
+      },
+      {
+        "formula": "=UNIQUE({1;2;2;3},FALSE,TRUE)",
+        "result": "{1;3}"
+      }
+    ],
+    "since": "2021"
+  },
+  {
+    "name": "VLOOKUP",
+    "category": "Lookup & Reference",
+    "summary": "Looks for a value in the first column of a table and returns a value from the same row.",
+    "syntax": "VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])",
+    "args": [
+      {
+        "name": "lookup_value",
+        "description": "The value to find in the first column."
+      },
+      {
+        "name": "table_array",
+        "description": "The table to search."
+      },
+      {
+        "name": "col_index_num",
+        "description": "Column of the table to return (1 is the first)."
+      },
+      {
+        "name": "range_lookup",
+        "description": "FALSE for an exact match; TRUE or omitted for the closest match in sorted data.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=VLOOKUP(2,{1,\"a\";2,\"b\"},2,FALSE)",
+        "result": "\"b\""
+      },
+      {
+        "formula": "=VLOOKUP(2.5,{1,\"a\";2,\"b\";3,\"c\"},2)",
+        "result": "\"b\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "VSTACK",
+    "category": "Lookup & Reference",
+    "summary": "Appends arrays vertically.",
+    "syntax": "VSTACK(array1, [array2], ...)",
+    "args": [
+      {
+        "name": "array1",
+        "description": "The first array."
+      },
+      {
+        "name": "array2",
+        "description": "Further arrays.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=VSTACK({1,2},{3,4})",
+        "result": "{1,2;3,4}"
+      },
+      {
+        "formula": "=VSTACK({1,2},{3})",
+        "result": "{1,2;3,#N/A}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "WRAPCOLS",
+    "category": "Lookup & Reference",
+    "summary": "Wraps a row or column of values into columns of the given height.",
+    "syntax": "WRAPCOLS(vector, wrap_count, [pad_with])",
+    "args": [
+      {
+        "name": "vector",
+        "description": "The row or column to wrap."
+      },
+      {
+        "name": "wrap_count",
+        "description": "The number of values per column."
+      },
+      {
+        "name": "pad_with",
+        "description": "Padding value (default #N/A).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=WRAPCOLS({1,2,3,4,5},2,0)",
+        "result": "{1,3,5;2,4,0}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "WRAPROWS",
+    "category": "Lookup & Reference",
+    "summary": "Wraps a row or column of values into rows of the given width.",
+    "syntax": "WRAPROWS(vector, wrap_count, [pad_with])",
+    "args": [
+      {
+        "name": "vector",
+        "description": "The row or column to wrap."
+      },
+      {
+        "name": "wrap_count",
+        "description": "The number of values per row."
+      },
+      {
+        "name": "pad_with",
+        "description": "Padding value (default #N/A).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=WRAPROWS({1,2,3,4,5},2,0)",
+        "result": "{1,2;3,4;5,0}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "XLOOKUP",
+    "category": "Lookup & Reference",
+    "summary": "Searches a range or array and returns the matching item from another range or array.",
+    "syntax": "XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode])",
+    "args": [
+      {
+        "name": "lookup_value",
+        "description": "The value to search for."
+      },
+      {
+        "name": "lookup_array",
+        "description": "The row or column to search."
+      },
+      {
+        "name": "return_array",
+        "description": "The range or array to return from."
+      },
+      {
+        "name": "if_not_found",
+        "description": "Returned when nothing matches (default #N/A).",
+        "optional": true
+      },
+      {
+        "name": "match_mode",
+        "description": "0 exact (default), -1 exact or next smaller, 1 exact or next larger, 2 wildcard.",
+        "optional": true
+      },
+      {
+        "name": "search_mode",
+        "description": "1 first to last (default), -1 last to first, 2 binary ascending, -2 binary descending.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=XLOOKUP(5,{1,3,5},{\"a\",\"b\",\"c\"})",
+        "result": "\"c\""
+      },
+      {
+        "formula": "=XLOOKUP(4,{1,3,5},{\"a\",\"b\",\"c\"},\"none\",-1)",
+        "result": "\"b\""
+      },
+      {
+        "formula": "=XLOOKUP(\"x\",{\"a\",\"b\"},{1,2},\"none\")",
+        "result": "\"none\""
+      }
+    ],
+    "since": "2021"
+  },
+  {
+    "name": "XMATCH",
+    "category": "Lookup & Reference",
+    "summary": "Returns the relative position of an item in a row or column.",
+    "syntax": "XMATCH(lookup_value, lookup_array, [match_mode], [search_mode])",
+    "args": [
+      {
+        "name": "lookup_value",
+        "description": "The value to find."
+      },
+      {
+        "name": "lookup_array",
+        "description": "The row or column to search."
+      },
+      {
+        "name": "match_mode",
+        "description": "0 exact (default), -1 next smaller, 1 next larger, 2 wildcard.",
+        "optional": true
+      },
+      {
+        "name": "search_mode",
+        "description": "1 first to last (default), -1 last to first, 2/-2 binary search.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=XMATCH(\"Gra?e\",{\"Apple\",\"Grape\",\"Pear\",\"Banana\",\"Cherry\"},2)",
+        "result": "2"
+      },
+      {
+        "formula": "=XMATCH(35000,{5000,20000,30000,40000,50000},1)",
+        "result": "4"
+      }
+    ],
+    "since": "2021"
+  }
+]

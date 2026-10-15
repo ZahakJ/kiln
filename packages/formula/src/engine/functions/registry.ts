@@ -1,6 +1,8 @@
 /**
  * The function registry. WP-07 registers a native core set; WP-09 fills it with the full library.
  */
+
+import { LIBRARY_FUNCTIONS } from '../../functions/index.ts';
 import type { Node } from '../../parser/ast.ts';
 import type { EvalValue, Scope } from '../../values/types.ts';
 import type { CallContext } from '../context.ts';
@@ -84,11 +86,15 @@ export interface FunctionDescriptor {
 const registry = new Map<string, FunctionDescriptor>();
 let coreLoaded = false;
 
-/** Registers the engine's native functions on first use (explicit registrations win). */
+/**
+ * Registers the engine's native core functions and the WP-09 function library on first use (the
+ * library replaces core entries of the same name; explicit registrations made later win).
+ */
 function ensureCore(): void {
   if (coreLoaded) return;
   coreLoaded = true;
   for (const d of CORE_FUNCTIONS) if (!registry.has(d.name)) registry.set(d.name, d);
+  for (const d of LIBRARY_FUNCTIONS()) registry.set(d.name, d);
 }
 
 const PREFIXES = ['_XLFN._XLWS.', '_XLFN.', '_XLWS.', '_XLETA.'];

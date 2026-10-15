@@ -11,5 +11,15 @@
 export const PACKAGE_NAME = '@officina/formula' as const;
 
 export * from './engine/index.ts';
+export {
+  DOC_FAMILIES,
+  type FunctionDocEntry,
+  formatComplex,
+  formatNumber,
+  functionDoc,
+  listFunctionDocs,
+  parseComplex,
+  parseCriterion,
+} from './functions/index.ts';
 export * from './parser/index.ts';
 export * from './values/index.ts';

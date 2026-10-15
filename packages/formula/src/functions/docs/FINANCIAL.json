@@ -1,0 +1,1773 @@
+[
+  {
+    "name": "ACCRINT",
+    "category": "Financial",
+    "summary": "Returns the accrued interest for a security that pays periodic interest.",
+    "syntax": "ACCRINT(issue, first_interest, settlement, rate, par, frequency, [basis], [calc_method])",
+    "args": [
+      {
+        "name": "issue",
+        "description": "The issue date."
+      },
+      {
+        "name": "first_interest",
+        "description": "The first interest date."
+      },
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "rate",
+        "description": "The annual coupon rate."
+      },
+      {
+        "name": "par",
+        "description": "The par value."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      },
+      {
+        "name": "calc_method",
+        "description": "TRUE (default) accrues from issue to settlement.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ACCRINT(DATE(2008,3,1),DATE(2008,8,31),DATE(2008,5,1),0.1,1000,2,0)",
+        "result": "16.66666667"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ACCRINTM",
+    "category": "Financial",
+    "summary": "Returns the accrued interest for a security that pays interest at maturity.",
+    "syntax": "ACCRINTM(issue, settlement, rate, [par], [basis])",
+    "args": [
+      {
+        "name": "issue",
+        "description": "The issue date."
+      },
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "rate",
+        "description": "The annual coupon rate."
+      },
+      {
+        "name": "par",
+        "description": "The par value (default 1000).",
+        "optional": true
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ACCRINTM(DATE(2008,4,1),DATE(2008,6,15),0.1,1000,3)",
+        "result": "20.54794521"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COUPDAYBS",
+    "category": "Financial",
+    "summary": "Returns the number of days from the beginning of the coupon period to the settlement date.",
+    "syntax": "COUPDAYBS(settlement, maturity, frequency, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COUPDAYBS(DATE(2011,1,25),DATE(2011,11,15),2,1)",
+        "result": "71"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COUPDAYS",
+    "category": "Financial",
+    "summary": "Returns the number of days in the coupon period that contains the settlement date.",
+    "syntax": "COUPDAYS(settlement, maturity, frequency, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COUPDAYS(DATE(2011,1,25),DATE(2011,11,15),2,1)",
+        "result": "181"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COUPDAYSNC",
+    "category": "Financial",
+    "summary": "Returns the number of days from the settlement date to the next coupon date.",
+    "syntax": "COUPDAYSNC(settlement, maturity, frequency, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COUPDAYSNC(DATE(2011,1,25),DATE(2011,11,15),2,1)",
+        "result": "110"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COUPNCD",
+    "category": "Financial",
+    "summary": "Returns the next coupon date after the settlement date.",
+    "syntax": "COUPNCD(settlement, maturity, frequency, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COUPNCD(DATE(2011,1,25),DATE(2011,11,15),2,1)",
+        "result": "40678"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COUPNUM",
+    "category": "Financial",
+    "summary": "Returns the number of coupons payable between the settlement date and maturity date.",
+    "syntax": "COUPNUM(settlement, maturity, frequency, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COUPNUM(DATE(2007,1,25),DATE(2008,11,15),2,1)",
+        "result": "4"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COUPPCD",
+    "category": "Financial",
+    "summary": "Returns the previous coupon date before the settlement date.",
+    "syntax": "COUPPCD(settlement, maturity, frequency, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COUPPCD(DATE(2011,1,25),DATE(2011,11,15),2,1)",
+        "result": "40497"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "CUMIPMT",
+    "category": "Financial",
+    "summary": "Returns the cumulative interest paid on a loan between two periods.",
+    "syntax": "CUMIPMT(rate, nper, pv, start_period, end_period, type)",
+    "args": [
+      {
+        "name": "rate",
+        "description": "The interest rate per period."
+      },
+      {
+        "name": "nper",
+        "description": "The total number of payment periods."
+      },
+      {
+        "name": "pv",
+        "description": "The present value (principal)."
+      },
+      {
+        "name": "start_period",
+        "description": "The first period."
+      },
+      {
+        "name": "end_period",
+        "description": "The last period."
+      },
+      {
+        "name": "type",
+        "description": "0 end of period, 1 beginning."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CUMIPMT(0.09/12,30*12,125000,13,24,0)",
+        "result": "-11135.23213"
+      },
+      {
+        "formula": "=CUMIPMT(0.09/12,30*12,125000,1,1,0)",
+        "result": "-937.5"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "CUMPRINC",
+    "category": "Financial",
+    "summary": "Returns the cumulative principal paid on a loan between two periods.",
+    "syntax": "CUMPRINC(rate, nper, pv, start_period, end_period, type)",
+    "args": [
+      {
+        "name": "rate",
+        "description": "The interest rate per period."
+      },
+      {
+        "name": "nper",
+        "description": "The total number of payment periods."
+      },
+      {
+        "name": "pv",
+        "description": "The present value (principal)."
+      },
+      {
+        "name": "start_period",
+        "description": "The first period."
+      },
+      {
+        "name": "end_period",
+        "description": "The last period."
+      },
+      {
+        "name": "type",
+        "description": "0 end of period, 1 beginning."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CUMPRINC(0.09/12,30*12,125000,13,24,0)",
+        "result": "-934.1071234"
+      },
+      {
+        "formula": "=CUMPRINC(0.09/12,30*12,125000,1,1,0)",
+        "result": "-68.27827118"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DB",
+    "category": "Financial",
+    "summary": "Returns the depreciation of an asset for a period using the fixed-declining balance method.",
+    "syntax": "DB(cost, salvage, life, period, [month])",
+    "args": [
+      {
+        "name": "cost",
+        "description": "The initial cost."
+      },
+      {
+        "name": "salvage",
+        "description": "The value at the end of the depreciation."
+      },
+      {
+        "name": "life",
+        "description": "The number of periods."
+      },
+      {
+        "name": "period",
+        "description": "The period to calculate."
+      },
+      {
+        "name": "month",
+        "description": "Months in the first year (default 12).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DB(1000000,100000,6,1,7)",
+        "result": "186083.3333"
+      },
+      {
+        "formula": "=DB(1000000,100000,6,2,7)",
+        "result": "259639.4167"
+      },
+      {
+        "formula": "=DB(1000000,100000,6,7,7)",
+        "result": "15845.09847"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DDB",
+    "category": "Financial",
+    "summary": "Returns the depreciation of an asset for a period using the double-declining balance (or another) method.",
+    "syntax": "DDB(cost, salvage, life, period, [factor])",
+    "args": [
+      {
+        "name": "cost",
+        "description": "The initial cost."
+      },
+      {
+        "name": "salvage",
+        "description": "The value at the end of the depreciation."
+      },
+      {
+        "name": "life",
+        "description": "The number of periods."
+      },
+      {
+        "name": "period",
+        "description": "The period to calculate."
+      },
+      {
+        "name": "factor",
+        "description": "The rate at which the balance declines (default 2).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DDB(2400,300,10*365,1)",
+        "result": "1.315068493"
+      },
+      {
+        "formula": "=DDB(2400,300,10*12,1,2)",
+        "result": "40"
+      },
+      {
+        "formula": "=DDB(2400,300,10,1,2)",
+        "result": "480"
+      },
+      {
+        "formula": "=DDB(2400,300,10,2,1.5)",
+        "result": "306"
+      },
+      {
+        "formula": "=DDB(2400,300,10,10)",
+        "result": "22.1225472"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DISC",
+    "category": "Financial",
+    "summary": "Returns the discount rate for a security.",
+    "syntax": "DISC(settlement, maturity, pr, redemption, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "pr",
+        "description": "The price per $100 face value."
+      },
+      {
+        "name": "redemption",
+        "description": "The redemption value per $100 face value."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DISC(DATE(2018,7,1),DATE(2048,1,1),97.975,100,1)",
+        "result": "0.000686"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DOLLARDE",
+    "category": "Financial",
+    "summary": "Converts a dollar price expressed as a fraction into a decimal number.",
+    "syntax": "DOLLARDE(fractional_dollar, fraction)",
+    "args": [
+      {
+        "name": "fractional_dollar",
+        "description": "The price written as integer.fraction."
+      },
+      {
+        "name": "fraction",
+        "description": "The denominator of the fraction."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DOLLARDE(1.02,16)",
+        "result": "1.125"
+      },
+      {
+        "formula": "=DOLLARDE(1.1,32)",
+        "result": "1.3125"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DOLLARFR",
+    "category": "Financial",
+    "summary": "Converts a decimal dollar price into a fractional price.",
+    "syntax": "DOLLARFR(decimal_dollar, fraction)",
+    "args": [
+      {
+        "name": "decimal_dollar",
+        "description": "The decimal price."
+      },
+      {
+        "name": "fraction",
+        "description": "The denominator of the fraction."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DOLLARFR(1.125,16)",
+        "result": "1.02"
+      },
+      {
+        "formula": "=DOLLARFR(1.125,32)",
+        "result": "1.04"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DURATION",
+    "category": "Financial",
+    "summary": "Returns the Macaulay duration of a security with periodic interest payments.",
+    "syntax": "DURATION(settlement, maturity, coupon, yld, frequency, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "coupon",
+        "description": "The annual coupon rate."
+      },
+      {
+        "name": "yld",
+        "description": "The annual yield."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DURATION(DATE(2018,7,1),DATE(2048,1,1),0.08,0.09,2,1)",
+        "result": "10.9191453"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "EFFECT",
+    "category": "Financial",
+    "summary": "Returns the effective annual interest rate.",
+    "syntax": "EFFECT(nominal_rate, npery)",
+    "args": [
+      {
+        "name": "nominal_rate",
+        "description": "The nominal interest rate."
+      },
+      {
+        "name": "npery",
+        "description": "Compounding periods per year."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=EFFECT(0.0525,4)",
+        "result": "0.053542667"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FV",
+    "category": "Financial",
+    "summary": "Returns the future value of an investment with periodic, constant payments and a constant rate.",
+    "syntax": "FV(rate, nper, pmt, [pv], [type])",
+    "args": [
+      {
+        "name": "rate",
+        "description": "The interest rate per period."
+      },
+      {
+        "name": "nper",
+        "description": "The total number of payment periods."
+      },
+      {
+        "name": "pmt",
+        "description": "The payment made each period."
+      },
+      {
+        "name": "pv",
+        "description": "The present value (default 0).",
+        "optional": true
+      },
+      {
+        "name": "type",
+        "description": "0 (default) payments at the end of each period, 1 at the beginning.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FV(0.06/12,10,-200,-500,1)",
+        "result": "2581.403374"
+      },
+      {
+        "formula": "=FV(0.12/12,12,-1000)",
+        "result": "12682.50301"
+      },
+      {
+        "formula": "=FV(0,10,-100)",
+        "result": "1000"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FVSCHEDULE",
+    "category": "Financial",
+    "summary": "Returns the future value of a principal after applying a series of compound interest rates.",
+    "syntax": "FVSCHEDULE(principal, schedule)",
+    "args": [
+      {
+        "name": "principal",
+        "description": "The present value."
+      },
+      {
+        "name": "schedule",
+        "description": "An array of interest rates."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FVSCHEDULE(1,{0.09,0.11,0.1})",
+        "result": "1.33089"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "INTRATE",
+    "category": "Financial",
+    "summary": "Returns the interest rate for a fully invested security.",
+    "syntax": "INTRATE(settlement, maturity, investment, redemption, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "investment",
+        "description": "The amount invested."
+      },
+      {
+        "name": "redemption",
+        "description": "The amount received at maturity."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=INTRATE(DATE(2008,2,15),DATE(2008,5,15),1000000,1014420,2)",
+        "result": "0.05768"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IPMT",
+    "category": "Financial",
+    "summary": "Returns the interest payment for a given period of an investment.",
+    "syntax": "IPMT(rate, per, nper, pv, [fv], [type])",
+    "args": [
+      {
+        "name": "rate",
+        "description": "The interest rate per period."
+      },
+      {
+        "name": "per",
+        "description": "The period (1 to nper)."
+      },
+      {
+        "name": "nper",
+        "description": "The total number of payment periods."
+      },
+      {
+        "name": "pv",
+        "description": "The present value (principal)."
+      },
+      {
+        "name": "fv",
+        "description": "The future value after the last payment (default 0).",
+        "optional": true
+      },
+      {
+        "name": "type",
+        "description": "0 (default) payments at the end of each period, 1 at the beginning.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IPMT(0.1/12,1,3*12,8000)",
+        "result": "-66.66666667"
+      },
+      {
+        "formula": "=IPMT(0.1,3,3,8000)",
+        "result": "-292.4471299"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IRR",
+    "category": "Financial",
+    "summary": "Returns the internal rate of return for a series of cash flows.",
+    "syntax": "IRR(values, [guess])",
+    "args": [
+      {
+        "name": "values",
+        "description": "Cash flows (at least one negative and one positive)."
+      },
+      {
+        "name": "guess",
+        "description": "A starting estimate (default 0.1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IRR({-70000,12000,15000,18000,21000,26000})",
+        "result": "0.086630948"
+      },
+      {
+        "formula": "=IRR({-70000,12000,15000,18000,21000})",
+        "result": "-0.021244848"
+      },
+      {
+        "formula": "=IRR({-100,30,40,50})",
+        "result": "0.088963395"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ISPMT",
+    "category": "Financial",
+    "summary": "Returns the interest paid during a period of a loan with even principal payments.",
+    "syntax": "ISPMT(rate, per, nper, pv)",
+    "args": [
+      {
+        "name": "rate",
+        "description": "The interest rate per period."
+      },
+      {
+        "name": "per",
+        "description": "The period (0-based)."
+      },
+      {
+        "name": "nper",
+        "description": "The total number of payment periods."
+      },
+      {
+        "name": "pv",
+        "description": "The present value (principal)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISPMT(0.1/12,0,3*12,8000000)",
+        "result": "-66666.66667"
+      },
+      {
+        "formula": "=ISPMT(0.1,0,3,8000000)",
+        "result": "-800000"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MDURATION",
+    "category": "Financial",
+    "summary": "Returns the modified Macaulay duration of a security.",
+    "syntax": "MDURATION(settlement, maturity, coupon, yld, frequency, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "coupon",
+        "description": "The annual coupon rate."
+      },
+      {
+        "name": "yld",
+        "description": "The annual yield."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MDURATION(DATE(2008,1,1),DATE(2016,1,1),0.08,0.09,2,1)",
+        "result": "5.73567"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MIRR",
+    "category": "Financial",
+    "summary": "Returns the modified internal rate of return for a series of cash flows.",
+    "syntax": "MIRR(values, finance_rate, reinvest_rate)",
+    "args": [
+      {
+        "name": "values",
+        "description": "Cash flows."
+      },
+      {
+        "name": "finance_rate",
+        "description": "The rate paid on money used."
+      },
+      {
+        "name": "reinvest_rate",
+        "description": "The rate received on reinvested cash."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MIRR({-120000,39000,30000,21000,37000,46000},0.1,0.12)",
+        "result": "0.126094"
+      },
+      {
+        "formula": "=MIRR({-120000,39000,30000,21000},0.1,0.12)",
+        "result": "-0.048044655"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "NOMINAL",
+    "category": "Financial",
+    "summary": "Returns the annual nominal interest rate.",
+    "syntax": "NOMINAL(effect_rate, npery)",
+    "args": [
+      {
+        "name": "effect_rate",
+        "description": "The effective interest rate."
+      },
+      {
+        "name": "npery",
+        "description": "Compounding periods per year."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NOMINAL(0.053543,4)",
+        "result": "0.0525003"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "NPER",
+    "category": "Financial",
+    "summary": "Returns the number of periods for an investment.",
+    "syntax": "NPER(rate, pmt, pv, [fv], [type])",
+    "args": [
+      {
+        "name": "rate",
+        "description": "The interest rate per period."
+      },
+      {
+        "name": "pmt",
+        "description": "The payment made each period."
+      },
+      {
+        "name": "pv",
+        "description": "The present value (principal)."
+      },
+      {
+        "name": "fv",
+        "description": "The future value after the last payment (default 0).",
+        "optional": true
+      },
+      {
+        "name": "type",
+        "description": "0 (default) payments at the end of each period, 1 at the beginning.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NPER(0.12/12,-100,-1000,10000,1)",
+        "result": "59.67386567"
+      },
+      {
+        "formula": "=NPER(0.12/12,-100,-1000,10000)",
+        "result": "60.08212285"
+      },
+      {
+        "formula": "=NPER(0.12/12,-100,-1000)",
+        "result": "-9.57859404"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "NPV",
+    "category": "Financial",
+    "summary": "Returns the net present value of an investment from a discount rate and future cash flows.",
+    "syntax": "NPV(rate, value1, [value2], ...)",
+    "args": [
+      {
+        "name": "rate",
+        "description": "The discount rate per period."
+      },
+      {
+        "name": "value1",
+        "description": "The first cash flow (at the end of period 1)."
+      },
+      {
+        "name": "value2",
+        "description": "Further cash flows.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NPV(0.1,-10000,3000,4200,6800)",
+        "result": "1188.443412"
+      },
+      {
+        "formula": "=NPV(0.08,{8000,9200,10000,12000,14500})+-40000",
+        "result": "1922.061555"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "PDURATION",
+    "category": "Financial",
+    "summary": "Returns the number of periods required for an investment to reach a value.",
+    "syntax": "PDURATION(rate, pv, fv)",
+    "args": [
+      {
+        "name": "rate",
+        "description": "The interest rate per period."
+      },
+      {
+        "name": "pv",
+        "description": "The present value."
+      },
+      {
+        "name": "fv",
+        "description": "The desired future value."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PDURATION(0.025,2000,2200)",
+        "result": "3.859866163"
+      },
+      {
+        "formula": "=PDURATION(0.025/12,1000,1200)",
+        "result": "87.60547642"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "PMT",
+    "category": "Financial",
+    "summary": "Returns the periodic payment for a loan.",
+    "syntax": "PMT(rate, nper, pv, [fv], [type])",
+    "args": [
+      {
+        "name": "rate",
+        "description": "The interest rate per period."
+      },
+      {
+        "name": "nper",
+        "description": "The total number of payment periods."
+      },
+      {
+        "name": "pv",
+        "description": "The present value (principal)."
+      },
+      {
+        "name": "fv",
+        "description": "The future value after the last payment (default 0).",
+        "optional": true
+      },
+      {
+        "name": "type",
+        "description": "0 (default) payments at the end of each period, 1 at the beginning.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PMT(0.08/12,10,10000)",
+        "result": "-1037.032089"
+      },
+      {
+        "formula": "=PMT(0.08/12,10,10000,0,1)",
+        "result": "-1030.164327"
+      },
+      {
+        "formula": "=PMT(0.06/12,18*12,0,50000)",
+        "result": "-129.0811609"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "PPMT",
+    "category": "Financial",
+    "summary": "Returns the principal payment for a given period of an investment.",
+    "syntax": "PPMT(rate, per, nper, pv, [fv], [type])",
+    "args": [
+      {
+        "name": "rate",
+        "description": "The interest rate per period."
+      },
+      {
+        "name": "per",
+        "description": "The period (1 to nper)."
+      },
+      {
+        "name": "nper",
+        "description": "The total number of payment periods."
+      },
+      {
+        "name": "pv",
+        "description": "The present value (principal)."
+      },
+      {
+        "name": "fv",
+        "description": "The future value after the last payment (default 0).",
+        "optional": true
+      },
+      {
+        "name": "type",
+        "description": "0 (default) payments at the end of each period, 1 at the beginning.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PPMT(0.1/12,1,2*12,2000)",
+        "result": "-75.62318601"
+      },
+      {
+        "formula": "=PPMT(0.08,10,10,200000)",
+        "result": "-27598.05346"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "PRICE",
+    "category": "Financial",
+    "summary": "Returns the price per $100 face value of a security that pays periodic interest.",
+    "syntax": "PRICE(settlement, maturity, rate, yld, redemption, frequency, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "rate",
+        "description": "The annual coupon rate."
+      },
+      {
+        "name": "yld",
+        "description": "The annual yield."
+      },
+      {
+        "name": "redemption",
+        "description": "The redemption value per $100 face value."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PRICE(DATE(2008,2,15),DATE(2017,11,15),0.0575,0.065,100,2,0)",
+        "result": "94.63436162"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "PRICEDISC",
+    "category": "Financial",
+    "summary": "Returns the price per $100 face value of a discounted security.",
+    "syntax": "PRICEDISC(settlement, maturity, discount, redemption, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "discount",
+        "description": "The discount rate."
+      },
+      {
+        "name": "redemption",
+        "description": "The redemption value per $100 face value."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PRICEDISC(DATE(2008,2,16),DATE(2008,3,1),0.0525,100,2)",
+        "result": "99.79583333"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "PRICEMAT",
+    "category": "Financial",
+    "summary": "Returns the price per $100 face value of a security that pays interest at maturity.",
+    "syntax": "PRICEMAT(settlement, maturity, issue, rate, yld, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "issue",
+        "description": "The issue date."
+      },
+      {
+        "name": "rate",
+        "description": "The interest rate at issue."
+      },
+      {
+        "name": "yld",
+        "description": "The annual yield."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PRICEMAT(DATE(2008,2,15),DATE(2008,4,13),DATE(2007,11,11),0.061,0.061,0)",
+        "result": "99.98449888"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "PV",
+    "category": "Financial",
+    "summary": "Returns the present value of an investment.",
+    "syntax": "PV(rate, nper, pmt, [fv], [type])",
+    "args": [
+      {
+        "name": "rate",
+        "description": "The interest rate per period."
+      },
+      {
+        "name": "nper",
+        "description": "The total number of payment periods."
+      },
+      {
+        "name": "pmt",
+        "description": "The payment made each period."
+      },
+      {
+        "name": "fv",
+        "description": "The future value after the last payment (default 0).",
+        "optional": true
+      },
+      {
+        "name": "type",
+        "description": "0 (default) payments at the end of each period, 1 at the beginning.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PV(0.08/12,12*20,500,0,0)",
+        "result": "-59777.14585"
+      },
+      {
+        "formula": "=PV(0,10,-100)",
+        "result": "1000"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "RATE",
+    "category": "Financial",
+    "summary": "Returns the interest rate per period of an annuity.",
+    "syntax": "RATE(nper, pmt, pv, [fv], [type], [guess])",
+    "args": [
+      {
+        "name": "nper",
+        "description": "The total number of payment periods."
+      },
+      {
+        "name": "pmt",
+        "description": "The payment made each period."
+      },
+      {
+        "name": "pv",
+        "description": "The present value (principal)."
+      },
+      {
+        "name": "fv",
+        "description": "The future value after the last payment (default 0).",
+        "optional": true
+      },
+      {
+        "name": "type",
+        "description": "0 (default) payments at the end of each period, 1 at the beginning.",
+        "optional": true
+      },
+      {
+        "name": "guess",
+        "description": "An estimate of the rate (default 10%).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=RATE(4*12,-200,8000)",
+        "result": "0.007701472"
+      },
+      {
+        "formula": "=RATE(4*12,-200,8000)*12",
+        "result": "0.09241767"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "RECEIVED",
+    "category": "Financial",
+    "summary": "Returns the amount received at maturity for a fully invested security.",
+    "syntax": "RECEIVED(settlement, maturity, investment, discount, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "investment",
+        "description": "The amount invested."
+      },
+      {
+        "name": "discount",
+        "description": "The discount rate."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=RECEIVED(DATE(2008,2,15),DATE(2008,5,15),1000000,0.0575,2)",
+        "result": "1014584.654"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "RRI",
+    "category": "Financial",
+    "summary": "Returns an equivalent interest rate for the growth of an investment.",
+    "syntax": "RRI(nper, pv, fv)",
+    "args": [
+      {
+        "name": "nper",
+        "description": "The number of periods."
+      },
+      {
+        "name": "pv",
+        "description": "The present value."
+      },
+      {
+        "name": "fv",
+        "description": "The future value."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=RRI(96,10000,11000)",
+        "result": "0.0009933"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "SLN",
+    "category": "Financial",
+    "summary": "Returns the straight-line depreciation of an asset for one period.",
+    "syntax": "SLN(cost, salvage, life)",
+    "args": [
+      {
+        "name": "cost",
+        "description": "The initial cost."
+      },
+      {
+        "name": "salvage",
+        "description": "The value at the end of the depreciation."
+      },
+      {
+        "name": "life",
+        "description": "The number of periods."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SLN(30000,7500,10)",
+        "result": "2250"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SYD",
+    "category": "Financial",
+    "summary": "Returns the sum-of-years' digits depreciation of an asset for a period.",
+    "syntax": "SYD(cost, salvage, life, per)",
+    "args": [
+      {
+        "name": "cost",
+        "description": "The initial cost."
+      },
+      {
+        "name": "salvage",
+        "description": "The value at the end of the depreciation."
+      },
+      {
+        "name": "life",
+        "description": "The number of periods."
+      },
+      {
+        "name": "per",
+        "description": "The period."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SYD(30000,7500,10,1)",
+        "result": "4090.909091"
+      },
+      {
+        "formula": "=SYD(30000,7500,10,10)",
+        "result": "409.0909091"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TBILLEQ",
+    "category": "Financial",
+    "summary": "Returns the bond-equivalent yield for a Treasury bill.",
+    "syntax": "TBILLEQ(settlement, maturity, discount)",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "discount",
+        "description": "The discount rate."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TBILLEQ(DATE(2008,3,31),DATE(2008,6,1),0.0914)",
+        "result": "0.094151494"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TBILLPRICE",
+    "category": "Financial",
+    "summary": "Returns the price per $100 face value for a Treasury bill.",
+    "syntax": "TBILLPRICE(settlement, maturity, discount)",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "discount",
+        "description": "The discount rate."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TBILLPRICE(DATE(2008,3,31),DATE(2008,6,1),0.09)",
+        "result": "98.45"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TBILLYIELD",
+    "category": "Financial",
+    "summary": "Returns the yield for a Treasury bill.",
+    "syntax": "TBILLYIELD(settlement, maturity, pr)",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "pr",
+        "description": "The price per $100 face value."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TBILLYIELD(DATE(2008,3,31),DATE(2008,6,1),98.45)",
+        "result": "0.091417"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "VDB",
+    "category": "Financial",
+    "summary": "Returns the depreciation of an asset for any period, using the declining balance method and switching to straight line.",
+    "syntax": "VDB(cost, salvage, life, start_period, end_period, [factor], [no_switch])",
+    "args": [
+      {
+        "name": "cost",
+        "description": "The initial cost."
+      },
+      {
+        "name": "salvage",
+        "description": "The value at the end of the depreciation."
+      },
+      {
+        "name": "life",
+        "description": "The number of periods."
+      },
+      {
+        "name": "start_period",
+        "description": "The starting period."
+      },
+      {
+        "name": "end_period",
+        "description": "The ending period."
+      },
+      {
+        "name": "factor",
+        "description": "The rate at which the balance declines (default 2).",
+        "optional": true
+      },
+      {
+        "name": "no_switch",
+        "description": "TRUE to never switch to straight line.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=VDB(2400,300,10*365,0,1)",
+        "result": "1.315068493"
+      },
+      {
+        "formula": "=VDB(2400,300,10*12,0,1)",
+        "result": "40"
+      },
+      {
+        "formula": "=VDB(2400,300,10,0,1)",
+        "result": "480"
+      },
+      {
+        "formula": "=VDB(2400,300,10*12,6,18)",
+        "result": "396.3060533"
+      },
+      {
+        "formula": "=VDB(2400,300,10,0,0.875,1.5)",
+        "result": "315"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "XIRR",
+    "category": "Financial",
+    "summary": "Returns the internal rate of return for a schedule of cash flows that is not necessarily periodic.",
+    "syntax": "XIRR(values, dates, [guess])",
+    "args": [
+      {
+        "name": "values",
+        "description": "Cash flows."
+      },
+      {
+        "name": "dates",
+        "description": "The payment dates."
+      },
+      {
+        "name": "guess",
+        "description": "A starting estimate (default 0.1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=XIRR({-10000,2750,4250,3250,2750},{39448,39508,39751,39859,39904})",
+        "result": "0.37336253"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "XNPV",
+    "category": "Financial",
+    "summary": "Returns the net present value for a schedule of cash flows that is not necessarily periodic.",
+    "syntax": "XNPV(rate, values, dates)",
+    "args": [
+      {
+        "name": "rate",
+        "description": "The discount rate."
+      },
+      {
+        "name": "values",
+        "description": "Cash flows."
+      },
+      {
+        "name": "dates",
+        "description": "The payment dates."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=XNPV(0.09,{-10000,2750,4250,3250,2750},{39448,39508,39751,39859,39904})",
+        "result": "2086.647602"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "YIELD",
+    "category": "Financial",
+    "summary": "Returns the yield of a security that pays periodic interest.",
+    "syntax": "YIELD(settlement, maturity, rate, pr, redemption, frequency, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "rate",
+        "description": "The annual coupon rate."
+      },
+      {
+        "name": "pr",
+        "description": "The price per $100 face value."
+      },
+      {
+        "name": "redemption",
+        "description": "The redemption value per $100 face value."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=YIELD(DATE(2008,2,15),DATE(2016,11,15),0.0575,95.04287,100,2,0)",
+        "result": "0.065"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "YIELDDISC",
+    "category": "Financial",
+    "summary": "Returns the annual yield for a discounted security.",
+    "syntax": "YIELDDISC(settlement, maturity, pr, redemption, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "pr",
+        "description": "The price per $100 face value."
+      },
+      {
+        "name": "redemption",
+        "description": "The redemption value per $100 face value."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=YIELDDISC(DATE(2008,2,16),DATE(2008,3,1),99.795,100,2)",
+        "result": "0.052823"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "YIELDMAT",
+    "category": "Financial",
+    "summary": "Returns the annual yield of a security that pays interest at maturity.",
+    "syntax": "YIELDMAT(settlement, maturity, issue, rate, pr, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The maturity date."
+      },
+      {
+        "name": "issue",
+        "description": "The issue date."
+      },
+      {
+        "name": "rate",
+        "description": "The interest rate at issue."
+      },
+      {
+        "name": "pr",
+        "description": "The price per $100 face value."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=YIELDMAT(DATE(2008,3,15),DATE(2008,11,3),DATE(2007,11,8),0.0625,100.0123,0)",
+        "result": "0.060954"
+      }
+    ],
+    "since": "2007"
+  }
+]

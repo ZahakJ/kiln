@@ -1,0 +1,2153 @@
+[
+  {
+    "name": "ABS",
+    "category": "Math & Trig",
+    "summary": "Returns the absolute value of a number.",
+    "syntax": "ABS(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A real number."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ABS(-4)",
+        "result": "4"
+      },
+      {
+        "formula": "=ABS(2.5)",
+        "result": "2.5"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ACOS",
+    "category": "Math & Trig",
+    "summary": "Returns the arccosine of a number, in radians (0 to pi).",
+    "syntax": "ACOS(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The cosine of the angle, from -1 to 1."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ACOS(-0.5)",
+        "result": "2.094395102"
+      },
+      {
+        "formula": "=DEGREES(ACOS(-0.5))",
+        "result": "120"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ACOSH",
+    "category": "Math & Trig",
+    "summary": "Returns the inverse hyperbolic cosine of a number.",
+    "syntax": "ACOSH(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "Any real number equal to or greater than 1."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ACOSH(1)",
+        "result": "0"
+      },
+      {
+        "formula": "=ACOSH(10)",
+        "result": "2.993222846"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ACOT",
+    "category": "Math & Trig",
+    "summary": "Returns the principal value of the arccotangent of a number, in radians (0 to pi).",
+    "syntax": "ACOT(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The cotangent of the angle."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ACOT(2)",
+        "result": "0.463647609"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "ACOTH",
+    "category": "Math & Trig",
+    "summary": "Returns the inverse hyperbolic cotangent of a number.",
+    "syntax": "ACOTH(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A number whose absolute value is greater than 1."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ACOTH(6)",
+        "result": "0.168236118"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "AGGREGATE",
+    "category": "Math & Trig",
+    "summary": "Returns an aggregate (sum, average, count, large…) of a list, optionally ignoring hidden rows, errors and nested SUBTOTAL/AGGREGATE results.",
+    "syntax": "AGGREGATE(function_num, options, ref1, [ref2], ...)",
+    "args": [
+      {
+        "name": "function_num",
+        "description": "1–19: AVERAGE, COUNT, COUNTA, MAX, MIN, PRODUCT, STDEV.S, STDEV.P, SUM, VAR.S, VAR.P, MEDIAN, MODE.SNGL, LARGE, SMALL, PERCENTILE.INC, QUARTILE.INC, PERCENTILE.EXC, QUARTILE.EXC."
+      },
+      {
+        "name": "options",
+        "description": "0–7: what to ignore (6 ignores error values; 5 hidden rows; 7 both)."
+      },
+      {
+        "name": "ref1",
+        "description": "The first range or array."
+      },
+      {
+        "name": "ref2",
+        "description": "Further ranges, or k for functions 14–19.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=AGGREGATE(9,6,{1,2,#N/A,4})",
+        "result": "7"
+      },
+      {
+        "formula": "=AGGREGATE(14,6,{3,#DIV/0!,9,5},2)",
+        "result": "5"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "ARABIC",
+    "category": "Math & Trig",
+    "summary": "Converts a Roman numeral to an Arabic number.",
+    "syntax": "ARABIC(text)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The Roman numeral, in quotes or as a reference."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ARABIC(\"LVII\")",
+        "result": "57"
+      },
+      {
+        "formula": "=ARABIC(\"mcmxii\")",
+        "result": "1912"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "ASIN",
+    "category": "Math & Trig",
+    "summary": "Returns the arcsine of a number, in radians (-pi/2 to pi/2).",
+    "syntax": "ASIN(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The sine of the angle, from -1 to 1."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ASIN(-0.5)",
+        "result": "-0.523598776"
+      },
+      {
+        "formula": "=DEGREES(ASIN(-0.5))",
+        "result": "-30"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ASINH",
+    "category": "Math & Trig",
+    "summary": "Returns the inverse hyperbolic sine of a number.",
+    "syntax": "ASINH(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A real number."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ASINH(-2.5)",
+        "result": "-1.647231146"
+      },
+      {
+        "formula": "=ASINH(10)",
+        "result": "2.99822295"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ATAN",
+    "category": "Math & Trig",
+    "summary": "Returns the arctangent of a number, in radians (-pi/2 to pi/2).",
+    "syntax": "ATAN(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The tangent of the angle."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ATAN(1)",
+        "result": "0.785398163"
+      },
+      {
+        "formula": "=DEGREES(ATAN(1))",
+        "result": "45"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ATAN2",
+    "category": "Math & Trig",
+    "summary": "Returns the arctangent of x- and y-coordinates, in radians (-pi to pi).",
+    "syntax": "ATAN2(x_num, y_num)",
+    "args": [
+      {
+        "name": "x_num",
+        "description": "The x-coordinate of the point."
+      },
+      {
+        "name": "y_num",
+        "description": "The y-coordinate of the point."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ATAN2(1,1)",
+        "result": "0.785398163"
+      },
+      {
+        "formula": "=ATAN2(-1,-1)",
+        "result": "-2.35619449"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ATANH",
+    "category": "Math & Trig",
+    "summary": "Returns the inverse hyperbolic tangent of a number.",
+    "syntax": "ATANH(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A number between -1 and 1 (exclusive)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ATANH(0.76159416)",
+        "result": "1.00000001"
+      },
+      {
+        "formula": "=ATANH(-0.1)",
+        "result": "-0.100335348"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "BASE",
+    "category": "Math & Trig",
+    "summary": "Converts a number into a text representation in another base (radix).",
+    "syntax": "BASE(number, radix, [min_length])",
+    "args": [
+      {
+        "name": "number",
+        "description": "A whole number from 0 to 2^53."
+      },
+      {
+        "name": "radix",
+        "description": "The base, from 2 to 36."
+      },
+      {
+        "name": "min_length",
+        "description": "Minimum length of the result (padded with zeros).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BASE(7,2)",
+        "result": "\"111\""
+      },
+      {
+        "formula": "=BASE(100,16)",
+        "result": "\"64\""
+      },
+      {
+        "formula": "=BASE(15,2,10)",
+        "result": "\"0000001111\""
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "CEILING.MATH",
+    "category": "Math & Trig",
+    "summary": "Rounds a number up to the nearest integer or multiple of significance.",
+    "syntax": "CEILING.MATH(number, [significance], [mode])",
+    "args": [
+      {
+        "name": "number",
+        "description": "A real number."
+      },
+      {
+        "name": "significance",
+        "description": "The multiple to round to (default 1).",
+        "optional": true
+      },
+      {
+        "name": "mode",
+        "description": "For negative numbers, non-zero rounds away from zero.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CEILING.MATH(24.3,5)",
+        "result": "25"
+      },
+      {
+        "formula": "=CEILING.MATH(6.7)",
+        "result": "7"
+      },
+      {
+        "formula": "=CEILING.MATH(-8.1,2)",
+        "result": "-8"
+      },
+      {
+        "formula": "=CEILING.MATH(-5.5,2,-1)",
+        "result": "-6"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "CEILING.PRECISE",
+    "category": "Math & Trig",
+    "summary": "Rounds a number up to the nearest multiple of significance, regardless of sign.",
+    "syntax": "CEILING.PRECISE(number, [significance])",
+    "args": [
+      {
+        "name": "number",
+        "description": "A real number."
+      },
+      {
+        "name": "significance",
+        "description": "The multiple to round to (default 1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CEILING.PRECISE(4.3)",
+        "result": "5"
+      },
+      {
+        "formula": "=CEILING.PRECISE(-4.3)",
+        "result": "-4"
+      },
+      {
+        "formula": "=CEILING.PRECISE(4.3,-2)",
+        "result": "6"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "COMBIN",
+    "category": "Math & Trig",
+    "summary": "Returns the number of combinations for a given number of items.",
+    "syntax": "COMBIN(number, number_chosen)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number of items."
+      },
+      {
+        "name": "number_chosen",
+        "description": "The number of items in each combination."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COMBIN(8,2)",
+        "result": "28"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COMBINA",
+    "category": "Math & Trig",
+    "summary": "Returns the number of combinations (with repetitions) for a given number of items.",
+    "syntax": "COMBINA(number, number_chosen)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number of items."
+      },
+      {
+        "name": "number_chosen",
+        "description": "The number of items in each combination."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COMBINA(4,3)",
+        "result": "20"
+      },
+      {
+        "formula": "=COMBINA(10,3)",
+        "result": "220"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "COS",
+    "category": "Math & Trig",
+    "summary": "Returns the cosine of an angle given in radians.",
+    "syntax": "COS(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The angle in radians."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COS(1.047)",
+        "result": "0.500171"
+      },
+      {
+        "formula": "=COS(RADIANS(60))",
+        "result": "0.5"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COSH",
+    "category": "Math & Trig",
+    "summary": "Returns the hyperbolic cosine of a number.",
+    "syntax": "COSH(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A real number."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COSH(4)",
+        "result": "27.30823284"
+      },
+      {
+        "formula": "=COSH(EXP(1))",
+        "result": "7.610125139"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COT",
+    "category": "Math & Trig",
+    "summary": "Returns the cotangent of an angle given in radians.",
+    "syntax": "COT(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The angle in radians."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COT(30)",
+        "result": "-0.156119952"
+      },
+      {
+        "formula": "=COT(45)",
+        "result": "0.617369624"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "COTH",
+    "category": "Math & Trig",
+    "summary": "Returns the hyperbolic cotangent of a number.",
+    "syntax": "COTH(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A real number."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COTH(2)",
+        "result": "1.037314721"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "CSC",
+    "category": "Math & Trig",
+    "summary": "Returns the cosecant of an angle given in radians.",
+    "syntax": "CSC(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The angle in radians."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CSC(15)",
+        "result": "1.537780562"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "CSCH",
+    "category": "Math & Trig",
+    "summary": "Returns the hyperbolic cosecant of an angle given in radians.",
+    "syntax": "CSCH(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The angle in radians."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CSCH(1.5)",
+        "result": "0.469642441"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "DECIMAL",
+    "category": "Math & Trig",
+    "summary": "Converts a text representation of a number in a given base into a decimal number.",
+    "syntax": "DECIMAL(text, radix)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The digits, up to 255 characters."
+      },
+      {
+        "name": "radix",
+        "description": "The base, from 2 to 36."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DECIMAL(\"FF\",16)",
+        "result": "255"
+      },
+      {
+        "formula": "=DECIMAL(111,2)",
+        "result": "7"
+      },
+      {
+        "formula": "=DECIMAL(\"zap\",36)",
+        "result": "45745"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "DEGREES",
+    "category": "Math & Trig",
+    "summary": "Converts radians into degrees.",
+    "syntax": "DEGREES(angle)",
+    "args": [
+      {
+        "name": "angle",
+        "description": "The angle in radians."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DEGREES(PI())",
+        "result": "180"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "EVEN",
+    "category": "Math & Trig",
+    "summary": "Rounds a number away from zero to the nearest even integer.",
+    "syntax": "EVEN(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The value to round."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=EVEN(1.5)",
+        "result": "2"
+      },
+      {
+        "formula": "=EVEN(3)",
+        "result": "4"
+      },
+      {
+        "formula": "=EVEN(-1)",
+        "result": "-2"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "EXP",
+    "category": "Math & Trig",
+    "summary": "Returns e raised to the power of a number.",
+    "syntax": "EXP(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The exponent applied to e."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=EXP(1)",
+        "result": "2.718281828"
+      },
+      {
+        "formula": "=EXP(2)",
+        "result": "7.389056099"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FACT",
+    "category": "Math & Trig",
+    "summary": "Returns the factorial of a number.",
+    "syntax": "FACT(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A non-negative number (truncated to an integer)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FACT(5)",
+        "result": "120"
+      },
+      {
+        "formula": "=FACT(1.9)",
+        "result": "1"
+      },
+      {
+        "formula": "=FACT(0)",
+        "result": "1"
+      },
+      {
+        "formula": "=FACT(-1)",
+        "result": "#NUM!"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FACTDOUBLE",
+    "category": "Math & Trig",
+    "summary": "Returns the double factorial of a number.",
+    "syntax": "FACTDOUBLE(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The value (truncated to an integer)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FACTDOUBLE(6)",
+        "result": "48"
+      },
+      {
+        "formula": "=FACTDOUBLE(7)",
+        "result": "105"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FLOOR.MATH",
+    "category": "Math & Trig",
+    "summary": "Rounds a number down to the nearest integer or multiple of significance.",
+    "syntax": "FLOOR.MATH(number, [significance], [mode])",
+    "args": [
+      {
+        "name": "number",
+        "description": "A real number."
+      },
+      {
+        "name": "significance",
+        "description": "The multiple to round to (default 1).",
+        "optional": true
+      },
+      {
+        "name": "mode",
+        "description": "For negative numbers, non-zero rounds toward zero.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FLOOR.MATH(24.3,5)",
+        "result": "20"
+      },
+      {
+        "formula": "=FLOOR.MATH(6.7)",
+        "result": "6"
+      },
+      {
+        "formula": "=FLOOR.MATH(-8.1,2)",
+        "result": "-10"
+      },
+      {
+        "formula": "=FLOOR.MATH(-5.5,2,-1)",
+        "result": "-4"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "FLOOR.PRECISE",
+    "category": "Math & Trig",
+    "summary": "Rounds a number down to the nearest multiple of significance, regardless of sign.",
+    "syntax": "FLOOR.PRECISE(number, [significance])",
+    "args": [
+      {
+        "name": "number",
+        "description": "A real number."
+      },
+      {
+        "name": "significance",
+        "description": "The multiple to round to (default 1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FLOOR.PRECISE(-3.2,-1)",
+        "result": "-4"
+      },
+      {
+        "formula": "=FLOOR.PRECISE(3.2,1)",
+        "result": "3"
+      },
+      {
+        "formula": "=FLOOR.PRECISE(3.2)",
+        "result": "3"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "GCD",
+    "category": "Math & Trig",
+    "summary": "Returns the greatest common divisor of integers.",
+    "syntax": "GCD(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first value."
+      },
+      {
+        "name": "number2",
+        "description": "Further values.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=GCD(5,2)",
+        "result": "1"
+      },
+      {
+        "formula": "=GCD(24,36)",
+        "result": "12"
+      },
+      {
+        "formula": "=GCD(7,1)",
+        "result": "1"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "INT",
+    "category": "Math & Trig",
+    "summary": "Rounds a number down to the nearest integer.",
+    "syntax": "INT(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number to round down."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=INT(8.9)",
+        "result": "8"
+      },
+      {
+        "formula": "=INT(-8.9)",
+        "result": "-9"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ISO.CEILING",
+    "category": "Math & Trig",
+    "summary": "Rounds a number up to the nearest multiple of significance, regardless of sign (ISO 8601 behaviour).",
+    "syntax": "ISO.CEILING(number, [significance])",
+    "args": [
+      {
+        "name": "number",
+        "description": "A real number."
+      },
+      {
+        "name": "significance",
+        "description": "The multiple to round to (default 1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISO.CEILING(4.3)",
+        "result": "5"
+      },
+      {
+        "formula": "=ISO.CEILING(-4.3)",
+        "result": "-4"
+      },
+      {
+        "formula": "=ISO.CEILING(4.3,2)",
+        "result": "6"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "LCM",
+    "category": "Math & Trig",
+    "summary": "Returns the least common multiple of integers.",
+    "syntax": "LCM(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first value."
+      },
+      {
+        "name": "number2",
+        "description": "Further values.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LCM(5,2)",
+        "result": "10"
+      },
+      {
+        "formula": "=LCM(24,36)",
+        "result": "72"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LN",
+    "category": "Math & Trig",
+    "summary": "Returns the natural logarithm of a number.",
+    "syntax": "LN(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A positive real number."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LN(86)",
+        "result": "4.454347296"
+      },
+      {
+        "formula": "=LN(EXP(3))",
+        "result": "3"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LOG",
+    "category": "Math & Trig",
+    "summary": "Returns the logarithm of a number to the base you specify.",
+    "syntax": "LOG(number, [base])",
+    "args": [
+      {
+        "name": "number",
+        "description": "A positive real number."
+      },
+      {
+        "name": "base",
+        "description": "The base (default 10).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LOG(10)",
+        "result": "1"
+      },
+      {
+        "formula": "=LOG(8,2)",
+        "result": "3"
+      },
+      {
+        "formula": "=LOG(86,2.7182818)",
+        "result": "4.454347343"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LOG10",
+    "category": "Math & Trig",
+    "summary": "Returns the base-10 logarithm of a number.",
+    "syntax": "LOG10(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A positive real number."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LOG10(86)",
+        "result": "1.934498451"
+      },
+      {
+        "formula": "=LOG10(10^5)",
+        "result": "5"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MDETERM",
+    "category": "Math & Trig",
+    "summary": "Returns the matrix determinant of an array.",
+    "syntax": "MDETERM(array)",
+    "args": [
+      {
+        "name": "array",
+        "description": "A square numeric array."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MDETERM({1,3,8,5;1,3,6,1;1,1,1,0;7,3,10,2})",
+        "result": "88"
+      },
+      {
+        "formula": "=MDETERM({3,6;1,1})",
+        "result": "-3"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MINVERSE",
+    "category": "Math & Trig",
+    "summary": "Returns the inverse matrix of a square array.",
+    "syntax": "MINVERSE(array)",
+    "args": [
+      {
+        "name": "array",
+        "description": "A square numeric array."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MINVERSE({4,-1;2,0})",
+        "result": "{0,0.5;-1,2}"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MMULT",
+    "category": "Math & Trig",
+    "summary": "Returns the matrix product of two arrays.",
+    "syntax": "MMULT(array1, array2)",
+    "args": [
+      {
+        "name": "array1",
+        "description": "The first array; its column count must equal the rows of array2."
+      },
+      {
+        "name": "array2",
+        "description": "The second array."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MMULT({1,3;7,2},{2,0;0,2})",
+        "result": "{2,6;14,4}"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MOD",
+    "category": "Math & Trig",
+    "summary": "Returns the remainder after division; the result has the sign of the divisor.",
+    "syntax": "MOD(number, divisor)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number to divide."
+      },
+      {
+        "name": "divisor",
+        "description": "The number to divide by."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MOD(3,2)",
+        "result": "1"
+      },
+      {
+        "formula": "=MOD(-3,2)",
+        "result": "1"
+      },
+      {
+        "formula": "=MOD(3,-2)",
+        "result": "-1"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MROUND",
+    "category": "Math & Trig",
+    "summary": "Returns a number rounded to the nearest multiple.",
+    "syntax": "MROUND(number, multiple)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The value to round."
+      },
+      {
+        "name": "multiple",
+        "description": "The multiple to round to."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MROUND(10,3)",
+        "result": "9"
+      },
+      {
+        "formula": "=MROUND(-10,-3)",
+        "result": "-9"
+      },
+      {
+        "formula": "=MROUND(1.3,0.2)",
+        "result": "1.4"
+      },
+      {
+        "formula": "=MROUND(5,-2)",
+        "result": "#NUM!"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MULTINOMIAL",
+    "category": "Math & Trig",
+    "summary": "Returns the multinomial of a set of numbers.",
+    "syntax": "MULTINOMIAL(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first value."
+      },
+      {
+        "name": "number2",
+        "description": "Further values.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MULTINOMIAL(2,3,4)",
+        "result": "1260"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MUNIT",
+    "category": "Math & Trig",
+    "summary": "Returns the unit (identity) matrix of a given size.",
+    "syntax": "MUNIT(dimension)",
+    "args": [
+      {
+        "name": "dimension",
+        "description": "The size of the matrix."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MUNIT(2)",
+        "result": "{1,0;0,1}"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "ODD",
+    "category": "Math & Trig",
+    "summary": "Rounds a number away from zero to the nearest odd integer.",
+    "syntax": "ODD(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The value to round."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ODD(1.5)",
+        "result": "3"
+      },
+      {
+        "formula": "=ODD(2)",
+        "result": "3"
+      },
+      {
+        "formula": "=ODD(-1)",
+        "result": "-1"
+      },
+      {
+        "formula": "=ODD(-2)",
+        "result": "-3"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "PI",
+    "category": "Math & Trig",
+    "summary": "Returns the value of pi, accurate to 15 digits.",
+    "syntax": "PI()",
+    "args": [],
+    "examples": [
+      {
+        "formula": "=PI()",
+        "result": "3.14159265358979"
+      },
+      {
+        "formula": "=PI()*3^2",
+        "result": "28.27433388"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "POWER",
+    "category": "Math & Trig",
+    "summary": "Returns the result of a number raised to a power.",
+    "syntax": "POWER(number, power)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The base number."
+      },
+      {
+        "name": "power",
+        "description": "The exponent."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=POWER(5,2)",
+        "result": "25"
+      },
+      {
+        "formula": "=POWER(98.6,3.2)",
+        "result": "2401077.222"
+      },
+      {
+        "formula": "=POWER(4,5/4)",
+        "result": "5.656854249"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "PRODUCT",
+    "category": "Math & Trig",
+    "summary": "Multiplies all the numbers given as arguments.",
+    "syntax": "PRODUCT(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PRODUCT(5,15,30)",
+        "result": "2250"
+      },
+      {
+        "formula": "=PRODUCT({5,15,30},2)",
+        "result": "4500"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "QUOTIENT",
+    "category": "Math & Trig",
+    "summary": "Returns the integer portion of a division.",
+    "syntax": "QUOTIENT(numerator, denominator)",
+    "args": [
+      {
+        "name": "numerator",
+        "description": "The dividend."
+      },
+      {
+        "name": "denominator",
+        "description": "The divisor."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=QUOTIENT(5,2)",
+        "result": "2"
+      },
+      {
+        "formula": "=QUOTIENT(4.5,3.1)",
+        "result": "1"
+      },
+      {
+        "formula": "=QUOTIENT(-10,3)",
+        "result": "-3"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "RADIANS",
+    "category": "Math & Trig",
+    "summary": "Converts degrees to radians.",
+    "syntax": "RADIANS(angle)",
+    "args": [
+      {
+        "name": "angle",
+        "description": "An angle in degrees."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=RADIANS(270)",
+        "result": "4.71238898"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "RAND",
+    "category": "Math & Trig",
+    "summary": "Returns a random number greater than or equal to 0 and less than 1 (recalculates every time).",
+    "syntax": "RAND()",
+    "args": [],
+    "examples": [
+      {
+        "formula": "=AND(RAND()>=0,RAND()<1)",
+        "result": "TRUE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "RANDARRAY",
+    "category": "Math & Trig",
+    "summary": "Returns an array of random numbers.",
+    "syntax": "RANDARRAY([rows], [columns], [min], [max], [whole_number])",
+    "args": [
+      {
+        "name": "rows",
+        "description": "Number of rows (default 1).",
+        "optional": true
+      },
+      {
+        "name": "columns",
+        "description": "Number of columns (default 1).",
+        "optional": true
+      },
+      {
+        "name": "min",
+        "description": "Smallest number (default 0).",
+        "optional": true
+      },
+      {
+        "name": "max",
+        "description": "Largest number (default 1).",
+        "optional": true
+      },
+      {
+        "name": "whole_number",
+        "description": "TRUE for whole numbers, FALSE for decimals (default).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ROWS(RANDARRAY(5,3))",
+        "result": "5"
+      },
+      {
+        "formula": "=COLUMNS(RANDARRAY(5,3))",
+        "result": "3"
+      }
+    ],
+    "since": "2021"
+  },
+  {
+    "name": "RANDBETWEEN",
+    "category": "Math & Trig",
+    "summary": "Returns a random integer between the numbers you specify.",
+    "syntax": "RANDBETWEEN(bottom, top)",
+    "args": [
+      {
+        "name": "bottom",
+        "description": "The smallest integer returned."
+      },
+      {
+        "name": "top",
+        "description": "The largest integer returned."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=AND(RANDBETWEEN(1,6)>=1,RANDBETWEEN(1,6)<=6)",
+        "result": "TRUE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ROMAN",
+    "category": "Math & Trig",
+    "summary": "Converts an Arabic numeral to Roman, as text.",
+    "syntax": "ROMAN(number, [form])",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number to convert (0–3999)."
+      },
+      {
+        "name": "form",
+        "description": "0 classic (default) to 4 simplified; TRUE is classic, FALSE simplified.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ROMAN(499,0)",
+        "result": "\"CDXCIX\""
+      },
+      {
+        "formula": "=ROMAN(499,1)",
+        "result": "\"LDVLIV\""
+      },
+      {
+        "formula": "=ROMAN(499,2)",
+        "result": "\"XDIX\""
+      },
+      {
+        "formula": "=ROMAN(499,3)",
+        "result": "\"VDIV\""
+      },
+      {
+        "formula": "=ROMAN(499,4)",
+        "result": "\"ID\""
+      },
+      {
+        "formula": "=ROMAN(2013,0)",
+        "result": "\"MMXIII\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ROUND",
+    "category": "Math & Trig",
+    "summary": "Rounds a number to a given number of digits (halves away from zero).",
+    "syntax": "ROUND(number, num_digits)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number to round."
+      },
+      {
+        "name": "num_digits",
+        "description": "Digits after the decimal point; negative rounds to tens, hundreds…"
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ROUND(2.15,1)",
+        "result": "2.2"
+      },
+      {
+        "formula": "=ROUND(2.149,1)",
+        "result": "2.1"
+      },
+      {
+        "formula": "=ROUND(-1.475,2)",
+        "result": "-1.48"
+      },
+      {
+        "formula": "=ROUND(21.5,-1)",
+        "result": "20"
+      },
+      {
+        "formula": "=ROUND(626.3,-3)",
+        "result": "1000"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ROUNDDOWN",
+    "category": "Math & Trig",
+    "summary": "Rounds a number down, toward zero.",
+    "syntax": "ROUNDDOWN(number, num_digits)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number to round."
+      },
+      {
+        "name": "num_digits",
+        "description": "Digits to round to."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ROUNDDOWN(3.2,0)",
+        "result": "3"
+      },
+      {
+        "formula": "=ROUNDDOWN(76.9,0)",
+        "result": "76"
+      },
+      {
+        "formula": "=ROUNDDOWN(3.14159,3)",
+        "result": "3.141"
+      },
+      {
+        "formula": "=ROUNDDOWN(-3.14159,1)",
+        "result": "-3.1"
+      },
+      {
+        "formula": "=ROUNDDOWN(31415.92654,-2)",
+        "result": "31400"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ROUNDUP",
+    "category": "Math & Trig",
+    "summary": "Rounds a number up, away from zero.",
+    "syntax": "ROUNDUP(number, num_digits)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number to round."
+      },
+      {
+        "name": "num_digits",
+        "description": "Digits to round to."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ROUNDUP(3.2,0)",
+        "result": "4"
+      },
+      {
+        "formula": "=ROUNDUP(76.9,0)",
+        "result": "77"
+      },
+      {
+        "formula": "=ROUNDUP(3.14159,3)",
+        "result": "3.142"
+      },
+      {
+        "formula": "=ROUNDUP(-3.14159,1)",
+        "result": "-3.2"
+      },
+      {
+        "formula": "=ROUNDUP(31415.92654,-2)",
+        "result": "31500"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SEC",
+    "category": "Math & Trig",
+    "summary": "Returns the secant of an angle given in radians.",
+    "syntax": "SEC(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The angle in radians."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SEC(45)",
+        "result": "1.90359"
+      },
+      {
+        "formula": "=SEC(30)",
+        "result": "6.48292"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "SECH",
+    "category": "Math & Trig",
+    "summary": "Returns the hyperbolic secant of an angle.",
+    "syntax": "SECH(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The angle in radians."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SECH(45)",
+        "result": "5.73E-20"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "SEQUENCE",
+    "category": "Math & Trig",
+    "summary": "Generates a list of sequential numbers in an array.",
+    "syntax": "SEQUENCE(rows, [columns], [start], [step])",
+    "args": [
+      {
+        "name": "rows",
+        "description": "Number of rows."
+      },
+      {
+        "name": "columns",
+        "description": "Number of columns (default 1).",
+        "optional": true
+      },
+      {
+        "name": "start",
+        "description": "First number (default 1).",
+        "optional": true
+      },
+      {
+        "name": "step",
+        "description": "Increment (default 1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SEQUENCE(2,3)",
+        "result": "{1,2,3;4,5,6}"
+      },
+      {
+        "formula": "=SEQUENCE(3,1,10,-5)",
+        "result": "{10;5;0}"
+      },
+      {
+        "formula": "=SUM(SEQUENCE(4))",
+        "result": "10"
+      }
+    ],
+    "since": "2021"
+  },
+  {
+    "name": "SERIESSUM",
+    "category": "Math & Trig",
+    "summary": "Returns the sum of a power series.",
+    "syntax": "SERIESSUM(x, n, m, coefficients)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The input value."
+      },
+      {
+        "name": "n",
+        "description": "The initial power of x."
+      },
+      {
+        "name": "m",
+        "description": "The step by which to increase n for each term."
+      },
+      {
+        "name": "coefficients",
+        "description": "The coefficients for each power of x."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SERIESSUM(PI()/4,0,2,{1,-0.5,0.041666667,-0.001388889})",
+        "result": "0.707103"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SIGN",
+    "category": "Math & Trig",
+    "summary": "Returns the sign of a number: 1, 0 or -1.",
+    "syntax": "SIGN(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A real number."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SIGN(10)",
+        "result": "1"
+      },
+      {
+        "formula": "=SIGN(4-4)",
+        "result": "0"
+      },
+      {
+        "formula": "=SIGN(-0.00001)",
+        "result": "-1"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SIN",
+    "category": "Math & Trig",
+    "summary": "Returns the sine of an angle given in radians.",
+    "syntax": "SIN(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The angle in radians."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SIN(PI())",
+        "result": "0"
+      },
+      {
+        "formula": "=SIN(PI()/2)",
+        "result": "1"
+      },
+      {
+        "formula": "=SIN(RADIANS(30))",
+        "result": "0.5"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SINH",
+    "category": "Math & Trig",
+    "summary": "Returns the hyperbolic sine of a number.",
+    "syntax": "SINH(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A real number."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SINH(1)",
+        "result": "1.175201194"
+      },
+      {
+        "formula": "=SINH(-1)",
+        "result": "-1.175201194"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SQRT",
+    "category": "Math & Trig",
+    "summary": "Returns a positive square root.",
+    "syntax": "SQRT(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number to take the square root of."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SQRT(16)",
+        "result": "4"
+      },
+      {
+        "formula": "=SQRT(-16)",
+        "result": "#NUM!"
+      },
+      {
+        "formula": "=SQRT(ABS(-16))",
+        "result": "4"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SQRTPI",
+    "category": "Math & Trig",
+    "summary": "Returns the square root of (number * pi).",
+    "syntax": "SQRTPI(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number multiplied by pi."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SQRTPI(1)",
+        "result": "1.772454"
+      },
+      {
+        "formula": "=SQRTPI(2)",
+        "result": "2.506628"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SUBTOTAL",
+    "category": "Math & Trig",
+    "summary": "Returns a subtotal in a list, ignoring other SUBTOTAL results and (for 101–111) hidden rows.",
+    "syntax": "SUBTOTAL(function_num, ref1, [ref2], ...)",
+    "args": [
+      {
+        "name": "function_num",
+        "description": "1–11 include manually hidden rows, 101–111 ignore them: AVERAGE, COUNT, COUNTA, MAX, MIN, PRODUCT, STDEV, STDEVP, SUM, VAR, VARP."
+      },
+      {
+        "name": "ref1",
+        "description": "The first range to subtotal."
+      },
+      {
+        "name": "ref2",
+        "description": "Further ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SUBTOTAL(9,{120,10,150,23})",
+        "result": "303"
+      },
+      {
+        "formula": "=SUBTOTAL(1,{120,10,150,23})",
+        "result": "75.75"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SUM",
+    "category": "Math & Trig",
+    "summary": "Adds numbers.",
+    "syntax": "SUM(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "A number, cell reference or range to add."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SUM(1,2,3)",
+        "result": "6"
+      },
+      {
+        "formula": "=SUM({5,15,30},\"2\",TRUE)",
+        "result": "53"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SUMIF",
+    "category": "Math & Trig",
+    "summary": "Adds the cells that meet a criterion.",
+    "syntax": "SUMIF(range, criteria, [sum_range])",
+    "args": [
+      {
+        "name": "range",
+        "description": "The cells to evaluate against the criterion."
+      },
+      {
+        "name": "criteria",
+        "description": "A number, expression or text such as 32, \">32\", \"apples\" or \"a*\"."
+      },
+      {
+        "name": "sum_range",
+        "description": "The cells to add (default: range).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SUMIF({100000,200000,300000,400000},\">160000\",{7000,14000,21000,28000})",
+        "result": "63000"
+      },
+      {
+        "formula": "=SUMIF({100000,200000,300000,400000},\">160000\")",
+        "result": "900000"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SUMIFS",
+    "category": "Math & Trig",
+    "summary": "Adds the cells that meet several criteria.",
+    "syntax": "SUMIFS(sum_range, criteria_range1, criteria1, [criteria_range2, criteria2], ...)",
+    "args": [
+      {
+        "name": "sum_range",
+        "description": "The cells to add."
+      },
+      {
+        "name": "criteria_range1",
+        "description": "The cells tested by criteria1."
+      },
+      {
+        "name": "criteria1",
+        "description": "The first criterion."
+      },
+      {
+        "name": "criteria_range2, criteria2",
+        "description": "Further range/criterion pairs.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SUMIFS({5,4,15,3,22,12,10,33},{\"Apples\",\"Apples\",\"Artichokes\",\"Artichokes\",\"Bananas\",\"Bananas\",\"Carrots\",\"Carrots\"},\"=A*\",{1,2,1,2,1,2,1,2},1)",
+        "result": "20"
+      },
+      {
+        "formula": "=SUMIFS({5,4,15,3},{\"Apples\",\"Apples\",\"Artichokes\",\"Artichokes\"},\"<>Bananas\",{1,2,1,2},\">1\")",
+        "result": "7"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SUMPRODUCT",
+    "category": "Math & Trig",
+    "summary": "Returns the sum of the products of corresponding array elements.",
+    "syntax": "SUMPRODUCT(array1, [array2], ...)",
+    "args": [
+      {
+        "name": "array1",
+        "description": "The first array."
+      },
+      {
+        "name": "array2",
+        "description": "Further arrays of the same size.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SUMPRODUCT({3,4;8,6;1,9},{2,7;6,7;5,3})",
+        "result": "156"
+      },
+      {
+        "formula": "=SUMPRODUCT({1,2,3})",
+        "result": "6"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SUMSQ",
+    "category": "Math & Trig",
+    "summary": "Returns the sum of the squares of the arguments.",
+    "syntax": "SUMSQ(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SUMSQ(3,4)",
+        "result": "25"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SUMX2MY2",
+    "category": "Math & Trig",
+    "summary": "Returns the sum of the difference of squares of corresponding values in two arrays.",
+    "syntax": "SUMX2MY2(array_x, array_y)",
+    "args": [
+      {
+        "name": "array_x",
+        "description": "The first array."
+      },
+      {
+        "name": "array_y",
+        "description": "The second array."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SUMX2MY2({2,3,9,1,8,7,5},{6,5,11,7,5,4,4})",
+        "result": "-55"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SUMX2PY2",
+    "category": "Math & Trig",
+    "summary": "Returns the sum of the sum of squares of corresponding values in two arrays.",
+    "syntax": "SUMX2PY2(array_x, array_y)",
+    "args": [
+      {
+        "name": "array_x",
+        "description": "The first array."
+      },
+      {
+        "name": "array_y",
+        "description": "The second array."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SUMX2PY2({2,3,9,1,8,7,5},{6,5,11,7,5,4,4})",
+        "result": "521"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SUMXMY2",
+    "category": "Math & Trig",
+    "summary": "Returns the sum of squares of differences of corresponding values in two arrays.",
+    "syntax": "SUMXMY2(array_x, array_y)",
+    "args": [
+      {
+        "name": "array_x",
+        "description": "The first array."
+      },
+      {
+        "name": "array_y",
+        "description": "The second array."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SUMXMY2({2,3,9,1,8,7,5},{6,5,11,7,5,4,4})",
+        "result": "79"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TAN",
+    "category": "Math & Trig",
+    "summary": "Returns the tangent of an angle given in radians.",
+    "syntax": "TAN(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The angle in radians."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TAN(0.785)",
+        "result": "0.99920399"
+      },
+      {
+        "formula": "=TAN(RADIANS(45))",
+        "result": "1"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TANH",
+    "category": "Math & Trig",
+    "summary": "Returns the hyperbolic tangent of a number.",
+    "syntax": "TANH(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A real number."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TANH(-2)",
+        "result": "-0.96402758"
+      },
+      {
+        "formula": "=TANH(0)",
+        "result": "0"
+      },
+      {
+        "formula": "=TANH(0.5)",
+        "result": "0.462117157"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TRUNC",
+    "category": "Math & Trig",
+    "summary": "Truncates a number to an integer (or to the given precision).",
+    "syntax": "TRUNC(number, [num_digits])",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number to truncate."
+      },
+      {
+        "name": "num_digits",
+        "description": "Precision of the truncation (default 0).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TRUNC(8.9)",
+        "result": "8"
+      },
+      {
+        "formula": "=TRUNC(-8.9)",
+        "result": "-8"
+      },
+      {
+        "formula": "=TRUNC(0.45)",
+        "result": "0"
+      },
+      {
+        "formula": "=TRUNC(3.14159,2)",
+        "result": "3.14"
+      }
+    ],
+    "since": "2007"
+  }
+]

@@ -108,7 +108,6 @@ catalog:
   # File formats, data
   fflate: 0.8.3
   fast-xml-parser: 5.11.2
-  '@formulajs/formulajs': 4.6.1
   numfmt: 3.2.6
   decimal.js: 10.6.0
   papaparse: 5.7.0

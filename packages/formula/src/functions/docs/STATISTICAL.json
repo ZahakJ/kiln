@@ -1,0 +1,2936 @@
+[
+  {
+    "name": "AVEDEV",
+    "category": "Statistical",
+    "summary": "Returns the average of the absolute deviations of data points from their mean.",
+    "syntax": "AVEDEV(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=AVEDEV(4,5,6,7,5,4,3)",
+        "result": "1.020408163"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "AVERAGE",
+    "category": "Statistical",
+    "summary": "Returns the arithmetic mean of its arguments.",
+    "syntax": "AVERAGE(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=AVERAGE(10,7,9,27,2)",
+        "result": "11"
+      },
+      {
+        "formula": "=AVERAGE({10,7,9,27,2},5)",
+        "result": "10"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "AVERAGEA",
+    "category": "Statistical",
+    "summary": "Returns the average of its arguments, counting text in ranges as 0 and logicals as 1 or 0.",
+    "syntax": "AVERAGEA(value1, [value2], ...)",
+    "args": [
+      {
+        "name": "value1",
+        "description": "The first value or range."
+      },
+      {
+        "name": "value2",
+        "description": "Further values or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=AVERAGEA(10,7,9,2,TRUE)",
+        "result": "5.8"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "AVERAGEIF",
+    "category": "Statistical",
+    "summary": "Returns the average of the cells that meet a criterion.",
+    "syntax": "AVERAGEIF(range, criteria, [average_range])",
+    "args": [
+      {
+        "name": "range",
+        "description": "The cells to test."
+      },
+      {
+        "name": "criteria",
+        "description": "The condition, such as \">5000\" or \"West*\"."
+      },
+      {
+        "name": "average_range",
+        "description": "The cells to average (default: range).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=AVERAGEIF({7000,14000,21000,28000},\"<23000\")",
+        "result": "14000"
+      },
+      {
+        "formula": "=AVERAGEIF({100000,200000,300000,400000},\">250000\",{7000,14000,21000,28000})",
+        "result": "24500"
+      },
+      {
+        "formula": "=AVERAGEIF({1,2},\">5\")",
+        "result": "#DIV/0!"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "AVERAGEIFS",
+    "category": "Statistical",
+    "summary": "Returns the average of the cells that meet several criteria.",
+    "syntax": "AVERAGEIFS(average_range, criteria_range1, criteria1, [criteria_range2, criteria2], ...)",
+    "args": [
+      {
+        "name": "average_range",
+        "description": "The cells to average."
+      },
+      {
+        "name": "criteria_range1",
+        "description": "The cells tested by criteria1."
+      },
+      {
+        "name": "criteria1",
+        "description": "The first condition."
+      },
+      {
+        "name": "criteria_range2, criteria2",
+        "description": "Further range/condition pairs.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=AVERAGEIFS({75,94,86},{75,94,86},\">70\",{75,94,86},\"<90\")",
+        "result": "80.5"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "BETA.DIST",
+    "category": "Statistical",
+    "summary": "Returns the beta distribution.",
+    "syntax": "BETA.DIST(x, alpha, beta, cumulative, [A], [B])",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "alpha",
+        "description": "A parameter of the distribution."
+      },
+      {
+        "name": "beta",
+        "description": "A parameter of the distribution."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      },
+      {
+        "name": "A",
+        "description": "Lower bound of x (default 0).",
+        "optional": true
+      },
+      {
+        "name": "B",
+        "description": "Upper bound of x (default 1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BETA.DIST(2,8,10,TRUE,1,3)",
+        "result": "0.685470581"
+      },
+      {
+        "formula": "=BETA.DIST(2,8,10,FALSE,1,3)",
+        "result": "1.483764648"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "BETA.INV",
+    "category": "Statistical",
+    "summary": "Returns the inverse of the cumulative beta distribution.",
+    "syntax": "BETA.INV(probability, alpha, beta, [A], [B])",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability of the beta distribution."
+      },
+      {
+        "name": "alpha",
+        "description": "A parameter of the distribution."
+      },
+      {
+        "name": "beta",
+        "description": "A parameter of the distribution."
+      },
+      {
+        "name": "A",
+        "description": "Lower bound (default 0).",
+        "optional": true
+      },
+      {
+        "name": "B",
+        "description": "Upper bound (default 1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BETA.INV(0.685470581,8,10,1,3)",
+        "result": "2"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "BINOM.DIST",
+    "category": "Statistical",
+    "summary": "Returns the individual term binomial distribution probability.",
+    "syntax": "BINOM.DIST(number_s, trials, probability_s, cumulative)",
+    "args": [
+      {
+        "name": "number_s",
+        "description": "The number of successes."
+      },
+      {
+        "name": "trials",
+        "description": "The number of independent trials."
+      },
+      {
+        "name": "probability_s",
+        "description": "The probability of success on each trial."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for at most number_s successes, FALSE for exactly."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BINOM.DIST(6,10,0.5,FALSE)",
+        "result": "0.205078125"
+      },
+      {
+        "formula": "=BINOM.DIST(6,10,0.5,TRUE)",
+        "result": "0.828125"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "BINOM.DIST.RANGE",
+    "category": "Statistical",
+    "summary": "Returns the probability of a trial result using a binomial distribution.",
+    "syntax": "BINOM.DIST.RANGE(trials, probability_s, number_s, [number_s2])",
+    "args": [
+      {
+        "name": "trials",
+        "description": "The number of trials."
+      },
+      {
+        "name": "probability_s",
+        "description": "The probability of success."
+      },
+      {
+        "name": "number_s",
+        "description": "The number of successes."
+      },
+      {
+        "name": "number_s2",
+        "description": "If given, the upper bound of a range of successes.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BINOM.DIST.RANGE(60,0.75,48)",
+        "result": "0.083974967"
+      },
+      {
+        "formula": "=BINOM.DIST.RANGE(60,0.75,45,50)",
+        "result": "0.523629793"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "BINOM.INV",
+    "category": "Statistical",
+    "summary": "Returns the smallest value for which the cumulative binomial distribution is greater than or equal to a criterion value.",
+    "syntax": "BINOM.INV(trials, probability_s, alpha)",
+    "args": [
+      {
+        "name": "trials",
+        "description": "The number of trials."
+      },
+      {
+        "name": "probability_s",
+        "description": "The probability of success."
+      },
+      {
+        "name": "alpha",
+        "description": "The criterion value."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BINOM.INV(6,0.5,0.75)",
+        "result": "4"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "CHISQ.DIST",
+    "category": "Statistical",
+    "summary": "Returns the chi-squared distribution.",
+    "syntax": "CHISQ.DIST(x, deg_freedom, cumulative)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "deg_freedom",
+        "description": "The degrees of freedom."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CHISQ.DIST(0.5,1,TRUE)",
+        "result": "0.52049988"
+      },
+      {
+        "formula": "=CHISQ.DIST(2,3,FALSE)",
+        "result": "0.20755375"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "CHISQ.DIST.RT",
+    "category": "Statistical",
+    "summary": "Returns the right-tailed probability of the chi-squared distribution.",
+    "syntax": "CHISQ.DIST.RT(x, deg_freedom)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "deg_freedom",
+        "description": "The degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CHISQ.DIST.RT(18.307,10)",
+        "result": "0.0500006"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "CHISQ.INV",
+    "category": "Statistical",
+    "summary": "Returns the inverse of the left-tailed probability of the chi-squared distribution.",
+    "syntax": "CHISQ.INV(probability, deg_freedom)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "deg_freedom",
+        "description": "The degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CHISQ.INV(0.93,1)",
+        "result": "3.283020287"
+      },
+      {
+        "formula": "=CHISQ.INV(0.6,2)",
+        "result": "1.832581464"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "CHISQ.INV.RT",
+    "category": "Statistical",
+    "summary": "Returns the inverse of the right-tailed probability of the chi-squared distribution.",
+    "syntax": "CHISQ.INV.RT(probability, deg_freedom)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "deg_freedom",
+        "description": "The degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CHISQ.INV.RT(0.050001,10)",
+        "result": "18.306973"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "CHISQ.TEST",
+    "category": "Statistical",
+    "summary": "Returns the test for independence (the chi-squared probability).",
+    "syntax": "CHISQ.TEST(actual_range, expected_range)",
+    "args": [
+      {
+        "name": "actual_range",
+        "description": "The observed values."
+      },
+      {
+        "name": "expected_range",
+        "description": "The expected values."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CHISQ.TEST({58,35;11,25;10,23},{45.35,47.65;17.56,18.44;16.09,16.91})",
+        "result": "0.000308192"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "CONFIDENCE.NORM",
+    "category": "Statistical",
+    "summary": "Returns the confidence interval half-width for a population mean, using a normal distribution.",
+    "syntax": "CONFIDENCE.NORM(alpha, standard_dev, size)",
+    "args": [
+      {
+        "name": "alpha",
+        "description": "The significance level."
+      },
+      {
+        "name": "standard_dev",
+        "description": "The population standard deviation."
+      },
+      {
+        "name": "size",
+        "description": "The sample size."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CONFIDENCE.NORM(0.05,2.5,50)",
+        "result": "0.692951912"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "CONFIDENCE.T",
+    "category": "Statistical",
+    "summary": "Returns the confidence interval half-width for a population mean, using a Student's t distribution.",
+    "syntax": "CONFIDENCE.T(alpha, standard_dev, size)",
+    "args": [
+      {
+        "name": "alpha",
+        "description": "The significance level."
+      },
+      {
+        "name": "standard_dev",
+        "description": "The population standard deviation."
+      },
+      {
+        "name": "size",
+        "description": "The sample size."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CONFIDENCE.T(0.05,1,50)",
+        "result": "0.284196855"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "CORREL",
+    "category": "Statistical",
+    "summary": "Returns the correlation coefficient of two data sets.",
+    "syntax": "CORREL(array1, array2)",
+    "args": [
+      {
+        "name": "array1",
+        "description": "The first range of values."
+      },
+      {
+        "name": "array2",
+        "description": "The second range of values."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CORREL({3,2,4,5,6},{9,7,12,15,17})",
+        "result": "0.997054486"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COUNT",
+    "category": "Statistical",
+    "summary": "Counts the cells that contain numbers.",
+    "syntax": "COUNT(value1, [value2], ...)",
+    "args": [
+      {
+        "name": "value1",
+        "description": "The first value or range."
+      },
+      {
+        "name": "value2",
+        "description": "Further values or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COUNT(1,\"a\",TRUE)",
+        "result": "2"
+      },
+      {
+        "formula": "=COUNT({1,\"a\",TRUE,4})",
+        "result": "2"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COUNTA",
+    "category": "Statistical",
+    "summary": "Counts the cells that are not empty.",
+    "syntax": "COUNTA(value1, [value2], ...)",
+    "args": [
+      {
+        "name": "value1",
+        "description": "The first value or range."
+      },
+      {
+        "name": "value2",
+        "description": "Further values or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COUNTA(1,\"a\",TRUE)",
+        "result": "3"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COUNTBLANK",
+    "category": "Statistical",
+    "summary": "Counts the empty cells in a range (cells with \"\" count too).",
+    "syntax": "COUNTBLANK(range)",
+    "args": [
+      {
+        "name": "range",
+        "description": "The range to count blanks in."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COUNTBLANK({1,\"\",3})",
+        "result": "1"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COUNTIF",
+    "category": "Statistical",
+    "summary": "Counts the cells that meet a criterion.",
+    "syntax": "COUNTIF(range, criteria)",
+    "args": [
+      {
+        "name": "range",
+        "description": "The cells to count."
+      },
+      {
+        "name": "criteria",
+        "description": "A number, expression or text such as 32, \">32\", \"apples\" or \"a*\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COUNTIF({\"apples\",\"oranges\",\"peaches\",\"apples\"},\"apples\")",
+        "result": "2"
+      },
+      {
+        "formula": "=COUNTIF({32,54,75,86},\">55\")",
+        "result": "2"
+      },
+      {
+        "formula": "=COUNTIF({\"apples\",\"oranges\",\"peaches\"},\"*es\")",
+        "result": "3"
+      },
+      {
+        "formula": "=COUNTIF({\"apples\",\"oranges\",\"peaches\"},\"?????es\")",
+        "result": "2"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COUNTIFS",
+    "category": "Statistical",
+    "summary": "Counts the cells that meet several criteria.",
+    "syntax": "COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2], ...)",
+    "args": [
+      {
+        "name": "criteria_range1",
+        "description": "The cells tested by criteria1."
+      },
+      {
+        "name": "criteria1",
+        "description": "The first condition."
+      },
+      {
+        "name": "criteria_range2, criteria2",
+        "description": "Further range/condition pairs.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COUNTIFS({\"Yes\",\"Yes\",\"Yes\",\"No\"},\"=Yes\",{\"No\",\"Yes\",\"Yes\",\"Yes\"},\"=Yes\")",
+        "result": "2"
+      },
+      {
+        "formula": "=COUNTIFS({1,2,3,4,5},\">1\",{1,2,3,4,5},\"<5\")",
+        "result": "3"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COVARIANCE.P",
+    "category": "Statistical",
+    "summary": "Returns population covariance, the average of the products of paired deviations.",
+    "syntax": "COVARIANCE.P(array1, array2)",
+    "args": [
+      {
+        "name": "array1",
+        "description": "The first range of integers."
+      },
+      {
+        "name": "array2",
+        "description": "The second range of integers."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COVARIANCE.P({3,2,4,5,6},{9,7,12,15,17})",
+        "result": "5.2"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "COVARIANCE.S",
+    "category": "Statistical",
+    "summary": "Returns the sample covariance.",
+    "syntax": "COVARIANCE.S(array1, array2)",
+    "args": [
+      {
+        "name": "array1",
+        "description": "The first range of integers."
+      },
+      {
+        "name": "array2",
+        "description": "The second range of integers."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COVARIANCE.S({2,4,8},{5,11,12})",
+        "result": "9.666666667"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "DEVSQ",
+    "category": "Statistical",
+    "summary": "Returns the sum of squares of deviations from the sample mean.",
+    "syntax": "DEVSQ(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DEVSQ(4,5,8,7,11,4,3)",
+        "result": "48"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "EXPON.DIST",
+    "category": "Statistical",
+    "summary": "Returns the exponential distribution.",
+    "syntax": "EXPON.DIST(x, lambda, cumulative)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "lambda",
+        "description": "The parameter value."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=EXPON.DIST(0.2,10,TRUE)",
+        "result": "0.864664717"
+      },
+      {
+        "formula": "=EXPON.DIST(0.2,10,FALSE)",
+        "result": "1.353352832"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "F.DIST",
+    "category": "Statistical",
+    "summary": "Returns the F probability distribution.",
+    "syntax": "F.DIST(x, deg_freedom1, deg_freedom2, cumulative)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "deg_freedom1",
+        "description": "The numerator degrees of freedom."
+      },
+      {
+        "name": "deg_freedom2",
+        "description": "The denominator degrees of freedom."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=F.DIST(15.2069,6,4,TRUE)",
+        "result": "0.99"
+      },
+      {
+        "formula": "=F.DIST(15.2069,6,4,FALSE)",
+        "result": "0.0012238"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "F.DIST.RT",
+    "category": "Statistical",
+    "summary": "Returns the right-tailed F probability distribution.",
+    "syntax": "F.DIST.RT(x, deg_freedom1, deg_freedom2)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "deg_freedom1",
+        "description": "The numerator degrees of freedom."
+      },
+      {
+        "name": "deg_freedom2",
+        "description": "The denominator degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=F.DIST.RT(15.2068649,6,4)",
+        "result": "0.01"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "F.INV",
+    "category": "Statistical",
+    "summary": "Returns the inverse of the F probability distribution.",
+    "syntax": "F.INV(probability, deg_freedom1, deg_freedom2)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "deg_freedom1",
+        "description": "The numerator degrees of freedom."
+      },
+      {
+        "name": "deg_freedom2",
+        "description": "The denominator degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=F.INV(0.01,6,4)",
+        "result": "0.109309914"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "F.INV.RT",
+    "category": "Statistical",
+    "summary": "Returns the inverse of the right-tailed F probability distribution.",
+    "syntax": "F.INV.RT(probability, deg_freedom1, deg_freedom2)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "deg_freedom1",
+        "description": "The numerator degrees of freedom."
+      },
+      {
+        "name": "deg_freedom2",
+        "description": "The denominator degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=F.INV.RT(0.01,6,4)",
+        "result": "15.20686486"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "F.TEST",
+    "category": "Statistical",
+    "summary": "Returns the result of an F-test: the two-tailed probability that the variances are not significantly different.",
+    "syntax": "F.TEST(array1, array2)",
+    "args": [
+      {
+        "name": "array1",
+        "description": "The first data set."
+      },
+      {
+        "name": "array2",
+        "description": "The second data set."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=F.TEST({6,7,9,15,21},{20,28,31,38,40})",
+        "result": "0.64831785"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "FISHER",
+    "category": "Statistical",
+    "summary": "Returns the Fisher transformation.",
+    "syntax": "FISHER(x)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FISHER(0.75)",
+        "result": "0.972955075"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FISHERINV",
+    "category": "Statistical",
+    "summary": "Returns the inverse of the Fisher transformation.",
+    "syntax": "FISHERINV(y)",
+    "args": [
+      {
+        "name": "y",
+        "description": "The value to invert."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FISHERINV(0.972955)",
+        "result": "0.75"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FORECAST.LINEAR",
+    "category": "Statistical",
+    "summary": "Predicts a value along a linear trend from existing values.",
+    "syntax": "FORECAST.LINEAR(x, known_y's, known_x's)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The data point to predict a value for."
+      },
+      {
+        "name": "known_y's",
+        "description": "The dependent data."
+      },
+      {
+        "name": "known_x's",
+        "description": "The independent data."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FORECAST.LINEAR(30,{6,7,9,15,21},{20,28,31,38,40})",
+        "result": "10.607253"
+      }
+    ],
+    "since": "2016"
+  },
+  {
+    "name": "FREQUENCY",
+    "category": "Statistical",
+    "summary": "Counts how often values occur within ranges of values and returns a vertical array.",
+    "syntax": "FREQUENCY(data_array, bins_array)",
+    "args": [
+      {
+        "name": "data_array",
+        "description": "The values to count."
+      },
+      {
+        "name": "bins_array",
+        "description": "The interval upper bounds."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FREQUENCY({79,85,78,85,50,81,95,88,97},{70,79,89})",
+        "result": "{1;2;4;2}"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "GAMMA",
+    "category": "Statistical",
+    "summary": "Returns the gamma function value.",
+    "syntax": "GAMMA(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The input value."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=GAMMA(2.5)",
+        "result": "1.329340388"
+      },
+      {
+        "formula": "=GAMMA(-3.75)",
+        "result": "0.267866129"
+      },
+      {
+        "formula": "=GAMMA(0)",
+        "result": "#NUM!"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "GAMMA.DIST",
+    "category": "Statistical",
+    "summary": "Returns the gamma distribution.",
+    "syntax": "GAMMA.DIST(x, alpha, beta, cumulative)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "alpha",
+        "description": "A parameter of the distribution."
+      },
+      {
+        "name": "beta",
+        "description": "A parameter of the distribution (1 gives the standard gamma)."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=GAMMA.DIST(10.00001131,9,2,FALSE)",
+        "result": "0.032639"
+      },
+      {
+        "formula": "=GAMMA.DIST(10.00001131,9,2,TRUE)",
+        "result": "0.068094"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "GAMMA.INV",
+    "category": "Statistical",
+    "summary": "Returns the inverse of the gamma cumulative distribution.",
+    "syntax": "GAMMA.INV(probability, alpha, beta)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "The probability."
+      },
+      {
+        "name": "alpha",
+        "description": "A parameter of the distribution."
+      },
+      {
+        "name": "beta",
+        "description": "A parameter of the distribution."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=GAMMA.INV(0.068094,9,2)",
+        "result": "10.0000112"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "GAMMALN",
+    "category": "Statistical",
+    "summary": "Returns the natural logarithm of the gamma function.",
+    "syntax": "GAMMALN(x)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The input value."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=GAMMALN(4)",
+        "result": "1.791759469"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "GAMMALN.PRECISE",
+    "category": "Statistical",
+    "summary": "Returns the natural logarithm of the gamma function.",
+    "syntax": "GAMMALN.PRECISE(x)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The input value."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=GAMMALN.PRECISE(4)",
+        "result": "1.791759469"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "GAUSS",
+    "category": "Statistical",
+    "summary": "Returns the probability that a standard normal value falls between the mean and z standard deviations from it.",
+    "syntax": "GAUSS(z)",
+    "args": [
+      {
+        "name": "z",
+        "description": "The number of standard deviations."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=GAUSS(2)",
+        "result": "0.47725"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "GEOMEAN",
+    "category": "Statistical",
+    "summary": "Returns the geometric mean.",
+    "syntax": "GEOMEAN(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=GEOMEAN(4,5,8,7,11,4,3)",
+        "result": "5.47698697"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "GROWTH",
+    "category": "Statistical",
+    "summary": "Returns values along an exponential trend.",
+    "syntax": "GROWTH(known_y's, [known_x's], [new_x's], [const])",
+    "args": [
+      {
+        "name": "known_y's",
+        "description": "The y values."
+      },
+      {
+        "name": "known_x's",
+        "description": "The x values.",
+        "optional": true
+      },
+      {
+        "name": "new_x's",
+        "description": "The x values to return y for.",
+        "optional": true
+      },
+      {
+        "name": "const",
+        "description": "FALSE forces b to 1.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=GROWTH({33100,47300,69000,102000,150000,220000},{11,12,13,14,15,16},{17,18})",
+        "result": "{320196.718,468536.054}"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "HARMEAN",
+    "category": "Statistical",
+    "summary": "Returns the harmonic mean.",
+    "syntax": "HARMEAN(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=HARMEAN(4,5,8,7,11,4,3)",
+        "result": "5.028375962"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "HYPGEOM.DIST",
+    "category": "Statistical",
+    "summary": "Returns the hypergeometric distribution.",
+    "syntax": "HYPGEOM.DIST(sample_s, number_sample, population_s, number_pop, cumulative)",
+    "args": [
+      {
+        "name": "sample_s",
+        "description": "Successes in the sample."
+      },
+      {
+        "name": "number_sample",
+        "description": "Size of the sample."
+      },
+      {
+        "name": "population_s",
+        "description": "Successes in the population."
+      },
+      {
+        "name": "number_pop",
+        "description": "Size of the population."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=HYPGEOM.DIST(1,4,8,20,TRUE)",
+        "result": "0.465428277"
+      },
+      {
+        "formula": "=HYPGEOM.DIST(1,4,8,20,FALSE)",
+        "result": "0.363261094"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "INTERCEPT",
+    "category": "Statistical",
+    "summary": "Returns the intercept of the linear regression line.",
+    "syntax": "INTERCEPT(known_y's, known_x's)",
+    "args": [
+      {
+        "name": "known_y's",
+        "description": "The dependent values."
+      },
+      {
+        "name": "known_x's",
+        "description": "The independent values."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=INTERCEPT({2,3,9,1,8},{6,5,11,7,5})",
+        "result": "0.048387097"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "KURT",
+    "category": "Statistical",
+    "summary": "Returns the kurtosis of a data set.",
+    "syntax": "KURT(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=KURT(3,4,5,2,3,4,5,6,4,7)",
+        "result": "-0.151799637"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LARGE",
+    "category": "Statistical",
+    "summary": "Returns the k-th largest value in a data set.",
+    "syntax": "LARGE(array, k)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The data."
+      },
+      {
+        "name": "k",
+        "description": "The position from the largest."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LARGE({3,5,3,5,4,4,2,4,6,7},3)",
+        "result": "5"
+      },
+      {
+        "formula": "=LARGE({3,5,3,5,4,4,2,4,6,7},7)",
+        "result": "4"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LINEST",
+    "category": "Statistical",
+    "summary": "Returns the parameters of a linear trend (and optionally regression statistics).",
+    "syntax": "LINEST(known_y's, [known_x's], [const], [stats])",
+    "args": [
+      {
+        "name": "known_y's",
+        "description": "The y values."
+      },
+      {
+        "name": "known_x's",
+        "description": "The x values.",
+        "optional": true
+      },
+      {
+        "name": "const",
+        "description": "FALSE forces the intercept to 0.",
+        "optional": true
+      },
+      {
+        "name": "stats",
+        "description": "TRUE returns additional regression statistics.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LINEST({1,9,5,7},{0,4,2,3})",
+        "result": "{2,1}"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LOGEST",
+    "category": "Statistical",
+    "summary": "Returns the parameters of an exponential trend.",
+    "syntax": "LOGEST(known_y's, [known_x's], [const], [stats])",
+    "args": [
+      {
+        "name": "known_y's",
+        "description": "The y values."
+      },
+      {
+        "name": "known_x's",
+        "description": "The x values.",
+        "optional": true
+      },
+      {
+        "name": "const",
+        "description": "FALSE forces b to 1.",
+        "optional": true
+      },
+      {
+        "name": "stats",
+        "description": "TRUE returns additional statistics.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=INDEX(LOGEST({33100,47300,69000,102000,150000,220000},{11,12,13,14,15,16}),1)",
+        "result": "1.463275628"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LOGNORM.DIST",
+    "category": "Statistical",
+    "summary": "Returns the lognormal distribution of x.",
+    "syntax": "LOGNORM.DIST(x, mean, standard_dev, cumulative)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "mean",
+        "description": "The mean of ln(x)."
+      },
+      {
+        "name": "standard_dev",
+        "description": "The standard deviation of ln(x)."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LOGNORM.DIST(4,3.5,1.2,TRUE)",
+        "result": "0.039083556"
+      },
+      {
+        "formula": "=LOGNORM.DIST(4,3.5,1.2,FALSE)",
+        "result": "0.017617597"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "LOGNORM.INV",
+    "category": "Statistical",
+    "summary": "Returns the inverse of the lognormal cumulative distribution.",
+    "syntax": "LOGNORM.INV(probability, mean, standard_dev)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "mean",
+        "description": "The mean of ln(x)."
+      },
+      {
+        "name": "standard_dev",
+        "description": "The standard deviation of ln(x)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LOGNORM.INV(0.039084,3.5,1.2)",
+        "result": "4.0000252"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "MAX",
+    "category": "Statistical",
+    "summary": "Returns the largest number in a set of values.",
+    "syntax": "MAX(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MAX(10,7,9,27,2)",
+        "result": "27"
+      },
+      {
+        "formula": "=MAX({10,7,9,27,2},30)",
+        "result": "30"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MAXA",
+    "category": "Statistical",
+    "summary": "Returns the largest value, counting logicals and text in ranges.",
+    "syntax": "MAXA(value1, [value2], ...)",
+    "args": [
+      {
+        "name": "value1",
+        "description": "The first value or range."
+      },
+      {
+        "name": "value2",
+        "description": "Further values or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MAXA({0,0.2,0.5,0.4,TRUE})",
+        "result": "1"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MAXIFS",
+    "category": "Statistical",
+    "summary": "Returns the largest value among cells that meet criteria.",
+    "syntax": "MAXIFS(max_range, criteria_range1, criteria1, [criteria_range2, criteria2], ...)",
+    "args": [
+      {
+        "name": "max_range",
+        "description": "The cells to take the maximum of."
+      },
+      {
+        "name": "criteria_range1",
+        "description": "The cells tested by criteria1."
+      },
+      {
+        "name": "criteria1",
+        "description": "The first condition."
+      },
+      {
+        "name": "criteria_range2, criteria2",
+        "description": "Further pairs.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MAXIFS({89,93,96,85,91,88},{1,2,2,3,1,1},1)",
+        "result": "91"
+      }
+    ],
+    "since": "2019"
+  },
+  {
+    "name": "MEDIAN",
+    "category": "Statistical",
+    "summary": "Returns the median of the given numbers.",
+    "syntax": "MEDIAN(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MEDIAN(1,2,3,4,5)",
+        "result": "3"
+      },
+      {
+        "formula": "=MEDIAN(1,2,3,4,5,6)",
+        "result": "3.5"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MIN",
+    "category": "Statistical",
+    "summary": "Returns the smallest number in a set of values.",
+    "syntax": "MIN(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MIN(10,7,9,27,2)",
+        "result": "2"
+      },
+      {
+        "formula": "=MIN({10,7,9,27,2},0)",
+        "result": "0"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MINA",
+    "category": "Statistical",
+    "summary": "Returns the smallest value, counting logicals and text in ranges.",
+    "syntax": "MINA(value1, [value2], ...)",
+    "args": [
+      {
+        "name": "value1",
+        "description": "The first value or range."
+      },
+      {
+        "name": "value2",
+        "description": "Further values or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MINA({FALSE,0.2,0.5,0.4,0.8})",
+        "result": "0"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MINIFS",
+    "category": "Statistical",
+    "summary": "Returns the smallest value among cells that meet criteria.",
+    "syntax": "MINIFS(min_range, criteria_range1, criteria1, [criteria_range2, criteria2], ...)",
+    "args": [
+      {
+        "name": "min_range",
+        "description": "The cells to take the minimum of."
+      },
+      {
+        "name": "criteria_range1",
+        "description": "The cells tested by criteria1."
+      },
+      {
+        "name": "criteria1",
+        "description": "The first condition."
+      },
+      {
+        "name": "criteria_range2, criteria2",
+        "description": "Further pairs.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MINIFS({89,93,96,85,91,88},{1,2,2,3,1,1},1)",
+        "result": "88"
+      }
+    ],
+    "since": "2019"
+  },
+  {
+    "name": "MODE.MULT",
+    "category": "Statistical",
+    "summary": "Returns a vertical array of the most frequently occurring values.",
+    "syntax": "MODE.MULT(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MODE.MULT({1,2,3,4,3,2,1,2,3,5,6,1})",
+        "result": "{1;2;3}"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "MODE.SNGL",
+    "category": "Statistical",
+    "summary": "Returns the most frequently occurring value.",
+    "syntax": "MODE.SNGL(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MODE.SNGL(5.6,4,4,3,2,4)",
+        "result": "4"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "NEGBINOM.DIST",
+    "category": "Statistical",
+    "summary": "Returns the negative binomial distribution.",
+    "syntax": "NEGBINOM.DIST(number_f, number_s, probability_s, cumulative)",
+    "args": [
+      {
+        "name": "number_f",
+        "description": "The number of failures."
+      },
+      {
+        "name": "number_s",
+        "description": "The threshold number of successes."
+      },
+      {
+        "name": "probability_s",
+        "description": "The probability of a success."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NEGBINOM.DIST(10,5,0.25,TRUE)",
+        "result": "0.3135141"
+      },
+      {
+        "formula": "=NEGBINOM.DIST(10,5,0.25,FALSE)",
+        "result": "0.0550487"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "NORM.DIST",
+    "category": "Statistical",
+    "summary": "Returns the normal distribution for a mean and standard deviation.",
+    "syntax": "NORM.DIST(x, mean, standard_dev, cumulative)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "mean",
+        "description": "The arithmetic mean."
+      },
+      {
+        "name": "standard_dev",
+        "description": "The standard deviation."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NORM.DIST(42,40,1.5,TRUE)",
+        "result": "0.9087888"
+      },
+      {
+        "formula": "=NORM.DIST(42,40,1.5,FALSE)",
+        "result": "0.10934005"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "NORM.INV",
+    "category": "Statistical",
+    "summary": "Returns the inverse of the normal cumulative distribution.",
+    "syntax": "NORM.INV(probability, mean, standard_dev)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "mean",
+        "description": "The arithmetic mean."
+      },
+      {
+        "name": "standard_dev",
+        "description": "The standard deviation."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NORM.INV(0.908789,40,1.5)",
+        "result": "42.000002"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "NORM.S.DIST",
+    "category": "Statistical",
+    "summary": "Returns the standard normal distribution (mean 0, standard deviation 1).",
+    "syntax": "NORM.S.DIST(z, cumulative)",
+    "args": [
+      {
+        "name": "z",
+        "description": "The value."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NORM.S.DIST(1.333333,TRUE)",
+        "result": "0.908788726"
+      },
+      {
+        "formula": "=NORM.S.DIST(1.333333,FALSE)",
+        "result": "0.164010148"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "NORM.S.INV",
+    "category": "Statistical",
+    "summary": "Returns the inverse of the standard normal cumulative distribution.",
+    "syntax": "NORM.S.INV(probability)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NORM.S.INV(0.908789)",
+        "result": "1.3333347"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "PEARSON",
+    "category": "Statistical",
+    "summary": "Returns the Pearson product moment correlation coefficient.",
+    "syntax": "PEARSON(array1, array2)",
+    "args": [
+      {
+        "name": "array1",
+        "description": "The independent values."
+      },
+      {
+        "name": "array2",
+        "description": "The dependent values."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PEARSON({9,7,5,3,1},{10,6,1,5,3})",
+        "result": "0.699379"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "PERCENTILE.EXC",
+    "category": "Statistical",
+    "summary": "Returns the k-th percentile of values, where k is in the open range 0..1.",
+    "syntax": "PERCENTILE.EXC(array, k)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The data."
+      },
+      {
+        "name": "k",
+        "description": "The percentile value, exclusive of 0 and 1."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PERCENTILE.EXC({1,2,3,6,6,6,7,8,9},0.25)",
+        "result": "2.5"
+      },
+      {
+        "formula": "=PERCENTILE.EXC({1,2,3,6,6,6,7,8,9},0.01)",
+        "result": "#NUM!"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "PERCENTILE.INC",
+    "category": "Statistical",
+    "summary": "Returns the k-th percentile of values, where k is in the range 0..1 inclusive.",
+    "syntax": "PERCENTILE.INC(array, k)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The data."
+      },
+      {
+        "name": "k",
+        "description": "The percentile value, from 0 to 1."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PERCENTILE.INC({1,3,2,4},0.3)",
+        "result": "1.9"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "PERCENTRANK.EXC",
+    "category": "Statistical",
+    "summary": "Returns the rank of a value in a data set as a percentage (0..1, exclusive).",
+    "syntax": "PERCENTRANK.EXC(array, x, [significance])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The data."
+      },
+      {
+        "name": "x",
+        "description": "The value to rank."
+      },
+      {
+        "name": "significance",
+        "description": "The number of significant digits (default 3).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PERCENTRANK.EXC({1,2,3,6,6,6,7,8,9},7)",
+        "result": "0.7"
+      },
+      {
+        "formula": "=PERCENTRANK.EXC({1,2,3,6,6,6,7,8,9},6)",
+        "result": "0.4"
+      },
+      {
+        "formula": "=PERCENTRANK.EXC({1,2,3,6,6,6,7,8,9},5.43,2)",
+        "result": "0.38"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "PERCENTRANK.INC",
+    "category": "Statistical",
+    "summary": "Returns the rank of a value in a data set as a percentage (0..1, inclusive).",
+    "syntax": "PERCENTRANK.INC(array, x, [significance])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The data."
+      },
+      {
+        "name": "x",
+        "description": "The value to rank."
+      },
+      {
+        "name": "significance",
+        "description": "The number of significant digits (default 3).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PERCENTRANK.INC({13,12,11,8,4,3,2,1,1,1},2)",
+        "result": "0.333"
+      },
+      {
+        "formula": "=PERCENTRANK.INC({13,12,11,8,4,3,2,1,1,1},4)",
+        "result": "0.555"
+      },
+      {
+        "formula": "=PERCENTRANK.INC({13,12,11,8,4,3,2,1,1,1},8)",
+        "result": "0.666"
+      },
+      {
+        "formula": "=PERCENTRANK.INC({13,12,11,8,4,3,2,1,1,1},5)",
+        "result": "0.583"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "PERMUT",
+    "category": "Statistical",
+    "summary": "Returns the number of permutations for a given number of objects.",
+    "syntax": "PERMUT(number, number_chosen)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number of objects."
+      },
+      {
+        "name": "number_chosen",
+        "description": "The number of objects in each permutation."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PERMUT(100,3)",
+        "result": "970200"
+      },
+      {
+        "formula": "=PERMUT(3,2)",
+        "result": "6"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "PERMUTATIONA",
+    "category": "Statistical",
+    "summary": "Returns the number of permutations (with repetitions) for a given number of objects.",
+    "syntax": "PERMUTATIONA(number, number_chosen)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number of objects."
+      },
+      {
+        "name": "number_chosen",
+        "description": "The number of objects in each permutation."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PERMUTATIONA(3,2)",
+        "result": "9"
+      },
+      {
+        "formula": "=PERMUTATIONA(2,2)",
+        "result": "4"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "PHI",
+    "category": "Statistical",
+    "summary": "Returns the value of the density function for a standard normal distribution.",
+    "syntax": "PHI(x)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PHI(0.75)",
+        "result": "0.301137432"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "POISSON.DIST",
+    "category": "Statistical",
+    "summary": "Returns the Poisson distribution.",
+    "syntax": "POISSON.DIST(x, mean, cumulative)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The number of events."
+      },
+      {
+        "name": "mean",
+        "description": "The expected numeric value."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=POISSON.DIST(2,5,TRUE)",
+        "result": "0.124652"
+      },
+      {
+        "formula": "=POISSON.DIST(2,5,FALSE)",
+        "result": "0.084224"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "PROB",
+    "category": "Statistical",
+    "summary": "Returns the probability that values in a range are between two limits.",
+    "syntax": "PROB(x_range, prob_range, lower_limit, [upper_limit])",
+    "args": [
+      {
+        "name": "x_range",
+        "description": "The numeric values of x."
+      },
+      {
+        "name": "prob_range",
+        "description": "Probabilities for each value in x_range."
+      },
+      {
+        "name": "lower_limit",
+        "description": "The lower bound."
+      },
+      {
+        "name": "upper_limit",
+        "description": "The upper bound (default: lower_limit).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PROB({0,1,2,3},{0.2,0.3,0.1,0.4},2)",
+        "result": "0.1"
+      },
+      {
+        "formula": "=PROB({0,1,2,3},{0.2,0.3,0.1,0.4},1,3)",
+        "result": "0.8"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "QUARTILE.EXC",
+    "category": "Statistical",
+    "summary": "Returns the quartile of a data set, based on percentile values from 0..1, exclusive.",
+    "syntax": "QUARTILE.EXC(array, quart)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The data."
+      },
+      {
+        "name": "quart",
+        "description": "Which quartile (1, 2 or 3)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=QUARTILE.EXC({6,7,15,36,39,40,41,42,43,47,49},1)",
+        "result": "15"
+      },
+      {
+        "formula": "=QUARTILE.EXC({6,7,15,36,39,40,41,42,43,47,49},3)",
+        "result": "43"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "QUARTILE.INC",
+    "category": "Statistical",
+    "summary": "Returns the quartile of a data set, based on percentile values from 0..1, inclusive.",
+    "syntax": "QUARTILE.INC(array, quart)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The data."
+      },
+      {
+        "name": "quart",
+        "description": "0 minimum, 1 first quartile, 2 median, 3 third quartile, 4 maximum."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=QUARTILE.INC({1,2,4,7,8,9,10,12},1)",
+        "result": "3.5"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "RANK.AVG",
+    "category": "Statistical",
+    "summary": "Returns the rank of a number in a list; ties get the average rank.",
+    "syntax": "RANK.AVG(number, ref, [order])",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number to rank."
+      },
+      {
+        "name": "ref",
+        "description": "The list of numbers."
+      },
+      {
+        "name": "order",
+        "description": "0 or omitted for descending, non-zero for ascending.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=RANK.AVG(94,{89,88,92,101,94,97,95})",
+        "result": "4"
+      },
+      {
+        "formula": "=RANK.AVG(1,{1,2,1,3})",
+        "result": "3.5"
+      },
+      {
+        "formula": "=RANK.AVG(1,{1,2,1,3},1)",
+        "result": "1.5"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "RANK.EQ",
+    "category": "Statistical",
+    "summary": "Returns the rank of a number in a list; ties get the top rank.",
+    "syntax": "RANK.EQ(number, ref, [order])",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number to rank."
+      },
+      {
+        "name": "ref",
+        "description": "The list of numbers."
+      },
+      {
+        "name": "order",
+        "description": "0 or omitted for descending, non-zero for ascending.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=RANK.EQ(7,{7,3.5,3.5,1,2},1)",
+        "result": "5"
+      },
+      {
+        "formula": "=RANK.EQ(2,{7,3.5,3.5,1,2})",
+        "result": "4"
+      },
+      {
+        "formula": "=RANK.EQ(3.5,{7,3.5,3.5,1,2},1)",
+        "result": "3"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "RSQ",
+    "category": "Statistical",
+    "summary": "Returns the square of the Pearson correlation coefficient.",
+    "syntax": "RSQ(known_y's, known_x's)",
+    "args": [
+      {
+        "name": "known_y's",
+        "description": "The dependent values."
+      },
+      {
+        "name": "known_x's",
+        "description": "The independent values."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=RSQ({2,3,9,1,8,7,5},{6,5,11,7,5,4,4})",
+        "result": "0.05795"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SKEW",
+    "category": "Statistical",
+    "summary": "Returns the skewness of a distribution.",
+    "syntax": "SKEW(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SKEW(3,4,5,2,3,4,5,6,4,7)",
+        "result": "0.359543"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SKEW.P",
+    "category": "Statistical",
+    "summary": "Returns the skewness of a distribution based on a population.",
+    "syntax": "SKEW.P(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SKEW.P(3,4,5,2,3,4,5,6,4,7)",
+        "result": "0.303193"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "SLOPE",
+    "category": "Statistical",
+    "summary": "Returns the slope of the linear regression line.",
+    "syntax": "SLOPE(known_y's, known_x's)",
+    "args": [
+      {
+        "name": "known_y's",
+        "description": "The dependent values."
+      },
+      {
+        "name": "known_x's",
+        "description": "The independent values."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SLOPE({2,3,9,1,8,7,5},{6,5,11,7,5,4,4})",
+        "result": "0.305556"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SMALL",
+    "category": "Statistical",
+    "summary": "Returns the k-th smallest value in a data set.",
+    "syntax": "SMALL(array, k)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The data."
+      },
+      {
+        "name": "k",
+        "description": "The position from the smallest."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SMALL({3,4,5,2,3,4,6,4,7},4)",
+        "result": "4"
+      },
+      {
+        "formula": "=SMALL({1,4,8,3,7,12,54,8,23},2)",
+        "result": "3"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "STANDARDIZE",
+    "category": "Statistical",
+    "summary": "Returns a normalised value from a distribution with the given mean and standard deviation.",
+    "syntax": "STANDARDIZE(x, mean, standard_dev)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value to normalise."
+      },
+      {
+        "name": "mean",
+        "description": "The arithmetic mean."
+      },
+      {
+        "name": "standard_dev",
+        "description": "The standard deviation."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=STANDARDIZE(42,40,1.5)",
+        "result": "1.333333333"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "STDEV.P",
+    "category": "Statistical",
+    "summary": "Calculates the standard deviation of an entire population.",
+    "syntax": "STDEV.P(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=STDEV.P({1345,1301,1368,1322,1310,1370,1318,1350,1303,1299})",
+        "result": "26.05456"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "STDEV.S",
+    "category": "Statistical",
+    "summary": "Estimates the standard deviation of a sample.",
+    "syntax": "STDEV.S(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=STDEV.S({1345,1301,1368,1322,1310,1370,1318,1350,1303,1299})",
+        "result": "27.46391572"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "STDEVA",
+    "category": "Statistical",
+    "summary": "Estimates standard deviation from a sample, counting text and logicals.",
+    "syntax": "STDEVA(value1, [value2], ...)",
+    "args": [
+      {
+        "name": "value1",
+        "description": "The first value or range."
+      },
+      {
+        "name": "value2",
+        "description": "Further values or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=STDEVA(1345,1301,1368,1322,1310,1370,1318,1350,1303,1299)",
+        "result": "27.46391572"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "STDEVPA",
+    "category": "Statistical",
+    "summary": "Calculates the population standard deviation, counting text and logicals.",
+    "syntax": "STDEVPA(value1, [value2], ...)",
+    "args": [
+      {
+        "name": "value1",
+        "description": "The first value or range."
+      },
+      {
+        "name": "value2",
+        "description": "Further values or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=STDEVPA(1345,1301,1368,1322,1310,1370,1318,1350,1303,1299)",
+        "result": "26.05456"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "STEYX",
+    "category": "Statistical",
+    "summary": "Returns the standard error of the predicted y-value for each x in the regression.",
+    "syntax": "STEYX(known_y's, known_x's)",
+    "args": [
+      {
+        "name": "known_y's",
+        "description": "The dependent values."
+      },
+      {
+        "name": "known_x's",
+        "description": "The independent values."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=STEYX({2,3,9,1,8,7,5},{6,5,11,7,5,4,4})",
+        "result": "3.305719"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "T.DIST",
+    "category": "Statistical",
+    "summary": "Returns the left-tailed Student's t-distribution.",
+    "syntax": "T.DIST(x, deg_freedom, cumulative)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "deg_freedom",
+        "description": "The degrees of freedom."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=T.DIST(60,1,TRUE)",
+        "result": "0.99469533"
+      },
+      {
+        "formula": "=T.DIST(8,3,FALSE)",
+        "result": "0.00073691"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "T.DIST.2T",
+    "category": "Statistical",
+    "summary": "Returns the two-tailed Student's t-distribution.",
+    "syntax": "T.DIST.2T(x, deg_freedom)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "deg_freedom",
+        "description": "The degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=T.DIST.2T(1.959999998,60)",
+        "result": "0.054645"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "T.DIST.RT",
+    "category": "Statistical",
+    "summary": "Returns the right-tailed Student's t-distribution.",
+    "syntax": "T.DIST.RT(x, deg_freedom)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "deg_freedom",
+        "description": "The degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=T.DIST.RT(1.959999998,60)",
+        "result": "0.027322"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "T.INV",
+    "category": "Statistical",
+    "summary": "Returns the left-tailed inverse of the Student's t-distribution.",
+    "syntax": "T.INV(probability, deg_freedom)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "deg_freedom",
+        "description": "The degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=T.INV(0.75,2)",
+        "result": "0.8164966"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "T.INV.2T",
+    "category": "Statistical",
+    "summary": "Returns the two-tailed inverse of the Student's t-distribution.",
+    "syntax": "T.INV.2T(probability, deg_freedom)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "deg_freedom",
+        "description": "The degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=T.INV.2T(0.546449,60)",
+        "result": "0.606533"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "T.TEST",
+    "category": "Statistical",
+    "summary": "Returns the probability associated with a Student's t-test.",
+    "syntax": "T.TEST(array1, array2, tails, type)",
+    "args": [
+      {
+        "name": "array1",
+        "description": "The first data set."
+      },
+      {
+        "name": "array2",
+        "description": "The second data set."
+      },
+      {
+        "name": "tails",
+        "description": "1 or 2 tails."
+      },
+      {
+        "name": "type",
+        "description": "1 paired, 2 two-sample equal variance, 3 two-sample unequal variance."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=T.TEST({3,4,5,8,9,1,2,4,5},{6,19,3,2,14,4,5,17,1},2,1)",
+        "result": "0.196016"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "TREND",
+    "category": "Statistical",
+    "summary": "Returns values along a linear trend.",
+    "syntax": "TREND(known_y's, [known_x's], [new_x's], [const])",
+    "args": [
+      {
+        "name": "known_y's",
+        "description": "The y values."
+      },
+      {
+        "name": "known_x's",
+        "description": "The x values.",
+        "optional": true
+      },
+      {
+        "name": "new_x's",
+        "description": "The x values to return y for.",
+        "optional": true
+      },
+      {
+        "name": "const",
+        "description": "FALSE forces the intercept to 0.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TREND({1,9,5,7},{0,4,2,3},{5,8})",
+        "result": "{11,17}"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TRIMMEAN",
+    "category": "Statistical",
+    "summary": "Returns the mean of the interior of a data set, excluding a percentage of points from the top and bottom.",
+    "syntax": "TRIMMEAN(array, percent)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The data."
+      },
+      {
+        "name": "percent",
+        "description": "The fraction of points to exclude."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TRIMMEAN({4,5,6,7,2,3,4,5,1,2,3},0.2)",
+        "result": "3.777777778"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "VAR.P",
+    "category": "Statistical",
+    "summary": "Calculates variance based on the entire population.",
+    "syntax": "VAR.P(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=VAR.P({1345,1301,1368,1322,1310,1370,1318,1350,1303,1299})",
+        "result": "678.84"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "VAR.S",
+    "category": "Statistical",
+    "summary": "Estimates variance based on a sample.",
+    "syntax": "VAR.S(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=VAR.S({1345,1301,1368,1322,1310,1370,1318,1350,1303,1299})",
+        "result": "754.2666667"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "VARA",
+    "category": "Statistical",
+    "summary": "Estimates variance from a sample, counting text and logicals.",
+    "syntax": "VARA(value1, [value2], ...)",
+    "args": [
+      {
+        "name": "value1",
+        "description": "The first value or range."
+      },
+      {
+        "name": "value2",
+        "description": "Further values or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=VARA(1345,1301,1368,1322,1310,1370,1318,1350,1303,1299)",
+        "result": "754.2666667"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "VARPA",
+    "category": "Statistical",
+    "summary": "Calculates variance of an entire population, counting text and logicals.",
+    "syntax": "VARPA(value1, [value2], ...)",
+    "args": [
+      {
+        "name": "value1",
+        "description": "The first value or range."
+      },
+      {
+        "name": "value2",
+        "description": "Further values or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=VARPA(1345,1301,1368,1322,1310,1370,1318,1350,1303,1299)",
+        "result": "678.84"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "WEIBULL.DIST",
+    "category": "Statistical",
+    "summary": "Returns the Weibull distribution.",
+    "syntax": "WEIBULL.DIST(x, alpha, beta, cumulative)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "alpha",
+        "description": "A parameter of the distribution."
+      },
+      {
+        "name": "beta",
+        "description": "A parameter of the distribution."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=WEIBULL.DIST(105,20,100,TRUE)",
+        "result": "0.929581"
+      },
+      {
+        "formula": "=WEIBULL.DIST(105,20,100,FALSE)",
+        "result": "0.035589"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "Z.TEST",
+    "category": "Statistical",
+    "summary": "Returns the one-tailed probability-value of a z-test.",
+    "syntax": "Z.TEST(array, x, [sigma])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The data to test against x."
+      },
+      {
+        "name": "x",
+        "description": "The value to test."
+      },
+      {
+        "name": "sigma",
+        "description": "The population standard deviation (default: the sample standard deviation).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=Z.TEST({3,6,7,8,6,5,4,2,1,9},4)",
+        "result": "0.090574"
+      },
+      {
+        "formula": "=Z.TEST({3,6,7,8,6,5,4,2,1,9},6)",
+        "result": "0.863043"
+      }
+    ],
+    "since": "2010"
+  }
+]

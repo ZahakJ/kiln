@@ -294,6 +294,11 @@ export class Engine implements EvalHost {
     return this.formulas.get(cellKey(this.resolveSheet(sheet), row, col))?.text;
   }
 
+  /** Link target of a cell whose formula evaluated HYPERLINK (the cell value is the friendly name). */
+  getHyperlink(sheet: SheetRef, row: number, col: number): string | undefined {
+    return this.formulas.get(cellKey(this.resolveSheet(sheet), row, col))?.hyperlink;
+  }
+
   hasFormula(sheet: SheetRef, row: number, col: number): boolean {
     return this.formulas.has(cellKey(this.resolveSheet(sheet), row, col));
   }
@@ -610,7 +615,9 @@ export class Engine implements EvalHost {
     fc.circular = false;
     let value: Value;
     try {
-      value = new Evaluator(this, fc.sheet, fc.row, fc.col, fc.legacy).evaluateFormula(fc.ast);
+      const ev = new Evaluator(this, fc.sheet, fc.row, fc.col, fc.legacy);
+      value = ev.evaluateFormula(fc.ast);
+      fc.hyperlink = ev.hyperlink;
     } finally {
       fc.evaluating = false;
     }
@@ -730,6 +737,22 @@ export class Engine implements EvalHost {
 
   isFormulaCell(sheet: number, row: number, col: number): boolean {
     return this.formulas.has(cellKey(sheet, row, col));
+  }
+
+  sheetOrderIds(): number[] {
+    return [...this.sheetOrder];
+  }
+
+  formulaText(sheet: number, row: number, col: number): string | undefined {
+    return this.formulas.get(cellKey(sheet, row, col))?.text;
+  }
+
+  isRowHidden(sheet: number, row: number): boolean {
+    return this.host.isRowHidden?.(sheet, row) ?? false;
+  }
+
+  isRowFiltered(sheet: number, row: number): boolean {
+    return this.host.isRowFiltered?.(sheet, row) ?? false;
   }
 
   usedBounds(sheet: number): { rows: number; cols: number } {

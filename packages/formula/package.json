@@ -16,12 +16,14 @@
     "bench": "vitest bench --run --reporter=verbose"
   },
   "dependencies": {
-    "@formulajs/formulajs": "catalog:",
-    "decimal.js": "catalog:"
+    "decimal.js": "catalog:",
+    "numfmt": "catalog:"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@types/node": "catalog:",
+    "exceljs": "catalog:",
+    "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }
