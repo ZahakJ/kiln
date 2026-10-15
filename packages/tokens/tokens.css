@@ -1,0 +1,299 @@
+/*
+ * Officina "Horizon" design tokens (PLAN.md §1.2).
+ * GENERATED from packages/tokens/src/tokens.ts by `pnpm --filter @officina/tokens generate`.
+ * Do not edit by hand.
+ */
+
+/* Theme-independent scale: spacing (4 px grid), radii, type, controls, motion, stacking. */
+:root {
+  --of-space-0: 0px;
+  --of-space-0-5: 2px;
+  --of-space-1: 4px;
+  --of-space-1-5: 6px;
+  --of-space-2: 8px;
+  --of-space-3: 12px;
+  --of-space-4: 16px;
+  --of-space-5: 20px;
+  --of-space-6: 24px;
+  --of-space-8: 32px;
+  --of-space-10: 40px;
+  --of-space-12: 48px;
+  --of-radius-control: 4px;
+  --of-radius-menu: 6px;
+  --of-radius-dialog: 10px;
+  --of-radius-full: 9999px;
+  --of-font-ui: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --of-font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", "SFMono-Regular", Menlo, monospace;
+  --of-font-doc-sans: "Liberation Sans", Arial, sans-serif;
+  --of-font-doc-serif: "Liberation Serif", "Times New Roman", serif;
+  --of-font-doc-mono: "Liberation Mono", "Courier New", monospace;
+  --of-font-doc-calibri: Carlito, Calibri, sans-serif;
+  --of-font-doc-cambria: Caladea, Cambria, serif;
+  --of-text-xs: 11px;
+  --of-text-sm: 12px;
+  --of-text-base: 13px;
+  --of-text-md: 15px;
+  --of-text-lg: 18px;
+  --of-text-xl: 24px;
+  --of-leading-tight: 1.25;
+  --of-leading-normal: 1.45;
+  --of-weight-regular: 400;
+  --of-weight-medium: 500;
+  --of-weight-semibold: 600;
+  --of-control-h-sm: 24px;
+  --of-control-h: 28px;
+  --of-control-h-lg: 32px;
+  --of-icon-sm: 16px;
+  --of-icon-md: 20px;
+  --of-icon-lg: 32px;
+  --of-border-width: 1px;
+  --of-focus-width: 2px;
+  --of-duration-fast: 80ms;
+  --of-duration-menu: 120ms;
+  --of-duration-pane: 200ms;
+  --of-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --of-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --of-z-ribbon: 10;
+  --of-z-pane: 20;
+  --of-z-menu: 1000;
+  --of-z-dialog: 1100;
+  --of-z-popover: 1200;
+  --of-z-tooltip: 1300;
+  --of-z-toast: 1400;
+}
+
+/* Light theme (default). */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --of-bg-canvas: #eef1f6;
+  --of-bg-surface: #ffffff;
+  --of-bg-surface-2: #f6f8fb;
+  --of-bg-surface-3: #eceff4;
+  --of-bg-hover: rgb(27 31 39 / 0.06);
+  --of-bg-pressed: rgb(27 31 39 / 0.11);
+  --of-bg-checked: rgb(27 31 39 / 0.09);
+  --of-bg-input: #ffffff;
+  --of-bg-tooltip: #1b1f27;
+  --of-fg-tooltip: #f6f8fb;
+  --of-overlay: rgb(15 18 25 / 0.36);
+  --of-fg: #1b1f27;
+  --of-fg-muted: #5a6170;
+  --of-fg-disabled: #a1a7b3;
+  --of-border: #d8dde6;
+  --of-border-strong: #b4bbc8;
+  --of-focus-ring: var(--of-accent);
+  --of-on-accent: #ffffff;
+  --of-accent-write: #2b5fd9;
+  --of-accent-grid: #1f8a5b;
+  --of-accent-deck: #d9552b;
+  --of-accent-notes: #7a3fd1;
+  --of-accent-hub: #2b5fd9;
+  --of-accent-strong-write: #2b5fd9;
+  --of-accent-strong-grid: #1a7a50;
+  --of-accent-strong-deck: #b8461f;
+  --of-accent-strong-notes: #7a3fd1;
+  --of-accent-strong-hub: #2b5fd9;
+  --of-danger: #c8352b;
+  --of-warning: #b7791f;
+  --of-success: #1f8a5b;
+  --of-info: #2b5fd9;
+  --of-danger-subtle: #fcecea;
+  --of-warning-subtle: #fbf3e3;
+  --of-success-subtle: #e7f5ee;
+  --of-info-subtle: #eaf0fc;
+  --of-scrollbar: rgb(27 31 39 / 0.22);
+  --of-scrollbar-hover: rgb(27 31 39 / 0.38);
+  --of-selection-alpha: 18%;
+  --of-shadow-1: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.08);
+  --of-shadow-2: 0 4px 12px rgb(16 24 40 / 0.1), 0 2px 4px rgb(16 24 40 / 0.05);
+  --of-shadow-3: 0 16px 40px rgb(16 24 40 / 0.16), 0 4px 10px rgb(16 24 40 / 0.06);
+}
+
+/* Dark theme when following the OS (no explicit data-theme on <html>). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --of-bg-canvas: #15171c;
+    --of-bg-surface: #1e2127;
+    --of-bg-surface-2: #262a31;
+    --of-bg-surface-3: #2c3039;
+    --of-bg-hover: rgb(232 234 238 / 0.07);
+    --of-bg-pressed: rgb(232 234 238 / 0.12);
+    --of-bg-checked: rgb(232 234 238 / 0.1);
+    --of-bg-input: #17191e;
+    --of-bg-tooltip: #e8eaee;
+    --of-fg-tooltip: #15171c;
+    --of-overlay: rgb(0 0 0 / 0.55);
+    --of-fg: #e8eaee;
+    --of-fg-muted: #9aa1ae;
+    --of-fg-disabled: #5d6470;
+    --of-border: #333843;
+    --of-border-strong: #4a515e;
+    --of-focus-ring: var(--of-accent);
+    --of-on-accent: #0e1014;
+    --of-accent-write: #6b8ff0;
+    --of-accent-grid: #4fc08d;
+    --of-accent-deck: #f2825e;
+    --of-accent-notes: #a97cf0;
+    --of-accent-hub: #6b8ff0;
+    --of-accent-strong-write: #7c9cf2;
+    --of-accent-strong-grid: #4fc08d;
+    --of-accent-strong-deck: #f2825e;
+    --of-accent-strong-notes: #b38af2;
+    --of-accent-strong-hub: #7c9cf2;
+    --of-danger: #f07167;
+    --of-warning: #e0a52f;
+    --of-success: #4fc08d;
+    --of-info: #6b8ff0;
+    --of-danger-subtle: #3a2225;
+    --of-warning-subtle: #372d1a;
+    --of-success-subtle: #1b3329;
+    --of-info-subtle: #1f2a44;
+    --of-scrollbar: rgb(232 234 238 / 0.2);
+    --of-scrollbar-hover: rgb(232 234 238 / 0.36);
+    --of-selection-alpha: 28%;
+    --of-shadow-1: 0 1px 2px rgb(0 0 0 / 0.3), 0 1px 3px rgb(0 0 0 / 0.2);
+    --of-shadow-2: 0 6px 16px rgb(0 0 0 / 0.38), 0 2px 4px rgb(0 0 0 / 0.2);
+    --of-shadow-3: 0 18px 48px rgb(0 0 0 / 0.5), 0 4px 12px rgb(0 0 0 / 0.3);
+  }
+}
+
+/* Dark theme, chosen explicitly. */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --of-bg-canvas: #15171c;
+  --of-bg-surface: #1e2127;
+  --of-bg-surface-2: #262a31;
+  --of-bg-surface-3: #2c3039;
+  --of-bg-hover: rgb(232 234 238 / 0.07);
+  --of-bg-pressed: rgb(232 234 238 / 0.12);
+  --of-bg-checked: rgb(232 234 238 / 0.1);
+  --of-bg-input: #17191e;
+  --of-bg-tooltip: #e8eaee;
+  --of-fg-tooltip: #15171c;
+  --of-overlay: rgb(0 0 0 / 0.55);
+  --of-fg: #e8eaee;
+  --of-fg-muted: #9aa1ae;
+  --of-fg-disabled: #5d6470;
+  --of-border: #333843;
+  --of-border-strong: #4a515e;
+  --of-focus-ring: var(--of-accent);
+  --of-on-accent: #0e1014;
+  --of-accent-write: #6b8ff0;
+  --of-accent-grid: #4fc08d;
+  --of-accent-deck: #f2825e;
+  --of-accent-notes: #a97cf0;
+  --of-accent-hub: #6b8ff0;
+  --of-accent-strong-write: #7c9cf2;
+  --of-accent-strong-grid: #4fc08d;
+  --of-accent-strong-deck: #f2825e;
+  --of-accent-strong-notes: #b38af2;
+  --of-accent-strong-hub: #7c9cf2;
+  --of-danger: #f07167;
+  --of-warning: #e0a52f;
+  --of-success: #4fc08d;
+  --of-info: #6b8ff0;
+  --of-danger-subtle: #3a2225;
+  --of-warning-subtle: #372d1a;
+  --of-success-subtle: #1b3329;
+  --of-info-subtle: #1f2a44;
+  --of-scrollbar: rgb(232 234 238 / 0.2);
+  --of-scrollbar-hover: rgb(232 234 238 / 0.36);
+  --of-selection-alpha: 28%;
+  --of-shadow-1: 0 1px 2px rgb(0 0 0 / 0.3), 0 1px 3px rgb(0 0 0 / 0.2);
+  --of-shadow-2: 0 6px 16px rgb(0 0 0 / 0.38), 0 2px 4px rgb(0 0 0 / 0.2);
+  --of-shadow-3: 0 18px 48px rgb(0 0 0 / 0.5), 0 4px 12px rgb(0 0 0 / 0.3);
+}
+
+/* High-contrast theme. */
+[data-theme="hc"] {
+  color-scheme: dark;
+  --of-bg-canvas: #000000;
+  --of-bg-surface: #000000;
+  --of-bg-surface-2: #0b0b0b;
+  --of-bg-surface-3: #161616;
+  --of-bg-hover: rgb(255 255 255 / 0.18);
+  --of-bg-pressed: rgb(255 255 255 / 0.3);
+  --of-bg-checked: rgb(255 255 255 / 0.24);
+  --of-bg-input: #000000;
+  --of-bg-tooltip: #000000;
+  --of-fg-tooltip: #ffffff;
+  --of-overlay: rgb(0 0 0 / 0.75);
+  --of-fg: #ffffff;
+  --of-fg-muted: #e2e2e2;
+  --of-fg-disabled: #9c9c9c;
+  --of-border: #ffffff;
+  --of-border-strong: #ffffff;
+  --of-focus-ring: #ffd400;
+  --of-on-accent: #000000;
+  --of-accent-write: #8ab4ff;
+  --of-accent-grid: #5ee6a0;
+  --of-accent-deck: #ff9e7a;
+  --of-accent-notes: #cda6ff;
+  --of-accent-hub: #8ab4ff;
+  --of-accent-strong-write: #8ab4ff;
+  --of-accent-strong-grid: #5ee6a0;
+  --of-accent-strong-deck: #ff9e7a;
+  --of-accent-strong-notes: #cda6ff;
+  --of-accent-strong-hub: #8ab4ff;
+  --of-danger: #ff7a70;
+  --of-warning: #ffd400;
+  --of-success: #5ee6a0;
+  --of-info: #8ab4ff;
+  --of-danger-subtle: #000000;
+  --of-warning-subtle: #000000;
+  --of-success-subtle: #000000;
+  --of-info-subtle: #000000;
+  --of-scrollbar: #ffffff;
+  --of-scrollbar-hover: #ffd400;
+  --of-selection-alpha: 40%;
+  --of-shadow-1: none;
+  --of-shadow-2: 0 0 0 1px #ffffff;
+  --of-shadow-3: 0 0 0 2px #ffffff;
+}
+
+/* Active app accent: <html data-app="write|grid|deck|notes|hub">. Hub is the default. */
+:root {
+  --of-accent: var(--of-accent-hub);
+  --of-accent-strong: var(--of-accent-strong-hub);
+}
+[data-app="write"] {
+  --of-accent: var(--of-accent-write);
+  --of-accent-strong: var(--of-accent-strong-write);
+}
+[data-app="grid"] {
+  --of-accent: var(--of-accent-grid);
+  --of-accent-strong: var(--of-accent-strong-grid);
+}
+[data-app="deck"] {
+  --of-accent: var(--of-accent-deck);
+  --of-accent-strong: var(--of-accent-strong-deck);
+}
+[data-app="notes"] {
+  --of-accent: var(--of-accent-notes);
+  --of-accent-strong: var(--of-accent-strong-notes);
+}
+[data-app="hub"] {
+  --of-accent: var(--of-accent-hub);
+  --of-accent-strong: var(--of-accent-strong-hub);
+}
+
+/* Derived from the accent and theme; re-declared on every scope so nested data-app/data-theme work. */
+:root,
+[data-app],
+[data-theme] {
+  --of-selection: color-mix(in srgb, var(--of-accent) var(--of-selection-alpha), transparent);
+  --of-accent-subtle: color-mix(in srgb, var(--of-accent) 12%, transparent);
+  --of-accent-hover: color-mix(in srgb, var(--of-accent-strong), var(--of-fg) 12%);
+  --of-accent-pressed: color-mix(in srgb, var(--of-accent-strong), var(--of-fg) 22%);
+}
+
+/* Motion: respect the OS setting. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --of-duration-fast: 0ms;
+    --of-duration-menu: 0ms;
+    --of-duration-pane: 0ms;
+  }
+}

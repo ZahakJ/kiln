@@ -1,0 +1,190 @@
+/*
+ * Officina fonts: UI (Inter Variable, JetBrains Mono) and bundled document fonts (SIL OFL 1.1).
+ * GENERATED from packages/tokens/src/tokens.ts by `pnpm --filter @officina/tokens generate`.
+ * Do not edit by hand.
+ */
+@import "@fontsource-variable/inter/wght.css";
+@import "@fontsource-variable/inter/wght-italic.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/jetbrains-mono/700.css";
+
+/* Liberation Sans Regular — metric-compatible with Arial. */
+@font-face {
+  font-family: "Liberation Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/LiberationSans-Regular.ttf") format("truetype");
+}
+
+/* Liberation Sans Bold — metric-compatible with Arial. */
+@font-face {
+  font-family: "Liberation Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./fonts/LiberationSans-Bold.ttf") format("truetype");
+}
+
+/* Liberation Sans Italic — metric-compatible with Arial. */
+@font-face {
+  font-family: "Liberation Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/LiberationSans-Italic.ttf") format("truetype");
+}
+
+/* Liberation Sans BoldItalic — metric-compatible with Arial. */
+@font-face {
+  font-family: "Liberation Sans";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./fonts/LiberationSans-BoldItalic.ttf") format("truetype");
+}
+
+/* Liberation Serif Regular — metric-compatible with Times New Roman. */
+@font-face {
+  font-family: "Liberation Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/LiberationSerif-Regular.ttf") format("truetype");
+}
+
+/* Liberation Serif Bold — metric-compatible with Times New Roman. */
+@font-face {
+  font-family: "Liberation Serif";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./fonts/LiberationSerif-Bold.ttf") format("truetype");
+}
+
+/* Liberation Serif Italic — metric-compatible with Times New Roman. */
+@font-face {
+  font-family: "Liberation Serif";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/LiberationSerif-Italic.ttf") format("truetype");
+}
+
+/* Liberation Serif BoldItalic — metric-compatible with Times New Roman. */
+@font-face {
+  font-family: "Liberation Serif";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./fonts/LiberationSerif-BoldItalic.ttf") format("truetype");
+}
+
+/* Liberation Mono Regular — metric-compatible with Courier New. */
+@font-face {
+  font-family: "Liberation Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/LiberationMono-Regular.ttf") format("truetype");
+}
+
+/* Liberation Mono Bold — metric-compatible with Courier New. */
+@font-face {
+  font-family: "Liberation Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./fonts/LiberationMono-Bold.ttf") format("truetype");
+}
+
+/* Liberation Mono Italic — metric-compatible with Courier New. */
+@font-face {
+  font-family: "Liberation Mono";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/LiberationMono-Italic.ttf") format("truetype");
+}
+
+/* Liberation Mono BoldItalic — metric-compatible with Courier New. */
+@font-face {
+  font-family: "Liberation Mono";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./fonts/LiberationMono-BoldItalic.ttf") format("truetype");
+}
+
+/* Carlito Regular — metric-compatible with Calibri. */
+@font-face {
+  font-family: "Carlito";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/Carlito-Regular.ttf") format("truetype");
+}
+
+/* Carlito Bold — metric-compatible with Calibri. */
+@font-face {
+  font-family: "Carlito";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./fonts/Carlito-Bold.ttf") format("truetype");
+}
+
+/* Carlito Italic — metric-compatible with Calibri. */
+@font-face {
+  font-family: "Carlito";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/Carlito-Italic.ttf") format("truetype");
+}
+
+/* Carlito BoldItalic — metric-compatible with Calibri. */
+@font-face {
+  font-family: "Carlito";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./fonts/Carlito-BoldItalic.ttf") format("truetype");
+}
+
+/* Caladea Regular — metric-compatible with Cambria. */
+@font-face {
+  font-family: "Caladea";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/Caladea-Regular.ttf") format("truetype");
+}
+
+/* Caladea Bold — metric-compatible with Cambria. */
+@font-face {
+  font-family: "Caladea";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./fonts/Caladea-Bold.ttf") format("truetype");
+}
+
+/* Caladea Italic — metric-compatible with Cambria. */
+@font-face {
+  font-family: "Caladea";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/Caladea-Italic.ttf") format("truetype");
+}
+
+/* Caladea BoldItalic — metric-compatible with Cambria. */
+@font-face {
+  font-family: "Caladea";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./fonts/Caladea-BoldItalic.ttf") format("truetype");
+}

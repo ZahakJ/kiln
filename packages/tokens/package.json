@@ -6,13 +6,22 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./index.css": "./index.css",
+    "./tokens.css": "./tokens.css",
+    "./theme.css": "./theme.css",
+    "./fonts.css": "./fonts.css",
+    "./fonts/*": "./fonts/*"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
+    "generate": "tsx scripts/generate.ts",
+    "fetch-fonts": "node scripts/fetch-fonts.mjs",
     "lint": "biome check .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "node scripts/fetch-fonts.mjs --check && vitest run"
   },
   "dependencies": {
     "@fontsource-variable/inter": "catalog:",
@@ -21,6 +30,8 @@
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@types/node": "catalog:",
+    "jsdom": "catalog:",
+    "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }

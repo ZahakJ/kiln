@@ -108,8 +108,37 @@ function loadLicences() {
   for (const [licence, list] of Object.entries(byLicence)) {
     for (const pkg of list) packages.push({ ...pkg, license: pkg.license ?? licence });
   }
+  packages.push(...loadExtraAssets());
   packages.sort((a, b) => a.name.localeCompare(b.name));
   return packages;
+}
+
+/**
+ * Bundled non-npm assets (fonts, dictionaries, ...) declared in `packages/<pkg>/<dir>/NOTICES.json`
+ * (`{ "assets": [{ name, version, license, author?, homepage?, licenseFile }] }`, licenseFile relative to
+ * the NOTICES.json). Added in WP-04 for the document fonts in packages/tokens/fonts.
+ */
+function loadExtraAssets() {
+  const root = join(import.meta.dirname, '..', 'packages');
+  const assets = [];
+  for (const pkg of readdirSync(root)) {
+    for (const dir of ['fonts', 'assets']) {
+      const file = join(root, pkg, dir, 'NOTICES.json');
+      if (!existsSync(file)) continue;
+      for (const a of JSON.parse(readFileSync(file, 'utf8')).assets ?? []) {
+        assets.push({
+          name: a.name,
+          versions: [a.version],
+          license: a.license,
+          author: a.author,
+          homepage: a.homepage,
+          paths: [join(root, pkg, dir)],
+          licenseFile: a.licenseFile ? join(root, pkg, dir, a.licenseFile) : undefined,
+        });
+      }
+    }
+  }
+  return assets;
 }
 
 function check(packages) {
@@ -159,7 +188,7 @@ function notices(packages) {
     lines.push(`- Licence: ${p.license}`);
     if (p.author) lines.push(`- Author: ${p.author}`);
     if (p.homepage) lines.push(`- Homepage: ${p.homepage}`);
-    const text = licenceText(p.paths?.[0]);
+    const text = p.licenseFile ? readFileSync(p.licenseFile, 'utf8').trim() : licenceText(p.paths?.[0]);
     lines.push('');
     if (text) lines.push('```text', text.replace(/```/g, "'''"), '```', '');
   }
