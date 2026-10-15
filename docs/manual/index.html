@@ -120,8 +120,18 @@ async function show(push) {
     if (name === "index") {
       name = "README";
       render(await fetchMd(name), name);
-    } else page.innerHTML = `<h1>Page not found</h1><div class="notice">There is no manual page called <code>${name.replace(/[<>&"]/g, "")}.md</code>. The <a href="?p=README">contents</a> list every page.</div>`;
-    if (name !== "README") document.title = "Page not found · Officina manual";
+    } else {
+      const safe = name.replace(/[<>&"]/g, "");
+      const listed = [...toc.querySelectorAll("a[data-page]")].find((a) => a.dataset.page === name);
+      if (listed) {
+        const title = listed.textContent.replace(/[<>&"]/g, "");
+        page.innerHTML = `<h1>${title}</h1><div class="notice"><strong>This page hasn’t been written yet.</strong> It is planned and will appear here as the feature it describes lands. Until then, the <a href="?p=README">contents</a> show what is available, and you can follow progress on <a href="https://github.com/ZahakJ/officina">GitHub</a>.</div>`;
+        document.title = title + " (coming soon) · Officina manual";
+      } else {
+        page.innerHTML = `<h1>Page not found</h1><div class="notice">There is no manual page called <code>${safe}.md</code>. The <a href="?p=README">contents</a> list every page.</div>`;
+        document.title = "Page not found · Officina manual";
+      }
+    }
   }
   markToc(name);
   if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView();
