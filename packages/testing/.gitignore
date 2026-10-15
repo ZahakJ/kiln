@@ -1,0 +1,2 @@
+# Large generated files (python3 -I tools/make-fixtures.py --large)
+fixtures/xlsx/large/

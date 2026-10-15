@@ -18,5 +18,10 @@ All notable changes to Officina are recorded here. The format follows
 - Bundled fonts: Inter and JetBrains Mono for the interface, and the metric-compatible document fonts Liberation Sans/Serif/Mono, Carlito and Caladea so Office documents lay out like they do in Word.
 - UI building blocks shared by every app: buttons (including Classic-ribbon large and split buttons), toggles, menus with submenus and shortcuts, tooltips with Office-style descriptions, dialogs, tabs, drop-down lists, an editable font/size box, unit-aware number fields, an Office-style colour picker with theme tints and recent colours, a zoom slider, a styles gallery, toasts, keyboard keycaps and scroll areas, all keyboard accessible.
 - Officina Glyphs: 275 icons for Office commands (Format Painter, Merge & Center, Freeze Panes, Track Changes, slide layouts…), with an optional colourful style.
+- Office Open XML core (`@officina/ooxml`): reads and writes the zip container of .docx, .xlsx and .pptx files, leaving every part it does not change byte-for-byte identical; refuses zip bombs and recognises password-protected files.
+- Theme colours, fills, outlines, shadows, glow and reflection, and text formatting from DrawingML, resolved the way Office resolves them (theme tints and shades included).
+- All 187 Office preset shapes (rectangles, arrows, callouts, flowchart symbols, stars, banners, action buttons…) drawn from their ECMA-376 definitions, with adjustment handles, text areas and connection points.
+- Parts of a file Officina does not understand yet (macros, custom XML, embedded objects) are kept and written back on save instead of being dropped; document properties (title, author, custom fields) are read and written.
+- Test corpus: 58 generated Word, Excel and PowerPoint feature files plus hand-made edge cases, a script that downloads 30 real-world files, and checks against LibreOffice, ExcelJS, mammoth and the Python Office libraries, with a round-trip fidelity scorer.
 
 [Unreleased]: https://github.com/ZahakJ/officina/commits/main

@@ -12,9 +12,11 @@
   "scripts": {
     "lint": "biome check .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "fixtures": "python3 -I ../../tools/make-fixtures.py --out fixtures"
   },
   "dependencies": {
+    "@officina/ooxml": "workspace:*",
     "fflate": "catalog:"
   },
   "devDependencies": {

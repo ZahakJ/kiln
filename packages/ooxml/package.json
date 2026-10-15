@@ -12,7 +12,8 @@
   "scripts": {
     "lint": "biome check .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "gen:presets": "tsx scripts/gen-presets.ts"
   },
   "dependencies": {
     "fast-xml-parser": "catalog:",

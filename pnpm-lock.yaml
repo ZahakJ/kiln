@@ -1012,6 +1012,9 @@ importers:
 
   packages/testing:
     dependencies:
+      '@officina/ooxml':
+        specifier: workspace:*
+        version: link:../ooxml
       fflate:
         specifier: 'catalog:'
         version: 0.8.3
