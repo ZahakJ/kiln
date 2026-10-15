@@ -34,5 +34,9 @@ All notable changes to Officina are recorded here. The format follows
 - Field codes (PAGE, NUMPAGES, DATE/TIME with date pictures, TOC, REF, PAGEREF, HYPERLINK, SEQ) are understood, and unknown fields are kept unchanged.
 - Office fonts are replaced by bundled look-alikes with identical spacing where one exists (Calibri → Carlito, Cambria → Caladea, Arial/Times New Roman/Courier New → Liberation), and fonts that may shift the layout (such as Aptos) are reported.
 - Word count statistics as in Word (words, characters with and without spaces, paragraphs; East Asian characters counted one per word), and editing commands for styles, bold/italic toggling that respects styles, font size steps, case changes, lists and indents, tables (insert, rows, columns, merge, split), page and section breaks and page setup.
+- Formula engine (`@officina/formula`): Excel formula syntax including structured table references, 3-D and whole-column references, array constants, `@` and the `#` spill operator; formulas keep their own spacing when rows, columns or sheets change.
+- Fast, incremental recalculation: only what changed is recalculated (a 100,000-cell chain in about 0.2 s), with circular reference detection and optional iterative calculation.
+- Dynamic arrays that spill into neighbouring cells, with `#SPILL!` when something is in the way, plus LET, LAMBDA (including named and recursive lambdas), MAP, REDUCE, SCAN, BYROW, BYCOL and MAKEARRAY.
+- A core set of 47 native functions (SUM, IF, XLOOKUP, FILTER, SORT, UNIQUE, SEQUENCE, TEXTJOIN, INDIRECT…) with Excel-compatible text-to-number, date and comparison rules, and a step-by-step evaluation tree for the upcoming Formula Lab.
 
 [Unreleased]: https://github.com/ZahakJ/officina/commits/main
