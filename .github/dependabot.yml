@@ -1,0 +1,42 @@
+# Dependency updates, batched: one grouped pull request per ecosystem per week
+# for minor and patch versions. Major versions arrive one per pull request,
+# because each is a migration to read. Versions are pinned once in the
+# `catalog:` of pnpm-workspace.yaml, which Dependabot updates along with the
+# lockfile. Security advisories bypass this schedule.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      npm-minor-and-patch:
+        update-types: [minor, patch]
+    commit-message:
+      prefix: build
+      include: scope
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      actions:
+        patterns: ['*']
+    commit-message:
+      prefix: ci
+
+  # The Capacitor Android project (generated, committed).
+  - package-ecosystem: gradle
+    directory: /apps/android/android
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      gradle-minor-and-patch:
+        update-types: [minor, patch]
+    commit-message:
+      prefix: build

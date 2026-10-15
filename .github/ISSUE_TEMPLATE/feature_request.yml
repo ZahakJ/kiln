@@ -1,0 +1,40 @@
+name: Feature request
+description: Something Office does that Officina does not, or something neither does well.
+labels: [enhancement]
+body:
+  - type: dropdown
+    id: app
+    attributes:
+      label: Application
+      options:
+        - Scriba (documents)
+        - Tabula (spreadsheets)
+        - Scena (presentations)
+        - Notula (notebooks)
+        - Atrium (start screen)
+        - All of them
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What you were trying to do, and where it went wrong. Describe this before the solution; the fix we build is often not the one first proposed.
+    validations:
+      required: true
+  - type: textarea
+    id: office
+    attributes:
+      label: How Office does it
+      description: If this exists in Word, Excel, PowerPoint or OneNote, where is it (ribbon tab, group, command name) and what does it do? A screenshot is ideal.
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you have in mind
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you file
+      options:
+        - label: I searched existing issues and [PARITY.md](https://github.com/ZahakJ/officina/blob/main/PARITY.md), which lists the Office features already planned or in progress.
+          required: true

@@ -1,0 +1,68 @@
+# Every push to main and every pull request: the same gate as `pnpm verify`
+# locally, plus coverage, the licence check and the Playwright suite.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A newer push to the same branch or pull request supersedes the running check.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # Turborepo would otherwise print its telemetry notice on every run.
+      TURBO_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v7
+
+      # Installs the pnpm version named in package.json's packageManager field.
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Unit tests with coverage
+        run: pnpm test -- --coverage
+
+      - name: Licence check
+        run: pnpm licenses:check
+
+      # The browser build matches the Playwright version pinned in the e2e package.
+      - name: Install Chromium for Playwright
+        run: pnpm --filter @officina/e2e exec playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: pnpm e2e
+
+      # Screenshots are reviewed by people, so keep them whether or not the run passed.
+      - name: Upload screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-${{ github.run_id }}
+          path: |
+            e2e/screenshots
+            e2e/playwright-report
+          if-no-files-found: ignore
+          retention-days: 14

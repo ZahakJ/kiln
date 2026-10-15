@@ -1,0 +1,78 @@
+name: Bug report
+description: Something behaves wrong, crashes, or loses part of a file.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. Found a security problem? Do not file it here; see [SECURITY.md](https://github.com/ZahakJ/officina/blob/main/SECURITY.md).
+  - type: dropdown
+    id: app
+    attributes:
+      label: Application
+      options:
+        - Scriba (documents)
+        - Tabula (spreadsheets)
+        - Scena (presentations)
+        - Notula (notebooks)
+        - Atrium (start screen)
+        - Several, or the shell itself
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Linux (AppImage)
+        - Linux (deb)
+        - Windows
+        - macOS
+        - Android
+        - Web browser / installed web app
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The version is under File ▸ Account. Add the operating system version, and the browser for the web app.
+      placeholder: Officina 0.1.0, Ubuntu 24.04
+    validations:
+      required: true
+  - type: textarea
+    id: file
+    attributes:
+      label: A file that reproduces it
+      description: |
+        Most bugs live in a particular file. Attach the smallest one that shows the problem (drag it into this box; zip it if GitHub refuses the type).
+        **This issue is public.** Remove or replace anything private in the file first: names, figures, comments, tracked changes and document properties (File ▸ Info).
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the attached tables.docx
+        2. Select the second table and choose Layout ▸ Merge Cells
+        3. Save as .docx and open the file again
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead
+      description: Screenshots help, and for a file problem, how Microsoft Office or LibreOffice shows the same file.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: For a crash, the error the app showed, or what it printed when started from a terminal.
+      render: text

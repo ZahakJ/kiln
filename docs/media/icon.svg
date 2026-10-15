@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Officina">
+  <!--
+    The Officina mark: a bold lowercase "o" whose stroke opens at the bottom into
+    an arch, the doorway of the workshop, inside a rounded square in the brand
+    accent. Source of truth for every raster icon; run `pnpm media:render` after
+    editing. Each app icon keeps this tile and stroke and swaps the inner glyph.
+  -->
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4F7FF2"/>
+      <stop offset="1" stop-color="#2B58C7"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="114" fill="url(#tile)"/>
+  <rect width="512" height="512" rx="114" fill="url(#sheen)"/>
+  <path d="M348 412.95A170 170 0 1 0 164 412.95V270A92 92 0 0 1 348 270Z" fill="#ffffff"/>
+  <rect x="0.75" y="0.75" width="510.5" height="510.5" rx="113.25" fill="none" stroke="#0b1a3f" stroke-opacity="0.18" stroke-width="1.5"/>
+</svg>

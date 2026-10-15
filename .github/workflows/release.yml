@@ -1,0 +1,239 @@
+# Builds every platform package from a version tag and attaches them, with
+# SHA256SUMS.txt, to the GitHub Release for that tag. docs/RELEASING.md is the
+# runbook.
+#
+# The build commands are the root package.json scripts (`release:desktop`,
+# `release:android`), which run the apps' own release tasks through Turborepo,
+# so this file does not change when the packaging inside the apps does.
+# Outputs are expected in apps/desktop/dist/ and apps/android/dist/.
+name: release
+
+on:
+  push:
+    tags: ['v*']
+  # A manual run builds and uploads workflow artifacts; it publishes a release
+  # only when started from a tag.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+# electron-builder would publish on its own when it sees a token on a tag
+# build; publishing is the `publish` job's work, so every desktop build gets
+# `--publish never` and no job but `publish` holds a token with write access.
+env:
+  TURBO_TELEMETRY_DISABLED: 1
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build AppImage and deb
+        run: pnpm release:desktop --linux --publish never
+      - uses: actions/upload-artifact@v7
+        with:
+          name: linux
+          path: |
+            apps/desktop/dist/*.AppImage
+            apps/desktop/dist/*.deb
+          if-no-files-found: error
+
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # Code signing is off until a certificate exists. Adding the secrets
+      # WIN_CSC_LINK and WIN_CSC_KEY_PASSWORD turns it on with no other change.
+      - name: Signing certificate (optional)
+        shell: bash
+        env:
+          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+        run: |
+          if [ -n "$WIN_CSC_LINK" ]; then
+            echo "CSC_LINK=$WIN_CSC_LINK" >> "$GITHUB_ENV"
+            echo "CSC_KEY_PASSWORD=$WIN_CSC_KEY_PASSWORD" >> "$GITHUB_ENV"
+          else
+            echo "CSC_IDENTITY_AUTO_DISCOVERY=false" >> "$GITHUB_ENV"
+            echo "No WIN_CSC_LINK secret: building unsigned."
+          fi
+      - name: Build NSIS installer and portable exe (x64)
+        run: pnpm release:desktop --win --x64 --publish never
+      - uses: actions/upload-artifact@v7
+        with:
+          name: windows
+          path: apps/desktop/dist/*.exe
+          if-no-files-found: error
+
+  macos:
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # Unsigned and not notarised until an Apple Developer ID exists. The
+      # secrets MAC_CSC_LINK, MAC_CSC_KEY_PASSWORD, APPLE_ID,
+      # APPLE_APP_SPECIFIC_PASSWORD and APPLE_TEAM_ID turn both on.
+      - name: Signing identity (optional)
+        env:
+          MAC_CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
+          MAC_CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          if [ -n "$MAC_CSC_LINK" ]; then
+            {
+              echo "CSC_LINK=$MAC_CSC_LINK"
+              echo "CSC_KEY_PASSWORD=$MAC_CSC_KEY_PASSWORD"
+              echo "APPLE_ID=$APPLE_ID"
+              echo "APPLE_APP_SPECIFIC_PASSWORD=$APPLE_APP_SPECIFIC_PASSWORD"
+              echo "APPLE_TEAM_ID=$APPLE_TEAM_ID"
+            } >> "$GITHUB_ENV"
+          else
+            echo "CSC_IDENTITY_AUTO_DISCOVERY=false" >> "$GITHUB_ENV"
+            echo "No MAC_CSC_LINK secret: building unsigned."
+          fi
+      - name: Build dmg (arm64 and x64)
+        run: pnpm release:desktop --mac --arm64 --x64 --publish never
+      - uses: actions/upload-artifact@v7
+        with:
+          name: macos
+          path: apps/desktop/dist/*.dmg
+          if-no-files-found: error
+
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+      - uses: android-actions/setup-android@v4
+      - run: pnpm install --frozen-lockfile
+
+      # The release key lives where the local build expects it
+      # (~/.officina-keys, see PLAN.md §4.4). Without the secrets the APK is
+      # signed with a throwaway key and renamed, so it can never be mistaken for
+      # a build that updates an existing install.
+      - name: Signing key
+        id: key
+        env:
+          ANDROID_KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+          mkdir -p ~/.officina-keys && chmod 700 ~/.officina-keys
+          if [ -n "$ANDROID_KEYSTORE_B64" ] && [ -n "$ANDROID_KEYSTORE_PASSWORD" ]; then
+            printf '%s' "$ANDROID_KEYSTORE_B64" | base64 -d > ~/.officina-keys/release.jks
+            pw="$ANDROID_KEYSTORE_PASSWORD"
+            echo "throwaway=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::ANDROID_KEYSTORE_B64 or ANDROID_KEYSTORE_PASSWORD is not set; signing with a throwaway key."
+            pw="$(openssl rand -hex 24)"
+            keytool -genkeypair -keystore ~/.officina-keys/release.jks -alias officina \
+              -keyalg RSA -keysize 4096 -validity 10000 -storepass "$pw" -keypass "$pw" \
+              -dname "CN=Officina throwaway, O=CI" -noprompt
+            echo "throwaway=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "::add-mask::$pw"
+          printf 'PW=%s\nANDROID_KEYSTORE_PASSWORD=%s\n' "$pw" "$pw" > ~/.officina-keys/release.env
+          chmod 600 ~/.officina-keys/release.jks ~/.officina-keys/release.env
+          {
+            echo "ANDROID_KEYSTORE_PATH=$HOME/.officina-keys/release.jks"
+            echo "ANDROID_KEYSTORE_PASSWORD=$pw"
+          } >> "$GITHUB_ENV"
+
+      - name: Build signed release APK
+        run: pnpm release:android
+
+      - name: Mark a throwaway-signed APK
+        if: steps.key.outputs.throwaway == 'true'
+        run: |
+          for f in apps/android/dist/*.apk; do
+            mv "$f" "${f%.apk}-unsigned-key.apk"
+          done
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: android
+          path: apps/android/dist/*.apk
+          if-no-files-found: error
+
+      - name: Remove the key from the runner
+        if: always()
+        run: rm -rf ~/.officina-keys
+
+  publish:
+    needs: [linux, windows, macos, android]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      # Files a maintainer already attached by hand (see RELEASING.md) are
+      # fetched first, so the checksum list covers the whole release.
+      - name: Existing release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          mkdir -p assets
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir assets --skip-existing
+            rm -f assets/SHA256SUMS.txt
+          fi
+
+      - uses: actions/download-artifact@v8
+        with:
+          path: assets
+          merge-multiple: true
+
+      - name: SHA256SUMS.txt
+        id: sums
+        working-directory: assets
+        run: |
+          echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          sha256sum -- * > ../SHA256SUMS.txt
+          mv ../SHA256SUMS.txt .
+          cat SHA256SUMS.txt
+
+      - uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Officina ${{ steps.sums.outputs.version }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: assets/*

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manual · Officina</title>
+<meta name="description" content="The Officina manual: installing, Scriba, Tabula, Scena and Notula, collaboration, file formats and troubleshooting.">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='114' fill='%233F6FE0'/%3E%3Cpath fill='%23fff' d='M348 412.95A170 170 0 1 0 164 412.95V270A92 92 0 0 1 348 270Z'/%3E%3C/svg%3E">
+<style>
+/* The manual is the Markdown in this folder, rendered here by marked (MIT, docs/assets/marked.min.js). */
+@font-face{font-family:Inter;src:url(../assets/inter.woff2) format('woff2');font-weight:100 900;font-display:swap}
+:root{--bg:#111317;--bg2:#0c0e11;--panel:#181b20;--panel2:#1e2228;--line:#262b32;--fg:#eceff2;--muted:#9aa3ad;--accent:#6b8ff0;--accent2:#7c5cff;--accent-fg:#ffffff}
+@media (prefers-color-scheme:light){:root{--bg:#fbfbfc;--bg2:#f1f3f6;--panel:#fff;--panel2:#f6f7f9;--line:#e2e5ea;--fg:#121418;--muted:#59616b;--accent:#2b58c7;--accent2:#5b3fe0;--accent-fg:#fff}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:18px;height:56px;padding:0 20px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.logo{display:flex;align-items:center;gap:9px;color:var(--fg);font-weight:750;letter-spacing:-.02em}.logo:hover{text-decoration:none}
+.logo svg{width:24px;height:24px}.logo span{color:var(--muted);font-weight:500}
+.top nav{margin-left:auto;display:flex;gap:18px;font-size:14.5px}.top nav a{color:var(--muted)}.top nav a:hover{color:var(--fg);text-decoration:none}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);max-width:1180px;margin:0 auto}
+aside{position:sticky;top:56px;align-self:start;max-height:calc(100vh - 56px);overflow:auto;padding:26px 18px 40px 22px;border-right:1px solid var(--line);font-size:14.5px}
+aside h2{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:20px 0 6px;font-weight:650}aside h2:first-child{margin-top:0}
+aside ul{list-style:none;margin:0;padding:0}aside a{display:block;padding:4px 10px;border-radius:7px;color:var(--fg)}
+aside a:hover{background:var(--panel2);text-decoration:none}aside a[aria-current=page]{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent);font-weight:600}
+main{padding:36px 48px 80px;min-width:0}
+article{max-width:74ch}
+article h1{font-size:34px;letter-spacing:-.03em;line-height:1.15;margin:0 0 .6em}
+article h2{font-size:23px;letter-spacing:-.02em;margin:1.8em 0 .5em;padding-top:.2em}
+article h3{font-size:18px;margin:1.5em 0 .4em}
+article h1,article h2,article h3{scroll-margin-top:72px}
+article p,article ul,article ol{margin:0 0 1em}article li{margin:.2em 0}
+article code{font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:.08em .35em}
+article pre{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto}article pre code{background:none;border:0;padding:0}
+article table{border-collapse:collapse;width:100%;margin:0 0 1.2em;font-size:15px;display:block;overflow-x:auto}
+article th,article td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+article th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+article blockquote{margin:0 0 1em;padding:2px 16px;border-left:3px solid var(--accent);color:var(--muted)}
+article img{max-width:100%;border-radius:10px;border:1px solid var(--line)}
+.notice{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;color:var(--muted)}
+.menu{display:none}
+@media (max-width:860px){
+  .layout{display:block}aside{display:none;position:static;max-height:none;border-right:0;border-bottom:1px solid var(--line);padding:14px 16px}
+  body.open aside{display:block}.menu{display:inline-flex;font:inherit;font-size:14px;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:8px;padding:5px 11px;cursor:pointer}
+  main{padding:26px 16px 64px}.top{padding:0 16px;gap:12px}.menu{margin-left:auto}.top nav{margin-left:0}.top nav a.opt{display:none}article h1{font-size:28px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="../"><svg viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="114" fill="#3F6FE0"/><path fill="#fff" d="M348 412.95A170 170 0 1 0 164 412.95V270A92 92 0 0 1 348 270Z"/></svg>Officina <span>Manual</span></a>
+  <button class="menu" type="button" aria-expanded="false" aria-controls="toc">Contents</button>
+  <nav><a class="opt" href="../">Home</a><a class="opt" href="https://github.com/ZahakJ/officina/releases/latest">Download</a><a href="https://github.com/ZahakJ/officina">GitHub</a></nav>
+</header>
+<div class="layout">
+  <aside id="toc" aria-label="Manual contents"></aside>
+  <main><article id="page" aria-live="polite"></article></main>
+</div>
+<script src="../assets/marked.min.js"></script>
+<script>
+"use strict";
+const REPO = "https://github.com/ZahakJ/officina/blob/main/docs/";
+const page = document.getElementById("page"), toc = document.getElementById("toc"), menu = document.querySelector(".menu");
+const slug = (t) => t.toLowerCase().trim().replace(/[^\p{L}\p{N}\s-]/gu, "").replace(/\s+/g, "-");
+const current = () => (new URLSearchParams(location.search).get("p") || "index").replace(/^\/+|\.md$/g, "");
+
+/* Links and images in a page are relative to its folder. Manual pages stay in the viewer;
+   files elsewhere in the repository open on GitHub. */
+const REPO_ROOT = "https://github.com/ZahakJ/officina/blob/main/";
+function route(href, from, isImage) {
+  if (/^([a-z][a-z0-9+.-]*:|#|\/)/i.test(href)) return null;
+  const [path, hash] = href.split("#");
+  const parts = from.split("/").slice(0, -1);
+  let up = 0;
+  for (const seg of path.split("/")) {
+    if (seg === "..") parts.length ? parts.pop() : up++;
+    else if (seg && seg !== ".") parts.push(seg);
+  }
+  const target = parts.join("/"), frag = hash ? "#" + hash : "";
+  if (up === 1) return REPO + target + frag;
+  if (up >= 2) return REPO_ROOT + target + frag;
+  if (isImage || !target.endsWith(".md")) return target + frag;
+  return "?p=" + encodeURI(target.replace(/\.md$/, "")) + frag;
+}
+
+async function fetchMd(name) {
+  const res = await fetch(name + ".md", { cache: "no-cache" });
+  if (!res.ok) throw new Error(String(res.status));
+  return res.text();
+}
+
+function render(md, name) {
+  page.innerHTML = marked.parse(md);
+  for (const h of page.querySelectorAll("h1,h2,h3,h4")) h.id ||= slug(h.textContent);
+  for (const a of page.querySelectorAll("a[href]")) {
+    const to = route(a.getAttribute("href"), name, false);
+    if (to) a.setAttribute("href", to);
+  }
+  for (const img of page.querySelectorAll("img[src]")) {
+    const to = route(img.getAttribute("src"), name, true);
+    if (to) img.setAttribute("src", to.startsWith("http") ? to.replace("/blob/", "/raw/") : to);
+  }
+  const h1 = page.querySelector("h1");
+  document.title = (h1 ? h1.textContent + " · " : "") + "Officina manual";
+}
+
+function markToc(name) {
+  for (const a of toc.querySelectorAll("a")) {
+    if (a.dataset.page === name) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
+  }
+}
+
+async function show(push) {
+  let name = current();
+  try {
+    render(await fetchMd(name), name);
+  } catch {
+    if (name === "index") {
+      name = "README";
+      render(await fetchMd(name), name);
+    } else page.innerHTML = `<h1>Page not found</h1><div class="notice">There is no manual page called <code>${name.replace(/[<>&"]/g, "")}.md</code>. The <a href="?p=README">contents</a> list every page.</div>`;
+    if (name !== "README") document.title = "Page not found · Officina manual";
+  }
+  markToc(name);
+  if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView();
+  else if (push) scrollTo(0, 0);
+  document.body.classList.remove("open"); menu.setAttribute("aria-expanded", "false");
+}
+
+async function buildToc() {
+  const tokens = marked.lexer(await fetchMd("README"));
+  let html = "";
+  for (const t of tokens) {
+    if (t.type === "heading" && t.depth === 2) html += `<h2>${t.text}</h2>`;
+    if (t.type === "list") html += "<ul>" + t.items.map((it) => {
+      const link = it.tokens.flatMap((x) => x.tokens || []).find((x) => x.type === "link");
+      if (!link) return "";
+      const name = link.href.replace(/\.md$/, "");
+      return `<li><a href="?p=${encodeURI(name)}" data-page="${name}">${link.text}</a></li>`;
+    }).join("") + "</ul>";
+  }
+  toc.innerHTML = `<h2>Manual</h2><ul><li><a href="?p=README" data-page="README">Contents</a></li></ul>` + html;
+}
+
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("a[href^='?p=']");
+  if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+  e.preventDefault(); history.pushState(null, "", a.getAttribute("href")); show(true);
+});
+addEventListener("popstate", () => show(false));
+menu.addEventListener("click", () => menu.setAttribute("aria-expanded", String(document.body.classList.toggle("open"))));
+buildToc().catch(() => { toc.innerHTML = ""; }).finally(() => show(false));
+</script>
+</body>
+</html>
