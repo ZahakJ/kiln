@@ -1,0 +1,11 @@
+{
+  "name": "@officina/android",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Officina Android shell (Capacitor 8). Implemented by WP-35.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "scripts": {
+    "release:android": "sh -c 'echo \"@officina/android: release:android is not implemented yet (WP-35)\" >&2; exit 1' --"
+  }
+}

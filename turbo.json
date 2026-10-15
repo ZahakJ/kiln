@@ -1,0 +1,42 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "ui": "stream",
+  "globalDependencies": ["tsconfig.base.json", "biome.json", ".npmrc"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "typecheck": {
+      "outputs": []
+    },
+    "test": {
+      "outputs": ["coverage/**"]
+    },
+    "e2e": {
+      "dependsOn": ["@officina/web#build"],
+      "cache": false
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "bench": {
+      "cache": false
+    },
+    "fidelity": {
+      "cache": false
+    },
+    "release:desktop": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
+    "release:android": {
+      "dependsOn": ["^build"],
+      "cache": false
+    }
+  }
+}

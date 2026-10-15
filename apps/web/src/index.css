@@ -1,0 +1,92 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+/*
+ * Provisional "Horizon" tokens (PLAN.md §1.2) for the WP-01 placeholder Hub.
+ * WP-04 replaces this block with @officina/tokens.
+ */
+:root {
+  color-scheme: light dark;
+  --of-bg-canvas: #eef1f6;
+  --of-bg-surface: #ffffff;
+  --of-bg-surface-2: #f6f8fb;
+  --of-fg: #1b1f27;
+  --of-fg-muted: #5a6170;
+  --of-border: #d8dde6;
+  --of-accent-write: #2b5fd9;
+  --of-accent-grid: #1f8a5b;
+  --of-accent-deck: #d9552b;
+  --of-accent-notes: #7a3fd1;
+  --of-accent-hub: #2b5fd9;
+  --of-shadow-1: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.08);
+  --of-shadow-2: 0 4px 12px rgb(16 24 40 / 0.08), 0 2px 4px rgb(16 24 40 / 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --of-bg-canvas: #15171c;
+    --of-bg-surface: #1e2127;
+    --of-bg-surface-2: #262a31;
+    --of-fg: #e8eaee;
+    --of-fg-muted: #9aa1ae;
+    --of-border: #333843;
+    --of-accent-write: #6b8ff0;
+    --of-accent-grid: #4fc08d;
+    --of-accent-deck: #f2825e;
+    --of-accent-notes: #a97cf0;
+    --of-accent-hub: #6b8ff0;
+    --of-shadow-1: 0 1px 2px rgb(0 0 0 / 0.3);
+    --of-shadow-2: 0 6px 16px rgb(0 0 0 / 0.35);
+  }
+}
+
+:root[data-theme="dark"] {
+  --of-bg-canvas: #15171c;
+  --of-bg-surface: #1e2127;
+  --of-bg-surface-2: #262a31;
+  --of-fg: #e8eaee;
+  --of-fg-muted: #9aa1ae;
+  --of-border: #333843;
+  --of-accent-write: #6b8ff0;
+  --of-accent-grid: #4fc08d;
+  --of-accent-deck: #f2825e;
+  --of-accent-notes: #a97cf0;
+  --of-accent-hub: #6b8ff0;
+  --of-shadow-1: 0 1px 2px rgb(0 0 0 / 0.3);
+  --of-shadow-2: 0 6px 16px rgb(0 0 0 / 0.35);
+}
+
+@theme inline {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --color-canvas: var(--of-bg-canvas);
+  --color-surface: var(--of-bg-surface);
+  --color-surface-2: var(--of-bg-surface-2);
+  --color-fg: var(--of-fg);
+  --color-muted: var(--of-fg-muted);
+  --color-line: var(--of-border);
+  --color-hub: var(--of-accent-hub);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--of-bg-canvas);
+  color: var(--of-fg);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s;
+    animation-duration: 0s;
+  }
+}

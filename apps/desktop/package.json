@@ -1,0 +1,11 @@
+{
+  "name": "@officina/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Officina desktop shell (Electron 44 via electron-vite). Implemented by WP-34.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "scripts": {
+    "release:desktop": "sh -c 'echo \"@officina/desktop: release:desktop is not implemented yet (WP-34)\" >&2; exit 1' --"
+  }
+}

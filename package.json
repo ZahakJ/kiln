@@ -1,0 +1,46 @@
+{
+  "name": "officina",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Open-source office suite for Linux, macOS, Windows and Android: documents, spreadsheets and slides that open and save Office files and feel like home.",
+  "license": "AGPL-3.0-or-later",
+  "author": "ZahakJ",
+  "homepage": "https://zahakj.github.io/officina/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZahakJ/officina.git"
+  },
+  "type": "module",
+  "packageManager": "pnpm@12.11.2",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "turbo run dev --filter=@officina/web",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "e2e": "turbo run e2e --filter=@officina/e2e",
+    "bench": "turbo run bench",
+    "fidelity": "turbo run fidelity",
+    "verify": "turbo run lint typecheck test",
+    "format": "biome format --write .",
+    "licenses:check": "node tools/check-licenses.mjs",
+    "licenses:notices": "node tools/check-licenses.mjs --notices",
+    "release:desktop": "turbo run release:desktop --",
+    "release:android": "turbo run release:android --",
+    "media:render": "node tools/render-media.mjs",
+    "parity": "tsx parity/generate.ts",
+    "parity:verify": "tsx parity/verify.ts",
+    "competitors": "node -e \"const fs=require('node:fs');const f='docs/COMPETITORS.md';if(!fs.existsSync(f)){console.error(f+' does not exist yet');process.exit(1)}const m=fs.readFileSync(f,'utf8').match(/\\d{4}-\\d{2}-\\d{2}/);console.log(m?f+' last reviewed '+m[0]:f+' has no date');\""
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@types/node": "catalog:",
+    "tsx": "catalog:",
+    "turbo": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
