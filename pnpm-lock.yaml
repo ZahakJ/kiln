@@ -257,6 +257,9 @@ catalogs:
     dexie:
       specifier: 4.4.6
       version: 4.4.6
+    dingbat-to-unicode:
+      specifier: 1.0.2
+      version: 1.0.2
     docx:
       specifier: 9.11.0
       version: 9.11.0
@@ -769,10 +772,19 @@ importers:
       '@officina/ooxml':
         specifier: workspace:*
         version: link:../ooxml
+      '@tiptap/pm':
+        specifier: 'catalog:'
+        version: 3.32.0
+      dingbat-to-unicode:
+        specifier: 'catalog:'
+        version: 1.0.2
     devDependencies:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 2.5.15
+      '@officina/testing':
+        specifier: workspace:*
+        version: link:../testing
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2

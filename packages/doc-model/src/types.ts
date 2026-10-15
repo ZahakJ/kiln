@@ -577,6 +577,66 @@ export interface RevisionInfo {
   date: string;
 }
 
+/** Tracked changes attached to a paragraph node (`revision` attribute). */
+export interface ParagraphRevision {
+  /** `w:pPrChange`: the paragraph properties before the tracked formatting change. */
+  pPrChange?: RevisionInfo & { before: ParagraphProps };
+  /** Tracked insertion/deletion of the paragraph mark (`w:pPr/w:rPr/w:ins|w:del`). */
+  mark?: RevisionInfo & { kind: 'insertion' | 'deletion' };
+  /** `w:pPr/w:rPr/w:rPrChange`: paragraph-mark run properties before a tracked formatting change. */
+  markPrChange?: RevisionInfo & { before: RunProps };
+}
+
+/** Tracked insertion/deletion of a whole table row (`w:trPr/w:ins|w:del`). */
+export interface RowRevision extends RevisionInfo {
+  kind: 'insertion' | 'deletion';
+}
+
+/** `ST_SdtType`-like classification of a content control, derived from `w:sdtPr`. */
+export type SdtKind =
+  | 'richText'
+  | 'text'
+  | 'date'
+  | 'dropDownList'
+  | 'comboBox'
+  | 'checkbox'
+  | 'picture'
+  | 'docPartObj'
+  | 'docPartList'
+  | 'group'
+  | 'bibliography'
+  | 'citation'
+  | 'equation'
+  | 'repeatingSection'
+  | 'repeatingSectionItem'
+  | 'other';
+
+/**
+ * A content control (`w:sdt`). The editor shows its title/tag and kind; `pr`/`endPr` keep the original
+ * `w:sdtPr`/`w:sdtEndPr` XML so a writer re-wraps the content exactly. Blocks that belong to the same
+ * block-level control share `key`.
+ */
+export interface SdtInfo {
+  key: string;
+  level: 'block' | 'inline' | 'row' | 'cell';
+  kind: SdtKind;
+  id?: string;
+  tag?: string;
+  alias?: string;
+  /** Gallery of a building-block control (`Table of Contents`, `Cover Pages`, …). */
+  docPartGallery?: string;
+  /** Checkbox state (`w14:checkbox/w14:checked`). */
+  checked?: boolean;
+  /** Showing placeholder text (`w:showingPlcHdr`). */
+  showingPlaceholder?: boolean;
+  /** List items of drop-down/combo controls. */
+  listItems?: { displayText: string; value: string }[];
+  /** Date format of a date picker (`w:date/w:dateFormat`). */
+  dateFormat?: string;
+  pr: string;
+  endPr?: string;
+}
+
 /** Document-level settings that affect layout (`settings.xml`). */
 export interface DocSettings {
   /** `w:defaultTabStop` (twips). */

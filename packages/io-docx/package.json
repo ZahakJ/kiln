@@ -16,10 +16,13 @@
   },
   "dependencies": {
     "@officina/doc-model": "workspace:*",
-    "@officina/ooxml": "workspace:*"
+    "@officina/ooxml": "workspace:*",
+    "@tiptap/pm": "catalog:",
+    "dingbat-to-unicode": "catalog:"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
+    "@officina/testing": "workspace:*",
     "@types/node": "catalog:",
     "docx": "catalog:",
     "mammoth": "catalog:",

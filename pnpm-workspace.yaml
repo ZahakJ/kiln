@@ -131,6 +131,8 @@ catalog:
   docx: 9.11.0
   pptxgenjs: 4.0.1
   docx-preview: 0.4.1
+  # DOCX reader: w:sym symbol-font characters → Unicode (BSD-2-Clause; also a mammoth dependency)
+  dingbat-to-unicode: 1.0.2
 
 # Catalog versions newer than pnpm's minimum release age, accepted deliberately (versions verified in §4.2).
 minimumReleaseAgeExclude:

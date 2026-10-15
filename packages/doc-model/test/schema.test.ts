@@ -58,6 +58,7 @@ const MARKS = [
   'deletion',
   'formatChange',
   'spellError',
+  'sdt',
 ];
 
 describe('createDocSchema', () => {

@@ -80,6 +80,16 @@ export const CELL_PROP_KEYS = [
   'hideMark',
 ] as const;
 
+/**
+ * File-fidelity attributes of a paragraph (no editing semantics of their own; readers fill them and
+ * writers re-emit them):
+ * - `sdt`: enclosing block content controls (`w:sdt`), outermost first, as `SdtInfo[]`;
+ * - `revision`: tracked changes of the paragraph itself — `pPrChange` (formatting before the change)
+ *   and `mark` (inserted/deleted paragraph mark), see `ParagraphRevision`;
+ * - `xml`: unmodelled `w:pPr` children as raw XML strings, re-emitted verbatim.
+ */
+export const PARAGRAPH_FILE_KEYS = ['sdt', 'revision', 'xml'] as const;
+
 const nullAttrs = (keys: readonly string[]) =>
   Object.fromEntries(keys.map((k) => [k, { default: null }])) as Record<string, { default: null }>;
 
@@ -231,7 +241,12 @@ export function createDocSchema(): Schema {
     paragraph: {
       group: 'block',
       content: 'inline*',
-      attrs: { ...nullAttrs(PARAGRAPH_PROP_KEYS), markProps: { default: null }, paraId: { default: null } },
+      attrs: {
+        ...nullAttrs(PARAGRAPH_PROP_KEYS),
+        markProps: { default: null },
+        paraId: { default: null },
+        ...nullAttrs(PARAGRAPH_FILE_KEYS),
+      },
       parseDOM: [
         {
           tag: 'p',
@@ -266,7 +281,12 @@ export function createDocSchema(): Schema {
       content: 'tableRow+',
       tableRole: 'table',
       isolating: true,
-      attrs: { ...nullAttrs(TABLE_PROP_KEYS), grid: { default: null } },
+      attrs: {
+        ...nullAttrs(TABLE_PROP_KEYS),
+        grid: { default: null },
+        sdt: { default: null },
+        xml: { default: null },
+      },
       parseDOM: [{ tag: 'table' }],
       toDOM: (node) => ['table', { 'data-style': node.attrs.styleId }, ['tbody', 0]],
     },
@@ -274,7 +294,7 @@ export function createDocSchema(): Schema {
     tableRow: {
       content: 'tableCell+',
       tableRole: 'row',
-      attrs: nullAttrs(ROW_PROP_KEYS),
+      attrs: { ...nullAttrs(ROW_PROP_KEYS), revision: { default: null }, xml: { default: null } },
       parseDOM: [{ tag: 'tr' }],
       toDOM: () => ['tr', 0],
     },
@@ -289,6 +309,7 @@ export function createDocSchema(): Schema {
         /** Column widths in px for prosemirror-tables' column resizing (derived from the grid). */
         colwidth: { default: null },
         ...nullAttrs(CELL_PROP_KEYS),
+        xml: { default: null },
       },
       parseDOM: [
         {
@@ -829,6 +850,13 @@ export function createDocSchema(): Schema {
       attrs: { props: { default: {} } },
       parseDOM: [],
       toDOM: () => ['span', { 'data-rprops': '' }, 0],
+    },
+    /** Run-level content control (`w:sdt` inside a paragraph); `info` is an `SdtInfo`. */
+    sdt: {
+      attrs: { info: { default: null } },
+      excludes: '',
+      parseDOM: [],
+      toDOM: () => ['span', { 'data-of-sdt': '', class: 'of-sdt' }, 0],
     },
     comment: {
       attrs: { id: { default: '' } },
