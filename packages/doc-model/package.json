@@ -15,12 +15,14 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@officina/ooxml": "workspace:*",
     "@tiptap/pm": "catalog:",
     "prosemirror-model": "catalog:"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@types/node": "catalog:",
+    "jsdom": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }

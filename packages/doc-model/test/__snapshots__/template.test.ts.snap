@@ -1,0 +1,1155 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DefaultTemplate (Word 2016+ Normal.dotm) > default style sheet snapshot 1`] = `
+{
+  "docDefaults": {
+    "pPr": {
+      "spacing": {
+        "after": 160,
+        "line": 259,
+        "lineRule": "auto",
+      },
+    },
+    "rPr": {
+      "fonts": {
+        "asciiTheme": "minorHAnsi",
+        "csTheme": "minorBidi",
+        "eastAsiaTheme": "minorHAnsi",
+        "hAnsiTheme": "minorHAnsi",
+      },
+      "lang": {
+        "bidi": "ar-SA",
+        "eastAsia": "en-US",
+        "val": "en-US",
+      },
+      "size": 22,
+      "sizeCs": 22,
+    },
+  },
+  "styles": [
+    {
+      "id": "Normal",
+      "isDefault": true,
+      "name": "Normal",
+      "quickStyle": true,
+      "type": "paragraph",
+      "uiPriority": 0,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "Heading1",
+      "link": "Heading1Char",
+      "name": "heading 1",
+      "next": "Normal",
+      "pPr": {
+        "keepLines": true,
+        "keepNext": true,
+        "outlineLevel": 0,
+        "spacing": {
+          "after": 0,
+          "before": 240,
+        },
+      },
+      "quickStyle": true,
+      "rPr": {
+        "color": {
+          "themeColor": "accent1",
+          "themeShade": 191,
+          "val": "2F5496",
+        },
+        "fonts": {
+          "asciiTheme": "majorHAnsi",
+          "csTheme": "majorBidi",
+          "eastAsiaTheme": "majorEastAsia",
+          "hAnsiTheme": "majorHAnsi",
+        },
+        "size": 32,
+        "sizeCs": 32,
+      },
+      "type": "paragraph",
+      "uiPriority": 9,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "Heading2",
+      "link": "Heading2Char",
+      "name": "heading 2",
+      "next": "Normal",
+      "pPr": {
+        "keepLines": true,
+        "keepNext": true,
+        "outlineLevel": 1,
+        "spacing": {
+          "after": 0,
+          "before": 40,
+        },
+      },
+      "quickStyle": true,
+      "rPr": {
+        "color": {
+          "themeColor": "accent1",
+          "themeShade": 191,
+          "val": "2F5496",
+        },
+        "fonts": {
+          "asciiTheme": "majorHAnsi",
+          "csTheme": "majorBidi",
+          "eastAsiaTheme": "majorEastAsia",
+          "hAnsiTheme": "majorHAnsi",
+        },
+        "size": 26,
+        "sizeCs": 26,
+      },
+      "type": "paragraph",
+      "uiPriority": 9,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "Heading3",
+      "link": "Heading3Char",
+      "name": "heading 3",
+      "next": "Normal",
+      "pPr": {
+        "keepLines": true,
+        "keepNext": true,
+        "outlineLevel": 2,
+        "spacing": {
+          "after": 0,
+          "before": 40,
+        },
+      },
+      "quickStyle": true,
+      "rPr": {
+        "color": {
+          "themeColor": "accent1",
+          "themeShade": 127,
+          "val": "1F3763",
+        },
+        "fonts": {
+          "asciiTheme": "majorHAnsi",
+          "csTheme": "majorBidi",
+          "eastAsiaTheme": "majorEastAsia",
+          "hAnsiTheme": "majorHAnsi",
+        },
+        "size": 24,
+        "sizeCs": 24,
+      },
+      "type": "paragraph",
+      "uiPriority": 9,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "Heading4",
+      "link": "Heading4Char",
+      "name": "heading 4",
+      "next": "Normal",
+      "pPr": {
+        "keepLines": true,
+        "keepNext": true,
+        "outlineLevel": 3,
+        "spacing": {
+          "after": 0,
+          "before": 40,
+        },
+      },
+      "quickStyle": true,
+      "rPr": {
+        "color": {
+          "themeColor": "accent1",
+          "themeShade": 191,
+          "val": "2F5496",
+        },
+        "fonts": {
+          "asciiTheme": "majorHAnsi",
+          "csTheme": "majorBidi",
+          "eastAsiaTheme": "majorEastAsia",
+          "hAnsiTheme": "majorHAnsi",
+        },
+        "italic": true,
+        "italicCs": true,
+      },
+      "type": "paragraph",
+      "uiPriority": 9,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "Heading5",
+      "link": "Heading5Char",
+      "name": "heading 5",
+      "next": "Normal",
+      "pPr": {
+        "keepLines": true,
+        "keepNext": true,
+        "outlineLevel": 4,
+        "spacing": {
+          "after": 0,
+          "before": 40,
+        },
+      },
+      "quickStyle": true,
+      "rPr": {
+        "color": {
+          "themeColor": "accent1",
+          "themeShade": 191,
+          "val": "2F5496",
+        },
+        "fonts": {
+          "asciiTheme": "majorHAnsi",
+          "csTheme": "majorBidi",
+          "eastAsiaTheme": "majorEastAsia",
+          "hAnsiTheme": "majorHAnsi",
+        },
+      },
+      "type": "paragraph",
+      "uiPriority": 9,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "Heading6",
+      "link": "Heading6Char",
+      "name": "heading 6",
+      "next": "Normal",
+      "pPr": {
+        "keepLines": true,
+        "keepNext": true,
+        "outlineLevel": 5,
+        "spacing": {
+          "after": 0,
+          "before": 40,
+        },
+      },
+      "quickStyle": true,
+      "rPr": {
+        "color": {
+          "themeColor": "accent1",
+          "themeShade": 127,
+          "val": "1F3763",
+        },
+        "fonts": {
+          "asciiTheme": "majorHAnsi",
+          "csTheme": "majorBidi",
+          "eastAsiaTheme": "majorEastAsia",
+          "hAnsiTheme": "majorHAnsi",
+        },
+      },
+      "type": "paragraph",
+      "uiPriority": 9,
+      "unhideWhenUsed": true,
+    },
+    {
+      "id": "DefaultParagraphFont",
+      "isDefault": true,
+      "name": "Default Paragraph Font",
+      "semiHidden": true,
+      "type": "character",
+      "uiPriority": 1,
+      "unhideWhenUsed": true,
+    },
+    {
+      "id": "TableNormal",
+      "isDefault": true,
+      "name": "Normal Table",
+      "semiHidden": true,
+      "tblPr": {
+        "cellMargins": {
+          "bottom": 0,
+          "left": 108,
+          "right": 108,
+          "top": 0,
+        },
+        "indent": 0,
+      },
+      "type": "table",
+      "uiPriority": 99,
+      "unhideWhenUsed": true,
+    },
+    {
+      "id": "NoList",
+      "isDefault": true,
+      "name": "No List",
+      "semiHidden": true,
+      "type": "numbering",
+      "uiPriority": 99,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "Heading1Char",
+      "link": "Heading1",
+      "name": "Heading 1 Char",
+      "rPr": {
+        "color": {
+          "themeColor": "accent1",
+          "themeShade": 191,
+          "val": "2F5496",
+        },
+        "fonts": {
+          "asciiTheme": "majorHAnsi",
+          "csTheme": "majorBidi",
+          "eastAsiaTheme": "majorEastAsia",
+          "hAnsiTheme": "majorHAnsi",
+        },
+        "size": 32,
+        "sizeCs": 32,
+      },
+      "type": "character",
+      "uiPriority": 9,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "Heading2Char",
+      "link": "Heading2",
+      "name": "Heading 2 Char",
+      "rPr": {
+        "color": {
+          "themeColor": "accent1",
+          "themeShade": 191,
+          "val": "2F5496",
+        },
+        "fonts": {
+          "asciiTheme": "majorHAnsi",
+          "csTheme": "majorBidi",
+          "eastAsiaTheme": "majorEastAsia",
+          "hAnsiTheme": "majorHAnsi",
+        },
+        "size": 26,
+        "sizeCs": 26,
+      },
+      "type": "character",
+      "uiPriority": 9,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "Heading3Char",
+      "link": "Heading3",
+      "name": "Heading 3 Char",
+      "rPr": {
+        "color": {
+          "themeColor": "accent1",
+          "themeShade": 127,
+          "val": "1F3763",
+        },
+        "fonts": {
+          "asciiTheme": "majorHAnsi",
+          "csTheme": "majorBidi",
+          "eastAsiaTheme": "majorEastAsia",
+          "hAnsiTheme": "majorHAnsi",
+        },
+        "size": 24,
+        "sizeCs": 24,
+      },
+      "type": "character",
+      "uiPriority": 9,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "Heading4Char",
+      "link": "Heading4",
+      "name": "Heading 4 Char",
+      "rPr": {
+        "color": {
+          "themeColor": "accent1",
+          "themeShade": 191,
+          "val": "2F5496",
+        },
+        "fonts": {
+          "asciiTheme": "majorHAnsi",
+          "csTheme": "majorBidi",
+          "eastAsiaTheme": "majorEastAsia",
+          "hAnsiTheme": "majorHAnsi",
+        },
+        "italic": true,
+        "italicCs": true,
+      },
+      "type": "character",
+      "uiPriority": 9,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "Heading5Char",
+      "link": "Heading5",
+      "name": "Heading 5 Char",
+      "rPr": {
+        "color": {
+          "themeColor": "accent1",
+          "themeShade": 191,
+          "val": "2F5496",
+        },
+        "fonts": {
+          "asciiTheme": "majorHAnsi",
+          "csTheme": "majorBidi",
+          "eastAsiaTheme": "majorEastAsia",
+          "hAnsiTheme": "majorHAnsi",
+        },
+      },
+      "type": "character",
+      "uiPriority": 9,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "Heading6Char",
+      "link": "Heading6",
+      "name": "Heading 6 Char",
+      "rPr": {
+        "color": {
+          "themeColor": "accent1",
+          "themeShade": 127,
+          "val": "1F3763",
+        },
+        "fonts": {
+          "asciiTheme": "majorHAnsi",
+          "csTheme": "majorBidi",
+          "eastAsiaTheme": "majorEastAsia",
+          "hAnsiTheme": "majorHAnsi",
+        },
+      },
+      "type": "character",
+      "uiPriority": 9,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "Title",
+      "link": "TitleChar",
+      "name": "Title",
+      "next": "Normal",
+      "pPr": {
+        "contextualSpacing": true,
+        "spacing": {
+          "after": 0,
+          "line": 240,
+          "lineRule": "auto",
+        },
+      },
+      "quickStyle": true,
+      "rPr": {
+        "fonts": {
+          "asciiTheme": "majorHAnsi",
+          "csTheme": "majorBidi",
+          "eastAsiaTheme": "majorEastAsia",
+          "hAnsiTheme": "majorHAnsi",
+        },
+        "kern": 28,
+        "size": 56,
+        "sizeCs": 56,
+        "spacing": -10,
+      },
+      "type": "paragraph",
+      "uiPriority": 10,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "TitleChar",
+      "link": "Title",
+      "name": "Title Char",
+      "rPr": {
+        "fonts": {
+          "asciiTheme": "majorHAnsi",
+          "csTheme": "majorBidi",
+          "eastAsiaTheme": "majorEastAsia",
+          "hAnsiTheme": "majorHAnsi",
+        },
+        "kern": 28,
+        "size": 56,
+        "sizeCs": 56,
+        "spacing": -10,
+      },
+      "type": "character",
+      "uiPriority": 10,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "Subtitle",
+      "link": "SubtitleChar",
+      "name": "Subtitle",
+      "next": "Normal",
+      "pPr": {
+        "spacing": {
+          "after": 160,
+        },
+      },
+      "quickStyle": true,
+      "rPr": {
+        "color": {
+          "themeColor": "text1",
+          "themeTint": 165,
+          "val": "5A5A5A",
+        },
+        "fonts": {
+          "eastAsiaTheme": "minorEastAsia",
+        },
+        "spacing": 15,
+      },
+      "type": "paragraph",
+      "uiPriority": 11,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "SubtitleChar",
+      "link": "Subtitle",
+      "name": "Subtitle Char",
+      "rPr": {
+        "color": {
+          "themeColor": "text1",
+          "themeTint": 165,
+          "val": "5A5A5A",
+        },
+        "fonts": {
+          "eastAsiaTheme": "minorEastAsia",
+        },
+        "spacing": 15,
+      },
+      "type": "character",
+      "uiPriority": 11,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "SubtleEmphasis",
+      "name": "Subtle Emphasis",
+      "quickStyle": true,
+      "rPr": {
+        "color": {
+          "themeColor": "text1",
+          "themeTint": 191,
+          "val": "404040",
+        },
+        "italic": true,
+        "italicCs": true,
+      },
+      "type": "character",
+      "uiPriority": 19,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "Emphasis",
+      "name": "Emphasis",
+      "quickStyle": true,
+      "rPr": {
+        "italic": true,
+        "italicCs": true,
+      },
+      "type": "character",
+      "uiPriority": 20,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "IntenseEmphasis",
+      "name": "Intense Emphasis",
+      "quickStyle": true,
+      "rPr": {
+        "color": {
+          "themeColor": "accent1",
+          "val": "4472C4",
+        },
+        "italic": true,
+        "italicCs": true,
+      },
+      "type": "character",
+      "uiPriority": 21,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "Strong",
+      "name": "Strong",
+      "quickStyle": true,
+      "rPr": {
+        "bold": true,
+        "boldCs": true,
+      },
+      "type": "character",
+      "uiPriority": 22,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "Quote",
+      "link": "QuoteChar",
+      "name": "Quote",
+      "next": "Normal",
+      "pPr": {
+        "alignment": "center",
+        "indent": {
+          "left": 864,
+          "right": 864,
+        },
+        "spacing": {
+          "after": 160,
+          "before": 200,
+        },
+      },
+      "quickStyle": true,
+      "rPr": {
+        "color": {
+          "themeColor": "text1",
+          "themeTint": 191,
+          "val": "404040",
+        },
+        "italic": true,
+        "italicCs": true,
+      },
+      "type": "paragraph",
+      "uiPriority": 29,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "QuoteChar",
+      "link": "Quote",
+      "name": "Quote Char",
+      "rPr": {
+        "color": {
+          "themeColor": "text1",
+          "themeTint": 191,
+          "val": "404040",
+        },
+        "italic": true,
+        "italicCs": true,
+      },
+      "type": "character",
+      "uiPriority": 29,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "IntenseQuote",
+      "name": "Intense Quote",
+      "next": "Normal",
+      "pPr": {
+        "alignment": "center",
+        "borders": {
+          "bottom": {
+            "color": {
+              "themeColor": "accent1",
+              "val": "4472C4",
+            },
+            "size": 4,
+            "space": 10,
+            "style": "single",
+          },
+          "top": {
+            "color": {
+              "themeColor": "accent1",
+              "val": "4472C4",
+            },
+            "size": 4,
+            "space": 10,
+            "style": "single",
+          },
+        },
+        "indent": {
+          "left": 864,
+          "right": 864,
+        },
+        "spacing": {
+          "after": 360,
+          "before": 360,
+        },
+      },
+      "quickStyle": true,
+      "rPr": {
+        "color": {
+          "themeColor": "accent1",
+          "val": "4472C4",
+        },
+        "italic": true,
+        "italicCs": true,
+      },
+      "type": "paragraph",
+      "uiPriority": 30,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "SubtleReference",
+      "name": "Subtle Reference",
+      "quickStyle": true,
+      "rPr": {
+        "color": {
+          "themeColor": "text1",
+          "themeTint": 165,
+          "val": "5A5A5A",
+        },
+        "smallCaps": true,
+      },
+      "type": "character",
+      "uiPriority": 31,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "IntenseReference",
+      "name": "Intense Reference",
+      "quickStyle": true,
+      "rPr": {
+        "bold": true,
+        "boldCs": true,
+        "color": {
+          "themeColor": "accent1",
+          "val": "4472C4",
+        },
+        "smallCaps": true,
+        "spacing": 5,
+      },
+      "type": "character",
+      "uiPriority": 32,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "BookTitle",
+      "name": "Book Title",
+      "quickStyle": true,
+      "rPr": {
+        "bold": true,
+        "boldCs": true,
+        "italic": true,
+        "italicCs": true,
+        "spacing": 5,
+      },
+      "type": "character",
+      "uiPriority": 33,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "ListParagraph",
+      "name": "List Paragraph",
+      "pPr": {
+        "contextualSpacing": true,
+        "indent": {
+          "left": 720,
+        },
+      },
+      "quickStyle": true,
+      "type": "paragraph",
+      "uiPriority": 34,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "Caption",
+      "name": "caption",
+      "next": "Normal",
+      "pPr": {
+        "spacing": {
+          "after": 200,
+          "line": 240,
+          "lineRule": "auto",
+        },
+      },
+      "quickStyle": true,
+      "rPr": {
+        "color": {
+          "themeColor": "text2",
+          "val": "44546A",
+        },
+        "italic": true,
+        "italicCs": true,
+        "size": 18,
+        "sizeCs": 18,
+      },
+      "type": "paragraph",
+      "uiPriority": 35,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "TableNormal",
+      "id": "TableGrid",
+      "name": "Table Grid",
+      "pPr": {
+        "spacing": {
+          "after": 0,
+          "line": 240,
+          "lineRule": "auto",
+        },
+      },
+      "tblPr": {
+        "borders": {
+          "bottom": {
+            "color": {
+              "val": "auto",
+            },
+            "size": 4,
+            "space": 0,
+            "style": "single",
+          },
+          "insideH": {
+            "color": {
+              "val": "auto",
+            },
+            "size": 4,
+            "space": 0,
+            "style": "single",
+          },
+          "insideV": {
+            "color": {
+              "val": "auto",
+            },
+            "size": 4,
+            "space": 0,
+            "style": "single",
+          },
+          "left": {
+            "color": {
+              "val": "auto",
+            },
+            "size": 4,
+            "space": 0,
+            "style": "single",
+          },
+          "right": {
+            "color": {
+              "val": "auto",
+            },
+            "size": 4,
+            "space": 0,
+            "style": "single",
+          },
+          "top": {
+            "color": {
+              "val": "auto",
+            },
+            "size": 4,
+            "space": 0,
+            "style": "single",
+          },
+        },
+      },
+      "type": "table",
+      "uiPriority": 39,
+    },
+    {
+      "basedOn": "Heading1",
+      "id": "TOCHeading",
+      "name": "TOC Heading",
+      "next": "Normal",
+      "pPr": {
+        "outlineLevel": 9,
+      },
+      "quickStyle": true,
+      "type": "paragraph",
+      "uiPriority": 39,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "TOC1",
+      "name": "toc 1",
+      "next": "Normal",
+      "pPr": {
+        "spacing": {
+          "after": 100,
+        },
+      },
+      "type": "paragraph",
+      "uiPriority": 39,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "TOC2",
+      "name": "toc 2",
+      "next": "Normal",
+      "pPr": {
+        "indent": {
+          "left": 220,
+        },
+        "spacing": {
+          "after": 100,
+        },
+      },
+      "type": "paragraph",
+      "uiPriority": 39,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "TOC3",
+      "name": "toc 3",
+      "next": "Normal",
+      "pPr": {
+        "indent": {
+          "left": 440,
+        },
+        "spacing": {
+          "after": 100,
+        },
+      },
+      "type": "paragraph",
+      "uiPriority": 39,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "FootnoteText",
+      "link": "FootnoteTextChar",
+      "name": "footnote text",
+      "pPr": {
+        "spacing": {
+          "after": 0,
+          "line": 240,
+          "lineRule": "auto",
+        },
+      },
+      "rPr": {
+        "size": 20,
+        "sizeCs": 20,
+      },
+      "semiHidden": true,
+      "type": "paragraph",
+      "uiPriority": 99,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "FootnoteTextChar",
+      "link": "FootnoteText",
+      "name": "Footnote Text Char",
+      "rPr": {
+        "size": 20,
+        "sizeCs": 20,
+      },
+      "semiHidden": true,
+      "type": "character",
+      "uiPriority": 99,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "FootnoteReference",
+      "name": "footnote reference",
+      "rPr": {
+        "vertAlign": "superscript",
+      },
+      "semiHidden": true,
+      "type": "character",
+      "uiPriority": 99,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "EndnoteText",
+      "name": "endnote text",
+      "pPr": {
+        "spacing": {
+          "after": 0,
+          "line": 240,
+          "lineRule": "auto",
+        },
+      },
+      "rPr": {
+        "size": 20,
+        "sizeCs": 20,
+      },
+      "semiHidden": true,
+      "type": "paragraph",
+      "uiPriority": 99,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "EndnoteReference",
+      "name": "endnote reference",
+      "rPr": {
+        "vertAlign": "superscript",
+      },
+      "semiHidden": true,
+      "type": "character",
+      "uiPriority": 99,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "Header",
+      "link": "HeaderChar",
+      "name": "header",
+      "pPr": {
+        "spacing": {
+          "after": 0,
+          "line": 240,
+          "lineRule": "auto",
+        },
+        "tabs": [
+          {
+            "align": "center",
+            "pos": 4680,
+          },
+          {
+            "align": "right",
+            "pos": 9360,
+          },
+        ],
+      },
+      "type": "paragraph",
+      "uiPriority": 99,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "HeaderChar",
+      "link": "Header",
+      "name": "Header Char",
+      "type": "character",
+      "uiPriority": 99,
+    },
+    {
+      "basedOn": "Normal",
+      "id": "Footer",
+      "link": "FooterChar",
+      "name": "footer",
+      "pPr": {
+        "spacing": {
+          "after": 0,
+          "line": 240,
+          "lineRule": "auto",
+        },
+        "tabs": [
+          {
+            "align": "center",
+            "pos": 4680,
+          },
+          {
+            "align": "right",
+            "pos": 9360,
+          },
+        ],
+      },
+      "type": "paragraph",
+      "uiPriority": 99,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "FooterChar",
+      "link": "Footer",
+      "name": "Footer Char",
+      "type": "character",
+      "uiPriority": 99,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "Hyperlink",
+      "name": "Hyperlink",
+      "rPr": {
+        "color": {
+          "themeColor": "hyperlink",
+          "val": "0563C1",
+        },
+        "underline": {
+          "style": "single",
+        },
+      },
+      "type": "character",
+      "uiPriority": 99,
+      "unhideWhenUsed": true,
+    },
+    {
+      "basedOn": "DefaultParagraphFont",
+      "id": "FollowedHyperlink",
+      "name": "FollowedHyperlink",
+      "rPr": {
+        "color": {
+          "themeColor": "followedHyperlink",
+          "val": "954F72",
+        },
+        "underline": {
+          "style": "single",
+        },
+      },
+      "semiHidden": true,
+      "type": "character",
+      "uiPriority": 99,
+      "unhideWhenUsed": true,
+    },
+    {
+      "id": "NoSpacing",
+      "name": "No Spacing",
+      "pPr": {
+        "spacing": {
+          "after": 0,
+          "line": 240,
+          "lineRule": "auto",
+        },
+      },
+      "quickStyle": true,
+      "type": "paragraph",
+      "uiPriority": 1,
+    },
+  ],
+}
+`;
+
+exports[`DefaultTemplate (Word 2016+ Normal.dotm) > new document JSON snapshot 1`] = `
+{
+  "doc": {
+    "content": [
+      {
+        "attrs": {
+          "props": {
+            "columns": {
+              "count": 1,
+              "equalWidth": true,
+              "separator": false,
+              "space": 720,
+            },
+            "docGrid": {
+              "linePitch": 360,
+            },
+            "margins": {
+              "bottom": 1440,
+              "footer": 720,
+              "gutter": 0,
+              "header": 720,
+              "left": 1440,
+              "right": 1440,
+              "top": 1440,
+            },
+            "pageSize": {
+              "height": 15840,
+              "orientation": "portrait",
+              "width": 12240,
+            },
+            "titlePage": false,
+            "type": "nextPage",
+          },
+        },
+        "content": [
+          {
+            "attrs": {
+              "alignment": null,
+              "bidi": null,
+              "borders": null,
+              "contextualSpacing": null,
+              "dropCap": null,
+              "indent": null,
+              "keepLines": null,
+              "keepNext": null,
+              "markProps": null,
+              "numbering": null,
+              "outlineLevel": null,
+              "pageBreakBefore": null,
+              "paraId": null,
+              "shading": null,
+              "spacing": null,
+              "styleId": null,
+              "suppressAutoHyphens": null,
+              "suppressLineNumbers": null,
+              "tabs": null,
+              "textAlignment": null,
+              "widowControl": null,
+            },
+            "type": "paragraph",
+          },
+        ],
+        "type": "section",
+      },
+    ],
+    "type": "doc",
+  },
+  "numbering": {
+    "abstracts": [],
+    "instances": [],
+  },
+  "settings": {
+    "compatibilityMode": 15,
+    "defaultTabStop": 720,
+    "evenAndOddHeaders": false,
+    "mirrorMargins": false,
+    "trackRevisions": false,
+  },
+}
+`;
