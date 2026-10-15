@@ -1,0 +1,36 @@
+/** Shortcuts that work the same in every app (docs/SHORTCUTS.md rows marked "same"). */
+import type { KeyBinding } from '../keymap.ts';
+import { bind } from './bind.ts';
+
+export const commonKeymap: readonly KeyBinding[] = [
+  bind('Mod+N', 'file.new', 'Ctrl+N / O / S / P / W'),
+  bind('Mod+O', 'file.open', 'Ctrl+N / O / S / P / W'),
+  bind('Mod+S', 'file.save', 'Ctrl+N / O / S / P / W'),
+  bind('Mod+P', 'file.print', 'Ctrl+N / O / S / P / W'),
+  bind('Mod+W', 'file.close', 'Ctrl+N / O / S / P / W'),
+  bind('F12', 'file.saveAs', 'F12 or Ctrl+Shift+S'),
+  bind('Mod+Shift+S', 'file.saveAs', 'F12 or Ctrl+Shift+S'),
+  bind('Mod+Z', 'edit.undo', 'Ctrl+Z / Ctrl+Y (also Ctrl+Shift+Z)'),
+  bind('Mod+Y', 'edit.redo', 'Ctrl+Z / Ctrl+Y (also Ctrl+Shift+Z)'),
+  bind('Mod+Shift+Z', 'edit.redo', 'Ctrl+Z / Ctrl+Y (also Ctrl+Shift+Z)'),
+  bind('Mod+X', 'edit.cut', 'Ctrl+X / C / V, Ctrl+Alt+V'),
+  bind('Mod+C', 'edit.copy', 'Ctrl+X / C / V, Ctrl+Alt+V'),
+  bind('Mod+V', 'edit.paste', 'Ctrl+X / C / V, Ctrl+Alt+V'),
+  bind('Mod+Alt+V', 'edit.pasteSpecial', 'Ctrl+X / C / V, Ctrl+Alt+V'),
+  bind('Mod+A', 'edit.selectAll', 'Ctrl+A'),
+  bind('Mod+F', 'edit.find', 'Ctrl+F / Ctrl+H / Ctrl+G'),
+  bind('Mod+H', 'edit.replace', 'Ctrl+F / Ctrl+H / Ctrl+G'),
+  bind('Mod+B', 'format.bold', 'Ctrl+B / I / U'),
+  bind('Mod+I', 'format.italic', 'Ctrl+B / I / U'),
+  bind('Mod+U', 'format.underline', 'Ctrl+B / I / U'),
+  bind('Mod+K', 'insert.link', 'Ctrl+K'),
+  bind('F7', 'review.spelling', 'F7 / Shift+F7'),
+  bind('Mod+Alt+M', 'review.newComment', 'Ctrl+Alt+M'),
+  bind('Mod+F1', 'view.toggleRibbon', 'Ctrl+F1'),
+  bind('Alt', 'view.keyTips', 'Alt or F10', { onRelease: true }),
+  bind('F10', 'view.keyTips', 'Alt or F10'),
+  bind('Alt+Q', 'view.commandPalette', 'Alt+Q, Ctrl+Shift+P ★'),
+  bind('Mod+Shift+P', 'view.commandPalette', 'Alt+Q, Ctrl+Shift+P ★'),
+  bind('Mod+/', 'view.shortcuts', 'Ctrl+/ ★'),
+  bind('Esc', 'edit.cancel', 'Esc'),
+];

@@ -1,0 +1,17 @@
+.of-contextmenu__mini {
+  position: fixed;
+  z-index: var(--of-z-menu);
+  transform: translateY(-4px);
+  animation: of-mini-in var(--of-duration-menu) var(--of-ease-out);
+}
+@keyframes of-mini-in {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .of-contextmenu__mini {
+    animation: none;
+  }
+}

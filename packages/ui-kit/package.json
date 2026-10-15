@@ -15,6 +15,7 @@
   "scripts": {
     "gallery": "vite --config stories/vite.config.ts",
     "gallery:shots": "node stories/screenshot.mjs",
+    "chrome:shots": "node stories/chrome-shots.mjs",
     "lint": "biome check .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run"

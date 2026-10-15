@@ -3,9 +3,11 @@ import './gallery.css';
 import { applyTheme, isAppId, isThemePreference } from '@officina/tokens';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { ThemeProvider } from '../src/theme/ThemeProvider.tsx';
+import { ChromeDemo } from './Chrome.tsx';
 import { GalleryPage, ThemeMatrix } from './Gallery.tsx';
 
-// URL parameters drive screenshots: ?theme=light|dark|hc|system&app=write|grid|deck|notes|hub&view=matrix&icons=colorful
+// URL parameters drive screenshots: ?theme=light|dark|hc|system&app=write|grid|deck|notes|hub&view=matrix|chrome&icons=colorful
 const params = new URLSearchParams(location.search);
 const theme = params.get('theme');
 const app = params.get('app');
@@ -16,6 +18,14 @@ const container = document.getElementById('root');
 if (!container) throw new Error('#root missing');
 createRoot(container).render(
   <StrictMode>
-    {params.get('view') === 'matrix' ? <ThemeMatrix app={isAppId(app) ? app : 'write'} /> : <GalleryPage />}
+    {params.get('view') === 'chrome' ? (
+      <ThemeProvider app="write" defaultTheme={isThemePreference(theme) ? theme : 'system'} persist={false}>
+        <ChromeDemo />
+      </ThemeProvider>
+    ) : params.get('view') === 'matrix' ? (
+      <ThemeMatrix app={isAppId(app) ? app : 'write'} />
+    ) : (
+      <GalleryPage />
+    )}
   </StrictMode>,
 );

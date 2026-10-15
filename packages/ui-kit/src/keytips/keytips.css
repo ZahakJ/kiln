@@ -1,0 +1,40 @@
+.of-keytips {
+  position: fixed;
+  inset: 0;
+  z-index: var(--of-z-tooltip);
+  pointer-events: none;
+}
+.of-keytip {
+  position: fixed;
+  transform: translate(-50%, -30%);
+  min-width: 16px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: var(--of-bg-tooltip);
+  color: var(--of-fg-tooltip);
+  box-shadow: var(--of-shadow-1);
+  font-family: var(--of-font-ui);
+  font-size: var(--of-text-xs);
+  font-weight: var(--of-weight-semibold);
+  line-height: 14px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  animation: of-keytip-in 90ms var(--of-ease-out);
+}
+.of-keytip[data-disabled] {
+  opacity: 0.55;
+}
+.of-keytip__typed {
+  opacity: 0.45;
+}
+@keyframes of-keytip-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .of-keytip {
+    animation: none;
+  }
+}

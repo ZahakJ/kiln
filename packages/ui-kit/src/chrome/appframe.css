@@ -1,0 +1,327 @@
+/* App window (PLAN.md §1.3): neutral title bar, ribbon, canvas, status bar. */
+
+.of-appframe {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  background: var(--of-bg-canvas);
+  color: var(--of-fg);
+  font-family: var(--of-font-ui);
+  font-size: var(--of-text-base);
+}
+.of-appframe__body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+.of-appframe__canvas {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  background: var(--of-bg-canvas);
+}
+
+/* Title bar ------------------------------------------------------------------------------------- */
+
+.of-titlebar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(200px, 440px) minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  height: 44px;
+  padding: 0 8px 0 10px;
+  background: var(--of-bg-surface-2);
+  color: var(--of-fg);
+  -webkit-app-region: drag;
+  user-select: none;
+}
+.of-titlebar button,
+.of-titlebar input {
+  -webkit-app-region: no-drag;
+}
+.of-titlebar__start,
+.of-titlebar__end {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+.of-titlebar__start > .of-appmark {
+  flex: none;
+  margin-inline-end: 8px;
+  border-radius: 6px;
+}
+.of-titlebar__end {
+  justify-content: flex-end;
+  gap: 8px;
+}
+.of-titlebar__center {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+.of-titlebar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: var(--of-radius-control);
+  background: transparent;
+  color: var(--of-fg);
+}
+.of-titlebar__btn:hover {
+  background: var(--of-bg-hover);
+}
+.of-titlebar__btn[aria-disabled="true"] {
+  color: var(--of-fg-disabled);
+}
+.of-titlebar__btn:focus-visible,
+.of-titlebar__title:focus-visible,
+.of-searchbox:focus-visible,
+.of-autosave:focus-visible {
+  outline: var(--of-focus-width) solid var(--of-focus-ring);
+  outline-offset: -1px;
+}
+.of-titlebar__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  max-width: 100%;
+  height: 30px;
+  margin-inline-start: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--of-radius-control);
+  background: transparent;
+  color: var(--of-fg);
+  font: inherit;
+  font-weight: var(--of-weight-medium);
+}
+button.of-titlebar__title:hover {
+  background: var(--of-bg-hover);
+}
+.of-titlebar__title-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.of-titlebar__status {
+  flex: none;
+  color: var(--of-fg-muted);
+  font-weight: var(--of-weight-regular);
+  white-space: nowrap;
+}
+.of-titlebar__title-chevron {
+  flex: none;
+  color: var(--of-fg-muted);
+}
+.of-titlebar__title-input {
+  width: 260px;
+  height: 28px;
+  margin-inline-start: 8px;
+  padding: 0 8px;
+  border: 1px solid var(--of-accent);
+  border-radius: var(--of-radius-control);
+  background: var(--of-bg-input);
+  color: var(--of-fg);
+  font: inherit;
+  outline: none;
+}
+.of-titlebar__presence {
+  display: flex;
+  align-items: center;
+}
+.of-titlebar__share {
+  flex: none;
+}
+.of-titlebar__window {
+  display: flex;
+  align-self: stretch;
+  margin-inline-end: -8px;
+}
+
+/* Search / Tell me: looks like a field, opens the command palette. */
+.of-searchbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--of-border);
+  border-radius: var(--of-radius-control);
+  background: var(--of-bg-surface);
+  color: var(--of-fg-muted);
+  font: inherit;
+  text-align: start;
+  transition:
+    border-color var(--of-duration-fast) ease-out,
+    background-color var(--of-duration-fast) ease-out;
+}
+.of-searchbox:hover {
+  border-color: var(--of-border-strong);
+}
+.of-searchbox__text {
+  flex: 1;
+}
+.of-searchbox__kbd {
+  font-size: var(--of-text-xs);
+  color: var(--of-fg-muted);
+}
+
+/* AutoSave switch */
+.of-autosave {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--of-radius-control);
+  background: transparent;
+  color: var(--of-fg);
+  font: inherit;
+  font-size: var(--of-text-sm);
+}
+.of-autosave:hover {
+  background: var(--of-bg-hover);
+}
+.of-autosave__track {
+  position: relative;
+  width: 30px;
+  height: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--of-border-strong);
+  background: var(--of-bg-surface);
+  transition: background-color var(--of-duration-fast) ease-out;
+}
+.of-autosave__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--of-fg-muted);
+  transition: transform var(--of-duration-menu) var(--of-ease-out);
+}
+.of-autosave[aria-checked="true"] .of-autosave__track {
+  background: var(--of-accent-strong);
+  border-color: var(--of-accent-strong);
+}
+.of-autosave[aria-checked="true"] .of-autosave__thumb {
+  transform: translateX(14px);
+  background: var(--of-on-accent);
+}
+.of-autosave__state {
+  min-width: 20px;
+  color: var(--of-fg-muted);
+}
+.of-autosave[aria-disabled="true"] {
+  opacity: 0.6;
+}
+
+/* Classic Office look: a solid accent title bar (PLAN.md §1.9). */
+.of-appframe--classic .of-titlebar {
+  background: var(--of-accent-strong);
+  color: var(--of-on-accent);
+}
+.of-appframe--classic .of-titlebar__btn,
+.of-appframe--classic .of-titlebar__title,
+.of-appframe--classic .of-autosave {
+  color: var(--of-on-accent);
+}
+.of-appframe--classic .of-titlebar__status,
+.of-appframe--classic .of-autosave__state {
+  color: color-mix(in srgb, var(--of-on-accent) 75%, transparent);
+}
+.of-appframe--classic .of-titlebar__btn:hover,
+.of-appframe--classic button.of-titlebar__title:hover,
+.of-appframe--classic .of-autosave:hover {
+  background: color-mix(in srgb, var(--of-on-accent) 16%, transparent);
+}
+.of-appframe--classic .of-searchbox {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--of-on-accent) 88%, transparent);
+}
+
+/* Cheat sheet */
+.of-shortcut-sheet .of-dialog__body {
+  max-height: min(70vh, 640px);
+  overflow: auto;
+}
+.of-shortcut-sheet__filter {
+  width: 100%;
+  margin-bottom: 12px;
+}
+.of-shortcut-sheet__grid {
+  columns: 2 300px;
+  column-gap: 28px;
+}
+.of-shortcut-sheet__group {
+  break-inside: avoid;
+  margin-bottom: 16px;
+}
+.of-shortcut-sheet__group h3 {
+  margin: 0 0 6px;
+  font-size: var(--of-text-sm);
+  font-weight: var(--of-weight-semibold);
+  color: var(--of-accent-strong);
+}
+.of-shortcut-sheet__group dl {
+  margin: 0;
+}
+.of-shortcut-sheet__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 3px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--of-border) 60%, transparent);
+}
+.of-shortcut-sheet__row dt {
+  min-width: 0;
+}
+.of-shortcut-sheet__row dd {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  flex: none;
+}
+
+@media (max-width: 639px) {
+  .of-titlebar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px;
+    padding: 0 4px 0 8px;
+  }
+  .of-titlebar__center {
+    order: 3;
+    grid-column: 2;
+  }
+  .of-titlebar__end {
+    display: none;
+  }
+  .of-searchbox {
+    width: 34px;
+    padding: 0;
+    justify-content: center;
+    border-color: transparent;
+    background: transparent;
+  }
+  .of-searchbox__text,
+  .of-searchbox__kbd,
+  .of-autosave,
+  .of-titlebar__status {
+    display: none;
+  }
+}

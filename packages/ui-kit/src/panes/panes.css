@@ -1,0 +1,146 @@
+.of-taskpane {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  width: var(--pane-width, 320px);
+  min-height: 0;
+  max-width: 100%;
+  background: var(--of-bg-surface);
+  color: var(--of-fg);
+  font-family: var(--of-font-ui);
+  font-size: var(--of-text-base);
+  z-index: var(--of-z-pane);
+  animation: of-pane-in var(--of-duration-pane) var(--of-ease-out);
+}
+.of-taskpane--right {
+  border-inline-start: var(--of-border-width) solid var(--of-border);
+}
+.of-taskpane--left {
+  border-inline-end: var(--of-border-width) solid var(--of-border);
+}
+@keyframes of-pane-in {
+  from {
+    opacity: 0;
+  }
+}
+.of-taskpane__splitter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 7px;
+  z-index: 1;
+  cursor: col-resize;
+  touch-action: none;
+}
+.of-taskpane--right .of-taskpane__splitter {
+  left: -4px;
+}
+.of-taskpane--left .of-taskpane__splitter {
+  right: -4px;
+}
+.of-taskpane__splitter:hover,
+.of-taskpane__splitter:focus-visible {
+  background: linear-gradient(
+    90deg,
+    transparent 2px,
+    var(--of-accent) 2px,
+    var(--of-accent) 5px,
+    transparent 5px
+  );
+  outline: none;
+}
+.of-taskpane__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 6px 0 14px;
+  border-bottom: 1px solid var(--of-border);
+}
+.of-taskpane__title {
+  flex: 1;
+  margin: 0;
+  font-size: var(--of-text-md);
+  font-weight: var(--of-weight-semibold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.of-taskpane__tabs {
+  display: flex;
+  flex: 1;
+  gap: 2px;
+  min-width: 0;
+  align-self: stretch;
+  align-items: stretch;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.of-taskpane__tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  border: 0;
+  background: transparent;
+  color: var(--of-fg-muted);
+  font: inherit;
+  white-space: nowrap;
+}
+.of-taskpane__tab:hover {
+  color: var(--of-fg);
+}
+.of-taskpane__tab.is-active {
+  color: var(--of-fg);
+  font-weight: var(--of-weight-semibold);
+}
+.of-taskpane__tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 0;
+  height: 3px;
+  border-radius: 2px 2px 0 0;
+  background: var(--of-accent);
+}
+.of-taskpane__tab:focus-visible {
+  outline: var(--of-focus-width) solid var(--of-focus-ring);
+  outline-offset: -2px;
+}
+.of-taskpane__actions {
+  display: flex;
+  gap: 2px;
+  flex: none;
+}
+.of-taskpane__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 12px 14px;
+}
+
+@media (max-width: 639px) {
+  .of-taskpane {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    max-height: 70vh;
+    border: 0;
+    border-top: 1px solid var(--of-border);
+    border-radius: var(--of-radius-dialog) var(--of-radius-dialog) 0 0;
+    box-shadow: var(--of-shadow-3);
+  }
+  .of-taskpane__splitter {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .of-taskpane {
+    animation: none;
+  }
+}
