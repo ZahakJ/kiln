@@ -94,6 +94,18 @@ pub(crate) fn log1pmx(u: f64) -> f64 {
     2.0 * sum - u * w
 }
 
+/// `ln(ρ) − (ρ − 1)` given both `ρ` and `u = ρ − 1`, each formed directly by the caller. Near
+/// `u = −1` (a gamma or beta tail at a tiny fraction of its mean) `1 + u` keeps only the digits
+/// `u` has left above the spacing of doubles near 1, so `ln(1 + u)` is taken from `ρ` instead: at
+/// `x/a = 10⁻¹⁵` it would otherwise be wrong in the second digit.
+pub(crate) fn log_ratio_m1(rho: f64, u: f64) -> f64 {
+    if u.abs() <= 0.5 {
+        log1pmx(u)
+    } else {
+        rho.ln() - u
+    }
+}
+
 /// The error of Stirling's approximation, `δ(z) = ln Γ(z) − ((z − ½) ln z − z + ½ ln 2π)`.
 pub(crate) fn stirling_err(z: f64) -> f64 {
     if z >= 10.0 {
@@ -153,6 +165,11 @@ fn gamma_pq(a: f64, x: f64) -> (f64, f64) {
         let p = prob(gamma_series(a, x));
         (p, 1.0 - p)
     } else {
+        // Q ≤ xᵃe⁻ˣ/Γ(a) · 1/(x + 1 − a) here: below e⁻⁸⁰⁰ it is zero in double precision (and
+        // the continued fraction would overflow near x = 10³⁰⁸).
+        if gamma_prefix_ln(a, x) < -800.0 {
+            return (1.0, 0.0);
+        }
         let q = prob(gamma_cf(a, x));
         (1.0 - q, q)
     }
@@ -163,7 +180,8 @@ fn gamma_prefix_ln(a: f64, x: f64) -> f64 {
     if a < 10.0 {
         a * x.ln() - x - log_gamma(a)
     } else {
-        a * log1pmx((x - a) / a) + 0.5 * (a / (2.0 * std::f64::consts::PI)).ln() - stirling_err(a)
+        a * log_ratio_m1(x / a, (x - a) / a) + 0.5 * (a / (2.0 * std::f64::consts::PI)).ln()
+            - stirling_err(a)
     }
 }
 
@@ -215,7 +233,7 @@ fn gamma_cf(a: f64, x: f64) -> f64 {
 fn gamma_uniform(a: f64, x: f64) -> Option<(f64, f64)> {
     static SERIES: std::sync::OnceLock<Uniform> = std::sync::OnceLock::new();
     let mu = (x - a) / a;
-    let e = log1pmx(mu); // −η²/2
+    let e = log_ratio_m1(x / a, mu); // −η²/2
     let eta = (-2.0 * e).max(0.0).sqrt().copysign(mu);
     let s = SERIES
         .get_or_init(|| Uniform::new(1.0, 1.0, 0.0, 1.0))
@@ -314,11 +332,6 @@ impl Uniform {
     }
 }
 
-/// Regularised incomplete beta I_x(a, b) with `1 − x` formed in floating point.
-pub(crate) fn beta_i(x: f64, a: f64, b: f64) -> f64 {
-    beta_ixy(x, 1.0 - x, a, b)
-}
-
 /// Regularised incomplete beta I_x(a, b) given both `x` and `y = 1 − x`, so callers that know `y`
 /// more precisely than `1 − x` (the t distribution's `t²/(ν + t²)`) keep its digits. NaN where no
 /// method converges.
@@ -386,8 +399,8 @@ fn beta_prefix_ln(x: f64, y: f64, a: f64, b: f64) -> f64 {
         return a * x.ln() + b * y.ln() - log_beta(a, b);
     }
     let (u, v) = beta_uv(x, y, a, b);
-    a * log1pmx(u)
-        + b * log1pmx(v)
+    a * log_ratio_m1(x * r / a, u)
+        + b * log_ratio_m1(y * r / b, v)
         + 0.5 * (a.ln() + b.ln() - r.ln() - (2.0 * std::f64::consts::PI).ln())
         + stirling_err(r)
         - stirling_err(a)
@@ -401,7 +414,7 @@ fn beta_uniform(x: f64, y: f64, a: f64, b: f64) -> Option<f64> {
     let r = a + b;
     let (x0, y0) = (a / r, b / r);
     let (u, v) = beta_uv(x, y, a, b);
-    let e = a * log1pmx(u) + b * log1pmx(v); // −rη²/2
+    let e = a * log_ratio_m1(x / x0, u) + b * log_ratio_m1(y / y0, v); // −rη²/2
     let eta = (-2.0 * e / r).max(0.0).sqrt().copysign(u);
     let s = Uniform::new(x0 * y0, y0 - x0, -1.0, x0.min(y0)).sum(eta, r)?;
     let corr = (e + stirling_err(r) - stirling_err(a) - stirling_err(b)).exp()
@@ -631,7 +644,13 @@ pub(crate) fn norm_inv(p: f64) -> f64 {
             -(norm_cdf_upper(x) - (1.0 - p))
         };
         let u = e * (2.0 * std::f64::consts::PI).sqrt() * (x * x / 2.0).exp();
-        x -= u / (1.0 + x * u / 2.0);
+        let step = u / (1.0 + x * u / 2.0);
+        // Past z ≈ 37.6 (subnormal p) the density underflows; the rational start is already
+        // accurate to 10⁻⁹ there, which is more than a subnormal p carries.
+        if !step.is_finite() {
+            break;
+        }
+        x -= step;
     }
     x
 }
@@ -732,8 +751,12 @@ pub(crate) fn t_cdf(t: f64, df: f64) -> f64 {
     // t = 0.5, 1 − x is 2.5·10⁻¹⁶, below the spacing of doubles near 1).
     let z = t / df.sqrt();
     let z2 = z * z;
-    let tail = if z2.is_infinite() {
-        0.0
+    let tail = if z2 > 1e30 {
+        // Far tail, x = 1/(1 + z²) < 10⁻³⁰: I_x(a, ½) = xᵃ/(a B(a, ½))·(1 + O(x)), in logs as z²
+        // overflows past |z| = 1.3·10¹⁵⁴ (T.INV.2T(1E-300, 1) is 6.4·10²⁹⁹).
+        let a = df / 2.0;
+        let ln_x = -2.0 * z.abs().ln() - (1.0 / z2).ln_1p();
+        0.5 * (a * ln_x - a.ln() - log_beta(a, 0.5)).exp()
     } else {
         0.5 * beta_ixy(1.0 / (1.0 + z2), z2 / (1.0 + z2), df / 2.0, 0.5)
     };
@@ -778,7 +801,8 @@ pub(crate) fn f_sf(x: f64, d1: f64, d2: f64) -> f64 {
 fn f_xy(x: f64, d1: f64, d2: f64) -> (f64, f64) {
     let w = d1 / d2 * x;
     if w.is_infinite() {
-        return (1.0, 0.0);
+        // 1/(1 + w) = (d2/d1)/x to double precision; it may still be a (sub)normal number.
+        return (1.0, d2 / d1 / x);
     }
     (w / (1.0 + w), 1.0 / (1.0 + w))
 }
@@ -801,14 +825,27 @@ pub(crate) fn f_pdf(x: f64, d1: f64, d2: f64) -> f64 {
         let (p, q) = f_xy(x, d1, d2);
         return beta_prefix_ln(p, q, d1 / 2.0, d2 / 2.0).exp() / x;
     }
-    (0.5 * (d1 * (d1 * x).ln() + d2 * d2.ln() - (d1 + d2) * (d1 * x + d2).ln())
-        - x.ln()
-        - log_beta(d1 / 2.0, d2 / 2.0))
-    .exp()
+    // ln(d1·x) and ln(d1·x + d2) from the logarithms when d1·x overflows.
+    let dx = d1 * x;
+    let (ln_dx, ln_sum) = if dx.is_finite() {
+        (dx.ln(), (dx + d2).ln())
+    } else {
+        let l = d1.ln() + x.ln();
+        (l, l + (d2 / d1 / x).ln_1p())
+    };
+    (0.5 * (d1 * ln_dx + d2 * d2.ln() - (d1 + d2) * ln_sum) - x.ln() - log_beta(d1 / 2.0, d2 / 2.0))
+        .exp()
 }
 
-/// Inverts a continuous increasing CDF on `[lo, hi]` by bisection to full precision; with
-/// `unbounded`, `hi` doubles until it brackets `p`.
+/// Inverts a continuous increasing CDF over non-negative arguments: the double `x` in `[lo, hi]`
+/// (`[lo, f64::MAX]` with `unbounded`, when `hi` does not reach `p`) whose CDF is nearest `p`;
+/// `lo` when the CDF there already reaches `p`, `hi` when a bounded search never does.
+///
+/// The search bisects the bit patterns of the bracket rather than its values. Non-negative
+/// doubles order like their bits, so every step halves the number of doubles left and at most 64
+/// steps reach two adjacent doubles, whatever the scale: quantiles of 10⁻³⁰⁰ (gamma with a tiny
+/// shape) and 10¹⁷ (Student's t with one degree of freedom far in the tail) come out to full
+/// precision in the same 64 evaluations. NaN when the CDF fails or never reaches `p`.
 pub(crate) fn invert_cdf(
     cdf: impl Fn(f64) -> f64,
     p: f64,
@@ -816,38 +853,60 @@ pub(crate) fn invert_cdf(
     hi: f64,
     unbounded: bool,
 ) -> f64 {
-    let (mut a, mut b) = (lo, hi);
-    if unbounded {
-        let mut guard = 0;
-        loop {
-            let c = cdf(b);
-            if c.is_nan() {
-                return f64::NAN;
-            }
-            if c >= p || guard >= 2000 {
-                break;
-            }
-            a = b;
-            b *= 2.0;
-            guard += 1;
-        }
+    if !(lo >= 0.0 && hi > lo) || p.is_nan() {
+        return f64::NAN;
     }
-    for _ in 0..300 {
-        let m = (a + b) / 2.0;
-        if m == a || m == b {
-            break;
+    let (c_lo, mut c_hi) = (cdf(lo), cdf(hi));
+    if c_lo.is_nan() || c_hi.is_nan() {
+        return f64::NAN;
+    }
+    if c_lo >= p {
+        return lo;
+    }
+    let (mut a, mut b) = (lo, hi);
+    if c_hi < p {
+        if !unbounded {
+            // A bounded search ends where its caller knows the CDF reaches p (rounding may leave
+            // it a few ulps short there).
+            return hi;
         }
-        let c = cdf(m);
+        c_hi = cdf(f64::MAX);
+        if c_hi.is_nan() || c_hi < p {
+            return f64::NAN;
+        }
+        (a, b) = (hi, f64::MAX);
+    }
+    // Invariant: cdf(a) < p <= cdf(b).
+    let (mut ia, mut ib) = (a.to_bits(), b.to_bits());
+    let mut c_a = f64::NEG_INFINITY;
+    while ib - ia > 1 {
+        let im = ia + (ib - ia) / 2;
+        let c = cdf(f64::from_bits(im));
         if c.is_nan() {
             return f64::NAN;
         }
         if c < p {
-            a = m;
+            (ia, c_a) = (im, c);
         } else {
-            b = m;
+            (ib, c_hi) = (im, c);
         }
     }
-    (a + b) / 2.0
+    let (a, b) = (f64::from_bits(ia), f64::from_bits(ib));
+    if c_a.is_finite() && p - c_a < c_hi - p {
+        a
+    } else {
+        b
+    }
+}
+
+/// The Student's t quantile of the upper tail: the `x >= 0` with `P(T > x) = q`, for
+/// `0 < q <= 0.5`. Taking the tail probability itself keeps its digits (T.INV(10⁻¹⁶, 2) would
+/// otherwise solve for `1 − (1 − 10⁻¹⁶)`, which is 1.1·10⁻¹⁶).
+pub(crate) fn t_quantile_upper(q: f64, df: f64) -> f64 {
+    if q == 0.5 {
+        return 0.0;
+    }
+    invert_cdf(|x| -t_cdf(-x, df), -q, 0.0, 1.0, true)
 }
 
 // ── discrete distributions ─────────────────────────────────────────────────────────────────
@@ -976,7 +1035,7 @@ mod tests {
         // BINOM.DIST(4900, 10000, 0.5, TRUE): Σ C(10000, k) / 2¹⁰⁰⁰⁰ for k ≤ 4900, exactly.
         let p = binom_cdf(4900.0, 10000.0, 0.5);
         assert!(close(p, 0.023_292_763_852_473_694, 1e-14), "{p}");
-        assert!(close(beta_i(0.3, 2.0, 3.0), 0.3483, 1e-12));
+        assert!(close(beta_ixy(0.3, 0.7, 2.0, 3.0), 0.3483, 1e-12));
     }
 
     /// 50-digit references (mpmath: quadrature of the density, both tails normalised by their
@@ -1129,11 +1188,25 @@ mod tests {
     }
 
     #[test]
+    fn inversion_reaches_every_scale() {
+        // 1 − e⁻ˣ = p has x = −ln(1 − p) ≈ p for tiny p; x/(1 + x) = p has x = p/(1 − p).
+        let tiny = invert_cdf(|x| -(-x).exp_m1(), 1e-300, 0.0, 1.0, true);
+        assert!(close(tiny, 1e-300, 1e-15), "{tiny:e}");
+        let huge = invert_cdf(|x| -1.0 / (1.0 + x), -1e-200, 0.0, 1.0, true);
+        assert!(close(huge, 1e200, 1e-15), "{huge:e}");
+        // Beyond the largest double: no answer rather than a wrong one.
+        assert!(invert_cdf(|x| -1.0 / (1.0 + x), -1e-320, 0.0, 1.0, true).is_nan());
+        assert_eq!(invert_cdf(|x| x, 0.0, 0.0, 1.0, false), 0.0);
+    }
+
+    #[test]
     fn normal_quantile_round_trips() {
         for p in [1e-12, 0.001, 0.025, 0.3, 0.5, 0.9, 0.999_999] {
             let x = norm_inv(p);
             assert!(close(norm_cdf(x), p, 1e-13), "{p}");
         }
         assert!(norm_inv(0.0).is_nan());
+        // A subnormal probability: the density underflows, the rational start is kept.
+        assert!(close(norm_inv(1e-320), -38.269_125_343_032_65, 1e-8));
     }
 }

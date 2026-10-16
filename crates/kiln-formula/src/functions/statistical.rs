@@ -7,7 +7,7 @@ use std::sync::Arc;
 
 use super::agg;
 use super::special::{
-    chisq_cdf, f_cdf, gamma, invert_cdf, log_gamma, norm_cdf, norm_inv, norm_pdf, t_cdf,
+    chisq_cdf, f_cdf, gamma, log_gamma, norm_cdf, norm_inv, norm_pdf, t_cdf, t_quantile_upper,
 };
 use super::support::*;
 use crate::engine::{Arg, CallContext, EvalValue, collect_numbers};
@@ -870,7 +870,7 @@ fn confidence_t(alpha: f64, sd: f64, n0: f64) -> R<f64> {
     if n == 1.0 {
         return Err(ErrorValue::Div0);
     }
-    let t = invert_cdf(|x| t_cdf(x, n - 1.0), 1.0 - alpha / 2.0, 0.0, 1.0, true);
+    let t = t_quantile_upper(alpha / 2.0, n - 1.0);
     Ok(t * sd / n.sqrt())
 }
 
