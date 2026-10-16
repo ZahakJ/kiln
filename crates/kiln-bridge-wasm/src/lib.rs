@@ -371,8 +371,9 @@ mod tests {
             ErrorKind::InvalidInput
         );
         assert_eq!(b.a11y(1).unwrap_err().kind, ErrorKind::NotFound);
+        // No app creates presentations yet (Kiln Deck arrives with WP-77/WP-78).
         assert_eq!(
-            b.new_document("\"Grid\"").unwrap_err().kind,
+            b.new_document("\"Deck\"").unwrap_err().kind,
             ErrorKind::Unsupported
         );
         assert_eq!(
