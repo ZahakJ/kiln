@@ -414,3 +414,59 @@ WP-54 had to touch these files outside its owned paths; every change is additive
 - For WP-85 (Backstage/Save As): build the compatibility checker UI on `Query::CompatReport`; it lists features that
   the target format drops (macros into .docx, etc.) and what Kiln could not model (kept verbatim).
 - Strict-conformance relationship types in passthrough parts are kept as read, not converted to transitional.
+
+## WP-69 → WP-70 (XLSX), WP-71/WP-72 (Grid surface and features), WP-73 (charts), WP-56/WP-94 (engine, performance), the bridge's owner
+
+- Outside WP-69's paths: the workspace pins `icu_collator = "=2.3.1"` and `icu_locale_core = "=2.3.0"` (Unicode-3.0,
+  already in the lock through `icu_segmenter`; optional in kiln-sheet behind the default `collation` feature, so the
+  wasm core leaves the collation data out), `CHANGELOG.md`, and the four `grid.formulas.calculation.*` rows of
+  `parity/parity.json` (WP-69's), with `PARITY.md` regenerated.
+- For WP-70 (XLSX reader/writer): build a workbook with `Workbook::with_options(WorkbookOptions { sheets:
+  Some(vec![]), .. })`, `add_sheet(name, index, Some(SheetId(n)))`, `set_styles(StyleTable::from_parts(parts)?)`
+  (indices are kept, duplicates too; custom table styles and the default table style go in `StyleParts`),
+  `set_theme`, `load_value`, `load_formula(text, cached, legacy)` (a formula the engine cannot parse is kept as a
+  raw formula showing its cached value, and written back verbatim from `Workbook::formula`), `load_style`,
+  `load_name` (reserved `_xlnm.` names and external references are kept even though the engine cannot evaluate
+  them), `load_sheet_meta`, `load_sheet_layout`, `set_persons`, `passthrough_mut()` for parts kept verbatim. Set
+  the calculation mode to manual while loading (or load before the first command) and restore the file's
+  properties afterwards with `Command::SetProps`; `fullCalcOnLoad` is yours to honour (`recalc_all`). Shared
+  formulas must be expanded to per-cell text (`kiln_formula::refs::copy_formula`). Legacy array formulas (CSE,
+  `t="array" ref=…`) are not modelled as ranges: keep them as raw formulas on the anchor and the range in
+  passthrough until the engine supports them. Cached results are in the store (`Sheet::cells().value`) after every
+  recalculation, so the writer can read values without the engine; spilled cells are not stored — read them with
+  `Workbook::value` and `spill_range`. Notes, threaded comments, hyperlinks, CF (with x14 options), validation,
+  tables, AutoFilter, views, page setup and protection map one to one onto `kiln_sheet::meta`.
+- For WP-71 (Grid surface): drain `Workbook::take_changes()` after each command (cells, recalculated anchors —
+  repaint their `result_area` — structure, layout, meta, sheets, names, props). Typed input goes in as
+  `Content::Typed` (recognises numbers, percentages, currency, dates, times, logicals and errors and applies the
+  implied number format, as Excel's cell entry does). Display text and colour come from `Workbook::display`;
+  conditional formats for the viewport from `Workbook::conditional_formats(sheet, viewport)` (layer `dxf` over the
+  cell format; `scale_color`, `data_bar`, `icon`, `hide_value`); table banding from `Workbook::table_format`;
+  validation dropdowns and prompts from `validation_list`/`validation_prompt`, and `validate` before committing an
+  entry. Clipboard: `Workbook::copy` → `ClipData::to_tsv`/`to_html`; external data via `ClipData::from_tsv` /
+  `from_html` → `paste_command`. The fill handle is `Command::AutoFill` with `FillMode`. Row and column geometry
+  (`Axis::offset_px`, `index_at_px`) is O(log n). The parity verify ids `unit:kiln-sheet/clipboard`, `fill`,
+  `filter`, `limits` and `command_log` now resolve to passing tests; the surface rows can flip once their e2e
+  tests exist.
+- For WP-72 (Grid features): Data › Sort is `Command::Sort` (keys with custom lists and colour sorts, `case_sensitive`,
+  `locale` for ICU collation); filters are `SetSheetMeta(AutoFilter)` (or a table's `auto_filter`) followed by
+  `Command::ApplyFilter`, which hides failing rows as `filtered` so `SUBTOTAL`/`AGGREGATE` skip them; Remove
+  Duplicates and Text to Columns are commands too. Conditional formats and validation are edited with
+  `SetSheetMeta(Cf/Validations)` (rule ids from `Workbook::alloc_rule_id`). Built-in table styles are generated
+  from the theme in the Light/Medium/Dark families' layout (`table_style::builtin_element`) — structure and
+  colours match Excel's presets, individual border weights may not; replace the generator with the exact preset
+  definitions when the Format as Table gallery needs pixel parity.
+- For WP-73 (charts): drawings are `meta::DrawingAnchor`s on `SheetMeta::drawings` (`reference` names the chart
+  object); they move and resize with structural edits like Excel's anchors.
+- For WP-56/WP-94 (engine): (1) a whole-column or whole-sheet reference whose used bounds reach far
+  (`=COUNTA(B:XFD)` with a value in XFD1048576) is evaluated over the dense bounding box — billions of host reads,
+  minutes of CPU; iterating stored cells (the host can expose them) would make it instant. (2) `numfmt::format_general`
+  misses Excel's 11-character rule for some values (999999999999 → `10E+11`, Excel `1E+12`; 99999999999.6 →
+  `100000000000`, Excel `1E+11`; 1.23456789E+100 → `1.23457E+100`, Excel `1.2346E+100`); kiln-sheet formats General
+  cells itself (`kiln_sheet::format::general`, the v1.0 algorithm) but `TEXT(x,"General")` still uses the engine's.
+  (3) Structural edits re-parse every formula in the engine and the model dry-runs the same rewrite to record what
+  undo must restore (about twice the engine's 3 s per million formulas); shifting compiled formulas and reporting
+  the changed ones from the engine would serve both.
+- For the bridge's owner: `kiln-sheet` is not linked into `kiln-bridge-wasm` yet. Build it with
+  `--no-default-features` there (no rayon, no ICU collation data); it pulls in `kiln-formula` and its library
+  (about 587 KB gzip measured by WP-57).

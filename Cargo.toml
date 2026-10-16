@@ -177,3 +177,4 @@ fancy-regex = "=0.19.2"
 # Locale-aware sort order for Data ▸ Sort (Unicode collation, case-sensitive option); optional in
 # kiln-sheet so the wasm core can leave the collation data out.
 icu_collator = "=2.3.1"
+icu_locale_core = "=2.3.0"

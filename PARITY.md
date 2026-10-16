@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **6.7 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **7.0 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,23 +12,23 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 6.7 % | 782 | 0 | 26 | 43 | 713 | 20 |
+| **Overall** | 7.0 % | 782 | 0 | 27 | 44 | 711 | 20 |
 | Kiln Write | 6.9 % | 231 | 0 | 2 | 25 | 204 | 1 |
-| Kiln Grid | 13.4 % | 261 | 0 | 24 | 14 | 223 | 6 |
+| Kiln Grid | 14.2 % | 261 | 0 | 25 | 15 | 221 | 6 |
 | Kiln Deck | 0.0 % | 184 | 0 | 0 | 0 | 184 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
 | Suite | 3.3 % | 62 | 0 | 0 | 4 | 58 | 9 |
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 7.8 % | 462 | 0 | 20 | 32 | 410 | 0 |
+| critical | 8.1 % | 462 | 0 | 21 | 33 | 408 | 0 |
 | commonly-missed | 3.8 % | 224 | 0 | 4 | 9 | 211 | 0 |
 | niche | 3.1 % | 96 | 0 | 2 | 2 | 92 | 20 |
 
 | App | Critical | Commonly-missed | Niche |
 |---|---:|---:|---:|
 | Kiln Write | 7.5 % (146) | 5.2 % (58) | 1.9 % (27) |
-| Kiln Grid | 16.8 % (143) | 5.4 % (83) | 7.1 % (35) |
+| Kiln Grid | 17.8 % (143) | 5.4 % (83) | 7.1 % (35) |
 | Kiln Deck | 0.0 % (119) | 0.0 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
 | Suite | 3.2 % (31) | 3.4 % (29) | 0.0 % (2) |
@@ -112,8 +112,10 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `grid.home.number.format-combo` | Number format combo: General, Number, Currency, Accounting, Short/Long Date, Time, Percentage, Fraction, Scientific, Text | missing | partial |
 | `grid.home.number.custom-formats` | Custom number format codes (sections, colours, conditions, elapsed time, fractions, text placeholders) | missing | partial |
 | `grid.formulas.library.function-count` | At least 484 Excel functions in v0.1 and all 520+ worksheet functions except cube, RTD and web services in the loop | missing | partial |
+| `grid.formulas.calculation.options` | Calculation options: automatic, automatic except tables, manual | missing | partial |
+| `grid.formulas.calculation.calculate-now` | Calculate now (F9) and calculate sheet (Shift+F9) | missing | partial |
 | `grid.formulas.calculation.iterative` | Iterative calculation (max iterations, max change) and circular reference warnings | missing | partial |
-| `grid.formulas.calculation.multithreaded` | Multi-threaded incremental recalculation of large workbooks | missing | partial |
+| `grid.formulas.calculation.multithreaded` | Multi-threaded incremental recalculation of large workbooks | missing | done |
 | `grid.language.dynamic-arrays` | Dynamic arrays with spill ranges, the # spill operator and #SPILL! errors | missing | partial |
 | `grid.language.structured-references` | Structured references to table columns (Table1[Sales], [@Qty], #Totals) | missing | partial |
 | `grid.language.3d-references` | 3-D references across sheets (Sheet1:Sheet3!A1) | missing | partial |
@@ -679,7 +681,7 @@ Score 6.9 % over 231 rows in scope; 0 better, 2 done, 25 partial, 204 missing, 1
 
 ## Kiln Grid
 
-Score 13.4 % over 261 rows in scope; 0 better, 24 done, 14 partial, 223 missing, 6 out of scope.
+Score 14.2 % over 261 rows in scope; 0 better, 25 done, 15 partial, 221 missing, 6 out of scope.
 
 ### Home ▸ Clipboard
 
@@ -906,10 +908,10 @@ Score 13.4 % over 261 rows in scope; 0 better, 24 done, 14 partial, 223 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Calculation options: automatic, automatic except tables, manual | Excel ▸ Formulas ▸ Calculation Options | critical | P0 | WP-69 | `grid.formulas.calculation.options` |
-| ○ | Calculate now (F9) and calculate sheet (Shift+F9) | Excel ▸ Formulas ▸ Calculate Now | critical | P0 | WP-69 | `grid.formulas.calculation.calculate-now` |
+| ◐ | Calculation options: automatic, automatic except tables, manual | Excel ▸ Formulas ▸ Calculation Options | critical | P0 | WP-69 | `grid.formulas.calculation.options` |
+| ◐ | Calculate now (F9) and calculate sheet (Shift+F9) | Excel ▸ Formulas ▸ Calculate Now | critical | P0 | WP-69 | `grid.formulas.calculation.calculate-now` |
 | ◐ | Iterative calculation (max iterations, max change) and circular reference warnings | Excel ▸ Options ▸ Formulas ▸ Enable iterative calculation | commonly-missed | P1 | WP-69 | `grid.formulas.calculation.iterative` |
-| ◐ | Multi-threaded incremental recalculation of large workbooks | Excel ▸ multi-threaded calculation | critical | P0 | WP-69 | `grid.formulas.calculation.multithreaded` |
+| ● | Multi-threaded incremental recalculation of large workbooks | Excel ▸ multi-threaded calculation | critical | P0 | WP-69 | `grid.formulas.calculation.multithreaded` |
 
 ### Formulas ▸ Formula Lab
 

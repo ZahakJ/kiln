@@ -1,6 +1,6 @@
 [package]
 name = "kiln-sheet"
-description = "The Kiln Grid workbook model"
+description = "The Kiln Grid workbook model: sparse store, styles, metadata, commands with undo and formula binding"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -9,8 +9,33 @@ authors.workspace = true
 repository.workspace = true
 publish.workspace = true
 
+[features]
+default = ["parallel", "collation"]
+# Recalculate independent formulas of a topological level on the rayon pool (kiln-formula's
+# `parallel`). Without it (the single-threaded wasm artefact) results are identical.
+parallel = ["kiln-formula/parallel"]
+# Locale-aware sorting through ICU4X collation. Without it, sorts use Excel's own text order.
+collation = ["dep:icu_collator", "dep:icu_locale_core"]
+
 [dependencies]
 kiln-common.workspace = true
+kiln-formula = { workspace = true, default-features = false }
+serde = { workspace = true, features = ["rc"] }
+postcard.workspace = true
+serde_json.workspace = true
+rustc-hash.workspace = true
+thiserror.workspace = true
+icu_collator = { workspace = true, optional = true }
+icu_locale_core = { workspace = true, optional = true }
+
+[dev-dependencies]
+proptest.workspace = true
+# The benchmark example runs recalculation on a pool of a fixed size.
+rayon.workspace = true
+
+[[example]]
+name = "edit_bench"
+required-features = ["parallel"]
 
 [lints]
 workspace = true

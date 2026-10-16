@@ -2724,10 +2724,12 @@ name = "kiln-sheet"
 version = "0.1.0"
 dependencies = [
  "icu_collator",
+ "icu_locale_core",
  "kiln-common",
  "kiln-formula",
  "postcard",
  "proptest",
+ "rayon",
  "rustc-hash",
  "serde",
  "serde_json",
