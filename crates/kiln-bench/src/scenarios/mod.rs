@@ -10,6 +10,8 @@ mod ooxml_repack;
 mod recalc;
 mod scratch_frame;
 mod text_layout;
+#[path = "../benches/write.rs"]
+mod write; // WP-63: Kiln Write open and frame
 
 use std::time::Duration;
 
@@ -81,6 +83,16 @@ pub fn all() -> Vec<Bench> {
             name: "recalc-incremental",
             description: "One edit + recalculation in a 100,000-formula workbook (kiln-formula)",
             run: recalc::incremental,
+        },
+        Bench {
+            name: "write-open-300p",
+            description: "Open the 300-page .docx to its first painted page; full_ms: read + full pagination (B3)",
+            run: write::open_300p,
+        },
+        Bench {
+            name: "write-frame",
+            description: "One frame after jumping within the open 300-page .docx (kiln-doc-layout → SceneDelta)",
+            run: write::frame,
         },
     ]
 }

@@ -11,6 +11,24 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+kiln-doc.workspace = true
+kiln-text = { workspace = true, default-features = false }
+kiln-scene.workspace = true
+kiln-ooxml.workspace = true
+# Symbol-font characters (Wingdings, Symbol…) as Unicode for painting.
+kiln-io-docx.workspace = true
+rustc-hash.workspace = true
+kurbo.workspace = true
+# Pictures: PNG, JPEG, GIF and BMP (EMF/WMF are drawn as placeholders).
+image = { workspace = true, features = ["png", "jpeg", "gif", "bmp"] }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+kiln-text = { workspace = true, default-features = false, features = ["bundled-fonts"] }
+
+[dev-dependencies]
+insta.workspace = true
+kiln-raster.workspace = true
+kiln-io-docx.workspace = true
 
 [lints]
 workspace = true

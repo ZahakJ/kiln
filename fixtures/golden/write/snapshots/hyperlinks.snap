@@ -1,0 +1,7 @@
+---
+source: crates/kiln-doc-layout/tests/fixtures.rs
+expression: summary(&l)
+---
+pages: 2
+  1 [s1 #1] Hyperlinks … paragraph. (58 words)
+  2 [s1 #2] Bookmark … target (2 words)

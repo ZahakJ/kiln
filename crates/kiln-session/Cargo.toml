@@ -12,6 +12,7 @@ publish.workspace = true
 [dependencies]
 kiln-common.workspace = true
 kiln-doc.workspace = true
+kiln-doc-layout.workspace = true
 kiln-io-docx.workspace = true
 kiln-protocol.workspace = true
 kiln-scene.workspace = true

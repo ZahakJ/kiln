@@ -26,7 +26,7 @@ use kiln_bench::scenarios::{self, RunOptions};
 const USAGE: &str = "usage: kiln-bench list
        kiln-bench run <name>... [--json] [--quick]
        kiln-bench calibrate
-       kiln-bench assert [--ci] [--budgets <budgets.toml>] [--report <perf.md>] [--quick]";
+       kiln-bench assert [--ci] [--only <id>]... [--budgets <budgets.toml>] [--report <perf.md>] [--quick]";
 
 enum Failure {
     Usage(String),
@@ -145,10 +145,16 @@ fn assert_budgets(args: &[String]) -> Result<String, Failure> {
     let mut quick = false;
     let mut file = repo_file("bench/budgets.toml");
     let mut report: Option<PathBuf> = None;
+    let mut only: Vec<String> = Vec::new();
     let mut it = args.iter();
     while let Some(a) = it.next() {
         match a.as_str() {
             "--ci" => ci = true,
+            "--only" => only.push(
+                it.next()
+                    .cloned()
+                    .ok_or_else(|| Failure::Usage("--only needs a budget id".into()))?,
+            ),
             "--quick" => quick = true,
             "--budgets" => {
                 file = it
@@ -171,7 +177,18 @@ fn assert_budgets(args: &[String]) -> Result<String, Failure> {
             "budgets are measured in a release build: `cargo run --release -p kiln-bench -- assert` (or `cargo xtask budgets`); --quick runs a smoke test".into(),
         ));
     }
-    let budgets = BudgetFile::load(&file).map_err(Failure::Failed)?;
+    let mut budgets = BudgetFile::load(&file).map_err(Failure::Failed)?;
+    if !only.is_empty() {
+        // Only the named budgets (ids such as `B3`); the report is not rewritten from a subset.
+        budgets.budgets.retain(|b| only.contains(&b.id));
+        if budgets.budgets.is_empty() {
+            return Err(Failure::Usage(format!(
+                "no budget with id {}",
+                only.join(", ")
+            )));
+        }
+        report = None;
+    }
     let options = AssertOptions { ci, quick };
     let mut seen = Vec::new();
     let outcome = budgets::evaluate_with(

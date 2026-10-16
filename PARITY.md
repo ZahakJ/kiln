@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **4.9 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **6.4 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,8 +12,8 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 4.9 % | 782 | 0 | 24 | 21 | 737 | 20 |
-| Kiln Write | 1.1 % | 231 | 0 | 0 | 4 | 227 | 1 |
+| **Overall** | 6.4 % | 782 | 0 | 24 | 42 | 716 | 20 |
+| Kiln Write | 5.9 % | 231 | 0 | 0 | 25 | 206 | 1 |
 | Kiln Grid | 13.4 % | 261 | 0 | 24 | 14 | 223 | 6 |
 | Kiln Deck | 0.0 % | 184 | 0 | 0 | 0 | 184 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
@@ -21,13 +21,13 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 5.8 % | 462 | 0 | 18 | 18 | 426 | 0 |
-| commonly-missed | 2.2 % | 224 | 0 | 4 | 2 | 218 | 0 |
-| niche | 2.6 % | 96 | 0 | 2 | 1 | 93 | 20 |
+| critical | 7.5 % | 462 | 0 | 18 | 33 | 411 | 0 |
+| commonly-missed | 3.3 % | 224 | 0 | 4 | 7 | 213 | 0 |
+| niche | 3.1 % | 96 | 0 | 2 | 2 | 92 | 20 |
 
 | App | Critical | Commonly-missed | Niche |
 |---|---:|---:|---:|
-| Kiln Write | 1.4 % (146) | 0.0 % (58) | 0.0 % (27) |
+| Kiln Write | 6.5 % (146) | 4.3 % (58) | 1.9 % (27) |
 | Kiln Grid | 16.8 % (143) | 5.4 % (83) | 7.1 % (35) |
 | Kiln Deck | 0.0 % (119) | 0.0 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
@@ -83,8 +83,29 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | Row | Feature | From | To |
 |---|---|---|---|
 | `write.home.styles.builtin` | Word's built-in styles with their names (Normal, No Spacing, Heading 1–9, Title, Subtitle, Emphasis, Strong, Quote, Intense Quote, references, Book Title, List Paragraph) | missing | partial |
+| `write.layout.page-setup.margins` | Margins presets and custom margins, mirrored and gutter | missing | partial |
+| `write.layout.page-setup.orientation` | Portrait and landscape per section | missing | partial |
+| `write.layout.page-setup.size` | Paper sizes (Letter, A4, Legal, A3, A5, custom) | missing | partial |
+| `write.layout.page-setup.columns` | Text columns (one to three, left, right, more columns, line between) | missing | partial |
+| `write.layout.page-setup.breaks` | Breaks: page, column, text wrapping, section next page/continuous/even/odd | missing | partial |
+| `write.layout.page-setup.hyphenation` | Automatic and manual hyphenation | missing | partial |
 | `write.review.comments.new` | New comment with author, time and threaded replies | missing | partial |
 | `write.review.tracking.track-changes` | Track Changes on/off (Ctrl+Shift+E) recording insertions, deletions, formatting and moves | missing | partial |
+| `write.view.views.read-mode` | Read Mode: columns, page turning, zoomed objects | missing | partial |
+| `write.view.views.print-layout` | Print Layout with page shadows, margins and header/footer areas | missing | partial |
+| `write.view.views.web-layout` | Web Layout (reflowed to the window width) | missing | partial |
+| `write.view.views.draft` | Draft view | missing | partial |
+| `write.view.page-movement.vertical` | Vertical page movement (default) | missing | partial |
+| `write.table-layout.repeat-header` | Repeat header rows on each page | missing | partial |
+| `write.table-layout.nested-tables` | Nested tables (displayed and edited) | missing | partial |
+| `write.header-footer.different-first` | Different first page | missing | partial |
+| `write.header-footer.different-odd-even` | Different odd and even pages | missing | partial |
+| `write.header-footer.link-previous` | Link to previous section | missing | partial |
+| `write.header-footer.position` | Header and footer distance from edge | missing | partial |
+| `write.layout.pagination-fidelity` | Pagination matching Word within ±1 line per page for standard fonts | missing | partial |
+| `write.layout.keep-rules` | Keep with next, keep lines together, widow/orphan control, page break before | missing | partial |
+| `write.layout.sections` | Sections with different page size, orientation, margins, columns and headers | missing | partial |
+| `write.layout.bidi-text` | Bidirectional text (Arabic, Hebrew) shaping and caret movement in documents | missing | partial |
 | `write.files.docx-open` | Open .docx with styles, numbering, sections, tables, images, fields, comments and revisions | missing | partial |
 | `grid.home.number.format-combo` | Number format combo: General, Number, Currency, Accounting, Short/Long Date, Time, Percentage, Fraction, Scientific, Text | missing | partial |
 | `grid.home.number.custom-formats` | Custom number format codes (sections, colours, conditions, elapsed time, fractions, text placeholders) | missing | partial |
@@ -184,7 +205,7 @@ Out of scope:
 
 ## Kiln Write
 
-Score 1.1 % over 231 rows in scope; 0 better, 0 done, 4 partial, 227 missing, 1 out of scope.
+Score 5.9 % over 231 rows in scope; 0 better, 0 done, 25 partial, 206 missing, 1 out of scope.
 
 ### Home ▸ Clipboard
 
@@ -352,13 +373,13 @@ Score 1.1 % over 231 rows in scope; 0 better, 0 done, 4 partial, 227 missing, 1 
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Margins presets and custom margins, mirrored and gutter | Word ▸ Layout ▸ Page Setup ▸ Margins | critical | P0 | WP-63 | `write.layout.page-setup.margins` |
-| ○ | Portrait and landscape per section | Word ▸ Layout ▸ Page Setup ▸ Orientation | critical | P0 | WP-63 | `write.layout.page-setup.orientation` |
-| ○ | Paper sizes (Letter, A4, Legal, A3, A5, custom) | Word ▸ Layout ▸ Page Setup ▸ Size | critical | P0 | WP-63 | `write.layout.page-setup.size` |
-| ○ | Text columns (one to three, left, right, more columns, line between) | Word ▸ Layout ▸ Page Setup ▸ Columns | critical | P0 | WP-63 | `write.layout.page-setup.columns` |
-| ○ | Breaks: page, column, text wrapping, section next page/continuous/even/odd | Word ▸ Layout ▸ Page Setup ▸ Breaks | critical | P0 | WP-63 | `write.layout.page-setup.breaks` |
+| ◐ | Margins presets and custom margins, mirrored and gutter | Word ▸ Layout ▸ Page Setup ▸ Margins | critical | P0 | WP-63 | `write.layout.page-setup.margins` |
+| ◐ | Portrait and landscape per section | Word ▸ Layout ▸ Page Setup ▸ Orientation | critical | P0 | WP-63 | `write.layout.page-setup.orientation` |
+| ◐ | Paper sizes (Letter, A4, Legal, A3, A5, custom) | Word ▸ Layout ▸ Page Setup ▸ Size | critical | P0 | WP-63 | `write.layout.page-setup.size` |
+| ◐ | Text columns (one to three, left, right, more columns, line between) | Word ▸ Layout ▸ Page Setup ▸ Columns | critical | P0 | WP-63 | `write.layout.page-setup.columns` |
+| ◐ | Breaks: page, column, text wrapping, section next page/continuous/even/odd | Word ▸ Layout ▸ Page Setup ▸ Breaks | critical | P0 | WP-63 | `write.layout.page-setup.breaks` |
 | ○ | Line numbers (continuous, restart each page/section) | Word ▸ Layout ▸ Page Setup ▸ Line Numbers | niche | P2 | WP-63 | `write.layout.page-setup.line-numbers` |
-| ○ | Automatic and manual hyphenation | Word ▸ Layout ▸ Page Setup ▸ Hyphenation | commonly-missed | P1 | WP-63 | `write.layout.page-setup.hyphenation` |
+| ◐ | Automatic and manual hyphenation | Word ▸ Layout ▸ Page Setup ▸ Hyphenation | commonly-missed | P1 | WP-63 | `write.layout.page-setup.hyphenation` |
 | ○ | Page Setup dialog: margins, paper, layout (section start, headers different, vertical alignment) | Word ▸ Layout ▸ Page Setup ▸ dialog launcher | critical | P0 | WP-63 | `write.layout.page-setup.dialog` |
 
 ### Layout ▸ Paragraph
@@ -498,11 +519,11 @@ Score 1.1 % over 231 rows in scope; 0 better, 0 done, 4 partial, 227 missing, 1 
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Read Mode: columns, page turning, zoomed objects | Word ▸ View ▸ Views ▸ Read Mode | commonly-missed | P0 | WP-63 | `write.view.views.read-mode` |
-| ○ | Print Layout with page shadows, margins and header/footer areas | Word ▸ View ▸ Views ▸ Print Layout | critical | P0 | WP-63 | `write.view.views.print-layout` |
-| ○ | Web Layout (reflowed to the window width) | Word ▸ View ▸ Views ▸ Web Layout | commonly-missed | P0 | WP-63 | `write.view.views.web-layout` |
+| ◐ | Read Mode: columns, page turning, zoomed objects | Word ▸ View ▸ Views ▸ Read Mode | commonly-missed | P0 | WP-63 | `write.view.views.read-mode` |
+| ◐ | Print Layout with page shadows, margins and header/footer areas | Word ▸ View ▸ Views ▸ Print Layout | critical | P0 | WP-63 | `write.view.views.print-layout` |
+| ◐ | Web Layout (reflowed to the window width) | Word ▸ View ▸ Views ▸ Web Layout | commonly-missed | P0 | WP-63 | `write.view.views.web-layout` |
 | ○ | Outline view: promote, demote, move, show levels, collapse | Word ▸ View ▸ Views ▸ Outline | commonly-missed | P1 | WP-63 | `write.view.views.outline` |
-| ○ | Draft view | Word ▸ View ▸ Views ▸ Draft | niche | P2 | WP-63 | `write.view.views.draft` |
+| ◐ | Draft view | Word ▸ View ▸ Views ▸ Draft | niche | P2 | WP-63 | `write.view.views.draft` |
 
 ### View ▸ Immersive
 
@@ -514,7 +535,7 @@ Score 1.1 % over 231 rows in scope; 0 better, 0 done, 4 partial, 227 missing, 1 
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Vertical page movement (default) | Word ▸ View ▸ Page Movement ▸ Vertical | critical | P0 | WP-63 | `write.view.page-movement.vertical` |
+| ◐ | Vertical page movement (default) | Word ▸ View ▸ Page Movement ▸ Vertical | critical | P0 | WP-63 | `write.view.page-movement.vertical` |
 | ○ | Side to side page movement with thumbnails | Word ▸ View ▸ Page Movement ▸ Side to Side | niche | P2 | WP-63 | `write.view.page-movement.side-to-side` |
 
 ### View ▸ Show
@@ -570,12 +591,12 @@ Score 1.1 % over 231 rows in scope; 0 better, 0 done, 4 partial, 227 missing, 1 
 | ○ | Cell size and AutoFit (contents, window, fixed column width) | Word ▸ Table Layout ▸ Cell Size | critical | P0 | WP-64 | `write.table-layout.cell-size` |
 | ○ | Distribute rows and columns evenly | Word ▸ Table Layout ▸ Cell Size ▸ Distribute | critical | P0 | WP-64 | `write.table-layout.distribute` |
 | ○ | Cell alignment (nine positions), text direction and cell margins | Word ▸ Table Layout ▸ Alignment | critical | P0 | WP-64 | `write.table-layout.alignment` |
-| ○ | Repeat header rows on each page | Word ▸ Table Layout ▸ Data ▸ Repeat Header Rows | critical | P0 | WP-63 | `write.table-layout.repeat-header` |
+| ◐ | Repeat header rows on each page | Word ▸ Table Layout ▸ Data ▸ Repeat Header Rows | critical | P0 | WP-63 | `write.table-layout.repeat-header` |
 | ○ | Convert table to text | Word ▸ Table Layout ▸ Data ▸ Convert to Text | critical | P0 | WP-64 | `write.table-layout.convert-to-text` |
 | ○ | Table formulas (=SUM(ABOVE), bookmarks, number format) | Word ▸ Table Layout ▸ Data ▸ Formula | niche | P2 | WP-64 | `write.table-layout.formula` |
 | ○ | Sort table rows by columns | Word ▸ Table Layout ▸ Data ▸ Sort | commonly-missed | P1 | WP-64 | `write.table-layout.sort` |
 | ○ | Table Properties dialog (table, row, column, cell; alignment, text wrapping around floating tables) | Word ▸ Table Layout ▸ Table ▸ Properties | critical | P0 | WP-64 | `write.table-layout.properties` |
-| ○ | Nested tables (displayed and edited) | Word ▸ nested tables | commonly-missed | P0 | WP-63 | `write.table-layout.nested-tables` |
+| ◐ | Nested tables (displayed and edited) | Word ▸ nested tables | commonly-missed | P0 | WP-63 | `write.table-layout.nested-tables` |
 
 ### Picture Format (contextual)
 
@@ -601,10 +622,10 @@ Score 1.1 % over 231 rows in scope; 0 better, 0 done, 4 partial, 227 missing, 1 
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Different first page | Word ▸ Header & Footer ▸ Options ▸ Different First Page | critical | P0 | WP-63 | `write.header-footer.different-first` |
-| ○ | Different odd and even pages | Word ▸ Header & Footer ▸ Options ▸ Different Odd & Even Pages | critical | P0 | WP-63 | `write.header-footer.different-odd-even` |
-| ○ | Link to previous section | Word ▸ Header & Footer ▸ Navigation ▸ Link to Previous | critical | P0 | WP-63 | `write.header-footer.link-previous` |
-| ○ | Header and footer distance from edge | Word ▸ Header & Footer ▸ Position | critical | P0 | WP-63 | `write.header-footer.position` |
+| ◐ | Different first page | Word ▸ Header & Footer ▸ Options ▸ Different First Page | critical | P0 | WP-63 | `write.header-footer.different-first` |
+| ◐ | Different odd and even pages | Word ▸ Header & Footer ▸ Options ▸ Different Odd & Even Pages | critical | P0 | WP-63 | `write.header-footer.different-odd-even` |
+| ◐ | Link to previous section | Word ▸ Header & Footer ▸ Navigation ▸ Link to Previous | critical | P0 | WP-63 | `write.header-footer.link-previous` |
+| ◐ | Header and footer distance from edge | Word ▸ Header & Footer ▸ Position | critical | P0 | WP-63 | `write.header-footer.position` |
 | ○ | Go to header/footer, previous/next section, close (Esc, double-click body) | Word ▸ Header & Footer ▸ Navigation / Close | critical | P0 | WP-64 | `write.header-footer.navigate-close` |
 
 ### Editing behaviour
@@ -630,12 +651,12 @@ Score 1.1 % over 231 rows in scope; 0 better, 0 done, 4 partial, 227 missing, 1 
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Pagination matching Word within ±1 line per page for standard fonts | Word ▸ page layout | critical | P0 | WP-63 | `write.layout.pagination-fidelity` |
-| ○ | Keep with next, keep lines together, widow/orphan control, page break before | Word ▸ Paragraph ▸ Line and Page Breaks | critical | P0 | WP-63 | `write.layout.keep-rules` |
-| ○ | Sections with different page size, orientation, margins, columns and headers | Word ▸ sections | critical | P0 | WP-63 | `write.layout.sections` |
+| ◐ | Pagination matching Word within ±1 line per page for standard fonts | Word ▸ page layout | critical | P0 | WP-63 | `write.layout.pagination-fidelity` |
+| ◐ | Keep with next, keep lines together, widow/orphan control, page break before | Word ▸ Paragraph ▸ Line and Page Breaks | critical | P0 | WP-63 | `write.layout.keep-rules` |
+| ◐ | Sections with different page size, orientation, margins, columns and headers | Word ▸ sections | critical | P0 | WP-63 | `write.layout.sections` |
 | ○ | Floating (positioned) tables with text wrap | Word ▸ Table Properties ▸ Text wrapping Around | commonly-missed | P1 | WP-63 | `write.layout.floating-tables` |
 | ○ | Balanced columns at continuous section breaks | Word ▸ continuous section break balancing | commonly-missed | P1 | WP-63 | `write.layout.column-balancing` |
-| ○ | Bidirectional text (Arabic, Hebrew) shaping and caret movement in documents | Word ▸ RTL text | commonly-missed | P0 | WP-63 | `write.layout.bidi-text` |
+| ◐ | Bidirectional text (Arabic, Hebrew) shaping and caret movement in documents | Word ▸ RTL text | commonly-missed | P0 | WP-63 | `write.layout.bidi-text` |
 | ○ | East Asian typography (vertical text, ruby, kinsoku line breaking) | Word ▸ Asian Typography | niche | P2 | WP-64 | `write.layout.east-asian` |
 
 ### Files

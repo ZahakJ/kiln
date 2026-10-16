@@ -329,3 +329,38 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   in `crates/kiln-doc/src/model.rs` still add `grid_before`/`grid_after`/spans as unchecked
   `usize` (32 bits on wasm); a model built by another source (CRDT merge, a future ODF reader)
   could still overflow there. Suggest saturating adds or a model-level clamp in `validate`.
+
+## WP-63 → WP-64 (Write editor), WP-67 (PDF), WP-53 (text), WP-60 (bench/CLI), the session owner
+
+- Outside the owned paths, all additive: `crates/kiln-session/src/frame/mod.rs` (`FrameSource::image_updates`, a
+  default method returning nothing, and one line in `FrameState::produce` that puts the pictures into
+  `SceneDelta::images`); `crates/kiln-cli/src/render.rs` (the test that expected `.docx` rendering to fail now
+  renders it and checks the refusal with an unknown extension); `crates/kiln-bench/src/main.rs` and
+  `xtask/src/budgets.rs` (`assert --only <id>` / `cargo xtask budgets --only B3`, which the WP-63 acceptance names;
+  with `--only` the report is not rewritten), `crates/kiln-bench/src/scenarios/mod.rs` (the `write` module from
+  `src/benches/write.rs` and two `Bench` rows), `crates/kiln-bench/Cargo.toml` (`kiln-io-docx`, `kiln-doc-layout`),
+  `bench/budgets.toml` (both B3 rows point at `write-open-300p`, the second at its `full_ms`; a component row
+  `write-frame`), `Cargo.lock`, `THIRD-PARTY-NOTICES.md` (regenerated for `image` and its decoders), `CHANGELOG.md`,
+  21 parity rows set to partial with `PARITY.md` and the badge regenerated, and this note.
+- For WP-64: `crates/kiln-session/src/apps/write/` holds the Write app: `mod.rs` (model, frame source, selection,
+  status with the page, a11y), `view.rs` (layout + scene + overlay; edits are noted per transaction and laid out
+  lazily near the viewport), `editing.rs` (the scratch command set on `kiln-doc` transactions). `commands/` is yours.
+  Not done here: `Query::Rulers` in `kiln-protocol` — the data is ready in `kiln_doc_layout::rulers::rulers(layout,
+  doc, pos)` (margins, columns, indents, tabs, default tab, text area); the view-mode switch of the ribbon only has to
+  set `Viewport::mode` (print/web/read/draft map to `View`); Update Field (F9) can write
+  `kiln_doc_layout::fields::field_updates` / `toc_entries` as transactions (fields display cached results until
+  then). Word's second caret at bidi boundaries is in `CaretGeom::secondary` (the overlay draws it half height).
+- For WP-67 (PDF export): `DocScene::page_ops(layout, doc, page, tile)` gives a page's ops in tile-local document px
+  (glyph runs as atlas quads; `kiln_text::glyph_outline` gives vector outlines for PDF). Pictures are
+  `DrawOp::Image` with the ids of `DocScene::image_updates`.
+- For WP-53 (`kiln-text`): there is no inline-object API, so an inline picture is a 1-px zero-width space raised by
+  `baseline_shift` to the picture's height and widened by `letter_spacing` to its width (`source.rs`); a real
+  "inline box" span (width, ascent, descent, break before/after) would remove the trick. The bundled fonts have no
+  Arabic or CJK glyphs, so `rtl.docx` and the CJK samples paint tofu without system fonts (the golden PNGs avoid
+  them). `AtlasGlyphs` in `kiln-doc-layout` duplicates the session's `frame::GlyphCache` (≈100 lines) so pages render
+  without the session; one could move to `kiln-text` or `kiln-scene`.
+- Known limits (README): footnotes do not continue across pages; floating tables flow in place; column balancing is
+  off; line numbers, page borders and page colour are not drawn; horizontal character scaling and text effects are
+  ignored.
+- Disk: `target/debug/incremental` had grown to 16 GB and filled the disk mid-build; incremental directories not
+  touched for an hour were deleted (cargo rebuilds them).

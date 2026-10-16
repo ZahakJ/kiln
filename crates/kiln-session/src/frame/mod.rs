@@ -18,7 +18,7 @@ pub use glyphs::GlyphCache;
 
 use kiln_common::Result;
 use kiln_protocol::Viewport;
-use kiln_scene::{AtlasUpdate, Bounds, DeltaTracker, Scene, SceneDelta};
+use kiln_scene::{AtlasUpdate, Bounds, DeltaTracker, ImageUpload, Scene, SceneDelta};
 
 /// Viewports added on every side of the visible rectangle for prefetching.
 pub const PREFETCH_MARGIN: f32 = 1.0;
@@ -76,6 +76,13 @@ pub trait FrameSource {
     /// Glyph-atlas pixels the painter lacks: every page with `all` (after a reset), otherwise the
     /// pages changed since the last call.
     fn atlas_updates(&mut self, all: bool) -> Vec<AtlasUpdate>;
+
+    /// Pictures the painter lacks: every picture with `all` (after a reset), otherwise the ones
+    /// first used since the last call. Sources without pictures keep the default.
+    fn image_updates(&mut self, all: bool) -> Vec<ImageUpload> {
+        let _ = all;
+        Vec::new()
+    }
 
     /// Size of the whole surface before any viewport is known (for a first, empty frame).
     fn extent(&self) -> Bounds;
@@ -135,6 +142,7 @@ impl FrameState {
             .tracker
             .delta(source.scene(), &request.send, &request.keep, revision);
         delta.atlas = source.atlas_updates(delta.reset);
+        delta.images = source.image_updates(delta.reset);
         Ok(delta)
     }
 }

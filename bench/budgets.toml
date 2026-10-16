@@ -21,7 +21,7 @@ part = "first page painted"
 scenario = "Open a 300-page .docx (mixed text, tables, images) to the first painted page"
 limit = 400.0
 unit = "ms"
-pending = "WP-62, WP-63: doc-open"
+bench = "write-open-300p"
 
 [[budget]]
 id = "B3"
@@ -29,7 +29,8 @@ part = "fully paginated"
 scenario = "Open a 300-page .docx (mixed text, tables, images) until fully paginated"
 limit = 1500.0
 unit = "ms"
-pending = "WP-62, WP-63: doc-open"
+bench = "write-open-300p"
+metric = "full_ms"
 
 [[budget]]
 id = "B7"
@@ -120,4 +121,12 @@ scenario = "Open, inflate every part and save a 1M-cell .xlsx package (kiln-ooxm
 limit = 300.0
 unit = "ms"
 bench = "ooxml-repack-large"
+group = "component"
+
+[[budget]]
+id = "write-frame"
+scenario = "One frame after jumping within the open 300-page .docx (WP-63)"
+limit = 16.7
+unit = "ms"
+bench = "write-frame"
 group = "component"

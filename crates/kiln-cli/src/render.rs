@@ -457,16 +457,38 @@ mod tests {
         .unwrap();
         assert!(out.contains("page-001.png"), "{out}");
         assert!(dir.join("page-001.png").is_file());
+        // Word documents render through the Write layout (WP-63).
         let docx = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("../../fixtures/docx/features/tables.docx");
-        let err = run(&[
+        let out = run(&[
             docx.to_string_lossy().into_owned(),
             "--png".into(),
             dir.join("t.png").to_string_lossy().into_owned(),
+            "--dpi".into(),
+            "24".into(),
+        ])
+        .unwrap();
+        assert!(
+            out.contains("t.png") && dir.join("t.png").is_file(),
+            "{out}"
+        );
+        // A kind no app opens is refused, naming the file.
+        let unknown = dir.join("notes.xyz");
+        std::fs::write(&unknown, b"?").unwrap();
+        let err = run(&[
+            unknown.to_string_lossy().into_owned(),
+            "--png".into(),
+            dir.join("u.png").to_string_lossy().into_owned(),
         ])
         .unwrap_err();
-        assert!(matches!(err, CliError::Failed(_)));
-        assert!(err.to_string().contains(".docx"), "{err}");
+        assert!(
+            matches!(err, CliError::Failed(_) | CliError::Usage(_)),
+            "{err}"
+        );
+        assert!(
+            err.to_string().contains("notes.xyz") || err.to_string().contains("xyz"),
+            "{err}"
+        );
         let _ = std::fs::remove_dir_all(&dir);
     }
 }
