@@ -681,9 +681,30 @@ fn param_angle(wr: f64, hr: f64, ang: f64) -> f64 {
     (wr * th.sin()).atan2(hr * th.cos())
 }
 
+/// A full turn in DrawingML angle units (60 000ths of a degree).
+const FULL_TURN: f64 = DEG * 360.0;
+
+/// Sanitises an arc's sweep angle: Office draws any `|swAng| >= 21 600 000` as a full ellipse, so
+/// longer sweeps are clamped to one turn (keeping their direction) and a non-finite sweep draws
+/// nothing. Without this a file could ask for an arbitrarily long arc and make rendering run for
+/// ever.
+fn clamp_sweep(sw: f64) -> f64 {
+    if sw.is_finite() {
+        sw.clamp(-FULL_TURN, FULL_TURN)
+    } else {
+        0.0
+    }
+}
+
+/// Sanitises an arc's start angle: a non-finite angle is treated as 0.
+fn finite_angle(a: f64) -> f64 {
+    if a.is_finite() { a } else { 0.0 }
+}
+
 impl Segment {
     /// The arc's end point.
     fn arc_end(from: Point, wr: f64, hr: f64, st: f64, sw: f64) -> Point {
+        let (st, sw) = (finite_angle(st), clamp_sweep(sw));
         let center = from - ellipse_point(wr, hr, st);
         center + ellipse_point(wr, hr, st + sw)
     }
@@ -730,6 +751,8 @@ impl ResolvedPath {
                     st_ang,
                     sw_ang,
                 } => {
+                    // `Segment` is public, so a caller-built arc is sanitised here as well.
+                    let (st_ang, sw_ang) = (finite_angle(st_ang), clamp_sweep(sw_ang));
                     let center = from - ellipse_point(wr, hr, st_ang);
                     if wr == 0.0 || hr == 0.0 || sw_ang == 0.0 {
                         parts.push(format!(
@@ -825,8 +848,11 @@ impl ResolvedPath {
 }
 
 fn append_arc(path: &mut BezPath, from: Point, wr: f64, hr: f64, st: f64, sw: f64, tol: f64) {
+    // `Segment` is public, so a caller-built arc is sanitised here as well.
+    let (st, sw) = (finite_angle(st), clamp_sweep(sw));
     let end = Segment::arc_end(from, wr, hr, st, sw);
-    if wr == 0.0 || hr == 0.0 || sw == 0.0 || !end.is_finite() {
+    if wr == 0.0 || hr == 0.0 || sw == 0.0 || !end.is_finite() || !wr.is_finite() || !hr.is_finite()
+    {
         if end.is_finite() {
             path.line_to(end);
         }
@@ -858,7 +884,11 @@ fn append_arc(path: &mut BezPath, from: Point, wr: f64, hr: f64, st: f64, sw: f6
     let (sx, sy) = (wr.signum(), hr.signum());
     let start = (sy * start.sin()).atan2(sx * start.cos());
     let sweep = if sx * sy < 0.0 { -sweep } else { sweep };
-    let arc = Arc::new(center, Vec2::new(wr.abs(), hr.abs()), start, sweep, 0.0);
+    let radii = Vec2::new(wr.abs(), hr.abs());
+    // kurbo subdivides by radius / tolerance; an error of a billionth of the radius is invisible
+    // and keeps the cubic count bounded (about 32 per turn) however large a file makes the radii.
+    let tol = tol.max(radii.x.max(radii.y) * 1e-9);
+    let arc = Arc::new(center, radii, start, sweep, 0.0);
     for el in arc.append_iter(tol) {
         path.push(el);
     }
@@ -990,7 +1020,7 @@ impl CompiledGeometry {
                         }
                         CompiledCmd::ArcTo([wr, hr, st, sw]) => {
                             let (wr, hr) = (val(wr) * sx, val(hr) * sy);
-                            let (st, sw) = (val(st), val(sw));
+                            let (st, sw) = (finite_angle(val(st)), clamp_sweep(val(sw)));
                             segments.push(Segment::ArcTo {
                                 from: cur,
                                 wr,

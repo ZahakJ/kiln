@@ -8,8 +8,9 @@
 //! ```
 //!
 //! For each package it reports the median of several runs of `OpcPackage::open` + `save` (no
-//! edits), checks that the output is byte-identical part by part, and also times a full read
-//! (every part inflated) for reference. Exits with status 1 when a package misses the budget.
+//! edits), checks that the output is byte-identical part by part, and times a full read (open,
+//! inflate every part, repack). The budget applies to both figures; the full read is the one to
+//! register in `bench/budgets.toml`. Exits with status 1 when a package misses the budget.
 
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
@@ -84,13 +85,13 @@ fn bench(path: &Path) -> Result<bool, String> {
     }
 
     let repack_ms = ms(median(repack));
-    let ok = repack_ms < BUDGET_MS;
+    let full_ms = ms(median(full));
+    let ok = repack_ms < BUDGET_MS && full_ms < BUDGET_MS;
     println!(
-        "{name}: open + repack {repack_ms:.1} ms (budget {BUDGET_MS:.0} ms, {}) | \
-         open + inflate every part + repack {:.1} ms | {:.1} MB zip, {:.1} MB uncompressed, \
+        "{name}: open + inflate every part + repack {full_ms:.1} ms (budget {BUDGET_MS:.0} ms, {}) | \
+         open + raw repack {repack_ms:.1} ms | {:.1} MB zip, {:.1} MB uncompressed, \
          {} parts, parts byte-identical",
         if ok { "ok" } else { "OVER BUDGET" },
-        ms(median(full)),
         bytes.len() as f64 / 1e6,
         uncompressed as f64 / 1e6,
         before.len(),

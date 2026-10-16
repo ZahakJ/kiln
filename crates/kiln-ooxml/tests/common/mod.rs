@@ -6,8 +6,13 @@ use std::io::{Cursor, Read};
 use std::path::{Path, PathBuf};
 
 /// The repository's `fixtures/` directory.
+///
+/// The manifest directory is read at run time (cargo and nextest both set it) so a test binary
+/// reused from a compiler cache built in another checkout still reads this checkout's fixtures.
 pub fn fixtures_dir() -> PathBuf {
-    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../fixtures")
+    let manifest = std::env::var_os("CARGO_MANIFEST_DIR")
+        .map_or_else(|| PathBuf::from(env!("CARGO_MANIFEST_DIR")), PathBuf::from);
+    manifest.join("../../fixtures")
 }
 
 /// The bytes of a fixture, by path relative to `fixtures/`.

@@ -785,3 +785,106 @@ mod text {
         );
     }
 }
+
+/// Custom geometry whose single arc takes its sweep (and radii) from guides, so a file can ask for
+/// any angle a formula can produce.
+fn arc_geometry(
+    sweep_guide: &str,
+    radius: &str,
+) -> kiln_ooxml::drawingml::geometry::ResolvedGeometry {
+    use kiln_ooxml::drawingml::geometry::parse_geometry;
+    let xml = format!(
+        r#"<a:custGeom xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:avLst/><a:gdLst>
+        <a:gd name="big" fmla="val 9000000000000000000"/>
+        <a:gd name="b2" fmla="*/ big big 1"/>
+        <a:gd name="b4" fmla="*/ b2 b2 1"/>
+        <a:gd name="b8" fmla="*/ b4 b4 1"/>
+        <a:gd name="b16" fmla="*/ b8 b8 1"/>
+        <a:gd name="inf" fmla="*/ b16 b16 1"/>
+        <a:gd name="ninf" fmla="+- 0 0 inf"/>
+        <a:gd name="nan" fmla="+- inf 0 inf"/>
+        <a:gd name="neg" fmla="+- 0 0 big"/>
+        <a:gd name="mid" fmla="val 2160000000000"/>
+        </a:gdLst><a:pathLst><a:path w="100" h="100"><a:moveTo><a:pt x="0" y="0"/></a:moveTo>
+        <a:arcTo wR="{radius}" hR="{radius}" stAng="0" swAng="{sweep_guide}"/></a:path></a:pathLst></a:custGeom>"#
+    );
+    let doc = parse_xml_str(&xml).expect("well-formed");
+    parse_geometry(&doc.root)
+        .resolve(100.0, 100.0, &[])
+        .expect("resolves")
+}
+
+#[test]
+fn hostile_arc_sweeps_are_clamped_to_one_turn() {
+    use kiln_ooxml::drawingml::geometry::Segment;
+    let started = std::time::Instant::now();
+    for sweep in ["big", "neg", "mid", "b16", "inf", "ninf", "nan"] {
+        for radius in ["50", "b16"] {
+            let geom = arc_geometry(sweep, radius);
+            let path = &geom.paths[0];
+            let Segment::ArcTo { sw_ang, st_ang, .. } = path.segments[1] else {
+                panic!("expected an arc, got {:?}", path.segments[1]);
+            };
+            assert!(st_ang.is_finite(), "{sweep}: start {st_ang}");
+            assert!(
+                sw_ang.is_finite() && sw_ang.abs() <= 21_600_000.0,
+                "{sweep}: sweep {sw_ang} not clamped"
+            );
+            // One turn is at most two SVG arc commands and a handful of cubics.
+            let svg = path.to_svg();
+            assert!(svg.matches('A').count() <= 2, "{sweep}/{radius}: {svg}");
+            let bez = path.to_bez_path(0.1);
+            assert!(
+                bez.elements().len() <= 200,
+                "{sweep}/{radius}: {} elements",
+                bez.elements().len()
+            );
+        }
+    }
+    // Directions survive the clamp. Guides never yield a non-finite value (an overflowing
+    // formula evaluates to 0), so those sweeps draw nothing; caller-built non-finite arcs are
+    // covered below.
+    let sweep_of = |g: &str| match arc_geometry(g, "50").paths[0].segments[1] {
+        Segment::ArcTo { sw_ang, .. } => sw_ang,
+        ref s => panic!("expected an arc, got {s:?}"),
+    };
+    assert_eq!(sweep_of("big"), 21_600_000.0);
+    assert_eq!(sweep_of("neg"), -21_600_000.0);
+    assert_eq!(sweep_of("b16"), 21_600_000.0);
+    assert_eq!(sweep_of("inf"), 0.0);
+    assert_eq!(sweep_of("ninf"), 0.0);
+    assert_eq!(sweep_of("nan"), 0.0);
+    assert!(started.elapsed() < std::time::Duration::from_secs(5));
+}
+
+#[test]
+fn caller_built_arcs_are_sanitised_too() {
+    use kiln_ooxml::drawingml::geometry::{ResolvedPath, Segment};
+    use kiln_ooxml::st::PathFillMode;
+    for sw_ang in [9e18, -9e18, f64::INFINITY, f64::NEG_INFINITY, f64::NAN] {
+        for st_ang in [0.0, f64::NAN] {
+            let path = ResolvedPath {
+                segments: vec![
+                    Segment::MoveTo(kurbo::Point::new(100.0, 50.0)),
+                    Segment::ArcTo {
+                        from: kurbo::Point::new(100.0, 50.0),
+                        wr: 50.0,
+                        hr: 50.0,
+                        st_ang,
+                        sw_ang,
+                    },
+                ],
+                fill: PathFillMode::Norm,
+                stroke: true,
+                extrusion_ok: false,
+                closed: false,
+            };
+            let svg = path.to_svg();
+            assert!(
+                svg.len() < 200 && !svg.contains("NaN"),
+                "{sw_ang}/{st_ang}: {svg}"
+            );
+            assert!(path.to_bez_path(0.1).elements().len() <= 64);
+        }
+    }
+}
