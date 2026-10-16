@@ -12,8 +12,8 @@
 use std::sync::Arc;
 use std::time::Instant;
 
+use kiln_formula::engine::number_arg;
 use kiln_formula::engine::{Area, Arg, CallContext, Engine, EngineOptions, EvalValue, Reference};
-use kiln_formula::engine::{number_arg, scalar_arg};
 use kiln_formula::registry::{FunctionRegistry, FunctionSpec, FunctionTable};
 use kiln_formula::values::{ErrorValue, Value};
 
@@ -42,7 +42,6 @@ fn index(args: &mut [Arg<'_>], ctx: &mut dyn CallContext) -> EvalValue {
     if r < 1 || c < 1 || r as usize > h || c as usize > w {
         return EvalValue::from(ErrorValue::Ref);
     }
-    let _ = scalar_arg;
     EvalValue::Ref(Reference::area(Area::cell(
         a.sheet,
         a.bounds.r0 + (r - 1) as u32,
@@ -211,4 +210,7 @@ fn main() {
         "budgets B8<2000ms B9<2ms: {}",
         if ok { "PASS" } else { "FAIL" }
     );
+    if !ok {
+        std::process::exit(1);
+    }
 }

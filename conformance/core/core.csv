@@ -16,6 +16,7 @@ formula,expected,type,notes
 "=SUM(1,2,3)",6,number,curated-math.csv: Microsoft documentation example (SUM)
 "=SUM({5,15,30},""2"",TRUE)",53,number,curated-math.csv: Microsoft documentation example (SUM)
 =SUM(Data!D1:D10),2.5,number,curated-math.csv: Excel behaviour: logicals and text in ranges are ignored
+=SUM(Data!G1:G2),#DIV/0!,error,curated-math.csv: Excel behaviour: errors propagate
 "=SUM(""5"",TRUE,2)",8,number,curated-math.csv: Excel behaviour: typed-in text numbers and logicals count
 "=SUM(""x"")",#VALUE!,error,curated-math.csv: Excel behaviour
 =0.1+0.2=0.3,TRUE,boolean,curated-math.csv: WP-09 spot check: 15-digit comparison

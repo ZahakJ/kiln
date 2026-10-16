@@ -248,6 +248,13 @@ impl Parser<'_> {
                 if SPILL_BP < min_bp || ws {
                     return Step::Done(Ok(left));
                 }
+                if is_literal(&left) {
+                    return Step::Done(err(
+                        "The # operator needs a reference to a cell",
+                        left.span.start,
+                        p.end,
+                    ));
+                }
                 self.pos = p.idx + 1;
                 Step::More(postfix(PostfixOp::Spill, left, p.end))
             }
@@ -301,6 +308,14 @@ impl Parser<'_> {
 
     fn binary_rhs(&mut self, op: BinaryOp, left: Node, min_bp: u8, union: bool) -> Step {
         match self.expression(min_bp, union) {
+            Ok(right) if op == BinaryOp::Range && (is_literal(&left) || is_literal(&right)) => {
+                // Excel refuses `=1:1048577` or `=A1:5`: both sides of `:` must be references.
+                Step::Done(err(
+                    "Both sides of : must be cell references",
+                    left.span.start,
+                    right.span.end,
+                ))
+            }
             Ok(right) => Step::More(binary(op, left, right)),
             Err(e) => Step::Done(Err(e)),
         }
@@ -512,6 +527,14 @@ fn postfix(op: PostfixOp, operand: Node, end: u32) -> Node {
             operand: Box::new(operand),
         },
         Span::new(start, end),
+    )
+}
+
+/// A number, text, logical or array constant: never a reference.
+fn is_literal(n: &Node) -> bool {
+    matches!(
+        n.kind,
+        NodeKind::Number(_) | NodeKind::Str(_) | NodeKind::Bool(_) | NodeKind::Array(_)
     )
 }
 

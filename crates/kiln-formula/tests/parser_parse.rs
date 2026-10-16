@@ -226,11 +226,33 @@ fn rejects_malformed_formulas_with_a_message() {
         ("=\"abc", "quotation"),
         ("=1 2 +", ""),
         ("=*3", "Unexpected"),
+        ("=1:1048577", "references"),
+        ("=A1:5", "references"),
+        ("=\"a\":A1", "references"),
+        ("={1}:A1", "references"),
+        ("=1#", "reference"),
+        ("=\"A1\"#", "reference"),
     ] {
         match parse(src, &ParseOptions::default()) {
             Ok(_) => panic!("{src} should not parse"),
             Err(e) => assert!(e.message.contains(msg), "{src}: {}", e.message),
         }
+    }
+}
+
+#[test]
+fn ranges_rows_and_spills_of_references_still_parse() {
+    for src in [
+        "=1:1048576",
+        "=A1:B2",
+        "=A:A",
+        "=(A1):(B2)",
+        "=A1#",
+        "=Sheet1!A1#",
+        "=A1:INDEX(B:B,2)",
+        "=#REF!:A1",
+    ] {
+        assert!(parse(src, &ParseOptions::default()).is_ok(), "{src}");
     }
 }
 

@@ -7,6 +7,7 @@
 pub(crate) mod builtins;
 mod core;
 mod eval;
+mod explain;
 mod expr;
 mod graph;
 mod host;
@@ -24,6 +25,7 @@ pub use eval::{
     CallContext, MAX_EVAL_DEPTH, MAX_LAMBDA_DEPTH, MAX_NAME_DEPTH, arithmetic, broadcast_dims,
     broadcast_pick, lift_binary,
 };
+pub use explain::{ExplainKind, ExplainStep, MAX_ARRAY_PREVIEW, format_scalar, format_value};
 pub use expr::{CompileContext, Coord, Expr, FuncRef, NameScope, RelAddress, SheetSel, compile};
 pub use host::{EngineHost, HostReadOnly, MemoryHost, TableDef};
 pub use types::{

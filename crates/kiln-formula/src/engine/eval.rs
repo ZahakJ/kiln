@@ -9,6 +9,7 @@
 
 use std::sync::Arc;
 
+use rustc_hash::FxHashMap;
 use smallvec::SmallVec;
 
 use super::expr::{Expr, FuncRef, NameScope, RelAddress, SheetSel};
@@ -143,6 +144,24 @@ pub(crate) struct Evaluator<'s> {
     name_depth: u32,
     coercion: CoercionOptions,
     pub(crate) hyperlink: Option<String>,
+    /// Per-expression evaluation record for the Formula Lab (`None` outside `Engine::explain`).
+    trace: Option<FxHashMap<usize, TraceEntry>>,
+}
+
+/// What one sub-expression evaluated to during a traced evaluation.
+#[derive(Debug, Clone)]
+pub(crate) struct TraceEntry {
+    /// The last value it produced (references are not dereferenced).
+    pub(crate) value: EvalValue,
+    /// How many times it was evaluated (more than once inside lambdas).
+    pub(crate) count: u32,
+}
+
+/// The trace key of an expression: its address. Every traced expression of a formula lives in
+/// the compiled tree, which is borrowed for the whole evaluation, so addresses are stable and
+/// distinct; temporaries (INDIRECT targets, defined-name bodies) never alias a live tree node.
+pub(crate) fn trace_key(e: &Expr) -> usize {
+    std::ptr::from_ref(e) as usize
 }
 
 fn err(e: ErrorValue) -> EvalValue {
@@ -313,7 +332,28 @@ impl<'s> Evaluator<'s> {
             name_depth: 0,
             coercion,
             hyperlink: None,
+            trace: None,
         }
+    }
+
+    /// Records the value and evaluation count of every sub-expression from now on.
+    pub(crate) fn enable_trace(&mut self) {
+        self.trace = Some(FxHashMap::default());
+    }
+
+    /// The trace entry of an expression, if tracing is on and it was evaluated.
+    pub(crate) fn traced(&self, e: &Expr) -> Option<&TraceEntry> {
+        self.trace.as_ref()?.get(&trace_key(e))
+    }
+
+    /// The function registry of the workbook.
+    pub(crate) fn registry(&self) -> &dyn FunctionRegistry {
+        self.src.workbook().registry()
+    }
+
+    /// The formula's sheet.
+    pub(crate) fn formula_sheet(&self) -> SheetId {
+        self.sheet
     }
 
     /// Evaluates a whole formula and reduces the result to what a cell holds.
@@ -354,6 +394,18 @@ impl<'s> Evaluator<'s> {
         self.depth += 1;
         let v = self.eval_inner(e);
         self.depth -= 1;
+        if let Some(trace) = &mut self.trace {
+            trace
+                .entry(trace_key(e))
+                .and_modify(|t| {
+                    t.value = v.clone();
+                    t.count = t.count.saturating_add(1);
+                })
+                .or_insert_with(|| TraceEntry {
+                    value: v.clone(),
+                    count: 1,
+                });
+        }
         v
     }
 
@@ -507,7 +559,9 @@ impl<'s> Evaluator<'s> {
 
     /// Evaluates and dereferences (fast path for plain cell references).
     fn eval_value(&mut self, e: &Expr) -> Value {
-        if let Expr::Ref(SheetSel::Current, RelAddress::Cell { row, col }) = e {
+        if let Expr::Ref(SheetSel::Current, RelAddress::Cell { row, col }) = e
+            && self.trace.is_none()
+        {
             return match (
                 row.resolve(self.anchor.0, MAX_ROWS),
                 col.resolve(self.anchor.1, MAX_COLS),

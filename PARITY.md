@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **0.2 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **1.0 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,23 +12,23 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 0.2 % | 782 | 0 | 0 | 3 | 779 | 20 |
+| **Overall** | 1.0 % | 782 | 0 | 0 | 14 | 768 | 20 |
 | Kiln Write | 0.0 % | 231 | 0 | 0 | 0 | 231 | 1 |
-| Kiln Grid | 0.0 % | 261 | 0 | 0 | 0 | 261 | 6 |
+| Kiln Grid | 2.4 % | 261 | 0 | 0 | 11 | 250 | 6 |
 | Kiln Deck | 0.0 % | 184 | 0 | 0 | 0 | 184 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
 | Suite | 2.6 % | 62 | 0 | 0 | 3 | 59 | 9 |
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 0.2 % | 462 | 0 | 0 | 2 | 460 | 0 |
-| commonly-missed | 0.2 % | 224 | 0 | 0 | 1 | 223 | 0 |
-| niche | 0.0 % | 96 | 0 | 0 | 0 | 96 | 20 |
+| critical | 1.2 % | 462 | 0 | 0 | 11 | 451 | 0 |
+| commonly-missed | 0.4 % | 224 | 0 | 0 | 2 | 222 | 0 |
+| niche | 0.5 % | 96 | 0 | 0 | 1 | 95 | 20 |
 
 | App | Critical | Commonly-missed | Niche |
 |---|---:|---:|---:|
 | Kiln Write | 0.0 % (146) | 0.0 % (58) | 0.0 % (27) |
-| Kiln Grid | 0.0 % (143) | 0.0 % (83) | 0.0 % (35) |
+| Kiln Grid | 3.1 % (143) | 0.6 % (83) | 1.4 % (35) |
 | Kiln Deck | 0.0 % (119) | 0.0 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
 | Suite | 3.2 % (31) | 1.7 % (29) | 0.0 % (2) |
@@ -82,6 +82,17 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 
 | Row | Feature | From | To |
 |---|---|---|---|
+| `grid.home.number.format-combo` | Number format combo: General, Number, Currency, Accounting, Short/Long Date, Time, Percentage, Fraction, Scientific, Text | missing | partial |
+| `grid.home.number.custom-formats` | Custom number format codes (sections, colours, conditions, elapsed time, fractions, text placeholders) | missing | partial |
+| `grid.formulas.calculation.iterative` | Iterative calculation (max iterations, max change) and circular reference warnings | missing | partial |
+| `grid.formulas.calculation.multithreaded` | Multi-threaded incremental recalculation of large workbooks | missing | partial |
+| `grid.language.dynamic-arrays` | Dynamic arrays with spill ranges, the # spill operator and #SPILL! errors | missing | partial |
+| `grid.language.structured-references` | Structured references to table columns (Table1[Sales], [@Qty], #Totals) | missing | partial |
+| `grid.language.3d-references` | 3-D references across sheets (Sheet1:Sheet3!A1) | missing | partial |
+| `grid.language.r1c1` | R1C1 reference style option | missing | partial |
+| `grid.language.date-1904` | 1900 and 1904 date systems with Excel's 1900 leap-year bug | missing | partial |
+| `grid.language.precision` | Excel precision rules: 15 significant digits, -0, floating display rounding | missing | partial |
+| `grid.language.legacy-cse` | Legacy array formulas (Ctrl+Shift+Enter) and implicit intersection (@) | missing | partial |
 | `suite.files.byte-preserving` | Byte-preserving saves: every part not edited is byte-identical after save | missing | partial |
 | `suite.files.macros-preserve` | Macro-enabled files (.docm/.xlsm/.pptm): vbaProject.bin preserved, never run | missing | partial |
 | `suite.security.hostile-files` | Hostile files refused cleanly (zip bombs, billion laughs, deep nesting) | missing | partial |
@@ -613,7 +624,7 @@ Score 0.0 % over 231 rows in scope; 0 better, 0 done, 0 partial, 231 missing, 1 
 
 ## Kiln Grid
 
-Score 0.0 % over 261 rows in scope; 0 better, 0 done, 0 partial, 261 missing, 6 out of scope.
+Score 2.4 % over 261 rows in scope; 0 better, 0 done, 11 partial, 250 missing, 6 out of scope.
 
 ### Home ▸ Clipboard
 
@@ -656,11 +667,11 @@ Score 0.0 % over 261 rows in scope; 0 better, 0 done, 0 partial, 261 missing, 6 
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Number format combo: General, Number, Currency, Accounting, Short/Long Date, Time, Percentage, Fraction, Scientific, Text | Excel ▸ Home ▸ Number ▸ Number Format | critical | P0 | WP-71 | `grid.home.number.format-combo` |
+| ◐ | Number format combo: General, Number, Currency, Accounting, Short/Long Date, Time, Percentage, Fraction, Scientific, Text | Excel ▸ Home ▸ Number ▸ Number Format | critical | P0 | WP-71 | `grid.home.number.format-combo` |
 | ○ | Accounting number format with currency choices | Excel ▸ Home ▸ Number ▸ Accounting Number Format | critical | P0 | WP-71 | `grid.home.number.accounting` |
 | ○ | Percent style (Ctrl+Shift+%) and comma style | Excel ▸ Home ▸ Number ▸ Percent Style / Comma Style | critical | P0 | WP-71 | `grid.home.number.percent-comma` |
 | ○ | Increase and decrease decimal | Excel ▸ Home ▸ Number ▸ Increase / Decrease Decimal | critical | P0 | WP-71 | `grid.home.number.decimals` |
-| ○ | Custom number format codes (sections, colours, conditions, elapsed time, fractions, text placeholders) | Excel ▸ Format Cells ▸ Number ▸ Custom | critical | P0 | WP-71 | `grid.home.number.custom-formats` |
+| ◐ | Custom number format codes (sections, colours, conditions, elapsed time, fractions, text placeholders) | Excel ▸ Format Cells ▸ Number ▸ Custom | critical | P0 | WP-71 | `grid.home.number.custom-formats` |
 | ○ | Format Cells dialog (Ctrl+1) with its six tabs: Number, Alignment, Font, Border, Fill, Protection | Excel ▸ Format Cells | critical | P0 | WP-71 | `grid.home.number.format-cells-dialog` |
 
 ### Home ▸ Styles
@@ -842,8 +853,8 @@ Score 0.0 % over 261 rows in scope; 0 better, 0 done, 0 partial, 261 missing, 6 
 |---|---|---|---|---|---|---|
 | ○ | Calculation options: automatic, automatic except tables, manual | Excel ▸ Formulas ▸ Calculation Options | critical | P0 | WP-69 | `grid.formulas.calculation.options` |
 | ○ | Calculate now (F9) and calculate sheet (Shift+F9) | Excel ▸ Formulas ▸ Calculate Now | critical | P0 | WP-69 | `grid.formulas.calculation.calculate-now` |
-| ○ | Iterative calculation (max iterations, max change) and circular reference warnings | Excel ▸ Options ▸ Formulas ▸ Enable iterative calculation | commonly-missed | P1 | WP-69 | `grid.formulas.calculation.iterative` |
-| ○ | Multi-threaded incremental recalculation of large workbooks | Excel ▸ multi-threaded calculation | critical | P0 | WP-69 | `grid.formulas.calculation.multithreaded` |
+| ◐ | Iterative calculation (max iterations, max change) and circular reference warnings | Excel ▸ Options ▸ Formulas ▸ Enable iterative calculation | commonly-missed | P1 | WP-69 | `grid.formulas.calculation.iterative` |
+| ◐ | Multi-threaded incremental recalculation of large workbooks | Excel ▸ multi-threaded calculation | critical | P0 | WP-69 | `grid.formulas.calculation.multithreaded` |
 
 ### Formulas ▸ Formula Lab
 
@@ -855,16 +866,16 @@ Score 0.0 % over 261 rows in scope; 0 better, 0 done, 0 partial, 261 missing, 6 
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Dynamic arrays with spill ranges, the # spill operator and #SPILL! errors | Excel 365 ▸ dynamic arrays | critical | P0 | WP-56 | `grid.language.dynamic-arrays` |
-| ○ | Structured references to table columns (Table1[Sales], [@Qty], #Totals) | Excel ▸ structured references | critical | P0 | WP-56 | `grid.language.structured-references` |
-| ○ | 3-D references across sheets (Sheet1:Sheet3!A1) | Excel ▸ 3-D references | critical | P0 | WP-56 | `grid.language.3d-references` |
+| ◐ | Dynamic arrays with spill ranges, the # spill operator and #SPILL! errors | Excel 365 ▸ dynamic arrays | critical | P0 | WP-56 | `grid.language.dynamic-arrays` |
+| ◐ | Structured references to table columns (Table1[Sales], [@Qty], #Totals) | Excel ▸ structured references | critical | P0 | WP-56 | `grid.language.structured-references` |
+| ◐ | 3-D references across sheets (Sheet1:Sheet3!A1) | Excel ▸ 3-D references | critical | P0 | WP-56 | `grid.language.3d-references` |
 | ○ | LET, LAMBDA and named LAMBDA functions | Excel 365 ▸ LET / LAMBDA | commonly-missed | P0 | WP-57 | `grid.language.lambda-let` |
-| ○ | R1C1 reference style option | Excel ▸ Options ▸ Formulas ▸ R1C1 reference style | niche | P2 | WP-56 | `grid.language.r1c1` |
+| ◐ | R1C1 reference style option | Excel ▸ Options ▸ Formulas ▸ R1C1 reference style | niche | P2 | WP-56 | `grid.language.r1c1` |
 | ○ | Locale decimal comma and ; argument separators in the formula bar | Excel ▸ regional formula separators | commonly-missed | P1 | — | `grid.language.locale-separators` |
 | ○ | Localised function names (de, es, fr…) shown and accepted | Excel ▸ localised function names | commonly-missed | P1 | — | `grid.language.localised-names` |
-| ○ | 1900 and 1904 date systems with Excel's 1900 leap-year bug | Excel ▸ Options ▸ Use 1904 date system | critical | P0 | WP-56 | `grid.language.date-1904` |
-| ○ | Excel precision rules: 15 significant digits, -0, floating display rounding | Excel ▸ precision | critical | P0 | WP-56 | `grid.language.precision` |
-| ○ | Legacy array formulas (Ctrl+Shift+Enter) and implicit intersection (@) | Excel ▸ CSE arrays | critical | P0 | WP-56 | `grid.language.legacy-cse` |
+| ◐ | 1900 and 1904 date systems with Excel's 1900 leap-year bug | Excel ▸ Options ▸ Use 1904 date system | critical | P0 | WP-56 | `grid.language.date-1904` |
+| ◐ | Excel precision rules: 15 significant digits, -0, floating display rounding | Excel ▸ precision | critical | P0 | WP-56 | `grid.language.precision` |
+| ◐ | Legacy array formulas (Ctrl+Shift+Enter) and implicit intersection (@) | Excel ▸ CSE arrays | critical | P0 | WP-56 | `grid.language.legacy-cse` |
 | – | Python in Excel (=PY) | Excel ▸ Formulas ▸ Insert Python | niche | out | — | `grid.language.python` |
 
 ### Formulas ▸ Function families

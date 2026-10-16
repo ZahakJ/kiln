@@ -2,7 +2,7 @@
 //! Shared helpers for the engine tests: an engine with a fixed clock, cell filling by A1 address,
 //! a deterministic PRNG, and a handful of test-only functions registered through the public
 //! `FunctionRegistry` (LET, LAMBDA, ISOMITTED, SEQUENCE, ROW, COLUMN, NOW, INDIRECT, OFFSET,
-//! COUNT, COUNTA, IFERROR, INDEX). The real implementations live in the function library; these
+//! COUNT, COUNTA, IFERROR, INDEX, MAP). The real implementations live in the function library; these
 //! exist to exercise the engine's lazy arguments, lambdas, spilling, volatility and dynamic
 //! references, and to prove the registry is a sufficient extension point.
 #![allow(dead_code)]
@@ -263,6 +263,30 @@ fn counta(args: &mut [Arg<'_>], ctx: &mut dyn CallContext) -> EvalValue {
     count_like(args, ctx, true)
 }
 
+/// `MAP(array, lambda)` over one array (enough to count repeated lambda evaluation).
+fn map(args: &mut [Arg<'_>], ctx: &mut dyn CallContext) -> EvalValue {
+    let source = force(args.first_mut(), ctx);
+    let a = match ctx.to_array(source) {
+        Ok(a) => a,
+        Err(e) => return err(e),
+    };
+    let f = force(args.get_mut(1), ctx);
+    let f = match ctx.to_value(f) {
+        Value::Lambda(l) if l.arity() == 1 => l,
+        Value::Error(e) => return err(e),
+        _ => return err(ErrorValue::Value),
+    };
+    let mut out = Vec::with_capacity(a.len());
+    for x in a.values() {
+        let v = ctx.invoke(&f, vec![EvalValue::Value(x.clone())]);
+        out.push(ctx.to_scalar(v));
+    }
+    match Array2D::new(a.rows(), a.cols(), out) {
+        Some(r) => EvalValue::Value(Value::array(r)),
+        None => err(ErrorValue::Calc),
+    }
+}
+
 fn iferror(args: &mut [Arg<'_>], ctx: &mut dyn CallContext) -> EvalValue {
     let v = scalar_arg(args.first_mut(), ctx);
     if v.as_error().is_some() {
@@ -358,6 +382,7 @@ pub fn test_registry() -> FunctionTable {
             ..FunctionSpec::new("IFERROR", 2, 2, iferror)
         },
         FunctionSpec::new("INDEX", 2, 3, index),
+        FunctionSpec::new("MAP", 2, 2, map),
     ]);
     t
 }

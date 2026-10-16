@@ -68,6 +68,10 @@ shows), and date serials in the 1900 system (with the Lotus 1900-02-29) and the 
   legacy formulas (`CellInput::Formula { legacy: true }`) and `@`; volatile functions; defined names with workbook
   and sheet scope; tables and structured references through the host; 3-D references in workbook order; structural
   edits, range moves, sheet renames, removals and reordering.
+- **Formula Lab** (`Engine::explain`, `explain_at`): evaluates a formula once with tracing and returns an
+  `ExplainStep` tree — every AST node with its source span, label, value (references dereferenced and shown as
+  `A1:A3 → {1;2;3}`), whether and how often it was evaluated (the untaken `IF` arm: never; a `MAP` lambda body:
+  once per item) and the function's description.
 - **Host**: literal values live in an `EngineHost` (the sheet model); `MemoryHost` is the in-memory one.
 - **Limits**: `#NUM!` instead of a crash for runaway lambda recursion (`MAX_LAMBDA_DEPTH`) or evaluation depth.
 
@@ -91,11 +95,12 @@ decimal, as in Excel. Locale data is English for now (other locale codes use the
 
 - `cargo nextest run -p kiln-formula`: unit tests plus `tests/parser_*.rs` (tokenizer, parser, rewriting,
   round-trips of every conformance formula), `tests/engine_*.rs` (recalculation, spills, structural edits, LET and
-  LAMBDA through the registry, core functions and operators, stack limits, `conformance/core/*.csv`) and
+  LAMBDA through the registry, core functions and operators, stack limits, the Formula Lab tree,
+  `conformance/core/*.csv`) and
   `tests/numfmt_conformance.rs` (`conformance/numfmt/*.csv`, regenerated with `node tools/gen-numfmt-cases.mjs`
   from the `numfmt` oracle, a dev-only dependency).
 - `cargo run --release -p kiln-formula --example recalc_bench` measures B8 (full recalculation of 1,000,008
   formulas on 4 threads; `THREADS=n` to vary) and B9 (single-edit incremental recalculation in a 100,008-formula
-  workbook, 95th percentile).
+  workbook, 95th percentile), and exits with status 1 when either budget is missed.
 - `cargo build --target wasm32-unknown-unknown -p kiln-formula --no-default-features` builds the single-threaded
   web variant.

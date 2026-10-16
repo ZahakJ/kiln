@@ -20,6 +20,7 @@ use std::sync::Arc;
 use rustc_hash::{FxHashMap, FxHashSet};
 
 use super::eval::{CellSource, Evaluator, Workbook};
+use super::explain::{ExplainStep, build_explain_tree};
 use super::expr::{CompileContext, Expr, FuncRef, NameScope, SheetSel, compile};
 use super::graph::{FormulaId, Graph, Precedents, Registration};
 use super::host::{EngineHost, HostReadOnly, MemoryHost, TableDef};
@@ -1791,6 +1792,46 @@ impl<H: EngineHost> Engine<H> {
         let mut src = Serial { eng: self };
         let mut ev = Evaluator::new(&mut src, sid, row, col, legacy);
         Ok(ev.evaluate_formula(&code))
+    }
+
+    /// Evaluates a formula step by step for the Formula Lab, as if it were in the first sheet's
+    /// A1: every sub-expression with its source text, span and value; branches that were not
+    /// evaluated (the untaken arm of `IF`) are marked `evaluated: false`. Nothing is stored.
+    ///
+    /// ```
+    /// use kiln_formula::engine::Engine;
+    ///
+    /// let mut e = Engine::new();
+    /// let step = e.explain("=IF(2>1,\"x\",1/0)").expect("valid formula");
+    /// assert_eq!(step.display, "\"x\"");
+    /// assert_eq!(step.children[0].display, "TRUE");
+    /// assert!(!step.children[2].evaluated);
+    /// ```
+    pub fn explain(&mut self, formula: &str) -> Result<ExplainStep, EngineError> {
+        let sheet = match self.sheet_order.first() {
+            Some(&s) => s,
+            None => self.add_sheet("Sheet1")?,
+        };
+        self.explain_at(formula, sheet, 0, 0)
+    }
+
+    /// [`explain`](Self::explain) as if the formula were in `(row, col)` of `sheet`.
+    pub fn explain_at(
+        &mut self,
+        formula: &str,
+        sheet: impl SheetRef,
+        row: u32,
+        col: u32,
+    ) -> Result<ExplainStep, EngineError> {
+        let sid = self.resolve_sheet(&sheet)?;
+        check_cell(row, col)?;
+        let ast = parse(formula, &ParseOptions::default())?;
+        let code = compile(&ast, (row, col), self);
+        let mut src = Serial { eng: self };
+        let mut ev = Evaluator::new(&mut src, sid, row, col, false);
+        ev.enable_trace();
+        let result = ev.evaluate_formula(&code);
+        Ok(build_explain_tree(formula, &ast, &code, &result, &mut ev))
     }
 
     // ── internals ───────────────────────────────────────────────────────────────────────────

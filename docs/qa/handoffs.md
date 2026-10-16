@@ -96,6 +96,34 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   machine: full recalculation of 1,000,008 formulas 867 ms on 4 threads (1,487 ms on 1), single-edit
   recalculation p95 0.12 ms in the 100,008-formula workbook and 0.12 ms in the million-formula one;
   building the million-formula workbook takes 3.1 s and 447 MB.
+  The bench now exits with status 1 when either budget is missed, so `cargo xtask budgets` can rely
+  on the exit code.
+- For WP-72 (Formula Lab, `Query::FormulaTrace`): `Engine::explain(formula)` and
+  `Engine::explain_at(formula, sheet, row, col)` evaluate a formula once, without storing it, and
+  return an `ExplainStep` tree: each AST node's `kind`, `label` (function name, operator, `( )`,
+  `(omitted)`), source `text` and `span` (byte offsets), `evaluated` (false for the untaken `IF`
+  arm and everything under it), `count` (evaluations, e.g. 3 for a `MAP` lambda body over three
+  items), `value` (references dereferenced), `reference` (`A1:A3`, `'Data 2'!A1`, `B:B`),
+  `display` (`A1:A3 → {1;2;3}`, arrays previewed to 6×6 with `…`), and `description` (the
+  registry's inline docs summary) or `docs_key` (for `DocsHandle::Key`). `format_value` and
+  `format_scalar` are public for the same display text elsewhere. `=IF(SUM(A1:A3)>5,"x","y")` is
+  covered by `tests/engine_explain.rs::formula_lab_example_shows_each_level`. Spans are bytes:
+  convert to UTF-16 for the editor.
+- For WP-57 (record in `docs/formula-deviations.md`, which WP-57 owns): circular references show 0
+  and are flagged, as Excel does, instead of the `#CIRCULAR` error in the plan text. A cycle
+  between defined names (`X=Y+1`, `Y=X+1`) evaluates to `#NAME?` (the name-nesting limit) rather
+  than being reported as a circular reference. Number formats follow the numfmt oracle where it
+  may differ from Excel, unverified for lack of an Excel oracle: format `0` shows `0` for -0.4
+  (Excel may show `-0`; LibreOffice 24.2 also shows `0`), and `General` shows -0.0000001 and
+  0.000012345 in decimal (LibreOffice agrees; Excel may use `-1E-07` and `1.2345E-05`). The core
+  parser now rejects literal operands of `:` (`=1:1048577`, `=A1:5`) and `#` (`=1#`), as Excel does.
+- For WP-69 (sheet model): `Engine::add_sheet` and `rename_sheet` accept any name, as the v1.0
+  engine did; the sheet model must refuse empty names, names over 31 characters, names with
+  `: \ / ? * [ ]`, names starting or ending with `'`, and `History`, before calling the engine.
+  `insert_rows`/`insert_cols` also shift without checking for overflow (`insert_cols("S", 0,
+  20000)` pushes every non-empty cell off the sheet); Excel refuses an insert that would push
+  non-empty cells off the sheet, and only the sheet model knows the exact extent, so it must refuse
+  before calling the engine.
 
 ## WP-59 → WP-50, WP-57, WP-60, WP-98 (parity tracker)
 
