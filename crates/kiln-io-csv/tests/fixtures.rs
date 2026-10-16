@@ -109,3 +109,94 @@ fn json_records_become_a_table_and_write_back() {
     assert_eq!(back[2]["member"], serde_json::Value::Bool(false));
     assert_eq!(back.as_array().map(Vec::len), Some(3));
 }
+
+#[test]
+fn json_round_trip_keeps_integers_as_integers() {
+    let src = fixture("people.json");
+    let (wb, _) = read_json(&src, &ImportOptions::default()).expect("json");
+    let s = wb.first_sheet().expect("sheet");
+    let out = String::from_utf8(write_json(&wb, s)).expect("utf8");
+    assert!(!out.contains(".0,") && !out.contains(".0}"), "{out}");
+    let before: serde_json::Value = serde_json::from_slice(&src).expect("source");
+    let after: serde_json::Value = serde_json::from_str(&out).expect("output");
+    assert_eq!(after[0]["age"], before[0]["age"]);
+    assert!(after[0]["age"].is_i64());
+}
+
+#[test]
+fn json_mixed_arrays_keep_every_item() {
+    let json = br#"[{"a":1,"b":"x"},{"z":null,"a":2},1,"s",[1]]"#;
+    let (wb, report) = read_json(json, &ImportOptions::default()).expect("json");
+    let s = wb.first_sheet().expect("sheet");
+    let header: Vec<CellValue> = (0..4).map(|c| wb.value(s, 0, c)).collect();
+    assert_eq!(header, ["a", "b", "z", "value"].map(CellValue::text));
+    assert_eq!(wb.value(s, 1, 0), CellValue::Number(1.0));
+    assert_eq!(wb.value(s, 2, 0), CellValue::Number(2.0));
+    assert_eq!(wb.value(s, 3, 3), CellValue::Number(1.0));
+    assert_eq!(wb.value(s, 4, 3), CellValue::text("s"));
+    assert_eq!(wb.value(s, 5, 3), CellValue::text("[1]"));
+    assert_eq!(wb.value(s, 3, 0), CellValue::Blank);
+    assert_eq!(report.warnings.len(), 1, "{:?}", report.warnings);
+    assert!(report.warnings[0].contains("\"value\""));
+    // A key already called "value" is not overwritten.
+    let (wb, _) = read_json(br#"[{"value":1},2]"#, &ImportOptions::default()).expect("json");
+    let s = wb.first_sheet().expect("sheet");
+    assert_eq!(wb.value(s, 0, 1), CellValue::text("value 2"));
+    assert_eq!(wb.value(s, 2, 1), CellValue::Number(2.0));
+}
+
+#[test]
+fn json_with_more_keys_than_columns_is_truncated_with_a_warning() {
+    let keys = 20_000;
+    let mut json = String::from("[{");
+    for k in 0..keys {
+        if k > 0 {
+            json.push(',');
+        }
+        json.push_str(&format!("\"k{k}\":{k}"));
+    }
+    // A repeated key keeps its first position and last value.
+    json.push_str(",\"k0\":-1}]");
+    let started = std::time::Instant::now();
+    let (wb, report) = read_json(json.as_bytes(), &ImportOptions::default()).expect("json");
+    assert!(started.elapsed() < std::time::Duration::from_secs(10));
+    let s = wb.first_sheet().expect("sheet");
+    assert_eq!(wb.value(s, 0, 16_383), CellValue::text("k16383"));
+    assert_eq!(wb.value(s, 1, 0), CellValue::Number(-1.0));
+    assert_eq!(wb.value(s, 1, 16_383), CellValue::Number(16_383.0));
+    assert!(
+        report.warnings.iter().any(|w| w.contains("20000 keys")),
+        "{:?}",
+        report.warnings
+    );
+    assert_eq!(wb.sheet(s).expect("sheet").tables().len(), 1);
+}
+
+#[test]
+fn csv_limits_are_reported_once_and_cells_are_cut_to_fit() {
+    // Three rows wider than the sheet: one warning, not one per row.
+    let wide = format!("{}\n", vec!["1"; 16_390].join(","));
+    let text = format!("{wide}{wide}{wide}");
+    let imp = read_csv(text.as_bytes(), &ImportOptions::default()).expect("csv");
+    assert_eq!(imp.report.warnings.len(), 1, "{:?}", imp.report.warnings);
+    assert!(imp.report.warnings[0].starts_with("3 row(s)"));
+    // A 5,000,000-character field is cut to Excel's 32,767-character cell limit, counted in
+    // UTF-16 units and never splitting a character.
+    let long = format!(
+        "a,{}\nb,{}\n",
+        "x".repeat(5_000_000),
+        "\u{1F600}".repeat(20_000)
+    );
+    let imp = read_csv(long.as_bytes(), &ImportOptions::default()).expect("csv");
+    let s = imp.workbook.first_sheet().expect("sheet");
+    let CellValue::Text(t) = imp.workbook.value(s, 0, 1) else {
+        panic!("text expected");
+    };
+    assert_eq!(t.len(), 32_767);
+    let CellValue::Text(t) = imp.workbook.value(s, 1, 1) else {
+        panic!("text expected");
+    };
+    assert_eq!(t.encode_utf16().count(), 32_766);
+    assert_eq!(imp.report.warnings.len(), 1, "{:?}", imp.report.warnings);
+    assert!(imp.report.warnings[0].starts_with("2 cell(s)"));
+}

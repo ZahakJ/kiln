@@ -4,10 +4,11 @@
 //! become plain rows. Exporting writes a sheet's first table (or its used range with the first
 //! row as keys) as an array of objects.
 
+use std::collections::{HashMap, HashSet};
 use std::fmt;
 
 use kiln_sheet::meta::{Table, TableColumn, TableStyleInfo};
-use kiln_sheet::{CellValue, Range, SheetId, Workbook};
+use kiln_sheet::{CellValue, MAX_COLS, Range, SheetId, Workbook};
 use serde::de::{self, Deserializer, MapAccess, SeqAccess, Visitor};
 use serde_json::Value;
 
@@ -61,11 +62,17 @@ impl<'de> de::Deserialize<'de> for Ordered {
                 Ok(Ordered::Array(v))
             }
             fn visit_map<A: MapAccess<'de>>(self, mut m: A) -> Result<Ordered, A::Error> {
+                // A repeated key keeps its first position and its last value (as JavaScript
+                // does); the index keeps this linear for objects with many keys.
                 let mut v: Vec<(String, Ordered)> = Vec::new();
+                let mut at: HashMap<String, usize> = HashMap::new();
                 while let Some((k, x)) = m.next_entry::<String, Ordered>()? {
-                    match v.iter_mut().find(|(e, _)| *e == k) {
-                        Some(slot) => slot.1 = x,
-                        None => v.push((k, x)),
+                    match at.get(&k) {
+                        Some(&i) => v[i].1 = x,
+                        None => {
+                            at.insert(k.clone(), v.len());
+                            v.push((k, x));
+                        }
                     }
                 }
                 Ok(Ordered::Object(v))
@@ -74,6 +81,9 @@ impl<'de> de::Deserialize<'de> for Ordered {
         d.deserialize_any(V)
     }
 }
+
+/// The JSON `null` an absent key reads as.
+static NULL: Ordered = Ordered::Scalar(Value::Null);
 
 fn ordered_text(o: &Ordered) -> String {
     fn to_value(o: &Ordered) -> Value {
@@ -107,6 +117,33 @@ fn cell(o: &Ordered) -> CellValue {
     }
 }
 
+/// One item's row of values: an object's values in the key order; in a table, any other item in
+/// the `loose` column; outside one, an array's elements or a lone scalar.
+fn row_of<'a>(
+    i: &'a Ordered,
+    keys: &[String],
+    loose: Option<usize>,
+    objects: bool,
+) -> Vec<&'a Ordered> {
+    match i {
+        Ordered::Object(m) => {
+            let by_key: HashMap<&str, &Ordered> = m.iter().map(|(k, v)| (k.as_str(), v)).collect();
+            keys.iter()
+                .map(|k| by_key.get(k.as_str()).copied().unwrap_or(&NULL))
+                .collect()
+        }
+        other if objects => {
+            let mut row = vec![&NULL; keys.len()];
+            if let Some(slot) = loose.and_then(|l| row.get_mut(l)) {
+                *slot = other;
+            }
+            row
+        }
+        Ordered::Array(a) => a.iter().collect(),
+        scalar => vec![scalar],
+    }
+}
+
 /// Reads JSON (an array of objects, or of arrays) into a one-sheet workbook.
 ///
 /// # Errors
@@ -121,16 +158,50 @@ pub fn read_json(
     let Ordered::Array(items) = root else {
         return Err(CsvError::Json("the file is not a JSON array".into()));
     };
-    let objects = !items.is_empty() && items.iter().all(|i| matches!(i, Ordered::Object(_)));
+    // Any object makes this a table: its header holds every key in first-seen order. Items that
+    // are not objects (in a mixed array) go in a column of their own rather than being lost.
+    let objects = items.iter().any(|i| matches!(i, Ordered::Object(_)));
+    let mut warnings: Vec<String> = Vec::new();
     let mut keys: Vec<String> = Vec::new();
+    let mut loose: Option<usize> = None;
     if objects {
+        let mut seen: HashSet<&str> = HashSet::new();
         for i in &items {
             if let Ordered::Object(m) = i {
                 for (k, _) in m {
-                    if !keys.contains(k) {
+                    if seen.insert(k.as_str()) {
                         keys.push(k.clone());
                     }
                 }
+            }
+        }
+        let others = items
+            .iter()
+            .filter(|i| !matches!(i, Ordered::Object(_)))
+            .count();
+        if others > 0 {
+            let mut name = "value".to_owned();
+            let mut n = 1;
+            while seen.contains(name.as_str()) {
+                n += 1;
+                name = format!("value {n}");
+            }
+            warnings.push(format!(
+                "{others} item(s) of the array are not objects; they were put in the column \"{name}\""
+            ));
+            loose = Some(keys.len());
+            keys.push(name);
+        }
+        let limit = MAX_COLS as usize;
+        if keys.len() > limit {
+            warnings.push(format!(
+                "the objects have {} keys; keys after the first {limit} do not fit on a sheet and \
+                 were not imported",
+                keys.len()
+            ));
+            keys.truncate(limit);
+            if loose.is_some_and(|l| l >= limit) {
+                loose = None;
             }
         }
     }
@@ -140,26 +211,19 @@ pub fn read_json(
         records.push(keys.clone());
     }
     for i in &items {
-        match i {
-            Ordered::Object(m) => records.push(
-                keys.iter()
-                    .map(|k| {
-                        m.iter()
-                            .find(|(x, _)| x == k)
-                            .map(|(_, v)| field(v))
-                            .unwrap_or_default()
-                    })
-                    .collect(),
-            ),
-            Ordered::Array(a) => records.push(a.iter().map(field).collect()),
-            scalar => records.push(vec![field(scalar)]),
-        }
+        records.push(
+            row_of(i, &keys, loose, objects)
+                .into_iter()
+                .map(field)
+                .collect(),
+        );
     }
     let text_opts = ImportOptions {
         as_text: true,
         ..options.clone()
     };
-    let (mut wb, report) = crate::import::records_to_workbook(&records, &text_opts)?;
+    let (mut wb, mut report) = crate::import::records_to_workbook(&records, &text_opts)?;
+    report.warnings.splice(0..0, warnings);
     let sheet = wb
         .first_sheet()
         .ok_or_else(|| CsvError::Json("no sheet".into()))?;
@@ -167,31 +231,29 @@ pub fn read_json(
     let start = u32::from(objects);
     for (r, i) in items.iter().enumerate() {
         let row = start + r as u32;
-        let values: Vec<CellValue> = match i {
-            Ordered::Object(m) => keys
-                .iter()
-                .map(|k| {
-                    m.iter()
-                        .find(|(x, _)| x == k)
-                        .map_or(CellValue::Blank, |(_, v)| cell(v))
-                })
-                .collect(),
-            Ordered::Array(a) => a.iter().map(cell).collect(),
-            scalar => vec![cell(scalar)],
-        };
-        for (c, v) in values.into_iter().enumerate() {
+        if row >= kiln_sheet::MAX_ROWS {
+            break;
+        }
+        let values: Vec<CellValue> = row_of(i, &keys, loose, objects)
+            .into_iter()
+            .map(cell)
+            .collect();
+        for (c, v) in values.into_iter().enumerate().take(MAX_COLS as usize) {
             if matches!(v, CellValue::Number(_) | CellValue::Bool(_)) {
                 wb.load_value(sheet, row, c as u32, v)?;
             }
         }
     }
     if objects && !keys.is_empty() {
+        let last_row = u32::try_from(items.len())
+            .unwrap_or(u32::MAX)
+            .min(kiln_sheet::MAX_ROWS - 1);
         let name = wb.next_table_name();
         let t = Table {
             id: 1,
             name,
             display_name: None,
-            range: Range::new(0, 0, items.len() as u32, keys.len() as u32 - 1),
+            range: Range::new(0, 0, last_row, keys.len() as u32 - 1),
             header_row: true,
             totals_row: false,
             columns: keys.iter().map(TableColumn::named).collect(),
@@ -211,10 +273,22 @@ pub fn read_json(
     Ok((wb, report))
 }
 
+/// A number as JSON: integral values within the exactly representable range are written as
+/// integers (`41`, not `41.0`), as they were most likely read.
+fn number_value(n: f64) -> Value {
+    const EXACT: f64 = 9_007_199_254_740_992.0; // 2^53
+    if n.fract() == 0.0 && n.abs() <= EXACT {
+        // In range and integral, so the conversion is exact.
+        #[allow(clippy::cast_possible_truncation)]
+        return Value::from(n as i64);
+    }
+    serde_json::Number::from_f64(n).map_or(Value::Null, Value::Number)
+}
+
 fn json_value(v: &CellValue) -> Value {
     match v {
         CellValue::Blank => Value::Null,
-        CellValue::Number(n) => serde_json::Number::from_f64(*n).map_or(Value::Null, Value::Number),
+        CellValue::Number(n) => number_value(*n),
         CellValue::Bool(b) => Value::Bool(*b),
         CellValue::Error(e) => Value::String(e.code().to_owned()),
         CellValue::Text(t) => Value::String(t.to_string()),
@@ -281,7 +355,8 @@ mod tests {
         let out = String::from_utf8(write_json(&wb, s)).expect("utf8");
         let back: Value = serde_json::from_str(&out).expect("valid json");
         assert_eq!(back[0]["name"], Value::String("Ann".into()));
-        assert_eq!(back[0]["age"], serde_json::json!(41.0));
+        assert_eq!(back[0]["age"], serde_json::json!(41));
+        assert!(out.contains("\"age\": 41,"), "{out}");
         assert_eq!(back[2]["name"], Value::Null);
     }
 

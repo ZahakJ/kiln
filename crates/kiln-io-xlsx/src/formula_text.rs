@@ -8,7 +8,7 @@
 //! them back. Text inside string literals, quoted sheet names and brackets is never touched.
 //! Ported from the v1.0 TypeScript reader (`reference/ts-core/io-xlsx/src/formula-text.ts`).
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeSet, HashMap};
 
 /// Functions Excel stores with the `_xlfn.` prefix ("future functions", MS-XLSX §2.2.2).
 pub const FUTURE_FUNCTIONS: &[&str] = &[
@@ -378,7 +378,6 @@ pub fn to_file_formula(text: &str, extra: Option<&BTreeSet<String>>) -> String {
     let toks = scan(text);
     let mut stack: Vec<usize> = Vec::new();
     let mut frames: Vec<Frame> = Vec::new();
-    let mut enclosing: Vec<Vec<usize>> = Vec::with_capacity(toks.len());
     let finish = |f: &mut Frame, toks: &[Tok]| {
         let bare = strip_prefix_upper(&f.name);
         let last = f.arg;
@@ -398,7 +397,6 @@ pub fn to_file_formula(text: &str, extra: Option<&BTreeSet<String>>) -> String {
         f.params.extend(names);
     };
     for (k, t) in toks.iter().enumerate() {
-        enclosing.push(stack.clone());
         match t.punct {
             Some('(') => {
                 let name = k
@@ -443,9 +441,40 @@ pub fn to_file_formula(text: &str, extra: Option<&BTreeSet<String>>) -> String {
     while let Some(f) = stack.pop() {
         finish(&mut frames[f], &toks);
     }
+    // Second pass: walk the tokens again, keeping a count of how many open frames bind each
+    // parameter name. Each frame's names are added once when it opens and removed once when it
+    // closes, so this is linear in the formula length whatever the nesting depth (hostile
+    // formulas nest tens of thousands of parentheses deep).
     let mut out = String::with_capacity(text.len() + 16);
     let mut last = 0usize;
-    for (k, t) in toks.iter().enumerate() {
+    let mut in_scope: HashMap<&str, usize> = HashMap::new();
+    let mut open: Vec<usize> = Vec::new();
+    let mut next_frame = 0usize;
+    for t in &toks {
+        match t.punct {
+            Some('(') => {
+                let f = next_frame;
+                next_frame += 1;
+                if let Some(fr) = frames.get(f) {
+                    for p in &fr.params {
+                        *in_scope.entry(p.as_str()).or_insert(0) += 1;
+                    }
+                }
+                open.push(f);
+                continue;
+            }
+            Some(')') => {
+                if let Some(fr) = open.pop().and_then(|f| frames.get(f)) {
+                    for p in &fr.params {
+                        if let Some(n) = in_scope.get_mut(p.as_str()) {
+                            *n = n.saturating_sub(1);
+                        }
+                    }
+                }
+                continue;
+            }
+            _ => {}
+        }
         let Some(ident) = &t.ident else { continue };
         if prefix_len(ident).is_some() {
             continue;
@@ -459,10 +488,7 @@ pub fn to_file_formula(text: &str, extra: Option<&BTreeSet<String>>) -> String {
             } else {
                 None
             }
-        } else if enclosing[k]
-            .iter()
-            .any(|&f| frames[f].params.contains(&upper))
-        {
+        } else if in_scope.get(upper.as_str()).is_some_and(|&n| n > 0) {
             Some("_xlpm.")
         } else {
             None

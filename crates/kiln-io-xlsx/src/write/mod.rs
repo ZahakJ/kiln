@@ -99,10 +99,15 @@ struct Out {
     issues: Vec<String>,
 }
 
-fn xml_bytes(root: &XmlElement) -> Vec<u8> {
+/// A part's XML as bytes. A tree that cannot be serialised (say, a reused subtree with a prefix
+/// no ancestor declares) is an error naming the part, never an empty part in a corrupt package.
+fn xml_bytes(name: &str, root: &XmlElement) -> Result<Vec<u8>, XlsxError> {
     write_element(root, &XmlWriteOptions::default())
         .map(String::into_bytes)
-        .unwrap_or_default()
+        .map_err(|e| XlsxError::Xml {
+            part: name.to_owned(),
+            message: e.to_string(),
+        })
 }
 
 impl Out {
@@ -120,7 +125,8 @@ impl Out {
     }
 
     fn put_xml(&mut self, name: &str, ct: &str, root: &XmlElement) -> Result<(), XlsxError> {
-        self.put(name, ct, xml_bytes(root))
+        let bytes = xml_bytes(name, root)?;
+        self.put(name, ct, bytes)
     }
 
     /// The id of a relationship of `source` to `target` of type `ty`, added when missing.
@@ -1123,6 +1129,23 @@ pub(crate) fn reachable_parts(bytes: &[u8]) -> BTreeSet<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn an_unserialisable_part_is_an_error_not_an_empty_part() {
+        let mut root = XmlElement::new("worksheet");
+        root.children
+            .push(kiln_ooxml::xml::XmlNode::Element(XmlElement::new(
+                "zz9:mystery",
+            )));
+        match xml_bytes("/xl/worksheets/sheet1.xml", &root) {
+            Err(XlsxError::Xml { part, message }) => {
+                assert_eq!(part, "/xl/worksheets/sheet1.xml");
+                assert!(message.contains("zz9"), "{message}");
+            }
+            other => panic!("expected an XML error, got {other:?}"),
+        }
+        assert!(xml_bytes("/x.xml", &XmlElement::new("worksheet")).is_ok());
+    }
 
     #[test]
     fn a_new_workbook_is_a_complete_package() {

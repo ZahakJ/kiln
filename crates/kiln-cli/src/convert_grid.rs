@@ -188,7 +188,7 @@ mod tests {
         .expect("json");
         let v: serde_json::Value =
             serde_json::from_str(&std::fs::read_to_string(&json).expect("json")).expect("valid");
-        assert_eq!(v[0]["Result"], serde_json::json!(210.0));
+        assert_eq!(v[0]["Result"], serde_json::json!(210));
         let xlsm = tmp("f.xlsm");
         crate::convert::run(&[
             input.to_string_lossy().into_owned(),

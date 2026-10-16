@@ -600,7 +600,8 @@ WP-54 had to touch these files outside its owned paths; every change is additive
     `tools/make-fixtures.py --synthetic-large --only xlsx` when missing, as `write-open-300p` does.
   - `packages/testing/scripts/exceljs-xlsx.mjs` (WP-60's package): writes `fixtures/xlsx/read/*.exceljs.json`
     (`--check` for staleness). exceljs 4.4 cannot read `charts.xlsx`, `comments.xlsx` and `tables.xlsx` (absolute
-    relationship targets); their JSON records that.
+    relationship targets); their JSON records that, and `crates/kiln-io-xlsx/tests/oracle/openpyxl-xlsx.py` writes
+    `fixtures/xlsx/read/<name>.openpyxl.json` for those three (checked by `tests/openpyxl_oracle.rs`).
   - `docs/FORMATS.md` (xlsx section, CSV/JSON lines), `CHANGELOG.md`, six `parity/parity.json` rows (WP-70's, all
     `partial` with notes) with `PARITY.md` and the badge regenerated, `Cargo.lock`, `docs/qa/fidelity.md`.
 - For WP-71 (Grid surface): open with `read_xlsx_with(&bytes, &ReadOptions { defer_calculation: true, .. })` to paint
@@ -633,3 +634,16 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   inside) and `fixtures/xlsx/read/` (the exceljs oracle).
 - For the bridge's owner: the Grid app links `kiln-sheet` (no rayon, no ICU), the formula library and both readers into
   the web core: 3.29 MB gzip after `wasm-opt` (B12: 4.5 MB).
+- Fix round 1 (review of WP-70), still open for other owners:
+  - WP-56/WP-95 (`kiln-formula/src/numfmt`): the number-format renderer does not cap decimal places: `0.` followed by
+    500 zeros formats with 500 decimals, where Excel caps a format at 30. Hostile files can carry such formats, and
+    the cell text is built on every paint.
+  - WP-52 (protocol) and WP-71 (`apps/grid`): `FileFormat` has no TSV or JSON entry, so Save As offers only CSV of the
+    three (`kiln-io-csv` and the CLI handle all three); `.xltm` is read by `kiln-io-xlsx` but is not in Grid's
+    `FORMATS`. Add the formats, then the session entries.
+  - WP-60 (fidelity scorer): please confirm the `cell_scores` change above (no formulas scores 1.0).
+  - WP-72 (CSV/JSON import dialogs): imports now cut cells to 32,767 characters, report rows wider than 16,384 columns
+    once, put the scalars of a mixed JSON array in a `value` column, and cut JSON objects with more than 16,384 keys,
+    each with one warning in `ImportReport::warnings`; show them in the import preview.
+  - Saves are checked with LibreOffice, exceljs and (for the three files exceljs cannot read) openpyxl, never with
+    Excel itself; the xlsx parity rows stay `partial` until a real-Excel check exists.

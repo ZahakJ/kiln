@@ -145,3 +145,63 @@ proptest! {
         survives(&bytes);
     }
 }
+
+/// A worksheet whose A1 holds `formula` (escaped) and whose B1 holds a plain number.
+fn with_formula(formula: &str) -> Vec<u8> {
+    let escaped = formula
+        .replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;");
+    let xml = format!(
+        r#"<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData><row r="1"><c r="A1"><f>{escaped}</f><v>1</v></c><c r="B1"><v>2</v></c></row></sheetData></worksheet>"#
+    );
+    with_part(
+        "multi-sheet.xlsx",
+        "/xl/worksheets/sheet1.xml",
+        xml.as_bytes(),
+    )
+}
+
+/// Deeply nested formulas (far beyond Excel's 64 levels and 8,192 characters) are saved in
+/// linear time and memory, with and without the source package, and read back unchanged.
+#[test]
+fn deep_formulas_save_without_blowing_up() {
+    let deep = |open: &str, inner: &str, depth: usize| {
+        format!("{}{inner}{}", open.repeat(depth), ")".repeat(depth))
+    };
+    for formula in [
+        deep("(", "1", 100_000),
+        deep("ABS(", "1", 50_000),
+        deep("XLOOKUP(", "1", 20_000),
+        // Parameters in scope across tens of thousands of open frames.
+        format!("LET(x,1,{})", deep("SUM(x,", "LAMBDA(y,x+y)(x)", 30_000)),
+        // Unbalanced in both directions.
+        "(".repeat(60_000),
+        ")".repeat(60_000),
+    ] {
+        let bytes = with_formula(&formula);
+        let r = read_xlsx(&bytes).expect("a deep formula is read");
+        for source in [Some(&r.source), None] {
+            let w = write_xlsx(&r.workbook, source, &WriteOptions::default())
+                .expect("a deep formula is written");
+            let again = read_xlsx(&w.bytes).expect("and read again");
+            let s = again.workbook.sheets()[0].id();
+            assert_eq!(
+                again.workbook.value(s, 0, 1),
+                kiln_sheet::CellValue::Number(2.0)
+            );
+        }
+    }
+    // The prefixing pass itself stays linear on a 200 KB formula.
+    let formula = deep("(", "1", 100_000);
+    let started = std::time::Instant::now();
+    let file = kiln_io_xlsx::formula_text::to_file_formula(&formula, None);
+    assert_eq!(file, formula);
+    let file = kiln_io_xlsx::formula_text::to_file_formula(
+        &format!("LET(x,1,{})", deep("SUM(x,", "x", 30_000)),
+        None,
+    );
+    assert!(file.starts_with("_xlfn.LET(_xlpm.x,1,SUM(_xlpm.x,"));
+    assert!(file.contains("SUM(_xlpm.x,_xlpm.x)"));
+    assert!(started.elapsed() < std::time::Duration::from_secs(20));
+}

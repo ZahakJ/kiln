@@ -69,13 +69,21 @@ written per cell.
   - `tests/libreoffice_values.rs`: every formula cell of the feature fixtures against
     LibreOffice's recalculated values, and the CSV export against LibreOffice's (14 cells where
     LibreOffice 24.2 lacks the function or differs from Excel by design are listed with the
-    reason);
+    reason, and checked instead against hand-computed values, on CI too; every exported row must
+    be as wide as LibreOffice's);
   - `tests/exceljs_oracle.rs`: values, formulas and merges against exceljs (all agree) and the
     format summary (≥ 0.99 per workbook) — `node packages/testing/scripts/exceljs-xlsx.mjs`
     regenerates `fixtures/xlsx/read/*.exceljs.json`;
+  - `tests/openpyxl_oracle.rs`: the three files exceljs cannot open (`charts`, `comments`,
+    `tables`) against openpyxl 3.1 — every constant, formula, merge, comment and table, before
+    and after a save; `python3 -I tests/oracle/openpyxl-xlsx.py <fixtures>` regenerates
+    `fixtures/xlsx/read/*.openpyxl.json`;
   - `tests/hostile.rs`: damaged and hostile parts (DTDs, unknown entities, unbalanced markup,
     absurd nesting, out-of-range references and styles, random mutations) give errors or
-    warnings, never panics, and whatever is read saves and reads again.
+    warnings, never panics, and whatever is read saves and reads again; formulas nested 100,000
+    parentheses deep save in linear time and memory (the `_xlfn.`/`_xlpm.` prefixing pass keeps
+    one count per parameter name in scope, not a copy of the open-parenthesis stack per token).
+    A part the XML writer cannot serialise is an error naming the part, never an empty part.
 - `cargo xtask fidelity --format xlsx` — the corpus through `kiln-testing` (adapter
   `crates/kiln-testing/src/formats/xlsx.rs`); results in `docs/qa/fidelity.md`.
 - `cargo run --release -p kiln-io-xlsx --example open_bench fixtures/large/sheet-1m.xlsx` — B7:

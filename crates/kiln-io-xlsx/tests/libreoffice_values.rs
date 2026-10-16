@@ -98,6 +98,99 @@ const ORACLE_GAPS: &[(&str, &str, &str)] = &[
     ),
 ];
 
+/// What the [`ORACLE_GAPS`] cells (and the arrays the gap formulas spill) must hold, computed by
+/// hand from the fixtures' `Data` sheet (A1:A20 = 1…20, B = alpha…, C1 = 2026-01-15 in steps of a
+/// week) and the `Formulas` sheet of `shared-array-formulas.xlsx` (A1:A10 = 3,6,9,1,4,7,10,2,5,8),
+/// following Excel's documented definitions. These need no LibreOffice, so they also run on CI.
+#[derive(Debug, Clone, Copy)]
+enum Expect {
+    N(f64),
+    T(&'static str),
+}
+
+const GAP_EXPECTED: &[(&str, &str, Expect)] = &[
+    // SUM ignoring errors and hidden rows over 1…20.
+    ("formulas.xlsx", "Formulas!C31", Expect::N(210.0)),
+    // (7 − 1) / (20 − 1) = 0.31578…, truncated (not rounded) to 3 significant digits.
+    ("formulas.xlsx", "Formulas!C102", Expect::N(0.315)),
+    // 2026-01-15 … 2026-03-19 is 64 days, 9 of them Sundays (weekend code 11 = Sunday only).
+    ("formulas.xlsx", "Formulas!C176", Expect::N(55.0)),
+    // 10 working days (Saturday–Sunday weekend) after Thursday 2026-01-15: 2026-01-29.
+    ("formulas.xlsx", "Formulas!C178", Expect::N(46_051.0)),
+    ("formulas.xlsx", "Formulas!C192", Expect::T("eta")),
+    ("formulas.xlsx", "Formulas!C193", Expect::T("none")),
+    ("formulas.xlsx", "Formulas!C194", Expect::N(7.0)),
+    ("formulas.xlsx", "Formulas!C233", Expect::N(64.0)),
+    // ln(2200 / 2000) / ln(1.025).
+    (
+        "formulas.xlsx",
+        "Formulas!C257",
+        Expect::N(3.859_866_162_622_662),
+    ),
+    // (11000 / 10000)^(1/96) − 1.
+    (
+        "formulas.xlsx",
+        "Formulas!C258",
+        Expect::N(0.000_993_307_376_291_330_3),
+    ),
+    // The international avoirdupois pound, exactly.
+    ("formulas.xlsx", "Formulas!C259", Expect::N(0.453_592_37)),
+    // SORT(A1:A10) spills 1…10 down G.
+    ("shared-array-formulas.xlsx", "Formulas!G1", Expect::N(1.0)),
+    ("shared-array-formulas.xlsx", "Formulas!G2", Expect::N(2.0)),
+    ("shared-array-formulas.xlsx", "Formulas!G5", Expect::N(5.0)),
+    (
+        "shared-array-formulas.xlsx",
+        "Formulas!G10",
+        Expect::N(10.0),
+    ),
+    // UNIQUE(A1:A10) keeps the first-seen order.
+    ("shared-array-formulas.xlsx", "Formulas!H1", Expect::N(3.0)),
+    ("shared-array-formulas.xlsx", "Formulas!H2", Expect::N(6.0)),
+    ("shared-array-formulas.xlsx", "Formulas!H4", Expect::N(1.0)),
+    ("shared-array-formulas.xlsx", "Formulas!H10", Expect::N(8.0)),
+    // SEQUENCE(5,1,1,2) = 1, 3, 5, 7, 9.
+    ("shared-array-formulas.xlsx", "Formulas!I1", Expect::N(1.0)),
+    ("shared-array-formulas.xlsx", "Formulas!I3", Expect::N(5.0)),
+    ("shared-array-formulas.xlsx", "Formulas!I5", Expect::N(9.0)),
+];
+
+/// The cells LibreOffice cannot vouch for are checked against hand-computed values instead, and
+/// every listed gap has such a value.
+#[test]
+fn oracle_gap_cells_match_hand_computed_values() {
+    for (file, cell, reason) in ORACLE_GAPS {
+        assert!(
+            GAP_EXPECTED.iter().any(|(f, c, _)| f == file && c == cell),
+            "{file} {cell} ({reason}) has no independent expected value"
+        );
+    }
+    let features = kiln_testing::fixtures::fixtures_dir().join("xlsx/features");
+    let mut failures = Vec::new();
+    for (file, at, expect) in GAP_EXPECTED {
+        let read = read_xlsx(&std::fs::read(features.join(file)).expect("fixture")).expect("read");
+        let wb = &read.workbook;
+        let (sheet, cell) = at.split_once('!').expect("sheet!cell");
+        let s = wb
+            .sheets()
+            .iter()
+            .find(|s| s.name() == sheet)
+            .expect("sheet")
+            .id();
+        let (r, c) = kiln_io_xlsx::text::parse_cell_ref(cell.as_bytes()).expect("cell");
+        let ours = wb.value(s, r, c);
+        let ok = match (expect, &ours) {
+            (Expect::N(x), CellValue::Number(n)) => (x - n).abs() <= 1e-12 * x.abs().max(1.0),
+            (Expect::T(t), CellValue::Text(v)) => *t == &**v,
+            _ => false,
+        };
+        if !ok {
+            failures.push(format!("{file} {at}: expected {expect:?}, Kiln {ours:?}"));
+        }
+    }
+    assert!(failures.is_empty(), "{}", failures.join("\n"));
+}
+
 /// A time of day as LibreOffice writes it (`09:30:00 AM`, `17:05:10`) as a day fraction.
 fn parse_lo_time(text: &str) -> Option<f64> {
     let t = text.trim();
@@ -334,6 +427,15 @@ fn csv_export_matches_libreoffice_csv() {
     let mut compared = 0;
     let mut failures = Vec::new();
     for (r, (a, b)) in ours.iter().zip(&theirs).enumerate() {
+        // Every row must be as wide as LibreOffice's, or cells it writes would go unchecked.
+        if a.len() != b.len() {
+            failures.push(format!(
+                "row {}: Kiln wrote {} fields, LibreOffice {}",
+                r + 1,
+                a.len(),
+                b.len()
+            ));
+        }
         for (c, (x, y)) in a.iter().zip(b).enumerate() {
             let at = format!(
                 "Formulas!{}",

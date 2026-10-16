@@ -32,7 +32,11 @@ let (wb, _) = kiln_io_csv::read_json(br#"[{"a":1},{"a":2,"b":true}]"#, &ImportOp
 - **JSON** (`json::read_json`): an array of objects becomes a header row of the keys, in the
   order they first appear, one row per object with typed values (numbers, logicals, text,
   `null` as an empty cell, nested values as JSON text) and a table over it; an array of arrays
-  becomes plain rows.
+  becomes plain rows. In a mixed array, items that are not objects go in a column of their own
+  (`value`, or `value 2`… when a key already has the name), with a warning.
+- **Limits**, as Excel's: cells are cut to 32,767 characters (UTF-16 units, never splitting a
+  character), rows after 1,048,576 and columns after 16,384 (JSON keys too) are not imported;
+  each limit adds one warning to `ImportReport::warnings` however often it is hit.
 
 ## Export
 
@@ -42,7 +46,7 @@ General numbers with up to 15 significant digits, fields quoted only when they h
 delimiter, a quote, a line break or edge spaces, CRLF line ends, UTF-8 (`Encoding` also offers
 UTF-8 with BOM, UTF-16 and Windows-1252). `ExportOptions::as_displayed = false` writes raw values.
 `write_json` writes a sheet's first table (or its used range, first row as keys) as an array of
-objects.
+objects; whole numbers are written as integers (`41`, not `41.0`).
 
 ## Tests
 
