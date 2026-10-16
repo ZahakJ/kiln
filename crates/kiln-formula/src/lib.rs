@@ -15,7 +15,7 @@
 //! - [`registry`]: the [`FunctionRegistry`](registry::FunctionRegistry) the function library plugs
 //!   into; an engine without options knows the core set (`SUM`, `IF`, `AND`, `OR`, `NOT`, `TRUE`,
 //!   `FALSE`).
-//! - [`functions`]: the function library — 484 Excel worksheet functions with their documentation
+//! - [`functions`]: the function library — 497 Excel worksheet functions with their documentation
 //!   ([`functions::engine_options`] gives an engine all of them, [`functions::doc`] the docs).
 //! - [`numfmt`]: Excel number format codes (sections, conditions, colours, dates and times,
 //!   fractions, scientific, `General`).

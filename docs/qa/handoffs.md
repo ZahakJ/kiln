@@ -200,7 +200,7 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   examples, `since`); `functions::doc(name)` is case-insensitive and accepts `_xlfn.`. Library specs carry
   `DocsHandle::Key(name)`, so `ExplainStep::docs_key` resolves with `functions::doc(key)`.
 - For the bridge's owner: `kiln-bridge-wasm` does not link `kiln-formula` yet (nothing in `kiln-session`
-  uses it), so its artefact is unchanged; once it does, the library adds about 577 KB gzip (1.84 MB after
+  uses it), so its artefact is unchanged; once it does, the library adds about 587 KB gzip (2.16 MB after
   `wasm-opt -Oz`) on top of the 126 KB engine core, measured with a probe cdylib built with the
   wasm-release settings (opt-level s, fat LTO, one codegen unit, panic=abort).
 - For WP-56 (`values/dates.rs`): `serial_to_date` and `civil_from_days` overflow (a panic in debug builds,
@@ -211,11 +211,10 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   values at the cap; `WRAPROWS(1,1E+15)` builds a 1×16,777,216 row of `#N/A`. Excel's own limit is not
   documented; if the wasm heap proves too small in practice, lower the cap in `functions/support.rs` and
   record it in `docs/formula-deviations.md`.
-- Not yet implemented (21 functions the parity tracker plans, all `#NAME?` today and listed as `planned` in
-  `conformance/functions-implemented.json`): `AMORDEGRC`, `AMORLINC`, `ODDFPRICE`, `ODDFYIELD`, `ODDLPRICE`,
-  `ODDLYIELD`, `ASC`, `DBCS`, `JIS`, `BAHTTEXT`, `PHONETIC`, `EUROCONVERT`, `PERCENTOF`, `TRIMRANGE`,
-  `GROUPBY`, `PIVOTBY`, `GETPIVOTDATA`, `FORECAST.ETS`, `FORECAST.ETS.CONFINT`, `FORECAST.ETS.SEASONALITY`,
-  `FORECAST.ETS.STAT`. When adding one: implement it in `src/functions/<family>.rs`, add its docs entry,
-  conformance rows, `KILN_BLESS=1 cargo nextest run -p kiln-formula --test conformance_registry`, then
-  `cargo xtask parity` (the v1.0 registry snapshot test allows only the 484 v1.0 names today; extend it
-  with an allow-list of post-v1.0 additions).
+- Not yet implemented (8 functions the parity tracker plans, `#NAME?` today and `planned` in
+  `conformance/functions-implemented.json`): `GROUPBY`, `PIVOTBY`, `TRIMRANGE`, `GETPIVOTDATA`,
+  `FORECAST.ETS`, `FORECAST.ETS.CONFINT`, `FORECAST.ETS.SEASONALITY`, `FORECAST.ETS.STAT`. `TRIMRANGE`
+  goes with the trim-reference operators (`A:.A`, `.:.`) the parser does not read yet (WP-56's area);
+  `GETPIVOTDATA` needs the pivot tables. When adding one: implement it in `src/functions/<family>.rs`,
+  add its docs entry and conformance rows, list it in `POST_V1` in `tests/conformance_registry.rs`, run
+  `KILN_BLESS=1 cargo nextest run -p kiln-formula --test conformance_registry`, then `cargo xtask parity`.

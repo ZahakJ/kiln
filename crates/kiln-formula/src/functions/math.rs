@@ -1057,6 +1057,20 @@ pub fn specs() -> Vec<FunctionSpec> {
             imp!(|a, c| pair_sum(a, c, |x, y| (x - y) * (x - y))),
         ),
         spec("SUMPRODUCT", 1, VARIADIC, imp!(sumproduct)),
+        spec(
+            "PERCENTOF",
+            2,
+            2,
+            imp!(|a, c| {
+                let part = sum(&numbers_of(a, 0, c)?);
+                let all = sum(&numbers_of(a, 1, c)?);
+                if all == 0.0 {
+                    Err(ErrorValue::Div0)
+                } else {
+                    finite(part / all)
+                }
+            }),
+        ),
         spec("SERIESSUM", 4, 4, imp!(seriessum)),
         spec("MDETERM", 1, 1, imp!(mdeterm)),
         spec("MINVERSE", 1, 1, imp!(minverse)),

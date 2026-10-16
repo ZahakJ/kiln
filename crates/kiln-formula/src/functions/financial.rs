@@ -399,6 +399,181 @@ fn db(cost: f64, salvage: f64, life0: f64, period0: f64, month0: f64) -> R<f64> 
     Ok(0.0)
 }
 
+// ── French depreciation (AMORLINC, AMORDEGRC) ────────────────────────────────────────────────
+
+/// The arguments of `AMORLINC` and `AMORDEGRC`.
+struct Amor {
+    cost: f64,
+    date: f64,
+    first: f64,
+    salvage: f64,
+    period: f64,
+    rate: f64,
+    basis: f64,
+}
+
+impl Amor {
+    /// Validates the arguments; returns the whole period and the year fraction of the first
+    /// (partial) period.
+    fn check(&self, ctx: &dyn CallContext) -> R<(f64, f64)> {
+        let basis = self.basis.trunc();
+        if self.cost < 0.0
+            || self.salvage < 0.0
+            || self.period < 0.0
+            || self.rate <= 0.0
+            || ![0.0, 1.0, 3.0, 4.0].contains(&basis)
+        {
+            return Err(ErrorValue::Num);
+        }
+        let first_fraction = yearfrac(self.date.trunc(), self.first.trunc(), basis, ctx)?;
+        Ok((self.period.trunc(), first_fraction))
+    }
+}
+
+/// `AMORLINC`: straight-line depreciation in the French accounting system, with the first period
+/// prorated from the purchase date.
+fn amorlinc(x: &Amor, ctx: &dyn CallContext) -> R<f64> {
+    let (per, first_fraction) = x.check(ctx)?;
+    let (cost, rate) = (x.cost, x.rate);
+    let full = cost * rate;
+    let first_rate = first_fraction * rate * cost;
+    let depreciable = cost - x.salvage;
+    let full_periods = ((depreciable - first_rate) / full).floor().max(0.0);
+    let d = if per == 0.0 {
+        first_rate
+    } else if per <= full_periods {
+        full
+    } else if per == full_periods + 1.0 {
+        depreciable - full * full_periods - first_rate
+    } else {
+        0.0
+    };
+    Ok(d.max(0.0))
+}
+
+/// `AMORDEGRC`: declining-balance depreciation in the French system. The rate is multiplied by
+/// a coefficient for the asset's life (1/rate): 1.5 for 3–4 years, 2 for 5–6 years, 2.5 beyond;
+/// lives strictly between 0 and 1, 1 and 2, 2 and 3 or 4 and 5 years are `#NUM!`, as Excel
+/// documents. Depreciation is rounded to whole units; the period before the residual value would
+/// be crossed takes half the remaining value, and later periods 0.
+fn amordegrc(x: &Amor, ctx: &dyn CallContext) -> R<f64> {
+    let (per, first_fraction) = x.check(ctx)?;
+    let (cost, rate) = (x.cost, x.rate);
+    let life = 1.0 / rate;
+    let between = |a: f64, b: f64| life > a && life < b;
+    if between(0.0, 1.0) || between(1.0, 2.0) || between(2.0, 3.0) || between(4.0, 5.0) {
+        return Err(ErrorValue::Num);
+    }
+    let coefficient = if life < 3.0 {
+        1.0
+    } else if life <= 4.0 {
+        1.5
+    } else if life <= 6.0 {
+        2.0
+    } else {
+        2.5
+    };
+    let r = rate * coefficient;
+    let mut d = (first_fraction * r * cost).round();
+    let mut value = cost - d;
+    let mut rest = value - x.salvage;
+    // The value falls geometrically, so real schedules end within a few hundred periods; a rate
+    // so small that a million periods do not reach the residual value is `#NUM!`.
+    let mut n = 0.0;
+    while n < per {
+        if n >= 1e6 {
+            return Err(ErrorValue::Num);
+        }
+        d = (r * value).round();
+        rest -= d;
+        if rest < 0.0 {
+            return Ok(if per - n <= 1.0 {
+                (value * 0.5).round()
+            } else {
+                0.0
+            });
+        }
+        value -= d;
+        n += 1.0;
+        if d <= 0.0 && n < per {
+            return Ok(0.0);
+        }
+    }
+    Ok(d)
+}
+
+// ── EUROCONVERT ────────────────────────────────────────────────────────────────────────────
+
+/// The euro and the fixed conversion rates of the currencies it replaced, with the decimals a
+/// converted amount is rounded to (Microsoft's calculation precision; currencies that joined
+/// after the Euro Currency Tools add-in round to cents).
+const EURO_RATES: [(&str, f64, i32); 21] = [
+    ("EUR", 1.0, 2),
+    ("BEF", 40.3399, 0),
+    ("LUF", 40.3399, 0),
+    ("DEM", 1.95583, 2),
+    ("ESP", 166.386, 0),
+    ("FRF", 6.55957, 2),
+    ("IEP", 0.787_564, 2),
+    ("ITL", 1936.27, 0),
+    ("NLG", 2.20371, 2),
+    ("ATS", 13.7603, 2),
+    ("PTE", 200.482, 1),
+    ("FIM", 5.94573, 2),
+    ("GRD", 340.75, 0),
+    ("SIT", 239.64, 2),
+    ("CYP", 0.585_274, 2),
+    ("MTL", 0.4293, 2),
+    ("SKK", 30.126, 2),
+    ("EEK", 15.6466, 2),
+    ("LVL", 0.702_804, 2),
+    ("LTL", 3.4528, 2),
+    ("HRK", 7.5345, 2),
+];
+
+fn euro_rate(code: &str) -> R<(f64, i32)> {
+    EURO_RATES
+        .iter()
+        .find(|(c, _, _)| c.eq_ignore_ascii_case(code.trim()))
+        .map(|&(_, rate, dec)| (rate, dec))
+        .ok_or(ErrorValue::Value)
+}
+
+fn euroconvert(args: &mut [Arg<'_>], ctx: &mut dyn CallContext) -> R<f64> {
+    let x = num(args, 0, ctx, 0.0)?;
+    let from = text(args, 1, ctx)?;
+    let to = text(args, 2, ctx)?;
+    let full = flag(args, 3, ctx, false)?;
+    let triangulation = if omitted(args, 4) {
+        None
+    } else {
+        let p = int(args, 4, ctx, 0.0)?;
+        if p < 3.0 {
+            return Err(ErrorValue::Value);
+        }
+        Some(p.min(15.0))
+    };
+    let (from_rate, _) = euro_rate(&from)?;
+    let (to_rate, to_dec) = euro_rate(&to)?;
+    if from.trim().eq_ignore_ascii_case(to.trim()) {
+        return Ok(x);
+    }
+    let result = if from.trim().eq_ignore_ascii_case("EUR") {
+        x * to_rate
+    } else {
+        let mut euros = x / from_rate;
+        if let Some(p) = triangulation {
+            euros = crate::values::excel_round(euros, p);
+        }
+        euros * to_rate
+    };
+    finite(if full {
+        result
+    } else {
+        crate::values::excel_round(result, f64::from(to_dec))
+    })
+}
+
 // ── securities: day counts and coupon schedules ────────────────────────────────────────────
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -566,6 +741,202 @@ fn yield_fn(b: &Bond, rate_v: f64, pr: f64, redemption: f64, ctx: &dyn CallConte
     let f = |y: f64| price(b, rate_v, y, redemption, ctx) - pr;
     let df = |y: f64| (f(y + 1e-7) - f(y - 1e-7)) / 2e-7;
     solve(f, df, 0.05)
+}
+
+// ── odd first and last periods (ODDFPRICE, ODDFYIELD, ODDLPRICE, ODDLYIELD) ─────────────────
+
+/// The normal length in days of a (quasi-)coupon period `[a, b]` for a basis: actual days for
+/// basis 1, 365/frequency for basis 3, 360/frequency otherwise.
+fn normal_length(a: Ymd, b: Ymd, freq: f64, basis: f64, ctx: &dyn CallContext) -> f64 {
+    match basis as i64 {
+        1 => serial(b, ctx) - serial(a, ctx),
+        3 => 365.0 / freq,
+        _ => 360.0 / freq,
+    }
+}
+
+/// Days from `a` to `b` for a basis: 30/360 for bases 0 and 4, actual days otherwise.
+fn basis_days(a: Ymd, b: Ymd, basis: f64, ctx: &dyn CallContext) -> f64 {
+    if basis == 0.0 || basis == 4.0 {
+        day_count(a, b, basis, ctx)
+    } else {
+        serial(b, ctx) - serial(a, ctx)
+    }
+}
+
+/// The quasi-coupon fraction of `[from, to]` on the coupon schedule through `anchor`: days in the
+/// partial periods at either end divided by their normal length, plus 1 for each whole period in
+/// between (Microsoft's Σ DCᵢ/NLᵢ, Σ Aᵢ/NLᵢ and Σ DSCᵢ/NLᵢ for odd periods, as Gnumeric computes
+/// them).
+fn date_ratio(
+    from: Ymd,
+    to: Ymd,
+    anchor: Ymd,
+    freq: f64,
+    basis: f64,
+    ctx: &dyn CallContext,
+) -> R<f64> {
+    if from >= to {
+        return Ok(0.0);
+    }
+    let step = (12.0 / freq) as i64;
+    // The schedule date after `from` (and the one before it).
+    let mut k = 0i64;
+    let (mut prev, mut next);
+    loop {
+        next = shift_months(anchor, k * step);
+        prev = shift_months(anchor, (k - 1) * step);
+        if prev <= from && from < next {
+            break;
+        }
+        k += if next <= from { 1 } else { -1 };
+        if k.abs() > 40_000 {
+            return Err(ErrorValue::Num);
+        }
+    }
+    if next >= to {
+        return Ok(basis_days(from, to, basis, ctx) / normal_length(prev, next, freq, basis, ctx));
+    }
+    let mut ratio =
+        basis_days(from, next, basis, ctx) / normal_length(prev, next, freq, basis, ctx);
+    for _ in 0..40_000 {
+        prev = next;
+        k += 1;
+        next = shift_months(anchor, k * step);
+        if next >= to {
+            return Ok(ratio
+                + basis_days(prev, to, basis, ctx) / normal_length(prev, next, freq, basis, ctx));
+        }
+        ratio += 1.0;
+    }
+    Err(ErrorValue::Num)
+}
+
+struct OddFirst {
+    /// Σ DC/NL (issue to first coupon) and Σ A/NL (issue to settlement), in coupon periods.
+    dc: f64,
+    a: f64,
+    /// Coupon periods from settlement to the first coupon.
+    t_first: f64,
+    /// Coupons after the first one, up to maturity.
+    n: f64,
+}
+
+#[allow(clippy::too_many_arguments)]
+fn odd_first(
+    settle: f64,
+    mat: f64,
+    issue: f64,
+    first: f64,
+    freq: f64,
+    basis: f64,
+    ctx: &dyn CallContext,
+) -> R<OddFirst> {
+    let (settle, mat, issue, first) = (settle.trunc(), mat.trunc(), issue.trunc(), first.trunc());
+    let (freq, basis) = (freq.trunc(), basis.trunc());
+    if ![1.0, 2.0, 4.0].contains(&freq)
+        || !(0.0..=4.0).contains(&basis)
+        || !(issue < settle && settle < first && first < mat)
+        || issue < 0.0
+        || mat > super::datetime::max_serial(ctx)
+    {
+        return Err(ErrorValue::Num);
+    }
+    let (s, m, i, f) = (
+        ymd(settle, ctx),
+        ymd(mat, ctx),
+        ymd(issue, ctx),
+        ymd(first, ctx),
+    );
+    let b = Bond {
+        settle,
+        s,
+        m,
+        freq,
+        basis,
+    };
+    let e = coupdays(&b, ctx);
+    let mut a = basis_days(i, s, basis, ctx);
+    let mut ds = basis_days(s, f, basis, ctx);
+    let mut df = basis_days(i, f, basis, ctx);
+    let mut n = coupon_dates(s, m, freq).2;
+    if ds > e {
+        // A long first period: count the coupons from the first one, and for the actual-day
+        // bases split the odd period into quasi-coupon periods.
+        let step = (12.0 / freq) as i64;
+        if basis == 0.0 || basis == 4.0 {
+            n = 1.0 + (basis_days(f, m, basis, ctx) / e).ceil();
+        } else {
+            let mut k = 0i64;
+            loop {
+                let prev = shift_months(f, k * step);
+                let next = shift_months(f, (k + 1) * step);
+                if next >= m {
+                    let tail = basis_days(prev, m, basis, ctx)
+                        / normal_length(prev, next, freq, basis, ctx);
+                    n = k as f64 + tail.ceil() + 1.0;
+                    break;
+                }
+                k += 1;
+                if k > 40_000 {
+                    return Err(ErrorValue::Num);
+                }
+            }
+            a = e * date_ratio(i, s, f, freq, basis, ctx)?;
+            ds = e * date_ratio(s, f, f, freq, basis, ctx)?;
+            df = e * date_ratio(i, f, f, freq, basis, ctx)?;
+        }
+    }
+    Ok(OddFirst {
+        dc: df / e,
+        a: a / e,
+        t_first: ds / e,
+        n: n - 1.0,
+    })
+}
+
+fn oddfprice_of(o: &OddFirst, rate: f64, yld: f64, redemption: f64, freq: f64) -> f64 {
+    let c = 100.0 * rate / freq;
+    let v = 1.0 + yld / freq;
+    let mut p = redemption / v.powf(o.n + o.t_first) + c * o.dc / v.powf(o.t_first);
+    let mut k = 1.0;
+    while k <= o.n {
+        p += c / v.powf(k + o.t_first);
+        k += 1.0;
+    }
+    p - c * o.a
+}
+
+struct OddLast {
+    dc: f64,
+    a: f64,
+    dsc: f64,
+}
+
+fn odd_last(
+    settle: f64,
+    mat: f64,
+    last: f64,
+    freq: f64,
+    basis: f64,
+    ctx: &dyn CallContext,
+) -> R<OddLast> {
+    let (settle, mat, last) = (settle.trunc(), mat.trunc(), last.trunc());
+    let (freq, basis) = (freq.trunc(), basis.trunc());
+    if ![1.0, 2.0, 4.0].contains(&freq)
+        || !(0.0..=4.0).contains(&basis)
+        || !(last < settle && settle < mat)
+        || last < 0.0
+        || mat > super::datetime::max_serial(ctx)
+    {
+        return Err(ErrorValue::Num);
+    }
+    let (s, m, l) = (ymd(settle, ctx), ymd(mat, ctx), ymd(last, ctx));
+    Ok(OddLast {
+        dc: date_ratio(l, m, l, freq, basis, ctx)?,
+        a: date_ratio(l, s, l, freq, basis, ctx)?,
+        dsc: date_ratio(s, m, l, freq, basis, ctx)?,
+    })
 }
 
 /// Macaulay duration in years: cash flows at (k − 1 + DSC/E) coupon periods from settlement,
@@ -766,6 +1137,43 @@ fn flag01(t: f64) -> f64 {
 /// The financial functions.
 pub fn specs() -> Vec<FunctionSpec> {
     vec![
+        numeric_ctx!(
+            "AMORLINC",
+            6,
+            7,
+            [0.0],
+            |ctx, cost, date, first, salvage, period, rate, basis| {
+                let x = Amor {
+                    cost,
+                    date,
+                    first,
+                    salvage,
+                    period,
+                    rate,
+                    basis,
+                };
+                amorlinc(&x, ctx)
+            }
+        ),
+        numeric_ctx!(
+            "AMORDEGRC",
+            6,
+            7,
+            [0.0],
+            |ctx, cost, date, first, salvage, period, rate, basis| {
+                let x = Amor {
+                    cost,
+                    date,
+                    first,
+                    salvage,
+                    period,
+                    rate,
+                    basis,
+                };
+                amordegrc(&x, ctx)
+            }
+        ),
+        spec("EUROCONVERT", 3, 5, imp!(euroconvert)).lift(crate::registry::ArgMask::ALL),
         numeric!("PMT", 3, 5, [0.0, 0.0], |r, n, p, f, t| if n == 0.0 {
             Err(ErrorValue::Num)
         } else {
@@ -949,6 +1357,64 @@ pub fn specs() -> Vec<FunctionSpec> {
                 Ok(price(&bd, r, y, red, ctx))
             }
         }),
+        numeric_ctx!(
+            "ODDFPRICE",
+            8,
+            9,
+            [0.0],
+            |ctx, s, m, iss, fc, r, y, red, f, b| {
+                if r < 0.0 || y < 0.0 || red <= 0.0 {
+                    return Err(ErrorValue::Num);
+                }
+                let o = odd_first(s, m, iss, fc, f, b, ctx)?;
+                Ok(oddfprice_of(&o, r, y, red, f.trunc()))
+            }
+        ),
+        numeric_ctx!(
+            "ODDFYIELD",
+            8,
+            9,
+            [0.0],
+            |ctx, s, m, iss, fc, r, pr, red, f, b| {
+                if r < 0.0 || pr <= 0.0 || red <= 0.0 {
+                    return Err(ErrorValue::Num);
+                }
+                let o = odd_first(s, m, iss, fc, f, b, ctx)?;
+                let fr = f.trunc();
+                let g = |y: f64| oddfprice_of(&o, r, y, red, fr) - pr;
+                let dg = |y: f64| (g(y + 1e-7) - g(y - 1e-7)) / 2e-7;
+                solve(g, dg, r.max(0.05))
+            }
+        ),
+        numeric_ctx!(
+            "ODDLPRICE",
+            7,
+            8,
+            [0.0],
+            |ctx, s, m, last, r, y, red, f, b| {
+                if r < 0.0 || y < 0.0 || red <= 0.0 {
+                    return Err(ErrorValue::Num);
+                }
+                let o = odd_last(s, m, last, f, b, ctx)?;
+                let c = 100.0 * r / f.trunc();
+                Ok((red + o.dc * c) / (1.0 + o.dsc * y / f.trunc()) - o.a * c)
+            }
+        ),
+        numeric_ctx!(
+            "ODDLYIELD",
+            7,
+            8,
+            [0.0],
+            |ctx, s, m, last, r, pr, red, f, b| {
+                if r < 0.0 || pr <= 0.0 || red <= 0.0 {
+                    return Err(ErrorValue::Num);
+                }
+                let o = odd_last(s, m, last, f, b, ctx)?;
+                let c = 100.0 * r / f.trunc();
+                let dirty = pr + o.a * c;
+                Ok((red + o.dc * c - dirty) / dirty * f.trunc() / o.dsc)
+            }
+        ),
         numeric_ctx!("YIELD", 6, 7, [0.0], |ctx, s, m, r, pr, red, f, b| {
             let bd = bond(s, m, f, b, ctx)?;
             if r < 0.0 || pr <= 0.0 || red <= 0.0 {

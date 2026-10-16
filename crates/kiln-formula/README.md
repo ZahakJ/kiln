@@ -2,7 +2,7 @@
 
 Kiln Grid's spreadsheet formula engine (PLAN.md §3.4, §3.8, §3.9): the tokenizer and Pratt parser, references
 and their rewriting, the value model, the dependency graph with incremental recalculation by topological levels
-(independent cells evaluated in parallel), dynamic arrays, Excel number formats, and the function library: 484
+(independent cells evaluated in parallel), dynamic arrays, Excel number formats, and the function library: 497
 Excel worksheet functions with their documentation (`functions`). The library plugs in through the
 `FunctionRegistry`: `Engine::new()` knows only the core set (`SUM`, `IF`, `AND`, `OR`, `NOT`, `TRUE`, `FALSE`),
 `Engine::with_options(kiln_formula::functions::engine_options())` knows everything.
@@ -86,9 +86,10 @@ sheets, tables and row visibility — enough for the library (WP-57) to add ever
 
 ## Function library — `functions`
 
-484 functions in every Excel family, ported from the v1.0 TypeScript library with identical names, arities,
-volatility and lazy/lifted arguments (`tests/conformance_registry.rs` checks them against a snapshot of the v1.0
-registry): Math & Trig (including `SUBTOTAL`, `AGGREGATE`, `SUMPRODUCT`, matrices, `SEQUENCE`, `RANDARRAY`),
+497 functions in every Excel family: the 484 of the v1.0 TypeScript library, ported with identical names,
+arities, volatility and lazy/lifted arguments (`tests/conformance_registry.rs` checks them against a snapshot of the
+v1.0 registry), and 13 that v1.0 lacked (`AMORDEGRC`, `AMORLINC`, `ODDFPRICE`, `ODDFYIELD`, `ODDLPRICE`, `ODDLYIELD`,
+`EUROCONVERT`, `ASC`, `JIS`, `DBCS`, `BAHTTEXT`, `PHONETIC`, `PERCENTOF`): Math & Trig (including `SUBTOTAL`, `AGGREGATE`, `SUMPRODUCT`, matrices, `SEQUENCE`, `RANDARRAY`),
 conditional aggregates (`COUNTIFS`, `SUMIFS`, `MAXIFS` … with Excel's criteria and wildcards), Statistical with
 every distribution and its inverse, regression (`LINEST`, `LOGEST`, `FORECAST`), and tests; Logical including
 `LET`, `LAMBDA`, `MAP`, `REDUCE`, `SCAN`, `MAKEARRAY`, `BYROW`, `BYCOL`; Information; Text including `TEXT`
@@ -96,7 +97,8 @@ every distribution and its inverse, regression (`LINEST`, `LOGEST`, `FORECAST`),
 back-references and a backtracking limit); Date & Time including `NETWORKDAYS.INTL`, `WORKDAY.INTL`, `DATEDIF`,
 `YEARFRAC`; Lookup & Reference including `XLOOKUP`, `XMATCH`, `FILTER`, `SORT`, `SORTBY`, `UNIQUE`, `TAKE`,
 `DROP`, `HSTACK`, `VSTACK`, `TOCOL`, `TOROW`, `WRAPROWS`, `WRAPCOLS`, `EXPAND`, `OFFSET`, `INDIRECT`; Financial
-(time value of money, cash flows, depreciation, bonds and bills; `rust_decimal` for `DOLLARDE`/`DOLLARFR`);
+(time value of money, cash flows, depreciation including the French `AMORLINC`/`AMORDEGRC`, bonds with odd first
+and last periods, bills, `EUROCONVERT`; `rust_decimal` for `DOLLARDE`/`DOLLARFR`);
 Engineering including `CONVERT`, base conversions, bitwise operations, complex numbers and Bessel functions;
 Database (`DSUM` … `DGET`); and `ENCODEURL`.
 
@@ -116,15 +118,15 @@ assert!(doc.syntax.starts_with("XLOOKUP(lookup_value"));
   worked examples; `functions::docs()` lists them in Insert Function order and `functions::doc(name)` finds one
   (case-insensitive, `_xlfn.` allowed). Autocompletion, the Insert Function dialog and the Formula Lab read it.
 - **Conformance**: `tests/conformance.rs` evaluates every row of `conformance/curated-*.csv` and
-  `conformance/generated-*.csv` (4,879 rows: Microsoft's documented examples, curated Excel behaviours including
+  `conformance/generated-*.csv` (5,420 rows: Microsoft's documented examples, curated Excel behaviours including
   279 dynamic-array and LAMBDA rows, and LibreOffice-oracle rows) with 0 failures; `tests/docs.rs` checks that
-  every function has exactly one documentation entry and that all 866 documented examples evaluate as stated;
+  every function has exactly one documentation entry and that all 890 documented examples evaluate as stated;
   `tests/conformance_fuzz.rs` calls every function at every arity with hostile arguments and requires an answer
   without a panic or a stall. Known differences from Excel: `docs/formula-deviations.md`.
 - **Parity**: `conformance/functions-implemented.json` (kept current by `tests/conformance_registry.rs`; rewrite it
   with `KILN_BLESS=1`) tells `cargo xtask parity` which Excel functions are done.
 - `cargo run -p kiln-formula --example functions -- --count | --list [FAMILY] | --doc XLOOKUP` prints the library
-  from the command line.
+  from the command line; `--eval FORMULA…` evaluates formulas with it (every digit of numbers shown).
 
 ## Number formats — `numfmt`
 

@@ -2,13 +2,16 @@
 
 This page lists where Kiln's formula engine knowingly behaves differently from Microsoft Excel, and
 where the LibreOffice oracle used by the conformance suite differs from Excel. The engine and its
-484-function library are Rust (`crates/kiln-formula`: the core from WP-56, the library in
+497-function library are Rust (`crates/kiln-formula`: the core from WP-56, the library in
 `src/functions/` from WP-57), ported from the v1.0 TypeScript engine kept read-only in
 `reference/ts-core/formula/`. The port keeps every name, arity, volatility and lazy or lifted
 argument of v1.0 (`tests/conformance_registry.rs` checks them against a snapshot of the v1.0
 registry) and reproduces the entries below; where the port changed a behaviour, the entry says so.
+Thirteen functions v1.0 lacked were added with the port: `AMORDEGRC`, `AMORLINC`, `ODDFPRICE`,
+`ODDFYIELD`, `ODDLPRICE`, `ODDLYIELD`, `EUROCONVERT`, `ASC`, `JIS`, `DBCS`, `BAHTTEXT`, `PHONETIC`
+and `PERCENTOF`.
 The conformance suite lives in `conformance/` and runs with
-`cargo nextest run -p kiln-formula --test conformance` (`tests/conformance.rs`, 4,879 rows, 0
+`cargo nextest run -p kiln-formula --test conformance` (`tests/conformance.rs`, 5,420 rows, 0
 failures):
 
 - `curated-*.csv` rows are Microsoft's documented examples (copied from the function documentation in
@@ -18,7 +21,14 @@ failures):
   `TOCOL`/`TOROW`, `WRAPROWS`/`WRAPCOLS`, `EXPAND`, `CHOOSEROWS`/`CHOOSECOLS`, `XLOOKUP`/`XMATCH`
   (including references returned by `XLOOKUP`), `TEXTSPLIT`/`TEXTBEFORE`/`TEXTAFTER`, array
   broadcasting, and `LET`, `LAMBDA`, `MAP`, `REDUCE`, `SCAN`, `BYROW`, `BYCOL`, `MAKEARRAY`, closures,
-  currying and recursion by passing a lambda to itself.
+  currying and recursion by passing a lambda to itself. The rows for the thirteen added functions
+  are appended to `curated-financial.csv`, `curated-text.csv` and `curated-math.csv`.
+- `generated-additions.csv` (486 rows) holds LibreOffice 24.2 values for the added functions
+  (`AMORLINC`, `AMORDEGRC`, `ODDLPRICE`, `ODDLYIELD`, `EUROCONVERT`, `BAHTTEXT`, `ASC`, `JIS`),
+  computed by writing the formulas into a flat ODS file and converting it to CSV with
+  `tools/oracle-soffice.sh`; the 71 rows where LibreOffice is known to differ from Excel are in
+  `oracle-exclusions.csv` with their reasons (LibreOffice has no `ODDFPRICE`/`ODDFYIELD`; their rows
+  are Microsoft's examples and round trips through `ODDFYIELD`).
 - `generated-*.csv` rows are produced by `reference/ts-core/formula/tools/gen-conformance.mjs`, which writes the
   formulas into an `.xlsx` with exceljs, lets LibreOffice 24.2 recalculate it headless
   (`tools/oracle-soffice.sh … csv`), and records the values. Rows where LibreOffice is known to differ
@@ -29,7 +39,7 @@ The runner compares numbers and date serials to 1e-9 relative (rows marked `roun
 examples print rounded values — to their displayed precision), errors by name, and text and logicals
 exactly. **Skipped rows:** none. A row typed `skip` must have its formula quoted in this file;
 `tests/conformance.rs` fails otherwise. Every documented example in `crates/kiln-formula/docs/*.json`
-(866 of them) is evaluated by `tests/docs.rs` as well.
+(890 of them) is evaluated by `tests/docs.rs` as well.
 
 ## Implementation note
 
@@ -72,8 +82,15 @@ These are behaviours where Kiln is known, or not verified, to match Excel.
 | Circular references | Cells in a cycle show 0 and are flagged (`Engine::is_circular`, `circular_cells`), unless iterative calculation is on. A cycle between defined names (`X=Y+1`, `Y=X+1`) evaluates to `#NAME?` (the name-nesting limit) instead of being reported as circular. | Shows 0 and warns; reports name cycles as circular references. | The plan text mentioned a `#CIRCULAR` error; Kiln follows Excel instead. Name cycles are rare and still never hang. |
 | Number formats (`TEXT`, cell display) | Format `0` shows `0` for -0.4; `General` shows -0.0000001 and 0.000012345 in decimal. | May show `-0`, and `-1E-07` / `1.2345E-05` (not verified). | Follows the numfmt oracle of v1.0; LibreOffice 24.2 agrees. |
 | `LET` names that are function names | `=LET(fact,LAMBDA(…),fact(fact,5))` calls the built-in `FACT`, so it is `#VALUE!` here. | Not verified. | A name followed by `(` resolves to a worksheet function first; name `LET` variables that are not function names (`fac`). The conformance rows do. |
+| Criteria longer than 255 characters | `#VALUE!` in `COUNTIF(S)`, `SUMIF(S)`, `AVERAGEIF(S)`, `MAXIFS`, `MINIFS`. | `#VALUE!`. | Matches Excel's documented limit (and keeps a 32,767-character wildcard from costing seconds). |
 | Huge arguments | `MULTINOMIAL`, the Bessel functions and other functions with loops over an argument are computed in bounded time: they overflow to `#NUM!` (or underflow to 0) instead of iterating up to 10^308 times; dates beyond 9999-12-31 in the date, `YEARFRAC` and security functions are `#NUM!`. | Same results where Excel gives one. | `tests/conformance_fuzz.rs` calls every function with every arity and hostile arguments and requires an answer without a panic or a stall. v1.0 could hang on `MULTINOMIAL(1E+308)` and `BESSELJ(1,1E+15)`. |
-| Not implemented | `GROUPBY`, `PIVOTBY`, `PERCENTOF`, `TRIMRANGE`, `IMAGE`, `WEBSERVICE`, `FILTERXML`, `CUBE*`, `RTD`, `CALL`, `REGISTER.ID`, `EUROCONVERT`, `AMORDEGRC`, `AMORLINC`, `ODDFPRICE`, `ODDFYIELD`, `ODDLPRICE`, `ODDLYIELD`, `STOCKHISTORY`, `GETPIVOTDATA`, `ASC`, `JIS`, `DBCS`, `BAHTTEXT`, `PHONETIC`, `TRANSLATE`, `DETECTLANGUAGE`, `PY`. | Available. | They return `#NAME?`. Pivot tables, external data and Python are outside the v0.1 scope; the odd-period bond and French depreciation functions are planned. |
+| Not implemented | `GROUPBY`, `PIVOTBY`, `TRIMRANGE`, `GETPIVOTDATA`, `FORECAST.ETS`, `FORECAST.ETS.CONFINT`, `FORECAST.ETS.SEASONALITY`, `FORECAST.ETS.STAT`, `IMAGE`, `WEBSERVICE`, `FILTERXML`, `CUBE*`, `RTD`, `CALL`, `REGISTER.ID`, `STOCKHISTORY`, `TRANSLATE`, `DETECTLANGUAGE`, `COPILOT`, `FIELDVALUE`, `PY`. | Available. | They return `#NAME?`. Pivot tables, external data, online services and Python are outside the v0.1 scope (the parity tracker lists each with its reason); `GROUPBY`, `PIVOTBY`, `TRIMRANGE` and the exponential-smoothing forecasts are planned. |
+| `AMORDEGRC` | Lives (1/rate) strictly between 0 and 1, 1 and 2, 2 and 3, or 4 and 5 years are `#NUM!`; the coefficient is 1.5 for 3–4 years, 2 for 5–6 and 2.5 beyond; basis 2 is `#NUM!` for both French functions; a schedule that a million periods do not exhaust is `#NUM!`. | As documented by Microsoft (the #NUM! ranges and coefficients). | LibreOffice computes a value for those lives (excluded rows). |
+| `ODDFPRICE`, `ODDFYIELD`, `ODDLPRICE`, `ODDLYIELD` | Microsoft's formulas with quasi-coupon periods: a whole quasi period counts 1, a partial one its days over the period's normal length (actual days for basis 1, 365/frequency for basis 3, 360/frequency otherwise); for an odd long first period under the 30/360 bases the spans are counted in one piece, as Gnumeric does; `ODDFYIELD` solves `ODDFPRICE` by Newton's method with a bracketing fallback. A maturity off the regular schedule after the first coupon counts its last partial period as a whole coupon. | Microsoft's four examples are reproduced to every printed digit. Other odd-period conventions not verified. | LibreOffice prorates odd last periods with `YEARFRAC` over the whole span (60 excluded rows, mostly basis 1) and has no `ODDFPRICE`/`ODDFYIELD`. |
+| `EUROCONVERT` | The 14 currencies of Microsoft's table with its calculation precision (BEF, LUF, ESP, ITL, GRD 0 decimals; PTE 1; the others 2), plus CYP, MTL, SKK, EEK, LVL, LTL and HRK (2 decimals) that joined the euro later; triangulation rounds the intermediate euro amount. | Microsoft's table; the later currencies are not in Excel's Euro Currency Tools. | LibreOffice rounds escudos and drachmas to 2 decimals. |
+| `ASC`, `JIS`, `DBCS` | Code page 932 conventions: printable ASCII ↔ full-width forms except `'` `"` `` ` `` `\` ↔ `’` `”` `‘` `￥`; katakana ↔ half-width katakana with voiced kana as two half-width characters (`ガ` ↔ `ｶﾞ`, `ヴ` ↔ `ｳﾞ`); spaces, hiragana and kanji unchanged; `DBCS` is `JIS`. | Japanese Excel converts through code page 932 (not verified in Excel). | Follows LibreOffice's Excel-compatible transliterations, except that a half-width `ｳﾞ` combines into `ヴ` (LibreOffice leaves `ウ゛`). |
+| `PHONETIC` | Returns the text of its argument (the upper-left cell of a range; `#N/A` for several areas). | Returns the furigana stored with the cell. | Kiln documents store no phonetic guides yet; Excel shows the same text for cells typed without an input method. |
+| `BAHTTEXT` | Rounded to the satang as `ROUND` does; เอ็ด only after a tens digit, so 101 is หนึ่งร้อยหนึ่งบาทถ้วน. | Microsoft's example (1234) is reproduced; other readings not verified. | Matches LibreOffice's Excel-compatible implementation on 36 amounts. |
 
 The WP-09 acceptance text asks for `=IRR({-100,30,40,50})` "within 1e-7 of 0.0894". The internal rate
 of return of those cash flows is 0.0889633947 (the net present value at 8.94% is −0.084, not 0); that
@@ -114,6 +131,9 @@ been re-checked in a copy of Excel for this suite.
 | `AND(TRUE,1,"TRUE")` | 1 | `#VALUE!`. | TRUE (text logicals typed directly are converted; not verified). |
 | `IMSUM("1+i","1+j")` | 1 | "2+2i". | `#VALUE!` (mixed suffixes). |
 | `IFERROR`/`IFNA` of an empty cell | 2 | An empty result. | 0. |
+| `ODDLPRICE`, `ODDLYIELD` with an odd last period spanning several quasi-coupon periods, or basis 1 | 60 | Prorates with `YEARFRAC` over the whole span. | Quasi-coupon periods (see the deviation above). |
+| `AMORDEGRC` with a life between 2 and 3 years | 10 | A depreciation amount. | `#NUM!` (documented). |
+| `JIS("ｳﾞ")` | 1 | ウ゛. | ヴ (not verified). |
 
 Rows LibreOffice cannot answer at all are excluded automatically: functions it does not read from
 `.xlsx` files (93 rows, e.g. `XLOOKUP`, `LET`, `TEXTSPLIT`, `NETWORKDAYS.INTL`, `IMCOSH` and other

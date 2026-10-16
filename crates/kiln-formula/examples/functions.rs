@@ -5,14 +5,20 @@
 //! cargo run -p kiln-formula --example functions -- --count
 //! cargo run -p kiln-formula --example functions -- --list [FAMILY]
 //! cargo run -p kiln-formula --example functions -- --doc XLOOKUP
+//! cargo run -p kiln-formula --example functions -- --eval '=XLOOKUP(5,{1,3,5},{"a","b","c"})' …
 //! ```
+//!
+//! `--eval` evaluates each formula on an empty sheet with the full library and prints
+//! `formula<TAB>result`, the result written as a formula literal (`"c"`, `{1,2;3,4}`, `#N/A`).
 
 use std::process::ExitCode;
 
+use kiln_formula::Engine;
+use kiln_formula::Value;
 use kiln_formula::functions::{self, DocFamily, FunctionDoc, doc, docs};
 use kiln_formula::registry::MAX_ARGS;
 
-const USAGE: &str = "usage: functions --count | --list [FAMILY] | --doc NAME";
+const USAGE: &str = "usage: functions --count | --list [FAMILY] | --doc NAME | --eval FORMULA…";
 
 fn print_doc(d: &FunctionDoc) {
     println!("{}", d.syntax);
@@ -60,6 +66,29 @@ fn print_doc(d: &FunctionDoc) {
     }
 }
 
+/// A value as a formula literal, numbers with every digit (shortest round-trip form).
+fn literal(v: &Value) -> String {
+    match v {
+        Value::Blank => String::new(),
+        Value::Number(n) => format!("{n}"),
+        Value::Str(s) => format!("\"{}\"", s.replace('"', "\"\"")),
+        Value::Bool(b) => if *b { "TRUE" } else { "FALSE" }.to_owned(),
+        Value::Error(e) => e.to_string(),
+        Value::Array(a) => {
+            let rows: Vec<String> = (0..a.rows())
+                .map(|r| {
+                    (0..a.cols())
+                        .map(|c| literal(a.get(r, c)))
+                        .collect::<Vec<_>>()
+                        .join(",")
+                })
+                .collect();
+            format!("{{{}}}", rows.join(";"))
+        }
+        Value::Lambda(l) => format!("LAMBDA({})", l.params().join(",")),
+    }
+}
+
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
     match args.first().map(String::as_str) {
@@ -96,6 +125,27 @@ fn main() -> ExitCode {
                 ExitCode::FAILURE
             }
         },
+        Some("--eval") if args.len() > 1 => {
+            let mut engine = Engine::with_options(functions::engine_options());
+            let Ok(sheet) = engine.add_sheet("Sheet1") else {
+                return ExitCode::FAILURE;
+            };
+            let mut ok = true;
+            for f in &args[1..] {
+                match engine.evaluate_at(f, sheet, 0, 0, false) {
+                    Ok(v) => println!("{f}\t{}", literal(&v)),
+                    Err(e) => {
+                        ok = false;
+                        println!("{f}\tparse error: {e}");
+                    }
+                }
+            }
+            if ok {
+                ExitCode::SUCCESS
+            } else {
+                ExitCode::FAILURE
+            }
+        }
         _ => {
             eprintln!("{USAGE}");
             ExitCode::from(2)

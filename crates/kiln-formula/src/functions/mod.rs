@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-//! The worksheet function library: 484 Excel functions in twelve families, each with
+//! The worksheet function library: 497 Excel functions in twelve families, each with
 //! documentation (signature, arguments, examples) used by autocompletion, the Insert Function
 //! dialog and the Formula Lab.
 //!
@@ -9,8 +9,8 @@
 //!
 //! The library is a port of Kiln's v1.0 TypeScript library: names, arities, volatility and which
 //! arguments are lazy or lifted over arrays are identical (`tests/conformance_registry.rs` checks
-//! them against a snapshot of the v1.0 registry), and the 4,800-row conformance suite in
-//! `conformance/` is the oracle (`tests/conformance.rs`). Known differences from Excel are listed
+//! them against a snapshot of the v1.0 registry), plus 13 functions v1.0 lacked; the 5,400-row
+//! conformance suite in `conformance/` is the oracle (`tests/conformance.rs`). Known differences from Excel are listed
 //! in `docs/formula-deviations.md`.
 //!
 //! | Module | Family |
@@ -44,7 +44,9 @@ mod grid;
 mod matching;
 mod special;
 mod textutil;
+mod thai;
 mod units;
+mod widths;
 
 pub mod conditional;
 pub mod database;

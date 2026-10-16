@@ -1199,6 +1199,33 @@
     "since": "2007"
   },
   {
+    "name": "PERCENTOF",
+    "category": "Math & Trig",
+    "summary": "Returns the percentage that a subset makes up of a data set: the sum of the subset divided by the sum of all the data.",
+    "syntax": "PERCENTOF(data_subset, data_all)",
+    "args": [
+      {
+        "name": "data_subset",
+        "description": "The values of the subset."
+      },
+      {
+        "name": "data_all",
+        "description": "All the values the subset is a part of."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PERCENTOF({10,20},{10,20,30,40})",
+        "result": "0.3"
+      },
+      {
+        "formula": "=PERCENTOF(5,0)",
+        "result": "#DIV/0!"
+      }
+    ],
+    "since": "365"
+  },
+  {
     "name": "PI",
     "category": "Math & Trig",
     "summary": "Returns the value of pi, accurate to 15 digits.",

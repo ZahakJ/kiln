@@ -15,9 +15,18 @@ use crate::engine::{Arg, CallContext, EvalValue, broadcast_dims, broadcast_pick}
 use crate::registry::{ArgMask, FunctionImpl, FunctionSpec};
 use crate::values::{Array2D, ErrorValue, Value};
 
-fn criterion_of(args: &mut [Arg<'_>], i: usize, ctx: &mut dyn CallContext) -> Criterion {
+/// Excel's limit on the length of a text criterion (longer ones are `#VALUE!`).
+const MAX_CRITERION: usize = 255;
+
+fn criterion_of(args: &mut [Arg<'_>], i: usize, ctx: &mut dyn CallContext) -> R<Criterion> {
     let c = scalar(args, i, ctx);
-    parse_criterion(&c, &ctx.coercion())
+    if let Value::Str(s) = &c
+        && s.len() > MAX_CRITERION
+        && s.encode_utf16().count() > MAX_CRITERION
+    {
+        return Err(ErrorValue::Value);
+    }
+    Ok(parse_criterion(&c, &ctx.coercion()))
 }
 
 /// Positions `(r, c)` where every (grid, criterion) pair matches, plus how many positions beyond
@@ -75,7 +84,7 @@ fn count_ifs(args: &mut [Arg<'_>], ctx: &mut dyn CallContext) -> R<f64> {
     let mut i = 0;
     while i < args.len() {
         let g = grid_of(args, i, ctx)?;
-        let crit = criterion_of(args, i + 1, ctx);
+        let crit = criterion_of(args, i + 1, ctx)?;
         pairs.push((g, crit));
         i += 2;
     }
@@ -144,7 +153,7 @@ fn min_fold(xs: &[f64]) -> R<f64> {
 
 fn if_single(args: &mut [Arg<'_>], ctx: &mut dyn CallContext, fold: Fold) -> R<f64> {
     let range = grid_of(args, 0, ctx)?;
-    let crit = criterion_of(args, 1, ctx);
+    let crit = criterion_of(args, 1, ctx)?;
     let target = if args.len() > 2 && !matches!(&args[2], Arg::Value(EvalValue::Missing)) {
         resized_grid(args, 2, &range, ctx)?
     } else {
@@ -162,7 +171,7 @@ fn if_multi(args: &mut [Arg<'_>], ctx: &mut dyn CallContext, fold: Fold) -> R<f6
     let mut i = 1;
     while i < args.len() {
         let g = grid_of(args, i, ctx)?;
-        let crit = criterion_of(args, i + 1, ctx);
+        let crit = criterion_of(args, i + 1, ctx)?;
         pairs.push((g, crit));
         i += 2;
     }

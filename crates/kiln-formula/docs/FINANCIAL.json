@@ -86,6 +86,102 @@
     "since": "2007"
   },
   {
+    "name": "AMORDEGRC",
+    "category": "Financial",
+    "summary": "Returns the depreciation for each accounting period in the French accounting system, with a depreciation coefficient that depends on the asset's life.",
+    "syntax": "AMORDEGRC(cost, date_purchased, first_period, salvage, period, rate, [basis])",
+    "args": [
+      {
+        "name": "cost",
+        "description": "The cost of the asset."
+      },
+      {
+        "name": "date_purchased",
+        "description": "The date the asset was purchased."
+      },
+      {
+        "name": "first_period",
+        "description": "The date of the end of the first period."
+      },
+      {
+        "name": "salvage",
+        "description": "The value at the end of the asset's life."
+      },
+      {
+        "name": "period",
+        "description": "The period (0 is the first, partial one)."
+      },
+      {
+        "name": "rate",
+        "description": "The rate of depreciation."
+      },
+      {
+        "name": "basis",
+        "description": "The day-count basis: 0 30/360 (default), 1 actual, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=AMORDEGRC(2400,DATE(2008,8,19),DATE(2008,12,31),300,1,0.15,1)",
+        "result": "776"
+      },
+      {
+        "formula": "=AMORDEGRC(2400,DATE(2008,8,19),DATE(2008,12,31),300,0,0.15,1)",
+        "result": "330"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "AMORLINC",
+    "category": "Financial",
+    "summary": "Returns the straight-line depreciation for each accounting period in the French accounting system, prorating the first period.",
+    "syntax": "AMORLINC(cost, date_purchased, first_period, salvage, period, rate, [basis])",
+    "args": [
+      {
+        "name": "cost",
+        "description": "The cost of the asset."
+      },
+      {
+        "name": "date_purchased",
+        "description": "The date the asset was purchased."
+      },
+      {
+        "name": "first_period",
+        "description": "The date of the end of the first period."
+      },
+      {
+        "name": "salvage",
+        "description": "The value at the end of the asset's life."
+      },
+      {
+        "name": "period",
+        "description": "The period (0 is the first, partial one)."
+      },
+      {
+        "name": "rate",
+        "description": "The rate of depreciation."
+      },
+      {
+        "name": "basis",
+        "description": "The day-count basis: 0 30/360 (default), 1 actual, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=AMORLINC(2400,DATE(2008,8,19),DATE(2008,12,31),300,1,0.15,1)",
+        "result": "360"
+      },
+      {
+        "formula": "=AMORLINC(2400,DATE(2008,8,19),DATE(2008,12,31),300,0,0.15,1)",
+        "result": "131.803279"
+      }
+    ],
+    "since": "2007"
+  },
+  {
     "name": "COUPDAYBS",
     "category": "Financial",
     "summary": "Returns the number of days from the beginning of the coupon period to the settlement date.",
@@ -613,6 +709,51 @@
     "since": "2007"
   },
   {
+    "name": "EUROCONVERT",
+    "category": "Financial",
+    "summary": "Converts a number to euros, from euros to a euro member currency, or between two member currencies through the euro (triangulation), at the fixed conversion rates.",
+    "syntax": "EUROCONVERT(number, source, target, [full_precision], [triangulation_precision])",
+    "args": [
+      {
+        "name": "number",
+        "description": "The amount to convert."
+      },
+      {
+        "name": "source",
+        "description": "The ISO code of the currency of the amount (EUR, BEF, LUF, DEM, ESP, FRF, IEP, ITL, NLG, ATS, PTE, FIM, GRD, SIT, CYP, MTL, SKK, EEK, LVL, LTL, HRK)."
+      },
+      {
+        "name": "target",
+        "description": "The ISO code of the currency to convert to."
+      },
+      {
+        "name": "full_precision",
+        "description": "TRUE keeps every digit; FALSE (default) rounds to the target currency's precision.",
+        "optional": true
+      },
+      {
+        "name": "triangulation_precision",
+        "description": "Digits (3 or more) the intermediate euro amount is rounded to when converting between two member currencies.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=EUROCONVERT(1.2,\"DEM\",\"EUR\")",
+        "result": "0.61"
+      },
+      {
+        "formula": "=EUROCONVERT(1,\"FRF\",\"DEM\",TRUE,3)",
+        "result": "0.29728616"
+      },
+      {
+        "formula": "=EUROCONVERT(1,\"FRF\",\"DEM\",FALSE,3)",
+        "result": "0.3"
+      }
+    ],
+    "since": "2007"
+  },
+  {
     "name": "FV",
     "category": "Financial",
     "summary": "Returns the future value of an investment with periodic, constant payments and a constant rate.",
@@ -996,6 +1137,206 @@
       {
         "formula": "=NPV(0.08,{8000,9200,10000,12000,14500})+-40000",
         "result": "1922.061555"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ODDFPRICE",
+    "category": "Financial",
+    "summary": "Returns the price per $100 face value of a security with an odd (short or long) first period.",
+    "syntax": "ODDFPRICE(settlement, maturity, issue, first_coupon, rate, yld, redemption, frequency, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The security's settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The security's maturity date."
+      },
+      {
+        "name": "issue",
+        "description": "The security's issue date."
+      },
+      {
+        "name": "first_coupon",
+        "description": "The first coupon date."
+      },
+      {
+        "name": "rate",
+        "description": "The annual coupon rate."
+      },
+      {
+        "name": "yld",
+        "description": "The annual yield."
+      },
+      {
+        "name": "redemption",
+        "description": "The redemption value per $100 face value."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "The day-count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ODDFPRICE(DATE(2008,11,11),DATE(2021,3,1),DATE(2008,10,15),DATE(2009,3,1),0.0785,0.0625,100,2,1)",
+        "result": "113.597717474079"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ODDFYIELD",
+    "category": "Financial",
+    "summary": "Returns the yield of a security with an odd (short or long) first period.",
+    "syntax": "ODDFYIELD(settlement, maturity, issue, first_coupon, rate, pr, redemption, frequency, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The security's settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The security's maturity date."
+      },
+      {
+        "name": "issue",
+        "description": "The security's issue date."
+      },
+      {
+        "name": "first_coupon",
+        "description": "The first coupon date."
+      },
+      {
+        "name": "rate",
+        "description": "The annual coupon rate."
+      },
+      {
+        "name": "pr",
+        "description": "The price per $100 face value."
+      },
+      {
+        "name": "redemption",
+        "description": "The redemption value per $100 face value."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "The day-count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ODDFYIELD(DATE(2008,11,11),DATE(2021,3,1),DATE(2008,10,15),DATE(2009,3,1),0.0575,84.5,100,2,0)",
+        "result": "0.0772455"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ODDLPRICE",
+    "category": "Financial",
+    "summary": "Returns the price per $100 face value of a security with an odd last period.",
+    "syntax": "ODDLPRICE(settlement, maturity, last_interest, rate, yld, redemption, frequency, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The security's settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The security's maturity date."
+      },
+      {
+        "name": "last_interest",
+        "description": "The last coupon date."
+      },
+      {
+        "name": "rate",
+        "description": "The annual coupon rate."
+      },
+      {
+        "name": "yld",
+        "description": "The annual yield."
+      },
+      {
+        "name": "redemption",
+        "description": "The redemption value per $100 face value."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "The day-count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ODDLPRICE(DATE(2008,2,7),DATE(2008,6,15),DATE(2007,10,15),0.0375,0.0405,100,2,0)",
+        "result": "99.8782860"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ODDLYIELD",
+    "category": "Financial",
+    "summary": "Returns the yield of a security with an odd last period.",
+    "syntax": "ODDLYIELD(settlement, maturity, last_interest, rate, pr, redemption, frequency, [basis])",
+    "args": [
+      {
+        "name": "settlement",
+        "description": "The security's settlement date."
+      },
+      {
+        "name": "maturity",
+        "description": "The security's maturity date."
+      },
+      {
+        "name": "last_interest",
+        "description": "The last coupon date."
+      },
+      {
+        "name": "rate",
+        "description": "The annual coupon rate."
+      },
+      {
+        "name": "pr",
+        "description": "The price per $100 face value."
+      },
+      {
+        "name": "redemption",
+        "description": "The redemption value per $100 face value."
+      },
+      {
+        "name": "frequency",
+        "description": "Coupon payments per year: 1 annual, 2 semiannual, 4 quarterly."
+      },
+      {
+        "name": "basis",
+        "description": "The day-count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ODDLYIELD(DATE(2008,4,20),DATE(2008,6,15),DATE(2007,12,24),0.0375,99.875,100,2,0)",
+        "result": "0.0451922"
       }
     ],
     "since": "2007"

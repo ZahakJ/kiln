@@ -1015,7 +1015,62 @@ pub fn specs() -> Vec<FunctionSpec> {
         .lift(all),
         spec("REGEXREPLACE", 3, 5, imp!(regexreplace)).lift(ArgMask::of(&[0, 1, 2, 3, 4])),
         spec("REGEXEXTRACT", 2, 4, imp!(regexextract)).lift(ArgMask::of(&[0, 1, 3])),
+        spec(
+            "ASC",
+            1,
+            1,
+            imp!(|a, c| text(a, 0, c).map(|s| super::widths::to_half_width(&s))),
+        )
+        .lift(all),
+        spec(
+            "JIS",
+            1,
+            1,
+            imp!(|a, c| text(a, 0, c).and_then(|s| capped(super::widths::to_full_width(&s)))),
+        )
+        .lift(all),
+        spec(
+            "DBCS",
+            1,
+            1,
+            imp!(|a, c| text(a, 0, c).and_then(|s| capped(super::widths::to_full_width(&s)))),
+        )
+        .lift(all),
+        spec(
+            "BAHTTEXT",
+            1,
+            1,
+            imp!(|a, c| {
+                let x = num(a, 0, c, 0.0)?;
+                super::thai::baht_text(x).ok_or(ErrorValue::Num)
+            }),
+        )
+        .lift(all),
+        spec("PHONETIC", 1, 1, imp!(phonetic)),
     ]
+}
+
+/// `PHONETIC`: Kiln documents carry no furigana, so the reading of a cell is its text (what
+/// Excel shows for text typed without an input method); a range reads its top-left cell.
+fn phonetic(args: &mut [Arg<'_>], ctx: &mut dyn CallContext) -> R<Arc<str>> {
+    let v = value_at(args, 0, ctx);
+    if let EvalValue::Ref(r) = &v
+        && r.as_areas().len() > 1
+    {
+        return Err(ErrorValue::NA);
+    }
+    let first = match v {
+        EvalValue::Missing => Value::Blank,
+        EvalValue::Ref(r) => match r.as_areas().first() {
+            Some(a) => ctx.read_cell(a.sheet, a.bounds.r0, a.bounds.c0),
+            None => Value::Blank,
+        },
+        other => ctx.to_value(other).top_left(),
+    };
+    match first {
+        Value::Lambda(_) => Err(ErrorValue::Value),
+        v => to_text(&v),
+    }
 }
 
 #[cfg(test)]

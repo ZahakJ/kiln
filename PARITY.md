@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **4.3 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **4.6 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,23 +12,23 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 4.3 % | 782 | 0 | 20 | 20 | 742 | 20 |
+| **Overall** | 4.6 % | 782 | 0 | 24 | 17 | 741 | 20 |
 | Kiln Write | 0.0 % | 231 | 0 | 0 | 0 | 231 | 1 |
-| Kiln Grid | 12.6 % | 261 | 0 | 20 | 17 | 224 | 6 |
+| Kiln Grid | 13.4 % | 261 | 0 | 24 | 14 | 223 | 6 |
 | Kiln Deck | 0.0 % | 184 | 0 | 0 | 0 | 184 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
 | Suite | 2.6 % | 62 | 0 | 0 | 3 | 59 | 9 |
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 5.1 % | 462 | 0 | 15 | 17 | 430 | 0 |
+| critical | 5.4 % | 462 | 0 | 18 | 14 | 430 | 0 |
 | commonly-missed | 2.2 % | 224 | 0 | 4 | 2 | 218 | 0 |
-| niche | 1.6 % | 96 | 0 | 1 | 1 | 94 | 20 |
+| niche | 2.6 % | 96 | 0 | 2 | 1 | 93 | 20 |
 
 | App | Critical | Commonly-missed | Niche |
 |---|---:|---:|---:|
 | Kiln Write | 0.0 % (146) | 0.0 % (58) | 0.0 % (27) |
-| Kiln Grid | 15.7 % (143) | 5.4 % (83) | 4.3 % (35) |
+| Kiln Grid | 16.8 % (143) | 5.4 % (83) | 7.1 % (35) |
 | Kiln Deck | 0.0 % (119) | 0.0 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
 | Suite | 3.2 % (31) | 1.7 % (29) | 0.0 % (2) |
@@ -95,11 +95,11 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `grid.language.date-1904` | 1900 and 1904 date systems with Excel's 1900 leap-year bug | missing | partial |
 | `grid.language.precision` | Excel precision rules: 15 significant digits, -0, floating display rounding | missing | partial |
 | `grid.language.legacy-cse` | Legacy array formulas (Ctrl+Shift+Enter) and implicit intersection (@) | missing | partial |
-| `grid.formulas.functions.math` | Math & Trig functions (ABS…TRUNC, SUMIFS, SUMPRODUCT, AGGREGATE, SEQUENCE…) | missing | partial |
+| `grid.formulas.functions.math` | Math & Trig functions (ABS…TRUNC, SUMIFS, SUMPRODUCT, AGGREGATE, SEQUENCE…) | missing | done |
 | `grid.formulas.functions.statistical` | Statistical functions incl. distributions (AVERAGEIFS, COUNTIFS, STDEV.S, NORM.DIST, FORECAST…) | missing | partial |
-| `grid.formulas.functions.financial` | Financial functions (PMT, NPV, IRR, XNPV, XIRR, PRICE, YIELD…) | missing | partial |
+| `grid.formulas.functions.financial` | Financial functions (PMT, NPV, IRR, XNPV, XIRR, PRICE, YIELD…) | missing | done |
 | `grid.formulas.functions.logical` | Logical functions (IF, IFS, SWITCH, AND, OR, XOR, LET, LAMBDA, MAP, REDUCE…) | missing | done |
-| `grid.formulas.functions.text` | Text functions (TEXT, TEXTJOIN, TEXTSPLIT, TEXTBEFORE, REGEXTEST…) | missing | partial |
+| `grid.formulas.functions.text` | Text functions (TEXT, TEXTJOIN, TEXTSPLIT, TEXTBEFORE, REGEXTEST…) | missing | done |
 | `grid.formulas.functions.date-time` | Date & Time functions (DATE, EDATE, NETWORKDAYS.INTL, WORKDAY.INTL, DATEDIF, YEARFRAC…) | missing | done |
 | `grid.formulas.functions.lookup` | Lookup & Reference functions (VLOOKUP, XLOOKUP, INDEX/MATCH, FILTER, SORT, UNIQUE, TAKE, GROUPBY…) | missing | partial |
 | `grid.formulas.functions.information` | Information functions (ISBLANK, ISNUMBER, CELL, TYPE, SHEET…) | missing | done |
@@ -107,6 +107,7 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `grid.formulas.functions.database` | Database functions (DSUM, DCOUNT, DAVERAGE, DGET…) | missing | done |
 | `grid.formulas.functions.compatibility` | Compatibility functions (STDEV, PERCENTILE, RANK, CONCATENATE…) | missing | done |
 | `grid.formulas.functions.web` | Web functions (ENCODEURL; FILTERXML and WEBSERVICE out) | missing | done |
+| `grid.formulas.functions.add-in` | Add-in and automation functions: EUROCONVERT (CALL and REGISTER.ID are out) | missing | done |
 | `grid.formulas.functions.lookup.XLOOKUP` | XLOOKUP with match and search modes | missing | done |
 | `grid.formulas.functions.lookup.VLOOKUP` | VLOOKUP exact and approximate match | missing | done |
 | `grid.formulas.functions.lookup.INDEX` | INDEX/MATCH combinations | missing | done |
@@ -125,23 +126,23 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 
 ## Excel worksheet functions
 
-523 functions from Microsoft's public list ([parity/functions.json](parity/functions.json)): 484 done, 21 planned, 18 out of scope. A function is done when the formula library lists it as implemented in `conformance/functions-implemented.json`; each family row below aggregates its functions.
+523 functions from Microsoft's public list ([parity/functions.json](parity/functions.json)): 497 done, 8 planned, 18 out of scope. A function is done when the formula library lists it as implemented in `conformance/functions-implemented.json`; each family row below aggregates its functions.
 
 | Family | Done | Planned | Out | Row |
 |---|---:|---:|---:|---|
-| add-in | 0 | 1 | 2 | `grid.formulas.functions.add-in` |
+| add-in | 1 | 0 | 2 | `grid.formulas.functions.add-in` |
 | compatibility | 40 | 0 | 0 | `grid.formulas.functions.compatibility` |
 | cube | 0 | 0 | 7 | `grid.formulas.functions.cube` |
 | database | 12 | 0 | 0 | `grid.formulas.functions.database` |
 | date-time | 25 | 0 | 0 | `grid.formulas.functions.date-time` |
 | engineering | 54 | 0 | 0 | `grid.formulas.functions.engineering` |
-| financial | 49 | 6 | 0 | `grid.formulas.functions.financial` |
+| financial | 55 | 0 | 0 | `grid.formulas.functions.financial` |
 | information | 21 | 0 | 1 | `grid.formulas.functions.information` |
 | logical | 19 | 0 | 0 | `grid.formulas.functions.logical` |
 | lookup | 34 | 4 | 3 | `grid.formulas.functions.lookup` |
-| math | 79 | 1 | 0 | `grid.formulas.functions.math` |
+| math | 80 | 0 | 0 | `grid.formulas.functions.math` |
 | statistical | 107 | 4 | 0 | `grid.formulas.functions.statistical` |
-| text | 43 | 5 | 3 | `grid.formulas.functions.text` |
+| text | 48 | 0 | 3 | `grid.formulas.functions.text` |
 | web | 1 | 0 | 2 | `grid.formulas.functions.web` |
 
 Out of scope:
@@ -650,7 +651,7 @@ Score 0.0 % over 231 rows in scope; 0 better, 0 done, 0 partial, 231 missing, 1 
 
 ## Kiln Grid
 
-Score 12.6 % over 261 rows in scope; 0 better, 20 done, 17 partial, 224 missing, 6 out of scope.
+Score 13.4 % over 261 rows in scope; 0 better, 24 done, 14 partial, 223 missing, 6 out of scope.
 
 ### Home ▸ Clipboard
 
@@ -908,11 +909,11 @@ Score 12.6 % over 261 rows in scope; 0 better, 20 done, 17 partial, 224 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ◐ | Math & Trig functions (ABS…TRUNC, SUMIFS, SUMPRODUCT, AGGREGATE, SEQUENCE…) | Excel ▸ Formulas ▸ Math & Trig | critical | P0 | WP-57 | `grid.formulas.functions.math` |
+| ● | Math & Trig functions (ABS…TRUNC, SUMIFS, SUMPRODUCT, AGGREGATE, SEQUENCE…) | Excel ▸ Formulas ▸ Math & Trig | critical | P0 | WP-57 | `grid.formulas.functions.math` |
 | ◐ | Statistical functions incl. distributions (AVERAGEIFS, COUNTIFS, STDEV.S, NORM.DIST, FORECAST…) | Excel ▸ More Functions ▸ Statistical | critical | P0 | WP-57 | `grid.formulas.functions.statistical` |
-| ◐ | Financial functions (PMT, NPV, IRR, XNPV, XIRR, PRICE, YIELD…) | Excel ▸ Formulas ▸ Financial | critical | P0 | WP-57 | `grid.formulas.functions.financial` |
+| ● | Financial functions (PMT, NPV, IRR, XNPV, XIRR, PRICE, YIELD…) | Excel ▸ Formulas ▸ Financial | critical | P0 | WP-57 | `grid.formulas.functions.financial` |
 | ● | Logical functions (IF, IFS, SWITCH, AND, OR, XOR, LET, LAMBDA, MAP, REDUCE…) | Excel ▸ Formulas ▸ Logical | critical | P0 | WP-57 | `grid.formulas.functions.logical` |
-| ◐ | Text functions (TEXT, TEXTJOIN, TEXTSPLIT, TEXTBEFORE, REGEXTEST…) | Excel ▸ Formulas ▸ Text | critical | P0 | WP-57 | `grid.formulas.functions.text` |
+| ● | Text functions (TEXT, TEXTJOIN, TEXTSPLIT, TEXTBEFORE, REGEXTEST…) | Excel ▸ Formulas ▸ Text | critical | P0 | WP-57 | `grid.formulas.functions.text` |
 | ● | Date & Time functions (DATE, EDATE, NETWORKDAYS.INTL, WORKDAY.INTL, DATEDIF, YEARFRAC…) | Excel ▸ Formulas ▸ Date & Time | critical | P0 | WP-57 | `grid.formulas.functions.date-time` |
 | ◐ | Lookup & Reference functions (VLOOKUP, XLOOKUP, INDEX/MATCH, FILTER, SORT, UNIQUE, TAKE, GROUPBY…) | Excel ▸ Formulas ▸ Lookup & Reference | critical | P0 | WP-57 | `grid.formulas.functions.lookup` |
 | ● | Information functions (ISBLANK, ISNUMBER, CELL, TYPE, SHEET…) | Excel ▸ More Functions ▸ Information | critical | P0 | WP-57 | `grid.formulas.functions.information` |
@@ -921,7 +922,7 @@ Score 12.6 % over 261 rows in scope; 0 better, 20 done, 17 partial, 224 missing,
 | ● | Compatibility functions (STDEV, PERCENTILE, RANK, CONCATENATE…) | Excel ▸ More Functions ▸ Compatibility | commonly-missed | P0 | WP-57 | `grid.formulas.functions.compatibility` |
 | ● | Web functions (ENCODEURL; FILTERXML and WEBSERVICE out) | Excel ▸ More Functions ▸ Web | niche | P2 | WP-57 | `grid.formulas.functions.web` |
 | – | Cube functions (CUBEVALUE, CUBEMEMBER…) for OLAP data models | Excel ▸ More Functions ▸ Cube | niche | out | — | `grid.formulas.functions.cube` |
-| ○ | Add-in and automation functions: EUROCONVERT (CALL and REGISTER.ID are out) | Excel ▸ add-in functions | niche | P2 | WP-57 | `grid.formulas.functions.add-in` |
+| ● | Add-in and automation functions: EUROCONVERT (CALL and REGISTER.ID are out) | Excel ▸ add-in functions | niche | P2 | WP-57 | `grid.formulas.functions.add-in` |
 
 ### Formulas ▸ Key functions
 

@@ -28,6 +28,56 @@
     "since": "2024"
   },
   {
+    "name": "ASC",
+    "category": "Text",
+    "summary": "Changes full-width (double-byte) letters, digits and katakana to their half-width (single-byte) forms.",
+    "syntax": "ASC(text)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text or a reference to a cell containing the text to change."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ASC(\"ＥＸＣＥＬ\")",
+        "result": "\"EXCEL\""
+      },
+      {
+        "formula": "=ASC(\"エクセル\")",
+        "result": "\"ｴｸｾﾙ\""
+      },
+      {
+        "formula": "=ASC(\"ガ\")",
+        "result": "\"ｶﾞ\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "BAHTTEXT",
+    "category": "Text",
+    "summary": "Converts a number to Thai text and adds the suffix \"Baht\".",
+    "syntax": "BAHTTEXT(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A number, rounded to the satang (two decimals)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BAHTTEXT(1234)",
+        "result": "\"หนึ่งพันสองร้อยสามสิบสี่บาทถ้วน\""
+      },
+      {
+        "formula": "=BAHTTEXT(21.5)",
+        "result": "\"ยี่สิบเอ็ดบาทห้าสิบสตางค์\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
     "name": "CHAR",
     "category": "Text",
     "summary": "Returns the character for a code number (Windows-1252).",
@@ -145,6 +195,29 @@
       }
     ],
     "since": "2007"
+  },
+  {
+    "name": "DBCS",
+    "category": "Text",
+    "summary": "Changes half-width (single-byte) letters, digits and katakana to their full-width (double-byte) forms.",
+    "syntax": "DBCS(text)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text or a reference to a cell containing the text to change."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DBCS(\"EXCEL\")",
+        "result": "\"ＥＸＣＥＬ\""
+      },
+      {
+        "formula": "=DBCS(\"ｴｸｾﾙ\")",
+        "result": "\"エクセル\""
+      }
+    ],
+    "since": "2013"
   },
   {
     "name": "DOLLAR",
@@ -310,6 +383,33 @@
       {
         "formula": "=FIXED(44.332)",
         "result": "\"44.33\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "JIS",
+    "category": "Text",
+    "summary": "Changes half-width (single-byte) letters, digits and katakana to their full-width (double-byte) forms.",
+    "syntax": "JIS(text)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text or a reference to a cell containing the text to change."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=JIS(\"EXCEL\")",
+        "result": "\"ＥＸＣＥＬ\""
+      },
+      {
+        "formula": "=JIS(\"ｴｸｾﾙ\")",
+        "result": "\"エクセル\""
+      },
+      {
+        "formula": "=JIS(\"ｶﾞ\")",
+        "result": "\"ガ\""
       }
     ],
     "since": "2007"
@@ -521,6 +621,25 @@
       }
     ],
     "since": "2013"
+  },
+  {
+    "name": "PHONETIC",
+    "category": "Text",
+    "summary": "Extracts the phonetic (furigana) characters from a text string; text without furigana is returned as it is.",
+    "syntax": "PHONETIC(reference)",
+    "args": [
+      {
+        "name": "reference",
+        "description": "A text string or a reference to a cell (a range reads its upper-left cell)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PHONETIC(\"東京\")",
+        "result": "\"東京\""
+      }
+    ],
+    "since": "2007"
   },
   {
     "name": "PROPER",

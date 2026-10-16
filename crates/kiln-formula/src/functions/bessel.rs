@@ -177,6 +177,11 @@ pub(crate) fn bessel_i(x: f64, n: f64) -> f64 {
     if x <= 30.0 + n {
         return series(x, n, false);
     }
+    if x > 750.0 {
+        // Iₙ(x) ≥ e^x/√(2πx)·(1 − (4n²−1)/8x) overflows f64 here for every order the series
+        // branch does not take.
+        return f64::INFINITY;
+    }
     // Scaled integrand to avoid overflow: e^{x(cos τ − 1)} · e^x.
     let s = integrate(
         |t| (x * (t.cos() - 1.0)).exp() * (n * t).cos(),
@@ -271,6 +276,8 @@ mod tests {
         assert_eq!(bessel_j(1.0, 1e15), 0.0);
         assert_eq!(bessel_i(2.0, 1e15), 0.0);
         assert!(!bessel_k(2.0, 1e15).is_finite());
+        assert!(!bessel_i(1e308, 3.0).is_finite());
+        assert!(bessel_i(700.0, 3.0).is_finite());
         assert!(bessel_j(3.0, 171.0) >= 0.0);
         // Continuity across the switch to log space.
         let (a, b) = (

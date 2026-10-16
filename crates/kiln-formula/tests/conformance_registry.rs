@@ -4,6 +4,8 @@
 //! the v1.0 `listFunctions()` (masks as arithmetic runs `[start, step, count]`, `"all"` for every
 //! position; a variadic maximum is 255).
 //!
+//! Functions added after v1.0 (`POST_V1`) are checked to be registered and documented instead.
+//!
 //! `ArgMask` lists positions below 64 one by one; the criteria of `COUNTIFS`, `SUMIFS`,
 //! `AVERAGEIFS`, `MAXIFS` and `MINIFS` beyond that are lifted by the implementations themselves,
 //! which `criteria_beyond_position_64_are_lifted` checks by evaluation.
@@ -32,6 +34,23 @@ fn positions(runs: &Json) -> Vec<usize> {
     }
     out
 }
+
+/// Functions the Rust library added to the v1.0 set (Excel functions v1.0 lacked).
+const POST_V1: [&str; 13] = [
+    "AMORDEGRC",
+    "AMORLINC",
+    "ASC",
+    "BAHTTEXT",
+    "DBCS",
+    "EUROCONVERT",
+    "JIS",
+    "ODDFPRICE",
+    "ODDFYIELD",
+    "ODDLPRICE",
+    "ODDLYIELD",
+    "PERCENTOF",
+    "PHONETIC",
+];
 
 /// Functions whose lifted criteria beyond position 63 are handled by the implementation.
 const LIFT_TAIL: [&str; 5] = ["AVERAGEIFS", "COUNTIFS", "MAXIFS", "MINIFS", "SUMIFS"];
@@ -88,15 +107,30 @@ fn registry_matches_the_v1_snapshot() {
         problems.extend(mask_matches(name, "lifted", s.lift, &want["lift"], max));
     }
     for name in specs.keys() {
-        if !snapshot.iter().any(|w| w["name"].as_str() == Some(name)) {
-            problems.push(format!("{name}: not in v1.0"));
+        let in_v1 = snapshot.iter().any(|w| w["name"].as_str() == Some(name));
+        if in_v1 == POST_V1.contains(name) {
+            problems.push(if in_v1 {
+                format!("{name}: in v1.0, remove it from POST_V1")
+            } else {
+                format!("{name}: not in v1.0; add it to POST_V1")
+            });
+        }
+    }
+    for name in POST_V1 {
+        if !specs.contains_key(name) {
+            problems.push(format!("{name}: in POST_V1 but not registered"));
+        }
+        if kiln_formula::functions::doc(name).is_none() {
+            problems.push(format!("{name}: not documented"));
         }
     }
     println!(
-        "{} functions compared with the v1.0 registry",
-        snapshot.len()
+        "{} functions compared with the v1.0 registry, {} added since",
+        snapshot.len(),
+        POST_V1.len()
     );
     assert_eq!(snapshot.len(), 484);
+    assert_eq!(specs.len(), 484 + POST_V1.len());
     assert!(problems.is_empty(), "{}", problems.join("\n"));
 }
 
