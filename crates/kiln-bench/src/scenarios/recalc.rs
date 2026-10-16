@@ -94,7 +94,7 @@ pub fn full(options: &RunOptions) -> Result<Sample, String> {
     let (rows, config) = if options.quick {
         (500, Config::new(0, 2))
     } else {
-        (100_000, Config::new(1, 3))
+        (100_000, Config::new(1, 20))
     };
     let pool = pool()?;
     let t = Instant::now();

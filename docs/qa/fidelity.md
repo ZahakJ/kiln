@@ -12,12 +12,12 @@ No formats registered: no reader/writer has registered a `Roundtrip` adapter in 
 
 ## OPC passthrough baseline
 
-Every package opened and saved by `kiln-ooxml` without edits (what `kiln-cli repack` does): every part, `.rels` and `[Content_Types].xml` included, must come out byte-identical (PLAN.md §3.1 principle 4).
+Every package opened and saved by `kiln-ooxml` without edits (what `kiln-cli repack` does): every part, `.rels` parts included, must come out byte-identical (PLAN.md §3.1 principle 4), and `[Content_Types].xml` must declare the same content types (it is parsed on open, so it is compared by its declarations and not counted among the parts below).
 
 | Fixtures | Packages | Parts | Identical parts | Result |
 |---|---|---|---|---|
-| `docx/features` | 19 | 344 | 344 | pass |
-| `docx/manual` | 2 | 12 | 12 | pass |
-| `xlsx/features` | 20 | 216 | 216 | pass |
-| `xlsx/manual` | 1 | 5 | 5 | pass |
-| `pptx/features` | 19 | 919 | 919 | pass |
+| `docx/features` | 19 | 325 | 325 | pass |
+| `docx/manual` | 2 | 10 | 10 | pass |
+| `xlsx/features` | 20 | 196 | 196 | pass |
+| `xlsx/manual` | 1 | 4 | 4 | pass |
+| `pptx/features` | 19 | 900 | 900 | pass |

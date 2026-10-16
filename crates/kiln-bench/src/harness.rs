@@ -58,6 +58,10 @@ pub struct Sample {
     pub peak_rss_mb: Option<f64>,
     /// Further figures a benchmark reports (`cold_ms`, `cells`, …).
     pub extra: BTreeMap<String, f64>,
+    /// The share of all CPUs (0 to 1) that other processes kept busy while the benchmark ran
+    /// (Linux only): above [`CONTENDED`], its timings say more about the machine than the code.
+    #[serde(default)]
+    pub contention: Option<f64>,
 }
 
 impl Sample {
@@ -112,6 +116,7 @@ pub fn summarize(name: &str, times: &[Duration], peak_rss_mb: Option<f64>) -> Sa
         max_ms: ms.last().copied().unwrap_or(0.0),
         peak_rss_mb,
         extra: BTreeMap::new(),
+        contention: None,
     }
 }
 
@@ -124,6 +129,119 @@ pub fn current_rss_kib() -> Option<u64> {
         .find_map(|l| l.strip_prefix("VmRSS:"))
         .and_then(|v| v.split_whitespace().next())
         .and_then(|n| n.parse().ok())
+}
+
+/// Busy and total jiffies over all CPUs (the `cpu` line of `/proc/stat`), on Linux.
+fn cpu_jiffies() -> Option<(u64, u64)> {
+    let stat = std::fs::read_to_string("/proc/stat").ok()?;
+    let fields: Vec<u64> = stat
+        .lines()
+        .next()?
+        .strip_prefix("cpu ")?
+        .split_whitespace()
+        .map(str::parse)
+        .collect::<Result<_, _>>()
+        .ok()?;
+    // user nice system idle iowait irq softirq steal (guest time is already in user).
+    let total: u64 = fields.iter().take(8).sum();
+    let idle = fields.get(3)? + fields.get(4).copied().unwrap_or(0);
+    Some((total.saturating_sub(idle), total))
+}
+
+/// The fraction of all CPUs that were busy during `window` (0 to 1; `None` where `/proc/stat` is
+/// unavailable).
+#[must_use]
+pub fn busy_fraction(window: Duration) -> Option<f64> {
+    let (busy0, total0) = cpu_jiffies()?;
+    std::thread::sleep(window);
+    let (busy1, total1) = cpu_jiffies()?;
+    let total = total1.checked_sub(total0).filter(|&t| t > 0)?;
+    #[allow(clippy::cast_precision_loss)]
+    let fraction = busy1.saturating_sub(busy0) as f64 / total as f64;
+    Some(fraction.clamp(0.0, 1.0))
+}
+
+/// The [`Sample::contention`] above which a benchmark ran on a busy machine: other processes
+/// used more than a quarter of all CPUs (one of four here).
+pub const CONTENDED: f64 = 0.25;
+
+/// CPU time of this process (user + system, all threads) in clock ticks, from
+/// `/proc/self/stat`, on Linux.
+fn self_ticks() -> Option<u64> {
+    let stat = std::fs::read_to_string("/proc/self/stat").ok()?;
+    // Fields after the command name (which may contain spaces) start with the state (field 3);
+    // utime and stime are fields 14 and 15.
+    let rest = &stat[stat.rfind(')')? + 1..];
+    let fields: Vec<&str> = rest.split_whitespace().collect();
+    let utime: u64 = fields.get(11)?.parse().ok()?;
+    let stime: u64 = fields.get(12)?.parse().ok()?;
+    Some(utime + stime)
+}
+
+/// Measures how busy other processes keep the machine between [`ContentionMeter::start`] and
+/// [`ContentionMeter::finish`]: all CPUs' busy ticks minus this process's own.
+#[derive(Debug, Clone, Copy)]
+pub struct ContentionMeter {
+    start: Option<(u64, u64, u64)>,
+}
+
+impl ContentionMeter {
+    /// Starts measuring.
+    #[must_use]
+    pub fn start() -> Self {
+        Self {
+            start: cpu_jiffies()
+                .zip(self_ticks())
+                .map(|((busy, total), own)| (busy, total, own)),
+        }
+    }
+
+    /// The share of all CPUs (0 to 1) that other processes used since the start (`None` where
+    /// `/proc` is unavailable or no time passed).
+    #[must_use]
+    pub fn finish(self) -> Option<f64> {
+        let (busy0, total0, own0) = self.start?;
+        let (busy1, total1) = cpu_jiffies()?;
+        let own1 = self_ticks()?;
+        let total = total1.checked_sub(total0).filter(|&t| t > 0)?;
+        let others = busy1
+            .saturating_sub(busy0)
+            .saturating_sub(own1.saturating_sub(own0));
+        #[allow(clippy::cast_precision_loss)]
+        let share = others as f64 / total as f64;
+        Some(share.clamp(0.0, 1.0))
+    }
+}
+
+/// How [`wait_for_quiet`] ended.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Quiet {
+    /// The busy fraction of the last one-second window.
+    pub busy: f64,
+    /// Whether it fell to the limit (otherwise the wait timed out).
+    pub quiet: bool,
+    /// How long the wait took.
+    pub waited: Duration,
+}
+
+/// Waits, for at most `max`, until fewer than `busy_limit` of all CPUs are busy over a one-second
+/// window: other processes (a build, another agent's tests) make timings meaningless, so a
+/// benchmark that missed a budget is measured again once the machine has calmed down. `None`
+/// where the load cannot be read (then nothing is waited for).
+#[must_use]
+pub fn wait_for_quiet(max: Duration, busy_limit: f64) -> Option<Quiet> {
+    let start = Instant::now();
+    loop {
+        let busy = busy_fraction(Duration::from_secs(1))?;
+        let waited = start.elapsed();
+        if busy <= busy_limit || waited >= max {
+            return Some(Quiet {
+                busy,
+                quiet: busy <= busy_limit,
+                waited,
+            });
+        }
+    }
 }
 
 /// Samples the resident set size on a background thread until dropped, keeping the peak.
@@ -248,6 +366,39 @@ mod tests {
         assert_eq!(err.unwrap_err(), "boom");
         assert_eq!(Config::new(4, 20).scaled_down(10), Config::new(0, 2));
         assert_eq!(Config::new(1, 0).iterations, 1);
+    }
+
+    #[test]
+    fn measures_contention_without_counting_itself() {
+        let meter = ContentionMeter::start();
+        // Busy work of our own must not count as contention.
+        let mut x = 0u64;
+        let t = Instant::now();
+        while t.elapsed() < Duration::from_millis(300) {
+            x = std::hint::black_box(x.wrapping_mul(31).wrapping_add(7));
+        }
+        let share = meter.finish();
+        if cfg!(target_os = "linux") {
+            let share = share.unwrap();
+            assert!((0.0..=1.0).contains(&share), "{share}");
+            assert!(self_ticks().unwrap() > 0);
+        }
+    }
+
+    #[test]
+    fn reads_the_machine_load_on_linux() {
+        let busy = busy_fraction(Duration::from_millis(50));
+        let quiet = wait_for_quiet(Duration::ZERO, 1.0);
+        if cfg!(target_os = "linux") {
+            let busy = busy.unwrap();
+            assert!((0.0..=1.0).contains(&busy), "{busy}");
+            // A limit of 100 % is always met, after one window.
+            let q = quiet.unwrap();
+            assert!(q.quiet && q.waited >= Duration::from_millis(900), "{q:?}");
+            // An impossible limit times out after the first window.
+            let q = wait_for_quiet(Duration::ZERO, -1.0).unwrap();
+            assert!(!q.quiet);
+        }
     }
 
     #[test]

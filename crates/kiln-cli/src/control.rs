@@ -132,6 +132,23 @@ fn from_json<T: serde::de::DeserializeOwned>(what: &str, v: Value) -> Result<T, 
     serde_json::from_value(v).map_err(|e| invalid(format!("{what}: {e}")))
 }
 
+/// The argument names each verb accepts (`None` for an unknown verb, reported by `dispatch`).
+fn allowed_args(verb: &str) -> Option<&'static [&'static str]> {
+    Some(match verb {
+        "ping" => &[],
+        "new" => &["kind"],
+        "open" => &["path", "read_only"],
+        "execute" => &["doc", "cmd"],
+        "query" => &["doc", "q"],
+        "viewport" => &["doc", "viewport"],
+        "frame" => &["doc", "full"],
+        "render" => &["doc", "png", "page", "dpi", "dark"],
+        "save" => &["doc", "path", "format"],
+        "close" | "subscribe" | "unsubscribe" => &["doc"],
+        _ => return None,
+    })
+}
+
 /// A short description of a frame, for clients that do not paint.
 fn frame_summary(d: &SceneDelta) -> Value {
     json!({
@@ -202,6 +219,20 @@ impl Control {
                 "the arguments of \"{verb}\" must be an object"
             )));
         }
+        if let (Some(allowed), Value::Object(given)) = (allowed_args(verb), args) {
+            // Reject typos rather than ignoring them: an agent must learn that `"widht"` did
+            // nothing.
+            if let Some(unknown) = given.keys().find(|k| !allowed.contains(&k.as_str())) {
+                return Err(invalid(format!(
+                    "\"{verb}\" has no argument \"{unknown}\" (expected: {})",
+                    if allowed.is_empty() {
+                        "none".to_owned()
+                    } else {
+                        allowed.join(", ")
+                    }
+                )));
+            }
+        }
         match verb {
             "ping" => to_json(&Session::core_info()),
             "new" => {
@@ -243,7 +274,14 @@ impl Control {
                 };
                 if let Value::Object(b) = &mut base {
                     for (k, v) in given {
-                        b.insert(k.clone(), v.clone());
+                        let Some(slot) = b.get_mut(k) else {
+                            let known: Vec<&str> = b.keys().map(String::as_str).collect();
+                            return Err(invalid(format!(
+                                "\"viewport\" has no field \"{k}\" (expected: {})",
+                                known.join(", ")
+                            )));
+                        };
+                        *slot = v.clone();
                     }
                 }
                 let vp: Viewport = from_json("viewport", base)?;
@@ -415,10 +453,16 @@ pub fn serve(input: impl BufRead, mut output: impl Write) -> Result<(), String> 
             }
             control.handle_line(line)
         };
-        for l in lines {
-            writeln!(output, "{l}").map_err(|e| format!("writing stdout: {e}"))?;
+        let written = lines
+            .iter()
+            .try_for_each(|l| writeln!(output, "{l}"))
+            .and_then(|()| output.flush());
+        match written {
+            Ok(()) => {}
+            // The client stopped reading: the session is over.
+            Err(e) if e.kind() == std::io::ErrorKind::BrokenPipe => return Ok(()),
+            Err(e) => return Err(format!("writing stdout: {e}")),
         }
-        output.flush().map_err(|e| format!("writing stdout: {e}"))?;
     }
 }
 
@@ -555,6 +599,27 @@ mod tests {
         let text = std::fs::read_to_string(&saved).unwrap();
         assert!(text.starts_with("New First paragraph."), "{text}");
         let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn unknown_arguments_and_viewport_fields_are_errors() {
+        let out = run_lines(concat!(
+            "{\"new\":{\"kind\":\"scratch\"}}\n",
+            "{\"viewport\":{\"doc\":1,\"viewport\":{\"width\":800,\"height\":600,\"scale\":1}}}\n",
+            "{\"frame\":{\"doc\":1,\"ful\":true}}\n",
+            "{\"ping\":{\"x\":1}}\n",
+            "{\"viewport\":{\"doc\":1,\"viewport\":{\"width_px\":800,\"height_px\":600}}}\n",
+        ));
+        assert_eq!(out.len(), 5, "{out:?}");
+        assert_eq!(out[0]["ok"], true);
+        let message = |i: usize| out[i]["error"]["message"].as_str().unwrap().to_owned();
+        // A typo: `width`/`height` for `width_px`/`height_px`.
+        assert!(message(1).contains("no field \"height\""), "{}", out[1]);
+        assert!(message(1).contains("width_px"), "{}", out[1]);
+        assert!(message(2).contains("no argument \"ful\""), "{}", out[2]);
+        assert!(message(2).contains("doc, full"), "{}", out[2]);
+        assert!(message(3).contains("expected: none"), "{}", out[3]);
+        assert_eq!(out[4]["ok"], true, "{}", out[4]);
     }
 
     #[test]

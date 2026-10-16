@@ -13,7 +13,7 @@ mod text_layout;
 
 use std::time::Duration;
 
-use crate::harness::{RssSampler, Sample};
+use crate::harness::{ContentionMeter, RssSampler, Sample};
 
 /// How a benchmark runs.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
@@ -40,11 +40,14 @@ impl Bench {
     /// When the benchmark's set-up or a run fails.
     pub fn run(&self, options: &RunOptions) -> Result<Sample, String> {
         let rss = RssSampler::start(Duration::from_millis(5));
+        let contention = ContentionMeter::start();
         let result = (self.run)(options);
+        let contention = contention.finish();
         let peak = rss.finish();
         result.map(|mut s| {
             s.name = self.name.to_owned();
             s.peak_rss_mb = peak;
+            s.contention = contention;
             s
         })
     }

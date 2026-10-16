@@ -16,7 +16,7 @@ pub fn run(options: &RunOptions) -> Result<Sample, String> {
     let (rows, config) = if options.quick {
         (2_000, Config::new(0, 2))
     } else {
-        (100_000, Config::new(1, 7))
+        (100_000, Config::new(2, 20))
     };
     let bytes = crate::synth::xlsx(rows, 10, 2)?;
     let e = |e: kiln_ooxml::opc::OpcError| e.to_string();

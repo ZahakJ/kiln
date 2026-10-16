@@ -38,7 +38,7 @@ pub fn run(options: &RunOptions) -> Result<Sample, String> {
     let (paragraphs, config) = if options.quick {
         (40, Config::new(0, 3))
     } else {
-        (600, Config::new(5, 60))
+        (600, Config::new(10, 200))
     };
     let e = |e: kiln_common::KilnError| e.to_string();
     let t = Instant::now();

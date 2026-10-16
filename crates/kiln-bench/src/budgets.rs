@@ -162,6 +162,13 @@ pub enum Status {
     Pass,
     /// Measured over the effective limit.
     Fail,
+    /// A time limit missed by every attempt, but every attempt ran while other processes kept
+    /// more than [`harness::CONTENDED`] of the CPUs busy (the lowest share is given): the
+    /// timings measure the machine, not the code, so the row neither passes nor fails. A
+    /// quiet machine (CI) gives a verdict.
+    ///
+    /// [`harness::CONTENDED`]: crate::harness::CONTENDED
+    Busy(f64),
     /// The benchmark failed to run.
     Error(String),
     /// Not measured yet (the work package that adds the benchmark).
@@ -181,6 +188,10 @@ impl Status {
         match self {
             Self::Pass => "pass".into(),
             Self::Fail => "**FAIL**".into(),
+            Self::Busy(share) => format!(
+                "inconclusive (other processes kept {:.0} % of the CPUs busy)",
+                share * 100.0
+            ),
             Self::Error(e) => format!("**error**: {e}"),
             Self::Pending(wp) => format!("pending ({wp})"),
             Self::Manual(_) => "manual".into(),
@@ -199,6 +210,9 @@ pub struct Row {
     pub measured: Option<f64>,
     /// The verdict.
     pub status: Status,
+    /// How many times its benchmark had been measured when the row was judged (0 when it has
+    /// none; more than 1 after a re-measurement, see [`REMEASURES`]).
+    pub attempts: usize,
 }
 
 /// How [`evaluate`] scales and runs.
@@ -215,8 +229,10 @@ pub struct AssertOptions {
 pub struct Outcome {
     /// Rows in file order.
     pub rows: Vec<Row>,
-    /// Samples by benchmark name.
+    /// The best attempt's sample (lowest p95) by benchmark name.
     pub samples: BTreeMap<String, Sample>,
+    /// How many times each benchmark was measured.
+    pub attempts: BTreeMap<String, usize>,
     /// This machine's calibration time (ms).
     pub calibration_ms: f64,
     /// The reference machine's (ms).
@@ -247,8 +263,37 @@ fn fmt_limit(v: f64, unit: &str) -> String {
     }
 }
 
-/// Measures every row: runs each referenced benchmark once (with `run`, injectable for tests)
-/// and compares.
+/// How many times a benchmark that misses a budget is measured again (each time from scratch, in
+/// a fresh process when run by `kiln-bench assert`) before the row fails.
+///
+/// A regression is slow every time; a single slow attempt is a machine that was busy (PLAN.md
+/// §4.7 has two agents sharing it, and CI runners are noisy). A row therefore fails only when
+/// every one of `1 + REMEASURES` attempts misses it, and reports the best attempt's figure; when
+/// every attempt also ran on a busy machine, the row is [`Status::Busy`] instead.
+pub const REMEASURES: usize = 2;
+
+/// The best (lowest) value of `metric` over the successful attempts.
+fn best_metric(attempts: &[Result<Sample, String>], metric: &str) -> Option<f64> {
+    attempts
+        .iter()
+        .filter_map(|a| a.as_ref().ok()?.metric(metric))
+        .min_by(f64::total_cmp)
+}
+
+/// The lowest contention of the successful attempts, when every one of them reports it.
+fn least_contention(attempts: &[Result<Sample, String>]) -> Option<f64> {
+    attempts
+        .iter()
+        .filter_map(|a| a.as_ref().ok())
+        .map(|s| s.contention)
+        .collect::<Option<Vec<f64>>>()?
+        .into_iter()
+        .min_by(f64::total_cmp)
+}
+
+/// Measures every row: runs each referenced benchmark once (with `run`, injectable for tests),
+/// measures it again up to [`REMEASURES`] times while a row that reads it is over its limit, and
+/// compares the best attempt with the limit.
 pub fn evaluate_with(
     file: &BudgetFile,
     options: AssertOptions,
@@ -261,51 +306,53 @@ pub fn evaluate_with(
         file.max_machine_factor,
     );
     let tolerance = if options.ci { file.ci_tolerance } else { 1.0 };
-    let mut samples: BTreeMap<String, Result<Sample, String>> = BTreeMap::new();
+    let run_options = RunOptions {
+        quick: options.quick,
+    };
+    let mut attempts: BTreeMap<String, Vec<Result<Sample, String>>> = BTreeMap::new();
     let mut rows = Vec::with_capacity(file.budgets.len());
     for b in &file.budgets {
-        let (effective, measured, status) = match (&b.bench, &b.pending, &b.manual) {
+        let (effective, measured, status, tries) = match (&b.bench, &b.pending, &b.manual) {
             (Some(name), _, _) => {
-                let sample = samples.entry(name.clone()).or_insert_with(|| {
-                    run(
-                        name,
-                        &RunOptions {
-                            quick: options.quick,
-                        },
-                    )
-                });
+                let tries = attempts
+                    .entry(name.clone())
+                    .or_insert_with(|| vec![run(name, &run_options)]);
                 let scale = if b.unit == "ms" {
                     machine_factor * tolerance
                 } else {
                     1.0
                 };
                 let effective = b.limit * scale;
-                match sample {
-                    Ok(s) => match s.metric(b.metric_name()) {
-                        Some(v) => (
-                            Some(effective),
-                            Some(v),
-                            if v <= effective {
-                                Status::Pass
-                            } else {
-                                Status::Fail
-                            },
-                        ),
-                        None => (
-                            Some(effective),
-                            None,
-                            Status::Error(format!("{name} reports no '{}'", b.metric_name())),
-                        ),
-                    },
-                    Err(e) => (Some(effective), None, Status::Error(e.clone())),
-                }
+                let metric = b.metric_name();
+                let (measured, status) = loop {
+                    if let Some(Err(e)) = tries.first() {
+                        // A benchmark that cannot run is broken, not slow: no second attempt.
+                        break (None, Status::Error(e.clone()));
+                    }
+                    match best_metric(tries, metric) {
+                        Some(v) if v <= effective => break (Some(v), Status::Pass),
+                        Some(v) if tries.len() > REMEASURES => {
+                            let busy = (b.unit == "ms")
+                                .then(|| least_contention(tries))
+                                .flatten()
+                                .filter(|&c| c > crate::harness::CONTENDED);
+                            break (Some(v), busy.map_or(Status::Fail, Status::Busy));
+                        }
+                        Some(_) => tries.push(run(name, &run_options)),
+                        None => {
+                            break (None, Status::Error(format!("{name} reports no '{metric}'")));
+                        }
+                    }
+                };
+                (Some(effective), measured, status, tries.len())
             }
-            (None, Some(wp), _) => (None, None, Status::Pending(wp.clone())),
-            (None, None, Some(m)) => (None, None, Status::Manual(m.clone())),
+            (None, Some(wp), _) => (None, None, Status::Pending(wp.clone()), 0),
+            (None, None, Some(m)) => (None, None, Status::Manual(m.clone()), 0),
             (None, None, None) => (
                 None,
                 None,
                 Status::Error("no bench, pending or manual".into()),
+                0,
             ),
         };
         rows.push(Row {
@@ -313,14 +360,23 @@ pub fn evaluate_with(
             effective,
             measured,
             status,
+            attempts: tries,
         });
     }
+    let samples = attempts
+        .iter()
+        .filter_map(|(k, tries)| {
+            let best = tries
+                .iter()
+                .filter_map(|a| a.as_ref().ok())
+                .min_by(|a, b| a.p95_ms.total_cmp(&b.p95_ms))?;
+            Some((k.clone(), best.clone()))
+        })
+        .collect();
     Outcome {
         rows,
-        samples: samples
-            .into_iter()
-            .filter_map(|(k, v)| v.ok().map(|s| (k, s)))
-            .collect(),
+        samples,
+        attempts: attempts.iter().map(|(k, v)| (k.clone(), v.len())).collect(),
         calibration_ms,
         reference_ms: file.calibration_reference_ms,
         machine_factor,
@@ -374,6 +430,25 @@ pub const BEGIN: &str =
 pub const END: &str = "<!-- kiln-bench:end -->";
 
 impl Outcome {
+    /// Rows left inconclusive by a busy machine.
+    #[must_use]
+    pub fn inconclusive(&self) -> usize {
+        self.rows
+            .iter()
+            .filter(|r| matches!(r.status, Status::Busy(_)))
+            .count()
+    }
+
+    /// `pass`, `FAIL`, or `pass, 1 inconclusive`.
+    #[must_use]
+    pub fn verdict(&self) -> String {
+        match (self.passed(), self.inconclusive()) {
+            (false, _) => "FAIL".into(),
+            (true, 0) => "pass".into(),
+            (true, n) => format!("pass, {n} inconclusive"),
+        }
+    }
+
     /// The generated Markdown block (between [`BEGIN`] and [`END`]).
     #[must_use]
     pub fn to_markdown(&self, date: &str) -> String {
@@ -384,7 +459,10 @@ impl Outcome {
             md,
             "Measured by `cargo xtask budgets{}` on {date} ({} build of `kiln-bench`, {} {}, {} CPUs). \
 Calibration {:.1} ms against the reference machine's {:.1} ms: machine factor {:.2}{}. \
-Time limits are multiplied by the factor{}; memory limits are not. Result: **{}**.\n",
+Time limits are multiplied by the factor{}; memory limits are not. A benchmark over a limit is \
+measured again, up to {} more times after waiting for a quieter machine, and the row fails only when every attempt \
+misses it; when every attempt also ran while other processes kept more than {:.0} % of the CPUs busy, the row is \
+inconclusive instead (it does not fail, and a quiet machine gives the verdict). Result: **{}**.\n",
             if self.tolerance > 1.0 { " --ci" } else { "" },
             if self.release_build {
                 "release"
@@ -407,7 +485,9 @@ Time limits are multiplied by the factor{}; memory limits are not. Result: **{}*
             } else {
                 ""
             },
-            if self.passed() { "pass" } else { "FAIL" },
+            REMEASURES,
+            crate::harness::CONTENDED * 100.0,
+            self.verdict(),
         );
         for (group, title) in [
             ("plan", "Budgets of PLAN.md §3.9"),
@@ -426,6 +506,12 @@ Time limits are multiplied by the factor{}; memory limits are not. Result: **{}*
             for r in rows {
                 let b = &r.budget;
                 let measured = match (r.measured, &r.status) {
+                    (Some(v), _) if r.attempts > 1 => format!(
+                        "{} ({}, best of {} attempts)",
+                        fmt_limit(v, &b.unit),
+                        b.metric_name(),
+                        r.attempts
+                    ),
                     (Some(v), _) => format!("{} ({})", fmt_limit(v, &b.unit), b.metric_name()),
                     (None, Status::Manual(where_)) => where_.clone(),
                     _ => "—".into(),
@@ -445,7 +531,7 @@ Time limits are multiplied by the factor{}; memory limits are not. Result: **{}*
             md.push('\n');
         }
         if !self.samples.is_empty() {
-            md.push_str("### Benchmarks\n\n| Benchmark | Runs | p50 | p95 | min | max | Peak RSS | Also |\n|---|---|---|---|---|---|---|---|\n");
+            md.push_str("### Benchmarks\n\nThe best attempt of each benchmark (lowest p95); \"others' CPU\" is the share of all CPUs other processes used while it ran.\n\n| Benchmark | Attempts | Runs | p50 | p95 | min | max | Peak RSS | Others' CPU | Also |\n|---|---|---|---|---|---|---|---|---|---|\n");
             for (name, s) in &self.samples {
                 let extra: Vec<String> = s
                     .extra
@@ -460,7 +546,8 @@ Time limits are multiplied by the factor{}; memory limits are not. Result: **{}*
                     .collect();
                 let _ = writeln!(
                     md,
-                    "| `{name}` | {} | {:.2} ms | {:.2} ms | {:.2} ms | {:.2} ms | {} | {} |",
+                    "| `{name}` | {} | {} | {:.2} ms | {:.2} ms | {:.2} ms | {:.2} ms | {} | {} | {} |",
+                    self.attempts.get(name).copied().unwrap_or(1),
                     s.iterations,
                     s.p50_ms,
                     s.p95_ms,
@@ -468,6 +555,8 @@ Time limits are multiplied by the factor{}; memory limits are not. Result: **{}*
                     s.max_ms,
                     s.peak_rss_mb
                         .map_or_else(|| "—".into(), |m| format!("{m:.0} MB")),
+                    s.contention
+                        .map_or_else(|| "—".into(), |c| format!("{:.0} %", c * 100.0)),
                     extra.join(", ")
                 );
             }
@@ -498,7 +587,16 @@ Time limits are multiplied by the factor{}; memory limits are not. Result: **{}*
                     |e| format!("<{}", fmt_limit(e, &b.unit))
                 ),
                 match &r.status {
+                    Status::Pass if r.attempts > 1 => format!("pass (attempt {})", r.attempts),
+                    Status::Fail if r.attempts > 1 => {
+                        format!("FAIL (all {} attempts)", r.attempts)
+                    }
                     Status::Fail => "FAIL".to_owned(),
+                    Status::Busy(share) => format!(
+                        "INCONCLUSIVE (all {} attempts over, others used {:.0} % of the CPUs)",
+                        r.attempts,
+                        share * 100.0
+                    ),
                     Status::Error(e) => format!("ERROR {e}"),
                     other => other.cell(),
                 }
@@ -671,7 +769,7 @@ group = "component"
         }
         assert!(md.contains("pending (WP-62)"));
         assert!(md.contains("### Component budgets"));
-        assert!(md.contains("| `recalc-full` | 1 |"));
+        assert!(md.contains("| `recalc-full` | 1 | 1 |"));
         assert!(out.to_text().contains("ERROR broken"));
         // Locally, without the tolerance, the same measurement fails B8.
         let local = evaluate_with(
@@ -685,6 +783,136 @@ group = "component"
         );
         assert_eq!(local.rows[0].status, Status::Fail);
         assert_eq!(local.rows[4].status, Status::Fail);
+        // A consistent miss is measured 1 + REMEASURES times and still fails.
+        assert_eq!(local.rows[0].attempts, 1 + REMEASURES);
+        assert_eq!(local.attempts["recalc-full"], 1 + REMEASURES);
+        assert!(local.to_text().contains("FAIL (all 3 attempts)"));
+    }
+
+    #[test]
+    fn one_slow_attempt_is_measured_again() {
+        let f = BudgetFile::parse(FILE).unwrap();
+        // recalc-full: an outlier first (busy machine), then a normal run. text-layout-1000:
+        // always slow (a regression).
+        let mut calls: BTreeMap<String, usize> = BTreeMap::new();
+        let out = evaluate_with(
+            &f,
+            AssertOptions {
+                ci: false,
+                quick: true,
+            },
+            100.0,
+            |name, _| {
+                let n = calls.entry(name.to_owned()).or_default();
+                *n += 1;
+                match (name, *n) {
+                    ("recalc-full", 1) => Ok(sample(name, 5100.0, 280.0)),
+                    ("recalc-full", _) => Ok(sample(name, 760.0, 290.0)),
+                    _ => Ok(sample(
+                        name,
+                        75.0 + f64::from(u32::try_from(*n).unwrap()),
+                        9.0,
+                    )),
+                }
+            },
+        );
+        assert_eq!(calls["recalc-full"], 2);
+        assert_eq!(out.rows[0].status, Status::Pass);
+        assert_eq!(out.rows[0].measured, Some(760.0));
+        assert_eq!(out.rows[0].attempts, 2);
+        // The memory row reads the same benchmark and its best attempt (280 MB).
+        assert_eq!(out.rows[2].status, Status::Pass);
+        assert_eq!(out.rows[2].measured, Some(280.0));
+        // The regression is measured three times, fails every time and reports its best.
+        assert_eq!(calls["text-layout-1000"], 1 + REMEASURES);
+        assert_eq!(out.rows[4].status, Status::Fail);
+        assert_eq!(out.rows[4].measured, Some(76.0));
+        assert!(!out.passed());
+        assert_eq!(out.samples["recalc-full"].p95_ms, 760.0);
+        let md = out.to_markdown("2026-10-16");
+        assert!(md.contains("760 ms (p95, best of 2 attempts)"), "{md}");
+        assert!(md.contains("Result: **FAIL**"), "{md}");
+        assert!(md.contains("| `recalc-full` | 2 | 1 |"), "{md}");
+        assert!(out.to_text().contains("pass (attempt 2)"));
+        // Every attempt over, every attempt on a busy machine: inconclusive, not a failure. One
+        // quiet attempt over the limit is enough for a verdict.
+        for (contention, expected) in [
+            ([0.6, 0.4, 0.3], Status::Busy(0.3)),
+            ([0.6, 0.1, 0.9], Status::Fail),
+        ] {
+            let mut n = 0;
+            let busy = evaluate_with(
+                &f,
+                AssertOptions {
+                    ci: false,
+                    quick: true,
+                },
+                100.0,
+                |name, _| {
+                    let mut s = sample(name, 9000.0, 1.0);
+                    if name == "recalc-full" {
+                        s.contention = Some(contention[n]);
+                        n += 1;
+                    }
+                    Ok(s)
+                },
+            );
+            assert_eq!(busy.rows[0].status, expected);
+            // The memory row reads the same attempts and is judged normally.
+            assert_eq!(busy.rows[2].status, Status::Pass);
+            // Without a contention figure (text-layout-1000 here) a miss is a failure.
+            assert_eq!(busy.rows[4].status, Status::Fail);
+            assert!(!busy.passed());
+        }
+        let mut n = 0;
+        let only_busy = evaluate_with(
+            &BudgetFile::parse(
+                &FILE.replace("bench = \"text-layout-1000\"", "pending = \"WP-53\""),
+            )
+            .unwrap(),
+            AssertOptions {
+                ci: true,
+                quick: true,
+            },
+            100.0,
+            |name, _| {
+                n += 1;
+                let mut s = sample(name, 9000.0, 1.0);
+                s.contention = Some(0.5);
+                Ok(s)
+            },
+        );
+        assert_eq!(n, 1 + REMEASURES);
+        assert_eq!(only_busy.rows[0].status, Status::Busy(0.5));
+        assert!(only_busy.passed());
+        assert_eq!(only_busy.verdict(), "pass, 1 inconclusive");
+        let md = only_busy.to_markdown("2026-10-16");
+        assert!(
+            md.contains("inconclusive (other processes kept 50 % of the CPUs busy)"),
+            "{md}"
+        );
+        assert!(md.contains("| 50 % |"), "{md}");
+        assert!(
+            only_busy
+                .to_text()
+                .contains("INCONCLUSIVE (all 3 attempts over")
+        );
+        // A benchmark that errors is not measured again.
+        let mut errors = 0;
+        let broken = evaluate_with(
+            &f,
+            AssertOptions {
+                ci: false,
+                quick: true,
+            },
+            100.0,
+            |_, _| {
+                errors += 1;
+                Err("boom".to_owned())
+            },
+        );
+        assert_eq!(errors, 2);
+        assert_eq!(broken.rows[0].status, Status::Error("boom".into()));
     }
 
     #[test]

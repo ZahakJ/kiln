@@ -109,7 +109,7 @@ pub fn run(options: &RunOptions) -> Result<Sample, String> {
     let (n, config) = if options.quick {
         (50, Config::new(0, 2))
     } else {
-        (1000, Config::new(2, 15))
+        (1000, Config::new(3, 40))
     };
     let mut engine = TextEngine::new(FontStore::bundled());
     let specs = paragraphs(n);

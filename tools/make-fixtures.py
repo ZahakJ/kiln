@@ -1853,7 +1853,25 @@ def large_sheet(path: Path) -> None:
         ])
     buf = io.BytesIO()
     wb.save(buf)
-    path.write_bytes(normalize_package(buf.getvalue()))
+
+    def with_dimensions(name: str, body: bytes) -> bytes:
+        # openpyxl's write-only mode leaves out <dimension>; Excel always writes it (it follows
+        # <sheetPr> and precedes <sheetViews>), and readers use it to size the sheet up front.
+        refs = {"xl/worksheets/sheet1.xml": "A1:A4", "xl/worksheets/sheet2.xml": f"A1:J{LARGE_SHEET_ROWS}"}
+        if name not in refs or b"<dimension" in body:
+            return body
+        text = body.decode("utf-8")
+        tag = f'<dimension ref="{refs[name]}"/>'
+        m = re.search(r"<sheetPr\b[^>]*?(/>|>.*?</sheetPr>)", text, re.S)
+        if m:
+            text = text[: m.end()] + tag + text[m.end() :]
+        else:
+            m = re.search(r"<worksheet\b[^>]*>", text)
+            assert m, name
+            text = text[: m.end()] + tag + text[m.end() :]
+        return text.encode("utf-8")
+
+    path.write_bytes(normalize_package(buf.getvalue(), with_dimensions))
 
 
 def large_deck(path: Path) -> None:

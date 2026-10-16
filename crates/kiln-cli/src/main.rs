@@ -89,7 +89,11 @@ fn version() -> String {
 fn run(args: &[String]) -> Result<String, CliError> {
     let rest = args.get(1..).unwrap_or_default();
     match args.first().map(String::as_str) {
-        None | Some("--help" | "-h" | "help") => Ok(usage()),
+        None => Err(CliError::Usage(format!(
+            "kiln-cli: no command given\n\n{}",
+            usage()
+        ))),
+        Some("--help" | "-h" | "help") => Ok(usage()),
         Some("--version" | "-V" | "version") => {
             if rest.is_empty() {
                 Ok(version())
@@ -113,15 +117,33 @@ fn run(args: &[String]) -> Result<String, CliError> {
     }
 }
 
+/// Writes the result and a newline to stdout, returning I/O errors (such as a closed pipe) rather
+/// than panicking as `println!` does.
+fn write_stdout(text: &str) -> std::io::Result<()> {
+    use std::io::Write as _;
+    let mut out = std::io::stdout().lock();
+    out.write_all(text.as_bytes())?;
+    out.write_all(b"\n")?;
+    out.flush()
+}
+
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
     let command = args.first().cloned().unwrap_or_default();
     match run(&args) {
         Ok(text) => {
-            if !text.is_empty() {
-                println!("{text}");
+            if text.is_empty() {
+                return ExitCode::SUCCESS;
             }
-            ExitCode::SUCCESS
+            match write_stdout(&text) {
+                Ok(()) => ExitCode::SUCCESS,
+                // The reader went away (`kiln-cli … | head`): nothing more to say, like `cat`.
+                Err(e) if e.kind() == std::io::ErrorKind::BrokenPipe => ExitCode::SUCCESS,
+                Err(e) => {
+                    eprintln!("kiln-cli {command}: writing stdout: {e}");
+                    ExitCode::FAILURE
+                }
+            }
         }
         Err(e) => {
             let message = e.to_string();
@@ -148,11 +170,15 @@ mod tests {
         let v = run(&args(&["version"])).unwrap();
         assert!(v.starts_with("kiln 0.1.0\nprotocol "), "{v}");
         assert_eq!(run(&args(&["--version"])).unwrap(), v);
-        let help = run(&[]).unwrap();
+        let help = run(&args(&["help"])).unwrap();
+        let none = run(&[]).unwrap_err();
+        assert_eq!(none.exit_code(), 2);
+        assert!(none.to_string().contains("no command given"));
+        assert!(none.to_string().contains(&help));
         for cmd in ["inspect", "repack", "render", "control", "eval", "fidelity"] {
             assert!(help.contains(&format!("kiln-cli {cmd}")), "{cmd}");
         }
-        assert_eq!(run(&args(&["help"])).unwrap(), help);
+        assert_eq!(run(&args(&["--help"])).unwrap(), help);
         assert_eq!(run(&args(&["version", "x"])).unwrap_err().exit_code(), 2);
     }
 

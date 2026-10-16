@@ -47,6 +47,11 @@ pub fn run(args: &[String]) -> Result<String, CliError> {
         c.identical,
         c.parts
     );
+    match c.content_types_equal {
+        Some(true) => out.push_str("\n[Content_Types].xml: the same declared content types"),
+        Some(false) => out.push_str("\n[Content_Types].xml: the declared content types differ"),
+        None => {}
+    }
     if r.zip_identical {
         out.push_str("\nthe output file is byte-identical to the input");
     }

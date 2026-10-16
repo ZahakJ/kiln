@@ -153,7 +153,15 @@ impl Report {
             .sum();
         let _ = writeln!(
             out,
-            "passthrough baseline: {} packages, identical parts: {identical}/{parts}",
+            "passthrough baseline: {} packages, identical parts: {identical}/{parts}, same declared content types: {}/{}",
+            self.baseline.len(),
+            self.baseline
+                .iter()
+                .filter(|b| b
+                    .outcome
+                    .as_ref()
+                    .is_ok_and(|c| c.content_types_equal == Some(true)))
+                .count(),
             self.baseline.len()
         );
         for b in self.failed_baseline() {
@@ -272,8 +280,9 @@ Do not edit by hand: rerun the command.\n\n",
 
         md.push_str(
             "## OPC passthrough baseline\n\nEvery package opened and saved by `kiln-ooxml` without edits \
-(what `kiln-cli repack` does): every part, `.rels` and `[Content_Types].xml` included, must come out byte-identical \
-(PLAN.md §3.1 principle 4).\n\n| Fixtures | Packages | Parts | Identical parts | Result |\n|---|---|---|---|---|\n",
+(what `kiln-cli repack` does): every part, `.rels` parts included, must come out byte-identical \
+(PLAN.md §3.1 principle 4), and `[Content_Types].xml` must declare the same content types (it is parsed on open, so it \
+is compared by its declarations and not counted among the parts below).\n\n| Fixtures | Packages | Parts | Identical parts | Result |\n|---|---|---|---|---|\n",
         );
         let mut groups: BTreeMap<(FixtureFormat, FixtureKind), (usize, usize, usize, bool)> =
             BTreeMap::new();

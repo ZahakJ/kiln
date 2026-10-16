@@ -17,8 +17,9 @@ kiln-cli version
 ```
 
 Every command exits with **0** when it succeeds, **1** when it ran and failed (a missing file, a part that did
-not survive, a page that does not exist) and **2** when the command line itself is wrong; `kiln-cli help` prints
-the summary.
+not survive, a page that does not exist) and **2** when the command line itself is wrong (running `kiln-cli` with no
+command is one); `kiln-cli help` prints the summary and exits 0. Output piped into a command that stops reading
+early (`kiln-cli inspect a.docx --xml /word/document.xml | head`) ends quietly.
 
 What works today: `inspect`, `repack` and `fidelity` handle any `.docx`, `.xlsx` or `.pptx` package;
 `render` and `control` open the document kinds whose app is in the build, which is currently the plain-text
@@ -50,6 +51,10 @@ kiln-cli repack <in> <out>
 Opens the package and saves it again without changing anything, then compares the two part by part and prints
 `identical parts: N/N`. Parts Kiln does not understand are copied byte for byte, so N/N is the expected
 result for every file; anything else is listed (`changed:`, `missing:`, `added:`) and the command exits 1.
+`[Content_Types].xml` is read into a table of content types when the package opens, so it is checked separately:
+the line `[Content_Types].xml: the same declared content types` says the copy declares the same types, and
+`the output file is byte-identical to the input` (when printed) says the whole file, that part included, came
+out byte for byte.
 
 ## render
 
@@ -92,7 +97,9 @@ A JSON control channel over standard input and output, for scripts and agents. E
 a JSON object with one verb and an optional `"id"`, which the response repeats. Each request gets exactly one
 response line, `{"id":…,"ok":true,"result":…}` or `{"id":…,"ok":false,"error":{"kind":…,"message":…}}`,
 followed by the events of documents you subscribed to as `{"event":…}` lines. A malformed line gets an error
-response and the channel carries on; it ends at the end of the input.
+response and the channel carries on; it ends at the end of the input. Arguments a verb does not take, and
+viewport fields that do not exist, are errors rather than being ignored, so a typo such as `"width"` for
+`"width_px"` is reported instead of silently doing nothing.
 
 | Request | Result |
 |---|---|

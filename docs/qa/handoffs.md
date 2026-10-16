@@ -180,7 +180,17 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   docs of `crates/kiln-cli/src/control.rs`.
 - For WP-53 (text): the playground shows tofu for CJK text typed through an IME (`日本` after
   `composeIme`); the bundled fonts have no CJK coverage and the fallback chain found no system CJK
-  font on this machine.
+  font on this machine. The same holds for Arabic: `kiln-cli render` of a `.txt` containing `مرحبا`
+  paints tofu boxes in light and dark mode, so the bundled set needs Arabic and CJK fallback faces
+  (or WP-85, RTL/i18n, picks this up) before right-to-left and CJK documents render.
+- For benchmark authors (every scenario in `crates/kiln-bench/src/scenarios/`): budgets read p95 by
+  nearest rank, so give a timed benchmark at least 20 iterations (with fewer, p95 is the slowest run
+  and one busy moment fails the gate). `kiln-bench assert` measures a benchmark again, up to twice,
+  when a row reading it is over its limit (after waiting up to 30 s for half of the CPUs to be idle),
+  and fails the row only when every attempt misses (`budgets::REMEASURES`); when every attempt also
+  ran while other processes used more than a quarter of the CPUs (`harness::CONTENDED`), the row is
+  inconclusive, not failed. A real regression still fails on a quiet machine, because it is slow
+  every time.
 - For the manual's owner: link `docs/manual/cli.md` from `docs/manual/README.md` (For developers or
   Reference); WP-60 does not own the README.
 

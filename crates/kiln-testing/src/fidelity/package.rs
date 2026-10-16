@@ -6,11 +6,15 @@ use std::time::{Duration, Instant};
 
 use kiln_ooxml::opc::OpcPackage;
 
-/// How two packages compare part by part (parts include `.rels` parts and
-/// `[Content_Types].xml`).
+/// How two packages compare part by part (parts include `.rels` parts).
+///
+/// `[Content_Types].xml` is not counted among the byte-compared parts: `kiln-ooxml` parses it on
+/// open and does not keep its source bytes, so it is compared by what it declares (the default
+/// and override content types) and reported in [`PartComparison::content_types_equal`]. Whole
+/// output files are compared byte for byte by [`repack`] ([`Repack::zip_identical`]).
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct PartComparison {
-    /// Parts of the first package.
+    /// Parts of the first package (`[Content_Types].xml` excluded).
     pub parts: usize,
     /// Parts of the first package that the second holds with identical (inflated) bytes.
     pub identical: usize,
@@ -20,14 +24,19 @@ pub struct PartComparison {
     pub missing: Vec<String>,
     /// Parts only the second package has.
     pub added: Vec<String>,
+    /// Whether both packages declare the same content types (`None` when `[Content_Types].xml`
+    /// was skipped). When they differ, `[Content_Types].xml` is also listed in `differing`.
+    pub content_types_equal: Option<bool>,
 }
 
 impl PartComparison {
-    /// True when every part of the first package is identical in the second and nothing was
-    /// added.
+    /// True when every part of the first package is identical in the second, nothing was added
+    /// and the declared content types are the same.
     #[must_use]
     pub fn all_identical(&self) -> bool {
-        self.identical == self.parts && self.added.is_empty()
+        self.identical == self.parts
+            && self.added.is_empty()
+            && self.content_types_equal != Some(false)
     }
 }
 
@@ -45,11 +54,11 @@ pub fn compare_packages(a: &OpcPackage, b: &OpcPackage, skip: &[String]) -> Part
     let skipped = |name: &str| skip.iter().any(|s| s.eq_ignore_ascii_case(name));
     let mut cmp = PartComparison::default();
     if !skipped(CONTENT_TYPES) {
-        cmp.parts += 1;
-        // Both sides are re-serialised the same way, so this compares the declared types.
-        if content_types_bytes(a) == content_types_bytes(b) {
-            cmp.identical += 1;
-        } else {
+        // Both sides are re-serialised the same way, so this compares the declared types, not
+        // the source bytes (see the type's documentation).
+        let equal = content_types_bytes(a) == content_types_bytes(b);
+        cmp.content_types_equal = Some(equal);
+        if !equal {
             cmp.differing.push(CONTENT_TYPES.to_owned());
         }
     }
@@ -122,6 +131,8 @@ mod tests {
         assert!(r.comparison.all_identical(), "{:?}", r.comparison);
         assert!(r.comparison.parts > 5);
         assert_eq!(r.comparison.identical, r.comparison.parts);
+        assert_eq!(r.comparison.content_types_equal, Some(true));
+        assert!(r.zip_identical);
     }
 
     #[test]
@@ -153,6 +164,11 @@ mod tests {
         let c2 = compare_packages(&a, &b, &skip);
         assert!(!c2.differing.iter().any(|p| p == "/word/document.xml"));
         assert_eq!(c2.parts + 1, c.parts);
+        // Removing a part drops its override: the declared content types differ.
+        assert_eq!(c.content_types_equal, Some(false));
+        assert!(c.differing.iter().any(|p| p == CONTENT_TYPES));
+        let c3 = compare_packages(&a, &b, &[CONTENT_TYPES.to_owned()]);
+        assert_eq!(c3.content_types_equal, None);
     }
 
     #[test]
