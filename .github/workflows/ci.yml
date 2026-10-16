@@ -129,7 +129,7 @@ jobs:
 
       # The core built by the rust job; the Worker loads it and the bridge e2e tests need it.
       - name: Download the WebAssembly core
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: wasm-${{ github.run_id }}
           path: apps/web/src/wasm
