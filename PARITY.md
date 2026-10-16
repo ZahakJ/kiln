@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **4.6 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **4.8 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,8 +12,8 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 4.6 % | 782 | 0 | 24 | 17 | 741 | 20 |
-| Kiln Write | 0.0 % | 231 | 0 | 0 | 0 | 231 | 1 |
+| **Overall** | 4.8 % | 782 | 0 | 24 | 20 | 738 | 20 |
+| Kiln Write | 0.8 % | 231 | 0 | 0 | 3 | 228 | 1 |
 | Kiln Grid | 13.4 % | 261 | 0 | 24 | 14 | 223 | 6 |
 | Kiln Deck | 0.0 % | 184 | 0 | 0 | 0 | 184 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
@@ -21,13 +21,13 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 5.4 % | 462 | 0 | 18 | 14 | 430 | 0 |
+| critical | 5.7 % | 462 | 0 | 18 | 17 | 427 | 0 |
 | commonly-missed | 2.2 % | 224 | 0 | 4 | 2 | 218 | 0 |
 | niche | 2.6 % | 96 | 0 | 2 | 1 | 93 | 20 |
 
 | App | Critical | Commonly-missed | Niche |
 |---|---:|---:|---:|
-| Kiln Write | 0.0 % (146) | 0.0 % (58) | 0.0 % (27) |
+| Kiln Write | 1.0 % (146) | 0.0 % (58) | 0.0 % (27) |
 | Kiln Grid | 16.8 % (143) | 5.4 % (83) | 7.1 % (35) |
 | Kiln Deck | 0.0 % (119) | 0.0 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
@@ -82,6 +82,9 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 
 | Row | Feature | From | To |
 |---|---|---|---|
+| `write.home.styles.builtin` | Word's built-in styles with their names (Normal, No Spacing, Heading 1–9, Title, Subtitle, Emphasis, Strong, Quote, Intense Quote, references, Book Title, List Paragraph) | missing | partial |
+| `write.review.comments.new` | New comment with author, time and threaded replies | missing | partial |
+| `write.review.tracking.track-changes` | Track Changes on/off (Ctrl+Shift+E) recording insertions, deletions, formatting and moves | missing | partial |
 | `grid.home.number.format-combo` | Number format combo: General, Number, Currency, Accounting, Short/Long Date, Time, Percentage, Fraction, Scientific, Text | missing | partial |
 | `grid.home.number.custom-formats` | Custom number format codes (sections, colours, conditions, elapsed time, fractions, text placeholders) | missing | partial |
 | `grid.formulas.library.function-count` | At least 484 Excel functions in v0.1 and all 520+ worksheet functions except cube, RTD and web services in the loop | missing | partial |
@@ -180,7 +183,7 @@ Out of scope:
 
 ## Kiln Write
 
-Score 0.0 % over 231 rows in scope; 0 better, 0 done, 0 partial, 231 missing, 1 out of scope.
+Score 0.8 % over 231 rows in scope; 0 better, 0 done, 3 partial, 228 missing, 1 out of scope.
 
 ### Home ▸ Clipboard
 
@@ -240,7 +243,7 @@ Score 0.0 % over 231 rows in scope; 0 better, 0 done, 0 partial, 231 missing, 1 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
 | ○ | Quick Styles gallery with live preview | Word ▸ Home ▸ Styles ▸ gallery | critical | P0 | WP-64 | `write.home.styles.gallery` |
-| ○ | Word's built-in styles with their names (Normal, No Spacing, Heading 1–9, Title, Subtitle, Emphasis, Strong, Quote, Intense Quote, references, Book Title, List Paragraph) | Word ▸ built-in styles | critical | P0 | WP-64 | `write.home.styles.builtin` |
+| ◐ | Word's built-in styles with their names (Normal, No Spacing, Heading 1–9, Title, Subtitle, Emphasis, Strong, Quote, Intense Quote, references, Book Title, List Paragraph) | Word ▸ built-in styles | critical | P0 | WP-64 | `write.home.styles.builtin` |
 | ○ | Style shortcuts: Normal (Ctrl+Shift+N), Heading 1–3 (Ctrl+Alt+1/2/3) | Word ▸ style keyboard shortcuts | critical | P0 | WP-64 | `write.home.styles.shortcuts` |
 | ○ | Styles pane (Ctrl+Alt+Shift+S): apply, show preview, new style, style inspector | Word ▸ Home ▸ Styles ▸ dialog launcher | critical | P0 | WP-64 | `write.home.styles.pane` |
 | ○ | Update style to match selection and create a style from formatting | Word ▸ Styles ▸ Update Heading 1 to Match Selection | critical | P0 | WP-64 | `write.home.styles.update-from-selection` |
@@ -445,7 +448,7 @@ Score 0.0 % over 231 rows in scope; 0 better, 0 done, 0 partial, 231 missing, 1 
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | New comment with author, time and threaded replies | Word ▸ Review ▸ Comments ▸ New Comment | critical | P0 | WP-66 | `write.review.comments.new` |
+| ◐ | New comment with author, time and threaded replies | Word ▸ Review ▸ Comments ▸ New Comment | critical | P0 | WP-66 | `write.review.comments.new` |
 | ○ | Delete comment, delete all comments | Word ▸ Review ▸ Comments ▸ Delete | critical | P0 | WP-66 | `write.review.comments.delete` |
 | ○ | Previous and next comment | Word ▸ Review ▸ Comments ▸ Previous / Next | critical | P0 | WP-66 | `write.review.comments.navigate` |
 | ○ | Show comments (contextual balloons or list) and the comments pane | Word ▸ Review ▸ Comments ▸ Show Comments | critical | P0 | WP-66 | `write.review.comments.show` |
@@ -456,7 +459,7 @@ Score 0.0 % over 231 rows in scope; 0 better, 0 done, 0 partial, 231 missing, 1 
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Track Changes on/off (Ctrl+Shift+E) recording insertions, deletions, formatting and moves | Word ▸ Review ▸ Tracking ▸ Track Changes | critical | P0 | WP-66 | `write.review.tracking.track-changes` |
+| ◐ | Track Changes on/off (Ctrl+Shift+E) recording insertions, deletions, formatting and moves | Word ▸ Review ▸ Tracking ▸ Track Changes | critical | P0 | WP-66 | `write.review.tracking.track-changes` |
 | ○ | Markup display: Simple Markup, All Markup, No Markup, Original | Word ▸ Review ▸ Tracking ▸ Display for Review | critical | P0 | WP-66 | `write.review.tracking.display-mode` |
 | ○ | Show Markup filter (comments, insertions and deletions, formatting, specific people, balloons) | Word ▸ Review ▸ Tracking ▸ Show Markup | critical | P0 | WP-66 | `write.review.tracking.show-markup` |
 | ○ | Reviewing pane (vertical) listing every revision with author and summary | Word ▸ Review ▸ Tracking ▸ Reviewing Pane | critical | P0 | WP-66 | `write.review.tracking.reviewing-pane` |

@@ -245,3 +245,38 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   `kiln-bridge-wasm` does not link `kiln-formula` yet; measure it again on the real bridge when WP-69 or
   a later package wires the sheet model in.
 - Outside the owned paths in this round: the crate README (row count and the new fuzz check) only.
+
+## WP-61 → WP-62/65 (DOCX), WP-63 (layout), WP-64/66 (Write editing), the session and collab owners
+
+- Model shape for the DOCX reader/writer (`kiln-doc`): values keep the file's units (twips,
+  half-points, eighths of a point, EMU). `w:sectPr` belongs to `Section`; header/footer parts become
+  `HeaderFooter` stories referenced by `NodeId` per kind (`None` = Link to Previous). Footnote and
+  endnote parts (with their separator notes, `NoteType`) are `Note` stories; `w:footnoteReference` is
+  `InlineObject::NoteRef`. Comments are `Comment` stories with `CommentMeta.parent` from
+  `commentsExtended.xml`; `w:commentRangeStart/End` become `Mark::Comment(id)` spans per paragraph.
+  Simple and complex fields are `InlineObject::Field` (`FieldForm`); fields whose result spans
+  paragraphs (TOC, INDEX) are `Block::Field`. Bookmarks are `BookmarkStart`/`BookmarkEnd` objects by
+  name. Anything unmodelled goes to `InlineObject::Opaque` / `Block::Opaque` (XML kept) and
+  `Drawing.xml`. Readers build nodes directly with `Document::alloc_id`, then call
+  `refresh_id_counter()` and `validate()`; `DocTheme::from_ooxml` converts `kiln-ooxml`'s theme.
+- Text offsets are chars; each inline object is one `U+FFFC`. Marks are per-character attributes:
+  inserted text carries exactly its fragment's marks (`edit::insert_text` adds the marks that continue
+  on both sides of the caret). This is what makes every op exactly invertible. When mapping ops to
+  Loro, note that `LoroText` gives text inserted inside a mark range that mark: the mapping has to
+  unmark inserted text its fragment does not mark, so both sides keep the same per-char marks.
+- For WP-63: `Document::resolve_paragraph` / `resolve_run_at`, `resolve::resolve_run` with
+  `RunTarget::ListLabel` for list labels, `Document::list_labels`, `Table::cell_map` (grid columns and
+  `vMerge` spans), `resolve_cell`, `section::resolve_header_footer`, `SectionProps::header_kind_for_page`,
+  `section_start_page_numbers`, `fields::evaluate_field` (PAGE/NUMPAGES/DATE/REF/PAGEREF; TOC and SEQ
+  are layout's). Font names come back as Office names (Calibri); substitution is `kiln-text`'s.
+- For WP-64/66 and the session: `edit` builds transactions (typing, delete across paragraphs, Enter
+  with the "next" style, toggles with Word's style-aware off, tables, comments, section breaks,
+  accept/reject of text, formatting and paragraph changes); `UndoStack` groups typing per word and
+  needs `break_group()` when the caret moves. Not done here: recording tracked changes while typing
+  (WP-66 wraps the fragments in `Mark::Insertion` and turns deletions into `Mark::Deletion`),
+  deleting a range that crosses a table boundary (refused today), and moving rows/paragraphs.
+- Node lookup walks the document (about 0.3 ms per op at 5,000 paragraphs, unoptimised build); add an
+  id index inside `model.rs` if layout profiling asks for it — the API does not change.
+- Outside the owned paths: `Cargo.lock`, `CHANGELOG.md`, `THIRD-PARTY-NOTICES.md` (regenerated for
+  `ropey`), three parity rows set to partial (`write.home.styles.builtin`, `write.review.comments.new`,
+  `write.review.tracking.track-changes`) with `PARITY.md` and the badge regenerated, and this note.
