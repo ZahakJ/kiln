@@ -7,11 +7,16 @@
 //!
 //! The paragraphs mix English (left, justified, indented, with tabs and leaders), German with
 //! automatic hyphenation, Arabic right-to-left, Chinese, mixed-direction text and multi-run styled
-//! text, about 60 words each, all distinct. Fonts: the bundled OFL fonts plus the test fonts for
-//! Arabic and CJK, so the result does not depend on the machine's fonts.
+//! text, about 60 words each. The paragraphs differ, but they draw on a small fixed vocabulary, so
+//! once warm nearly every word hits the shaping cache. Fonts: the bundled OFL fonts plus the test
+//! fonts for Arabic and CJK, so the result does not depend on the machine's fonts.
 //!
 //! Output: `cold_ms` is the first pass (font loading, shaping caches), `total_ms` the time to lay
 //! out the 1,000 paragraphs once the engine is warm, which is how an open document re-lays out text.
+//! `vocab_ms` lays out 1,000 further English paragraphs whose words are generated from syllables
+//! (tens of thousands of distinct words), so most words miss the shaping cache: the cost of laying
+//! out a large document for the first time. `total_ms` is gated at 60 ms; the other two figures are
+//! reported for tracking.
 
 use std::time::Instant;
 
@@ -220,6 +225,44 @@ fn paragraphs() -> Vec<ParagraphSpec> {
         .collect()
 }
 
+const SYLLABLES: &[&str] = &[
+    "ka", "lin", "dor", "mes", "tra", "vel", "on", "qui", "bra", "sto", "per", "gal", "um", "fi",
+    "zen", "ro", "wat", "chi", "ple", "nor", "ex", "sa", "tum", "dri", "ve", "mon", "ash", "il",
+    "gro", "eu", "pha", "ty",
+];
+
+/// Paragraphs of generated words (mostly distinct), with capitals and punctuation.
+fn vocabulary_paragraphs(rng: &mut Lcg) -> Vec<ParagraphSpec> {
+    let px = |pt: f32| pt * 4.0 / 3.0;
+    (0..1000)
+        .map(|i| {
+            let mut text = String::new();
+            for w in 0..60 {
+                if w > 0 {
+                    text.push(' ');
+                }
+                let mut word = String::new();
+                for _ in 0..2 + rng.next(3) {
+                    word.push_str(SYLLABLES[rng.next(SYLLABLES.len())]);
+                }
+                if w == 0 || rng.next(9) == 0 {
+                    let mut c = word.chars();
+                    if let Some(first) = c.next() {
+                        word = first.to_uppercase().chain(c).collect();
+                    }
+                }
+                text.push_str(&word);
+                if rng.next(11) == 0 {
+                    text.push(',');
+                }
+            }
+            text.push('.');
+            let family = if i % 2 == 0 { "Calibri" } else { "Cambria" };
+            ParagraphSpec::plain(text, SpanStyle::new(family, px(11.0)), 600.0)
+        })
+        .collect()
+}
+
 fn main() {
     let test_fonts = concat!(env!("CARGO_MANIFEST_DIR"), "/tests/fonts");
     let mut fonts = FontStore::new(&FontStoreOptions {
@@ -250,9 +293,25 @@ fn main() {
         }
         best = best.min(start.elapsed().as_secs_f64() * 1000.0);
     }
+    let vocab = vocabulary_paragraphs(&mut Lcg(0xfeed));
+    let distinct: std::collections::HashSet<&str> = vocab
+        .iter()
+        .flat_map(|s| s.runs[0].text.split(' '))
+        .collect();
+    let start = Instant::now();
+    let mut vocab_lines = 0;
+    for spec in &vocab {
+        vocab_lines += engine.layout(spec).lines.len();
+    }
+    let vocab_ms = start.elapsed().as_secs_f64() * 1000.0;
+
     println!("paragraphs 1000 | lines {lines} | glyphs {glyphs}");
     println!("cold_ms {cold_ms:.1}");
     println!("total_ms {best:.1}");
+    println!(
+        "vocab_ms {vocab_ms:.1} (1000 paragraphs, {} distinct words, {vocab_lines} lines)",
+        distinct.len()
+    );
     if best >= 60.0 {
         eprintln!("budget exceeded: total_ms must be < 60");
         std::process::exit(1);

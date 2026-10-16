@@ -16,6 +16,7 @@ All notable changes to Kiln (called Officina until WP-50) are recorded here. The
 
 ### Changed
 
+- Text layout no longer hangs or runs out of memory on documents with extreme indents, page widths or tab stops: paragraph geometry and letter spacing are clamped and tab leaders are bounded. Automatic hyphenation skips tokens longer than 96 characters, so a long pasted URL or base64 string no longer freezes layout.
 - The `pnpm e2e` script passes its arguments to Playwright, so `pnpm e2e --grep <name>` runs one group of end-to-end tests.
 - When an internal error interrupts an edit in the desktop app, that document becomes read-only and asks for a new name when saved, instead of carrying on with a possibly half-applied change; other documents are unaffected. A request for a file or dialog raised before the window finished loading is no longer lost, and reloading the window no longer duplicates its event stream.
 - The suite is now called **Kiln**: Kiln Write (formerly Scriba), Kiln Grid (Tabula), Kiln Deck (Scena), Kiln Notes (Notula) and Kiln Home (Atrium). Package scope `@kiln/*`, application identifier `io.github.zahakj.kiln`, repository `ZahakJ/kiln`, website `zahakj.github.io/kiln`. The reasons and the new architecture are recorded in `docs/adr/0002-kiln-rust-core.md`.

@@ -62,6 +62,7 @@ pub struct SpanStyle {
     /// Strikethrough.
     pub strike: StrikeKind,
     /// Extra space after every character, in px (Word's character spacing "Expanded by").
+    /// Layout clamps it to `-size / 4 ..= 2112`.
     pub letter_spacing: f32,
     /// Baseline shift in px, positive raises the text (superscript), negative lowers it.
     pub baseline_shift: f32,

@@ -85,6 +85,26 @@ of `caret_rect`, preferring the position whose caret is drawn where the click la
 `selection_rects(range)`, `next_position`/`prev_position`, `word_at`, `next_word_start`/`prev_word_start` and
 `sentence_at` (UAX #29 via `unicode-segmentation`).
 
+## Limits on untrusted input
+
+Paragraph geometry comes from documents, so layout clamps it before use: widths, indents, first-line/hanging
+indents, tab stops, default tab interval and space before/after to ±100,000 px (`MAX_EXTENT`, far beyond
+Word's 22-inch page), font sizes to 0.5–4,000 px, letter spacing to −size/4 … 2,112 px (1,584 pt, Word's
+maximum expansion; condensing is bounded tighter than Word so text cannot collapse onto one point), and
+non-finite values to defaults. A tab leader emits at most 16,384 glyphs, placed from an integer index. Words
+longer than 96 clusters (URLs, base64, identifiers) are never hyphenated, which keeps hyphenation cost per line
+constant. `tests/robustness.rs` holds the regression tests.
+
+## Known fidelity gaps
+
+- CJK text is shaped one character per segment (so the word cache works and every ideograph is a break
+  opportunity); kerning, `palt`/`vpal` and contextual forms *between* CJK characters are therefore not applied.
+  Word's defaults do not use them; documents that do will set slightly looser.
+- `glyph_outline` and outline runs (≥ 96 device px) do not embolden synthetic-bold faces: the painter (WP-54)
+  must stroke the path by the synthetic-bold amount.
+- The LibreOffice oracle fixtures are Latin left-to-right; bidi, CJK and hyphenation breaks are covered by the
+  insta snapshots only.
+
 ## Glyph atlas — `GlyphAtlas`
 
 `prepare_run(&fonts, &run, origin_x, origin_y, scale)` rasterises a run's glyphs with `swash` at
@@ -92,6 +112,8 @@ of `caret_rect`, preferring the position whose caret is drawn where the click la
 RGBA8 for colour glyphs — with shelf packing, and returns placed bitmaps (`page`, rectangle, device x/y) for
 the Scene. Each glyph is rasterised once; `take_dirty()` lists the pages the painter must re-upload. Runs at
 96 device px or larger are returned as `kurbo` outline paths instead (`glyph_outline` for single glyphs).
+The atlas does not evict yet: entries and pages grow with every (glyph, size, offset) seen, so long sessions
+across many zoom levels need an LRU/page-recycling policy agreed with the painter (follow-up).
 
 ## Features
 
@@ -103,6 +125,8 @@ the Scene. Each glyph is rasterised once; `take_dirty()` lists the pages the pai
 
 The web build uses `--no-default-features --features bundled-fonts` (plus `hyphenation` if wanted):
 `cargo build --target wasm32-unknown-unknown -p kiln-text --no-default-features --features bundled-fonts`.
+`bundled-fonts` embeds about 9.7 MB of TTFs, which does not fit the web core's 4.5 MB gzip budget (B12): the
+shipped web build must load fonts at run time with `FontStore::add_font_data` instead (WP-52/WP-94).
 
 ## Tests and tools
 
@@ -119,6 +143,8 @@ The web build uses `--no-default-features --features bundled-fonts` (plus `hyphe
 - Tests use bundled fonts plus `tests/fonts/` (Noto Naskh Arabic and a Noto Sans CJK SC subset, OFL) with system
   fonts off, so snapshots are identical on every machine.
 - `cargo run --release -p kiln-text --example layout_bench`: 1,000 mixed paragraphs at 600 px; prints `cold_ms`
-  (first pass, empty caches) and `total_ms` (warm engine, best of five); fails above 60 ms.
+  (first pass, empty caches), `total_ms` (warm engine, best of five; the vocabulary is small, so most words hit
+  the shaping cache) and `vocab_ms` (1,000 further paragraphs of ~40,000 distinct generated words, mostly cache
+  misses); fails when `total_ms` reaches 60 ms.
 - `cargo run -p kiln-text --example render_png -- out.png [scale] [dark]`: renders sample paragraphs through the
   atlas to a PNG for visual review. `--example dump -- "text" [width] [family]` prints line breaks.

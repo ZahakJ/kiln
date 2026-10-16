@@ -38,6 +38,28 @@ use crate::spec::{
 /// Tolerance for width comparisons (px).
 const EPS: f32 = 1e-3;
 
+/// Largest paragraph coordinate magnitude in px (about 26 m at 96 dpi, far beyond Word's
+/// 22-inch page limit). Widths, indents and tab stops from documents are clamped to it so that
+/// f32 positions keep sub-pixel precision and loops stepping across a line always advance.
+pub(crate) const MAX_EXTENT: f32 = 100_000.0;
+
+/// Upper bound on the glyphs one tab leader emits, whatever the geometry.
+const MAX_LEADER_GLYPHS: usize = 16_384;
+
+/// Words longer than this many clusters are not hyphenated (long URLs, base64 blobs, pasted
+/// identifiers). Real words are far shorter; browsers and LibreOffice apply similar bounds, and
+/// it keeps hyphenation cost per line constant.
+const MAX_HYPHENATED_WORD: usize = 96;
+
+/// A finite coordinate clamped to [`MAX_EXTENT`]; non-finite values become 0.
+fn coord(v: f32) -> f32 {
+    if v.is_finite() {
+        v.clamp(-MAX_EXTENT, MAX_EXTENT)
+    } else {
+        0.0
+    }
+}
+
 const NO_KERN: &[FontFeature] = &[FontFeature::new(Tag::new(b"kern"), 0)];
 const NO_LIGA: &[FontFeature] = &[
     FontFeature::new(Tag::new(b"liga"), 0),
@@ -199,19 +221,14 @@ impl TextEngine {
             self.playout_text.push_str(&run.text);
         }
         let text = self.playout_text.clone();
-        let width = if spec.width.is_finite() {
-            spec.width.max(0.0)
-        } else {
-            0.0
-        };
+        let width = coord(spec.width).max(0.0);
         let props = &spec.props;
-        let fin = |v: f32| if v.is_finite() { v } else { 0.0 };
-        let indent_start = fin(props.indent_start);
-        let indent_end = fin(props.indent_end);
+        let indent_start = coord(props.indent_start);
+        let indent_end = coord(props.indent_end);
         let frame = Frame {
             width,
             indent_start,
-            first_line: fin(props.first_line),
+            first_line: coord(props.first_line),
             limit: width - indent_end,
         };
 
@@ -272,7 +289,7 @@ impl TextEngine {
         self.assign_breaks(&text);
 
         let mut lines = Vec::new();
-        let mut y = fin(props.space_before).max(0.0);
+        let mut y = coord(props.space_before).max(0.0);
         if self.cls.is_empty() {
             lines.push(self.empty_line(spec, &families, frame, rtl, y, text.len()));
             y += lines[0].height;
@@ -295,7 +312,7 @@ impl TextEngine {
                 lines.push(line);
             }
         }
-        let height = y + fin(props.space_after).max(0.0);
+        let height = y + coord(props.space_after).max(0.0);
 
         let mut boundaries: Vec<usize> = self.cls.iter().map(|c| c.range.start).collect();
         boundaries.push(text.len());
@@ -606,11 +623,12 @@ impl TextEngine {
         // The first custom stop after x.
         let mut best: Option<(f32, TabAlignment, TabLeader)> = None;
         for stop in &props.tab_stops {
+            let position = coord(stop.position);
             if stop.position.is_finite()
-                && stop.position > x + EPS
-                && best.is_none_or(|(p, _, _)| stop.position < p)
+                && position > x + EPS
+                && best.is_none_or(|(p, _, _)| position < p)
             {
-                best = Some((stop.position, stop.alignment, stop.leader));
+                best = Some((position, stop.alignment, stop.leader));
             }
         }
         // Word puts an implicit stop at the indent of a hanging first line.
@@ -624,7 +642,7 @@ impl TextEngine {
         }
         let (pos, align, leader) = best.unwrap_or_else(|| {
             let interval = if props.default_tab.is_finite() && props.default_tab >= 1.0 {
-                props.default_tab
+                props.default_tab.min(MAX_EXTENT)
             } else {
                 48.0
             };
@@ -824,12 +842,32 @@ impl TextEngine {
         j: usize,
     ) -> Option<Fit> {
         let n = self.cls.len();
-        // Extend the word to its end (next break opportunity).
+        // Extend the word to its end (next break opportunity), giving up on overlong tokens
+        // without scanning them: the cost per line stays bounded by MAX_HYPHENATED_WORD.
+        let bound = word_start.saturating_add(MAX_HYPHENATED_WORD + 2).min(n);
+        if j >= bound {
+            return None;
+        }
         let mut word_end = j;
-        while word_end < n && self.cls[word_end].brk == Brk::None {
+        while word_end < bound && self.cls[word_end].brk == Brk::None {
             word_end += 1;
         }
+        if word_end == bound && bound < n {
+            return None;
+        }
         let word_end = (word_end + 1).min(n);
+        // A line that starts inside a word (after an emergency break or an earlier hyphen) still
+        // belongs to that word: measure it back to its real start, again with a bound.
+        let mut real_start = word_start;
+        while real_start > 0
+            && self.cls[real_start - 1].brk == Brk::None
+            && word_end - real_start <= MAX_HYPHENATED_WORD + 2
+        {
+            real_start -= 1;
+        }
+        if word_end - real_start > MAX_HYPHENATED_WORD + 2 {
+            return None;
+        }
         // Only letters are hyphenated; trim punctuation and spaces at both ends.
         let mut a = word_start;
         while a < word_end && !self.is_letter(a) {
@@ -839,7 +877,7 @@ impl TextEngine {
         while b > a && !self.is_letter(b - 1) {
             b -= 1;
         }
-        if b <= a + 3 {
+        if b <= a + 3 || b - a > MAX_HYPHENATED_WORD {
             return None;
         }
         if (a..b).any(|k| self.cls[k].kind != Kind::Normal || !self.is_letter(k)) {
@@ -1224,9 +1262,27 @@ impl TextEngine {
         }
         // Leader glyphs sit on a grid so that dots of consecutive lines align, as in Word.
         let pad = adv * 0.5;
-        let mut gx = ((x0 + pad) / adv).ceil() * adv;
+        let gx0 = ((x0 + pad) / adv).ceil() * adv;
+        let room = x1 - pad * 0.5 + EPS - gx0 - adv;
+        if !room.is_finite() || room < 0.0 {
+            return;
+        }
+        // Positions are computed from an integer index (never by repeated addition, which stalls
+        // once `adv` is below one ulp of `gx`), and the count is bounded.
+        let fits = (room / adv).floor();
+        #[expect(
+            clippy::cast_possible_truncation,
+            clippy::cast_sign_loss,
+            reason = "finite, non-negative and clamped to MAX_LEADER_GLYPHS before the cast"
+        )]
+        let count = (fits.min(MAX_LEADER_GLYPHS as f32 - 1.0) as usize) + 1;
         let at = c.range.start;
-        while gx + adv <= x1 - pad * 0.5 + EPS {
+        for i in 0..count {
+            #[expect(
+                clippy::cast_precision_loss,
+                reason = "i < MAX_LEADER_GLYPHS, exactly representable"
+            )]
+            let gx = gx0 + i as f32 * adv;
             push_glyph(
                 runs,
                 (c.font, c.size, c.span, color, level),
@@ -1239,7 +1295,6 @@ impl TextEngine {
                     cluster: u32::try_from(at).unwrap_or(u32::MAX),
                 },
             );
-            gx += adv;
         }
     }
 
@@ -1545,6 +1600,19 @@ pub(crate) fn sanitize_size(size: f32) -> f32 {
     }
 }
 
+/// Clamps letter spacing (px per character). Expansion is limited to 1584 pt (2112 px), Word's
+/// maximum. Condensing is limited to a quarter of the font size so that a paragraph cannot collapse onto
+/// a single point (a deliberate bound below Word's own 1584 pt, where glyphs pile up unreadably).
+pub(crate) fn sanitize_letter_spacing(style: &SpanStyle) -> f32 {
+    if style.letter_spacing.is_finite() {
+        style
+            .letter_spacing
+            .clamp(-0.25 * sanitize_size(style.size), 2112.0)
+    } else {
+        0.0
+    }
+}
+
 /// parley style for a span.
 fn text_style<'a>(style: &SpanStyle, family: &'a str) -> TextStyle<'a, 'static, ()> {
     let features: &'static [FontFeature] = match (style.kerning, style.ligatures) {
@@ -1564,11 +1632,7 @@ fn text_style<'a>(style: &SpanStyle, family: &'a str) -> TextStyle<'a, 'static, 
         font_weight: FontWeight::new(f32::from(style.weight.clamp(1, 1000))),
         font_features: features.into(),
         locale: style.lang.as_deref().and_then(|l| Language::parse(l).ok()),
-        letter_spacing: if style.letter_spacing.is_finite() {
-            style.letter_spacing
-        } else {
-            0.0
-        },
+        letter_spacing: sanitize_letter_spacing(style),
         ..TextStyle::default()
     }
 }
@@ -1715,11 +1779,7 @@ fn style_key(style: &SpanStyle, family: &str) -> StyleKey {
         size: sanitize_size(style.size).to_bits(),
         weight: style.weight,
         italic: style.italic,
-        letter_spacing: if style.letter_spacing.is_finite() {
-            style.letter_spacing.to_bits()
-        } else {
-            0
-        },
+        letter_spacing: sanitize_letter_spacing(style).to_bits(),
         kerning: style.kerning,
         ligatures: style.ligatures,
         lang: style.lang.clone(),
