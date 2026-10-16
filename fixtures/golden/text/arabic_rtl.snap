@@ -1,0 +1,8 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 3 | glyphs 116 | height 95.37 | rtl true
+ 0 wrap      g=47  x=16.9    w=283.1   top=0       h=31.79  base=19.95   |تُعدّ اللغة العربية من أكثر اللغات انتشاراً في|
+ 1 wrap      g=42  x=19.59   w=280.41  top=31.79   h=31.79  base=51.74   |العالم، ويتحدث بها أكثر من أربعمائة مليون|
+ 2 end       g=27  x=73.33   w=226.67  top=63.58   h=31.79  base=83.53   |شخص في الوطن العربي وخارجه.|
+substitutions: Arial -> Liberation Sans (MetricCompatible)

@@ -1,0 +1,6 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 1 | glyphs 19 | height 17.9 | rtl false
+ 0 end       g=19  x=0       w=194.48  top=0       h=17.9   base=13.96   |Name→Role→Team→Location|
+substitutions: Calibri -> Carlito (MetricCompatible)

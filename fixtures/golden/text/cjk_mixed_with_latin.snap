@@ -1,0 +1,7 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 2 | glyphs 34 | height 42.47 | rtl false
+ 0 wrap      g=20  x=0       w=173.3   top=0       h=21.24  base=17.01   |Kiln 支持中文、English 和数|
+ 1 end       g=14  x=0       w=146.47  top=21.24   h=21.24  base=38.25   |字 12345 的混合排版。|
+substitutions: Calibri -> Carlito (MetricCompatible)

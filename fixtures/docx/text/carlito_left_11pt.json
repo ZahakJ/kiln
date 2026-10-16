@@ -1,0 +1,12 @@
+{
+  "name": "carlito_left_11pt",
+  "font": "Calibri",
+  "size_pt": 11,
+  "width_pt": 468,
+  "alignment": "left",
+  "runs": [
+    {
+      "text": "Kiln is an open-source office suite that opens, edits and saves real Microsoft Office files and feels immediately familiar to Office users, while looking and feeling like its own product: warmer, calmer and faster, with features Office lacks such as a command palette with Office synonyms, built-in version history, self-hosted live collaboration and presenter view everywhere."
+    }
+  ]
+}

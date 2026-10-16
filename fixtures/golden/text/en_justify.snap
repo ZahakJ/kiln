@@ -1,0 +1,11 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 6 | glyphs 344 | height 101.2 | rtl false
+ 0 wrap      g=63  x=0       w=420     top=0       h=16.87  base=13.2    |Pagination and line breaking are deterministic Rust code using|
+ 1 wrap      g=65  x=0       w=420     top=16.87   h=16.87  base=30.07   |bundled font metrics, so a three-hundred-page document paginates|
+ 2 wrap      g=72  x=0       w=420     top=33.73   h=16.87  base=46.93   |identically on every platform and identically in the exported PDF. Rust|
+ 3 wrap      g=69  x=0       w=420     top=50.6    h=16.87  base=63.8    |owns the hot loop (layout, invalidation, culling, glyph caching) and|
+ 4 wrap      g=69  x=0       w=420     top=67.47   h=16.87  base=80.67   |runs multi-threaded natively; the painter only blits tiles and glyph|
+ 5 end       g=6   x=0       w=38.65   top=84.33   h=16.87  base=97.53   |quads.|
+substitutions: Cambria -> Caladea (MetricCompatible)

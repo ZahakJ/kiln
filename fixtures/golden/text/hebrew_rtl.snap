@@ -1,0 +1,7 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 2 | glyphs 66 | height 35.75 | rtl true
+ 0 wrap      g=34  x=2.91    w=257.09  top=0       h=17.88  base=14.48   |שלום עולם, זהו טקסט בעברית לבדיקת|
+ 1 end       g=32  x=25.59   w=234.41  top=17.88   h=17.88  base=32.36   |שבירת השורות בכיוון מימין לשמאל.|
+substitutions: Arial -> Liberation Sans (MetricCompatible)

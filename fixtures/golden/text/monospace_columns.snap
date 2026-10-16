@@ -1,0 +1,8 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 3 | glyphs 72 | height 45.31 | rtl false
+ 0 wrap      g=29  x=0       w=224.04  top=0       h=15.1   base=11.1    |fn main() { println!("Hello,|
+ 1 wrap      g=25  x=0       w=192.03  top=15.1    h=15.1   base=26.2    |Kiln"); let total: u64 =|
+ 2 end       g=18  x=0       w=144.02  top=30.21   h=15.1   base=41.31   |(1..=100).sum(); }|
+substitutions: Courier New -> Liberation Mono (MetricCompatible)

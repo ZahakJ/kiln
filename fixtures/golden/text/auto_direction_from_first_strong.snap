@@ -1,0 +1,6 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 1 | glyphs 10 | height 17.88 | rtl true
+ 0 end       g=10  x=222.16  w=77.84   top=0       h=17.88  base=14.48   |שלום world|
+substitutions: Arial -> Liberation Sans (MetricCompatible)

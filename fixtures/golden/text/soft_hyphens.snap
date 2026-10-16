@@ -1,0 +1,7 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 2 | glyphs 43 | height 35.81 | rtl false
+ 0 hyphen    g=23  x=0       w=144.91  top=0       h=17.9   base=13.96   |Extraordinary incompre-|
+ 1 end       g=20  x=0       w=123.42  top=17.9    h=17.9   base=31.87   |hensibilities abound.|
+substitutions: Calibri -> Carlito (MetricCompatible)

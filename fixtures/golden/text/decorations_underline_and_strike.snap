@@ -1,0 +1,17 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 1 | glyphs 59 | height 17.9 | rtl false
+ 0 end       g=59  x=0       w=370.11  top=0       h=17.9   base=13.96   |Underlined words words only here double and struck through.|
+substitutions: Calibri -> Carlito (MetricCompatible)
+   line 0 run span=0 font=0 size=14.67 level=0 glyphs=17 x0=0 text="Underlined words "
+   line 0 run span=1 font=0 size=14.67 level=0 glyphs=16 x0=109.74 text="words only here "
+   line 0 run span=2 font=0 size=14.67 level=0 glyphs=7 x0=208.79 text="double "
+   line 0 run span=3 font=0 size=14.67 level=0 glyphs=19 x0=253.62 text="and struck through."
+   line 0 Underline(Single) x0=0 x1=109.74 y=14.7 t=1.39
+   line 0 Underline(Words) x0=109.74 x1=146.18 y=14.7 t=1.39
+   line 0 Underline(Words) x0=149.5 x1=174.94 y=14.7 t=1.39
+   line 0 Underline(Words) x0=178.26 x1=205.48 y=14.7 t=1.39
+   line 0 Underline(Double) x0=208.79 x1=253.62 y=14.7 t=1.39
+   line 0 Underline(Double) x0=208.79 x1=253.62 y=17.48 t=1.39
+   line 0 Strike(Single) x0=253.62 x1=370.11 y=10.3 t=0.96

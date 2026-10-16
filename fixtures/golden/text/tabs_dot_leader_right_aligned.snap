@@ -1,0 +1,7 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 1 | glyphs 86 | height 17.9 | rtl false
+ 0 end       g=86  x=0       w=400     top=0       h=17.9   base=13.96   |Chapter 1: Getting started→12|
+substitutions: Calibri -> Carlito (MetricCompatible)
+   line 0 run span=0 font=0 size=14.67 level=0 glyphs=86 x0=0 text="Chapter 1: Getting started\t12"

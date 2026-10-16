@@ -1,0 +1,6 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 1 | glyphs 62 | height 16.45 | rtl false
+ 0 end       g=62  x=0       w=402.16  top=0       h=16.45  base=13.28   |Aptos body text, Wingdings symbols, and an unknown serif face.|
+substitutions: Aptos -> Liberation Sans (UiSans), Wingdings -> Liberation Sans (SymbolFallback), Fancy Serif Pro -> Liberation Serif (Missing)

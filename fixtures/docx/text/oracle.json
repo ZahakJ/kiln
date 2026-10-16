@@ -1,0 +1,104 @@
+{
+  "carlito_left_11pt": {
+    "line_count": 4,
+    "lines": [
+      "Kiln is an open-source office suite that opens, edits and saves real Microsoft Office files and feels",
+      "immediately familiar to Office users, while looking and feeling like its own product: warmer, calmer and",
+      "faster, with features Office lacks such as a command palette with Office synonyms, built-in version",
+      "history, self-hosted live collaboration and presenter view everywhere."
+    ]
+  },
+  "caladea_justify_12pt": {
+    "line_count": 4,
+    "lines": [
+      "Pagination and line breaking are deterministic code using bundled font metrics, so a long",
+      "document paginates identically on every platform and identically in the exported PDF. The",
+      "layout engine owns the hot loop of layout, invalidation, culling and glyph caching, and the",
+      "painter only blits tiles and glyph quads onto the canvas of each page."
+    ]
+  },
+  "times_left_12pt_narrow": {
+    "line_count": 7,
+    "lines": [
+      "Fidelity is measured, not claimed: every",
+      "fixture in the corpus is opened, laid out and",
+      "compared with a reference rendering, and a",
+      "regression in the number of lines of any",
+      "paragraph fails the build before it reaches",
+      "anyone who depends on their documents",
+      "looking the way they wrote them."
+    ]
+  },
+  "arial_center_10pt": {
+    "line_count": 5,
+    "lines": [
+      "Kiln is an open-source office suite that opens, edits and saves real Microsoft",
+      "Office files and feels immediately familiar to Office users, while looking and",
+      "feeling like its own product: warmer, calmer and faster, with features Office lacks",
+      "such as a command palette with Office synonyms, built-in version history, self-",
+      "hosted live collaboration and presenter view everywhere."
+    ]
+  },
+  "courier_right_10pt": {
+    "line_count": 6,
+    "lines": [
+      "Pagination and line breaking are deterministic code using bundled",
+      "font metrics, so a long document paginates identically on every",
+      "platform and identically in the exported PDF. The layout engine",
+      "owns the hot loop of layout, invalidation, culling and glyph",
+      "caching, and the painter only blits tiles and glyph quads onto the",
+      "canvas of each page."
+    ]
+  },
+  "carlito_first_line_indent": {
+    "line_count": 4,
+    "lines": [
+      "Fidelity is measured, not claimed: every fixture in the corpus is opened,",
+      "laid out and compared with a reference rendering, and a regression in the",
+      "number of lines of any paragraph fails the build before it reaches anyone who",
+      "depends on their documents looking the way they wrote them."
+    ]
+  },
+  "caladea_hanging_indent": {
+    "line_count": 5,
+    "lines": [
+      "1. Kiln is an open-source office suite that opens, edits and saves real Microsoft Office",
+      "files and feels immediately familiar to Office users, while looking and feeling like its",
+      "own product: warmer, calmer and faster, with features Office lacks such as a",
+      "command palette with Office synonyms, built-in version history, self-hosted live",
+      "collaboration and presenter view everywhere."
+    ]
+  },
+  "liberation_sans_both_indents": {
+    "line_count": 5,
+    "lines": [
+      "Pagination and line breaking are deterministic code using bundled",
+      "font metrics, so a long document paginates identically on every",
+      "platform and identically in the exported PDF. The layout engine owns",
+      "the hot loop of layout, invalidation, culling and glyph caching, and the",
+      "painter only blits tiles and glyph quads onto the canvas of each page."
+    ]
+  },
+  "carlito_mixed_runs": {
+    "line_count": 6,
+    "lines": [
+      "Mixed formatting: bold words sit next to italic Cambria at fourteen",
+      "points and a run of Courier New code. Fidelity is measured, not",
+      "claimed: every fixture in the corpus is opened, laid out and compared with",
+      "a reference rendering, and a regression in the number of lines of any",
+      "paragraph fails the build before it reaches anyone who depends on their",
+      "documents looking the way they wrote them."
+    ]
+  },
+  "times_16pt_justify": {
+    "line_count": 6,
+    "lines": [
+      "Kiln is an open-source office suite that opens, edits and saves real",
+      "Microsoft Office files and feels immediately familiar to Office",
+      "users, while looking and feeling like its own product: warmer,",
+      "calmer and faster, with features Office lacks such as a command",
+      "palette with Office synonyms, built-in version history, self-hosted",
+      "live collaboration and presenter view everywhere."
+    ]
+  }
+}

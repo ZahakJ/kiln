@@ -1,0 +1,6 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 1 | glyphs 0 | height 21.47 | rtl false
+ 0 end       g=0   x=0       w=0       top=0       h=21.47  base=16.8    ||
+substitutions: Cambria -> Caladea (MetricCompatible)

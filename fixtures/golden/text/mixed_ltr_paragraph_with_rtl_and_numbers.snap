@@ -1,0 +1,18 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 2 | glyphs 98 | height 42.88 | rtl false
+ 0 wrap      g=49  x=0       w=283.26  top=0       h=24.98  base=15.68   |The headline مرحبا بالعالم 2026 appeared next to|
+ 1 end       g=49  x=0       w=297.29  top=24.98   h=17.9   base=38.94   |שלום עולם and the figure 1,234.50 in English text.|
+substitutions: Calibri -> Carlito (MetricCompatible)
+   line 0 run span=0 font=0 size=14.67 level=0 glyphs=13 x0=0 text="The headline "
+   line 0 run span=0 font=0 size=14.67 level=2 glyphs=4 x0=80.25 text="2026"
+   line 0 run span=0 font=0 size=14.67 level=1 glyphs=1 x0=109.99 text=" "
+   line 0 run span=0 font=1 size=14.67 level=1 glyphs=7 x0=113.3 text="بالعالم"
+   line 0 run span=0 font=0 size=14.67 level=1 glyphs=1 x0=144.79 text=" "
+   line 0 run span=0 font=1 size=14.67 level=1 glyphs=5 x0=148.11 text="مرحبا"
+   line 0 run span=0 font=0 size=14.67 level=0 glyphs=18 x0=178.04 text=" appeared next to "
+   line 1 run span=0 font=2 size=14.67 level=1 glyphs=4 x0=0 text="עולם"
+   line 1 run span=0 font=0 size=14.67 level=1 glyphs=1 x0=29.77 text=" "
+   line 1 run span=0 font=2 size=14.67 level=1 glyphs=4 x0=33.09 text="שלום"
+   line 1 run span=0 font=0 size=14.67 level=0 glyphs=40 x0=65.32 text=" and the figure 1,234.50 in English text."

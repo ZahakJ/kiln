@@ -1,0 +1,15 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 10 | glyphs 336 | height 179.04 | rtl false
+ 0 hyphen    g=35  x=0       w=220     top=0       h=17.9   base=13.96   |Pagination and line breaking are de-|
+ 1 wrap      g=35  x=0       w=220     top=17.9    h=17.9   base=31.87   |terministic Rust code using bundled|
+ 2 wrap      g=33  x=0       w=220     top=35.81   h=17.9   base=49.77   |font metrics, so a three-hundred-|
+ 3 wrap      g=35  x=0       w=220     top=53.71   h=17.9   base=67.68   |page document paginates identically|
+ 4 wrap      g=35  x=0       w=220     top=71.61   h=17.9   base=85.58   |on every platform and identically in|
+ 5 wrap      g=36  x=0       w=220     top=89.52   h=17.9   base=103.48  |the exported PDF. Rust owns the hot|
+ 6 wrap      g=36  x=0       w=220     top=107.42  h=17.9   base=121.39  |loop (layout, invalidation, culling,|
+ 7 wrap      g=29  x=0       w=220     top=125.33  h=17.9   base=139.29  |glyph caching) and runs multi-|
+ 8 wrap      g=35  x=0       w=220     top=143.23  h=17.9   base=157.19  |threaded natively; the painter only|
+ 9 end       g=27  x=0       w=157.26  top=161.13  h=17.9   base=175.1   |blits tiles and glyph quads.|
+substitutions: Calibri -> Carlito (MetricCompatible)

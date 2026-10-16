@@ -1,0 +1,8 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 1 | glyphs 36 | height 17.9 | rtl false
+ 0 end       g=36  x=0       w=470     top=0       h=17.9   base=13.96   |Signature→→Date→|
+substitutions: Calibri -> Carlito (MetricCompatible)
+   line 0 run span=0 font=0 size=14.67 level=0 glyphs=36 x0=0 text="Signature\t\tDate"
+   line 0 LeaderRule x0=327.97 x1=470 y=14.7 t=2.78

@@ -1,0 +1,9 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 4 | glyphs 63 | height 81.09 | rtl false
+ 0 wrap      g=17  x=0       w=250     top=0       h=20.27  base=16.24   |日本語の文章では、句読点の前で改行|
+ 1 wrap      g=17  x=0       w=250     top=20.27   h=20.27  base=36.51   |してはいけません。ひらがなとカタカ|
+ 2 wrap      g=17  x=0       w=250     top=40.54   h=20.27  base=56.78   |ナ、漢字が混在するテキストを正しく|
+ 3 end       g=12  x=0       w=168     top=60.82   h=20.27  base=77.06   |折り返す必要があります。|
+substitutions: MS Mincho -> Liberation Sans (Approximate)

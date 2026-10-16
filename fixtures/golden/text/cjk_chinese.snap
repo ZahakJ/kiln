@@ -1,0 +1,9 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 4 | glyphs 62 | height 84.95 | rtl false
+ 0 wrap      g=16  x=0       w=234.67  top=0       h=21.24  base=17.01   |中文排版需要在汉字之间允许换行，|
+ 1 wrap      g=16  x=0       w=234.67  top=21.24   h=21.24  base=38.25   |标点符号遵循禁则规则。这是一段用|
+ 2 wrap      g=16  x=0       w=234.67  top=42.47   h=21.24  base=59.49   |于测试的简体中文文本，包含逗号、|
+ 3 end       g=14  x=0       w=205.33  top=63.71   h=21.24  base=80.73   |句号以及引号「这样」的内容。|
+substitutions: Microsoft YaHei -> Liberation Sans (Approximate)

@@ -1,0 +1,13 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 8 | glyphs 227 | height 134.93 | rtl false
+ 0 wrap      g=30  x=0       w=180.66  top=0       h=16.87  base=13.2    |Die Silbentrennung verbessert|
+ 1 hyphen    g=33  x=0       w=192.35  top=16.87   h=16.87  base=30.07   |das Schriftbild von Blocksatz er-|
+ 2 wrap      g=32  x=0       w=193.17  top=33.73   h=16.87  base=46.93   |heblich, besonders bei schmalen|
+ 3 hyphen    g=30  x=0       w=198.42  top=50.6    h=16.87  base=63.8    |Spalten mit langen zusammenge-|
+ 4 hyphen    g=26  x=0       w=167.53  top=67.47   h=16.87  base=80.67   |setzten Wörtern wie Donau-|
+ 5 wrap      g=30  x=0       w=177.11  top=84.33   h=16.87  base=97.53   |dampfschifffahrtsgesellschaft|
+ 6 hyphen    g=31  x=0       w=198.04  top=101.2   h=16.87  base=114.4   |oder Rechtsschutzversicherungs-|
+ 7 end       g=15  x=0       w=87.05   top=118.07  h=16.87  base=131.27  |gesellschaften.|
+substitutions: Cambria -> Caladea (MetricCompatible)

@@ -9,8 +9,34 @@ authors.workspace = true
 repository.workspace = true
 publish.workspace = true
 
+[features]
+default = ["bundled-fonts", "system-fonts", "hyphenation"]
+# Embed the OFL document fonts from assets/fonts/ (Liberation, Carlito, Caladea) with include_bytes!.
+bundled-fonts = []
+# Discover the platform's fonts with fontique (fontconfig is dlopen'ed on Linux). Native targets only.
+system-fonts = ["fontique/system", "fontique/fontconfig-dlopen", "parley/system"]
+# Embed the en-US and German (1996) hyphenation patterns.
+hyphenation = ["dep:hyphenation"]
+
 [dependencies]
 kiln-common.workspace = true
+parley = { workspace = true, default-features = false, features = ["std"] }
+fontique = { workspace = true, default-features = false, features = ["std"] }
+skrifa.workspace = true
+swash.workspace = true
+kurbo.workspace = true
+unicode-segmentation.workspace = true
+unicode-bidi.workspace = true
+unicode-linebreak.workspace = true
+hyphenation = { workspace = true, optional = true }
+hashbrown.workspace = true
+rustc-hash.workspace = true
+
+[dev-dependencies]
+insta.workspace = true
+proptest.workspace = true
+serde_json.workspace = true
+png.workspace = true
 
 [lints]
 workspace = true

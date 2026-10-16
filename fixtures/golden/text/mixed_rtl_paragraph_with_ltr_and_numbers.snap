@@ -1,0 +1,36 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 3 | glyphs 82 | height 81.74 | rtl true
+ 0 wrap      g=39  x=21.48   w=238.52  top=0       h=27.25  base=17.1    |قال المدير إن مبيعات Kiln Write ارتفعت|
+ 1 wrap      g=36  x=30.3    w=229.7   top=27.25   h=27.25  base=44.35   |بنسبة 25% في عام 2026 مقارنة بالعام|
+ 2 end       g=7   x=214.13  w=45.87   top=54.5    h=27.25  base=71.6    |الماضي.|
+substitutions: Arial -> Liberation Sans (MetricCompatible)
+   line 0 run span=0 font=0 size=16 level=1 glyphs=1 x0=17.04 text=" "
+   line 0 run span=0 font=1 size=16 level=1 glyphs=6 x0=21.48 text="ارتفعت"
+   line 0 run span=0 font=0 size=16 level=1 glyphs=1 x0=61.75 text=" "
+   line 0 run span=0 font=0 size=16 level=2 glyphs=10 x0=66.2 text="Kiln Write"
+   line 0 run span=0 font=0 size=16 level=1 glyphs=1 x0=134.36 text=" "
+   line 0 run span=0 font=1 size=16 level=1 glyphs=6 x0=138.81 text="مبيعات"
+   line 0 run span=0 font=0 size=16 level=1 glyphs=1 x0=179.56 text=" "
+   line 0 run span=0 font=1 size=16 level=1 glyphs=2 x0=184.01 text="إن"
+   line 0 run span=0 font=0 size=16 level=1 glyphs=1 x0=197.48 text=" "
+   line 0 run span=0 font=1 size=16 level=1 glyphs=6 x0=201.92 text="المدير"
+   line 0 run span=0 font=0 size=16 level=1 glyphs=1 x0=235.27 text=" "
+   line 0 run span=0 font=1 size=16 level=1 glyphs=3 x0=239.71 text="قال"
+   line 1 run span=0 font=0 size=16 level=1 glyphs=1 x0=25.86 text=" "
+   line 1 run span=0 font=1 size=16 level=1 glyphs=6 x0=30.3 text="بالعام"
+   line 1 run span=0 font=0 size=16 level=1 glyphs=1 x0=60.64 text=" "
+   line 1 run span=0 font=1 size=16 level=1 glyphs=6 x0=65.08 text="مقارنة"
+   line 1 run span=0 font=0 size=16 level=1 glyphs=1 x0=100.67 text=" "
+   line 1 run span=0 font=0 size=16 level=2 glyphs=4 x0=105.11 text="2026"
+   line 1 run span=0 font=0 size=16 level=1 glyphs=1 x0=140.71 text=" "
+   line 1 run span=0 font=1 size=16 level=1 glyphs=3 x0=145.15 text="عام"
+   line 1 run span=0 font=0 size=16 level=1 glyphs=1 x0=165.1 text=" "
+   line 1 run span=0 font=1 size=16 level=1 glyphs=2 x0=169.55 text="في"
+   line 1 run span=0 font=0 size=16 level=1 glyphs=2 x0=187.26 text="% "
+   line 1 run span=0 font=0 size=16 level=2 glyphs=2 x0=205.93 text="25"
+   line 1 run span=0 font=0 size=16 level=1 glyphs=1 x0=223.73 text=" "
+   line 1 run span=0 font=1 size=16 level=1 glyphs=5 x0=228.18 text="بنسبة"
+   line 2 run span=0 font=0 size=16 level=1 glyphs=1 x0=214.13 text="."
+   line 2 run span=0 font=1 size=16 level=1 glyphs=6 x0=218.58 text="الماضي"

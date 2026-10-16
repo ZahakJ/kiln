@@ -1,0 +1,8 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 3 | glyphs 26 | height 53.71 | rtl false
+ 0 break     g=10  x=0       w=50.5    top=0       h=17.9   base=13.96   |First line↵|
+ 1 break     g=11  x=0       w=68.31   top=17.9    h=17.9   base=31.87   |Second line↵|
+ 2 end       g=5   x=0       w=30.84   top=35.81   h=17.9   base=49.77   |Third|
+substitutions: Calibri -> Carlito (MetricCompatible)

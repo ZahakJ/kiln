@@ -1,0 +1,6 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 1 | glyphs 41 | height 17.9 | rtl false
+ 0 end       g=41  x=0       w=300     top=0       h=17.9   base=13.96   |Distributed alignment spreads every line.|
+substitutions: Calibri -> Carlito (MetricCompatible)

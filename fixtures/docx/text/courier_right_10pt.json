@@ -1,0 +1,12 @@
+{
+  "name": "courier_right_10pt",
+  "font": "Courier New",
+  "size_pt": 10,
+  "width_pt": 400,
+  "alignment": "right",
+  "runs": [
+    {
+      "text": "Pagination and line breaking are deterministic code using bundled font metrics, so a long document paginates identically on every platform and identically in the exported PDF. The layout engine owns the hot loop of layout, invalidation, culling and glyph caching, and the painter only blits tiles and glyph quads onto the canvas of each page."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "liberation_sans_both_indents",
+  "font": "Liberation Sans",
+  "size_pt": 11,
+  "width_pt": 468,
+  "alignment": "justify",
+  "left_pt": 72,
+  "right_pt": 54,
+  "runs": [
+    {
+      "text": "Pagination and line breaking are deterministic code using bundled font metrics, so a long document paginates identically on every platform and identically in the exported PDF. The layout engine owns the hot loop of layout, invalidation, culling and glyph caching, and the painter only blits tiles and glyph quads onto the canvas of each page."
+    }
+  ]
+}
