@@ -186,15 +186,15 @@ export const RANGE_PATTERN =
  */
 export function SelectDataDialog({ host, open, onOpenChange }: OpenProps & { host: ChartUiHost }) {
   const id = useId();
-  const [range, setRange] = useState(host.state.dataRange);
+  const [range, setRange] = useState(host.state.data_range);
   useEffect(() => {
-    if (open) setRange(host.state.dataRange);
-  }, [open, host.state.dataRange]);
+    if (open) setRange(host.state.data_range);
+  }, [open, host.state.data_range]);
   const valid = RANGE_PATTERN.test(range.trim());
   const submit = (e?: FormEvent) => {
     e?.preventDefault();
     if (!valid) return;
-    if (range.trim() !== host.state.dataRange) host.run({ ChartSelectData: { range: range.trim() } });
+    if (range.trim() !== host.state.data_range) host.run({ ChartSelectData: { range: range.trim() } });
     onOpenChange(false);
   };
   return (
@@ -224,11 +224,11 @@ export function SelectDataDialog({ host, open, onOpenChange }: OpenProps & { hos
             spellCheck={false}
             aria-invalid={!valid}
             aria-describedby={`${id}-range-hint`}
-            disabled={!host.state.hasCells}
+            disabled={!host.state.has_cells}
             onChange={(e) => setRange(e.target.value)}
           />
           <p id={`${id}-range-hint`} className="kiln-chart-data__hint">
-            {host.state.hasCells
+            {host.state.has_cells
               ? valid
                 ? 'Series and labels are read from this range.'
                 : 'Type a range such as Sheet1!$A$1:$D$5.'
@@ -237,7 +237,7 @@ export function SelectDataDialog({ host, open, onOpenChange }: OpenProps & { hos
           <div className="kiln-chart-data__switch">
             <Button
               icon={<Icon icon={ArrowLeftRight} size={16} />}
-              disabled={!host.state.hasCells}
+              disabled={!host.state.has_cells}
               onClick={() => host.run('ChartSwitchRowColumn')}
             >
               Switch Row/Column
@@ -251,7 +251,7 @@ export function SelectDataDialog({ host, open, onOpenChange }: OpenProps & { hos
               <ul className="kiln-chart-data__list">
                 {host.state.series.map((s) => (
                   <li key={s.idx}>
-                    <span className="kiln-chart-data__swatch" style={{ background: s.color }} />
+                    <span className="kiln-chart-data__swatch" style={{ background: `#${s.color}` }} />
                     {s.name}
                     {s.secondary ? <span className="kiln-chart-data__tag">secondary axis</span> : null}
                   </li>

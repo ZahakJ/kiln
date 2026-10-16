@@ -315,7 +315,36 @@ fn category_axis(id: i64, cross: i64, pos: AxisPos) -> Axis {
 
 /// Builds the plot area of `kind` around `series` (their references and caches stay), keeping
 /// series formatting that the new type can show.
-fn plot_for(kind: ChartKind, mut series: Vec<Series>) -> (Vec<ChartGroup>, Vec<Axis>) {
+/// The groups and axes of a `kind` chart over `series`, with every kept unknown element the new
+/// types do not allow, or now model themselves, dropped (so a radar series' stray `c:smooth`
+/// is not written next to the line chart's own).
+fn plot_for(kind: ChartKind, series: Vec<Series>) -> (Vec<ChartGroup>, Vec<Axis>) {
+    let (mut groups, axes) = plot_groups(kind, series);
+    for g in &mut groups {
+        let allowed = crate::read::series_schema(&g.kind);
+        let chartex = matches!(g.kind, GroupKind::Hierarchy { .. });
+        let modelled = if chartex {
+            crate::chartex::SERIES_KNOWN.to_vec()
+        } else {
+            crate::read::series_known(&g.kind)
+        };
+        let point_modelled = crate::read::point_known(&g.kind);
+        for s in &mut g.series {
+            s.extras
+                .retain_named(|n| allowed.contains(&n) && !modelled.contains(&n));
+            if !chartex {
+                s.attrs.clear();
+            }
+            for p in &mut s.points {
+                p.extras
+                    .retain_named(|n| n.starts_with("c:") && !point_modelled.contains(&n));
+            }
+        }
+    }
+    (groups, axes)
+}
+
+fn plot_groups(kind: ChartKind, mut series: Vec<Series>) -> (Vec<ChartGroup>, Vec<Axis>) {
     for (i, s) in series.iter_mut().enumerate() {
         let i = u32::try_from(i).unwrap_or(u32::MAX);
         s.idx = i;
@@ -465,6 +494,15 @@ fn plot_for(kind: ChartKind, mut series: Vec<Series>) -> (Vec<ChartGroup>, Vec<A
         ChartKind::AreaPercent => area(Grouping::PercentStacked, series),
         ChartKind::Pie | ChartKind::PieExploded => {
             series.truncate(1);
+            if kind == ChartKind::Pie {
+                // A plain pie: pull every slice back in (Excel does the same).
+                for s in &mut series {
+                    s.explosion = None;
+                    for p in &mut s.points {
+                        p.explosion = None;
+                    }
+                }
+            }
             if kind == ChartKind::PieExploded
                 && let Some(s) = series.first_mut()
             {
@@ -778,6 +816,106 @@ pub fn insert_from_range(
     Ok(cs)
 }
 
+fn literal_numbers(values: &[f64]) -> DataSource {
+    DataSource::Num(NumData {
+        formula: None,
+        format_code: Some("General".into()),
+        points: values.iter().copied().map(Some).collect(),
+        has_cache: true,
+        extras: Extras::default(),
+    })
+}
+
+fn literal_labels(labels: &[&str]) -> DataSource {
+    DataSource::Str(StrData {
+        formula: None,
+        points: labels.iter().map(|l| Some((*l).to_owned())).collect(),
+        has_cache: true,
+        extras: Extras::default(),
+    })
+}
+
+/// The sample series a new chart of `kind` gets where there are no cells to chart (Insert ▸
+/// Chart in Write and Deck): the values Office uses, held as literal data (`c:numLit`,
+/// `c:strLit`) in the chart itself.
+#[must_use]
+pub fn sample_series(kind: ChartKind) -> Vec<Series> {
+    let named = |name: &str, categories: DataSource, values: &[f64]| Series {
+        name: Some(SeriesText::Literal(name.to_owned())),
+        categories: Some(categories),
+        values: Some(literal_numbers(values)),
+        ..Series::default()
+    };
+    match kind {
+        ChartKind::Pie | ChartKind::PieExploded | ChartKind::Doughnut => vec![named(
+            "Sales",
+            literal_labels(&["1st Qtr", "2nd Qtr", "3rd Qtr", "4th Qtr"]),
+            &[8.2, 3.2, 1.4, 1.2],
+        )],
+        ChartKind::ScatterMarkers | ChartKind::ScatterLines | ChartKind::ScatterSmooth => {
+            vec![named(
+                "Y-Values",
+                literal_numbers(&[0.7, 1.8, 2.6]),
+                &[2.7, 3.2, 0.8],
+            )]
+        }
+        ChartKind::Bubble => vec![Series {
+            bubble_sizes: Some(literal_numbers(&[10.0, 4.0, 8.0])),
+            ..named(
+                "Y-Values",
+                literal_numbers(&[0.7, 1.8, 2.6]),
+                &[2.7, 3.2, 0.8],
+            )
+        }],
+        ChartKind::Treemap | ChartKind::Sunburst => {
+            let leaves = [
+                "Leaf 1", "Leaf 2", "Leaf 3", "Leaf 4", "Leaf 5", "Leaf 6", "Leaf 7",
+            ];
+            let branches = [
+                Some("Branch 1"),
+                None,
+                None,
+                Some("Branch 2"),
+                None,
+                Some("Branch 3"),
+                None,
+            ];
+            vec![Series {
+                categories: Some(DataSource::MultiLevel(MultiLevelData {
+                    formula: String::new(),
+                    levels: vec![
+                        leaves.iter().map(|l| Some((*l).to_owned())).collect(),
+                        branches.iter().map(|b| b.map(str::to_owned)).collect(),
+                    ],
+                    has_cache: true,
+                    extras: Extras::default(),
+                })),
+                ..named(
+                    "Sales",
+                    literal_labels(&[]),
+                    &[22.0, 12.0, 18.0, 87.0, 88.0, 17.0, 14.0],
+                )
+            }]
+        }
+        _ => {
+            let categories =
+                literal_labels(&["Category 1", "Category 2", "Category 3", "Category 4"]);
+            vec![
+                named("Series 1", categories.clone(), &[4.3, 2.5, 3.5, 4.5]),
+                named("Series 2", categories.clone(), &[2.4, 4.4, 1.8, 2.8]),
+                named("Series 3", categories, &[2.0, 2.0, 3.0, 5.0]),
+            ]
+        }
+    }
+}
+
+/// A new chart of `kind` (clustered column when `None`, as in Office) over [`sample_series`].
+#[must_use]
+pub fn sample_chart(kind: Option<ChartKind>) -> ChartSpace {
+    let kind = kind.unwrap_or(ChartKind::ColumnClustered);
+    new_chart(kind, sample_series(kind))
+}
+
 fn series_for(data: &dyn ChartData, shape: &RangeShape, kind: ChartKind) -> Vec<Series> {
     let xy = matches!(
         kind,
@@ -846,7 +984,7 @@ pub fn change_type(cs: &mut ChartSpace, kind: ChartKind) {
                 && cs.format == PartFormat::ChartEx
             {
                 s.categories = Some(DataSource::Str(StrData {
-                    formula: Some(m.formula.clone()),
+                    formula: (!m.formula.is_empty()).then(|| m.formula.clone()),
                     points: m.levels.first().cloned().unwrap_or_default(),
                     has_cache: true,
                     extras: Extras::default(),
@@ -1008,14 +1146,26 @@ fn rebuild_series(cs: &mut ChartSpace, data: &dyn ChartData, shape: &RangeShape)
     refresh(cs, data);
 }
 
-fn axis_by_role(cs: &mut ChartSpace, horizontal: bool, secondary: bool) -> Option<&mut Axis> {
+/// The id of the primary or secondary axis drawn horizontally or vertically.
+pub(crate) fn axis_role_id(cs: &ChartSpace, horizontal: bool, secondary: bool) -> Option<i64> {
     let groups = &cs.chart.plot_area.groups;
     let pair: Vec<i64> = groups
         .iter()
         .filter(|g| !g.axis_ids.is_empty())
         .map(|g| g.axis_ids.clone())
         .nth(usize::from(secondary))?;
-    let swapped = groups.iter().any(|g| {
+    // The first id is the category (or x) axis.
+    let id = if horizontal != bar_swapped(cs) {
+        pair.first()
+    } else {
+        pair.get(1)
+    };
+    id.copied()
+}
+
+/// Whether the chart's bars run horizontally (value axis at the bottom).
+pub(crate) fn bar_swapped(cs: &ChartSpace) -> bool {
+    cs.chart.plot_area.groups.iter().any(|g| {
         matches!(
             g.kind,
             GroupKind::Bar {
@@ -1023,13 +1173,11 @@ fn axis_by_role(cs: &mut ChartSpace, horizontal: bool, secondary: bool) -> Optio
                 ..
             }
         )
-    });
-    // The first id is the category (or x) axis.
-    let id = if horizontal != swapped {
-        pair[0]
-    } else {
-        pair[1]
-    };
+    })
+}
+
+fn axis_by_role(cs: &mut ChartSpace, horizontal: bool, secondary: bool) -> Option<&mut Axis> {
+    let id = axis_role_id(cs, horizontal, secondary)?;
     cs.chart.plot_area.axes.iter_mut().find(|a| a.id == id)
 }
 
@@ -1634,6 +1782,10 @@ pub fn apply(cs: &mut ChartSpace, cmd: &SuiteCommand, host: HostContext<'_>) -> 
             .ok_or_else(|| invalid("this chart has no cells to read (no workbook)"))
     };
     match cmd {
+        SuiteCommand::ChartInsert { kind } if host.data.is_none() && host.selection.is_none() => {
+            // Write and Deck: no cells to chart, so the chart carries its own sample data.
+            *cs = sample_chart(*kind);
+        }
         SuiteCommand::ChartInsert { kind } => {
             let data = need_data()?;
             let (sheet, range) = host
@@ -1641,7 +1793,25 @@ pub fn apply(cs: &mut ChartSpace, cmd: &SuiteCommand, host: HostContext<'_>) -> 
                 .ok_or_else(|| invalid("select the cells to chart first"))?;
             *cs = insert_from_range(data, sheet, range, *kind)?;
         }
-        SuiteCommand::ChartChangeType { kind } => change_type(cs, *kind),
+        SuiteCommand::ChartChangeType { kind } => {
+            let combo = matches!(
+                kind,
+                ChartKind::ComboColumnLine | ChartKind::ComboColumnLineSecondary
+            );
+            let n: usize = cs
+                .chart
+                .plot_area
+                .groups
+                .iter()
+                .map(|g| g.series.len())
+                .sum();
+            if combo && n < 2 {
+                return Err(invalid(
+                    "a combo chart needs at least two series: add a series with Select Data first",
+                ));
+            }
+            change_type(cs, *kind);
+        }
         SuiteCommand::ChartSwitchRowColumn => switch_row_column(cs, need_data()?)?,
         SuiteCommand::ChartSelectData { range } => select_data(cs, need_data()?, range)?,
         SuiteCommand::ChartSetElement { element, on } => set_element(cs, *element, *on),

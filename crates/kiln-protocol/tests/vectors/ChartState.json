@@ -1,0 +1,141 @@
+{
+  "type": "ChartState",
+  "format": {
+    "TYPENAME": "ChartState"
+  },
+  "values": [
+    {
+      "kind": "ComboColumnLineSecondary",
+      "style": 2,
+      "color_set": 0,
+      "color_sets": [
+        [
+          "1D8A60",
+          "E05A27"
+        ],
+        [
+          "1D8A60",
+          "E05A27"
+        ],
+        [
+          "1D8A60",
+          "E05A27"
+        ],
+        [
+          "1D8A60",
+          "E05A27"
+        ],
+        [
+          "1D8A60",
+          "E05A27"
+        ],
+        [
+          "1D8A60",
+          "E05A27"
+        ],
+        [
+          "1D8A60",
+          "E05A27"
+        ],
+        [
+          "1D8A60",
+          "E05A27"
+        ]
+      ],
+      "title": "Spend by quarter",
+      "legend": "Bottom",
+      "data_labels": "OutsideEnd",
+      "elements": [
+        "ChartTitle",
+        "Legend"
+      ],
+      "data_range": "'Budget «2026»'!$A$1:$D$5",
+      "series": [
+        {
+          "idx": 0,
+          "name": "Materials",
+          "color": "1D8A60",
+          "fill": null,
+          "line": null,
+          "line_width": 0.0,
+          "secondary": false
+        },
+        {
+          "idx": 2,
+          "name": "Events",
+          "color": "3159C6",
+          "fill": "3159C6",
+          "line": "2B1C14",
+          "line_width": 2.25,
+          "secondary": true
+        }
+      ],
+      "categories": [
+        "Q1",
+        "Q2",
+        ""
+      ],
+      "has_cells": true,
+      "axes": [
+        {
+          "target": "PrimaryValue",
+          "label": "Vertical (Value) Axis",
+          "is_value": true,
+          "min": 0.0,
+          "max": 1400.0,
+          "major_unit": 200.0,
+          "min_auto": true,
+          "max_auto": false,
+          "major_unit_auto": true,
+          "log_base": 10.0,
+          "reversed": true,
+          "number_format": "#,##0"
+        },
+        {
+          "target": "PrimaryCategory",
+          "label": "Horizontal (Category) Axis: Quarter",
+          "is_value": false,
+          "min": null,
+          "max": null,
+          "major_unit": null,
+          "min_auto": true,
+          "max_auto": true,
+          "major_unit_auto": true,
+          "log_base": null,
+          "reversed": false,
+          "number_format": null
+        }
+      ]
+    },
+    {
+      "kind": null,
+      "style": null,
+      "color_set": 7,
+      "color_sets": [],
+      "title": null,
+      "legend": null,
+      "data_labels": null,
+      "elements": [],
+      "data_range": "",
+      "series": [],
+      "categories": [],
+      "has_cells": false,
+      "axes": []
+    },
+    {
+      "kind": null,
+      "style": null,
+      "color_set": 0,
+      "color_sets": [],
+      "title": null,
+      "legend": null,
+      "data_labels": null,
+      "elements": [],
+      "data_range": "",
+      "series": [],
+      "categories": [],
+      "has_cells": false,
+      "axes": []
+    }
+  ]
+}

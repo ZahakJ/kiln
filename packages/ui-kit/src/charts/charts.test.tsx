@@ -4,9 +4,11 @@ import { createCommandRegistry } from '@kiln/commands';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
+import { createHarness, renderWithCommands } from '../chrome/test-helpers.tsx';
+import { Ribbon } from '../ribbon/Ribbon.tsx';
 import { validateRibbonSpec } from '../ribbon/validate.ts';
 import { ChangeChartTypeDialog, RANGE_PATTERN, SelectDataDialog } from './ChartDialogs.tsx';
-import { ChartElementsMenu } from './ChartMenus.tsx';
+import { ChangeColorsMenu, ChartElementsMenu } from './ChartMenus.tsx';
 import { ChartTypeGallery } from './ChartTypeGallery.tsx';
 import { chartTabs } from './chartRibbon.tsx';
 import { FormatChartPane } from './FormatChartPane.tsx';
@@ -27,13 +29,59 @@ function host(state: Partial<ChartUiState> = {}) {
       ...EMPTY_CHART_STATE,
       kind: 'ColumnClustered',
       title: 'Spend by quarter',
-      dataRange: "'Budget 2026'!$A$1:$D$5",
+      data_range: "'Budget 2026'!$A$1:$D$5",
       series: [
-        { idx: 0, name: 'Materials', color: '#1D8A60', secondary: false },
-        { idx: 1, name: 'Firing', color: '#E05A27', secondary: false },
+        {
+          idx: 0,
+          name: 'Materials',
+          color: '1D8A60',
+          fill: null,
+          line: null,
+          line_width: 0,
+          secondary: false,
+        },
+        {
+          idx: 1,
+          name: 'Firing',
+          color: 'E05A27',
+          fill: 'E05A27',
+          line: null,
+          line_width: 0,
+          secondary: false,
+        },
       ],
       categories: ['Q1', 'Q2', 'Q3', 'Q4'],
-      hasCells: true,
+      has_cells: true,
+      axes: [
+        {
+          target: 'PrimaryValue',
+          label: 'Vertical (Value) Axis',
+          is_value: true,
+          min: 0,
+          max: 1400,
+          major_unit: 200,
+          min_auto: true,
+          max_auto: false,
+          major_unit_auto: true,
+          log_base: null,
+          reversed: false,
+          number_format: null,
+        },
+        {
+          target: 'PrimaryCategory',
+          label: 'Horizontal (Category) Axis',
+          is_value: false,
+          min: null,
+          max: null,
+          major_unit: null,
+          min_auto: true,
+          max_auto: true,
+          major_unit_auto: true,
+          log_base: null,
+          reversed: false,
+          number_format: null,
+        },
+      ],
       ...state,
     },
     run,
@@ -152,7 +200,7 @@ describe('Select Data', () => {
 
 describe('Add Chart Element', () => {
   it('toggles elements and places the legend', async () => {
-    const { h, run } = host({ legend: 'Bottom', elements: { MajorGridlines: true } });
+    const { h, run } = host({ legend: 'Bottom', elements: ['MajorGridlines'] });
     render(<ChartElementsMenu host={h} />);
     await userEvent.click(screen.getByRole('button', { name: /Add Chart Element/ }));
     await userEvent.click(screen.getByRole('menuitemcheckbox', { name: 'Chart Title' }));
@@ -199,7 +247,78 @@ describe('Format Chart pane', () => {
   });
 });
 
+describe('Format Chart pane values', () => {
+  it('shows the axis bounds the core reports, and follows the selected axis', async () => {
+    const { h } = host();
+    render(<FormatChartPane host={h} />);
+    expect(screen.getByRole('spinbutton', { name: 'Minimum' })).toHaveValue('0');
+    expect(screen.getByRole('spinbutton', { name: 'Maximum' })).toHaveValue('1400');
+    expect(screen.getByRole('spinbutton', { name: 'Major unit' })).toHaveValue('200');
+    // Automatic bounds say so; a fixed one offers Reset.
+    expect(screen.getAllByText('Auto')).toHaveLength(2);
+    expect(screen.getByRole('button', { name: 'Reset maximum to automatic' })).toBeTruthy();
+    await userEvent.click(screen.getByRole('combobox', { name: 'Axis' }));
+    await userEvent.click(await screen.findByRole('option', { name: 'Horizontal (Category) Axis' }));
+    expect(screen.queryByRole('spinbutton', { name: 'Minimum' })).toBeNull();
+    expect(screen.getByRole('checkbox', { name: 'Categories in reverse order' })).toBeTruthy();
+  });
+
+  it('labels the colour rows and marks the current colour', async () => {
+    const { h } = host();
+    render(<FormatChartPane host={h} />);
+    expect(screen.getByText('Fill')).toBeTruthy();
+    expect(screen.getByText('Line')).toBeTruthy();
+    // Materials: automatic fill.
+    expect(screen.getByRole('button', { name: 'Fill: Automatic' })).toHaveAttribute('aria-pressed', 'true');
+    await userEvent.click(screen.getByRole('combobox', { name: 'Series' }));
+    await userEvent.click(await screen.findByRole('option', { name: 'Firing' }));
+    expect(screen.getByRole('button', { name: 'Fill: Ember' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Fill: Automatic' })).toHaveAttribute('aria-pressed', 'false');
+  });
+
+  it('shows no axis section for a chart without axes', () => {
+    const { h } = host({ axes: [] });
+    render(<FormatChartPane host={h} />);
+    expect(screen.queryByRole('heading', { name: 'Axis Options' })).toBeNull();
+  });
+});
+
 describe('chart contextual tabs', () => {
+  it('lay each Chart Design control out in its own full-height column', async () => {
+    const { h } = host();
+    const tabs = chartTabs(h, { sheets: ['Budget'], isChartSelected: () => true });
+    for (const t of tabs)
+      for (const g of t.groups)
+        for (const i of g.items) expect('size' in i ? i.size : undefined).toBe('large');
+    const harness = createHarness('grid');
+    const { container } = renderWithCommands(
+      <Ribbon
+        spec={{ app: 'grid', tabs }}
+        layout="classic"
+        defaultTab="chart-design"
+        onFileClick={() => {}}
+      />,
+      harness,
+      'grid',
+    );
+    const design = container.querySelector('[data-ribbon-group="chart-layouts"]');
+    expect(design?.querySelectorAll('.kiln-ribbon__col--single')).toHaveLength(2);
+    expect(design?.querySelectorAll('.kiln-ribbon__col--stack')).toHaveLength(0);
+  });
+
+  it('mark the current colour set from the core state', async () => {
+    const { h } = host({
+      color_set: 2,
+      color_sets: Array.from({ length: 8 }, (_, i) => Array.from({ length: 6 }, () => `0${i}0000`)),
+    });
+    render(<ChangeColorsMenu host={h} />);
+    await userEvent.click(screen.getByRole('button', { name: /Change Colors/ }));
+    expect(screen.getByRole('menuitemradio', { name: 'Monochromatic: accent 2' })).toHaveAttribute(
+      'aria-checked',
+      'true',
+    );
+  });
+
   it('are valid ribbon tabs in the Chart Tools set', () => {
     const { h } = host();
     const tabs = chartTabs(h, { sheets: ['Budget'], isChartSelected: () => true });

@@ -12,9 +12,9 @@ use crate::OpenHint;
 use crate::a11y::{A11yNode, A11yRole, A11yTree};
 use crate::app::{App, DocKind, FileFormat};
 use crate::commands::{
-    Availability, CaretMotion, ChartAxisTarget, ChartBound, ChartElementKind, ChartKind,
-    ChartLabelPosition, ChartLegendPosition, ChartMoveTarget, Command, CommandInfo, SelectUnit,
-    SuiteCommand, Tier, WriteCommand, catalog,
+    Availability, CaretMotion, ChartAxisState, ChartAxisTarget, ChartBound, ChartElementKind,
+    ChartKind, ChartLabelPosition, ChartLegendPosition, ChartMoveTarget, ChartSeriesState,
+    ChartState, Command, CommandInfo, SelectUnit, SuiteCommand, Tier, WriteCommand, catalog,
 };
 use crate::error::ErrorInfo;
 use crate::event::{Event, Progress, RecoveryEntry};
@@ -504,4 +504,94 @@ samples! {
         ChartAxisTarget::PrimaryValue, ChartAxisTarget::PrimaryCategory,
         ChartAxisTarget::SecondaryValue, ChartAxisTarget::SecondaryCategory,
     ];
+    ChartSeriesState => chart_series_states();
+    ChartAxisState => chart_axis_states();
+    ChartState => vec![
+        ChartState {
+            kind: Some(ChartKind::ComboColumnLineSecondary),
+            style: Some(2),
+            color_set: 0,
+            color_sets: vec![vec!["1D8A60".into(), "E05A27".into()]; 8],
+            title: Some("Spend by quarter".into()),
+            legend: Some(ChartLegendPosition::Bottom),
+            data_labels: Some(ChartLabelPosition::OutsideEnd),
+            elements: vec![ChartElementKind::ChartTitle, ChartElementKind::Legend],
+            data_range: "'Budget «2026»'!$A$1:$D$5".into(),
+            series: chart_series_states(),
+            categories: vec!["Q1".into(), "Q2".into(), String::new()],
+            has_cells: true,
+            axes: chart_axis_states(),
+        },
+        ChartState {
+            kind: None,
+            style: None,
+            color_set: 7,
+            color_sets: Vec::new(),
+            title: None,
+            legend: None,
+            data_labels: None,
+            elements: Vec::new(),
+            data_range: String::new(),
+            series: Vec::new(),
+            categories: Vec::new(),
+            has_cells: false,
+            axes: Vec::new(),
+        },
+    ];
+}
+
+fn chart_series_states() -> Vec<ChartSeriesState> {
+    vec![
+        ChartSeriesState {
+            idx: 0,
+            name: "Materials".into(),
+            color: "1D8A60".into(),
+            fill: None,
+            line: None,
+            line_width: 0.0,
+            secondary: false,
+        },
+        ChartSeriesState {
+            idx: 2,
+            name: "Events".into(),
+            color: "3159C6".into(),
+            fill: Some("3159C6".into()),
+            line: Some("2B1C14".into()),
+            line_width: 2.25,
+            secondary: true,
+        },
+    ]
+}
+
+fn chart_axis_states() -> Vec<ChartAxisState> {
+    vec![
+        ChartAxisState {
+            target: ChartAxisTarget::PrimaryValue,
+            label: "Vertical (Value) Axis".into(),
+            is_value: true,
+            min: Some(0.0),
+            max: Some(1400.0),
+            major_unit: Some(200.0),
+            min_auto: true,
+            max_auto: false,
+            major_unit_auto: true,
+            log_base: Some(10.0),
+            reversed: true,
+            number_format: Some("#,##0".into()),
+        },
+        ChartAxisState {
+            target: ChartAxisTarget::PrimaryCategory,
+            label: "Horizontal (Category) Axis: Quarter".into(),
+            is_value: false,
+            min: None,
+            max: None,
+            major_unit: None,
+            min_auto: true,
+            max_auto: true,
+            major_unit_auto: true,
+            log_base: None,
+            reversed: false,
+            number_format: None,
+        },
+    ]
 }

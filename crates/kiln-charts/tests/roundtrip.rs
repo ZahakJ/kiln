@@ -120,3 +120,203 @@ fn every_fixture_chart_round_trips() {
     }
     eprintln!("{}", report.join("\n"));
 }
+
+/// The children `CT_*Ser` allows, in schema order (ECMA-376 Part 1, dml-chart.xsd), for the
+/// element that holds the series.
+fn series_schema(group: &str) -> Option<&'static [&'static str]> {
+    Some(match group {
+        "c:barChart" | "c:bar3DChart" => &[
+            "c:idx",
+            "c:order",
+            "c:tx",
+            "c:spPr",
+            "c:invertIfNegative",
+            "c:pictureOptions",
+            "c:dPt",
+            "c:dLbls",
+            "c:trendline",
+            "c:errBars",
+            "c:cat",
+            "c:val",
+            "c:shape",
+            "c:extLst",
+        ],
+        "c:lineChart" | "c:line3DChart" => &[
+            "c:idx",
+            "c:order",
+            "c:tx",
+            "c:spPr",
+            "c:marker",
+            "c:dPt",
+            "c:dLbls",
+            "c:trendline",
+            "c:errBars",
+            "c:cat",
+            "c:val",
+            "c:smooth",
+            "c:extLst",
+        ],
+        "c:areaChart" | "c:area3DChart" => &[
+            "c:idx",
+            "c:order",
+            "c:tx",
+            "c:spPr",
+            "c:pictureOptions",
+            "c:dPt",
+            "c:dLbls",
+            "c:trendline",
+            "c:errBars",
+            "c:cat",
+            "c:val",
+            "c:extLst",
+        ],
+        "c:pieChart" | "c:pie3DChart" | "c:doughnutChart" | "c:ofPieChart" => &[
+            "c:idx",
+            "c:order",
+            "c:tx",
+            "c:spPr",
+            "c:explosion",
+            "c:dPt",
+            "c:dLbls",
+            "c:cat",
+            "c:val",
+            "c:extLst",
+        ],
+        "c:scatterChart" => &[
+            "c:idx",
+            "c:order",
+            "c:tx",
+            "c:spPr",
+            "c:marker",
+            "c:dPt",
+            "c:dLbls",
+            "c:trendline",
+            "c:errBars",
+            "c:xVal",
+            "c:yVal",
+            "c:smooth",
+            "c:extLst",
+        ],
+        "c:bubbleChart" => &[
+            "c:idx",
+            "c:order",
+            "c:tx",
+            "c:spPr",
+            "c:invertIfNegative",
+            "c:dPt",
+            "c:dLbls",
+            "c:trendline",
+            "c:errBars",
+            "c:xVal",
+            "c:yVal",
+            "c:bubbleSize",
+            "c:bubble3D",
+            "c:extLst",
+        ],
+        "c:radarChart" => &[
+            "c:idx", "c:order", "c:tx", "c:spPr", "c:marker", "c:dPt", "c:dLbls", "c:cat", "c:val",
+            "c:extLst",
+        ],
+        _ => return None,
+    })
+}
+
+/// Children a series may repeat.
+const REPEATABLE: &[&str] = &["c:dPt", "c:trendline", "c:errBars"];
+
+/// Every `c:ser` under `el` has only children its chart type allows, each at most once unless
+/// repeatable, in schema order.
+fn check_series_schema(el: &XmlElement, what: &str) {
+    for group in el.elements() {
+        if let Some(schema) = series_schema(&group.name) {
+            for ser in group.children_named("c:ser") {
+                let mut last = 0usize;
+                let mut prev: Option<&str> = None;
+                for c in ser.elements() {
+                    let name = c.name.as_str();
+                    let Some(pos) = schema.iter().position(|n| *n == name) else {
+                        panic!("{what}: {name} is not allowed in a {} series", group.name);
+                    };
+                    assert!(
+                        pos >= last,
+                        "{what}: {name} is out of schema order in a {} series",
+                        group.name
+                    );
+                    assert!(
+                        prev != Some(name) || REPEATABLE.contains(&name),
+                        "{what}: {name} appears twice in a {} series",
+                        group.name
+                    );
+                    last = pos;
+                    prev = Some(name);
+                }
+            }
+        }
+        check_series_schema(group, what);
+    }
+}
+
+/// Change Chart Type on every fixture chart to every type: the written part is schema-valid in
+/// its series, and reading it back gives the type the user picked (fuzzer seed 1174 found a radar
+/// series' kept `c:smooth` written next to the line chart's own, read back as Line with Markers).
+#[test]
+fn every_fixture_chart_changes_to_every_type() {
+    use kiln_charts::edit::{HostContext, apply, kind_of};
+    use kiln_protocol::commands::{ChartKind, SuiteCommand};
+    let parts = chart_parts();
+    let mut checked = 0usize;
+    let mut wrong = Vec::new();
+    for (name, bytes) in &parts {
+        let original = read_chart(bytes).unwrap_or_else(|e| panic!("{name}: {e}"));
+        let series: usize = original
+            .chart
+            .plot_area
+            .groups
+            .iter()
+            .map(|g| g.series.len())
+            .sum();
+        for kind in ChartKind::ALL {
+            let what = format!("{name} → {kind:?}");
+            let mut cs = original.clone();
+            let combo = matches!(
+                kind,
+                ChartKind::ComboColumnLine | ChartKind::ComboColumnLineSecondary
+            );
+            let result = apply(
+                &mut cs,
+                &SuiteCommand::ChartChangeType { kind },
+                HostContext::default(),
+            );
+            if combo && series < 2 {
+                assert!(
+                    result.is_err(),
+                    "{what}: a one-series combo must be refused"
+                );
+                assert_eq!(
+                    cs, original,
+                    "{what}: a refused change must not touch the chart"
+                );
+                continue;
+            }
+            result.unwrap_or_else(|e| panic!("{what}: {e}"));
+            let written = write_chart(&cs);
+            check_series_schema(&parse_xml(&written).unwrap().root, &what);
+            let again = read_chart(&written).unwrap_or_else(|e| panic!("{what} (written): {e}"));
+            let read_back = kind_of(&again);
+            if read_back != Some(kind) {
+                wrong.push(format!("{what}: read back as {read_back:?}"));
+            }
+            checked += 1;
+        }
+    }
+    assert!(
+        wrong.is_empty(),
+        "{} wrong:\n{}",
+        wrong.len(),
+        wrong.join("\n")
+    );
+    assert!(
+        checked >= parts.len() * 20,
+        "only {checked} changes checked"
+    );
+}

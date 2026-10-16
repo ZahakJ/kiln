@@ -1,0 +1,35 @@
+{
+  "type": "ChartSeriesState",
+  "format": {
+    "TYPENAME": "ChartSeriesState"
+  },
+  "values": [
+    {
+      "idx": 0,
+      "name": "Materials",
+      "color": "1D8A60",
+      "fill": null,
+      "line": null,
+      "line_width": 0.0,
+      "secondary": false
+    },
+    {
+      "idx": 2,
+      "name": "Events",
+      "color": "3159C6",
+      "fill": "3159C6",
+      "line": "2B1C14",
+      "line_width": 2.25,
+      "secondary": true
+    },
+    {
+      "idx": 0,
+      "name": "",
+      "color": "",
+      "fill": null,
+      "line": null,
+      "line_width": 0.0,
+      "secondary": false
+    }
+  ]
+}

@@ -107,6 +107,12 @@ impl Extras {
         self.0.retain(|e| e.el.name != name);
     }
 
+    /// Keeps only the elements whose name passes `keep` (an edit moved them to an element with a
+    /// different schema).
+    pub fn retain_named(&mut self, mut keep: impl FnMut(&str) -> bool) {
+        self.0.retain(|e| keep(&e.el.name));
+    }
+
     /// Puts the kept elements back among the regenerated `children`: each one right after the last
     /// element named like its original predecessor (an earlier kept element counts), at the start
     /// when it was the first child, or at the end when its predecessor is gone.

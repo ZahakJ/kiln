@@ -324,6 +324,58 @@
         }
       ]
     },
+    "ChartAxisState": {
+      "STRUCT": [
+        {
+          "target": {
+            "TYPENAME": "ChartAxisTarget"
+          }
+        },
+        {
+          "label": "STR"
+        },
+        {
+          "is_value": "BOOL"
+        },
+        {
+          "min": {
+            "OPTION": "F64"
+          }
+        },
+        {
+          "max": {
+            "OPTION": "F64"
+          }
+        },
+        {
+          "major_unit": {
+            "OPTION": "F64"
+          }
+        },
+        {
+          "min_auto": "BOOL"
+        },
+        {
+          "max_auto": "BOOL"
+        },
+        {
+          "major_unit_auto": "BOOL"
+        },
+        {
+          "log_base": {
+            "OPTION": "F64"
+          }
+        },
+        {
+          "reversed": "BOOL"
+        },
+        {
+          "number_format": {
+            "OPTION": "STR"
+          }
+        }
+      ]
+    },
     "ChartAxisTarget": {
       "ENUM": {
         "0": {
@@ -554,6 +606,112 @@
           }
         }
       }
+    },
+    "ChartSeriesState": {
+      "STRUCT": [
+        {
+          "idx": "U32"
+        },
+        {
+          "name": "STR"
+        },
+        {
+          "color": "STR"
+        },
+        {
+          "fill": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "line": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "line_width": "F64"
+        },
+        {
+          "secondary": "BOOL"
+        }
+      ]
+    },
+    "ChartState": {
+      "STRUCT": [
+        {
+          "kind": {
+            "OPTION": {
+              "TYPENAME": "ChartKind"
+            }
+          }
+        },
+        {
+          "style": {
+            "OPTION": "U8"
+          }
+        },
+        {
+          "color_set": "U8"
+        },
+        {
+          "color_sets": {
+            "SEQ": {
+              "SEQ": "STR"
+            }
+          }
+        },
+        {
+          "title": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "legend": {
+            "OPTION": {
+              "TYPENAME": "ChartLegendPosition"
+            }
+          }
+        },
+        {
+          "data_labels": {
+            "OPTION": {
+              "TYPENAME": "ChartLabelPosition"
+            }
+          }
+        },
+        {
+          "elements": {
+            "SEQ": {
+              "TYPENAME": "ChartElementKind"
+            }
+          }
+        },
+        {
+          "data_range": "STR"
+        },
+        {
+          "series": {
+            "SEQ": {
+              "TYPENAME": "ChartSeriesState"
+            }
+          }
+        },
+        {
+          "categories": {
+            "SEQ": "STR"
+          }
+        },
+        {
+          "has_cells": "BOOL"
+        },
+        {
+          "axes": {
+            "SEQ": {
+              "TYPENAME": "ChartAxisState"
+            }
+          }
+        }
+      ]
     },
     "ColorRole": {
       "ENUM": {

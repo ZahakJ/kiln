@@ -71,6 +71,7 @@ pub fn visit_all(v: &mut impl Visitor) {
         commands::ChartKind, commands::ChartElementKind, commands::ChartLegendPosition,
         commands::ChartLabelPosition, commands::ChartMoveTarget, commands::ChartAxisTarget,
         commands::ChartBound,
+        commands::ChartState, commands::ChartSeriesState, commands::ChartAxisState,
     );
 }
 

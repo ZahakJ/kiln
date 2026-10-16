@@ -29,15 +29,29 @@ let mut sink = text::AtlasSink::new(device_scale, chart_origin_in_tile_device_px
 let (layout, ops) = render::render(&chart, 480.0, 300.0, Some(&theme), ColorMode::Screen { dark }, &mut measurer, &mut sink);
 // … wrap `ops` in a PushTransform to the chart's position, upload `sink.updates(false)` with the tile.
 edit::apply(&mut chart, &command, edit::HostContext { data: Some(&workbook), selection: None })?;
+// What the chart chrome (`chartTabs`, `FormatChartPane`) shows: a protocol `ChartState`.
+let ui = kiln_charts::state::chart_state(&chart, &layout, &colors);
+
+// Write and Deck: Insert ▸ Chart without cells gives Office's sample data as literal values.
+let mut chart = ChartSpace::default();
+edit::apply(&mut chart, &SuiteCommand::ChartInsert { kind: None }, edit::HostContext::default())?;
 ```
+
+Change Chart Type keeps the unknown elements a series carried only where the new type's schema
+allows them and the model does not already write them (a radar series' stray `c:smooth` is dropped
+when it becomes a line series), and refuses a combo chart for fewer than two series.
 
 ## Tests
 
 - `tests/roundtrip.rs`: every chart part of `fixtures/{xlsx,pptx,docx}/features` and `fixtures/xlsx/charts`
-  reads, writes and reads back with identical model facts and the same XML structure (1.000).
+  reads, writes and reads back with identical model facts and the same XML structure (1.000); and
+  every one changed to each of the 28 types writes series that follow the schema (allowed children,
+  once each, in order) and reads back as the type chosen.
 - `tests/golden.rs`: 18 sample charts (every type) in the light and dark screen themes and the nine
   `charts.pptx` charts in document colours, against `fixtures/golden/charts/*.png`
-  (`KILN_UPDATE_GOLDEN=1` rewrites them; `KILN_CHART_PREVIEW=<dir>` also writes 2× renders).
+  (`KILN_UPDATE_GOLDEN=1` rewrites them; `KILN_CHART_PREVIEW=<dir>` also writes 2× renders); every
+  type inserted with sample data (Write, Deck) saves, reads back as its type and draws its data, with
+  six of them as `sample-*.png` goldens in document colours.
 - `tests/layout.rs`: legend wrapping, tick label collision avoidance, pie label placement, hit testing,
   every fixture at extreme sizes, and a property test feeding corrupted parts through read, layout, draw
   and write.

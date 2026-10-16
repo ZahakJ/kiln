@@ -291,3 +291,85 @@ fn fixture_charts_render_in_document_colours() {
     }
     assert!(failures.is_empty(), "{}", failures.join("\n"));
 }
+
+/// Insert ▸ Chart in Write and Deck (no cells): every type gets Office's sample data as literal
+/// values, keeps its type through a save, and draws its data. One golden per data family, in
+/// document colours as the page or slide shows it.
+#[test]
+fn sample_data_charts_insert_save_and_render() {
+    use kiln_charts::edit::{HostContext, apply, kind_of};
+    use kiln_charts::facts::chart_facts;
+    use kiln_charts::layout::{ChartElement, layout_chart};
+    use kiln_charts::palette::ChartColors;
+    use kiln_charts::write_chart;
+    use kiln_protocol::commands::SuiteCommand;
+    let mut text = TextMeasurer::new(default_fonts());
+    let dir = repo().join("fixtures/golden/charts");
+    let preview = std::env::var_os("KILN_CHART_PREVIEW").map(PathBuf::from);
+    let mut failures = Vec::new();
+    for kind in ChartKind::ALL {
+        let mut cs = ChartSpace::default();
+        apply(
+            &mut cs,
+            &SuiteCommand::ChartInsert { kind: Some(kind) },
+            HostContext::default(),
+        )
+        .unwrap_or_else(|e| panic!("{kind:?}: {e}"));
+        assert_eq!(
+            kind_of(&cs),
+            Some(kind),
+            "{kind:?}: inserted as another type"
+        );
+        let again = read_chart(&write_chart(&cs)).unwrap();
+        assert_eq!(
+            kind_of(&again),
+            Some(kind),
+            "{kind:?}: saved as another type"
+        );
+        assert_eq!(
+            chart_facts(&cs),
+            chart_facts(&again),
+            "{kind:?}: save lost data"
+        );
+        let colors = ChartColors::new(None, ColorMode::Document);
+        let l = layout_chart(&again, 560.0, 360.0, &colors, &mut text);
+        let points = l
+            .hits
+            .iter()
+            .filter(|(e, _)| matches!(e, ChartElement::Point { .. }))
+            .count();
+        let series = l
+            .hits
+            .iter()
+            .any(|(e, _)| matches!(e, ChartElement::Series { .. }));
+        assert!(points >= 3 || series, "{kind:?}: draws no data");
+        let name = match kind {
+            ChartKind::ColumnClustered => "sample-column",
+            ChartKind::Pie => "sample-pie",
+            ChartKind::ScatterMarkers => "sample-scatter",
+            ChartKind::Bubble => "sample-bubble",
+            ChartKind::Treemap => "sample-treemap",
+            ChartKind::ComboColumnLineSecondary => "sample-combo",
+            _ => continue,
+        };
+        let img = render_png(&again, ColorMode::Document, 1.0, &mut text);
+        if let Err(e) = golden::check(&img, &dir.join(format!("{name}.png"))) {
+            failures.push(e);
+        }
+        if let Some(p) = &preview {
+            std::fs::create_dir_all(p).unwrap();
+            let big = render_png(&again, ColorMode::Document, 2.0, &mut text);
+            std::fs::write(p.join(format!("{name}.png")), big.encode_png().unwrap()).unwrap();
+        }
+    }
+    // The default is a clustered column chart, as in Office.
+    let mut cs = ChartSpace::default();
+    apply(
+        &mut cs,
+        &SuiteCommand::ChartInsert { kind: None },
+        HostContext::default(),
+    )
+    .unwrap();
+    assert_eq!(kind_of(&cs), Some(ChartKind::ColumnClustered));
+    assert!(failures.is_empty(), "{}", failures.join("\n"));
+}

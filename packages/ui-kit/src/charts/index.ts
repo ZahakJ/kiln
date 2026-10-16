@@ -30,6 +30,7 @@ export {
 } from './kinds.ts';
 export {
   bound,
+  type ChartAxisInfo,
   type ChartAxisTarget,
   type ChartBound,
   type ChartCommand,

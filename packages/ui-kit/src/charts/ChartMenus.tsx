@@ -17,6 +17,15 @@ import {
 import { COLOR_SETS, QUICK_LAYOUTS } from './kinds.ts';
 import type { ChartElementKind, ChartLabelPosition, ChartLegendPosition, ChartUiHost } from './types.ts';
 
+/** Props of the chart menu buttons: `stacked` in the Classic ribbon, `inline` in Simplified. */
+export interface MenuButtonProps {
+  host: ChartUiHost;
+  layout?: 'stacked' | 'inline';
+}
+
+/** The Change Colors set each of Office's chart styles 1–8 shows (column 1 greys, 2 colourful). */
+const STYLE_SETS: readonly number[] = [7, 0, 1, 2, 3, 4, 5, 6];
+
 const LEGEND: readonly [ChartLegendPosition, string][] = [
   ['Right', 'Right'],
   ['Top', 'Top'],
@@ -72,16 +81,20 @@ const TOGGLES: readonly { label: string; items: readonly [ChartElementKind, stri
  * Chart Design ▸ Add Chart Element (and the + button beside a selected chart): every element with
  * its check mark, the legend and data label positions as radio submenus.
  */
-export function ChartElementsMenu({ host, trigger }: { host: ChartUiHost; trigger?: ReactNode }) {
+export function ChartElementsMenu({
+  host,
+  trigger,
+  layout = 'stacked',
+}: MenuButtonProps & { trigger?: ReactNode }) {
   const { state, run } = host;
-  const on = (k: ChartElementKind) => state.elements[k] === true;
+  const on = (k: ChartElementKind) => state.elements.includes(k);
   return (
     <Menu>
       <MenuTrigger asChild>
         {trigger ?? (
           <Button
             variant="toolbar"
-            layout="stacked"
+            layout={layout}
             icon={<Icon icon={Plus} size={20} />}
             iconAfter={<Icon icon={ChevronDown} size={12} />}
           >
@@ -111,7 +124,7 @@ export function ChartElementsMenu({ host, trigger }: { host: ChartUiHost; trigge
         ))}
         <Submenu label="Data Labels">
           <MenuRadioGroup
-            value={state.dataLabels ?? 'None'}
+            value={state.data_labels ?? 'None'}
             onValueChange={(v) =>
               run({ ChartSetDataLabels: { position: v === 'None' ? null : (v as ChartLabelPosition) } })
             }
@@ -207,13 +220,13 @@ function LayoutThumb({ layout }: { layout: number }) {
 }
 
 /** Chart Design ▸ Quick Layout: Office's eleven layouts. */
-export function QuickLayoutMenu({ host }: { host: ChartUiHost }) {
+export function QuickLayoutMenu({ host, layout = 'stacked' }: MenuButtonProps) {
   return (
     <Menu>
       <MenuTrigger asChild>
         <Button
           variant="toolbar"
-          layout="stacked"
+          layout={layout}
           icon={<LayoutThumb layout={1} />}
           iconAfter={<Icon icon={ChevronDown} size={12} />}
         >
@@ -236,22 +249,16 @@ export function QuickLayoutMenu({ host }: { host: ChartUiHost }) {
   );
 }
 
-/** Chart Design ▸ Change Colors: colourful, monochrome per accent, greys. */
-export function ChangeColorsMenu({ host }: { host: ChartUiHost }) {
-  const current =
-    host.state.style === null
-      ? 0
-      : (() => {
-          const col = (host.state.style - 1) % 8;
-          return col === 0 ? 7 : col === 1 ? 0 : col - 1;
-        })();
+/** Chart Design ▸ Change Colors: colourful, monochrome per accent, greys, in the chart's theme. */
+export function ChangeColorsMenu({ host, layout = 'stacked' }: MenuButtonProps) {
+  const sets = host.state.color_sets;
   return (
     <Menu>
       <MenuTrigger asChild>
         <Button
           variant="toolbar"
-          layout="stacked"
-          icon={<Swatches palette={0} />}
+          layout={layout}
+          icon={<Swatches palette={host.state.color_set} colors={sets[host.state.color_set]} />}
           iconAfter={<Icon icon={ChevronDown} size={12} />}
         >
           Change Colors
@@ -259,12 +266,12 @@ export function ChangeColorsMenu({ host }: { host: ChartUiHost }) {
       </MenuTrigger>
       <MenuContent aria-label="Colour sets" className="kiln-chart-colors">
         <MenuRadioGroup
-          value={String(current)}
+          value={String(host.state.color_set)}
           onValueChange={(v) => host.run({ ChartSetColors: { palette: Number(v) } })}
         >
           {COLOR_SETS.map((c) => (
             <MenuRadioItem key={c.palette} value={String(c.palette)} aria-label={c.label}>
-              <Swatches palette={c.palette} />
+              <Swatches palette={c.palette} colors={sets[c.palette]} />
               <span className="kiln-chart-colors__label">{c.label}</span>
             </MenuRadioItem>
           ))}
@@ -274,25 +281,37 @@ export function ChangeColorsMenu({ host }: { host: ChartUiHost }) {
   );
 }
 
-function Swatches({ palette }: { palette: number }) {
+/**
+ * Six colour chips. `colors` (`RRGGBB`, from the core's `ChartState::color_sets`) are the chart's
+ * own theme colours; without them the chips use the app's chart tokens.
+ */
+function Swatches({ palette, colors }: { palette: number; colors?: readonly string[] | undefined }) {
+  const own = colors !== undefined && colors.length > 0 ? colors : null;
   return (
     <span className={cx('kiln-chart-swatches', `kiln-chart-swatches--p${palette}`)} aria-hidden="true">
-      {[1, 2, 3, 4, 5, 6].map((i) => (
-        <span key={i} className={`kiln-chart-swatches__s${i}`} />
-      ))}
+      {[1, 2, 3, 4, 5, 6].map((i) => {
+        const hex = own?.[(i - 1) % own.length];
+        return (
+          <span
+            key={i}
+            className={`kiln-chart-swatches__s${i}`}
+            style={hex ? { background: `#${hex}` } : undefined}
+          />
+        );
+      })}
     </span>
   );
 }
 
 /** Chart Design ▸ Chart Styles: the eight colour styles of a row (Office numbering 1–8). */
-export function ChartStylesMenu({ host }: { host: ChartUiHost }) {
+export function ChartStylesMenu({ host, layout = 'stacked' }: MenuButtonProps) {
   return (
     <Menu>
       <MenuTrigger asChild>
         <Button
           variant="toolbar"
-          layout="stacked"
-          icon={<Swatches palette={0} />}
+          layout={layout}
+          icon={<Swatches palette={0} colors={host.state.color_sets[0]} />}
           iconAfter={<Icon icon={ChevronDown} size={12} />}
         >
           Chart Styles
@@ -305,7 +324,10 @@ export function ChartStylesMenu({ host }: { host: ChartUiHost }) {
         >
           {[1, 2, 3, 4, 5, 6, 7, 8].map((style) => (
             <MenuRadioItem key={style} value={String(style)} aria-label={`Style ${style}`}>
-              <Swatches palette={style === 1 ? 7 : style === 2 ? 0 : style - 2} />
+              <Swatches
+                palette={STYLE_SETS[style - 1] ?? 0}
+                colors={host.state.color_sets[STYLE_SETS[style - 1] ?? 0]}
+              />
               <span className="kiln-chart-colors__label">Style {style}</span>
             </MenuRadioItem>
           ))}

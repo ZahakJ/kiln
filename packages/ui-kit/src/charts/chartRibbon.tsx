@@ -6,12 +6,20 @@ import {
   MoveRight,
   PaintBucket,
   PanelRight,
+  PenLine,
 } from 'lucide-react';
 import { useId, useState } from 'react';
 import { Icon } from '../icons/Icon.tsx';
 import { Button } from '../primitives/Button.tsx';
 import { Dialog, DialogClose, DialogContent } from '../primitives/Dialog.tsx';
-import { Menu, MenuContent, MenuItem, MenuTrigger } from '../primitives/Menu.tsx';
+import {
+  Menu,
+  MenuContent,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuTrigger,
+  Submenu,
+} from '../primitives/Menu.tsx';
 import { group, tab } from '../ribbon/builders.ts';
 import type { RibbonCustomItem, RibbonTab } from '../ribbon/types.ts';
 import { ChangeChartTypeDialog, SelectDataDialog } from './ChartDialogs.tsx';
@@ -19,13 +27,13 @@ import { ChangeColorsMenu, ChartElementsMenu, ChartStylesMenu, QuickLayoutMenu }
 import { SERIES_SWATCHES } from './FormatChartPane.tsx';
 import type { ChartUiHost } from './types.ts';
 
-function ChangeTypeButton({ host }: { host: ChartUiHost }) {
+function ChangeTypeButton({ host, layout }: { host: ChartUiHost; layout: ButtonLayout }) {
   const [open, setOpen] = useState(false);
   return (
     <>
       <Button
         variant="toolbar"
-        layout="stacked"
+        layout={layout}
         icon={<Icon icon={BarChart3} size={20} />}
         onClick={() => setOpen(true)}
       >
@@ -36,15 +44,15 @@ function ChangeTypeButton({ host }: { host: ChartUiHost }) {
   );
 }
 
-function SelectDataButton({ host }: { host: ChartUiHost }) {
+function SelectDataButton({ host, layout }: { host: ChartUiHost; layout: ButtonLayout }) {
   const [open, setOpen] = useState(false);
   return (
     <>
       <Button
         variant="toolbar"
-        layout="stacked"
+        layout={layout}
         icon={<Icon icon={Database} size={20} />}
-        disabled={!host.state.hasCells}
+        disabled={!host.state.has_cells}
         onClick={() => setOpen(true)}
       >
         Select Data
@@ -145,13 +153,21 @@ export function MoveChartDialog({
   );
 }
 
-function MoveChartButton({ host, sheets }: { host: ChartUiHost; sheets: readonly string[] }) {
+function MoveChartButton({
+  host,
+  sheets,
+  layout,
+}: {
+  host: ChartUiHost;
+  sheets: readonly string[];
+  layout: ButtonLayout;
+}) {
   const [open, setOpen] = useState(false);
   return (
     <>
       <Button
         variant="toolbar"
-        layout="stacked"
+        layout={layout}
         icon={<Icon icon={MoveRight} size={20} />}
         onClick={() => setOpen(true)}
       >
@@ -162,12 +178,87 @@ function MoveChartButton({ host, sheets }: { host: ChartUiHost; sheets: readonly
   );
 }
 
-const custom = (id: string, label: string, render: RibbonCustomItem['render']): RibbonCustomItem => ({
+type ButtonLayout = 'stacked' | 'inline';
+
+/**
+ * A chart control as a large ribbon item: a full-height stacked button in the Classic ribbon (one
+ * per column, like Office's Chart Design tab), an inline button in the Simplified ribbon.
+ */
+const custom = (
+  id: string,
+  label: string,
+  render: (layout: ButtonLayout) => ReturnType<RibbonCustomItem['render']>,
+): RibbonCustomItem => ({
   kind: 'custom',
   id,
   label,
-  render,
+  size: 'large',
+  render: (ctx) => render(ctx.layout === 'classic' ? 'stacked' : 'inline'),
 });
+
+/** Format ▸ Shape Fill / Shape Outline: a submenu per series with the current colour checked. */
+function SeriesColourMenu({
+  host,
+  part,
+  layout,
+}: {
+  host: ChartUiHost;
+  part: 'fill' | 'line';
+  layout: ButtonLayout;
+}) {
+  const title = part === 'fill' ? 'Shape Fill' : 'Shape Outline';
+  return (
+    <Menu>
+      <MenuTrigger asChild>
+        <Button
+          variant="toolbar"
+          layout={layout}
+          icon={<Icon icon={part === 'fill' ? PaintBucket : PenLine} size={20} />}
+          iconAfter={<Icon icon={ChevronDown} size={12} />}
+          disabled={host.state.series.length === 0}
+        >
+          {title}
+        </Button>
+      </MenuTrigger>
+      <MenuContent aria-label={part === 'fill' ? 'Series fill' : 'Series outline'}>
+        {host.state.series.map((s) => (
+          <Submenu
+            key={s.idx}
+            label={
+              <>
+                <span className="kiln-chart-data__swatch" style={{ background: `#${s.color}` }} />
+                {s.name}
+              </>
+            }
+          >
+            <MenuRadioGroup
+              value={(part === 'fill' ? s.fill : s.line)?.toUpperCase() ?? ''}
+              onValueChange={(hex) =>
+                host.run({
+                  ChartFormatSeries: {
+                    series: s.idx,
+                    fill: part === 'fill' ? hex : null,
+                    line: part === 'line' ? hex : null,
+                    line_width: null,
+                    secondary: null,
+                  },
+                })
+              }
+            >
+              <MenuRadioItem value="">Automatic</MenuRadioItem>
+              {SERIES_SWATCHES.map((c) => (
+                <MenuRadioItem key={c.hex} value={c.hex}>
+                  <span className="kiln-chart-data__swatch" style={{ background: `#${c.hex}` }} />
+                  {c.label}
+                </MenuRadioItem>
+              ))}
+            </MenuRadioGroup>
+          </Submenu>
+        ))}
+      </MenuContent>
+    </Menu>
+  );
+}
 
 export interface ChartTabsOptions {
   /** Sheet names for Move Chart (Grid); Move Chart is left out without them. */
@@ -190,35 +281,35 @@ export function chartTabs(host: ChartUiHost, options: ChartTabsOptions = {}): Ri
     'Chart Design',
     [
       group('chart-layouts', 'Chart Layouts', [
-        custom('chart.addElement', 'Add Chart Element', () => <ChartElementsMenu host={host} />),
-        custom('chart.quickLayout', 'Quick Layout', () => <QuickLayoutMenu host={host} />),
+        custom('chart.addElement', 'Add Chart Element', (l) => <ChartElementsMenu host={host} layout={l} />),
+        custom('chart.quickLayout', 'Quick Layout', (l) => <QuickLayoutMenu host={host} layout={l} />),
       ]),
       group('chart-styles', 'Chart Styles', [
-        custom('chart.colors', 'Change Colors', () => <ChangeColorsMenu host={host} />),
-        custom('chart.styles', 'Chart Styles', () => <ChartStylesMenu host={host} />),
+        custom('chart.colors', 'Change Colors', (l) => <ChangeColorsMenu host={host} layout={l} />),
+        custom('chart.styles', 'Chart Styles', (l) => <ChartStylesMenu host={host} layout={l} />),
       ]),
       group('chart-data', 'Data', [
-        custom('chart.switchRowColumn', 'Switch Row/Column', () => (
+        custom('chart.switchRowColumn', 'Switch Row/Column', (l) => (
           <Button
             variant="toolbar"
-            layout="stacked"
+            layout={l}
             icon={<Icon icon={ArrowLeftRight} size={20} />}
-            disabled={!host.state.hasCells}
+            disabled={!host.state.has_cells}
             onClick={() => host.run('ChartSwitchRowColumn')}
           >
             Switch Row/Column
           </Button>
         )),
-        custom('chart.selectData', 'Select Data', () => <SelectDataButton host={host} />),
+        custom('chart.selectData', 'Select Data', (l) => <SelectDataButton host={host} layout={l} />),
       ]),
       group('chart-type', 'Type', [
-        custom('chart.changeType', 'Change Chart Type', () => <ChangeTypeButton host={host} />),
+        custom('chart.changeType', 'Change Chart Type', (l) => <ChangeTypeButton host={host} layout={l} />),
       ]),
       ...(options.sheets
         ? [
             group('chart-location', 'Location', [
-              custom('chart.move', 'Move Chart', () => (
-                <MoveChartButton host={host} sheets={options.sheets ?? []} />
+              custom('chart.move', 'Move Chart', (l) => (
+                <MoveChartButton host={host} sheets={options.sheets ?? []} layout={l} />
               )),
             ]),
           ]
@@ -231,10 +322,10 @@ export function chartTabs(host: ChartUiHost, options: ChartTabsOptions = {}): Ri
     'Format',
     [
       group('chart-selection', 'Current Selection', [
-        custom('chart.formatSelection', 'Format Selection', () => (
+        custom('chart.formatSelection', 'Format Selection', (l) => (
           <Button
             variant="toolbar"
-            layout="stacked"
+            layout={l}
             icon={<Icon icon={PanelRight} size={20} />}
             onClick={() => options.onFormatSelection?.()}
           >
@@ -243,43 +334,11 @@ export function chartTabs(host: ChartUiHost, options: ChartTabsOptions = {}): Ri
         )),
       ]),
       group('chart-shape-styles', 'Shape Styles', [
-        custom('chart.seriesFill', 'Shape Fill', () => (
-          <Menu>
-            <MenuTrigger asChild>
-              <Button
-                variant="toolbar"
-                layout="stacked"
-                icon={<Icon icon={PaintBucket} size={20} />}
-                iconAfter={<Icon icon={ChevronDown} size={12} />}
-                disabled={host.state.series.length === 0}
-              >
-                Shape Fill
-              </Button>
-            </MenuTrigger>
-            <MenuContent aria-label="Series fill">
-              {host.state.series.map((s) =>
-                SERIES_SWATCHES.slice(0, 6).map((c) => (
-                  <MenuItem
-                    key={`${s.idx}-${c.hex}`}
-                    onSelect={() =>
-                      host.run({
-                        ChartFormatSeries: {
-                          series: s.idx,
-                          fill: c.hex,
-                          line: null,
-                          line_width: null,
-                          secondary: null,
-                        },
-                      })
-                    }
-                  >
-                    <span className="kiln-chart-data__swatch" style={{ background: `#${c.hex}` }} />
-                    {s.name}: {c.label}
-                  </MenuItem>
-                )),
-              )}
-            </MenuContent>
-          </Menu>
+        custom('chart.seriesFill', 'Shape Fill', (l) => (
+          <SeriesColourMenu host={host} part="fill" layout={l} />
+        )),
+        custom('chart.seriesOutline', 'Shape Outline', (l) => (
+          <SeriesColourMenu host={host} part="line" layout={l} />
         )),
       ]),
     ],

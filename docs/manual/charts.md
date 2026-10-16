@@ -38,8 +38,10 @@ line chart for dates or long runs, a pie chart for a single series of a few posi
 chart with a secondary axis when the series differ in size tenfold or more, and a treemap or sunburst
 when two text columns form a hierarchy.
 
-In Kiln Write and Kiln Deck a chart keeps its data in its own small workbook inside the document, as
-in Office.
+In Kiln Write and Kiln Deck, **Insert ▸ Chart** adds a chart with Office's sample data (three series
+over four categories for most types; quarterly sales for a pie; a few points for a scatter or bubble
+chart; branches and leaves for a treemap or sunburst), which the chart keeps inside itself. A chart
+copied from Excel keeps its data in its own small workbook inside the document, as in Office.
 
 ## Changing a chart
 
@@ -52,11 +54,15 @@ Select the chart: the **Chart Design** and **Format** tabs appear.
 - **Switch Row/Column** swaps what is a series and what is a category.
 - **Select Data** changes the range the chart reads and lists its series and category labels.
 - **Change Chart Type** keeps the data, titles and formatting and changes the type, combos and
-  hierarchy charts included.
+  hierarchy charts included. A combo chart needs at least two series; Kiln says so instead of
+  making a chart of another type. Choosing **Pie** pulls exploded slices back in.
 - **Move Chart** (Grid) puts the chart on its own chart sheet or on another sheet.
-- **Format Selection** opens the Format Chart pane: the title, a series' fill, line, line width and
-  secondary axis, and the axis options (minimum, maximum and major unit with **Auto** to go back to
-  automatic, logarithmic scale, values in reverse order, number format).
+- **Shape Fill** and **Shape Outline** (Format tab) colour one series; the current colour is checked.
+- **Format Selection** opens the Format Chart pane: the title, a series' fill and line (the colour in
+  use is marked; **Automatic** shows the colour the chart picks), line width and secondary axis, and
+  the options of each axis the chart has: the minimum, maximum and major unit the chart is drawn
+  with, marked **Auto** while Kiln chooses them and with **Reset** once you set them, logarithmic
+  scale, values (or categories) in reverse order, and the number format.
 
 Every change can be undone with Ctrl+Z.
 

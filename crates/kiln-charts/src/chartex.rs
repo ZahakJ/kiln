@@ -157,6 +157,15 @@ fn read_labels(el: &XmlElement) -> DataLabels {
     }
 }
 
+/// The `cx:series` children the model covers.
+pub(crate) const SERIES_KNOWN: &[&str] = &[
+    "cx:tx",
+    "cx:spPr",
+    "cx:dataLabels",
+    "cx:dataId",
+    "cx:layoutPr",
+];
+
 /// Reads a `cx:chartSpace` element.
 #[must_use]
 pub fn read_chartex(root: &XmlElement) -> ChartSpace {
@@ -206,16 +215,7 @@ pub fn read_chartex(root: &XmlElement) -> ChartSpace {
                 values: block
                     .and_then(|(_, b)| b.values.clone())
                     .map(DataSource::Num),
-                extras: Extras::capture(
-                    s,
-                    &[
-                        "cx:tx",
-                        "cx:spPr",
-                        "cx:dataLabels",
-                        "cx:dataId",
-                        "cx:layoutPr",
-                    ],
-                ),
+                extras: Extras::capture(s, SERIES_KNOWN),
                 attrs: attrs_of(s, &["layoutId"]),
                 ..Series::default()
             });
@@ -309,7 +309,10 @@ fn str_level(points: &[Option<String>]) -> XmlElement {
 fn data_block(id: usize, s: &Series) -> XmlElement {
     let cats = s.categories.as_ref().map(|c| {
         let (formula, levels): (Option<&str>, Vec<Vec<Option<String>>>) = match c {
-            DataSource::MultiLevel(m) => (Some(&m.formula), m.levels.clone()),
+            DataSource::MultiLevel(m) => (
+                (!m.formula.is_empty()).then_some(m.formula.as_str()),
+                m.levels.clone(),
+            ),
             DataSource::Str(st) => (st.formula.as_deref(), vec![st.points.clone()]),
             DataSource::Num(n) => (
                 n.formula.as_deref(),

@@ -33,6 +33,7 @@ pub mod palette;
 pub mod read;
 pub mod render;
 pub mod scale;
+pub mod state;
 pub mod text;
 pub mod write;
 mod xmlx;

@@ -4,7 +4,13 @@ import { Icon } from '../icons/Icon.tsx';
 import { Button } from '../primitives/Button.tsx';
 import { NumberInput } from '../primitives/NumberInput.tsx';
 import { Select } from '../primitives/Select.tsx';
-import { bound, type ChartAxisTarget, type ChartCommand, type ChartUiHost } from './types.ts';
+import {
+  bound,
+  type ChartAxisInfo,
+  type ChartAxisTarget,
+  type ChartCommand,
+  type ChartUiHost,
+} from './types.ts';
 
 type FormatAxisArgs = Extract<ChartCommand, { ChartFormatAxis: unknown }>['ChartFormatAxis'];
 
@@ -47,42 +53,120 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 function SwatchRow({
   label,
   value,
+  current,
   onPick,
 }: {
   label: string;
-  value?: string;
+  /** The colour set on the series (`RRGGBB`), `null` when automatic. */
+  value: string | null;
+  /** The colour drawn (`RRGGBB`), shown on the Automatic chip; `null` when nothing is drawn. */
+  current: string | null;
   onPick: (hex: string) => void;
 }) {
+  const id = useId();
+  const set = value?.toUpperCase() ?? null;
+  const custom = set !== null && !SERIES_SWATCHES.some((s) => s.hex === set);
   return (
-    // biome-ignore lint/a11y/useSemanticElements: a radio-like row of colour buttons.
-    <div role="group" aria-label={label} className="kiln-chart-pane__swatches">
-      <button
-        type="button"
-        className="kiln-chart-pane__swatch kiln-chart-pane__swatch--auto"
-        aria-label={`${label}: Automatic`}
-        aria-pressed={value === ''}
-        onClick={() => onPick('')}
-      >
-        A
-      </button>
-      {SERIES_SWATCHES.map((s) => (
+    <div className="kiln-chart-pane__colour">
+      <span id={id} className="kiln-chart-pane__label">
+        {label}
+      </span>
+      {/* biome-ignore lint/a11y/useSemanticElements: a radio-like row of colour buttons. */}
+      <div role="group" aria-labelledby={id} className="kiln-chart-pane__swatches">
         <button
-          key={s.hex}
           type="button"
-          className="kiln-chart-pane__swatch"
-          style={{ background: `#${s.hex}` }}
-          aria-label={`${label}: ${s.label}`}
-          aria-pressed={value?.toUpperCase() === s.hex}
-          onClick={() => onPick(s.hex)}
-        />
-      ))}
+          className="kiln-chart-pane__swatch kiln-chart-pane__swatch--auto"
+          aria-label={`${label}: Automatic`}
+          title="Automatic"
+          aria-pressed={set === null}
+          onClick={() => onPick('')}
+        >
+          {current === null ? (
+            <span className="kiln-chart-pane__auto-chip kiln-chart-pane__auto-chip--none" />
+          ) : (
+            <span className="kiln-chart-pane__auto-chip" style={{ background: `#${current}` }} />
+          )}
+        </button>
+        {SERIES_SWATCHES.map((s) => (
+          <button
+            key={s.hex}
+            type="button"
+            className="kiln-chart-pane__swatch"
+            style={{ background: `#${s.hex}` }}
+            aria-label={`${label}: ${s.label}`}
+            title={s.label}
+            aria-pressed={set === s.hex}
+            onClick={() => onPick(s.hex)}
+          />
+        ))}
+        {custom ? (
+          <span
+            className="kiln-chart-pane__swatch kiln-chart-pane__swatch--custom"
+            style={{ background: `#${set}` }}
+            role="img"
+            aria-label={`${label}: #${set} (current)`}
+            title={`#${set}`}
+          />
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function AxisBoundRow({
+  label,
+  id,
+  value,
+  auto,
+  min,
+  onSet,
+  onAuto,
+}: {
+  label: string;
+  id: string;
+  value: number;
+  auto: boolean;
+  min?: number;
+  onSet: (v: number) => void;
+  onAuto: () => void;
+}) {
+  return (
+    <div className="kiln-chart-pane__row">
+      <label htmlFor={id}>{label}</label>
+      <NumberInput
+        id={id}
+        aria-label={label}
+        value={value}
+        precision={6}
+        size="sm"
+        width={104}
+        {...(min !== undefined ? { min } : {})}
+        onValueChange={onSet}
+      />
+      {auto ? (
+        <span className="kiln-chart-pane__auto" title="Office chooses this value from the data">
+          Auto
+        </span>
+      ) : (
+        <Button
+          variant="ghost"
+          size="sm"
+          aria-label={`Reset ${label.toLowerCase()} to automatic`}
+          icon={<Icon icon={RotateCcw} size={14} />}
+          onClick={onAuto}
+        >
+          Reset
+        </Button>
+      )}
     </div>
   );
 }
 
 /**
  * The Format Chart pane (Format Selection / double-click): title, series fill and line, secondary
- * axis, and axis options with Auto/Reset for bounds and units. Every change runs one chart command.
+ * axis, and axis options with the bounds the chart is drawn with (automatic ones marked Auto,
+ * fixed ones with Reset). Every value comes from the core's `ChartState`; every change runs one
+ * chart command.
  */
 export function FormatChartPane({ host }: { host: ChartUiHost }) {
   const { state, run } = host;
@@ -91,18 +175,32 @@ export function FormatChartPane({ host }: { host: ChartUiHost }) {
   useEffect(() => setTitle(state.title ?? ''), [state.title]);
   const [seriesIdx, setSeriesIdx] = useState<number>(state.series[0]?.idx ?? 0);
   const series = state.series.find((s) => s.idx === seriesIdx) ?? state.series[0];
-  const [width, setWidth] = useState(2.25);
-  const [axis, setAxis] = useState<ChartAxisTarget>('PrimaryValue');
-  const [min, setMin] = useState(0);
-  const [max, setMax] = useState(100);
-  const [unit, setUnit] = useState(10);
-  const [log, setLog] = useState(false);
-  const [reversed, setReversed] = useState(false);
+  const [target, setTarget] = useState<ChartAxisTarget>(state.axes[0]?.target ?? 'PrimaryValue');
+  const axis: ChartAxisInfo | undefined = state.axes.find((a) => a.target === target) ?? state.axes[0];
 
-  const formatAxis = (patch: Partial<Omit<FormatAxisArgs, 'axis'>>) =>
+  const formatSeries = (
+    patch: Partial<
+      Omit<Extract<ChartCommand, { ChartFormatSeries: unknown }>['ChartFormatSeries'], 'series'>
+    >,
+  ) => {
+    if (!series) return;
+    run({
+      ChartFormatSeries: {
+        series: series.idx,
+        fill: null,
+        line: null,
+        line_width: null,
+        secondary: null,
+        ...patch,
+      },
+    });
+  };
+
+  const formatAxis = (patch: Partial<Omit<FormatAxisArgs, 'axis'>>) => {
+    if (!axis) return;
     run({
       ChartFormatAxis: {
-        axis,
+        axis: axis.target,
         min: null,
         max: null,
         major_unit: null,
@@ -112,6 +210,12 @@ export function FormatChartPane({ host }: { host: ChartUiHost }) {
         ...patch,
       },
     });
+  };
+
+  const formatValue = axis?.number_format ?? '';
+  const formatOptions = NUMBER_FORMATS.some((f) => f.value === formatValue)
+    ? NUMBER_FORMATS
+    : [...NUMBER_FORMATS, { value: formatValue, label: `Custom (${formatValue})` }];
 
   return (
     <div className="kiln-chart-pane">
@@ -141,33 +245,17 @@ export function FormatChartPane({ host }: { host: ChartUiHost }) {
           />
           <SwatchRow
             label="Fill"
-            onPick={(hex) =>
-              run({
-                ChartFormatSeries: {
-                  series: series.idx,
-                  fill: hex,
-                  line: null,
-                  line_width: null,
-                  secondary: null,
-                },
-              })
-            }
+            value={series.fill}
+            current={series.color}
+            onPick={(hex) => formatSeries({ fill: hex })}
           />
           <SwatchRow
             label="Line"
-            onPick={(hex) =>
-              run({
-                ChartFormatSeries: {
-                  series: series.idx,
-                  fill: null,
-                  line: hex,
-                  line_width: null,
-                  secondary: null,
-                },
-              })
-            }
+            value={series.line}
+            current={series.line ?? (series.line_width > 0 ? series.color : null)}
+            onPick={(hex) => formatSeries({ line: hex })}
           />
-          <div className="kiln-chart-pane__row">
+          <div className="kiln-chart-pane__row kiln-chart-pane__row--2">
             <label htmlFor={`${ids}-width`}>Line width</label>
             <NumberInput
               id={`${ids}-width`}
@@ -176,123 +264,90 @@ export function FormatChartPane({ host }: { host: ChartUiHost }) {
               min={0}
               max={20}
               step={0.25}
-              value={width}
+              value={series.line_width}
               size="sm"
-              width={96}
-              onValueChange={(v) => {
-                setWidth(v);
-                run({
-                  ChartFormatSeries: {
-                    series: series.idx,
-                    fill: null,
-                    line: null,
-                    line_width: v,
-                    secondary: null,
-                  },
-                });
-              }}
+              width={104}
+              onValueChange={(v) => formatSeries({ line_width: v })}
             />
           </div>
           <label className="kiln-chart-pane__check">
             <input
               type="checkbox"
               checked={series.secondary}
-              onChange={(e) =>
-                run({
-                  ChartFormatSeries: {
-                    series: series.idx,
-                    fill: null,
-                    line: null,
-                    line_width: null,
-                    secondary: e.target.checked,
-                  },
-                })
-              }
+              onChange={(e) => formatSeries({ secondary: e.target.checked })}
             />
             Plot on secondary axis
           </label>
         </Section>
       ) : null}
 
-      <Section title="Axis Options">
-        <Select
-          aria-label="Axis"
-          value={axis}
-          onValueChange={(v) => setAxis(v as ChartAxisTarget)}
-          options={[
-            { value: 'PrimaryValue', label: 'Vertical (Value) Axis' },
-            { value: 'PrimaryCategory', label: 'Horizontal (Category) Axis' },
-            { value: 'SecondaryValue', label: 'Secondary Vertical Axis' },
-            { value: 'SecondaryCategory', label: 'Secondary Horizontal Axis' },
-          ]}
-        />
-        {(
-          [
-            ['Minimum', min, setMin, 'min'],
-            ['Maximum', max, setMax, 'max'],
-            ['Major unit', unit, setUnit, 'major_unit'],
-          ] as const
-        ).map(([label, value, set, key]) => (
-          <div key={key} className="kiln-chart-pane__row">
-            <label htmlFor={`${ids}-${key}`}>{label}</label>
-            <NumberInput
-              id={`${ids}-${key}`}
-              aria-label={label}
-              value={value}
-              size="sm"
-              width={96}
-              min={key === 'major_unit' ? 0.000001 : undefined}
-              onValueChange={(v) => {
-                set(v);
-                formatAxis({ [key]: bound.fixed(v) });
-              }}
-            />
-            <Button
-              variant="ghost"
-              size="sm"
-              aria-label={`Reset ${label.toLowerCase()} to automatic`}
-              icon={<Icon icon={RotateCcw} size={14} />}
-              onClick={() => formatAxis({ [key]: bound.auto })}
-            >
-              Auto
-            </Button>
-          </div>
-        ))}
-        <label className="kiln-chart-pane__check">
-          <input
-            type="checkbox"
-            checked={log}
-            onChange={(e) => {
-              setLog(e.target.checked);
-              formatAxis({ log_base: e.target.checked ? bound.fixed(10) : bound.auto });
-            }}
-          />
-          Logarithmic scale (base 10)
-        </label>
-        <label className="kiln-chart-pane__check">
-          <input
-            type="checkbox"
-            checked={reversed}
-            onChange={(e) => {
-              setReversed(e.target.checked);
-              formatAxis({ reversed: e.target.checked });
-            }}
-          />
-          Values in reverse order
-        </label>
-        <div className="kiln-chart-pane__row">
-          <span id={`${ids}-fmt`}>Number</span>
+      {axis ? (
+        <Section title="Axis Options">
           <Select
-            labelId={`${ids}-fmt`}
-            defaultValue="source"
-            onValueChange={(v) => formatAxis({ number_format: v === 'source' ? '' : v })}
-            options={NUMBER_FORMATS.map((f) => ({
-              value: f.value === '' ? 'source' : f.value,
-              label: f.label,
-            }))}
+            aria-label="Axis"
+            value={axis.target}
+            onValueChange={(v) => setTarget(v as ChartAxisTarget)}
+            options={state.axes.map((a) => ({ value: a.target, label: a.label, textValue: a.label }))}
           />
-        </div>
-      </Section>
+          {axis.is_value && axis.min !== null && axis.max !== null && axis.major_unit !== null ? (
+            <>
+              <AxisBoundRow
+                label="Minimum"
+                id={`${ids}-min`}
+                value={axis.min}
+                auto={axis.min_auto}
+                onSet={(v) => formatAxis({ min: bound.fixed(v) })}
+                onAuto={() => formatAxis({ min: bound.auto })}
+              />
+              <AxisBoundRow
+                label="Maximum"
+                id={`${ids}-max`}
+                value={axis.max}
+                auto={axis.max_auto}
+                onSet={(v) => formatAxis({ max: bound.fixed(v) })}
+                onAuto={() => formatAxis({ max: bound.auto })}
+              />
+              <AxisBoundRow
+                label="Major unit"
+                id={`${ids}-unit`}
+                value={axis.major_unit}
+                auto={axis.major_unit_auto}
+                min={0.000001}
+                onSet={(v) => formatAxis({ major_unit: bound.fixed(v) })}
+                onAuto={() => formatAxis({ major_unit: bound.auto })}
+              />
+              <label className="kiln-chart-pane__check">
+                <input
+                  type="checkbox"
+                  checked={axis.log_base !== null}
+                  onChange={(e) => formatAxis({ log_base: e.target.checked ? bound.fixed(10) : bound.auto })}
+                />
+                Logarithmic scale (base 10)
+              </label>
+            </>
+          ) : null}
+          <label className="kiln-chart-pane__check">
+            <input
+              type="checkbox"
+              checked={axis.reversed}
+              onChange={(e) => formatAxis({ reversed: e.target.checked })}
+            />
+            {axis.is_value ? 'Values in reverse order' : 'Categories in reverse order'}
+          </label>
+          <div className="kiln-chart-pane__row kiln-chart-pane__row--2">
+            <span id={`${ids}-fmt`}>Number</span>
+            <Select
+              labelId={`${ids}-fmt`}
+              value={formatValue === '' ? 'source' : formatValue}
+              onValueChange={(v) => formatAxis({ number_format: v === 'source' ? '' : v })}
+              options={formatOptions.map((f) => ({
+                value: f.value === '' ? 'source' : f.value,
+                label: f.label,
+              }))}
+            />
+          </div>
+        </Section>
+      ) : null}
     </div>
   );
 }

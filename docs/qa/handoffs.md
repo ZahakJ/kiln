@@ -647,3 +647,30 @@ WP-54 had to touch these files outside its owned paths; every change is additive
     each with one warning in `ImportReport::warnings`; show them in the import preview.
   - Saves are checked with LibreOffice, exceljs and (for the three files exceljs cannot read) openpyxl, never with
     Excel itself; the xlsx parity rows stay `partial` until a real-Excel check exists.
+
+## WP-73 fix round 1 → WP-70 (XLSX), WP-60 (testing), WP-71 (Grid surface), WP-62/WP-65 and WP-77–79 (Write, Deck), WP-52 (protocol), WP-50 (env)
+
+- Still open and not WP-73's to edit: **"charts scored structurally" in `cargo xtask fidelity --format xlsx`**
+  needs (WP-70) `crates/kiln-testing/src/formats/xlsx.rs` to append
+  `kiln_charts::package::package_chart_facts(&pkg)` to the adapter's `Snapshot::facts` and `kiln-io-xlsx` to register
+  the chart part handler (`kiln_charts::package::{read_part, write_part}`), and (WP-60) `fixtures/xlsx/charts/` to
+  join the fidelity discovery (`FixtureKind`). **`pnpm e2e --grep charts`** (`e2e/specs/charts.spec.ts`, WP-73's path)
+  needs the Grid surface (WP-71): there is nothing in the web app that draws a chart or selects a range yet. Both
+  acceptance criteria wait for those packages.
+- Outside WP-73's paths (additive, for WP-52 to acknowledge): `crates/kiln-protocol` gained `ChartState`,
+  `ChartSeriesState` and `ChartAxisState` (appended to the chart section of `commands/suite.rs`, re-exported in
+  `commands/mod.rs`, registered on WP-73's line in `schema.rs`, samples appended in `samples.rs`; generated TS and
+  vectors via `cargo xtask protocol`, 291 files).
+- For WP-71, WP-62/WP-65, WP-77–79 (hosts): build the chrome's state with
+  `kiln_charts::state::chart_state(&chart, &layout, &colors)` (the `ChartLayout` you draw with, so automatic axis
+  bounds match the screen) and pass it as `ChartUiHost::state` to `chartTabs`/`FormatChartPane` — the ui-kit's
+  `ChartUiState` is now that generated `ChartState` (snake_case fields, colours `RRGGBB` without `#`). Expose it
+  over the bridge as a query when you wire the chart selection. In Write and Deck, `SuiteCommand::ChartInsert` with
+  `HostContext::default()` (no workbook, no selection) gives a chart with Office's sample data as literal
+  `c:numLit`/`c:strLit` values (`edit::sample_chart`); give it an embedded workbook when you add "Edit Data".
+  `ChartChangeType` to a combo now returns `InvalidInput` for a chart with fewer than two series: show the message.
+- For WP-50 (env): agents verifying in a separate clean checkout should build with their own `CARGO_TARGET_DIR`;
+  a clean-checkout build into the shared `target/` once left `target/debug/xtask` stale (`protocol --check`
+  reported 35 stale files that a fresh build did not). While two agents build in the shared `target/`, a
+  `cargo check` can also fail with "can't find crate" or "extern location … does not exist" mid-run; rerunning
+  after the other build finishes clears it. Worth a line in `docs/qa/env.md`.

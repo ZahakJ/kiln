@@ -469,3 +469,84 @@ pub enum ChartBound {
     /// A fixed value.
     Fixed(f64),
 }
+
+/// What the chart chrome (Chart Design and Format tabs, Format Chart pane, Select Data) shows
+/// about the selected chart. `kiln_charts::edit::chart_state` computes it from the chart and its
+/// layout, so the chrome holds no chart logic.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, TS)]
+pub struct ChartState {
+    /// The chart type (`None` for a type Kiln does not edit, such as a 3-D surface).
+    pub kind: Option<ChartKind>,
+    /// Office chart style number (1–48), when the chart has one.
+    pub style: Option<u8>,
+    /// The current Change Colors set: 0 colourful, 1–6 shades of accent n, 7 greys.
+    pub color_set: u8,
+    /// The first six colours (`RRGGBB`) of each Change Colors set, 0–7, in the document's theme.
+    pub color_sets: Vec<Vec<String>>,
+    /// The title as drawn; `None` when the chart shows no title.
+    pub title: Option<String>,
+    /// The legend position; `None` without a legend.
+    pub legend: Option<ChartLegendPosition>,
+    /// The data label position of the first labelled series; `None` without data labels.
+    pub data_labels: Option<ChartLabelPosition>,
+    /// The Add Chart Element items that are on.
+    pub elements: Vec<ChartElementKind>,
+    /// Select Data's chart data range (`Sheet1!$A$1:$D$5`); empty for literal data.
+    pub data_range: String,
+    /// The series, in plot order.
+    pub series: Vec<ChartSeriesState>,
+    /// The category (horizontal axis) labels.
+    pub categories: Vec<String>,
+    /// Whether the chart reads cells (Write and Deck charts with literal data do not).
+    pub has_cells: bool,
+    /// The axes the Format pane can format.
+    pub axes: Vec<ChartAxisState>,
+}
+
+/// One series of [`ChartState`].
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, TS)]
+pub struct ChartSeriesState {
+    /// The series' `idx` (what `ChartFormatSeries` addresses).
+    pub idx: u32,
+    /// The name as the legend shows it.
+    pub name: String,
+    /// The colour drawn (`RRGGBB`): the fill, or the line of a line series.
+    pub color: String,
+    /// The solid fill set on the series (`RRGGBB`); `None` when automatic.
+    pub fill: Option<String>,
+    /// The solid line colour set on the series (`RRGGBB`); `None` when automatic.
+    pub line: Option<String>,
+    /// The line width in points as drawn.
+    pub line_width: f64,
+    /// Plotted on the secondary axis.
+    pub secondary: bool,
+}
+
+/// One axis of [`ChartState`], with the bounds the chart draws (fixed or automatic).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, TS)]
+pub struct ChartAxisState {
+    /// Which axis (what `ChartFormatAxis` addresses).
+    pub target: ChartAxisTarget,
+    /// The axis title, or a description (`Vertical (Value) Axis`).
+    pub label: String,
+    /// A value axis (bounds and units apply) rather than a category axis.
+    pub is_value: bool,
+    /// The minimum drawn (value axes).
+    pub min: Option<f64>,
+    /// The maximum drawn (value axes).
+    pub max: Option<f64>,
+    /// The major unit drawn (value axes; the factor between ticks on a log scale).
+    pub major_unit: Option<f64>,
+    /// The minimum is automatic.
+    pub min_auto: bool,
+    /// The maximum is automatic.
+    pub max_auto: bool,
+    /// The major unit is automatic.
+    pub major_unit_auto: bool,
+    /// The logarithm base of a log scale.
+    pub log_base: Option<f64>,
+    /// Values (or categories) in reverse order.
+    pub reversed: bool,
+    /// The number format code; `None` when linked to the source.
+    pub number_format: Option<String>,
+}

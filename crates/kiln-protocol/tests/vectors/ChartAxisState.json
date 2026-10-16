@@ -1,0 +1,50 @@
+{
+  "type": "ChartAxisState",
+  "format": {
+    "TYPENAME": "ChartAxisState"
+  },
+  "values": [
+    {
+      "target": "PrimaryValue",
+      "label": "Vertical (Value) Axis",
+      "is_value": true,
+      "min": 0.0,
+      "max": 1400.0,
+      "major_unit": 200.0,
+      "min_auto": true,
+      "max_auto": false,
+      "major_unit_auto": true,
+      "log_base": 10.0,
+      "reversed": true,
+      "number_format": "#,##0"
+    },
+    {
+      "target": "PrimaryCategory",
+      "label": "Horizontal (Category) Axis: Quarter",
+      "is_value": false,
+      "min": null,
+      "max": null,
+      "major_unit": null,
+      "min_auto": true,
+      "max_auto": true,
+      "major_unit_auto": true,
+      "log_base": null,
+      "reversed": false,
+      "number_format": null
+    },
+    {
+      "target": "PrimaryValue",
+      "label": "",
+      "is_value": false,
+      "min": null,
+      "max": null,
+      "major_unit": null,
+      "min_auto": false,
+      "max_auto": false,
+      "major_unit_auto": false,
+      "log_base": null,
+      "reversed": false,
+      "number_format": null
+    }
+  ]
+}

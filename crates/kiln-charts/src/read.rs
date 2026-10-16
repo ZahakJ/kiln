@@ -357,7 +357,7 @@ pub(crate) fn group_known(kind: &GroupKind) -> &'static [&'static str] {
 
 /// The series children the model covers for a chart type (the rest are kept as extras, even
 /// elements the schema does not allow for the type, so they are written back as read).
-fn series_known(kind: &GroupKind) -> Vec<&'static str> {
+pub(crate) fn series_known(kind: &GroupKind) -> Vec<&'static str> {
     let mut k = vec!["c:idx", "c:order", "c:tx", "c:spPr", "c:dPt", "c:dLbls"];
     match kind {
         GroupKind::Bar { .. } => k.extend(["c:invertIfNegative", "c:trendline", "c:cat", "c:val"]),
@@ -383,6 +383,140 @@ fn series_known(kind: &GroupKind) -> Vec<&'static str> {
         GroupKind::Hierarchy { .. } | GroupKind::Other(_) => {}
     }
     k
+}
+
+/// Every child the schema allows in a series of a chart type (`CT_BarSer`, `CT_LineSer`, …, and
+/// chartex's `CT_Series`), modelled or not. An edit that moves series to another type keeps only
+/// the unknown children the new type allows.
+pub(crate) fn series_schema(kind: &GroupKind) -> &'static [&'static str] {
+    match kind {
+        GroupKind::Bar { .. } => &[
+            "c:idx",
+            "c:order",
+            "c:tx",
+            "c:spPr",
+            "c:invertIfNegative",
+            "c:pictureOptions",
+            "c:dPt",
+            "c:dLbls",
+            "c:trendline",
+            "c:errBars",
+            "c:cat",
+            "c:val",
+            "c:shape",
+            "c:extLst",
+        ],
+        GroupKind::Line { .. } => &[
+            "c:idx",
+            "c:order",
+            "c:tx",
+            "c:spPr",
+            "c:marker",
+            "c:dPt",
+            "c:dLbls",
+            "c:trendline",
+            "c:errBars",
+            "c:cat",
+            "c:val",
+            "c:smooth",
+            "c:extLst",
+        ],
+        GroupKind::Area { .. } => &[
+            "c:idx",
+            "c:order",
+            "c:tx",
+            "c:spPr",
+            "c:pictureOptions",
+            "c:dPt",
+            "c:dLbls",
+            "c:trendline",
+            "c:errBars",
+            "c:cat",
+            "c:val",
+            "c:extLst",
+        ],
+        GroupKind::Pie { .. } | GroupKind::Doughnut { .. } => &[
+            "c:idx",
+            "c:order",
+            "c:tx",
+            "c:spPr",
+            "c:explosion",
+            "c:dPt",
+            "c:dLbls",
+            "c:cat",
+            "c:val",
+            "c:extLst",
+        ],
+        GroupKind::Scatter { .. } => &[
+            "c:idx",
+            "c:order",
+            "c:tx",
+            "c:spPr",
+            "c:marker",
+            "c:dPt",
+            "c:dLbls",
+            "c:trendline",
+            "c:errBars",
+            "c:xVal",
+            "c:yVal",
+            "c:smooth",
+            "c:extLst",
+        ],
+        GroupKind::Bubble { .. } => &[
+            "c:idx",
+            "c:order",
+            "c:tx",
+            "c:spPr",
+            "c:invertIfNegative",
+            "c:dPt",
+            "c:dLbls",
+            "c:trendline",
+            "c:errBars",
+            "c:xVal",
+            "c:yVal",
+            "c:bubbleSize",
+            "c:bubble3D",
+            "c:extLst",
+        ],
+        GroupKind::Radar { .. } => &[
+            "c:idx", "c:order", "c:tx", "c:spPr", "c:marker", "c:dPt", "c:dLbls", "c:cat", "c:val",
+            "c:extLst",
+        ],
+        GroupKind::Hierarchy { .. } => &[
+            "cx:tx",
+            "cx:spPr",
+            "cx:valueColors",
+            "cx:valueColorPositions",
+            "cx:dataPt",
+            "cx:dataLabels",
+            "cx:dataId",
+            "cx:layoutPr",
+            "cx:axisId",
+            "cx:extLst",
+        ],
+        GroupKind::Other(_) => &[],
+    }
+}
+
+/// The children of a `c:dPt` the model covers for a chart type.
+pub(crate) fn point_known(kind: &GroupKind) -> Vec<&'static str> {
+    let mut known = vec!["c:idx", "c:spPr"];
+    if matches!(kind, GroupKind::Bar { .. } | GroupKind::Bubble { .. }) {
+        known.push("c:invertIfNegative");
+    }
+    if matches!(
+        kind,
+        GroupKind::Line { .. } | GroupKind::Scatter { .. } | GroupKind::Radar { .. }
+    ) {
+        known.push("c:marker");
+    }
+    if matches!(kind, GroupKind::Bubble { .. }) {
+        known.push("c:bubble3D");
+    }
+    if matches!(kind, GroupKind::Pie { .. } | GroupKind::Doughnut { .. }) {
+        known.push("c:explosion");
+    }
+    known
 }
 
 fn read_series(el: &XmlElement, kind: &GroupKind) -> Series {
@@ -599,19 +733,7 @@ fn read_data_point(el: &XmlElement, kind: &GroupKind) -> DataPoint {
     );
     let bubble = matches!(kind, GroupKind::Bubble { .. });
     let pie = matches!(kind, GroupKind::Pie { .. } | GroupKind::Doughnut { .. });
-    let mut known = vec!["c:idx", "c:spPr"];
-    if bar_or_bubble {
-        known.push("c:invertIfNegative");
-    }
-    if marker_kind {
-        known.push("c:marker");
-    }
-    if bubble {
-        known.push("c:bubble3D");
-    }
-    if pie {
-        known.push("c:explosion");
-    }
+    let known = point_known(kind);
     DataPoint {
         idx: u32_of(val_int(el, "c:idx")).unwrap_or(0),
         invert_if_negative: if bar_or_bubble {
