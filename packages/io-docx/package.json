@@ -12,7 +12,8 @@
   "scripts": {
     "lint": "biome check .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "fidelity": "tsx test/roundtrip/fidelity.ts"
   },
   "dependencies": {
     "@officina/doc-model": "workspace:*",

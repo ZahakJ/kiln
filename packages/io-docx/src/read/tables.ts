@@ -32,6 +32,8 @@ interface RowRec {
   attrs: Record<string, unknown>;
   cells: CellRec[];
   width: number;
+  /** Grid column after the row's last cell (before any `w:gridAfter`). */
+  end: number;
   gridBefore: number;
 }
 
@@ -102,7 +104,7 @@ export function readTable(story: StoryReader, tbl: XmlElement, sdt: readonly Sdt
     const attrs: Record<string, unknown> = { ...rp.props };
     if (rp.revision) attrs.revision = rp.revision satisfies RowRevision;
     if (rowXml.length) attrs.xml = rowXml;
-    const row: RowRec = { attrs, cells: [], width: 0, gridBefore: rp.gridBefore };
+    const row: RowRec = { attrs, cells: [], width: 0, end: 0, gridBefore: rp.gridBefore };
     let col = rp.gridBefore;
     const touched = new Set<number>();
 
@@ -182,6 +184,7 @@ export function readTable(story: StoryReader, tbl: XmlElement, sdt: readonly Sdt
     }
     // A column with no cell in this row ends any vertical merge through it.
     for (const c of [...open.keys()]) if (!touched.has(c)) open.delete(c);
+    row.end = col;
     row.width = col + rp.gridAfter;
     maxWidth = Math.max(maxWidth, row.width);
     rows.push(row);
@@ -226,9 +229,11 @@ export function readTable(story: StoryReader, tbl: XmlElement, sdt: readonly Sdt
         ),
       );
     }
-    if (row.width < maxWidth) {
-      const missing = maxWidth - row.width;
-      cells.push(placeholder(row.width, missing));
+    // Columns after the last cell (`w:gridAfter`, or a ragged row) get a placeholder too, so every
+    // row spans the whole grid as prosemirror-tables requires.
+    if (row.end < maxWidth) {
+      const missing = maxWidth - row.end;
+      cells.push(placeholder(row.end, missing));
       const xml = [...((row.attrs.xml as string[] | undefined) ?? [])];
       if (!xml.some((x) => x.startsWith('<w:gridAfter'))) {
         // A ragged row: Word lays it out as if it had w:gridAfter, which is what the writer emits.

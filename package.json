@@ -23,7 +23,7 @@
     "test": "turbo run test",
     "e2e": "turbo run e2e --filter=@officina/e2e",
     "bench": "turbo run bench",
-    "fidelity": "turbo run fidelity",
+    "fidelity": "turbo run fidelity --log-prefix=none --",
     "verify": "turbo run lint typecheck test",
     "format": "biome format --write .",
     "licenses:check": "node tools/check-licenses.mjs",

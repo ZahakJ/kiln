@@ -181,7 +181,8 @@ function parseFonts(node: XmlElement): RunFonts | undefined {
   for (const slot of ['ascii', 'hAnsi', 'eastAsia', 'cs'] as const) {
     const name = attr(node, `w:${slot}`);
     if (name) f[slot] = name;
-    const theme = attr(node, `w:${slot}Theme`);
+    // ECMA-376 spells the complex-script theme attribute in lower case (`w:cstheme`).
+    const theme = attr(node, slot === 'cs' ? 'w:cstheme' : `w:${slot}Theme`) ?? attr(node, `w:${slot}Theme`);
     if (theme && THEME_FONTS.has(theme)) f[`${slot}Theme`] = theme as ThemeFontRef;
   }
   return Object.keys(f).length ? f : undefined;

@@ -1,5 +1,5 @@
 /**
- * @officina/io-docx — reads (and, from WP-13, writes) `.docx`/`.docm`/`.dotx`/`.dotm` files to and from
+ * @officina/io-docx — reads and writes `.docx`/`.docm`/`.dotx`/`.dotm` files to and from
  * the Scriba document model.
  */
 export const PACKAGE_NAME = '@officina/io-docx' as const;
@@ -11,3 +11,20 @@ export type { DocxWarning, DocxWarningCode, DocxWarningSeverity } from './common
 export { fragmentXml, parseFragment } from './common/xml.ts';
 export { DocxFormatError, type ReadDocxOptions, readDocx, readDocxStream } from './read/index.ts';
 export { GRID_PLACEHOLDER } from './read/tables.ts';
+export {
+  type CheckCompatibilityOptions,
+  type CompatibilityIssue,
+  type CompatibilitySeverity,
+  checkCompatibility,
+} from './write/compat.ts';
+export type { WriteIssue } from './write/context.ts';
+export {
+  commentBlocks,
+  type DocxFormat,
+  type DocxWriteModel,
+  formatOfContentType,
+  type WriteDocxOptions,
+  type WriteDocxResult,
+  writeDocx,
+  writeDocxWithReport,
+} from './write/index.ts';
