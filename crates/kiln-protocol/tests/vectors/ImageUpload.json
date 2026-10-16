@@ -1,0 +1,25 @@
+{
+  "type": "ImageUpload",
+  "format": {
+    "TYPENAME": "ImageUpload"
+  },
+  "values": [
+    {
+      "id": 3,
+      "width": 1,
+      "height": 1,
+      "data": [
+        255,
+        106,
+        38,
+        255
+      ]
+    },
+    {
+      "id": 3,
+      "width": 0,
+      "height": 0,
+      "data": []
+    }
+  ]
+}

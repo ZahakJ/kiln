@@ -166,8 +166,15 @@
           }
         ],
         "active": 2,
-        "announce": "Bold on"
+        "announce": "Bold on",
+        "caret": {
+          "block": 2,
+          "offset": 3
+        }
       }
+    },
+    {
+      "Text": "Kiln\nWrite"
     },
     {
       "Documents": [

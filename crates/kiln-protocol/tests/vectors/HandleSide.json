@@ -1,0 +1,12 @@
+{
+  "type": "HandleSide",
+  "format": {
+    "TYPENAME": "HandleSide"
+  },
+  "values": [
+    "Start",
+    "Caret",
+    "Start",
+    "End"
+  ]
+}

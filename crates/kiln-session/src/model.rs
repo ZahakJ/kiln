@@ -8,6 +8,7 @@ use kiln_protocol::{
     A11yTree, Command, DocKind, FileFormat, OpenHint, ParagraphText, Selection, StatusBar,
 };
 
+use crate::frame::FrameSource;
 use crate::undo::StateId;
 
 /// What an app command changed.
@@ -60,6 +61,16 @@ pub trait DocModel: Send + fmt::Debug {
     fn paragraphs(&self) -> Option<Vec<ParagraphText>>;
     /// The accessibility tree, with `title` as the document's accessible name.
     fn a11y(&self, title: &str) -> A11yTree;
+
+    /// The selected text as plain text (Copy, Cut), for models with text selections.
+    fn selected_text(&self) -> Option<String> {
+        None
+    }
+
+    /// The model's painter-facing side, for models that paint through the Scene (WP-54).
+    fn frame_source(&mut self) -> Option<&mut dyn FrameSource> {
+        None
+    }
 
     /// The formats the model saves to; the first is the default.
     fn save_formats(&self) -> &'static [FileFormat];

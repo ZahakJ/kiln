@@ -3,4 +3,4 @@
 /**
  * How [`WriteCommand::MoveCaret`] moves the caret.
  */
-export type CaretMotion = "Backward" | "Forward" | "WordBackward" | "WordForward" | "LineStart" | "LineEnd" | "LineUp" | "LineDown" | "DocumentStart" | "DocumentEnd";
+export type CaretMotion = "Backward" | "Forward" | "WordBackward" | "WordForward" | "LineStart" | "LineEnd" | "LineUp" | "LineDown" | "DocumentStart" | "DocumentEnd" | "ParagraphBackward" | "ParagraphForward" | "PageUp" | "PageDown";

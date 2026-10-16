@@ -10,12 +10,14 @@
 //! Natively the session runs on its own thread behind a [`SessionHandle`] (flume channel,
 //! one-shot replies); the web build drives a `Session` directly inside its Web Worker.
 //!
-//! Document apps register in [`apps`]; the `scratch` app (plain paragraphs, no layout) proves the
-//! loop until the Write engine lands.
+//! Document apps register in [`apps`]; the `scratch` app (plain paragraphs laid out on pages by
+//! `kiln-text`) proves the loop until the Write engine lands. [`frame`] turns a model's Scene into
+//! the `SceneDelta`s the painters apply.
 #![forbid(unsafe_code)]
 #![warn(missing_docs)]
 
 pub mod apps;
+pub mod frame;
 mod host;
 mod model;
 mod session;

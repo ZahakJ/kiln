@@ -1,0 +1,35 @@
+{
+  "type": "AtlasUpdate",
+  "format": {
+    "TYPENAME": "AtlasUpdate"
+  },
+  "values": [
+    {
+      "page": 1,
+      "format": "A8",
+      "width": 4,
+      "height": 4,
+      "y": 1,
+      "rows": 2,
+      "data": [
+        0,
+        1,
+        127,
+        128,
+        200,
+        254,
+        255,
+        9
+      ]
+    },
+    {
+      "page": 1,
+      "format": "A8",
+      "width": 0,
+      "height": 0,
+      "y": 0,
+      "rows": 0,
+      "data": []
+    }
+  ]
+}

@@ -46,6 +46,9 @@ pub enum SuiteCommand {
         /// The view.
         mode: ViewMode,
     },
+    /// The surface lost its painted tiles (remounted, canvas context lost): the next frame
+    /// resets the painter and resends everything visible (WP-54).
+    Repaint,
     /// Round trip with no effect; the reply carries the core and protocol versions.
     Ping,
     /// Round trip that returns its text (bridge diagnostics).
@@ -91,6 +94,10 @@ crate::command_table! {
     };
     Self::SetViewMode { .. } => {
         id: "suite.view.mode", keytip: None, group: "view",
+        tier: P0, apps: AppMask::DOCUMENTS, availability: Document,
+    };
+    Self::Repaint => {
+        id: "suite.view.repaint", keytip: None, group: "view",
         tier: P0, apps: AppMask::DOCUMENTS, availability: Document,
     };
     Self::Ping => {

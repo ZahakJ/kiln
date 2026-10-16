@@ -1,0 +1,17 @@
+{
+  "type": "Paint",
+  "format": {
+    "TYPENAME": "Paint"
+  },
+  "values": [
+    {
+      "Rgba": 4292458751
+    },
+    {
+      "Role": "Ink"
+    },
+    {
+      "Rgba": 0
+    }
+  ]
+}

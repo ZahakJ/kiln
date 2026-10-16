@@ -1,0 +1,35 @@
+{
+  "type": "Overlay",
+  "format": {
+    "TYPENAME": "Overlay"
+  },
+  "values": [
+    {
+      "hash": 0,
+      "ops": []
+    },
+    {
+      "hash": 9007199254740991,
+      "ops": [
+        {
+          "Caret": {
+            "rect": {
+              "x": 301.0,
+              "y": 200.0,
+              "w": 2.0,
+              "h": 19.0
+            },
+            "paint": {
+              "Role": "Caret"
+            },
+            "spark": true
+          }
+        }
+      ]
+    },
+    {
+      "hash": 0,
+      "ops": []
+    }
+  ]
+}

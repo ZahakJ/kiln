@@ -1,0 +1,17 @@
+{
+  "type": "ColorRole",
+  "format": {
+    "TYPENAME": "ColorRole"
+  },
+  "values": [
+    "Canvas",
+    "Guide",
+    "Canvas",
+    "Page",
+    "Ink",
+    "Selection",
+    "Caret",
+    "Composition",
+    "Squiggle"
+  ]
+}

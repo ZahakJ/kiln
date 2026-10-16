@@ -40,7 +40,24 @@ class FakeSession implements WasmSession {
   }
   setViewport(): void {}
   frame(): Uint8Array {
-    return Uint8Array.of(0xac, 0x02);
+    // An empty SceneDelta for revision 300 (see postcard.test.ts).
+    return Uint8Array.of(
+      0xac,
+      0x02,
+      0,
+      0,
+      0,
+      0x80,
+      0x3f,
+      ...new Array<number>(16).fill(0),
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+    );
   }
   a11y(): string {
     return JSON.stringify({ nodes: [], active: null, announce: null });
@@ -102,7 +119,7 @@ describe('WasmWorkerClient', () => {
     expect(seen).toEqual([{ Closed: { doc: 3 } }, { Closed: { doc: 3 } }]);
     unsubscribe();
 
-    expect(await client.frame(3)).toEqual({ revision: 300 });
+    expect(await client.frame(3)).toMatchObject({ revision: 300, reset: false, scale: 1, tiles: [] });
     expect(await client.new('Scratch')).toEqual({ kind: 'Scratch' });
     const bytes = Uint8Array.of(1, 2, 3);
     expect(

@@ -12,14 +12,21 @@ publish.workspace = true
 [dependencies]
 kiln-common.workspace = true
 kiln-protocol.workspace = true
+kiln-scene.workspace = true
+# Layout of the scratch document. The web core gets no default features (no system fonts, no
+# hyphenation dictionaries) and embeds Carlito itself (apps/scratch/fonts.rs).
+kiln-text = { path = "../kiln-text", default-features = false }
+rustc-hash.workspace = true
 unicode-segmentation.workspace = true
 
 # The session thread and its channels exist only on native targets; the web build runs the
 # session directly inside a Web Worker.
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 flume.workspace = true
+kiln-text = { path = "../kiln-text", default-features = false, features = ["bundled-fonts"] }
 
 [dev-dependencies]
+kiln-raster.workspace = true
 proptest.workspace = true
 serde_json.workspace = true
 

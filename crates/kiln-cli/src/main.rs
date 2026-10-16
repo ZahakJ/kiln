@@ -8,12 +8,15 @@
 //! it holds no engine logic yet; WP-60 (PLAN.md §11) implements it.
 #![forbid(unsafe_code)]
 
+mod render;
+
 use std::process::ExitCode;
 
 fn usage() -> String {
     format!(
-        "{}\n\nUsage: kiln-cli [--version | --help]\n\nThe convert, render, inspect, fidelity, functions and control\nsubcommands arrive with WP-60 (PLAN.md §11).",
-        kiln_common::version_line()
+        "{}\n\nUsage: kiln-cli [--version | --help]\n       {}\n\nThe convert, inspect, fidelity, functions and control subcommands and the\nrest of render arrive with WP-60 (PLAN.md §11).",
+        kiln_common::version_line(),
+        render::USAGE
     )
 }
 
@@ -22,6 +25,10 @@ fn run(args: &[String]) -> (String, bool) {
     match args.first().map(String::as_str) {
         None | Some("--version" | "-V" | "version") => (kiln_common::version_line(), true),
         Some("--help" | "-h" | "help") => (usage(), true),
+        Some("render") => match render::run(&args[1..]) {
+            Ok(text) => (text, true),
+            Err(e) => (format!("kiln-cli render: {e}"), false),
+        },
         Some(other) => (
             format!("kiln-cli: unknown command '{other}'\n\n{}", usage()),
             false,

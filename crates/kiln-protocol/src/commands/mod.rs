@@ -27,7 +27,7 @@ pub use deck::{DECK_COMMANDS, DeckCommand};
 pub use grid::{GRID_COMMANDS, GridCommand};
 pub use notes::{NOTES_COMMANDS, NotesCommand};
 pub use suite::{SUITE_COMMANDS, SuiteCommand};
-pub use write::{CaretMotion, WRITE_COMMANDS, WriteCommand};
+pub use write::{CaretMotion, SelectUnit, WRITE_COMMANDS, WriteCommand};
 
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;

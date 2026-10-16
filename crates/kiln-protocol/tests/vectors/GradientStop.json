@@ -1,0 +1,20 @@
+{
+  "type": "GradientStop",
+  "format": {
+    "TYPENAME": "GradientStop"
+  },
+  "values": [
+    {
+      "offset": 0.25,
+      "paint": {
+        "Role": "Page"
+      }
+    },
+    {
+      "offset": 0.0,
+      "paint": {
+        "Rgba": 0
+      }
+    }
+  ]
+}

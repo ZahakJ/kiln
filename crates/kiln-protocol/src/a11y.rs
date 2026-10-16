@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
 use crate::geom::Rect;
+use crate::selection::TextPos;
 
 /// ARIA role of a node.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, TS)]
@@ -66,4 +67,7 @@ pub struct A11yTree {
     pub active: Option<NodeId>,
     /// Text for the polite live region ("Bold on").
     pub announce: Option<String>,
+    /// The caret (the selection's head) in a text document (WP-54), so the mirror can place the
+    /// screen reader's caret inside `active`.
+    pub caret: Option<TextPos>,
 }

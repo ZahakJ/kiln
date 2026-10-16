@@ -1,0 +1,31 @@
+{
+  "name": "@kiln/surface",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The document surface: paints the Rust core's Scene on canvas (tile cache, glyph atlas, overlay), owns scrolling and zoom, the IME input proxy and the accessibility mirror.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@kiln/protocol": "workspace:*",
+    "react": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "jsdom": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

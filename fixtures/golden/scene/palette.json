@@ -1,0 +1,60 @@
+[
+  {
+    "name": "light",
+    "canvas": 4142917375,
+    "page": 4294967295,
+    "ink": 723260671,
+    "selection": 4292458751,
+    "caret": 827967231,
+    "composition": 723260671,
+    "squiggle": 3644658431,
+    "guide": 3451429119,
+    "spark": 4285146879,
+    "selection_blend": "Darken",
+    "page_shadow": [
+      {
+        "dx": 0.0,
+        "dy": 1.0,
+        "blur": 2.0,
+        "spread": 0.0,
+        "rgba": 1008601620
+      },
+      {
+        "dx": 0.0,
+        "dy": 12.0,
+        "blur": 40.0,
+        "spread": 0.0,
+        "rgba": 1008601626
+      }
+    ]
+  },
+  {
+    "name": "dark",
+    "canvas": 386993919,
+    "page": 572134911,
+    "ink": 4125875711,
+    "selection": 1512707327,
+    "caret": 2544825599,
+    "composition": 4125875711,
+    "squiggle": 4287265535,
+    "guide": 1262104575,
+    "spark": 4285146879,
+    "selection_blend": "Lighten",
+    "page_shadow": [
+      {
+        "dx": 0.0,
+        "dy": 30.0,
+        "blur": 80.0,
+        "spread": -20.0,
+        "rgba": 4285146680
+      },
+      {
+        "dx": 0.0,
+        "dy": 2.0,
+        "blur": 10.0,
+        "spread": 0.0,
+        "rgba": 128
+      }
+    ]
+  }
+]

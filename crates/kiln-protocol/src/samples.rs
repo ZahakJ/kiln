@@ -12,7 +12,8 @@ use crate::OpenHint;
 use crate::a11y::{A11yNode, A11yRole, A11yTree};
 use crate::app::{App, DocKind, FileFormat};
 use crate::commands::{
-    Availability, CaretMotion, Command, CommandInfo, SuiteCommand, Tier, WriteCommand, catalog,
+    Availability, CaretMotion, Command, CommandInfo, SelectUnit, SuiteCommand, Tier, WriteCommand,
+    catalog,
 };
 use crate::error::ErrorInfo;
 use crate::event::{Event, Progress, RecoveryEntry};
@@ -20,7 +21,6 @@ use crate::exec::{CoreInfo, ExecResult, ExecValue, Outcome};
 use crate::geom::{Point, Rect, Size};
 use crate::host::{FileFilter, HostOp, HostReply, HostRequest, RecentFile, RequestId};
 use crate::query::{ParagraphText, Query, QueryResult};
-use crate::scene::SceneDelta;
 use crate::selection::{
     Caret, CellAddr, CellRange, Compass, Handle, HandleKind, SelKind, Selection, TextPos,
 };
@@ -81,6 +81,27 @@ pub fn commands() -> Vec<Command> {
             extend: false,
         }
         .into(),
+        SuiteCommand::Repaint.into(),
+        WriteCommand::DeleteForward.into(),
+        WriteCommand::DeleteWordBackward.into(),
+        WriteCommand::DeleteWordForward.into(),
+        WriteCommand::SelectAll.into(),
+        WriteCommand::SelectAt {
+            point: Point::new(412.5, -3.25),
+            extend: true,
+            unit: SelectUnit::Word,
+        }
+        .into(),
+        WriteCommand::SetComposition {
+            text: "にほんご".into(),
+            caret: 2,
+        }
+        .into(),
+        WriteCommand::CommitComposition {
+            text: "日本語".into(),
+        }
+        .into(),
+        WriteCommand::CancelComposition.into(),
     ]
 }
 
@@ -184,6 +205,7 @@ fn a11y() -> A11yTree {
         ],
         active: Some(NodeId(2)),
         announce: Some("Bold on".into()),
+        caret: Some(text_pos(2, 3)),
     }
 }
 
@@ -250,7 +272,8 @@ samples! {
     Tier => vec![Tier::P0, Tier::P1, Tier::P2];
     Availability => vec![Availability::Always, Availability::Document, Availability::Editable,
         Availability::CanUndo, Availability::CanRedo, Availability::Selection];
-    CaretMotion => vec![CaretMotion::Backward, CaretMotion::DocumentEnd];
+    CaretMotion => vec![CaretMotion::Backward, CaretMotion::DocumentEnd, CaretMotion::PageDown];
+    SelectUnit => vec![SelectUnit::Char, SelectUnit::Paragraph];
     ViewMode => vec![ViewMode::PrintLayout, ViewMode::ReadingView];
     Viewport => vec![Viewport::default(), Viewport {
         width_px: 1440.0, height_px: 900.0, scroll: Point::new(0.0, 12_345.5),
@@ -280,7 +303,7 @@ samples! {
     StatusBar => vec![StatusBar::default(), status()];
     DocSummary => vec![summary()];
     Query => vec![Query::Documents, Query::Summary, Query::Paragraphs, Query::Selection,
-        Query::Status, Query::A11y];
+        Query::Status, Query::A11y, Query::SelectedText];
     ParagraphText => vec![ParagraphText { id: NodeId(3), text: "Ünïcödé ✓".into() }];
     QueryResult => vec![
         QueryResult::Documents(vec![summary()]),
@@ -292,6 +315,7 @@ samples! {
         QueryResult::Selection(selection()),
         QueryResult::Status(status()),
         QueryResult::A11y(a11y()),
+        QueryResult::Text("Kiln\nWrite".into()),
     ];
     ErrorKind => vec![ErrorKind::NotFound, ErrorKind::Internal];
     ErrorInfo => vec![error()];
@@ -335,7 +359,6 @@ samples! {
     A11yRole => vec![A11yRole::Document, A11yRole::TextBox];
     A11yNode => a11y().nodes;
     A11yTree => vec![A11yTree::default(), a11y()];
-    SceneDelta => vec![SceneDelta::default(), SceneDelta { revision: 1 << 40 }];
     Progress => vec![Progress { doc: Some(DocId(1)), task: "progress.open".into(), done: 3, total: 0 }];
     RecoveryEntry => vec![RecoveryEntry { title: "Document1".into(), path: None, saved_at_ms: 1_792_000_000_000 }];
     Event => vec![
@@ -343,7 +366,7 @@ samples! {
         Event::Changed { summary: summary(), selection: selection(), status: status() },
         Event::Saved { summary: summary() },
         Event::Closed { doc: DocId(7) },
-        Event::Frame { doc: DocId(7), delta: SceneDelta { revision: 42 } },
+        Event::Frame { doc: DocId(7), delta: crate::scene::samples::small_delta() },
         Event::Progress(Progress { doc: None, task: "progress.save".into(), done: 1, total: 2 }),
         Event::Recovery { entries: RecoveryEntry::samples() },
         Event::Collab { doc: DocId(7), peers: 2, connected: true },

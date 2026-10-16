@@ -10,6 +10,7 @@ use kiln_protocol::{
     QueryResult, RequestId, SceneDelta, StatusBar, SuiteCommand, ViewMode, Viewport,
 };
 
+use crate::frame::FrameState;
 use crate::host::Host;
 use crate::model::{AppFactory, Change, DocModel};
 use crate::undo::StateId;
@@ -29,8 +30,8 @@ struct Document {
     revision: u64,
     saved_state: StateId,
     viewport: Viewport,
-    /// The revision of the last frame handed out.
-    framed: Option<u64>,
+    /// What the document's painter holds (WP-54).
+    frames: FrameState,
     model: Box<dyn DocModel>,
 }
 
@@ -176,7 +177,7 @@ impl Session {
             revision: 0,
             saved_state: 0,
             viewport: Viewport::default(),
-            framed: None,
+            frames: FrameState::new(),
             model,
         }))
     }
@@ -214,7 +215,7 @@ impl Session {
             revision: 0,
             saved_state: 0,
             viewport: Viewport::default(),
-            framed: None,
+            frames: FrameState::new(),
             model,
         }))
     }
@@ -389,6 +390,15 @@ impl Session {
                 Outcome::Unchanged,
                 ExecValue::Echo(text),
             )),
+            SuiteCommand::Repaint => {
+                let id = require(doc)?;
+                self.doc_mut(id)?.frames.reset();
+                Ok(ExecResult {
+                    outcome: Outcome::Applied,
+                    summary: Some(self.summary(id)?),
+                    value: ExecValue::None,
+                })
+            }
             SuiteCommand::New { kind } => {
                 let summary = self.new_document(kind)?;
                 Ok(ExecResult {
@@ -743,6 +753,7 @@ impl Session {
             Query::Selection => QueryResult::Selection(d.model.selection()),
             Query::Status => QueryResult::Status(Self::status_of(d)),
             Query::A11y => QueryResult::A11y(d.model.a11y(&d.title)),
+            Query::SelectedText => QueryResult::Text(d.model.selected_text().unwrap_or_default()),
         })
     }
 
@@ -773,18 +784,19 @@ impl Session {
         Ok(())
     }
 
-    /// The next frame of a document. Until the Scene exists (WP-54) the delta carries only the
-    /// revision it was produced for.
+    /// The next frame of a document for its current viewport: the tiles, atlas pages and overlay
+    /// its painter lacks (see [`crate::frame`]). Documents that do not paint yet get frames that
+    /// carry only the revision.
     ///
     /// # Errors
     ///
     /// `NotFound` for an unknown document.
     pub fn frame(&mut self, doc: DocId) -> Result<SceneDelta> {
         let d = self.doc_mut(doc)?;
-        d.framed = Some(d.revision);
-        Ok(SceneDelta {
-            revision: d.revision,
-        })
+        let viewport = d.viewport;
+        let revision = d.revision;
+        d.frames
+            .produce(d.model.frame_source(), &viewport, revision)
     }
 
     /// The accessibility tree of a document.

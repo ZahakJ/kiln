@@ -35,3 +35,39 @@ package reviews each entry and keeps, adapts or reverts the change in its own co
 - `apps/web/src/main.tsx`: a hash switch renders the temporary bridge pages (`#/frame`,
   `#/scratch`, from `apps/web/src/routes/frame/`, owned by WP-52) and otherwise the Hub. WP-58
   replaces this with its router and may drop the routes once its chrome talks to the core.
+
+## WP-54 → owners of shared files (Scene, painters, input proxy)
+
+WP-54 had to touch these files outside its owned paths; every change is additive:
+
+- `crates/kiln-protocol` (WP-52; Write commands later WP-63+): `commands/write.rs` appends
+  `CaretMotion::{ParagraphBackward, ParagraphForward, PageUp, PageDown}`, `SelectUnit` and
+  `WriteCommand::{DeleteForward, DeleteWordBackward, DeleteWordForward, SelectAll, SelectAt,
+  SetComposition, CommitComposition, CancelComposition}` with their table rows (`write.edit.*`,
+  `write.caret.select_all`/`select_at`, `write.ime.*`); `commands/suite.rs` appends
+  `SuiteCommand::Repaint` (`suite.view.repaint`); `query.rs` appends `Query::SelectedText` /
+  `QueryResult::Text`; `a11y.rs` adds `A11yTree::caret`; `commands/mod.rs` and `lib.rs` re-export
+  `SelectUnit`; `samples.rs` and `schema.rs` take the scene types' samples from `scene.rs` (one call in
+  `visit_all`); `Cargo.toml` depends on `kiln-scene`. Generated files regenerated with
+  `cargo xtask protocol`.
+- `crates/kiln-session` (WP-52): `model.rs` gains two default methods on `DocModel`
+  (`selected_text`, `frame_source`); `session.rs` keeps a `frame::FrameState` per document instead of
+  the last framed revision, routes `frame()` through it, handles `Repaint` and answers `SelectedText`;
+  `lib.rs` declares `pub mod frame`; `Cargo.toml` adds `kiln-scene`, `kiln-text` (default features off;
+  bundled fonts natively) and `kiln-raster` (dev).
+- `crates/kiln-cli` (WP-60): `Cargo.toml`, `main.rs` (the `render` dispatch and usage line) and the new
+  `src/render.rs` for `render --scratch` only; WP-60 owns the rest of `render` and may restructure.
+- `packages/protocol` (WP-52): `postcard.ts` decodes 16/32-bit varints with number arithmetic (frames
+  carry tens of thousands of glyph integers; BigInt made decoding several times slower);
+  `postcard.test.ts` and `wasm-worker-client.test.ts` use the new `SceneDelta` shape.
+- `apps/web/src/main.tsx` (WP-58): one line routes `#/playground` to `routes/playground`.
+- `e2e/package.json`: `@axe-core/playwright` and `pixelmatch` (catalog versions); the new
+  `e2e/specs/surface-helpers.ts` holds the helpers shared by `surface.spec.ts` and
+  `painter-parity.spec.ts`.
+- For the Write engine (WP-63+): implement `FrameSource` on the Write model the way
+  `apps/scratch/layout.rs` does (tile slots versioned by their lines, tiles built lazily for the send
+  region, `GlyphCache::push_run` for glyphs); one painter per document view is assumed — split views need
+  a view id in `frame()`.
+- For WP-94 (web fonts): the web core embeds Carlito Regular only (`apps/scratch/fonts.rs`); CJK and
+  Arabic need fonts loaded at run time with `FontStore::add_font_data`.
+

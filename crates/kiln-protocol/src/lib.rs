@@ -36,7 +36,7 @@ pub use a11y::{A11yNode, A11yRole, A11yTree};
 pub use app::{App, AppMask, DocKind, FileFormat};
 pub use commands::{
     Availability, CaretMotion, Command, CommandInfo, CommandMeta, DeckCommand, GridCommand,
-    NotesCommand, SuiteCommand, Tier, WriteCommand, catalog, meta_by_id,
+    NotesCommand, SelectUnit, SuiteCommand, Tier, WriteCommand, catalog, meta_by_id,
 };
 pub use error::ErrorInfo;
 pub use event::{Event, Progress, RecoveryEntry};

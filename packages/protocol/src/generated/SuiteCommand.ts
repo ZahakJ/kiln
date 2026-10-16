@@ -30,7 +30,7 @@ zoom: number, } } | { "SetViewMode": {
 /**
  * The view.
  */
-mode: ViewMode, } } | "Ping" | { "Echo": { 
+mode: ViewMode, } } | "Repaint" | "Ping" | { "Echo": { 
 /**
  * Any text.
  */

@@ -11,6 +11,13 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+kiln-scene.workspace = true
+tiny-skia = { workspace = true, default-features = false, features = ["std", "simd"] }
+png.workspace = true
+rustc-hash.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
 
 [lints]
 workspace = true

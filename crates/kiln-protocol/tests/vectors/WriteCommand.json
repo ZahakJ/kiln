@@ -25,6 +25,32 @@
         "extend": false
       }
     },
+    "DeleteForward",
+    "DeleteWordBackward",
+    "DeleteWordForward",
+    "SelectAll",
+    {
+      "SelectAt": {
+        "point": {
+          "x": 412.5,
+          "y": -3.25
+        },
+        "extend": true,
+        "unit": "Word"
+      }
+    },
+    {
+      "SetComposition": {
+        "text": "にほんご",
+        "caret": 2
+      }
+    },
+    {
+      "CommitComposition": {
+        "text": "日本語"
+      }
+    },
+    "CancelComposition",
     {
       "InsertText": {
         "text": ""

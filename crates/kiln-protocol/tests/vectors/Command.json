@@ -97,6 +97,51 @@
           "extend": false
         }
       }
+    },
+    {
+      "Suite": "Repaint"
+    },
+    {
+      "Write": "DeleteForward"
+    },
+    {
+      "Write": "DeleteWordBackward"
+    },
+    {
+      "Write": "DeleteWordForward"
+    },
+    {
+      "Write": "SelectAll"
+    },
+    {
+      "Write": {
+        "SelectAt": {
+          "point": {
+            "x": 412.5,
+            "y": -3.25
+          },
+          "extend": true,
+          "unit": "Word"
+        }
+      }
+    },
+    {
+      "Write": {
+        "SetComposition": {
+          "text": "にほんご",
+          "caret": 2
+        }
+      }
+    },
+    {
+      "Write": {
+        "CommitComposition": {
+          "text": "日本語"
+        }
+      }
+    },
+    {
+      "Write": "CancelComposition"
     }
   ]
 }

@@ -50,7 +50,7 @@ pub fn visit_all(v: &mut impl Visitor) {
     // Contains `GridCommand`, `DeckCommand` and `NotesCommand`, which have no variants yet.
     v.visit::<Command>("Command", false);
     visit_types!(v;
-        SuiteCommand, WriteCommand, CaretMotion, CommandInfo, Tier, Availability,
+        SuiteCommand, WriteCommand, CaretMotion, SelectUnit, CommandInfo, Tier, Availability,
         App, DocKind, FileFormat, OpenHint,
         geom::Point, geom::Size, geom::Rect,
         ViewMode, Viewport,
@@ -61,9 +61,11 @@ pub fn visit_all(v: &mut impl Visitor) {
         RequestId, FileFilter, RecentFile, HostOp, HostRequest, HostReply,
         Outcome, CoreInfo, ExecValue, ExecResult,
         A11yRole, A11yNode, A11yTree,
-        SceneDelta, Progress, RecoveryEntry, Event,
+        Progress, RecoveryEntry, Event,
         DocId, NodeId,
     );
+    // WP-54: the display list (kiln-scene), including SceneDelta.
+    crate::scene::samples::visit(v);
 }
 
 /// The ts-rs configuration: 64-bit integers are JavaScript numbers (ids and revisions stay below

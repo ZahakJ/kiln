@@ -25,6 +25,9 @@ pub enum Query {
     Status,
     /// Document: the accessibility tree.
     A11y,
+    /// Document: the selected text as plain text (paragraphs joined by `\n`), for Copy and Cut
+    /// (WP-54).
+    SelectedText,
 }
 
 /// One paragraph as plain text.
@@ -51,6 +54,8 @@ pub enum QueryResult {
     Status(StatusBar),
     /// The accessibility tree.
     A11y(A11yTree),
+    /// Plain text.
+    Text(String),
 }
 
 impl Query {

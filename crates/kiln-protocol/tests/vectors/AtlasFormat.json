@@ -1,0 +1,11 @@
+{
+  "type": "AtlasFormat",
+  "format": {
+    "TYPENAME": "AtlasFormat"
+  },
+  "values": [
+    "A8",
+    "Rgba8",
+    "A8"
+  ]
+}

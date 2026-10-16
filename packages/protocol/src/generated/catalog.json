@@ -131,6 +131,20 @@
       "availability": "Document"
     },
     {
+      "id": "suite.view.repaint",
+      "label_key": "cmd.suite.view.repaint",
+      "keytip": null,
+      "group": "view",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Grid",
+        "Deck",
+        "Notes"
+      ],
+      "availability": "Document"
+    },
+    {
       "id": "suite.dev.ping",
       "label_key": "cmd.suite.dev.ping",
       "keytip": null,
@@ -207,6 +221,102 @@
         "Notes"
       ],
       "availability": "Document"
+    },
+    {
+      "id": "write.edit.delete_forward",
+      "label_key": "cmd.write.edit.delete_forward",
+      "keytip": null,
+      "group": "edit",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.edit.delete_word_backward",
+      "label_key": "cmd.write.edit.delete_word_backward",
+      "keytip": null,
+      "group": "edit",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.edit.delete_word_forward",
+      "label_key": "cmd.write.edit.delete_word_forward",
+      "keytip": null,
+      "group": "edit",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.caret.select_all",
+      "label_key": "cmd.write.caret.select_all",
+      "keytip": null,
+      "group": "caret",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "write.caret.select_at",
+      "label_key": "cmd.write.caret.select_at",
+      "keytip": null,
+      "group": "caret",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "write.ime.set_composition",
+      "label_key": "cmd.write.ime.set_composition",
+      "keytip": null,
+      "group": "ime",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.ime.commit_composition",
+      "label_key": "cmd.write.ime.commit_composition",
+      "keytip": null,
+      "group": "ime",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.ime.cancel_composition",
+      "label_key": "cmd.write.ime.cancel_composition",
+      "keytip": null,
+      "group": "ime",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
     }
   ]
 }

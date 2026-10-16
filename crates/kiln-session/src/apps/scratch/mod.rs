@@ -8,18 +8,37 @@
 //!
 //! Every change is an [`Edit`] that replaces a contiguous run of paragraphs, so undo and redo
 //! restore paragraphs together with their node ids.
+//!
+//! Once a surface asks for a frame (or a click needs hit testing) the document gets a real layout
+//! ([`layout::DocLayout`]: `kiln-text` paragraphs on Letter pages) and paints through the Scene:
+//! caret and selection geometry, layout-aware Home/End/Up/Down/Page Up/Page Down, word and
+//! paragraph selection by clicks, IME composition shown underlined, and an accessibility tree of
+//! the visible pages. Documents that are never painted (the control channel, tests) never pay for
+//! layout, and their line motions fall back to paragraph semantics.
 
+pub(crate) mod fonts;
+mod layout;
 mod text;
 
+#[cfg(test)]
+mod golden_tests;
+
 use kiln_common::{KilnError, NodeId, NodeIdGen, Result};
+use kiln_protocol::geom::Rect;
 use kiln_protocol::{
-    A11yNode, A11yRole, A11yTree, CaretMotion, Command, DocKind, FileFormat, OpenHint,
-    ParagraphText, Selection, StatusBar, TextPos, WriteCommand,
+    A11yNode, A11yRole, A11yTree, Caret, CaretMotion, Command, DocKind, FileFormat, Handle,
+    HandleKind, OpenHint, ParagraphText, SelectUnit, Selection, StatusBar, TextPos, WriteCommand,
 };
+use kiln_scene::{AtlasUpdate, Bounds, ColorRole, DrawOp, Paint, Scene};
 use unicode_segmentation::UnicodeSegmentation;
 
+use self::layout::{At, DocLayout};
+use crate::frame::{FrameRequest, FrameSource};
 use crate::model::{AppFactory, Change, DocModel};
 use crate::undo::{StateId, UndoEntry, UndoStack};
+
+/// Paragraphs Page Up/Page Down move without a layout.
+const PAGE_PARAGRAPHS: usize = 10;
 
 /// The scratch app (registered in `apps/mod.rs`).
 #[derive(Debug, Clone, Copy, Default)]
@@ -148,13 +167,57 @@ impl UndoEntry for Edit {
     }
 }
 
-/// The scratch document model.
+/// An IME composition in progress: its text lives in the paragraph (so it lays out and paints
+/// like any text) but is not part of the history until it is committed.
 #[derive(Debug, Clone)]
+struct Composition {
+    /// Paragraph index.
+    para: usize,
+    /// Byte offset where the composition starts.
+    start: usize,
+    /// Byte length of the current composition string.
+    len: usize,
+    /// The paragraph's text before the composition began.
+    original: String,
+}
+
+/// The unit and original range of a word or paragraph selection, so that dragging (or
+/// Shift+click) extends it by the same unit.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+struct UnitAnchor {
+    unit: SelectUnit,
+    start: Pos,
+    end: Pos,
+}
+
+/// The scratch document model.
+#[derive(Debug)]
 pub struct ScratchDoc {
     paras: Vec<Para>,
     ids: NodeIdGen,
     sel: Sel,
     history: UndoStack<Edit>,
+    layout: Option<Box<DocLayout>>,
+    composition: Option<Composition>,
+    /// Remembered x of consecutive Up/Down/Page moves (Word keeps the column).
+    goal_x: Option<f32>,
+    unit_anchor: Option<UnitAnchor>,
+}
+
+impl Clone for ScratchDoc {
+    /// Clones the content and history; the copy lays itself out again when it is painted.
+    fn clone(&self) -> Self {
+        Self {
+            paras: self.paras.clone(),
+            ids: self.ids.clone(),
+            sel: self.sel,
+            history: self.history.clone(),
+            layout: None,
+            composition: self.composition.clone(),
+            goal_x: self.goal_x,
+            unit_anchor: self.unit_anchor,
+        }
+    }
 }
 
 impl Default for ScratchDoc {
@@ -186,6 +249,10 @@ impl ScratchDoc {
             ids,
             sel: Sel::caret(Pos { para: 0, byte: 0 }),
             history: UndoStack::default(),
+            layout: None,
+            composition: None,
+            goal_x: None,
+            unit_anchor: None,
         }
     }
 
@@ -361,6 +428,36 @@ impl ScratchDoc {
             }
             CaretMotion::DocumentStart => Pos { para: 0, byte: 0 },
             CaretMotion::DocumentEnd => self.doc_end(),
+            CaretMotion::ParagraphBackward => match (head.byte, head.para) {
+                (0, 0) => head,
+                (0, p) => Pos {
+                    para: p - 1,
+                    byte: 0,
+                },
+                (_, p) => Pos { para: p, byte: 0 },
+            },
+            CaretMotion::ParagraphForward => {
+                if head.para + 1 < self.paras.len() {
+                    Pos {
+                        para: head.para + 1,
+                        byte: 0,
+                    }
+                } else {
+                    self.doc_end()
+                }
+            }
+            CaretMotion::PageUp => Pos {
+                para: head.para.saturating_sub(PAGE_PARAGRAPHS),
+                byte: 0,
+            },
+            CaretMotion::PageDown => {
+                let p = head.para + PAGE_PARAGRAPHS;
+                if p < self.paras.len() {
+                    Pos { para: p, byte: 0 }
+                } else {
+                    self.doc_end()
+                }
+            }
         }
     }
 
@@ -434,6 +531,378 @@ impl ScratchDoc {
     }
 }
 
+impl ScratchDoc {
+    // ----- layout ------------------------------------------------------------------------------
+
+    fn at(p: Pos) -> At {
+        At {
+            para: p.para,
+            byte: p.byte,
+        }
+    }
+
+    fn pos(&self, a: At) -> Pos {
+        let para = a.para.min(self.paras.len().saturating_sub(1));
+        let text = &self.paras[para].text;
+        Pos {
+            para,
+            byte: text::grapheme_floor(text, a.byte.min(text.len())),
+        }
+    }
+
+    /// Lays the document out if it has no layout yet.
+    fn ensure_layout(&mut self) -> &mut DocLayout {
+        let paras = &self.paras;
+        self.layout.get_or_insert_with(|| {
+            Box::new(DocLayout::new(
+                paras.iter().map(|p| (p.id, p.text.as_str())),
+            ))
+        })
+    }
+
+    /// Brings an existing layout up to date after a change of the text.
+    fn relayout(&mut self) {
+        if let Some(l) = &mut self.layout {
+            l.update(self.paras.iter().map(|p| (p.id, p.text.as_str())));
+        }
+    }
+
+    /// The document x of the caret, for vertical motion.
+    fn caret_x(&self) -> Option<f32> {
+        let l = self.layout.as_ref()?;
+        let c = l.caret(Self::at(self.sel.head));
+        Some(c.bar.x + c.bar.w / 2.0)
+    }
+
+    // ----- deletion ----------------------------------------------------------------------------
+
+    fn delete_forward(&mut self) -> Change {
+        if !self.sel.is_empty() {
+            let range = self.sel.ordered();
+            return self.replace(range, "", EditKind::Delete);
+        }
+        let head = self.sel.head;
+        let text = &self.paras[head.para].text;
+        let to = if head.byte < text.len() {
+            Pos {
+                para: head.para,
+                byte: text::next_grapheme(text, head.byte),
+            }
+        } else if head.para + 1 < self.paras.len() {
+            Pos {
+                para: head.para + 1,
+                byte: 0,
+            }
+        } else {
+            return Change::None;
+        };
+        self.replace((head, to), "", EditKind::Delete)
+    }
+
+    fn delete_word(&mut self, forward: bool) -> Change {
+        if !self.sel.is_empty() {
+            let range = self.sel.ordered();
+            return self.replace(range, "", EditKind::Delete);
+        }
+        let head = self.sel.head;
+        let text = &self.paras[head.para].text;
+        let other = if forward {
+            if head.byte < text.len() {
+                Pos {
+                    para: head.para,
+                    byte: text::next_word_start(text, head.byte),
+                }
+            } else if head.para + 1 < self.paras.len() {
+                Pos {
+                    para: head.para + 1,
+                    byte: 0,
+                }
+            } else {
+                return Change::None;
+            }
+        } else if head.byte > 0 {
+            Pos {
+                para: head.para,
+                byte: text::prev_word_start(text, head.byte),
+            }
+        } else if head.para > 0 {
+            self.end_of(head.para - 1)
+        } else {
+            return Change::None;
+        };
+        let range = if forward {
+            (head, other)
+        } else {
+            (other, head)
+        };
+        self.replace(range, "", EditKind::Delete)
+    }
+
+    // ----- selection by pointer --------------------------------------------------------------
+
+    fn unit_range(&self, p: Pos, unit: SelectUnit) -> (Pos, Pos) {
+        match unit {
+            SelectUnit::Char => (p, p),
+            SelectUnit::Word => {
+                let r = self
+                    .layout
+                    .as_ref()
+                    .map_or(p.byte..p.byte, |l| l.word_at(Self::at(p)));
+                // Like Word, a double-clicked word takes its trailing spaces with it.
+                let text = &self.paras[p.para].text;
+                let word = text.get(r.clone()).unwrap_or("");
+                let end = if word.chars().any(|c| !c.is_whitespace()) {
+                    let rest = text.get(r.end..).unwrap_or("");
+                    r.end + (rest.len() - rest.trim_start_matches(' ').len())
+                } else {
+                    r.end
+                };
+                (
+                    Pos {
+                        para: p.para,
+                        byte: r.start,
+                    },
+                    Pos {
+                        para: p.para,
+                        byte: end,
+                    },
+                )
+            }
+            SelectUnit::Paragraph => (
+                Pos {
+                    para: p.para,
+                    byte: 0,
+                },
+                self.end_of(p.para),
+            ),
+        }
+    }
+
+    fn select_at(&mut self, x: f32, y: f32, extend: bool, unit: SelectUnit) -> Result<Change> {
+        let at = self
+            .ensure_layout()
+            .hit_test(x, y)
+            .ok_or_else(|| KilnError::InvalidInput(format!("no text position at ({x}, {y})")))?;
+        let p = self.pos(at);
+        let anchor = self.unit_anchor.filter(|a| extend && a.unit == unit);
+        let new = match (anchor, unit) {
+            (Some(a), _) => {
+                let (s, e) = self.unit_range(p, unit);
+                if s < a.start {
+                    Sel {
+                        anchor: a.end,
+                        head: s,
+                    }
+                } else {
+                    Sel {
+                        anchor: a.start,
+                        head: e.max(a.end),
+                    }
+                }
+            }
+            (None, SelectUnit::Char) => {
+                self.unit_anchor = None;
+                if extend {
+                    Sel {
+                        anchor: self.sel.anchor,
+                        head: p,
+                    }
+                } else {
+                    Sel::caret(p)
+                }
+            }
+            (None, _) => {
+                let (s, e) = self.unit_range(p, unit);
+                self.unit_anchor = Some(UnitAnchor {
+                    unit,
+                    start: s,
+                    end: e,
+                });
+                Sel { anchor: s, head: e }
+            }
+        };
+        if new == self.sel {
+            Ok(Change::None)
+        } else {
+            self.sel = new;
+            Ok(Change::Selection)
+        }
+    }
+
+    // ----- IME composition ---------------------------------------------------------------------
+
+    fn set_composition(&mut self, text: &str, caret: u32) -> Change {
+        let text: String = text.chars().filter(|c| !matches!(c, '\n' | '\r')).collect();
+        let mut changed = Change::None;
+        if self.composition.is_none() {
+            if !self.sel.is_empty() {
+                let range = self.sel.ordered();
+                changed = self.replace(range, "", EditKind::Delete);
+            }
+            let head = self.sel.head;
+            self.composition = Some(Composition {
+                para: head.para,
+                start: head.byte,
+                len: 0,
+                original: self.paras[head.para].text.clone(),
+            });
+        }
+        let Some(c) = &mut self.composition else {
+            return changed;
+        };
+        let para = &mut self.paras[c.para].text;
+        let end = (c.start + c.len).min(para.len());
+        para.replace_range(c.start..end, &text);
+        c.len = text.len();
+        let caret_byte = text
+            .char_indices()
+            .nth(usize::try_from(caret).unwrap_or(usize::MAX))
+            .map_or(text.len(), |(b, _)| b);
+        self.sel = Sel::caret(Pos {
+            para: c.para,
+            byte: c.start + caret_byte,
+        });
+        Change::Content
+    }
+
+    /// Removes the composition string, restoring the paragraph and putting the caret where the
+    /// composition started.
+    fn drop_composition(&mut self) -> bool {
+        let Some(c) = self.composition.take() else {
+            return false;
+        };
+        if let Some(p) = self.paras.get_mut(c.para) {
+            p.text = c.original;
+        }
+        self.sel = Sel::caret(Pos {
+            para: c.para,
+            byte: c.start,
+        });
+        true
+    }
+
+    fn commit_composition(&mut self, text: &str) -> Change {
+        let had = self.drop_composition();
+        match self.insert_text(text) {
+            Change::None if had => Change::Content,
+            other => other,
+        }
+    }
+
+    /// Commits a composition that another command interrupts (a click, a shortcut, Undo).
+    fn finish_composition(&mut self) -> bool {
+        let Some(c) = &self.composition else {
+            return false;
+        };
+        let current = self.paras[c.para].text[c.start..c.start + c.len].to_owned();
+        self.commit_composition(&current);
+        true
+    }
+
+    // ----- motions with layout -----------------------------------------------------------------
+
+    fn layout_motion(&mut self, motion: CaretMotion) -> Option<Pos> {
+        let head = Self::at(self.sel.head);
+        let goal = self.goal_x.or_else(|| self.caret_x());
+        let l = self.layout.as_ref()?;
+        let at = match motion {
+            CaretMotion::LineStart => At {
+                para: head.para,
+                byte: l.line_bounds(head).0,
+            },
+            CaretMotion::LineEnd => At {
+                para: head.para,
+                byte: l.line_bounds(head).1,
+            },
+            CaretMotion::LineUp | CaretMotion::LineDown => {
+                let down = motion == CaretMotion::LineDown;
+                l.vertical(head, goal?, down).unwrap_or(if down {
+                    At {
+                        para: self.paras.len() - 1,
+                        byte: self.paras[self.paras.len() - 1].text.len(),
+                    }
+                } else {
+                    At { para: 0, byte: 0 }
+                })
+            }
+            CaretMotion::PageUp | CaretMotion::PageDown => {
+                let h = l.request().map_or(800.0, |r| r.visible.h);
+                let dy = if motion == CaretMotion::PageDown {
+                    h
+                } else {
+                    -h
+                };
+                l.page_move(head, goal?, dy)?
+            }
+            _ => return None,
+        };
+        Some(self.pos(at))
+    }
+
+    // ----- painting ------------------------------------------------------------------------------
+
+    fn overlay(&self) -> Vec<DrawOp> {
+        let Some(l) = &self.layout else {
+            return Vec::new();
+        };
+        let (s, e) = self.sel.ordered();
+        let mut ops = Vec::new();
+        if s != e {
+            ops.push(DrawOp::SelectionRects {
+                rects: l.selection_rects(Self::at(s), Self::at(e)),
+                paint: Paint::Role(ColorRole::Selection),
+            });
+        }
+        if let Some(c) = &self.composition {
+            ops.extend(l.composition_underlines(c.para, c.start..c.start + c.len));
+        }
+        if s == e {
+            ops.push(DrawOp::Caret {
+                rect: l.caret(Self::at(self.sel.head)).bar,
+                paint: Paint::Role(ColorRole::Caret),
+                spark: true,
+            });
+        }
+        ops.extend(l.handles(Self::at(s), Self::at(e)));
+        ops
+    }
+}
+
+fn rect(b: Bounds) -> Rect {
+    Rect::new(b.x, b.y, b.w, b.h)
+}
+
+impl FrameSource for ScratchDoc {
+    fn prepare(&mut self, request: &FrameRequest) -> Result<()> {
+        self.ensure_layout();
+        let overlay = self.overlay();
+        if let Some(l) = &mut self.layout {
+            l.prepare(request, overlay);
+        }
+        Ok(())
+    }
+
+    fn scene(&self) -> &Scene {
+        static EMPTY: std::sync::OnceLock<Scene> = std::sync::OnceLock::new();
+        match &self.layout {
+            Some(l) => l.scene(),
+            None => {
+                EMPTY.get_or_init(|| Scene::new(1.0, Bounds::ZERO, Paint::Role(ColorRole::Canvas)))
+            }
+        }
+    }
+
+    fn atlas_updates(&mut self, all: bool) -> Vec<AtlasUpdate> {
+        self.layout
+            .as_mut()
+            .map_or_else(Vec::new, |l| l.atlas_updates(all))
+    }
+
+    fn extent(&self) -> Bounds {
+        self.layout.as_ref().map_or(Bounds::ZERO, |l| l.extent())
+    }
+}
+
 impl DocModel for ScratchDoc {
     fn kind(&self) -> DocKind {
         DocKind::Scratch
@@ -446,35 +915,108 @@ impl DocModel for ScratchDoc {
                 command.id()
             )));
         };
-        Ok(match cmd {
+        let ime = matches!(
+            cmd,
+            WriteCommand::SetComposition { .. }
+                | WriteCommand::CommitComposition { .. }
+                | WriteCommand::CancelComposition
+        );
+        let mut committed = false;
+        if !ime {
+            committed = self.finish_composition();
+        }
+        let vertical = matches!(
+            cmd,
+            WriteCommand::MoveCaret {
+                motion: CaretMotion::LineUp
+                    | CaretMotion::LineDown
+                    | CaretMotion::PageUp
+                    | CaretMotion::PageDown,
+                ..
+            }
+        );
+        if vertical && self.goal_x.is_none() {
+            self.goal_x = self.caret_x();
+        } else if !vertical {
+            self.goal_x = None;
+        }
+        if !matches!(cmd, WriteCommand::SelectAt { .. }) {
+            self.unit_anchor = None;
+        }
+        let change = match cmd {
             WriteCommand::InsertText { text } => self.insert_text(text),
             WriteCommand::DeleteBackward => self.delete_backward(),
+            WriteCommand::DeleteForward => self.delete_forward(),
+            WriteCommand::DeleteWordBackward => self.delete_word(false),
+            WriteCommand::DeleteWordForward => self.delete_word(true),
             WriteCommand::MoveCaret { motion, extend } => {
-                let target = self.motion_target(*motion, *extend);
+                let target = match self.layout_motion(*motion) {
+                    Some(p) => p,
+                    None => self.motion_target(*motion, *extend),
+                };
                 self.set_head(target, *extend)
             }
             WriteCommand::SelectTo { pos, extend } => {
                 let target = self.resolve(*pos)?;
                 self.set_head(target, *extend)
             }
-        })
+            WriteCommand::SelectAll => {
+                let new = Sel {
+                    anchor: Pos { para: 0, byte: 0 },
+                    head: self.doc_end(),
+                };
+                if new == self.sel {
+                    Change::None
+                } else {
+                    self.sel = new;
+                    Change::Selection
+                }
+            }
+            WriteCommand::SelectAt {
+                point,
+                extend,
+                unit,
+            } => self.select_at(point.x, point.y, *extend, *unit)?,
+            WriteCommand::SetComposition { text, caret } => self.set_composition(text, *caret),
+            WriteCommand::CommitComposition { text } => self.commit_composition(text),
+            WriteCommand::CancelComposition => {
+                if self.drop_composition() {
+                    Change::Content
+                } else {
+                    Change::None
+                }
+            }
+        };
+        let change = if committed && change != Change::Content {
+            Change::Content
+        } else {
+            change
+        };
+        if change == Change::Content {
+            self.relayout();
+        }
+        Ok(change)
     }
 
     fn undo(&mut self) -> bool {
+        self.finish_composition();
         let Some((id, edit)) = self.history.pop_undo() else {
             return false;
         };
         self.apply(&edit, false);
         self.history.undone(id, edit);
+        self.relayout();
         true
     }
 
     fn redo(&mut self) -> bool {
+        self.finish_composition();
         let Some((id, edit)) = self.history.pop_redo() else {
             return false;
         };
         self.apply(&edit, true);
         self.history.redone(id, edit);
+        self.relayout();
         true
     }
 
@@ -503,7 +1045,40 @@ impl DocModel for ScratchDoc {
     }
 
     fn selection(&self) -> Selection {
-        Selection::text(self.wire(self.sel.anchor), self.wire(self.sel.head))
+        let mut sel = Selection::text(self.wire(self.sel.anchor), self.wire(self.sel.head));
+        if let Some(l) = &self.layout {
+            let (s, e) = self.sel.ordered();
+            sel.rects = l
+                .selection_rects(Self::at(s), Self::at(e))
+                .into_iter()
+                .map(rect)
+                .collect();
+            let c = l.caret(Self::at(self.sel.head));
+            sel.caret = Some(Caret {
+                rect: rect(c.bar),
+                rtl: c.rtl,
+            });
+            if s != e {
+                let size = layout::HANDLE_SIZE;
+                for (p, kind) in [
+                    (s, HandleKind::SelectionStart),
+                    (e, HandleKind::SelectionEnd),
+                ] {
+                    let b = l.caret(Self::at(p)).bar;
+                    let x = b.x + b.w / 2.0;
+                    let left = if kind == HandleKind::SelectionStart {
+                        x - size
+                    } else {
+                        x
+                    };
+                    sel.handles.push(Handle {
+                        kind,
+                        rect: Rect::new(left, b.bottom(), size, size),
+                    });
+                }
+            }
+        }
+        sel
     }
 
     fn status(&self) -> StatusBar {
@@ -541,34 +1116,64 @@ impl DocModel for ScratchDoc {
     }
 
     fn a11y(&self, title: &str) -> A11yTree {
-        let mut nodes = Vec::with_capacity(self.paras.len() + 1);
+        // With a layout and a viewport: the paragraphs of the visible pages ± 1 page (and always
+        // the caret's), with their bounds. Otherwise every paragraph.
+        let head = self.sel.head.para;
+        let visible: Vec<usize> = match self.layout.as_ref().and_then(|l| Some((l, l.request()?))) {
+            Some((l, req)) => {
+                let region = req.visible.inflate(0.0, layout::PAGE_H + layout::PAGE_GAP);
+                let mut v = l.paras_in(&region);
+                if let Err(i) = v.binary_search(&head) {
+                    v.insert(i, head);
+                }
+                v
+            }
+            None => (0..self.paras.len()).collect(),
+        };
+        let mut nodes = Vec::with_capacity(visible.len() + 1);
         nodes.push(A11yNode {
             id: NodeId(0),
             role: A11yRole::Document,
             name: Some(title.to_owned()),
             text: None,
-            bounds: None,
+            bounds: self.layout.as_ref().map(|l| rect(l.extent())),
             level: None,
-            children: self.paras.iter().map(|p| p.id).collect(),
+            children: visible.iter().map(|i| self.paras[*i].id).collect(),
         });
-        nodes.extend(self.paras.iter().map(|p| A11yNode {
-            id: p.id,
-            role: A11yRole::Paragraph,
-            name: None,
-            text: Some(p.text.clone()),
-            bounds: None,
-            level: None,
-            children: Vec::new(),
+        nodes.extend(visible.iter().map(|i| {
+            let p = &self.paras[*i];
+            A11yNode {
+                id: p.id,
+                role: A11yRole::Paragraph,
+                name: None,
+                text: Some(p.text.clone()),
+                bounds: self
+                    .layout
+                    .as_ref()
+                    .and_then(|l| l.para_bounds(*i))
+                    .map(rect),
+                level: None,
+                children: Vec::new(),
+            }
         }));
         A11yTree {
             nodes,
-            active: Some(self.paras[self.sel.head.para].id),
+            active: Some(self.paras[head].id),
             announce: None,
+            caret: Some(self.wire(self.sel.head)),
         }
     }
 
     fn save_formats(&self) -> &'static [FileFormat] {
         &[FileFormat::Txt, FileFormat::Md]
+    }
+
+    fn selected_text(&self) -> Option<String> {
+        Some(self.selected_text())
+    }
+
+    fn frame_source(&mut self) -> Option<&mut dyn FrameSource> {
+        Some(self)
     }
 
     fn save(&self, format: FileFormat) -> Result<Vec<u8>> {

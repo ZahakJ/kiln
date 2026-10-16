@@ -3,4 +3,4 @@
 /**
  * A question about the session (`doc: None`) or one document.
  */
-export type Query = "Documents" | "Summary" | "Paragraphs" | "Selection" | "Status" | "A11y";
+export type Query = "Documents" | "Summary" | "Paragraphs" | "Selection" | "Status" | "A11y" | "SelectedText";

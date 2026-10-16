@@ -8,4 +8,4 @@ import type { StatusBar } from "./StatusBar";
 /**
  * The answer to a [`Query`], in the same variant.
  */
-export type QueryResult = { "Documents": Array<DocSummary> } | { "Summary": DocSummary } | { "Paragraphs": Array<ParagraphText> } | { "Selection": Selection } | { "Status": StatusBar } | { "A11y": A11yTree };
+export type QueryResult = { "Documents": Array<DocSummary> } | { "Summary": DocSummary } | { "Paragraphs": Array<ParagraphText> } | { "Selection": Selection } | { "Status": StatusBar } | { "A11y": A11yTree } | { "Text": string };

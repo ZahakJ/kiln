@@ -11,9 +11,11 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "devDependencies": {
+    "@axe-core/playwright": "catalog:",
     "@biomejs/biome": "catalog:",
     "@playwright/test": "catalog:",
     "@types/node": "catalog:",
+    "pixelmatch": "catalog:",
     "typescript": "catalog:"
   }
 }

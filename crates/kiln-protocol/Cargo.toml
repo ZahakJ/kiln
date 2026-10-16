@@ -16,6 +16,7 @@ schema = ["dep:serde-reflection", "dep:postcard", "dep:serde_json"]
 
 [dependencies]
 kiln-common = { workspace = true, features = ["serde", "ts"] }
+kiln-scene.workspace = true
 serde.workspace = true
 ts-rs = { workspace = true, features = ["no-serde-warnings"] }
 serde-reflection = { workspace = true, optional = true }

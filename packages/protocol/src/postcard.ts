@@ -132,8 +132,30 @@ class Reader {
     throw new PostcardError(`varint longer than ${maxBytes} bytes`);
   }
 
+  /**
+   * An unsigned varint of at most 32 bits, in plain number arithmetic (frames carry tens of
+   * thousands of small integers; the BigInt path is several times slower).
+   */
   private smallVarint(bits: number): number {
-    return Number(this.varint(bits));
+    const maxBytes = Math.ceil(bits / 7);
+    let result = 0;
+    let scale = 1;
+    for (let i = 0; i < maxBytes; i++) {
+      const b = this.byte();
+      result += (b & 0x7f) * scale;
+      if ((b & 0x80) === 0) {
+        if (result >= 2 ** bits) throw new PostcardError(`varint overflows ${bits} bits`);
+        return result;
+      }
+      scale *= 128;
+    }
+    throw new PostcardError(`varint longer than ${maxBytes} bytes`);
+  }
+
+  /** A zigzag varint of at most 32 bits, as a number. */
+  private smallZigzag(bits: number): number {
+    const u = this.smallVarint(bits);
+    return u % 2 === 0 ? u / 2 : -(u + 1) / 2;
   }
 
   private zigzag(bits: number): bigint {
@@ -194,9 +216,9 @@ class Reader {
         case 'U128':
           return this.safe(this.varint(128));
         case 'I16':
-          return Number(this.zigzag(16));
+          return this.smallZigzag(16);
         case 'I32':
-          return Number(this.zigzag(32));
+          return this.smallZigzag(32);
         case 'I64':
           return this.safe(this.zigzag(64));
         case 'I128':

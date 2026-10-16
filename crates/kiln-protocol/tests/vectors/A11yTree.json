@@ -7,7 +7,8 @@
     {
       "nodes": [],
       "active": null,
-      "announce": null
+      "announce": null,
+      "caret": null
     },
     {
       "nodes": [
@@ -39,12 +40,17 @@
         }
       ],
       "active": 2,
-      "announce": "Bold on"
+      "announce": "Bold on",
+      "caret": {
+        "block": 2,
+        "offset": 3
+      }
     },
     {
       "nodes": [],
       "active": null,
-      "announce": null
+      "announce": null,
+      "caret": null
     }
   ]
 }

@@ -34,8 +34,47 @@ describe('postcard vectors produced by Rust', () => {
 
 describe('postcard decoder', () => {
   it('decodes a frame', () => {
-    // SceneDelta { revision: 300 } = varint 300 = [0xac, 0x02]
-    expect(decodeAs<SceneDelta>('SceneDelta', Uint8Array.of(0xac, 0x02))).toEqual({ revision: 300 });
+    // An empty SceneDelta for revision 300: varint 300, reset, scale 1.0 (f32 LE), the extent
+    // (four f32 zeros), background Paint::Rgba(0), four empty lists and no overlay.
+    const bytes = Uint8Array.of(
+      0xac,
+      0x02,
+      0,
+      0,
+      0,
+      0x80,
+      0x3f,
+      ...new Array<number>(16).fill(0),
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+    );
+    expect(decodeAs<SceneDelta>('SceneDelta', bytes)).toEqual({
+      revision: 300,
+      reset: false,
+      scale: 1,
+      extent: { x: 0, y: 0, w: 0, h: 0 },
+      background: { Rgba: 0 },
+      tiles: [],
+      removed: [],
+      atlas: [],
+      images: [],
+      overlay: null,
+    });
+  });
+
+  it('decodes 32-bit varints without BigInt and rejects overflow', () => {
+    expect(decode('U32', Uint8Array.of(0xff, 0xff, 0xff, 0xff, 0x0f))).toBe(4294967295);
+    expect(decode('I32', Uint8Array.of(0xff, 0xff, 0xff, 0xff, 0x0f))).toBe(-2147483648);
+    expect(decode('I32', Uint8Array.of(0xfe, 0xff, 0xff, 0xff, 0x0f))).toBe(2147483647);
+    expect(decode('I16', Uint8Array.of(0x01))).toBe(-1);
+    expect(() => decode('U32', Uint8Array.of(0xff, 0xff, 0xff, 0xff, 0x1f))).toThrow(PostcardError);
+    expect(() => decode('U16', Uint8Array.of(0xff, 0xff, 0x04))).toThrow(PostcardError);
+    expect(() => decode('U32', Uint8Array.of(0xff, 0xff, 0xff, 0xff, 0xff, 0x01))).toThrow(PostcardError);
   });
 
   it('decodes primitives', () => {
