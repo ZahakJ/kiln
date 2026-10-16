@@ -113,6 +113,66 @@ fn unbalanced_fields_and_markers_never_break_the_model() {
     assert!(!read.warnings.is_empty());
 }
 
+/// The single table of a body that holds one table.
+fn only_table(doc: &kiln_doc::Document) -> &kiln_doc::Table {
+    let mut tables = doc
+        .sections
+        .iter()
+        .flat_map(|s| &s.blocks)
+        .filter_map(|b| match b {
+            kiln_doc::Block::Table(t) => Some(t),
+            _ => None,
+        });
+    let table = tables.next().expect("a table");
+    assert!(tables.next().is_none(), "one table");
+    table
+}
+
+/// `w:gridBefore` / `w:gridAfter` far beyond Word's 63-column grid (up to `u32::MAX`) are
+/// clamped, and completing ragged rows never overflows.
+#[test]
+fn huge_grid_before_and_after_are_clamped() {
+    let cases = [
+        // gridAfter = u32::MAX twice, the second row also skipping 10 columns: the ragged-row
+        // completion used to add to u32::MAX.
+        "<w:tbl><w:tblGrid><w:gridCol w:w=\"100\"/></w:tblGrid><w:tr><w:trPr><w:gridAfter w:val=\"4294967295\"/></w:trPr><w:tc><w:p/></w:tc></w:tr><w:tr><w:trPr><w:gridBefore w:val=\"10\"/><w:gridAfter w:val=\"4294967295\"/></w:trPr><w:tc><w:p/></w:tc></w:tr></w:tbl><w:p/>",
+        // gridBefore of four billion: a table about four billion columns wide.
+        "<w:tbl><w:tblGrid><w:gridCol w:w=\"100\"/></w:tblGrid><w:tr><w:trPr><w:gridBefore w:val=\"4000000000\"/></w:trPr><w:tc><w:p/></w:tc></w:tr><w:tr><w:tc><w:p/></w:tc></w:tr></w:tbl><w:p/>",
+        // Both at the maximum on the same row, plus a ragged row and a cell-less row.
+        "<w:tbl><w:tblGrid><w:gridCol w:w=\"100\"/></w:tblGrid><w:tr><w:trPr><w:gridBefore w:val=\"4294967295\"/><w:gridAfter w:val=\"4294967295\"/></w:trPr><w:tc><w:tcPr><w:gridSpan w:val=\"4294967295\"/></w:tcPr><w:p/></w:tc></w:tr><w:tr><w:tc><w:p/></w:tc></w:tr><w:tr><w:trPr><w:gridBefore w:val=\"99999999999\"/></w:trPr></w:tr></w:tbl><w:p/>",
+    ];
+    for body in cases {
+        let read = read_docx(&build_docx(Build {
+            body: body.to_owned(),
+            ..Build::default()
+        }))
+        .expect("reads");
+        read.document.validate().expect("valid");
+        let table = only_table(&read.document);
+        // At most gridBefore + one cell's span + gridAfter, each within the 63-column limit.
+        let width = table.grid_width();
+        assert!(width <= 3 * 63, "grid width {width}");
+        for row in &table.rows {
+            assert!(row.props.grid_before.unwrap_or(0) <= 63, "{:?}", row.props);
+            for cell in &row.cells {
+                // A cell-less row is filled by one cell across the whole table.
+                assert!(
+                    (1..=width).contains(&(cell.grid_span as usize)),
+                    "{}",
+                    cell.grid_span
+                );
+            }
+        }
+        // Every row is completed to the same width.
+        for row in &table.rows {
+            let w = row.props.grid_before.unwrap_or(0)
+                + row.cells.iter().map(|c| c.grid_span).sum::<u32>()
+                + row.props.grid_after.unwrap_or(0);
+            assert_eq!(w as usize, width, "{:?}", row.props);
+        }
+    }
+}
+
 fn fixture(name: &str) -> Vec<u8> {
     find(name).and_then(|f| f.read()).expect("fixture")
 }

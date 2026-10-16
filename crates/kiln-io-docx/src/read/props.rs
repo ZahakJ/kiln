@@ -642,8 +642,8 @@ pub(crate) fn parse_row_props(node: Option<&XmlElement>, raw: Raw<'_>) -> Parsed
                 Some(a) => p.alignment = Some(a),
                 None => out.xml.push(raw.xml(c)),
             },
-            "w:gridBefore" => p.grid_before = parse_u32(val(Some(c))),
-            "w:gridAfter" => p.grid_after = parse_u32(val(Some(c))),
+            "w:gridBefore" => p.grid_before = parse_grid_count(c),
+            "w:gridAfter" => p.grid_after = parse_grid_count(c),
             "w:ins" | "w:del" => {
                 out.revision = Some(InsDelRevision {
                     info: parse_revision(c),
@@ -659,6 +659,16 @@ pub(crate) fn parse_row_props(node: Option<&XmlElement>, raw: Raw<'_>) -> Parsed
         }
     }
     out
+}
+
+/// Word's table grid limit: a table has at most 63 columns, so no `w:gridSpan`,
+/// `w:gridBefore` or `w:gridAfter` can cover more. Clamping here keeps hostile values (up to
+/// `u32::MAX`) out of the column arithmetic and out of the layout engine.
+pub(crate) const MAX_GRID_COLUMNS: u32 = 63;
+
+/// `w:gridBefore` / `w:gridAfter`: a count of skipped grid columns, clamped to the grid limit.
+fn parse_grid_count(c: &XmlElement) -> Option<u32> {
+    parse_u32(val(Some(c))).map(|n| n.min(MAX_GRID_COLUMNS))
 }
 
 /// A parsed `w:tcPr`.
@@ -698,7 +708,9 @@ pub(crate) fn parse_cell_props(node: Option<&XmlElement>, raw: Raw<'_>) -> Parse
         match c.name.as_str() {
             "w:tcW" => p.width = parse_table_width(attr(c, "w:w"), attr(c, "w:type")),
             "w:gridSpan" => {
-                out.grid_span = parse_u32(val(Some(c))).unwrap_or(1).clamp(1, 64);
+                out.grid_span = parse_u32(val(Some(c)))
+                    .unwrap_or(1)
+                    .clamp(1, MAX_GRID_COLUMNS);
             }
             "w:vMerge" => out.v_merge = Some(merge(c)),
             "w:hMerge" => out.h_merge = Some(merge(c)),

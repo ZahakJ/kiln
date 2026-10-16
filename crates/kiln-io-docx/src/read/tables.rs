@@ -192,7 +192,9 @@ fn read_table_inner(story: &mut StoryReader<'_, '_>, tbl: &XmlElement) -> Block 
         if row_extras != RowExtras::default() {
             story.ctx.extras.rows.insert(row_id, row_extras);
         }
-        let grid_before = parsed.props.grid_before.unwrap_or(0) as usize;
+        // Grid counts are clamped by the props reader; the sums below still saturate so that no
+        // input can overflow `usize` (32 bits on wasm).
+        let grid_before = usize::try_from(parsed.props.grid_before.unwrap_or(0)).unwrap_or(0);
         let mut cells: Vec<Cell> = Vec::new();
         let mut col = grid_before;
         let mut touched: Vec<usize> = Vec::new();
@@ -214,14 +216,14 @@ fn read_table_inner(story: &mut StoryReader<'_, '_>, tbl: &XmlElement) -> Block 
             story.path = saved;
             let mut blocks = sink.into_blocks(story.ctx);
             let span = cp.grid_span;
-            let span_cols = span as usize;
+            let span_cols = usize::try_from(span).unwrap_or(usize::MAX);
 
             if cp.h_merge == Some(VMerge::Continue)
                 && let Some(prev) = cells.last_mut()
             {
                 prev.grid_span = prev.grid_span.saturating_add(span);
                 prev.blocks.extend(blocks.into_iter().filter(has_content));
-                col += span_cols;
+                col = col.saturating_add(span_cols);
                 continue;
             }
 
@@ -231,9 +233,9 @@ fn read_table_inner(story: &mut StoryReader<'_, '_>, tbl: &XmlElement) -> Block 
                 v_merge = None;
             }
             for k in 0..span_cols {
-                touched.push(col + k);
+                touched.push(col.saturating_add(k));
                 if k > 0 {
-                    open.remove(&(col + k));
+                    open.remove(&col.saturating_add(k));
                 }
             }
             match v_merge {
@@ -262,11 +264,12 @@ fn read_table_inner(story: &mut StoryReader<'_, '_>, tbl: &XmlElement) -> Block 
                 v_merge,
                 blocks,
             });
-            col += span_cols;
+            col = col.saturating_add(span_cols);
         }
         // A grid column without a cell in this row ends any vertical merge through it.
         open.retain(|c, _| touched.contains(c));
-        widths.push(col + parsed.props.grid_after.unwrap_or(0) as usize);
+        let grid_after = usize::try_from(parsed.props.grid_after.unwrap_or(0)).unwrap_or(0);
+        widths.push(col.saturating_add(grid_after));
         rows.push(Row {
             id: row_id,
             props: parsed.props,
@@ -280,7 +283,7 @@ fn read_table_inner(story: &mut StoryReader<'_, '_>, tbl: &XmlElement) -> Block 
     for (row, width) in rows.iter_mut().zip(widths) {
         if row.cells.is_empty() {
             // A row without cells (invalid, but Word opens it): one empty cell over the grid.
-            let before = row.props.grid_before.unwrap_or(0) as usize;
+            let before = usize::try_from(row.props.grid_before.unwrap_or(0)).unwrap_or(0);
             let span = u32::try_from(max_width.saturating_sub(before).max(1)).unwrap_or(1);
             let blocks = vec![empty_paragraph(story)];
             row.cells.push(Cell {
@@ -294,8 +297,8 @@ fn read_table_inner(story: &mut StoryReader<'_, '_>, tbl: &XmlElement) -> Block 
             irregular = true;
         } else if width < max_width {
             // A ragged row: Word lays it out as if it had w:gridAfter, which the writer emits.
-            let missing = u32::try_from(max_width - width).unwrap_or(0);
-            row.props.grid_after = Some(row.props.grid_after.unwrap_or(0) + missing);
+            let missing = u32::try_from(max_width - width).unwrap_or(u32::MAX);
+            row.props.grid_after = Some(row.props.grid_after.unwrap_or(0).saturating_add(missing));
             irregular = true;
         }
     }

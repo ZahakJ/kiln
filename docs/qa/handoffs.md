@@ -323,3 +323,9 @@ WP-54 had to touch these files outside its owned paths; every change is additive
 - Outside the owned paths also: `Cargo.lock`, `CHANGELOG.md`, `parity/parity.json`
   (`write.files.docx-open` → partial) with `PARITY.md` regenerated, `docs/FORMATS.md` (the docx
   section), and this note.
+- WP-62 fix round 1 → WP-61 (`kiln-doc` owner): the DOCX reader now clamps `w:gridBefore`,
+  `w:gridAfter` and `w:gridSpan` to Word's 63-column grid and completes ragged rows with
+  saturating arithmetic, so reader output stays small. `Table::grid_width` and `Table::cell_map`
+  in `crates/kiln-doc/src/model.rs` still add `grid_before`/`grid_after`/spans as unchecked
+  `usize` (32 bits on wasm); a model built by another source (CRDT merge, a future ODF reader)
+  could still overflow there. Suggest saturating adds or a model-level clamp in `validate`.

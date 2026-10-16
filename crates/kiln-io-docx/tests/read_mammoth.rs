@@ -50,6 +50,38 @@ fn similarity(a: &[String], b: &[String]) -> f64 {
     2.0 * lcs / total
 }
 
+/// The paragraphs outside one longest common subsequence, in document order: `ours:` lines are
+/// only in the model, `mammoth:` lines only in the oracle. Following the alignment (rather than
+/// pairing by index) keeps one inserted or missing paragraph from mispairing everything after it.
+fn unmatched(a: &[String], b: &[String]) -> Vec<String> {
+    // lcs[i][j] = LCS length of a[i..] and b[j..].
+    let mut lcs = vec![vec![0usize; b.len() + 1]; a.len() + 1];
+    for i in (0..a.len()).rev() {
+        for j in (0..b.len()).rev() {
+            lcs[i][j] = if a[i] == b[j] {
+                lcs[i + 1][j + 1] + 1
+            } else {
+                lcs[i + 1][j].max(lcs[i][j + 1])
+            };
+        }
+    }
+    let (mut i, mut j) = (0, 0);
+    let mut out = Vec::new();
+    while i < a.len() || j < b.len() {
+        if i < a.len() && j < b.len() && a[i] == b[j] {
+            i += 1;
+            j += 1;
+        } else if j == b.len() || (i < a.len() && lcs[i + 1][j] >= lcs[i][j + 1]) {
+            out.push(format!("  ours:    #{i} {:?}", a[i]));
+            i += 1;
+        } else {
+            out.push(format!("  mammoth: #{j} {:?}", b[j]));
+            j += 1;
+        }
+    }
+    out
+}
+
 #[test]
 fn body_text_matches_mammoth_for_every_feature_fixture() {
     let fixtures = list_in(&fixtures_dir(), FixtureFormat::Docx, FixtureKind::Features);
@@ -85,13 +117,7 @@ fn body_text_matches_mammoth_for_every_feature_fixture() {
         let score = similarity(&ours, &theirs);
         report.push(format!("{name:<20} {score:.4}"));
         if score < 0.99 {
-            let diff: Vec<String> = ours
-                .iter()
-                .zip(&theirs)
-                .filter(|(a, b)| a != b)
-                .take(5)
-                .map(|(a, b)| format!("  ours:    {a:?}\n  mammoth: {b:?}"))
-                .collect();
+            let diff: Vec<String> = unmatched(&ours, &theirs).into_iter().take(10).collect();
             failures.push(format!(
                 "{name}: {score:.4} ({} vs {} paragraphs)\n{}",
                 ours.len(),
@@ -111,4 +137,19 @@ fn similarity_is_a_paragraph_lcs_ratio() {
     assert!((similarity(&s(&["a", "b"]), &s(&["a", "c"])) - 0.5).abs() < 1e-12);
     assert!((similarity(&[], &[]) - 1.0).abs() < 1e-12);
     assert_eq!(mammoth_paragraphs("a\n\nb\n\n"), ["a", "b"]);
+}
+
+#[test]
+fn unmatched_follows_the_alignment() {
+    let s = |v: &[&str]| v.iter().map(|x| (*x).to_owned()).collect::<Vec<_>>();
+    // One missing paragraph is reported once; the rest stays aligned.
+    assert_eq!(
+        unmatched(&s(&["a", "c", "d"]), &s(&["a", "b", "c", "d"])),
+        ["  mammoth: #1 \"b\""]
+    );
+    assert_eq!(
+        unmatched(&s(&["a", "x", "b"]), &s(&["a", "b"])),
+        ["  ours:    #1 \"x\""]
+    );
+    assert!(unmatched(&s(&["a"]), &s(&["a"])).is_empty());
 }
