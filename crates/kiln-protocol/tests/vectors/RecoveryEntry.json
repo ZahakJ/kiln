@@ -1,0 +1,18 @@
+{
+  "type": "RecoveryEntry",
+  "format": {
+    "TYPENAME": "RecoveryEntry"
+  },
+  "values": [
+    {
+      "title": "Document1",
+      "path": null,
+      "saved_at_ms": 1792000000000
+    },
+    {
+      "title": "",
+      "path": "",
+      "saved_at_ms": 0
+    }
+  ]
+}

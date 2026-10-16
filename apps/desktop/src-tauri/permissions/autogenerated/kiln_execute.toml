@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-kiln-execute"
+description = "Enables the kiln_execute command without any pre-configured scope."
+commands.allow = ["kiln_execute"]
+
+[[permission]]
+identifier = "deny-kiln-execute"
+description = "Denies the kiln_execute command without any pre-configured scope."
+commands.deny = ["kiln_execute"]

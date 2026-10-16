@@ -53,7 +53,13 @@ jobs:
 
       - uses: taiki-e/install-action@v2
         with:
-          tool: cargo-nextest@0.9.148,cargo-deny@0.20.2
+          tool: cargo-nextest@0.9.148,cargo-deny@0.20.2,wasm-bindgen@0.2.129
+
+      # wasm-opt for `cargo xtask wasm --release` (PLAN.md §4.1 pins binaryen version_133).
+      - name: binaryen
+        run: |
+          curl -4 -LsSf https://github.com/WebAssembly/binaryen/releases/download/version_133/binaryen-version_133-x86_64-linux.tar.gz | tar xz -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/binaryen-version_133/bin" >> "$GITHUB_PATH"
 
       - name: Format
         run: cargo fmt --all --check
@@ -73,11 +79,17 @@ jobs:
       - name: Protocol is up to date
         run: cargo xtask protocol --check
 
-      # Until WP-52 adds `cargo xtask wasm`, build the bridge for wasm32 directly.
+      # wasm32 build + wasm-bindgen + wasm-opt, with the B12 size assertion; the web job tests it.
       - name: WebAssembly core
-        run: |
-          cargo build --target wasm32-unknown-unknown -p kiln-bridge-wasm
-          cargo xtask wasm --release --ci
+        run: cargo xtask wasm --release --ci
+
+      - name: Upload the WebAssembly core
+        uses: actions/upload-artifact@v7
+        with:
+          name: wasm-${{ github.run_id }}
+          path: apps/web/src/wasm
+          if-no-files-found: error
+          retention-days: 3
 
       - name: Performance budgets
         run: cargo xtask budgets --ci
@@ -114,6 +126,13 @@ jobs:
 
       - name: Install
         run: pnpm install --frozen-lockfile
+
+      # The core built by the rust job; the Worker loads it and the bridge e2e tests need it.
+      - name: Download the WebAssembly core
+        uses: actions/download-artifact@v7
+        with:
+          name: wasm-${{ github.run_id }}
+          path: apps/web/src/wasm
 
       - name: Lint
         run: pnpm lint

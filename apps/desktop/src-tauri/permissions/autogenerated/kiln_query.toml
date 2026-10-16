@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-kiln-query"
+description = "Enables the kiln_query command without any pre-configured scope."
+commands.allow = ["kiln_query"]
+
+[[permission]]
+identifier = "deny-kiln-query"
+description = "Denies the kiln_query command without any pre-configured scope."
+commands.deny = ["kiln_query"]

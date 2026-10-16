@@ -24,6 +24,8 @@ export default defineConfig({
   define: { __KILN_VERSION__: JSON.stringify(suiteVersion) },
   server: { port: 5173, strictPort: true },
   build: { target: 'es2023', sourcemap: true },
+  // The core's Worker loads the wasm bindings with a dynamic import, which needs ES module workers.
+  worker: { format: 'es' },
   test: {
     environment: 'jsdom',
     include: ['src/**/*.test.{ts,tsx}'],

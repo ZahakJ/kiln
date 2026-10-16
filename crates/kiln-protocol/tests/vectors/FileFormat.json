@@ -1,0 +1,25 @@
+{
+  "type": "FileFormat",
+  "format": {
+    "TYPENAME": "FileFormat"
+  },
+  "values": [
+    "Txt",
+    "Md",
+    "Docx",
+    "Dotx",
+    "Docm",
+    "Odt",
+    "Xlsx",
+    "Xltx",
+    "Xlsm",
+    "Csv",
+    "Ods",
+    "Pptx",
+    "Potx",
+    "Pptm",
+    "Odp",
+    "Pdf",
+    "Txt"
+  ]
+}

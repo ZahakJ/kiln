@@ -1,0 +1,84 @@
+{
+  "type": "HostReply",
+  "format": {
+    "TYPENAME": "HostReply"
+  },
+  "values": [
+    "Done",
+    "Empty",
+    {
+      "Bytes": [
+        75,
+        105,
+        108,
+        110,
+        10,
+        87,
+        114,
+        105,
+        116,
+        101
+      ]
+    },
+    {
+      "Path": "/home/ana/x.txt"
+    },
+    {
+      "Text": "\"dark\""
+    },
+    {
+      "Recents": [
+        {
+          "path": "/home/ana/Budget.xlsx",
+          "name": "Budget",
+          "kind": "Grid",
+          "opened_at_ms": 1792000000000,
+          "pinned": true
+        }
+      ]
+    },
+    {
+      "Clipboard": {
+        "text": "t",
+        "html": null
+      }
+    },
+    "Cancelled",
+    {
+      "Failed": {
+        "kind": "Unavailable",
+        "message": "write.edit.insert_text is not available: read-only"
+      }
+    },
+    "Done",
+    "Empty",
+    {
+      "Bytes": [
+        0
+      ]
+    },
+    {
+      "Path": ""
+    },
+    {
+      "Text": ""
+    },
+    {
+      "Recents": [
+        {
+          "path": "",
+          "name": "",
+          "kind": "Scratch",
+          "opened_at_ms": 0,
+          "pinned": false
+        }
+      ]
+    },
+    {
+      "Clipboard": {
+        "text": "",
+        "html": ""
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "type": "DocSummary",
+  "format": {
+    "TYPENAME": "DocSummary"
+  },
+  "values": [
+    {
+      "doc": 7,
+      "kind": "Scratch",
+      "app": "Write",
+      "title": "Scratch1",
+      "path": "/tmp/scratch.txt",
+      "format": "Txt",
+      "revision": 1234567890123,
+      "dirty": true,
+      "read_only": false,
+      "can_undo": true,
+      "can_redo": false,
+      "undo_label": "write.edit.insert_text",
+      "redo_label": null
+    },
+    {
+      "doc": 0,
+      "kind": "Scratch",
+      "app": "Write",
+      "title": "",
+      "path": null,
+      "format": null,
+      "revision": 0,
+      "dirty": false,
+      "read_only": false,
+      "can_undo": false,
+      "can_redo": false,
+      "undo_label": null,
+      "redo_label": ""
+    }
+  ]
+}

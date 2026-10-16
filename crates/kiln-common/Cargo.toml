@@ -9,5 +9,21 @@ authors.workspace = true
 repository.workspace = true
 publish.workspace = true
 
+[features]
+# `Serialize`/`Deserialize` for identifiers, units and colours (enabled by kiln-protocol).
+serde = ["dep:serde"]
+# `ts_rs::TS` for the types that cross the bridge (enabled by kiln-protocol).
+ts = ["dep:ts-rs", "serde"]
+
+[dependencies]
+kurbo.workspace = true
+thiserror.workspace = true
+serde = { workspace = true, optional = true }
+ts-rs = { workspace = true, optional = true }
+
+[dev-dependencies]
+serde_json.workspace = true
+proptest.workspace = true
+
 [lints]
 workspace = true

@@ -1,0 +1,54 @@
+{
+  "type": "SuiteCommand",
+  "format": {
+    "TYPENAME": "SuiteCommand"
+  },
+  "values": [
+    {
+      "Open": {
+        "path": null
+      }
+    },
+    {
+      "Open": {
+        "path": "/home/ana/Quarterly report.docx"
+      }
+    },
+    {
+      "New": {
+        "kind": "Scratch"
+      }
+    },
+    "Save",
+    {
+      "SaveAs": {
+        "path": "C:\\Users\\Zoë\\notes.txt",
+        "format": "Txt"
+      }
+    },
+    "Close",
+    "Undo",
+    "Redo",
+    {
+      "SetZoom": {
+        "zoom": 1.25
+      }
+    },
+    {
+      "SetViewMode": {
+        "mode": "Draft"
+      }
+    },
+    "Ping",
+    {
+      "Echo": {
+        "text": "héllo, 世界 👋"
+      }
+    },
+    {
+      "Open": {
+        "path": ""
+      }
+    }
+  ]
+}

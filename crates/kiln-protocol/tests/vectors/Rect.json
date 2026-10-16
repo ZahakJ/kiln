@@ -1,0 +1,26 @@
+{
+  "type": "Rect",
+  "format": {
+    "TYPENAME": "Rect"
+  },
+  "values": [
+    {
+      "x": -12.5,
+      "y": 96.0,
+      "width": 0.75,
+      "height": 18.0
+    },
+    {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    }
+  ]
+}

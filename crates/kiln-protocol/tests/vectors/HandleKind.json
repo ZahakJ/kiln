@@ -1,0 +1,15 @@
+{
+  "type": "HandleKind",
+  "format": {
+    "TYPENAME": "HandleKind"
+  },
+  "values": [
+    "Fill",
+    {
+      "Resize": "NE"
+    },
+    "Rotate",
+    "SelectionStart",
+    "SelectionEnd"
+  ]
+}

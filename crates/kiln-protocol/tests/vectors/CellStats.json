@@ -1,0 +1,24 @@
+{
+  "type": "CellStats",
+  "format": {
+    "TYPENAME": "CellStats"
+  },
+  "values": [
+    {
+      "count": 10,
+      "numeric_count": 9,
+      "sum": 1284.0,
+      "average": 142.66666666666666,
+      "min": -3.5,
+      "max": null
+    },
+    {
+      "count": 0,
+      "numeric_count": 0,
+      "sum": 0.0,
+      "average": null,
+      "min": null,
+      "max": 0.0
+    }
+  ]
+}

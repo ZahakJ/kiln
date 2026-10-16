@@ -11,6 +11,17 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+kiln-protocol.workspace = true
+unicode-segmentation.workspace = true
+
+# The session thread and its channels exist only on native targets; the web build runs the
+# session directly inside a Web Worker.
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+flume.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
+serde_json.workspace = true
 
 [lints]
 workspace = true

@@ -1,0 +1,20 @@
+{
+  "type": "Progress",
+  "format": {
+    "TYPENAME": "Progress"
+  },
+  "values": [
+    {
+      "doc": 1,
+      "task": "progress.open",
+      "done": 3,
+      "total": 0
+    },
+    {
+      "doc": null,
+      "task": "",
+      "done": 0,
+      "total": 0
+    }
+  ]
+}

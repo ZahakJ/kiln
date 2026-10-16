@@ -1,0 +1,14 @@
+{
+  "type": "App",
+  "format": {
+    "TYPENAME": "App"
+  },
+  "values": [
+    "Write",
+    "Grid",
+    "Deck",
+    "Notes",
+    "Home",
+    "Write"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "type": "ErrorInfo",
+  "format": {
+    "TYPENAME": "ErrorInfo"
+  },
+  "values": [
+    {
+      "kind": "Unavailable",
+      "message": "write.edit.insert_text is not available: read-only"
+    },
+    {
+      "kind": "NotFound",
+      "message": ""
+    }
+  ]
+}

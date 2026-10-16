@@ -1,0 +1,43 @@
+{
+  "type": "ExecResult",
+  "format": {
+    "TYPENAME": "ExecResult"
+  },
+  "values": [
+    {
+      "outcome": "Applied",
+      "summary": {
+        "doc": 7,
+        "kind": "Scratch",
+        "app": "Write",
+        "title": "Scratch1",
+        "path": "/tmp/scratch.txt",
+        "format": "Txt",
+        "revision": 1234567890123,
+        "dirty": true,
+        "read_only": false,
+        "can_undo": true,
+        "can_redo": false,
+        "undo_label": "write.edit.insert_text",
+        "redo_label": null
+      },
+      "value": "None"
+    },
+    {
+      "outcome": "Unchanged",
+      "summary": null,
+      "value": {
+        "Pong": {
+          "version": "0.1.0",
+          "protocol": 1,
+          "target": "wasm32"
+        }
+      }
+    },
+    {
+      "outcome": "Applied",
+      "summary": null,
+      "value": "None"
+    }
+  ]
+}

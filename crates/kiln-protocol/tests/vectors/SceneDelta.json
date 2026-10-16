@@ -1,0 +1,17 @@
+{
+  "type": "SceneDelta",
+  "format": {
+    "TYPENAME": "SceneDelta"
+  },
+  "values": [
+    {
+      "revision": 0
+    },
+    {
+      "revision": 1099511627776
+    },
+    {
+      "revision": 0
+    }
+  ]
+}

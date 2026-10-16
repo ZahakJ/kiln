@@ -1,0 +1,51 @@
+{
+  "type": "StatusBar",
+  "format": {
+    "TYPENAME": "StatusBar"
+  },
+  "values": [
+    {
+      "page": null,
+      "words": null,
+      "chars": null,
+      "language": null,
+      "cells": null,
+      "slide": null,
+      "zoom": 1.0,
+      "view": "PrintLayout"
+    },
+    {
+      "page": {
+        "current": 3,
+        "total": 12
+      },
+      "words": 1284,
+      "chars": 7311,
+      "language": "en-GB",
+      "cells": {
+        "count": 10,
+        "numeric_count": 9,
+        "sum": 1284.0,
+        "average": 142.66666666666666,
+        "min": -3.5,
+        "max": null
+      },
+      "slide": null,
+      "zoom": 1.5,
+      "view": "PrintLayout"
+    },
+    {
+      "page": null,
+      "words": null,
+      "chars": null,
+      "language": null,
+      "cells": null,
+      "slide": {
+        "current": 0,
+        "total": 0
+      },
+      "zoom": 0.0,
+      "view": "PrintLayout"
+    }
+  ]
+}

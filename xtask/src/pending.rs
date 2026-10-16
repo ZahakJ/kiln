@@ -18,14 +18,6 @@ pub struct Pending {
 
 const PENDING: &[Pending] = &[
     Pending {
-        name: "protocol",
-        owner: "WP-52",
-    },
-    Pending {
-        name: "wasm",
-        owner: "WP-52",
-    },
-    Pending {
         name: "fidelity",
         owner: "WP-60",
     },
@@ -80,7 +72,7 @@ mod tests {
 
     #[test]
     fn every_pending_command_names_its_owner() {
-        for name in ["protocol", "wasm", "fidelity", "budgets", "parity"] {
+        for name in ["fidelity", "budgets", "parity"] {
             let task = lookup(name).expect("pending command");
             assert!(task.owner.starts_with("WP-"));
             assert_eq!(
@@ -89,7 +81,8 @@ mod tests {
             );
         }
         assert!(lookup("verify").is_none());
-        assert!(!protocol_implemented());
+        assert!(lookup("protocol").is_none() && lookup("wasm").is_none());
+        assert!(protocol_implemented());
     }
 
     #[test]

@@ -21,6 +21,7 @@
       "!reference",
       "!apps/desktop/src-tauri/gen",
       "!apps/web/src/wasm",
+      "!packages/protocol/src/generated",
       "!docs/assets"
     ]
   },
@@ -60,7 +61,7 @@
   },
   "overrides": [
     {
-      "includes": ["packages/**", "apps/**", "!packages/testing/**"],
+      "includes": ["packages/protocol/**"],
       "linter": {
         "rules": {
           "style": {
@@ -92,6 +93,55 @@
                   "hyperformula": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
                   "xlsx": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
                   "jszip": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["packages/**", "apps/**", "!packages/testing/**", "!packages/protocol/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "paths": {
+                  "fflate": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "fast-xml-parser": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "papaparse": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "decimal.js": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "numfmt": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "exceljs": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "mammoth": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "docx": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "pptxgenjs": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "docx-preview": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "pdf-lib": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "pdfjs-dist": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "@pdf-lib/fontkit": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "echarts": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "yjs": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "@tiptap/core": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "@tiptap/pm": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "prosemirror-model": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "prosemirror-view": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "formulajs": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "@formulajs/formulajs": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "hyperformula": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "xlsx": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "jszip": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "@tauri-apps/api": "Thinness contract (PLAN.md \u00a73.7): only @kiln/protocol talks to the host; use KilnClient and HostHandler.",
+                  "@tauri-apps/api/core": "Thinness contract (PLAN.md \u00a73.7): only @kiln/protocol talks to the host; use KilnClient and HostHandler.",
+                  "@tauri-apps/api/event": "Thinness contract (PLAN.md \u00a73.7): only @kiln/protocol talks to the host; use KilnClient and HostHandler.",
+                  "@tauri-apps/plugin-dialog": "Thinness contract (PLAN.md \u00a73.7): only @kiln/protocol talks to the host; use KilnClient and HostHandler.",
+                  "@tauri-apps/plugin-fs": "Thinness contract (PLAN.md \u00a73.7): only @kiln/protocol talks to the host; use KilnClient and HostHandler.",
+                  "@tauri-apps/plugin-opener": "Thinness contract (PLAN.md \u00a73.7): only @kiln/protocol talks to the host; use KilnClient and HostHandler.",
+                  "@tauri-apps/plugin-process": "Thinness contract (PLAN.md \u00a73.7): only @kiln/protocol talks to the host; use KilnClient and HostHandler.",
+                  "@tauri-apps/plugin-clipboard-manager": "Thinness contract (PLAN.md \u00a73.7): only @kiln/protocol talks to the host; use KilnClient and HostHandler.",
+                  "@tauri-apps/plugin-store": "Thinness contract (PLAN.md \u00a73.7): only @kiln/protocol talks to the host; use KilnClient and HostHandler."
                 }
               }
             }

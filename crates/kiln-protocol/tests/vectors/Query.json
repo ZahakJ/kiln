@@ -1,0 +1,15 @@
+{
+  "type": "Query",
+  "format": {
+    "TYPENAME": "Query"
+  },
+  "values": [
+    "Documents",
+    "Summary",
+    "Paragraphs",
+    "Selection",
+    "Status",
+    "A11y",
+    "Documents"
+  ]
+}

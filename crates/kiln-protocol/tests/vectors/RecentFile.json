@@ -1,0 +1,22 @@
+{
+  "type": "RecentFile",
+  "format": {
+    "TYPENAME": "RecentFile"
+  },
+  "values": [
+    {
+      "path": "/home/ana/Budget.xlsx",
+      "name": "Budget",
+      "kind": "Grid",
+      "opened_at_ms": 1792000000000,
+      "pinned": true
+    },
+    {
+      "path": "",
+      "name": "",
+      "kind": "Scratch",
+      "opened_at_ms": 0,
+      "pinned": false
+    }
+  ]
+}

@@ -24,7 +24,20 @@ tauri-build = { workspace = true, features = [] }
 
 [dependencies]
 kiln-common.workspace = true
+kiln-protocol.workspace = true
+kiln-session.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+postcard.workspace = true
 tauri = { workspace = true, features = [] }
+tauri-plugin-fs.workspace = true
+tauri-plugin-dialog.workspace = true
+tauri-plugin-opener.workspace = true
+tauri-plugin-process.workspace = true
+
+# Window size/position memory exists on desktop only.
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-window-state.workspace = true
 
 [features]
 # Set by the Tauri CLI for production builds (serves the bundled frontend instead of devUrl).

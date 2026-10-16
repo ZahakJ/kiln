@@ -1,0 +1,22 @@
+{
+  "type": "A11yRole",
+  "format": {
+    "TYPENAME": "A11yRole"
+  },
+  "values": [
+    "Document",
+    "TextBox",
+    "Document",
+    "Heading",
+    "Paragraph",
+    "List",
+    "ListItem",
+    "Table",
+    "Row",
+    "Cell",
+    "Grid",
+    "GridCell",
+    "Group",
+    "Image"
+  ]
+}

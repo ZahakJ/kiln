@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-kiln-new"
+description = "Enables the kiln_new command without any pre-configured scope."
+commands.allow = ["kiln_new"]
+
+[[permission]]
+identifier = "deny-kiln-new"
+description = "Denies the kiln_new command without any pre-configured scope."
+commands.deny = ["kiln_new"]

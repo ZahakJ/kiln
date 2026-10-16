@@ -1,3 +1,9 @@
 # kiln-session
 
-The facade over the whole core and the only API the shells use: open, create, save and close documents, execute commands, set viewports, produce frames and emit events. This crate is a scaffold created by WP-50: it builds, is linted and tested in CI, and carries no engine logic yet; the work package that owns it in PLAN.md §11 fills it in.
+The facade over the whole core and the only API the shells use (PLAN.md §3.3, `docs/adr/0005-bridge.md`).
+
+- `Session`: open documents (`new_document`, `open`), `execute` with validation against each command's `CommandMeta` (app and availability), `query`, `set_viewport`, `frame` (an empty `SceneDelta` with the revision until WP-54), `a11y`, `poll` for events and `host_reply` for deferred host requests. Open and Save/Save As run as host-request continuations, so they work over both synchronous and asynchronous hosts.
+- `Host`: the outside world. `NativeHost` (desktop) reads and writes files with atomic replace and defers dialogs, clipboard and preferences to the UI; `DeferredHost` (web) defers everything.
+- `SessionHandle` (native only): the session on its own thread behind a flume channel with one-shot replies, typed async methods for the Tauri IPC handlers, blocking `call`, event subscriptions; a panicking job fails alone.
+- `undo::UndoStack`: bounded history (1,000 steps, 64 MB) with coalescing and saved-state ids.
+- `apps/`: the registry of document models (`DocModel`, `AppFactory`). `apps/scratch` is a plain-paragraph document (grapheme-aware editing, word motions, selections, coalesced undo, UTF-8/UTF-16 text files) that proves the loop until the Write engine exists. App work packages add one line each to `apps/mod.rs`.

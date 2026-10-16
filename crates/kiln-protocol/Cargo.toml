@@ -9,8 +9,23 @@ authors.workspace = true
 repository.workspace = true
 publish.workspace = true
 
+[features]
+# Schema tracing (serde-reflection) and representative samples of every type: used by
+# `cargo xtask protocol` to write the TypeScript decoder schema and the postcard test vectors.
+schema = ["dep:serde-reflection", "dep:postcard", "dep:serde_json"]
+
 [dependencies]
-kiln-common.workspace = true
+kiln-common = { workspace = true, features = ["serde", "ts"] }
+serde.workspace = true
+ts-rs = { workspace = true, features = ["no-serde-warnings"] }
+serde-reflection = { workspace = true, optional = true }
+postcard = { workspace = true, optional = true }
+serde_json = { workspace = true, optional = true }
+
+[dev-dependencies]
+serde_json.workspace = true
+postcard.workspace = true
+serde-reflection.workspace = true
 
 [lints]
 workspace = true

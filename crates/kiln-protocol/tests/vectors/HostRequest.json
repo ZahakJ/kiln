@@ -1,0 +1,20 @@
+{
+  "type": "HostRequest",
+  "format": {
+    "TYPENAME": "HostRequest"
+  },
+  "values": [
+    {
+      "id": 300,
+      "op": "Recents"
+    },
+    {
+      "id": 0,
+      "op": {
+        "ReadFile": {
+          "path": ""
+        }
+      }
+    }
+  ]
+}

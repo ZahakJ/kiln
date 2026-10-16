@@ -1,0 +1,19 @@
+{
+  "type": "CaretMotion",
+  "format": {
+    "TYPENAME": "CaretMotion"
+  },
+  "values": [
+    "Backward",
+    "DocumentEnd",
+    "Backward",
+    "Forward",
+    "WordBackward",
+    "WordForward",
+    "LineStart",
+    "LineEnd",
+    "LineUp",
+    "LineDown",
+    "DocumentStart"
+  ]
+}

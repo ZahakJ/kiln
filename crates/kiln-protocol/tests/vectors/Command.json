@@ -1,0 +1,102 @@
+{
+  "type": "Command",
+  "format": {
+    "TYPENAME": "Command"
+  },
+  "values": [
+    {
+      "Suite": {
+        "Open": {
+          "path": null
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Open": {
+          "path": "/home/ana/Quarterly report.docx"
+        }
+      }
+    },
+    {
+      "Suite": {
+        "New": {
+          "kind": "Scratch"
+        }
+      }
+    },
+    {
+      "Suite": "Save"
+    },
+    {
+      "Suite": {
+        "SaveAs": {
+          "path": "C:\\Users\\Zoë\\notes.txt",
+          "format": "Txt"
+        }
+      }
+    },
+    {
+      "Suite": "Close"
+    },
+    {
+      "Suite": "Undo"
+    },
+    {
+      "Suite": "Redo"
+    },
+    {
+      "Suite": {
+        "SetZoom": {
+          "zoom": 1.25
+        }
+      }
+    },
+    {
+      "Suite": {
+        "SetViewMode": {
+          "mode": "Draft"
+        }
+      }
+    },
+    {
+      "Suite": "Ping"
+    },
+    {
+      "Suite": {
+        "Echo": {
+          "text": "héllo, 世界 👋"
+        }
+      }
+    },
+    {
+      "Write": {
+        "InsertText": {
+          "text": "Kiln\nWrite"
+        }
+      }
+    },
+    {
+      "Write": "DeleteBackward"
+    },
+    {
+      "Write": {
+        "MoveCaret": {
+          "motion": "WordBackward",
+          "extend": true
+        }
+      }
+    },
+    {
+      "Write": {
+        "SelectTo": {
+          "pos": {
+            "block": 300,
+            "offset": 70000
+          },
+          "extend": false
+        }
+      }
+    }
+  ]
+}

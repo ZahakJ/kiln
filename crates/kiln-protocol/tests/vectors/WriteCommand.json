@@ -1,0 +1,34 @@
+{
+  "type": "WriteCommand",
+  "format": {
+    "TYPENAME": "WriteCommand"
+  },
+  "values": [
+    {
+      "InsertText": {
+        "text": "Kiln\nWrite"
+      }
+    },
+    "DeleteBackward",
+    {
+      "MoveCaret": {
+        "motion": "WordBackward",
+        "extend": true
+      }
+    },
+    {
+      "SelectTo": {
+        "pos": {
+          "block": 300,
+          "offset": 70000
+        },
+        "extend": false
+      }
+    },
+    {
+      "InsertText": {
+        "text": ""
+      }
+    }
+  ]
+}

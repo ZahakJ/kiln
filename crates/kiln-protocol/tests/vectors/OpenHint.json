@@ -1,0 +1,26 @@
+{
+  "type": "OpenHint",
+  "format": {
+    "TYPENAME": "OpenHint"
+  },
+  "values": [
+    {
+      "name": null,
+      "path": null,
+      "format": null,
+      "read_only": false
+    },
+    {
+      "name": "Report.docx",
+      "path": "/r/Report.docx",
+      "format": "Docx",
+      "read_only": true
+    },
+    {
+      "name": null,
+      "path": null,
+      "format": null,
+      "read_only": false
+    }
+  ]
+}

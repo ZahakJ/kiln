@@ -1,0 +1,20 @@
+{
+  "type": "TextPos",
+  "format": {
+    "TYPENAME": "TextPos"
+  },
+  "values": [
+    {
+      "block": 1,
+      "offset": 0
+    },
+    {
+      "block": 4294967302,
+      "offset": 4294967295
+    },
+    {
+      "block": 0,
+      "offset": 0
+    }
+  ]
+}

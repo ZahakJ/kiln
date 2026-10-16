@@ -1,7 +1,23 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Permissions of the main window. Kept minimal; WP-52 adds the kiln_* commands and WP-88 the plugins.",
+  "description": "The main window: the Kiln IPC commands (PLAN.md §3.5) and the plugins the host needs (files, dialogs, links, process). Nothing else.",
   "windows": ["main"],
-  "permissions": ["core:default"]
+  "permissions": [
+    "core:default",
+    "allow-kiln-open",
+    "allow-kiln-new",
+    "allow-kiln-execute",
+    "allow-kiln-query",
+    "allow-kiln-viewport",
+    "allow-kiln-frame",
+    "allow-kiln-a11y",
+    "allow-kiln-subscribe",
+    "allow-kiln-host-reply",
+    "allow-kiln-startup-probe",
+    "fs:default",
+    "dialog:default",
+    "opener:default",
+    "process:default"
+  ]
 }

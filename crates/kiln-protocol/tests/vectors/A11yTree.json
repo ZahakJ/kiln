@@ -1,0 +1,50 @@
+{
+  "type": "A11yTree",
+  "format": {
+    "TYPENAME": "A11yTree"
+  },
+  "values": [
+    {
+      "nodes": [],
+      "active": null,
+      "announce": null
+    },
+    {
+      "nodes": [
+        {
+          "id": 1,
+          "role": "Document",
+          "name": "Scratch1",
+          "text": null,
+          "bounds": null,
+          "level": null,
+          "children": [
+            2,
+            3
+          ]
+        },
+        {
+          "id": 2,
+          "role": "Heading",
+          "name": null,
+          "text": "Résumé",
+          "bounds": {
+            "x": -12.5,
+            "y": 96.0,
+            "width": 0.75,
+            "height": 18.0
+          },
+          "level": 1,
+          "children": []
+        }
+      ],
+      "active": 2,
+      "announce": "Bold on"
+    },
+    {
+      "nodes": [],
+      "active": null,
+      "announce": null
+    }
+  ]
+}

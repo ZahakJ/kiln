@@ -1,0 +1,102 @@
+{
+  "type": "HostOp",
+  "format": {
+    "TYPENAME": "HostOp"
+  },
+  "values": [
+    {
+      "ReadFile": {
+        "path": "/a.txt"
+      }
+    },
+    {
+      "WriteFile": {
+        "path": "/a.txt",
+        "bytes": [
+          0,
+          1,
+          127,
+          128,
+          255
+        ]
+      }
+    },
+    {
+      "PickOpen": {
+        "filters": [
+          {
+            "name": "Word Document",
+            "extensions": [
+              "docx",
+              "docm"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "PickSave": {
+        "suggested_name": "Scratch1.txt",
+        "filters": []
+      }
+    },
+    "Recents",
+    {
+      "StorePref": {
+        "key": "ui.theme",
+        "value": "\"dark\""
+      }
+    },
+    {
+      "LoadPref": {
+        "key": "ui.theme"
+      }
+    },
+    "ClipboardRead",
+    {
+      "ClipboardWrite": {
+        "text": "x",
+        "html": "<b>x</b>"
+      }
+    },
+    {
+      "OpenExternal": {
+        "url": "https://zahakj.github.io/kiln/"
+      }
+    },
+    {
+      "ReadFile": {
+        "path": ""
+      }
+    },
+    {
+      "WriteFile": {
+        "path": "",
+        "bytes": [
+          0
+        ]
+      }
+    },
+    {
+      "PickOpen": {
+        "filters": [
+          {
+            "name": "",
+            "extensions": []
+          }
+        ]
+      }
+    },
+    {
+      "PickSave": {
+        "suggested_name": "",
+        "filters": [
+          {
+            "name": "",
+            "extensions": []
+          }
+        ]
+      }
+    }
+  ]
+}

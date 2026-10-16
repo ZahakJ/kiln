@@ -1,15 +1,21 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //! The Kiln shell for Linux, Windows, macOS and Android (Tauri 2).
 //!
-//! **Status:** scaffold created by WP-50. It opens one window on the web build (`apps/web`) and
-//! supports `--startup-probe`, which measures the time from process start to the first finished
-//! page load, prints `startup-ms=<n>` (and `rss-kb=<n>` where `/proc` exists) and exits; CI uses it
-//! for budgets B1 and B2 (PLAN.md §3.9). The bridge to `kiln-session` arrives with WP-52.
+//! It opens one window on the web build (`apps/web`), runs the core's session on its own thread
+//! (`kiln_session::SessionHandle` with the native host) and exposes it to the webview through the
+//! `kiln_*` IPC commands of PLAN.md §3.5 ([`bridge`]); events stream over an IPC channel and frames
+//! travel as raw postcard bytes. `--startup-probe` measures the time from process start to the first
+//! finished page load, prints `startup-ms=<n>` (and `rss-kb=<n>` where `/proc` exists) and exits;
+//! CI uses it for budgets B1 and B2 (PLAN.md §3.9). WP-88 completes the desktop host, menus and
+//! file associations.
 #![forbid(unsafe_code)]
+
+pub mod bridge;
 
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::Instant;
 
+use kiln_session::{NativeHost, SessionHandle};
 use tauri::webview::PageLoadEvent;
 
 /// Command-line options understood by the shell.
@@ -66,7 +72,36 @@ pub fn run() {
     let options = Options::parse(std::env::args().skip(1));
     let reported = AtomicBool::new(false);
 
-    tauri::Builder::default()
+    let (session, _session_thread) = match SessionHandle::spawn(Box::new(NativeHost)) {
+        Ok(started_session) => started_session,
+        Err(e) => {
+            eprintln!("kiln: {e}");
+            std::process::exit(1);
+        }
+    };
+
+    let builder = tauri::Builder::default()
+        .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_process::init());
+    #[cfg(desktop)]
+    let builder = builder.plugin(tauri_plugin_window_state::Builder::default().build());
+
+    builder
+        .manage(bridge::Kiln { session, started })
+        .invoke_handler(tauri::generate_handler![
+            bridge::kiln_open,
+            bridge::kiln_new,
+            bridge::kiln_execute,
+            bridge::kiln_query,
+            bridge::kiln_viewport,
+            bridge::kiln_frame,
+            bridge::kiln_a11y,
+            bridge::kiln_subscribe,
+            bridge::kiln_host_reply,
+            bridge::kiln_startup_probe,
+        ])
         .on_page_load(move |webview, payload| {
             if options.startup_probe
                 && payload.event() == PageLoadEvent::Finished

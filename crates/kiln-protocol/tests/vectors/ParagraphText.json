@@ -1,0 +1,16 @@
+{
+  "type": "ParagraphText",
+  "format": {
+    "TYPENAME": "ParagraphText"
+  },
+  "values": [
+    {
+      "id": 3,
+      "text": "Ünïcödé ✓"
+    },
+    {
+      "id": 0,
+      "text": ""
+    }
+  ]
+}

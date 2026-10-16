@@ -14,8 +14,10 @@
 
 mod notices;
 mod pending;
+mod protocol;
 mod util;
 mod verify;
+mod wasm;
 
 use std::process::ExitCode;
 
@@ -40,6 +42,8 @@ fn main() -> ExitCode {
     let result = match cmd.as_str() {
         "verify" => verify::run(&rest),
         "notices" => notices::run(&rest),
+        "protocol" => protocol::run(&rest),
+        "wasm" => wasm::run(&rest),
         "-h" | "--help" | "help" => {
             println!("{USAGE}");
             Ok(())

@@ -1,13 +1,31 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //! # kiln-common
 //!
-//! Shared foundations for every Kiln crate: stable identifiers (`DocId`, `NodeId`), units (EMU,
-//! twips, points, pixels), colours, geometry on top of `kurbo`, error types and feature tiers.
+//! Shared foundations for every Kiln crate: stable identifiers ([`DocId`], [`NodeId`]), units
+//! ([`Emu`], [`Twip`], [`Pt`], [`Px`]), colours ([`Color`]), geometry re-exported from `kurbo`
+//! ([`Point`], [`Rect`], …) and the error type ([`KilnError`]).
 //!
-//! **Status:** scaffold created by WP-50. The crate builds and is linted and tested in CI, but
-//! it holds no engine logic yet; WP-52 (PLAN.md §11) implements it.
+//! The `serde` feature adds serialisation for identifiers, units and colours; the `ts` feature adds
+//! `ts_rs::TS` so `kiln-protocol` can export them to TypeScript.
 #![forbid(unsafe_code)]
 #![warn(missing_docs)]
+
+mod color;
+mod error;
+mod ids;
+mod units;
+
+pub use color::{Color, ParseColorError};
+pub use error::{ErrorKind, KilnError, Result};
+pub use ids::{DocId, NodeId, NodeIdGen};
+pub use units::{
+    EMU_PER_INCH, EMU_PER_PT, EMU_PER_PX, Emu, PT_PER_INCH, PX_PER_INCH, Pt, Px, TWIP_PER_INCH,
+    Twip,
+};
+
+/// Geometry shared by layout, scene, hit testing and the protocol: `kurbo` types in CSS pixels or
+/// points depending on the layer that uses them.
+pub use kurbo::{Affine, Insets, Point, Rect, Size, Vec2};
 
 /// The suite version, shared by every crate in the workspace.
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -37,5 +55,12 @@ mod tests {
         assert!(!VERSION.is_empty());
         assert_eq!(PRODUCT_NAME, "Kiln");
         assert_eq!(APP_IDENTIFIER, "io.github.zahakj.kiln");
+    }
+
+    #[test]
+    fn geometry_is_kurbo() {
+        let r = Rect::new(0.0, 0.0, 10.0, 20.0);
+        assert!(r.contains(Point::new(5.0, 5.0)));
+        assert_eq!(r.size(), Size::new(10.0, 20.0));
     }
 }

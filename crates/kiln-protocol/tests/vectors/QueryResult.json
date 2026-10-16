@@ -1,0 +1,192 @@
+{
+  "type": "QueryResult",
+  "format": {
+    "TYPENAME": "QueryResult"
+  },
+  "values": [
+    {
+      "Documents": [
+        {
+          "doc": 7,
+          "kind": "Scratch",
+          "app": "Write",
+          "title": "Scratch1",
+          "path": "/tmp/scratch.txt",
+          "format": "Txt",
+          "revision": 1234567890123,
+          "dirty": true,
+          "read_only": false,
+          "can_undo": true,
+          "can_redo": false,
+          "undo_label": "write.edit.insert_text",
+          "redo_label": null
+        }
+      ]
+    },
+    {
+      "Summary": {
+        "doc": 7,
+        "kind": "Scratch",
+        "app": "Write",
+        "title": "Scratch1",
+        "path": "/tmp/scratch.txt",
+        "format": "Txt",
+        "revision": 1234567890123,
+        "dirty": true,
+        "read_only": false,
+        "can_undo": true,
+        "can_redo": false,
+        "undo_label": "write.edit.insert_text",
+        "redo_label": null
+      }
+    },
+    {
+      "Paragraphs": [
+        {
+          "id": 1,
+          "text": "First"
+        },
+        {
+          "id": 2,
+          "text": ""
+        }
+      ]
+    },
+    {
+      "Selection": {
+        "kind": {
+          "Text": {
+            "anchor": {
+              "block": 1,
+              "offset": 0
+            },
+            "head": {
+              "block": 2,
+              "offset": 5
+            }
+          }
+        },
+        "rects": [
+          {
+            "x": -12.5,
+            "y": 96.0,
+            "width": 0.75,
+            "height": 18.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1000000.0,
+            "height": 0.0034
+          }
+        ],
+        "caret": {
+          "rect": {
+            "x": -12.5,
+            "y": 96.0,
+            "width": 0.75,
+            "height": 18.0
+          },
+          "rtl": true
+        },
+        "handles": [
+          {
+            "kind": "SelectionStart",
+            "rect": {
+              "x": -12.5,
+              "y": 96.0,
+              "width": 0.75,
+              "height": 18.0
+            }
+          },
+          {
+            "kind": {
+              "Resize": "SW"
+            },
+            "rect": {
+              "x": -12.5,
+              "y": 96.0,
+              "width": 0.75,
+              "height": 18.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Status": {
+        "page": {
+          "current": 3,
+          "total": 12
+        },
+        "words": 1284,
+        "chars": 7311,
+        "language": "en-GB",
+        "cells": {
+          "count": 10,
+          "numeric_count": 9,
+          "sum": 1284.0,
+          "average": 142.66666666666666,
+          "min": -3.5,
+          "max": null
+        },
+        "slide": null,
+        "zoom": 1.5,
+        "view": "PrintLayout"
+      }
+    },
+    {
+      "A11y": {
+        "nodes": [
+          {
+            "id": 1,
+            "role": "Document",
+            "name": "Scratch1",
+            "text": null,
+            "bounds": null,
+            "level": null,
+            "children": [
+              2,
+              3
+            ]
+          },
+          {
+            "id": 2,
+            "role": "Heading",
+            "name": null,
+            "text": "Résumé",
+            "bounds": {
+              "x": -12.5,
+              "y": 96.0,
+              "width": 0.75,
+              "height": 18.0
+            },
+            "level": 1,
+            "children": []
+          }
+        ],
+        "active": 2,
+        "announce": "Bold on"
+      }
+    },
+    {
+      "Documents": [
+        {
+          "doc": 0,
+          "kind": "Scratch",
+          "app": "Write",
+          "title": "",
+          "path": null,
+          "format": null,
+          "revision": 0,
+          "dirty": false,
+          "read_only": false,
+          "can_undo": false,
+          "can_redo": false,
+          "undo_label": null,
+          "redo_label": null
+        }
+      ]
+    }
+  ]
+}

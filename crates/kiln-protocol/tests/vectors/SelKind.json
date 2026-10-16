@@ -1,0 +1,53 @@
+{
+  "type": "SelKind",
+  "format": {
+    "TYPENAME": "SelKind"
+  },
+  "values": [
+    "None",
+    {
+      "Text": {
+        "anchor": {
+          "block": 1,
+          "offset": 0
+        },
+        "head": {
+          "block": 2,
+          "offset": 5
+        }
+      }
+    },
+    {
+      "Shapes": {
+        "ids": [
+          5,
+          900
+        ]
+      }
+    },
+    {
+      "Cells": {
+        "ranges": [
+          {
+            "start": {
+              "sheet": 0,
+              "row": 1,
+              "col": 1
+            },
+            "end": {
+              "sheet": 0,
+              "row": 10,
+              "col": 1
+            }
+          }
+        ],
+        "active": {
+          "sheet": 0,
+          "row": 1,
+          "col": 1
+        }
+      }
+    },
+    "None"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "type": "A11yNode",
+  "format": {
+    "TYPENAME": "A11yNode"
+  },
+  "values": [
+    {
+      "id": 1,
+      "role": "Document",
+      "name": "Scratch1",
+      "text": null,
+      "bounds": null,
+      "level": null,
+      "children": [
+        2,
+        3
+      ]
+    },
+    {
+      "id": 2,
+      "role": "Heading",
+      "name": null,
+      "text": "Résumé",
+      "bounds": {
+        "x": -12.5,
+        "y": 96.0,
+        "width": 0.75,
+        "height": 18.0
+      },
+      "level": 1,
+      "children": []
+    },
+    {
+      "id": 0,
+      "role": "Document",
+      "name": null,
+      "text": null,
+      "bounds": null,
+      "level": null,
+      "children": []
+    }
+  ]
+}

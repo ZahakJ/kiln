@@ -12,9 +12,23 @@ publish.workspace = true
 [lib]
 crate-type = ["cdylib", "rlib"]
 
+[features]
+# Multi-threaded build (a second artefact, used when the page is cross-origin isolated): exports
+# `initThreadPool` from wasm-bindgen-rayon. Needs a nightly toolchain with `+atomics` to be useful;
+# off by default (PLAN.md §3.5).
+threads = ["dep:wasm-bindgen-rayon"]
+
 [dependencies]
 kiln-common.workspace = true
+kiln-protocol.workspace = true
+kiln-session.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+postcard.workspace = true
 wasm-bindgen.workspace = true
+js-sys.workspace = true
+console_error_panic_hook.workspace = true
+wasm-bindgen-rayon = { workspace = true, optional = true }
 
 [lints]
 workspace = true
