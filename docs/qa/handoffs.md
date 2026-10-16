@@ -518,3 +518,30 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   cell down a whole column takes 1.0–2.2 s for values and 6.2 s for a relative formula (a million formulas bound
   and calculated); undo/redo 0.7–4.8 s. Excel fills a column in about a second; the formula case is the one to
   profile (perf is not permitted on the build machine, `perf_event_paranoid = 4`).
+
+## WP-65 fix round 2 → WP-62 (DOCX reader), WP-60 (CLI), WP-59 (parity), the fidelity owner
+
+- `poi-deep-table-cell.docx` now passes (visual 1.000; `cargo xtask fidelity --format docx` exits 0, summary visual
+  0.916): the reader remembers end-of-cell paragraphs it added after a nested table
+  (`DocxExtras::cell_end_paragraphs`, `common/extras.rs`, set in `read/tables.rs`) and the writer leaves such a
+  paragraph out while it is still empty, unformatted, without extras and after a table, so an unedited cell is saved
+  as the file had it and LibreOffice renders all 5,000 levels flat again (105 pages, as the original). Typing in,
+  formatting the paragraph or deleting the table writes it normally. The fix-round-1 note asking the plan owner for
+  a corpus exemption is withdrawn.
+- Outside WP-65's paths, for the owners to ratify: `read/tables.rs` (WP-62) — besides the flag above, the fixed
+  `TABLE_HEADROOM = 8` is replaced by `levels_within`, the element depth of the table's subtree with nested tables
+  counted as one level (iterative, each element visited once), an upper bound on the container levels the reader
+  enters; content controls nested 20 deep in the deepest followed cell were dropped before
+  (`write_hostile.rs` `deeply_wrapped_text_in_the_deepest_followed_table_is_saved`). `common/extras.rs` (WP-62):
+  the new field. `kiln-cli/src/convert.rs` (written by WP-65; WP-60's crate): the summary counted
+  `[Content_Types].xml` and `.rels` parts as written but not as parts ("parts: 4, written from the model: 5"); all
+  package files are now counted on both sides. The fix-round-1 edits in `kiln-ooxml` (WP-55), `read/{context,mod}.rs`
+  (WP-62) and `kiln-cli/src/inspect.rs` (WP-60) still await their owners' acknowledgement.
+- For WP-59 / the parity owner: content of an `XmlNode::Raw` subtree or an over-deep opaque table is kept on save but
+  invisible to layout, search and text extraction (the compat report says "kept unchanged but not shown"); this
+  deserves a parity row (Write, niche: "content nested past the followed depth is shown").
+- Still deferred: recording touched parts before a transaction is applied (needs a `kiln-session` change), and
+  showing `parity/corpus.json` notes in `docs/qa/fidelity.md` (fidelity owner). An unedited convert regenerates
+  `word/document.xml` (declaration and prefix normalisation) rather than copying it; copying model parts verbatim on
+  a save without edits is possible with `WriteOptions::preserve` and an empty `TouchedParts`, which `convert` does
+  not pass on purpose (it is meant to exercise the writer).

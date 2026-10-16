@@ -10,7 +10,7 @@
 //! Raw XML fragments use the stable Office prefixes without declaring them (see
 //! [`crate::common::xml::fragment_xml`]).
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 use kiln_doc::props::{Border, Lang};
 use kiln_doc::settings::NoteSettings;
@@ -184,6 +184,12 @@ pub struct DocxExtras {
     pub rows: BTreeMap<NodeId, RowExtras>,
     /// Cell extras.
     pub cells: BTreeMap<NodeId, CellExtras>,
+    /// End-of-cell paragraphs the reader added because the file's cell ended with a nested
+    /// table and no paragraph. The model keeps Word's invariant (every cell ends with a
+    /// paragraph); the writer leaves such a paragraph out again while it is still empty and
+    /// unformatted and still follows a table, so an unedited cell is saved as it was (Word and
+    /// LibreOffice lay the two forms out differently).
+    pub cell_end_paragraphs: BTreeSet<NodeId>,
     /// Section extras.
     pub sections: BTreeMap<NodeId, SectionExtras>,
     /// The part each header or footer story was read from.

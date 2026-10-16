@@ -4,7 +4,7 @@ Written by `cargo xtask fidelity` (`kiln-cli fidelity`, scorer in `crates/kiln-t
 
 - Formats: docx
 - Oracle: LibreOffice (`/usr/bin/soffice`) through `tools/oracle-soffice.sh`; pages rendered by `pdftoppm` at 60 dpi
-- Result: **FAIL**
+- Result: **pass**
 
 ## Summary
 
@@ -12,7 +12,7 @@ Lowest value of any file of the format (— = not measured).
 
 | Format | Adapter | Files | Passing | structural | text | visual | values | formulas | oracle_opens | byte_identical_untouched |
 |---|---|---|---|---|---|---|---|---|---|---|
-| docx | kiln-io-docx | 31 | 30 | 1.000 | 1.000 | 0.009 | — | — | yes | yes |
+| docx | kiln-io-docx | 31 | 31 | 1.000 | 1.000 | 0.916 | — | — | yes | yes |
 
 ## Files
 
@@ -45,7 +45,7 @@ Lowest value of any file of the format (— = not measured).
 | `external/docx/poi-Numbering.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
 | `external/docx/poi-SampleDoc.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
 | `external/docx/poi-Styles.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
-| `external/docx/poi-deep-table-cell.docx` | **fail** | 1.000 | 1.000 | 0.009 | — | — | yes | yes | visual 0.009 < 0.9 |
+| `external/docx/poi-deep-table-cell.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
 | `external/docx/poi-endnotes.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
 | `external/docx/poi-footnotes.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
 | `external/docx/poi-headerPic.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |

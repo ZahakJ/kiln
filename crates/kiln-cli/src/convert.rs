@@ -103,16 +103,26 @@ pub fn run(args: &[String]) -> Result<String, CliError> {
     let elapsed = started.elapsed();
     std::fs::write(&output, &written.bytes)
         .map_err(|e| CliError::Failed(format!("{}: {e}", output.display())))?;
-    let parts = OpcPackage::open(&written.bytes).map_or(0, |p| p.len());
+    // Every file of the output package (parts, relationships parts and the content types),
+    // split by whether the writer produced it or copied it from the input unchanged.
+    let (parts, carried) = OpcPackage::open(&written.bytes).map_or((0, 0), |p| {
+        let names: Vec<&str> = std::iter::once(kiln_ooxml::opc::CONTENT_TYPES_PART)
+            .chain(p.all_part_names())
+            .collect();
+        let carried = names
+            .iter()
+            .filter(|n| !written.regenerated.iter().any(|r| r == *n))
+            .count();
+        (names.len(), carried)
+    });
     let mut out = format!(
-        "{} -> {} ({} -> {} bytes, {:.1} ms)\nparts: {parts}, written from the model: {}, carried over: {}",
+        "{} -> {} ({} -> {} bytes, {:.1} ms)\nparts: {parts}, written from the model: {}, carried over: {carried}",
         input.display(),
         output.display(),
         bytes.len(),
         written.bytes.len(),
         elapsed.as_secs_f64() * 1000.0,
-        written.regenerated.len(),
-        parts.saturating_sub(written.regenerated.len()),
+        parts - carried,
     );
     for i in &written.issues {
         let _ = write!(out, "\nwarning: {i}");
@@ -147,6 +157,41 @@ mod tests {
         assert!(now_w3cdtf().starts_with("20") && now_w3cdtf().ends_with('Z'));
     }
 
+    /// The summary's part counts are consistent: written plus carried over is every part.
+    fn assert_counts_add_up(text: &str) {
+        let line = text
+            .lines()
+            .find(|l| l.starts_with("parts: "))
+            .expect("summary line");
+        let numbers: Vec<usize> = line
+            .split(", ")
+            .map(|f| f.rsplit(": ").next().unwrap().parse().unwrap())
+            .collect();
+        assert_eq!(numbers.len(), 3, "{line}");
+        assert_eq!(numbers[1] + numbers[2], numbers[0], "{line}");
+        assert!(numbers[1] > 0, "{line}");
+    }
+
+    #[test]
+    fn part_counts_cover_every_file_of_the_package() {
+        // Relationships parts and the content types count as parts too, so the parts written
+        // from the model never outnumber the parts of the package.
+        let input =
+            kiln_testing::fixtures::fixtures_dir().join("docx/features/tracked-changes.docx");
+        let out =
+            std::env::temp_dir().join(format!("kiln-convert-count-{}.docx", std::process::id()));
+        let text = run(&[
+            input.to_string_lossy().into_owned(),
+            out.to_string_lossy().into_owned(),
+        ])
+        .unwrap();
+        let written = std::fs::read(&out).unwrap();
+        let _ = std::fs::remove_file(&out);
+        assert_counts_add_up(&text);
+        let files = OpcPackage::open(&written).unwrap().all_part_names().count() + 1;
+        assert!(text.contains(&format!("parts: {files}, ")), "{text}");
+    }
+
     #[test]
     fn converts_a_fixture_and_refuses_other_formats() {
         let input =
@@ -158,6 +203,7 @@ mod tests {
         ])
         .unwrap();
         assert!(text.contains("written from the model"), "{text}");
+        assert_counts_add_up(&text);
         let back = kiln_io_docx::read_docx(&std::fs::read(&out).unwrap()).unwrap();
         assert!(!back.document.sections.is_empty());
         let _ = std::fs::remove_file(&out);

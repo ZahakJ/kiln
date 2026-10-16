@@ -115,6 +115,12 @@ pub fn differences(a: &DocxRead, b: &DocxRead) -> Vec<String> {
     check("extras.tables", &xa.tables, &xb.tables, &mut out);
     check("extras.rows", &xa.rows, &xb.rows, &mut out);
     check("extras.cells", &xa.cells, &xb.cells, &mut out);
+    check(
+        "extras.cell_end_paragraphs",
+        &xa.cell_end_paragraphs,
+        &xb.cell_end_paragraphs,
+        &mut out,
+    );
     check("extras.sections", &xa.sections, &xb.sections, &mut out);
     check("extras.note_ids", &xa.note_ids, &xb.note_ids, &mut out);
     check(

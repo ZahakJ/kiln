@@ -520,6 +520,109 @@ fn nested_tables_end_every_cell_with_a_paragraph() {
     assert!(document(&rt).contains("</w:tbl><w:p/></w:tc>"));
 }
 
+/// A cell whose last child is a nested table, without the end-of-cell paragraph Word writes
+/// (Apache POI's `deep-table-cell.docx` is made of them).
+const CELL_ENDING_WITH_A_TABLE: &str = concat!(
+    "<w:tbl><w:tblPr/><w:tblGrid><w:gridCol w:w=\"4000\"/></w:tblGrid><w:tr><w:tc>",
+    "<w:p><w:r><w:t>outer</w:t></w:r></w:p>",
+    "<w:tbl><w:tblPr/><w:tblGrid><w:gridCol w:w=\"2000\"/></w:tblGrid><w:tr><w:tc><w:p><w:r><w:t>inner</w:t></w:r></w:p></w:tc></w:tr></w:tbl>",
+    "</w:tc></w:tr></w:tbl><w:p/>"
+);
+
+/// The outer table's only cell.
+fn outer_cell(doc: &mut kiln_doc::Document) -> &mut kiln_doc::Cell {
+    let Some(Block::Table(t)) = doc.sections[0].blocks.first_mut() else {
+        panic!("table");
+    };
+    &mut t.rows[0].cells[0]
+}
+
+#[test]
+fn an_unedited_cell_ending_with_a_table_is_saved_without_an_added_paragraph() {
+    // The model still ends the cell with a paragraph, as Word does …
+    let rt = same(CELL_ENDING_WITH_A_TABLE);
+    let mut doc = rt.a.document.clone();
+    assert!(matches!(
+        outer_cell(&mut doc).blocks.last(),
+        Some(Block::Paragraph(_))
+    ));
+    assert_eq!(rt.a.extras.cell_end_paragraphs.len(), 1);
+    // … but the saved cell ends with the table, as the file had it (LibreOffice lays the two
+    // forms out differently).
+    let xml = document(&rt);
+    assert!(xml.contains("</w:tbl></w:tc>"), "{xml}");
+    assert!(!xml.contains("</w:tbl><w:p/></w:tc>"), "{xml}");
+}
+
+#[test]
+fn an_end_of_cell_paragraph_that_was_typed_in_or_formatted_is_saved() {
+    let pkg_bytes = build_docx(Build {
+        body: CELL_ENDING_WITH_A_TABLE.to_owned(),
+        ..Build::default()
+    });
+    let pkg = kiln_ooxml::opc::OpcPackage::open(&pkg_bytes).expect("package");
+    let read = kiln_io_docx::read_package(&pkg).expect("reads");
+    let save = |doc: &kiln_doc::Document| {
+        let source = kiln_io_docx::WriteSource::from_read(&read).with_package(&pkg);
+        let out =
+            kiln_io_docx::write_docx(doc, Some(&source), &Default::default()).expect("writes");
+        let back = kiln_io_docx::read_docx(&out.bytes).expect("reads back");
+        let pkg = kiln_ooxml::opc::OpcPackage::open(&out.bytes).expect("package");
+        let xml = pkg
+            .part("/word/document.xml")
+            .expect("readable")
+            .expect("present");
+        (String::from_utf8(xml.into_owned()).expect("UTF-8"), back)
+    };
+
+    // Typed in: the paragraph and its text are written.
+    let mut typed = read.document.clone();
+    if let Some(Block::Paragraph(p)) = outer_cell(&mut typed).blocks.last_mut() {
+        p.content =
+            kiln_doc::Inlines::from_fragment(kiln_doc::Fragment::text("typed", Default::default()))
+                .expect("fragment");
+    }
+    let (xml, back) = save(&typed);
+    assert!(
+        xml.contains("</w:tbl><w:p><w:r><w:t>typed</w:t></w:r></w:p></w:tc>"),
+        "{xml}"
+    );
+    assert!(back.extras.cell_end_paragraphs.is_empty());
+
+    // Formatted: the paragraph is written with its properties.
+    let mut formatted = read.document.clone();
+    if let Some(Block::Paragraph(p)) = outer_cell(&mut formatted).blocks.last_mut() {
+        p.props.keep_next = Some(true);
+    }
+    let (xml, _) = save(&formatted);
+    assert!(
+        xml.contains("</w:tbl><w:p><w:pPr><w:keepNext/></w:pPr></w:p></w:tc>"),
+        "{xml}"
+    );
+
+    // The table before it deleted: the cell keeps its paragraphs.
+    let mut deleted = read.document.clone();
+    let cell = outer_cell(&mut deleted);
+    cell.blocks.remove(1);
+    let (xml, _) = save(&deleted);
+    assert!(
+        xml.contains("<w:t>outer</w:t></w:r></w:p><w:p/></w:tc>"),
+        "{xml}"
+    );
+
+    // Without the reader's extras (a document built in Kiln) every cell ends with a paragraph.
+    let out = kiln_io_docx::write_docx(&read.document, None, &Default::default()).expect("writes");
+    let pkg = kiln_ooxml::opc::OpcPackage::open(&out.bytes).expect("package");
+    let xml = String::from_utf8(
+        pkg.part("/word/document.xml")
+            .expect("readable")
+            .expect("present")
+            .into_owned(),
+    )
+    .expect("UTF-8");
+    assert!(xml.contains("</w:tbl><w:p/></w:tc>"), "{xml}");
+}
+
 #[test]
 fn a_section_break_after_a_table_gets_a_paragraph_of_its_own() {
     let mut doc = kiln_doc::Document::new();

@@ -298,3 +298,40 @@ fn tables_nested_past_the_xml_depth_limit_open_and_save_losslessly() {
     // kept as verbatim markup, so the document opens and saves without losing a word.
     on_small_stack(|| assert_every_level_saved(5_000));
 }
+
+/// Tables nested `depth` deep whose innermost cell holds a word inside `wrappers` nested inline
+/// content controls.
+fn wrapped_word_in_nested_tables(depth: usize, wrappers: usize) -> Vec<u8> {
+    let mut inner = String::from("<w:r><w:t>wrapped</w:t></w:r>");
+    for _ in 0..wrappers {
+        inner = format!("<w:sdt><w:sdtPr/><w:sdtContent>{inner}</w:sdtContent></w:sdt>");
+    }
+    let mut body = format!("<w:p>{inner}</w:p>");
+    for _ in 0..depth {
+        body = format!(
+            "<w:tbl><w:tblGrid><w:gridCol w:w=\"2400\"/></w:tblGrid><w:tr><w:tc>{body}</w:tc></w:tr></w:tbl>"
+        );
+    }
+    build_docx(Build {
+        body,
+        ..Build::default()
+    })
+}
+
+#[test]
+fn deeply_wrapped_text_in_the_deepest_followed_table_is_saved() {
+    on_small_stack(|| {
+        for depth in 1..=40 {
+            for wrappers in [4, 8, 12, 20] {
+                let read =
+                    read_docx(&wrapped_word_in_nested_tables(depth, wrappers)).expect("reads");
+                let out =
+                    write_docx(&read.document, None, &WriteOptions::default()).expect("writes");
+                assert!(
+                    main_part_text(&out.bytes).contains(">wrapped<"),
+                    "depth {depth}, {wrappers} wrappers: the word was lost"
+                );
+            }
+        }
+    });
+}

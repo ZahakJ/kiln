@@ -1018,10 +1018,15 @@ impl<'w, 'a> StoryWriter<'w, 'a> {
         let empty: Vec<String> = Vec::new();
         let raw = self.ids.extras.cells.get(&c.id).map_or(&empty, |x| &x.xml);
         let tcpr = cell_props_inner(&c.props, c.grid_span, c.v_merge, raw);
-        let mut content = self.blocks(&c.blocks, BlockOpts::default());
-        if !matches!(c.blocks.last(), Some(Block::Paragraph(_))) {
-            // Word requires every cell to end with a paragraph.
-            content.push_str("<w:p/>");
+        let mut content;
+        if self.keeps_file_cell_end(c) {
+            content = self.blocks(&c.blocks[..c.blocks.len() - 1], BlockOpts::default());
+        } else {
+            content = self.blocks(&c.blocks, BlockOpts::default());
+            if !matches!(c.blocks.last(), Some(Block::Paragraph(_))) {
+                // Word requires every cell to end with a paragraph.
+                content.push_str("<w:p/>");
+            }
         }
         let tcpr = if tcpr.is_empty() {
             String::new()
@@ -1029,6 +1034,19 @@ impl<'w, 'a> StoryWriter<'w, 'a> {
             format!("<w:tcPr>{tcpr}</w:tcPr>")
         };
         format!("<w:tc>{tcpr}{content}</w:tc>")
+    }
+
+    /// True when the cell's last block is an end-of-cell paragraph the reader added after a
+    /// nested table (see [`DocxExtras::cell_end_paragraphs`]) and it is still empty, unformatted
+    /// and after a table: the cell is then written as the file had it, ending with the table.
+    fn keeps_file_cell_end(&self, c: &Cell) -> bool {
+        matches!(
+            &c.blocks[..],
+            [.., Block::Table(_) | Block::Opaque(_), Block::Paragraph(p)]
+                if self.ids.extras.cell_end_paragraphs.contains(&p.id)
+                    && !self.ids.extras.paragraphs.contains_key(&p.id)
+                    && *p == Paragraph::new(p.id)
+        )
     }
 }
 

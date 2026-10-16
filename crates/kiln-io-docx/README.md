@@ -20,7 +20,7 @@ let summary = kiln_io_docx::Summary::of(&read);    // outline and counts
 |---|---|
 | `document` | the `kiln_doc::Document`: sections with headers/footers, notes (separators kept, typed), threaded comments, styles, numbering, settings, properties, theme, media |
 | `passthrough` | every part and relationship the reader did not model (`kiln_ooxml::passthrough::PassthroughSet`) |
-| `extras` | `DocxExtras`: raw XML of unmodelled properties per paragraph, run range, table, row, cell and section; every style and abstract list as read; latent styles; the settings root; page borders and section note settings; original note and comment ids; `w14:paraId`; people |
+| `extras` | `DocxExtras`: raw XML of unmodelled properties per paragraph, run range, table, row, cell and section; every style and abstract list as read; latent styles; the settings root; page borders and section note settings; original note and comment ids; `w14:paraId`; people; end-of-cell paragraphs the reader added after a nested table (`cell_end_paragraphs`, left out again on save while untouched) |
 | `package_properties` | core, app and custom properties exactly as read (including values the model does not hold) |
 | `relationships` | relationship id → target per source part, for ids referenced from kept XML |
 | `charts` | chart drawings with their part, for the charts work |
@@ -41,8 +41,9 @@ What is modelled, kept or approximated is listed in `docs/FORMATS.md` (Word docu
   `Field` object (instruction + cached result), released as plain text if it crosses a paragraph,
   turned into a link for `HYPERLINK`, or into a `FieldBlock` for TOC, INDEX, BIBLIOGRAPHY and TOA.
 - **Bounded nesting.** Containers deeper than 64 levels and text boxes deeper than 4 are not
-  followed, so hostile files cannot exhaust the stack; a table is followed only when its cells fit
-  under that limit too, otherwise it is kept whole as opaque XML. Parts are parsed with
+  followed, so hostile files cannot exhaust the stack; a table is followed only when everything in
+  it (measured as its element depth, nested tables counted as one level) fits under that limit
+  too, otherwise it is kept whole as opaque XML. Parts are parsed with
   `keep_too_deep_as_raw`: elements past the XML layer's 2,000-level tree limit stay verbatim
   markup, so such files open and save without loss instead of being refused.
 - **Symbols** keep font and code; `symbol_to_unicode` maps Symbol, Webdings and Wingdings 1–3 with

@@ -79,8 +79,13 @@ whose result spans paragraphs (other than TOC-like fields) keeps its result as
 text; tables nested so deep that their cells would pass 64 containers (about 28
 tables), text boxes more than 4 deep, and anything past the XML layer's
 2,000-element tree limit (Apache POI's 5,000-table `deep-table-cell.docx`) are
-kept verbatim as XML and saved unchanged, but not shown. A cell that ends with a
-nested table (or is empty) gets the end-of-cell paragraph Word gives it.
+kept verbatim as XML and saved unchanged, but not shown; how deep a table can be
+and still be followed is measured from its content (content controls, links and
+other wrappers in its cells count). A cell that ends with a nested table (or is
+empty) gets the end-of-cell paragraph Word gives it; a cell that ended with a
+nested table in the file is saved that way again while that paragraph is still
+empty and unformatted, since Word and LibreOffice lay the two forms out
+differently.
 Packages that are encrypted, legacy
 binary `.doc`, not zip files or beyond the zip limits are refused with a typed
 error; a malformed secondary part is skipped with a diagnostic, never a crash.

@@ -150,10 +150,12 @@ fn has_content(b: &Block) -> bool {
 
 /// Reads a `w:tbl` into a table block.
 pub(crate) fn read_table(story: &mut StoryReader<'_, '_>, tbl: &XmlElement) -> Block {
-    // A table is only followed when its cells and their paragraphs fit under the depth limit
-    // too; otherwise the limit would cut the table open and drop its inner content. Too deep to
-    // follow: keep the whole table verbatim so a save loses nothing.
-    if story.ctx.depth.saturating_add(TABLE_HEADROOM) >= MAX_DEPTH {
+    // A table is only followed when everything in it — rows, cells, paragraphs and any inline
+    // wrappers (content controls, hyperlinks, smart tags) — fits under the depth limit too;
+    // otherwise the limit would cut the table open and drop its inner content. Nested tables are
+    // measured on their own when they are reached. Too deep to follow: keep the whole table
+    // verbatim so a save loses nothing.
+    if story.ctx.depth.saturating_add(levels_within(tbl)) >= MAX_DEPTH {
         story.warn(
             WarningCode::NestingTooDeep,
             Severity::Info,
@@ -169,9 +171,27 @@ pub(crate) fn read_table(story: &mut StoryReader<'_, '_>, tbl: &XmlElement) -> B
     block
 }
 
-/// Container levels reserved inside a table for its cell, the cell's paragraphs and a few inline
-/// wrappers (hyperlinks, fields, content controls).
-const TABLE_HEADROOM: usize = 8;
+/// An upper bound on the container levels the reader enters below (and including) `tbl`, not
+/// counting what nested tables need: the element depth of its subtree with every nested
+/// `w:tbl` counted as one level. Every container level the reader enters is an element it
+/// descends into, so the element depth bounds them. Iterative, so hostile nesting cannot exhaust
+/// the stack; every element is visited by its nearest enclosing table only.
+fn levels_within(tbl: &XmlElement) -> usize {
+    let mut deepest = 1;
+    let mut stack: Vec<(&XmlElement, usize)> = vec![(tbl, 1)];
+    while let Some((el, depth)) = stack.pop() {
+        deepest = deepest.max(depth);
+        for child in el.elements() {
+            if child.name == "w:tbl" {
+                deepest = deepest.max(depth.saturating_add(1));
+            } else {
+                stack.push((child, depth.saturating_add(1)));
+            }
+        }
+    }
+    // Verbatim over-deep markup (`XmlNode::Raw`) is kept as it is and never entered.
+    deepest
+}
 
 fn opaque_table(story: &mut StoryReader<'_, '_>, tbl: &XmlElement) -> Block {
     Block::Opaque(OpaqueBlock {
@@ -267,8 +287,13 @@ fn read_table_inner(story: &mut StoryReader<'_, '_>, tbl: &XmlElement) -> Block 
             }
             if !matches!(blocks.last(), Some(Block::Paragraph(_))) {
                 // Word ends every cell with a paragraph (the end-of-cell mark), also when the
-                // file's cell is empty or ends with a nested table; the writer writes it.
-                blocks.push(empty_paragraph(story));
+                // file's cell is empty or ends with a nested table. After a table the file's
+                // form is remembered so that an unedited cell is written back without it.
+                let id = story.ctx.doc.alloc_id();
+                if !blocks.is_empty() {
+                    story.ctx.extras.cell_end_paragraphs.insert(id);
+                }
+                blocks.push(Block::Paragraph(Paragraph::new(id)));
             }
             let id = story.ctx.doc.alloc_id();
             let extras = CellExtras {
