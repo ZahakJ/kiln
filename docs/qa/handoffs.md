@@ -697,3 +697,38 @@ WP-54 had to touch these files outside its owned paths; every change is additive
 - For WP-91 (packaging): per-document icons `apps/desktop/src-tauri/icons/{write,grid,deck,notes}.png` exist for
   `bundle.fileAssociations` (`.docx` → write, `.xlsx` → grid, `.pptx` → deck); `tauri.conf.json` does not declare
   the associations yet.
+
+## WP-76 → WP-77/WP-79 (PPTX), WP-78/WP-80 (Deck editor, layout, show), WP-82 (collaboration), WP-51 (brand fonts), WP-87 (ODF)
+
+- No edits outside WP-76's paths except the shared files (`CHANGELOG.md`, `parity/parity.json` rows for themes,
+  variants and layouts, `docs/FORMATS.md` gains a `.kdeck-theme` section, this note).
+- For WP-77/WP-79 (PPTX): `kiln_deck::dml::text` reads and writes `a:bodyPr`, `a:pPr`/`a:lvlNpPr`, `a:rPr`/`a:defRPr`
+  and `a:lstStyle`/`p:titleStyle`/`p:bodyStyle`/`p:otherStyle`/`p:defaultTextStyle` into the model (pass a
+  `ColorContext` from `Presentation::color_context` so theme colours cache their exact RGB); `dml::color` maps
+  DrawingML colours to kiln-doc run colours (lumMod/lumOff ⇄ tint/shade, exact for Office's standard steps).
+  Build text bodies with `TextBody::from_paragraphs(paragraphs, deck_props)` (paragraph `outline_level` is
+  `a:pPr/@lvl`; bullets and spacing go in `DeckParaProps`). `TransitionEffect::from_element` maps every
+  `p:transition` child (exact or nearest, keep the original XML in `Transition::original` when not exact) and
+  `to_element` writes it back; `AnimationEffect::from_ooxml_preset`/`ooxml_preset` map `presetClass`/`presetID`/
+  `presetSubtype` (keep unsupported effects' `p:par` XML in `AnimationEffect::Other { xml }`). Media, charts,
+  embedded workbooks and parts you keep go in `Presentation::parts` (key = part name). Readers allocate ids with
+  `Presentation::alloc_id` (or set their own and call `refresh_id_counter`), then `validate()`. A theme read from
+  a file should go through `kiln_deck::dml::serde_xml::normalize_theme` so it round-trips the model unchanged.
+- For WP-78 (deck layout and editor): everything inherits on access — `resolved_xfrm`, `resolved_props`,
+  `resolved_body` (insets, anchor, autofit, columns, wrap, direction), `level_style`/`resolved_paragraph`/
+  `resolved_run` (text formatting through the placeholder chain and the master's title/body/other styles),
+  `resolved_background`, `color_context` (theme + colour map in force), `shows_master_shapes`. Empty slide
+  placeholders show their layout placeholder's prompt text. Every command has a transaction builder in
+  `kiln_deck::edit` (apply with `UndoStack::apply`; wrap drags in `begin_group`/`end_group`); text edits run any
+  `kiln_doc::edit` builder through `edit::edit_text`. New presentations: `Presentation::new()` (Kiln theme, one
+  Title Slide). Themes gallery: `themes::bundled()` (12, each with 4 variants), `edit::apply_theme` /
+  `apply_variant`. `cargo run -p kiln-deck --example theme_gallery -- out.html <fonts>` renders all themes as
+  HTML for a visual reference of what the stage should look like.
+- For WP-80 (show): `Timeline::schedule()` gives each effect's click and start/end times (with/after previous as
+  PowerPoint's timing tree); `Transition::playable()` maps Morph to Fade until Morph exists.
+- For WP-82 (collaboration): ops are granular (slides, shapes, effects, comments by index; text as kiln-doc
+  transactions in `Op::EditText`); `SetShapeKind` and `SetSections` are whole-value replacements.
+- For WP-51 (brand fonts) and kiln-text: the Kiln and Tenmoku themes use **Fraunces** and **Figtree**; until they
+  are bundled, those themes fall back to the default family. Other themes use Office fonts whose substitutes are
+  approximate (Trebuchet MS, Gill Sans MT, Book Antiqua, Garamond, Constantia, Corbel → the Liberation, Caladea
+  and Carlito families; Aptos → the UI sans). Mapping Aptos to Figtree once it is bundled would suit the Slate theme.

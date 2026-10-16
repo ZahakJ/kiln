@@ -1,6 +1,6 @@
 [package]
 name = "kiln-deck"
-description = "The Kiln Deck presentation model"
+description = "The Kiln Deck presentation model: masters, layouts, slides, sections, shapes, placeholder inheritance, themes, transitions, the animation timeline, notes, transactions with undo, and the bundled themes"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -10,7 +10,19 @@ repository.workspace = true
 publish.workspace = true
 
 [dependencies]
-kiln-common.workspace = true
+kiln-common = { workspace = true, features = ["serde"] }
+# DrawingML: fills, lines, effects, colours, geometry and themes are kiln-ooxml's types; the model
+# stores them and serialises them through their (lossless) XML form.
+kiln-ooxml.workspace = true
+# Text bodies are kiln-doc paragraphs and runs, so Write's text engine and edit ops are reused.
+kiln-doc.workspace = true
+serde.workspace = true
+postcard.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
+serde_json.workspace = true
 
 [lints]
 workspace = true

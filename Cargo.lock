@@ -2526,6 +2526,13 @@ name = "kiln-deck"
 version = "0.1.0"
 dependencies = [
  "kiln-common",
+ "kiln-doc",
+ "kiln-ooxml",
+ "postcard",
+ "proptest",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
 ]
 
 [[package]]

@@ -219,6 +219,33 @@ change the shapes on that slide.
 **Kept, not edited:** embedded OLE objects, the VBA project of a `.pptm`,
 custom XML.
 
+## Kiln Deck themes (`.kdeck-theme`) — `kiln-deck`
+
+The twelve themes of Design ▸ Themes ship as `.kdeck-theme` files (`assets/themes/`), compiled
+into every build. A theme file is UTF-8 XML in the `urn:kiln:deck-theme:1` namespace:
+
+- **`a:theme`**: a complete DrawingML theme — colour scheme, font scheme and format scheme (an
+  empty `a:fmtScheme` takes Office's) — written unchanged as `ppt/theme/theme1.xml` when a
+  presentation is saved as `.pptx`, so the colours, fonts and Quick Styles survive in
+  PowerPoint.
+- **`kd:master`**: the background (a DrawingML fill or `kd:bgRef` to a background style), the
+  layout grid (`kd:grid`: margins, title height, gaps, gutter), the title, body, other and
+  footer text styles as DrawingML list styles (`a:lvl1pPr` … with `a:defRPr`) laid over Kiln's
+  defaults, placeholder overrides (`kd:ph type="…" n="…"` with position, `a:bodyPr`,
+  `a:lstStyle`, `kd:prompt`) and decoration (`kd:shape` with a preset or `a:custGeom`, fill,
+  outline and effects).
+- **`kd:layout type="…"`**: per standard layout, a background, light-on-dark text (`dark`),
+  hiding the master's decoration (`hideMaster`), placeholder overrides and decoration.
+- **`kd:variant`**: the Variants gallery — another colour scheme, font scheme, dark mapping or
+  background.
+
+Positions are fractions of the slide width and height, so one theme serves 16:9, 4:3 and custom
+sizes. Building a theme produces a master with title, body, date, footer and slide-number
+placeholders and the eleven standard layouts with PowerPoint's placeholder types and indices,
+so slides keep their content when a theme is applied and files match up in PowerPoint. Files
+from an unknown future version, unknown placeholder types or presets, and positions outside
+−1…2 are refused with a message; nothing in a theme file can crash Kiln (property-tested).
+
 ## OpenDocument (`.odt`, `.ods`, `.odp`) — `kiln-io-odf`
 
 Imported into and exported from the same models as the Office formats.
