@@ -1,0 +1,1318 @@
+[
+  {
+    "name": "ARRAYTOTEXT",
+    "category": "Text",
+    "summary": "Returns an array of values as text.",
+    "syntax": "ARRAYTOTEXT(array, [format])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The array to convert."
+      },
+      {
+        "name": "format",
+        "description": "0 concise (default), 1 strict (with braces and quotes).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ARRAYTOTEXT({1,\"a\";TRUE,2})",
+        "result": "\"1, a, TRUE, 2\""
+      },
+      {
+        "formula": "=ARRAYTOTEXT({1,\"a\";TRUE,2},1)",
+        "result": "\"{1,\"\"a\"\";TRUE,2}\""
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "CHAR",
+    "category": "Text",
+    "summary": "Returns the character for a code number (Windows-1252).",
+    "syntax": "CHAR(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A number from 1 to 255."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CHAR(65)",
+        "result": "\"A\""
+      },
+      {
+        "formula": "=CHAR(33)",
+        "result": "\"!\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "CLEAN",
+    "category": "Text",
+    "summary": "Removes non-printable characters (codes 0–31) from text.",
+    "syntax": "CLEAN(text)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CLEAN(CHAR(9)&\"Monthly report\"&CHAR(10))",
+        "result": "\"Monthly report\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "CODE",
+    "category": "Text",
+    "summary": "Returns the code number of the first character in text (Windows-1252).",
+    "syntax": "CODE(text)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CODE(\"A\")",
+        "result": "65"
+      },
+      {
+        "formula": "=CODE(\"!\")",
+        "result": "33"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "CONCAT",
+    "category": "Text",
+    "summary": "Joins text from several values and ranges.",
+    "syntax": "CONCAT(text1, [text2], ...)",
+    "args": [
+      {
+        "name": "text1",
+        "description": "Text, a number or a range to join."
+      },
+      {
+        "name": "text2",
+        "description": "Further items.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CONCAT(\"a\",1,TRUE)",
+        "result": "\"a1TRUE\""
+      },
+      {
+        "formula": "=CONCAT({\"The\",\" \",\"sun\"})",
+        "result": "\"The sun\""
+      }
+    ],
+    "since": "2019"
+  },
+  {
+    "name": "CONCATENATE",
+    "category": "Text",
+    "summary": "Joins several text strings into one.",
+    "syntax": "CONCATENATE(text1, [text2], ...)",
+    "args": [
+      {
+        "name": "text1",
+        "description": "The first item to join."
+      },
+      {
+        "name": "text2",
+        "description": "Further items.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CONCATENATE(\"Stream population for \",\"brook trout\",\" is \",32,\"/mile.\")",
+        "result": "\"Stream population for brook trout is 32/mile.\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DOLLAR",
+    "category": "Text",
+    "summary": "Converts a number to text in currency format.",
+    "syntax": "DOLLAR(number, [decimals])",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number to format."
+      },
+      {
+        "name": "decimals",
+        "description": "Digits after the decimal point (default 2; negative rounds to the left).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DOLLAR(1234.567,2)",
+        "result": "\"$1,234.57\""
+      },
+      {
+        "formula": "=DOLLAR(1234.567,-2)",
+        "result": "\"$1,200\""
+      },
+      {
+        "formula": "=DOLLAR(-1234.567,-2)",
+        "result": "\"($1,200)\""
+      },
+      {
+        "formula": "=DOLLAR(-0.123,4)",
+        "result": "\"($0.1230)\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "EXACT",
+    "category": "Text",
+    "summary": "Checks whether two text strings are exactly the same (case-sensitive).",
+    "syntax": "EXACT(text1, text2)",
+    "args": [
+      {
+        "name": "text1",
+        "description": "The first text."
+      },
+      {
+        "name": "text2",
+        "description": "The second text."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=EXACT(\"word\",\"word\")",
+        "result": "TRUE"
+      },
+      {
+        "formula": "=EXACT(\"Word\",\"word\")",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FIND",
+    "category": "Text",
+    "summary": "Finds one text string within another (case-sensitive) and returns its position.",
+    "syntax": "FIND(find_text, within_text, [start_num])",
+    "args": [
+      {
+        "name": "find_text",
+        "description": "The text to find."
+      },
+      {
+        "name": "within_text",
+        "description": "The text to search."
+      },
+      {
+        "name": "start_num",
+        "description": "The character to start at (default 1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FIND(\"M\",\"Miriam McGovern\")",
+        "result": "1"
+      },
+      {
+        "formula": "=FIND(\"m\",\"Miriam McGovern\")",
+        "result": "6"
+      },
+      {
+        "formula": "=FIND(\"M\",\"Miriam McGovern\",3)",
+        "result": "8"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FINDB",
+    "category": "Text",
+    "summary": "Finds one text string within another (byte positions in double-byte languages; same as FIND otherwise).",
+    "syntax": "FINDB(find_text, within_text, [start_num])",
+    "args": [
+      {
+        "name": "find_text",
+        "description": "The text to find."
+      },
+      {
+        "name": "within_text",
+        "description": "The text to search."
+      },
+      {
+        "name": "start_num",
+        "description": "The character to start at.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FINDB(\"c\",\"abc\")",
+        "result": "3"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FIXED",
+    "category": "Text",
+    "summary": "Formats a number as text with a fixed number of decimals.",
+    "syntax": "FIXED(number, [decimals], [no_commas])",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number to format."
+      },
+      {
+        "name": "decimals",
+        "description": "Digits after the decimal point (default 2).",
+        "optional": true
+      },
+      {
+        "name": "no_commas",
+        "description": "TRUE to omit thousands separators.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FIXED(1234.567,1)",
+        "result": "\"1,234.6\""
+      },
+      {
+        "formula": "=FIXED(1234.567,-1)",
+        "result": "\"1,230\""
+      },
+      {
+        "formula": "=FIXED(-1234.567,-1,TRUE)",
+        "result": "\"-1230\""
+      },
+      {
+        "formula": "=FIXED(44.332)",
+        "result": "\"44.33\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LEFT",
+    "category": "Text",
+    "summary": "Returns the first characters of a text string.",
+    "syntax": "LEFT(text, [num_chars])",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "num_chars",
+        "description": "How many characters (default 1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LEFT(\"Offering\",3)",
+        "result": "\"Off\""
+      },
+      {
+        "formula": "=LEFT(\"Sweden\")",
+        "result": "\"S\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LEFTB",
+    "category": "Text",
+    "summary": "Returns the first characters of a text string (bytes in double-byte languages).",
+    "syntax": "LEFTB(text, [num_bytes])",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "num_bytes",
+        "description": "How many (default 1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LEFTB(\"Offering\",3)",
+        "result": "\"Off\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LEN",
+    "category": "Text",
+    "summary": "Returns the number of characters in a text string.",
+    "syntax": "LEN(text)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LEN(\"Offering\")",
+        "result": "8"
+      },
+      {
+        "formula": "=LEN(\"\")",
+        "result": "0"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LENB",
+    "category": "Text",
+    "summary": "Returns the number of bytes used to represent the text (characters in single-byte languages).",
+    "syntax": "LENB(text)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LENB(\"Offering\")",
+        "result": "8"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LOWER",
+    "category": "Text",
+    "summary": "Converts text to lowercase.",
+    "syntax": "LOWER(text)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LOWER(\"E. E. Cummings\")",
+        "result": "\"e. e. cummings\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MID",
+    "category": "Text",
+    "summary": "Returns characters from the middle of a text string.",
+    "syntax": "MID(text, start_num, num_chars)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "start_num",
+        "description": "Position of the first character (1 is the first)."
+      },
+      {
+        "name": "num_chars",
+        "description": "How many characters."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MID(\"Fluid Flow\",1,5)",
+        "result": "\"Fluid\""
+      },
+      {
+        "formula": "=MID(\"Fluid Flow\",7,20)",
+        "result": "\"Flow\""
+      },
+      {
+        "formula": "=MID(\"Fluid Flow\",20,5)",
+        "result": "\"\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MIDB",
+    "category": "Text",
+    "summary": "Returns characters from the middle of a text string (bytes in double-byte languages).",
+    "syntax": "MIDB(text, start_num, num_bytes)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "start_num",
+        "description": "Starting position."
+      },
+      {
+        "name": "num_bytes",
+        "description": "How many."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MIDB(\"Fluid Flow\",7,4)",
+        "result": "\"Flow\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "NUMBERVALUE",
+    "category": "Text",
+    "summary": "Converts text to a number in a locale-independent way.",
+    "syntax": "NUMBERVALUE(text, [decimal_separator], [group_separator])",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "decimal_separator",
+        "description": "The decimal separator character.",
+        "optional": true
+      },
+      {
+        "name": "group_separator",
+        "description": "The group separator character.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NUMBERVALUE(\"2.500,27\",\",\",\".\")",
+        "result": "2500.27"
+      },
+      {
+        "formula": "=NUMBERVALUE(\"3.5%\")",
+        "result": "0.035"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "PROPER",
+    "category": "Text",
+    "summary": "Capitalises the first letter of each word.",
+    "syntax": "PROPER(text)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PROPER(\"this is a TITLE\")",
+        "result": "\"This Is A Title\""
+      },
+      {
+        "formula": "=PROPER(\"2-way street\")",
+        "result": "\"2-Way Street\""
+      },
+      {
+        "formula": "=PROPER(\"76BudGet\")",
+        "result": "\"76Budget\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "REGEXEXTRACT",
+    "category": "Text",
+    "summary": "Extracts text that matches a regular expression.",
+    "syntax": "REGEXEXTRACT(text, pattern, [return_mode], [case_sensitivity])",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "pattern",
+        "description": "The regular expression."
+      },
+      {
+        "name": "return_mode",
+        "description": "0 first match (default), 1 all matches, 2 capture groups of the first match.",
+        "optional": true
+      },
+      {
+        "name": "case_sensitivity",
+        "description": "0 case-sensitive (default), 1 case-insensitive.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=REGEXEXTRACT(\"DylanWilliams\",\"[A-Z][a-z]+\")",
+        "result": "\"Dylan\""
+      },
+      {
+        "formula": "=REGEXEXTRACT(\"DylanWilliams\",\"[A-Z][a-z]+\",1)",
+        "result": "{\"Dylan\";\"Williams\"}"
+      }
+    ],
+    "since": "365"
+  },
+  {
+    "name": "REGEXREPLACE",
+    "category": "Text",
+    "summary": "Replaces text that matches a regular expression.",
+    "syntax": "REGEXREPLACE(text, pattern, replacement, [occurrence], [case_sensitivity])",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "pattern",
+        "description": "The regular expression."
+      },
+      {
+        "name": "replacement",
+        "description": "The replacement text ($1 refers to a capture group)."
+      },
+      {
+        "name": "occurrence",
+        "description": "Which match to replace (0, the default, replaces all).",
+        "optional": true
+      },
+      {
+        "name": "case_sensitivity",
+        "description": "0 case-sensitive (default), 1 case-insensitive.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=REGEXREPLACE(\"Sonia Brown\",\"([A-Z])[a-z]+ ([A-Z][a-z]+)\",\"$2, $1.\")",
+        "result": "\"Brown, S.\""
+      },
+      {
+        "formula": "=REGEXREPLACE(\"a1b2c3\",\"[0-9]\",\"#\")",
+        "result": "\"a#b#c#\""
+      }
+    ],
+    "since": "365"
+  },
+  {
+    "name": "REGEXTEST",
+    "category": "Text",
+    "summary": "Checks whether any part of text matches a regular expression.",
+    "syntax": "REGEXTEST(text, pattern, [case_sensitivity])",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "pattern",
+        "description": "The regular expression."
+      },
+      {
+        "name": "case_sensitivity",
+        "description": "0 case-sensitive (default), 1 case-insensitive.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=REGEXTEST(\"alpha\",\"[aeiou]\")",
+        "result": "TRUE"
+      },
+      {
+        "formula": "=REGEXTEST(\"rhythm\",\"[aeiou]\")",
+        "result": "FALSE"
+      }
+    ],
+    "since": "365"
+  },
+  {
+    "name": "REPLACE",
+    "category": "Text",
+    "summary": "Replaces part of a text string with different text.",
+    "syntax": "REPLACE(old_text, start_num, num_chars, new_text)",
+    "args": [
+      {
+        "name": "old_text",
+        "description": "The original text."
+      },
+      {
+        "name": "start_num",
+        "description": "Position of the first character to replace."
+      },
+      {
+        "name": "num_chars",
+        "description": "How many characters to replace."
+      },
+      {
+        "name": "new_text",
+        "description": "The replacement text."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=REPLACE(\"abcdefghijk\",6,5,\"*\")",
+        "result": "\"abcde*k\""
+      },
+      {
+        "formula": "=REPLACE(\"2009\",3,2,\"10\")",
+        "result": "\"2010\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "REPLACEB",
+    "category": "Text",
+    "summary": "Replaces part of a text string (bytes in double-byte languages).",
+    "syntax": "REPLACEB(old_text, start_num, num_bytes, new_text)",
+    "args": [
+      {
+        "name": "old_text",
+        "description": "The original text."
+      },
+      {
+        "name": "start_num",
+        "description": "Starting position."
+      },
+      {
+        "name": "num_bytes",
+        "description": "How many to replace."
+      },
+      {
+        "name": "new_text",
+        "description": "The replacement text."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=REPLACEB(\"abcdefghijk\",6,5,\"*\")",
+        "result": "\"abcde*k\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "REPT",
+    "category": "Text",
+    "summary": "Repeats text a given number of times.",
+    "syntax": "REPT(text, number_times)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "number_times",
+        "description": "How many times to repeat."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=REPT(\"*-\",3)",
+        "result": "\"*-*-*-\""
+      },
+      {
+        "formula": "=REPT(\"-\",10)",
+        "result": "\"----------\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "RIGHT",
+    "category": "Text",
+    "summary": "Returns the last characters of a text string.",
+    "syntax": "RIGHT(text, [num_chars])",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "num_chars",
+        "description": "How many characters (default 1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=RIGHT(\"Sale Price\",5)",
+        "result": "\"Price\""
+      },
+      {
+        "formula": "=RIGHT(\"Stock Number\")",
+        "result": "\"r\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "RIGHTB",
+    "category": "Text",
+    "summary": "Returns the last characters of a text string (bytes in double-byte languages).",
+    "syntax": "RIGHTB(text, [num_bytes])",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "num_bytes",
+        "description": "How many (default 1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=RIGHTB(\"Sale Price\",5)",
+        "result": "\"Price\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SEARCH",
+    "category": "Text",
+    "summary": "Finds one text string within another (not case-sensitive, wildcards allowed) and returns its position.",
+    "syntax": "SEARCH(find_text, within_text, [start_num])",
+    "args": [
+      {
+        "name": "find_text",
+        "description": "The text to find (? and * are wildcards, ~ escapes)."
+      },
+      {
+        "name": "within_text",
+        "description": "The text to search."
+      },
+      {
+        "name": "start_num",
+        "description": "The character to start at (default 1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SEARCH(\"e\",\"Statements\",6)",
+        "result": "7"
+      },
+      {
+        "formula": "=SEARCH(\"margin\",\"Profit Margin\")",
+        "result": "8"
+      },
+      {
+        "formula": "=SEARCH(\"p?o\",\"Profit\")",
+        "result": "1"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SEARCHB",
+    "category": "Text",
+    "summary": "Finds one text string within another (byte positions in double-byte languages).",
+    "syntax": "SEARCHB(find_text, within_text, [start_num])",
+    "args": [
+      {
+        "name": "find_text",
+        "description": "The text to find."
+      },
+      {
+        "name": "within_text",
+        "description": "The text to search."
+      },
+      {
+        "name": "start_num",
+        "description": "The character to start at.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SEARCHB(\"margin\",\"Profit Margin\")",
+        "result": "8"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SUBSTITUTE",
+    "category": "Text",
+    "summary": "Substitutes new text for old text in a text string.",
+    "syntax": "SUBSTITUTE(text, old_text, new_text, [instance_num])",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "old_text",
+        "description": "The text to replace."
+      },
+      {
+        "name": "new_text",
+        "description": "The replacement."
+      },
+      {
+        "name": "instance_num",
+        "description": "Which occurrence to replace (default: all).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SUBSTITUTE(\"Sales Data\",\"Sales\",\"Cost\")",
+        "result": "\"Cost Data\""
+      },
+      {
+        "formula": "=SUBSTITUTE(\"Quarter 1, 2008\",\"1\",\"2\",1)",
+        "result": "\"Quarter 2, 2008\""
+      },
+      {
+        "formula": "=SUBSTITUTE(\"Quarter 1, 2011\",\"1\",\"2\",3)",
+        "result": "\"Quarter 1, 2012\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "T",
+    "category": "Text",
+    "summary": "Returns the text referred to by a value, or \"\" for non-text.",
+    "syntax": "T(value)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value to test."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=T(\"Rainfall\")",
+        "result": "\"Rainfall\""
+      },
+      {
+        "formula": "=T(19)",
+        "result": "\"\""
+      },
+      {
+        "formula": "=T(TRUE)",
+        "result": "\"\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TEXT",
+    "category": "Text",
+    "summary": "Formats a number and converts it to text using a number format code.",
+    "syntax": "TEXT(value, format_text)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The number to format."
+      },
+      {
+        "name": "format_text",
+        "description": "A number format such as \"#,##0.00\", \"0%\", \"yyyy-mm-dd\" or \"h:mm AM/PM\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TEXT(1234.5,\"#,##0.00\")",
+        "result": "\"1,234.50\""
+      },
+      {
+        "formula": "=TEXT(0.285,\"0.0%\")",
+        "result": "\"28.5%\""
+      },
+      {
+        "formula": "=TEXT(45306,\"yyyy-mm-dd\")",
+        "result": "\"2024-01-15\""
+      },
+      {
+        "formula": "=TEXT(45306,\"dddd, mmmm d\")",
+        "result": "\"Monday, January 15\""
+      },
+      {
+        "formula": "=TEXT(0.75,\"h:mm AM/PM\")",
+        "result": "\"6:00 PM\""
+      },
+      {
+        "formula": "=TEXT(1234567,\"0.00E+00\")",
+        "result": "\"1.23E+06\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TEXTAFTER",
+    "category": "Text",
+    "summary": "Returns text that occurs after a given delimiter.",
+    "syntax": "TEXTAFTER(text, delimiter, [instance_num], [match_mode], [match_end], [if_not_found])",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "delimiter",
+        "description": "The text that marks the point after which to extract."
+      },
+      {
+        "name": "instance_num",
+        "description": "Which occurrence (negative counts from the end; default 1).",
+        "optional": true
+      },
+      {
+        "name": "match_mode",
+        "description": "1 for case-insensitive.",
+        "optional": true
+      },
+      {
+        "name": "match_end",
+        "description": "1 treats the end of the text as a delimiter.",
+        "optional": true
+      },
+      {
+        "name": "if_not_found",
+        "description": "Returned when there is no match (default #N/A).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TEXTAFTER(\"Little Red Riding Hood's red hood\",\"Red\")",
+        "result": "\" Riding Hood's red hood\""
+      },
+      {
+        "formula": "=TEXTAFTER(\"Little Red Riding Hood's red hood\",\"red\",2,1)",
+        "result": "\" hood\""
+      },
+      {
+        "formula": "=TEXTAFTER(\"Little Red Riding Hood's red hood\",\"basket\",1,0,0,\"x\")",
+        "result": "\"x\""
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "TEXTBEFORE",
+    "category": "Text",
+    "summary": "Returns text that occurs before a given delimiter.",
+    "syntax": "TEXTBEFORE(text, delimiter, [instance_num], [match_mode], [match_end], [if_not_found])",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "delimiter",
+        "description": "The text that marks the point before which to extract."
+      },
+      {
+        "name": "instance_num",
+        "description": "Which occurrence (negative counts from the end; default 1).",
+        "optional": true
+      },
+      {
+        "name": "match_mode",
+        "description": "1 for case-insensitive.",
+        "optional": true
+      },
+      {
+        "name": "match_end",
+        "description": "1 treats the end of the text as a delimiter.",
+        "optional": true
+      },
+      {
+        "name": "if_not_found",
+        "description": "Returned when there is no match (default #N/A).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TEXTBEFORE(\"Little Red Riding Hood's red hood\",\"Red\")",
+        "result": "\"Little \""
+      },
+      {
+        "formula": "=TEXTBEFORE(\"Little Red Riding Hood's red hood\",\"red\",-1)",
+        "result": "\"Little Red Riding Hood's \""
+      },
+      {
+        "formula": "=TEXTBEFORE(\"Little Red Riding Hood's red hood\",\"red\",1,1)",
+        "result": "\"Little \""
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "TEXTJOIN",
+    "category": "Text",
+    "summary": "Joins text with a delimiter, optionally skipping empty values.",
+    "syntax": "TEXTJOIN(delimiter, ignore_empty, text1, [text2], ...)",
+    "args": [
+      {
+        "name": "delimiter",
+        "description": "Text placed between items."
+      },
+      {
+        "name": "ignore_empty",
+        "description": "TRUE to skip empty cells."
+      },
+      {
+        "name": "text1",
+        "description": "Text, a number or a range to join."
+      },
+      {
+        "name": "text2",
+        "description": "Further items.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TEXTJOIN(\", \",TRUE,\"a\",\"\",\"b\")",
+        "result": "\"a, b\""
+      },
+      {
+        "formula": "=TEXTJOIN(\"-\",FALSE,\"a\",\"\",\"b\")",
+        "result": "\"a--b\""
+      }
+    ],
+    "since": "2019"
+  },
+  {
+    "name": "TEXTSPLIT",
+    "category": "Text",
+    "summary": "Splits text into rows and columns using delimiters.",
+    "syntax": "TEXTSPLIT(text, col_delimiter, [row_delimiter], [ignore_empty], [match_mode], [pad_with])",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      },
+      {
+        "name": "col_delimiter",
+        "description": "Where to split into columns."
+      },
+      {
+        "name": "row_delimiter",
+        "description": "Where to split into rows.",
+        "optional": true
+      },
+      {
+        "name": "ignore_empty",
+        "description": "TRUE to ignore consecutive delimiters.",
+        "optional": true
+      },
+      {
+        "name": "match_mode",
+        "description": "1 for case-insensitive.",
+        "optional": true
+      },
+      {
+        "name": "pad_with",
+        "description": "Value used to pad missing cells (default #N/A).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TEXTSPLIT(\"Dakota Lennon Sanchez\",\" \")",
+        "result": "{\"Dakota\",\"Lennon\",\"Sanchez\"}"
+      },
+      {
+        "formula": "=TEXTSPLIT(\"1,2,3;4,5,6\",\",\",\";\")",
+        "result": "{\"1\",\"2\",\"3\";\"4\",\"5\",\"6\"}"
+      },
+      {
+        "formula": "=TEXTSPLIT(\"a,b;c\",\",\",\";\",FALSE,0,\"-\")",
+        "result": "{\"a\",\"b\";\"c\",\"-\"}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "TRIM",
+    "category": "Text",
+    "summary": "Removes extra spaces from text, leaving single spaces between words.",
+    "syntax": "TRIM(text)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TRIM(\"  First Quarter   Earnings \")",
+        "result": "\"First Quarter Earnings\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "UNICHAR",
+    "category": "Text",
+    "summary": "Returns the Unicode character for a code point.",
+    "syntax": "UNICHAR(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The Unicode code point."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=UNICHAR(66)",
+        "result": "\"B\""
+      },
+      {
+        "formula": "=UNICHAR(32)",
+        "result": "\" \""
+      },
+      {
+        "formula": "=UNICHAR(0)",
+        "result": "#VALUE!"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "UNICODE",
+    "category": "Text",
+    "summary": "Returns the Unicode code point of the first character of text.",
+    "syntax": "UNICODE(text)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=UNICODE(\" \")",
+        "result": "32"
+      },
+      {
+        "formula": "=UNICODE(\"B\")",
+        "result": "66"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "UPPER",
+    "category": "Text",
+    "summary": "Converts text to uppercase.",
+    "syntax": "UPPER(text)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=UPPER(\"total\")",
+        "result": "\"TOTAL\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "VALUE",
+    "category": "Text",
+    "summary": "Converts a text string that represents a number (or date or time) to a number.",
+    "syntax": "VALUE(text)",
+    "args": [
+      {
+        "name": "text",
+        "description": "The text."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=VALUE(\"$1,000\")",
+        "result": "1000"
+      },
+      {
+        "formula": "=VALUE(\"16:48:00\")-VALUE(\"12:00:00\")",
+        "result": "0.2"
+      },
+      {
+        "formula": "=VALUE(\"12%\")",
+        "result": "0.12"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "VALUETOTEXT",
+    "category": "Text",
+    "summary": "Returns text from any value.",
+    "syntax": "VALUETOTEXT(value, [format])",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value to convert."
+      },
+      {
+        "name": "format",
+        "description": "0 concise (default), 1 strict (text in quotes).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=VALUETOTEXT(TRUE)",
+        "result": "\"TRUE\""
+      },
+      {
+        "formula": "=VALUETOTEXT(\"Hello\",1)",
+        "result": "\"\"\"Hello\"\"\""
+      },
+      {
+        "formula": "=VALUETOTEXT(1234.01234)",
+        "result": "\"1234.01234\""
+      }
+    ],
+    "since": "2024"
+  }
+]

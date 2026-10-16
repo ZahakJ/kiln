@@ -13,7 +13,10 @@
 //!   levels (independent cells evaluated in parallel with deterministic results), cycles,
 //!   dynamic arrays and spilling, defined names, tables, structural edits.
 //! - [`registry`]: the [`FunctionRegistry`](registry::FunctionRegistry) the function library plugs
-//!   into; this crate registers the core set (`SUM`, `IF`, `AND`, `OR`, `NOT`, `TRUE`, `FALSE`).
+//!   into; an engine without options knows the core set (`SUM`, `IF`, `AND`, `OR`, `NOT`, `TRUE`,
+//!   `FALSE`).
+//! - [`functions`]: the function library — 484 Excel worksheet functions with their documentation
+//!   ([`functions::engine_options`] gives an engine all of them, [`functions::doc`] the docs).
 //! - [`numfmt`]: Excel number format codes (sections, conditions, colours, dates and times,
 //!   fractions, scientific, `General`).
 //!
@@ -23,6 +26,7 @@
 #![warn(missing_docs)]
 
 pub mod engine;
+pub mod functions;
 pub mod numfmt;
 pub mod parser;
 pub mod refs;

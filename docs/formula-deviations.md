@@ -1,13 +1,24 @@
 # Formula deviations
 
 This page lists where Kiln's formula engine knowingly behaves differently from Microsoft Excel, and
-where the LibreOffice oracle used by the conformance suite differs from Excel. The engine is being
-ported to Rust (`crates/kiln-formula`, WP-56 and WP-57); the entries below were established by the v1.0
-TypeScript engine, now kept read-only in `reference/ts-core/formula/`, and the Rust engine must
-reproduce them (or this page changes with the reason). The conformance suite lives in `conformance/`:
+where the LibreOffice oracle used by the conformance suite differs from Excel. The engine and its
+484-function library are Rust (`crates/kiln-formula`: the core from WP-56, the library in
+`src/functions/` from WP-57), ported from the v1.0 TypeScript engine kept read-only in
+`reference/ts-core/formula/`. The port keeps every name, arity, volatility and lazy or lifted
+argument of v1.0 (`tests/conformance_registry.rs` checks them against a snapshot of the v1.0
+registry) and reproduces the entries below; where the port changed a behaviour, the entry says so.
+The conformance suite lives in `conformance/` and runs with
+`cargo nextest run -p kiln-formula --test conformance` (`tests/conformance.rs`, 4,879 rows, 0
+failures):
 
 - `curated-*.csv` rows are Microsoft's documented examples (copied from the function documentation in
-  `reference/ts-core/formula/src/functions/docs/*.json`) and hand-written Excel behaviours and edge cases.
+  `crates/kiln-formula/docs/*.json`) and hand-written Excel behaviours and edge cases.
+  `curated-dynamic-arrays.csv` (190 rows) and `curated-lambda.csv` (89 rows) were added with the Rust
+  port: `SEQUENCE`, `FILTER`, `SORT`/`SORTBY`, `UNIQUE`, `TAKE`/`DROP`, `HSTACK`/`VSTACK`,
+  `TOCOL`/`TOROW`, `WRAPROWS`/`WRAPCOLS`, `EXPAND`, `CHOOSEROWS`/`CHOOSECOLS`, `XLOOKUP`/`XMATCH`
+  (including references returned by `XLOOKUP`), `TEXTSPLIT`/`TEXTBEFORE`/`TEXTAFTER`, array
+  broadcasting, and `LET`, `LAMBDA`, `MAP`, `REDUCE`, `SCAN`, `BYROW`, `BYCOL`, `MAKEARRAY`, closures,
+  currying and recursion by passing a lambda to itself.
 - `generated-*.csv` rows are produced by `reference/ts-core/formula/tools/gen-conformance.mjs`, which writes the
   formulas into an `.xlsx` with exceljs, lets LibreOffice 24.2 recalculate it headless
   (`tools/oracle-soffice.sh … csv`), and records the values. Rows where LibreOffice is known to differ
@@ -16,8 +27,9 @@ reproduce them (or this page changes with the reason). The conformance suite liv
 
 The runner compares numbers and date serials to 1e-9 relative (rows marked `rounded` — Microsoft's
 examples print rounded values — to their displayed precision), errors by name, and text and logicals
-exactly. **Skipped rows:** none. A row typed `skip` must have its formula quoted in this file; the test
-`documents every skipped row in docs/formula-deviations.md` enforces that.
+exactly. **Skipped rows:** none. A row typed `skip` must have its formula quoted in this file;
+`tests/conformance.rs` fails otherwise. Every documented example in `crates/kiln-formula/docs/*.json`
+(866 of them) is evaluated by `tests/docs.rs` as well.
 
 ## Implementation note
 
@@ -28,16 +40,22 @@ logical coercion, so each function would have needed rewrapping or replacing any
 suite checks the native implementations directly. This also removes formulajs and its `jstat` and
 `bessel` dependencies from the shipped bundle.
 
+The Rust port keeps the native implementations. The gamma function, its logarithm and the error
+function come from `statrs`; the regularised incomplete beta and gamma functions are Kiln's own
+(continued fractions without `statrs`' 140-iteration cap, which loses digits for
+`BINOM.DIST(4900,10000,0.5,TRUE)`), and the distribution rows of `generated-dist.csv` check them to
+1e-9 relative. `DOLLARDE` and `DOLLARFR` use `rust_decimal` where v1.0 used decimal.js.
+
 ## Deviations from Excel
 
 These are behaviours where Kiln is known, or not verified, to match Excel.
 
 | Area | Kiln | Excel | Why |
 |---|---|---|---|
-| `HYPERLINK` | The cell value is the friendly name (or the link); the target is recorded on the formula cell and exposed by `Engine.getHyperlink(sheet, row, col)`. | A cell showing a clickable link. | A separate "link" scalar type would ripple through every function's type checks; the grid reads the target from the engine instead. Nested uses (`=IF(x, HYPERLINK(…), "…")`) record the target only when the HYPERLINK branch is evaluated. |
+| `HYPERLINK` | The cell value is the friendly name (or the link); the target is recorded on the formula cell and exposed by `Engine::hyperlink(sheet, row, col)`. | A cell showing a clickable link. | A separate "link" scalar type would ripple through every function's type checks; the grid reads the target from the engine instead. Nested uses (`=IF(x, HYPERLINK(…), "…")`) record the target only when the HYPERLINK branch is evaluated. |
 | `CELL` | Supports `address`, `col`, `row`, `contents`, `type` and `filename` (always `""`). Other info types return `#VALUE!`. Without a reference it describes the formula cell. Addresses on other sheets read `Sheet!$A$1` without a `[Book]` prefix. | Many more info types; without a reference it uses the last changed cell. | Kiln documents have no file path exposed to formulas, and formatting information lives outside the engine. |
 | `INFO` | `numfile` (sheets in the workbook), `recalc` ("Automatic"), `release` ("16.0"), `system` ("pcdos"), `osversion` ("Kiln"), `origin` ("$A:$A$1"); `directory` is `#N/A`. | Values of the running Excel. | Formulas must not leak information about the user's machine. |
-| `REGEXTEST`, `REGEXEXTRACT`, `REGEXREPLACE` | ECMAScript regular expressions (`u` flag). `REGEXEXTRACT` mode 1 returns a column. | PCRE2. | The JavaScript engine's regular expressions; common patterns behave the same, PCRE-only syntax (possessive quantifiers, `\K` …) gives `#VALUE!`. |
+| `REGEXTEST`, `REGEXEXTRACT`, `REGEXREPLACE` | Perl/PCRE-style regular expressions (`fancy-regex`): classes, Unicode, named groups, look-ahead and look-behind, back-references, atomic groups and possessive quantifiers. A search that needs more than 1,000,000 backtracking steps is `#VALUE!`. Replacements take `$1`, `${1}`, `${name}` and `$$` (PCRE2) and also `$&`, `$<name>`, `` $` `` and `$'` (as v1.0 did). `REGEXEXTRACT` mode 1 returns a column. | PCRE2 with no step limit. | Common patterns behave the same; a few PCRE2-only constructs (`\K`, recursion `(?R)`, callouts, verbs such as `(*SKIP)`) are `#VALUE!`. The step limit keeps a catastrophic pattern from freezing recalculation. v1.0 used ECMAScript expressions, which lacked atomic groups and possessive quantifiers. |
 | `CHAR`, `CODE` | Windows-1252 on every platform. | Windows-1252 on Windows, Mac Roman on macOS. | One behaviour for every platform. |
 | `LENB`, `LEFTB`, `RIGHTB`, `MIDB`, `FINDB`, `SEARCHB`, `REPLACEB` | Count characters. | Count bytes when a double-byte language is the default editing language. | Matches Excel in single-byte locales. |
 | `TEXT`, `DOLLAR`, `FIXED`, `VALUE`, `DATEVALUE` | Number formats and text parsing use en-US conventions (`.` decimals, `,` thousands, `$`, month-first dates). | Follow the system locale. | Locale-aware formatting arrives with the i18n work; `NUMBERVALUE` already takes explicit separators. |
@@ -51,6 +69,10 @@ These are behaviours where Kiln is known, or not verified, to match Excel.
 | `SUBTOTAL`, `AGGREGATE` (functions 1–13) | Also accept arrays (no hidden-row or nested-subtotal checks apply to them). | Require references. | Lenient; never changes a result Excel would compute. |
 | `LINEST`, `LOGEST`, `TREND`, `GROWTH` | Collinear predictors give `#NUM!`. | Removes redundant columns and reports a zero coefficient. | Not implemented yet. |
 | `INDIRECT`, references | References to other workbooks give `#REF!`. | Resolve open workbooks. | Kiln has no cross-workbook references. |
+| Circular references | Cells in a cycle show 0 and are flagged (`Engine::is_circular`, `circular_cells`), unless iterative calculation is on. A cycle between defined names (`X=Y+1`, `Y=X+1`) evaluates to `#NAME?` (the name-nesting limit) instead of being reported as circular. | Shows 0 and warns; reports name cycles as circular references. | The plan text mentioned a `#CIRCULAR` error; Kiln follows Excel instead. Name cycles are rare and still never hang. |
+| Number formats (`TEXT`, cell display) | Format `0` shows `0` for -0.4; `General` shows -0.0000001 and 0.000012345 in decimal. | May show `-0`, and `-1E-07` / `1.2345E-05` (not verified). | Follows the numfmt oracle of v1.0; LibreOffice 24.2 agrees. |
+| `LET` names that are function names | `=LET(fact,LAMBDA(…),fact(fact,5))` calls the built-in `FACT`, so it is `#VALUE!` here. | Not verified. | A name followed by `(` resolves to a worksheet function first; name `LET` variables that are not function names (`fac`). The conformance rows do. |
+| Huge arguments | `MULTINOMIAL`, the Bessel functions and other functions with loops over an argument are computed in bounded time: they overflow to `#NUM!` (or underflow to 0) instead of iterating up to 10^308 times; dates beyond 9999-12-31 in the date, `YEARFRAC` and security functions are `#NUM!`. | Same results where Excel gives one. | `tests/conformance_fuzz.rs` calls every function with every arity and hostile arguments and requires an answer without a panic or a stall. v1.0 could hang on `MULTINOMIAL(1E+308)` and `BESSELJ(1,1E+15)`. |
 | Not implemented | `GROUPBY`, `PIVOTBY`, `PERCENTOF`, `TRIMRANGE`, `IMAGE`, `WEBSERVICE`, `FILTERXML`, `CUBE*`, `RTD`, `CALL`, `REGISTER.ID`, `EUROCONVERT`, `AMORDEGRC`, `AMORLINC`, `ODDFPRICE`, `ODDFYIELD`, `ODDLPRICE`, `ODDLYIELD`, `STOCKHISTORY`, `GETPIVOTDATA`, `ASC`, `JIS`, `DBCS`, `BAHTTEXT`, `PHONETIC`, `TRANSLATE`, `DETECTLANGUAGE`, `PY`. | Available. | They return `#NAME?`. Pivot tables, external data and Python are outside the v0.1 scope; the odd-period bond and French depreciation functions are planned. |
 
 The WP-09 acceptance text asks for `=IRR({-100,30,40,50})` "within 1e-7 of 0.0894". The internal rate

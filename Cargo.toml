@@ -167,3 +167,8 @@ criterion = "=0.8.2"
 # --- Benchmarks (WP-60) ---
 # bench/budgets.toml, the performance budgets of PLAN.md §3.9 (already in Cargo.lock through Tauri).
 toml = { version = "=1.1.8", default-features = false, features = ["std", "serde", "parse"] }
+
+# --- Formula library (WP-57) ---
+# REGEXTEST/REGEXEXTRACT/REGEXREPLACE: look-around and back-references as in Excel's PCRE2, with a
+# backtracking limit so no pattern can hang a recalculation.
+fancy-regex = "=0.19.2"

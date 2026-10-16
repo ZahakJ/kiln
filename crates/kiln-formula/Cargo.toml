@@ -21,10 +21,21 @@ rayon = { workspace = true, optional = true }
 rustc-hash.workspace = true
 smallvec.workspace = true
 thiserror.workspace = true
+# The function library (WP-57): special functions for the distributions, exact decimal arithmetic
+# for DOLLARDE/DOLLARFR, REGEXTEST/REGEXEXTRACT/REGEXREPLACE, the documentation JSON, and the seed
+# of RAND/RANDBETWEEN/RANDARRAY.
+statrs = { workspace = true, default-features = false, features = ["std"] }
+rust_decimal = { workspace = true, default-features = false }
+fancy-regex.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+getrandom.workspace = true
+
+[target.'cfg(all(target_arch = "wasm32", target_os = "unknown"))'.dependencies]
+getrandom = { workspace = true, features = ["wasm_js"] }
 
 [dev-dependencies]
 proptest.workspace = true
-serde_json.workspace = true
 
 [[example]]
 name = "recalc_bench"

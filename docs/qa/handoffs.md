@@ -183,3 +183,39 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   font on this machine.
 - For the manual's owner: link `docs/manual/cli.md` from `docs/manual/README.md` (For developers or
   Reference); WP-60 does not own the README.
+
+## WP-57 → WP-56, WP-69, WP-71, WP-72, the bridge's owner (function library)
+
+- Outside the owned paths, as the integration of the library needs: `crates/kiln-formula/Cargo.toml`
+  (dependencies `statrs`, `rust_decimal`, `fancy-regex`, `serde`, `serde_json`, `getrandom`; the unused
+  `regex` dependency dropped; `serde_json` moved from dev-dependencies), `crates/kiln-formula/src/lib.rs`
+  (`pub mod functions;` and its crate-doc bullet), the crate README (library section) and the workspace
+  `fancy-regex = "=0.19.2"` (MIT; look-around and back-references for `REGEX*`, as Excel's PCRE2 has).
+- For WP-69 (sheet model) and `kiln-session`: build the engine with
+  `Engine::with_options(EngineOptions { registry: Some(kiln_formula::functions::library()), .. })` (or
+  `functions::engine_options()`); `Engine::new()` knows only the seven core functions. `library()` is built
+  once and shared (`Arc`). `HYPERLINK` targets are read with `Engine::hyperlink(sheet, row, col)`.
+- For WP-71/WP-72 (autocompletion, Insert Function, Formula Lab): `functions::docs()` lists every entry in
+  Insert Function order (family, category, summary, syntax, arguments with optional/repeating flags,
+  examples, `since`); `functions::doc(name)` is case-insensitive and accepts `_xlfn.`. Library specs carry
+  `DocsHandle::Key(name)`, so `ExplainStep::docs_key` resolves with `functions::doc(key)`.
+- For the bridge's owner: `kiln-bridge-wasm` does not link `kiln-formula` yet (nothing in `kiln-session`
+  uses it), so its artefact is unchanged; once it does, the library adds about 577 KB gzip (1.84 MB after
+  `wasm-opt -Oz`) on top of the 126 KB engine core, measured with a probe cdylib built with the
+  wasm-release settings (opt-level s, fat LTO, one codegen unit, panic=abort).
+- For WP-56 (`values/dates.rs`): `serial_to_date` and `civil_from_days` overflow (a panic in debug builds,
+  a wrapped date in release) for serials far outside 0…2,958,465 (`serial_to_date(1e308, false)`). The
+  library validates or clamps before calling them (`functions::datetime::parts`, `check_serial`), but the
+  public functions would be safer total (clamp, or return `Option`).
+- Arrays built by functions are capped at 16,777,216 cells (`MAX_CELLS`, as in v1.0), about 400 MB of
+  values at the cap; `WRAPROWS(1,1E+15)` builds a 1×16,777,216 row of `#N/A`. Excel's own limit is not
+  documented; if the wasm heap proves too small in practice, lower the cap in `functions/support.rs` and
+  record it in `docs/formula-deviations.md`.
+- Not yet implemented (21 functions the parity tracker plans, all `#NAME?` today and listed as `planned` in
+  `conformance/functions-implemented.json`): `AMORDEGRC`, `AMORLINC`, `ODDFPRICE`, `ODDFYIELD`, `ODDLPRICE`,
+  `ODDLYIELD`, `ASC`, `DBCS`, `JIS`, `BAHTTEXT`, `PHONETIC`, `EUROCONVERT`, `PERCENTOF`, `TRIMRANGE`,
+  `GROUPBY`, `PIVOTBY`, `GETPIVOTDATA`, `FORECAST.ETS`, `FORECAST.ETS.CONFINT`, `FORECAST.ETS.SEASONALITY`,
+  `FORECAST.ETS.STAT`. When adding one: implement it in `src/functions/<family>.rs`, add its docs entry,
+  conformance rows, `KILN_BLESS=1 cargo nextest run -p kiln-formula --test conformance_registry`, then
+  `cargo xtask parity` (the v1.0 registry snapshot test allows only the 484 v1.0 names today; extend it
+  with an allow-list of post-v1.0 additions).
