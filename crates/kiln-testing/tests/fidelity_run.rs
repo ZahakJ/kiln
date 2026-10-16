@@ -172,12 +172,8 @@ fn the_empty_registry_measures_only_the_baseline() {
         &FixtureFormat::ALL,
         &[FixtureKind::Features, FixtureKind::Manual],
     );
-    let report = fidelity::run(
-        &kiln_testing::formats::registered(),
-        &files,
-        &corpus,
-        &no_oracle(),
-    );
+    // An empty registry (as before the first format registered its adapter).
+    let report = fidelity::run(&[], &files, &corpus, &no_oracle());
     assert!(report.no_formats_registered());
     assert_eq!(report.baseline.len(), files.len());
     assert!(report.passed(), "{}", report.to_text());

@@ -32,8 +32,8 @@ format cannot hold or that Kiln will not carry through.
 
 ## Word documents (`.docx`, `.dotx`, `.docm`) — `kiln-io-docx`
 
-Reading (WP-62) is in place; writing arrives with WP-65. Until then Kiln
-Write opens Word files and saving one reports that the writer is not there yet.
+Reading (WP-62) and writing (WP-65) are in place: Kiln Write opens and saves
+`.docx`, `.dotx` and `.docm` (File ▸ Save, Save As, `kiln-cli convert`).
 
 **Read into the document model:** paragraphs and runs with every paragraph and
 font setting Word stores (styles, document defaults, theme fonts and colours with
@@ -81,13 +81,63 @@ deep) is kept as XML without its text. Packages that are encrypted, legacy
 binary `.doc`, not zip files or beyond the zip limits are refused with a typed
 error; a malformed secondary part is skipped with a diagnostic, never a crash.
 
+**Written back (WP-65):** everything above is written from the model in the
+order Word's schema requires, merged with the raw XML the reader kept: unmodelled
+paragraph, run, table, row, cell and section properties go back in their schema
+position; styles and list definitions are regenerated from the model and keep
+the children the model does not cover (`w:rsid`, `w:tmpl`, `w15:tentative`,
+`w14` effects in style run properties); `settings.xml` is the original part
+with the modelled values patched in (zoom, rsids, compatibility settings and
+the protection hash survive); drawings read from the file are written back
+verbatim — `mc:AlternateContent` and VML fallback included — unless they were
+edited, in which case only what changed is patched (size, placement and wrap,
+alt text and the decorative flag, rotation and flips, the picture and its crop,
+the preset geometry) and the stale fallback is dropped; text box content is
+always written from the model; content control properties are kept and patched
+(a ticked check box, an edited list); comments come back with their threads,
+resolved state, `w14:paraId`s and authors, and `commentsIds.xml` is kept in step
+when comments are added or removed; footnote and endnote separators keep their
+ids, so `settings.xml` still points at them; header and footer parts, media
+and every passthrough part keep their names and relationship ids. Tracked
+moves are written as a deletion and an insertion (the reader reports that).
+New documents get Word's parts (styles, settings with Word 2013+ compatibility
+settings, theme, font table, separators when there are notes, `commentsIds`
+and `people.xml` when there are comments).
+
+**Byte-identical when untouched:** saving copies every part no edit touched
+from the file that was opened, byte for byte — the session records the parts
+each transaction touches (`TouchedParts`: the body, each header and footer,
+footnotes, endnotes, comments, styles, numbering, settings) — so typing in the
+body rewrites `document.xml` and the document properties only. Relationship
+parts whose relationships did not change, an unchanged theme, media and every
+passthrough part are copied as they were in any save. Content types and
+relationships are regenerated deterministically: the same model and options
+give the same bytes, and a second round trip writes the first one's bytes.
+
+**Compatibility Checker:** `Query::CompatReport { format }` (and
+`kiln_io_docx::compat_report`) lists, with counts, what a save loses or changes
+(pictures without image data, drawings without markup, invalid control
+characters, references to deleted notes or comments, orphaned replies, tracked
+moves, macros when a `.docm` is saved as `.docx`, unused headers) followed by
+what was lost or kept read-only on open (the reader's diagnostics).
+
 **Verified by:** `cargo nextest run -p kiln-io-docx` — structural assertions for
 every feature fixture, the v1.0 element tests ported, body text equal to
 mammoth's (an independent reader) on all 19 feature fixtures, every
 `fixtures/docx` file and the real-world corpus read into valid documents,
 hostile nesting read on a 1 MiB stack, corrupted bytes never panic, 300 pages
 read in about 50 ms (release). `kiln-cli inspect --docx <file>` prints the heading
-outline, counts and diagnostics.
+outline, counts and diagnostics. For the writer: every fixture (features,
+manual, the downloaded corpus) reads back into the same model *and* the same
+reader extras, node ids included; every part the writer did not regenerate is
+byte-identical; writing is deterministic and a second generation is identical;
+mammoth reads the same text from the rewritten files; the v1.0 writer tests
+(elements, stories, package) are ported; edits regenerate only the parts they
+touch; arbitrary content (proptest) is written and read back; 300 pages are read
+and written in about 120 ms (release). `cargo xtask fidelity --format docx`
+scores structure, text, LibreOffice rendering, LibreOffice opening and untouched
+bytes over the corpus (`docs/qa/fidelity.md`). `kiln-cli convert in.docx out.docx`
+saves a file the way Kiln does and prints the Compatibility Checker's list.
 
 **Approximate in layout (WP-63):** text wrap around floating objects follows
 Word's rules with square and tight wrapping, so a line can break one word

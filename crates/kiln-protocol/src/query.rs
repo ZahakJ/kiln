@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
 use crate::a11y::A11yTree;
+use crate::app::FileFormat;
 use crate::selection::Selection;
 use crate::status::StatusBar;
 use crate::summary::DocSummary;
@@ -28,6 +29,48 @@ pub enum Query {
     /// Document: the selected text as plain text (paragraphs joined by `\n`), for Copy and Cut
     /// (WP-54).
     SelectedText,
+    /// Document: the Compatibility Checker (Backstage ▸ Info ▸ Check for Issues): what saving in
+    /// `format` (the document's own format when absent) will lose or change, then what was
+    /// already lost or kept read-only when the file was opened (WP-65).
+    CompatReport {
+        /// The format to save in.
+        format: Option<FileFormat>,
+    },
+}
+
+/// How serious a compatibility issue is.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, TS)]
+pub enum CompatSeverity {
+    /// Content or formatting will be lost.
+    Loss,
+    /// Kept, but saved in a different form.
+    Change,
+    /// Kept as it was read; nothing new is lost.
+    Info,
+}
+
+/// Whether an issue comes from saving or was already there when the file was opened.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, TS)]
+pub enum CompatOrigin {
+    /// Caused by saving.
+    Save,
+    /// Lost or kept read-only when the file was opened.
+    Open,
+}
+
+/// One line of the Compatibility Checker.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, TS)]
+pub struct CompatIssue {
+    /// A stable code (`image.missing`, `macros.removed`, `drawing.smartArt`, …).
+    pub code: String,
+    /// Loss, change or information.
+    pub severity: CompatSeverity,
+    /// One-line summary.
+    pub message: String,
+    /// Occurrences in the document.
+    pub count: u32,
+    /// Save or open.
+    pub origin: CompatOrigin,
 }
 
 /// One paragraph as plain text.
@@ -56,6 +99,8 @@ pub enum QueryResult {
     A11y(A11yTree),
     /// Plain text.
     Text(String),
+    /// The Compatibility Checker's list, most serious first (empty: nothing to report).
+    CompatReport(Vec<CompatIssue>),
 }
 
 impl Query {

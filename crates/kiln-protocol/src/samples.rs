@@ -20,13 +20,23 @@ use crate::event::{Event, Progress, RecoveryEntry};
 use crate::exec::{CoreInfo, ExecResult, ExecValue, Outcome};
 use crate::geom::{Point, Rect, Size};
 use crate::host::{FileFilter, HostOp, HostReply, HostRequest, RecentFile, RequestId};
-use crate::query::{ParagraphText, Query, QueryResult};
+use crate::query::{CompatIssue, CompatOrigin, CompatSeverity, ParagraphText, Query, QueryResult};
 use crate::selection::{
     Caret, CellAddr, CellRange, Compass, Handle, HandleKind, SelKind, Selection, TextPos,
 };
 use crate::status::{CellStats, Position, StatusBar};
 use crate::summary::DocSummary;
 use crate::viewport::{ViewMode, Viewport};
+
+fn compat_issue() -> CompatIssue {
+    CompatIssue {
+        code: "image.missing".into(),
+        severity: CompatSeverity::Loss,
+        message: "Pictures whose image data is not available are not saved — «Ünïcödé».".into(),
+        count: 300,
+        origin: CompatOrigin::Save,
+    }
+}
 
 /// Types with representative sample values.
 pub trait Samples: Sized {
@@ -303,7 +313,12 @@ samples! {
     StatusBar => vec![StatusBar::default(), status()];
     DocSummary => vec![summary()];
     Query => vec![Query::Documents, Query::Summary, Query::Paragraphs, Query::Selection,
-        Query::Status, Query::A11y, Query::SelectedText];
+        Query::Status, Query::A11y, Query::SelectedText,
+        Query::CompatReport { format: None },
+        Query::CompatReport { format: Some(FileFormat::Docx) }];
+    CompatSeverity => vec![CompatSeverity::Loss, CompatSeverity::Change, CompatSeverity::Info];
+    CompatOrigin => vec![CompatOrigin::Save, CompatOrigin::Open];
+    CompatIssue => vec![compat_issue()];
     ParagraphText => vec![ParagraphText { id: NodeId(3), text: "Ünïcödé ✓".into() }];
     QueryResult => vec![
         QueryResult::Documents(vec![summary()]),
@@ -316,6 +331,17 @@ samples! {
         QueryResult::Status(status()),
         QueryResult::A11y(a11y()),
         QueryResult::Text("Kiln\nWrite".into()),
+        QueryResult::CompatReport(vec![]),
+        QueryResult::CompatReport(vec![
+            compat_issue(),
+            CompatIssue {
+                code: "drawing.smartArt".into(),
+                severity: CompatSeverity::Info,
+                message: "SmartArt is kept in the file but shown as a placeholder.".into(),
+                count: 1,
+                origin: CompatOrigin::Open,
+            },
+        ]),
     ];
     ErrorKind => vec![ErrorKind::NotFound, ErrorKind::Internal];
     ErrorInfo => vec![error()];

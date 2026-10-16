@@ -43,7 +43,7 @@ pub use event::{Event, Progress, RecoveryEntry};
 pub use exec::{CoreInfo, ExecResult, ExecValue, Outcome};
 pub use host::{FileFilter, HostOp, HostReply, HostRequest, RecentFile, RequestId};
 pub use kiln_common::{DocId, ErrorKind, NodeId};
-pub use query::{ParagraphText, Query, QueryResult};
+pub use query::{CompatIssue, CompatOrigin, CompatSeverity, ParagraphText, Query, QueryResult};
 pub use scene::SceneDelta;
 pub use selection::{
     Caret, CellAddr, CellRange, Compass, Handle, HandleKind, SelKind, Selection, TextPos,

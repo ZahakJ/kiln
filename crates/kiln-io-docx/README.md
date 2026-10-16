@@ -1,10 +1,11 @@
 # kiln-io-docx
 
 Reads `.docx`, `.dotx`, `.docm` and `.dotm` files into the Kiln Write model (`kiln-doc`), keeping
-every part it does not understand, so the writer (WP-65) can put the file back together. Ported
-from the v1.0 TypeScript reader (WP-11) and extended to the Rust model: block content controls,
-move marks, one-sided wrapping, Word's own table cell model and text box content are modelled
-rather than flattened. Pure Rust, no I/O: the same code runs natively and in the web build.
+every part it does not understand, and writes the model back (WP-65): what was read comes back
+exactly, what no edit touched comes back byte for byte. Ported from the v1.0 TypeScript reader
+(WP-11) and writer, and extended to the Rust model: block content controls, move marks, one-sided
+wrapping, Word's own table cell model and text box content are modelled rather than flattened.
+Pure Rust, no I/O: the same code runs natively and in the web build.
 
 ```rust
 let read = kiln_io_docx::read_docx(&bytes)?;      // DocxError for non-Word input
@@ -46,6 +47,52 @@ What is modelled, kept or approximated is listed in `docs/FORMATS.md` (Word docu
   the `dingbat-to-unicode` 1.0.2 table (BSD-2-Clause, © 2021 Michael Williamson; generated into
   `src/common/dingbats.rs`).
 
+## Writing
+
+```rust
+let pkg = kiln_ooxml::opc::OpcPackage::open(&bytes)?;
+let read = kiln_io_docx::read_package(&pkg)?;
+// … edit read.document through transactions, recording what they touch:
+let mut touched = kiln_io_docx::TouchedParts::new();
+touched.record(&doc, &tx);
+let source = kiln_io_docx::WriteSource::from_read(&read).with_package(&pkg);
+let out = kiln_io_docx::write_docx(&doc, Some(&source), &kiln_io_docx::WriteOptions {
+    now: Some(kiln_io_docx::w3cdtf(unix_seconds)), // dcterms:modified, cp:revision + 1
+    preserve: Some(&touched),                      // copy untouched parts byte for byte
+    ..Default::default()
+})?;
+// out.bytes, out.regenerated (parts written from the model), out.issues
+let report = kiln_io_docx::compat_report(&doc, Default::default()); // Compatibility Checker
+```
+
+`write_docx(&doc, None, …)` writes a new document (styles, settings, theme, font table, Word's
+note separators and comment companions as needed). `rewrite_docx(bytes, …)` is read → write with
+every model part regenerated (the fidelity scorer's and `kiln-cli convert`'s round trip).
+
+| Module | What it writes |
+|---|---|
+| `write/mod.rs` | the package: part names (original ones kept), placeholders, passthrough first (its relationship ids stay valid), stories, shared parts, relationship repair for kept XML, preserved parts, properties, relationships parts restored when unchanged |
+| `write/story.rs` | paragraphs cut into segments where formatting, marks, kept run properties or objects change; marks as wrappers (`w:sdt`, `w:hyperlink`, `w:ins`/`w:del`) shared by neighbours; comment ranges; fields (complex, simple, nested `{ … }`, field blocks); notes, bookmarks, symbols, breaks; tables with row and cell content controls; section breaks in the last paragraph |
+| `write/props.rs` | `w:rPr`, `w:pPr`, `w:tblPr`, `w:trPr`, `w:tcPr`, `w:sectPr` in schema order with kept raw children slotted in; classifiers of what the reader models (for merging styles and list levels) |
+| `write/drawing.rs` | drawings verbatim when unchanged, patched when edited (size, placement, wrap, alt text, decorative, rotation, flips, image, crop, geometry), built when new; text box content from the model |
+| `write/parts.rs` | styles (merged with their raw XML), numbering, settings (patched), people, comment threads and ids, font table, theme (kept when unchanged) |
+| `write/sdt.rs` | content control properties kept and patched |
+| `write/touched.rs` | `TouchedParts`: the parts a transaction touches |
+| `write/compat.rs` | `compat_report`: what a save loses or changes, then what was lost on open |
+| `write/xml.rs` | string XML emission, namespace declarations of the parts, relationship references |
+
+Design notes:
+
+- **Original names and ids.** Parts keep the names they were read under (`/word/header3.xml` stays
+  `header3.xml`); a relationship to the same target reuses its original id, fresh ids avoid every
+  original one, and ids that kept XML refers to (charts, OLE objects, images of kept shapes,
+  picture bullets) are re-added with their original targets.
+- **Kept XML is merged, not trusted blindly.** A drawing's or content control's kept XML is only
+  written verbatim when the model's view of it (derived exactly as the reader derives it) is
+  unchanged; otherwise only what changed is patched.
+- **Stable ids.** The writer writes stories in the order the reader numbers them, so a round trip
+  gives the same node ids: tests compare whole documents and extras, not summaries.
+
 ## Tests
 
 `cargo nextest run -p kiln-io-docx`:
@@ -63,6 +110,18 @@ What is modelled, kept or approximated is listed in `docs/FORMATS.md` (Word docu
   markers, corrupted bytes and arbitrary values (proptest) never panic.
 - `tests/read_performance.rs` — 300 synthetic pages: about 50 ms release, 200 ms debug.
 
-`cargo run -p kiln-cli -- inspect --docx <file>` prints the outline, counts and diagnostics.
+- `tests/roundtrip_fixtures.rs` — every fixture (features, manual, the downloaded corpus) reads back
+  into the same model and extras; untouched parts are byte-identical; writing is deterministic and a
+  second generation identical; mammoth reads the same text from the rewritten feature files.
+- `tests/write_elements.rs`, `tests/write_stories.rs`, `tests/write_package.rs` — the v1.0 writer
+  tests ported: runs, paragraphs, revisions, fields, content controls, tables; drawings (kept,
+  patched, new, every wrap), equations, comments and threads, notes, bookmarks, hyperlinks,
+  sections, styles, numbering, settings; parts and relationships, properties, determinism,
+  passthrough, macros, templates, Strict, new documents, issues.
+- `tests/write_touched.rs` — edits regenerate only the parts they touch.
+- `tests/write_hostile.rs` — arbitrary content (proptest) and deep nesting on a 1 MiB stack.
+
+`cargo run -p kiln-cli -- inspect --docx <file>` prints the outline, counts and diagnostics;
+`cargo run -p kiln-cli -- convert in.docx out.docx` saves a file the way Kiln does.
 
 Licence: AGPL-3.0-or-later.

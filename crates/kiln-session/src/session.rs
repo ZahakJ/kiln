@@ -570,8 +570,9 @@ impl Session {
 
     /// Serialises the document and asks the host to write it.
     fn write(&mut self, id: DocId, path: String, format: FileFormat) -> Result<ExecResult> {
+        let now = self.host.now_ms();
         let d = self.doc_mut(id)?;
-        let bytes = d.model.save(format)?;
+        let bytes = d.model.save_at(format, now)?;
         d.model.seal_history();
         let state = d.model.state();
         let outcome = self.request(
@@ -754,6 +755,14 @@ impl Session {
             Query::Status => QueryResult::Status(Self::status_of(d)),
             Query::A11y => QueryResult::A11y(d.model.a11y(&d.title)),
             Query::SelectedText => QueryResult::Text(d.model.selected_text().unwrap_or_default()),
+            Query::CompatReport { format } => {
+                let format = format
+                    .or(d.format.filter(|f| d.model.save_formats().contains(f)))
+                    .or_else(|| d.model.save_formats().first().copied());
+                QueryResult::CompatReport(
+                    format.map(|f| d.model.compat_report(f)).unwrap_or_default(),
+                )
+            }
         })
     }
 

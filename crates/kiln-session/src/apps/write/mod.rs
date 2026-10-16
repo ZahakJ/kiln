@@ -12,17 +12,22 @@
 //!   changed paragraph.
 //! - **Hit testing, caret and selection geometry, accessibility** of the visible pages ± 1.
 //!
-//! Saving arrives with the DOCX writer (WP-65) and the full editor with WP-64; until then those
-//! return `Unsupported` with the reason, never a silent no-op.
+//! - **Saving** ([`save`], WP-65): `.docx`, `.dotx` and `.docm` through the DOCX writer; the
+//!   parts no edit touched are copied byte for byte from the file that was opened. The
+//!   Compatibility Checker lists what a save loses or changes.
+//!
+//! The full editor arrives with WP-64; until then its commands return `Unsupported` with the
+//! reason, never a silent no-op.
 
 mod editing;
+mod save;
 #[cfg(test)]
 mod tests;
 mod view;
 
 use kiln_common::{KilnError, NodeId, Result};
 use kiln_doc::{Block, Document, Paragraph, Pos, Transaction, UndoStack};
-use kiln_io_docx::{DocxError, DocxWarning, read_docx};
+use kiln_io_docx::{DocxError, DocxWarning, TouchedParts, read_docx};
 use kiln_protocol::geom::Rect;
 use kiln_protocol::{
     A11yNode, A11yRole, A11yTree, Caret, Command, DocKind, FileFormat, Handle, HandleKind,
@@ -71,7 +76,10 @@ impl AppFactory for WriteApp {
             },
         })?;
         let name = hint.path.clone().or_else(|| hint.name.clone());
-        Ok(Box::new(WriteDoc::new(read.document, read.warnings, name)))
+        let (document, warnings, original) = save::Original::from_read(read, bytes);
+        let mut doc = WriteDoc::new(document, warnings, name);
+        doc.original = Some(original);
+        Ok(Box::new(doc))
     }
 }
 
@@ -102,6 +110,10 @@ pub struct WriteDoc {
     undone: Vec<StateId>,
     state: StateId,
     next_state: StateId,
+    /// The file the document was opened from, for saving (WP-65).
+    original: Option<save::Original>,
+    /// The parts the edits since opening touched.
+    touched: TouchedParts,
 }
 
 impl WriteDoc {
@@ -121,6 +133,8 @@ impl WriteDoc {
             undone: Vec::new(),
             state: 0,
             next_state: 1,
+            original: None,
+            touched: TouchedParts::new(),
         }
     }
 
@@ -281,6 +295,7 @@ impl DocModel for WriteDoc {
         self.end_composition();
         match self.history.undo(&mut self.doc) {
             Ok(Some(tx)) => {
+                self.touched.record(&self.doc, &tx);
                 if let Some(v) = &mut self.view {
                     v.note(&tx);
                 }
@@ -302,6 +317,7 @@ impl DocModel for WriteDoc {
         self.end_composition();
         match self.history.redo(&mut self.doc) {
             Ok(Some(tx)) => {
+                self.touched.record(&self.doc, &tx);
                 if let Some(v) = &mut self.view {
                     v.note(&tx);
                 }
@@ -493,10 +509,27 @@ impl DocModel for WriteDoc {
     }
 
     fn save(&self, format: FileFormat) -> Result<Vec<u8>> {
-        Err(KilnError::Unsupported(format!(
-            "saving .{} files: the DOCX writer arrives with WP-65",
-            format.extension()
-        )))
+        save::save(
+            &self.doc,
+            self.original.as_ref(),
+            &self.touched,
+            format,
+            None,
+        )
+    }
+
+    fn save_at(&self, format: FileFormat, now_ms: u64) -> Result<Vec<u8>> {
+        save::save(
+            &self.doc,
+            self.original.as_ref(),
+            &self.touched,
+            format,
+            Some(now_ms),
+        )
+    }
+
+    fn compat_report(&self, format: FileFormat) -> Vec<kiln_protocol::CompatIssue> {
+        save::compat(&self.doc, self.original.as_ref(), &self.warnings, format)
     }
 }
 

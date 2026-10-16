@@ -7,6 +7,7 @@
 //! ```text
 //! kiln-cli inspect <file> [--xml <part>] [--docx] [--json]  parts, relationships; --docx: outline and counts
 //! kiln-cli repack <in> <out>                          passthrough round trip, identical parts
+//! kiln-cli convert <in.docx> <out.docx>               read and save as Kiln saves (Save As)
 //! kiln-cli render <file> --png out/page-%03d.png      pages to PNG [--page N] [--dpi 96] [--dark]
 //! kiln-cli render --scratch <file.txt> --png <out>    one viewport of a scratch document
 //! kiln-cli control                                    JSON control channel over stdio
@@ -19,6 +20,7 @@
 #![forbid(unsafe_code)]
 
 mod control;
+mod convert;
 mod eval;
 mod fidelity;
 mod inspect;
@@ -64,10 +66,11 @@ impl fmt::Display for CliError {
 
 fn usage() -> String {
     format!(
-        "{}\n\nUsage:\n  {}\n  {}\n  {}\n  {}\n  {}\n  {}\n  kiln-cli version\n  kiln-cli help\n\nExit status: 0 success, 1 failure, 2 usage error. Manual: docs/manual/cli.md",
+        "{}\n\nUsage:\n  {}\n  {}\n  {}\n  {}\n  {}\n  {}\n  {}\n  kiln-cli version\n  kiln-cli help\n\nExit status: 0 success, 1 failure, 2 usage error. Manual: docs/manual/cli.md",
         kiln_common::version_line(),
         inspect::USAGE,
         repack::USAGE,
+        convert::USAGE,
         render::USAGE.replace('\n', "\n  "),
         control::USAGE,
         eval::USAGE,
@@ -106,6 +109,7 @@ fn run(args: &[String]) -> Result<String, CliError> {
         }
         Some("inspect") => inspect::run(rest),
         Some("repack") => repack::run(rest),
+        Some("convert") => convert::run(rest),
         Some("render") => render::run(rest),
         Some("control") => control::run(rest),
         Some("eval") => eval::run(rest),

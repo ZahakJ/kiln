@@ -168,6 +168,7 @@ impl WriteDoc {
         self.history
             .apply(&mut self.doc, tx.clone())
             .map_err(|e| KilnError::InvalidInput(e.to_string()))?;
+        self.touched.record(&self.doc, &tx);
         if let Some(v) = &mut self.view {
             v.note(&tx);
         }
@@ -419,6 +420,7 @@ impl WriteDoc {
             .doc
             .apply(tx.clone())
             .map_err(|e| KilnError::InvalidInput(e.to_string()))?;
+        self.touched.record(&self.doc, &tx);
         if let Some(v) = &mut self.view {
             v.note(&tx);
         }

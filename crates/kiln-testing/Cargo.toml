@@ -15,6 +15,9 @@ kiln-common.workspace = true
 kiln-ooxml.workspace = true
 # PNG decoding/encoding and the perceptual pixel metric shared with the golden-image tests.
 kiln-raster.workspace = true
+# The `.docx` fidelity adapter (formats/docx.rs, WP-65).
+kiln-doc.workspace = true
+kiln-io-docx.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 

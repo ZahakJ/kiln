@@ -1,0 +1,12 @@
+{
+  "type": "CompatSeverity",
+  "format": {
+    "TYPENAME": "CompatSeverity"
+  },
+  "values": [
+    "Loss",
+    "Change",
+    "Info",
+    "Loss"
+  ]
+}

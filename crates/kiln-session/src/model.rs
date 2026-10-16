@@ -5,7 +5,8 @@ use std::fmt;
 
 use kiln_common::Result;
 use kiln_protocol::{
-    A11yTree, Command, DocKind, FileFormat, OpenHint, ParagraphText, Selection, StatusBar,
+    A11yTree, Command, CompatIssue, DocKind, FileFormat, OpenHint, ParagraphText, Selection,
+    StatusBar,
 };
 
 use crate::frame::FrameSource;
@@ -80,6 +81,24 @@ pub trait DocModel: Send + fmt::Debug {
     ///
     /// `Unsupported` for a format not in [`DocModel::save_formats`].
     fn save(&self, format: FileFormat) -> Result<Vec<u8>>;
+
+    /// Serialises the document for a save at `now_ms` (Unix milliseconds, the host's clock), so
+    /// formats with a modification date can stamp it (WP-65). Defaults to [`DocModel::save`].
+    ///
+    /// # Errors
+    ///
+    /// As [`DocModel::save`].
+    fn save_at(&self, format: FileFormat, now_ms: u64) -> Result<Vec<u8>> {
+        let _ = now_ms;
+        self.save(format)
+    }
+
+    /// The Compatibility Checker: what saving in `format` loses or changes, then what was lost
+    /// or kept read-only on open (WP-65). Empty for models that save everything.
+    fn compat_report(&self, format: FileFormat) -> Vec<CompatIssue> {
+        let _ = format;
+        Vec::new()
+    }
 }
 
 /// Creates and opens documents of one kind.

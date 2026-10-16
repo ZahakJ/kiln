@@ -10,6 +10,7 @@ kiln-cli inspect report.docx                      # parts, content types, sizes,
 kiln-cli inspect report.docx --xml word/document.xml
 kiln-cli inspect report.docx --docx               # heading outline, counts, import diagnostics
 kiln-cli repack book.xlsx /tmp/book.xlsx          # open and save without edits
+kiln-cli convert report.docx copy.docx            # read and save as Kiln Write saves
 kiln-cli render notes.txt --png out/page-%03d.png --dpi 150
 kiln-cli eval '=SUM(1,2,3)/4'                     # 1.5
 kiln-cli control < requests.jsonl                 # JSON requests in, JSON responses out
@@ -23,6 +24,7 @@ command is one); `kiln-cli help` prints the summary and exits 0. Output piped in
 early (`kiln-cli inspect a.docx --xml /word/document.xml | head`) ends quietly.
 
 What works today: `inspect`, `repack` and `fidelity` handle any `.docx`, `.xlsx` or `.pptx` package;
+`convert` reads and writes Word documents (WP-65);
 `render` and `control` open the document kinds whose app is in the build: the plain-text scratch document
 (`.txt`, `.md`) and, since the Word reader (WP-62), `.docx`, `.dotx` and `.docm` — which `control` opens and
 queries today and `render` paints once the Write layout lands (WP-63). Excel and PowerPoint files join as their
@@ -64,6 +66,26 @@ the line `[Content_Types].xml: the same declared content types` says the copy de
 `the output file is byte-identical to the input` (when printed) says the whole file, that part included, came
 out byte for byte.
 
+
+## convert
+
+```text
+kiln-cli convert <in.docx> <out.docx|.docm|.dotx|.dotm>
+```
+
+Reads a document and saves it in the format the output's extension names, exactly as Kiln saves it (File ▸
+Save As): every part is written from Kiln's model, and what the model does not cover — media, custom XML,
+embedded objects, chart parts, an unchanged theme — is carried over byte for byte. The modification date and
+revision count are stamped with the current time. It prints the sizes, how many parts were written from the
+model and how many were carried over, then the Compatibility Checker's list for the save (for example
+`macros.removed (loss, 1×)` when a `.docm` is converted to `.docx`) and what was already lost or kept read-only
+when the file was opened. Word documents (`.docx`, `.docm`, `.dotx`, `.dotm`) convert today; PDF export
+arrives with the PDF writer.
+
+```sh
+kiln-cli convert fixtures/docx/features/tracked-changes.docx /tmp/t.docx
+soffice --headless --convert-to pdf --outdir /tmp /tmp/t.docx    # LibreOffice opens the result
+```
 ## render
 
 ```text

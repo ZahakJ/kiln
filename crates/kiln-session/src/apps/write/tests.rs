@@ -60,7 +60,11 @@ fn opens_word_documents_into_the_write_model() {
             .count(),
         20
     );
-    assert!(doc.save(FileFormat::Docx).is_err());
+    assert!(
+        doc.save(FileFormat::Docx).is_ok(),
+        "saves through the DOCX writer (WP-65)"
+    );
+    assert!(doc.save(FileFormat::Txt).is_err());
     assert_eq!(doc.save_formats()[0], FileFormat::Docx);
 }
 

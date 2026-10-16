@@ -1,0 +1,22 @@
+{
+  "type": "CompatIssue",
+  "format": {
+    "TYPENAME": "CompatIssue"
+  },
+  "values": [
+    {
+      "code": "image.missing",
+      "severity": "Loss",
+      "message": "Pictures whose image data is not available are not saved — «Ünïcödé».",
+      "count": 300,
+      "origin": "Save"
+    },
+    {
+      "code": "",
+      "severity": "Loss",
+      "message": "",
+      "count": 0,
+      "origin": "Save"
+    }
+  ]
+}

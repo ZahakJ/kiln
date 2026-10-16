@@ -11,6 +11,16 @@
     "Status",
     "A11y",
     "SelectedText",
+    {
+      "CompatReport": {
+        "format": null
+      }
+    },
+    {
+      "CompatReport": {
+        "format": "Docx"
+      }
+    },
     "Documents"
   ]
 }

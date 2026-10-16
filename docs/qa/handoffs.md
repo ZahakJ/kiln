@@ -383,3 +383,34 @@ WP-54 had to touch these files outside its owned paths; every change is additive
 - For WP-64: theme-coloured text (e.g. Heading 1 in `#2F5496`) is not adjusted in the dark theme; only automatic
   colour is. Word-style dark-mode colour mapping (lightness inversion keeping hue) belongs with the editor's
   dark-page option.
+
+## WP-65 → WP-62 (DOCX reader), WP-55 (OOXML), WP-64 (Write editor), WP-85 (Backstage), WP-60 (CLI), WP-52 (protocol), the session owner
+
+- Edits outside WP-65's paths, for the owners to acknowledge:
+  - `crates/kiln-io-docx/src/lib.rs` (WP-62): `pub mod write;` and the writer re-exports (`write_docx`,
+    `rewrite_docx`, `WriteSource`, `WriteOptions`, `DocxWritten`, `TouchedParts`, `compat_report`, `w3cdtf`, …).
+  - `crates/kiln-cli` (WP-60): new `src/convert.rs` (`kiln convert <in> <out.docx|docm|dotx|dotm>`, prints the
+    compatibility list) and its dispatch/usage line in `main.rs`; `docs/manual/cli.md` gains a `convert` section.
+  - `crates/kiln-protocol` (WP-52): `Query::CompatReport { format }` → `QueryResult::CompatReport(Vec<CompatIssue>)`
+    with `CompatIssue`/`CompatSeverity`/`CompatOrigin` (query.rs, lib.rs, samples.rs, schema.rs); `cargo xtask
+    protocol` regenerated `packages/protocol/src/generated` and `tests/vectors`.
+  - `crates/kiln-session`: `AppModel::save_at(format, now_ms)` and `compat_report(format)` default methods
+    (model.rs); `session.rs` answers `CompatReport` and saves with `host.now_ms()`; `apps/write/save.rs` (new) keeps
+    the original package and writes with preservation; `apps/write/{mod.rs,editing.rs}` record `TouchedParts` in
+    apply, undo/redo and composition; `apps/write/tests.rs` now expects save to succeed; `Cargo.toml` adds
+    `kiln-ooxml`.
+  - `crates/kiln-testing`: `src/formats/docx.rs` (adapter), registered in `formats/mod.rs`; `Cargo.toml` deps;
+    `tests/fidelity_run.rs` passes `&[]` to the empty-registry test.
+  - `docs/FORMATS.md` docx section, `parity/parity.json` rows (`write.files.docx-open`/`docx-save` done,
+    `docm-preserve` and `suite.files.compatibility-checker` partial), regenerated `PARITY.md`.
+- For WP-62/WP-55 (reader, XML layer): `external/docx/poi-deep-table-cell.docx` (tables nested ~15,000 deep) is
+  refused by the reader ("elements nested deeper than 2000 levels"); LibreOffice opens it. It is the one local
+  `cargo xtask fidelity --format docx` failure (the CI corpus, features + manual, passes). Also `read_blocks` drops
+  content nested beyond `MAX_DEPTH` (64) instead of keeping it as opaque XML as FORMATS.md says; the writer cannot
+  restore what the reader dropped.
+- For WP-64 (Write editor): every transaction must keep reaching `TouchedParts::record` (today via `WriteDoc::apply`,
+  undo/redo and composition in `kiln-session`); a part not marked is copied byte for byte from the original on save.
+  Moves are written as `w:ins`/`w:del` (no `w:moveFrom`/`w:moveTo` in the model).
+- For WP-85 (Backstage/Save As): build the compatibility checker UI on `Query::CompatReport`; it lists features that
+  the target format drops (macros into .docx, etc.) and what Kiln could not model (kept verbatim).
+- Strict-conformance relationship types in passthrough parts are kept as read, not converted to transitional.

@@ -2,8 +2,8 @@
 //! # kiln-io-docx
 //!
 //! Reads `.docx`, `.dotx`, `.docm` and `.dotm` files into the Kiln Write model
-//! ([`kiln_doc::Document`]), keeping every part it does not understand (the writer, WP-65, puts
-//! them back).
+//! ([`kiln_doc::Document`]), keeping every part it does not understand, and writes the model back
+//! ([`write_docx`]): what was read is reproduced, what was not touched stays byte-identical.
 //!
 //! ```no_run
 //! # fn main() -> Result<(), kiln_io_docx::DocxError> {
@@ -26,6 +26,7 @@
 
 pub mod common;
 pub mod read;
+pub mod write;
 
 pub use common::extras::DocxExtras;
 pub use common::symbols::{symbol_code_to_unicode, symbol_text, symbol_to_unicode};
@@ -33,6 +34,11 @@ pub use common::warnings::{DocxWarning, Severity, WarningCode};
 pub use read::{
     ChartRef, DocxError, DocxKind, DocxRead, ReadOptions, RelTarget, Summary, read_docx,
     read_docx_with, read_package, snapshot_facts,
+};
+pub use write::{
+    CompatIssue, CompatOptions, CompatOrigin, CompatSeverity, DocxWriteError, DocxWritten,
+    RewriteError, TouchedParts, WriteIssue, WriteOptions, WriteSource, compat_report, rewrite_docx,
+    w3cdtf, write_docx,
 };
 
 /// The version of this crate. Every Kiln crate shares the suite version (`[workspace.package]`).

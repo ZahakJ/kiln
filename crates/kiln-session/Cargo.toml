@@ -14,6 +14,8 @@ kiln-common.workspace = true
 kiln-doc.workspace = true
 kiln-doc-layout.workspace = true
 kiln-io-docx.workspace = true
+# Saving Write documents: the original package, the passthrough and package properties (WP-65).
+kiln-ooxml.workspace = true
 kiln-protocol.workspace = true
 kiln-scene.workspace = true
 # Layout of the scratch document. The web core gets no default features (no system fonts, no

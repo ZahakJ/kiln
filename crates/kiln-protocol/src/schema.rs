@@ -56,7 +56,7 @@ pub fn visit_all(v: &mut impl Visitor) {
         ViewMode, Viewport,
         TextPos, CellAddr, CellRange, SelKind, Caret, HandleKind, Compass, Handle, Selection,
         Position, CellStats, StatusBar, DocSummary,
-        Query, ParagraphText, QueryResult,
+        Query, ParagraphText, QueryResult, CompatSeverity, CompatOrigin, CompatIssue,
         ErrorKind, ErrorInfo,
         RequestId, FileFilter, RecentFile, HostOp, HostRequest, HostReply,
         Outcome, CoreInfo, ExecValue, ExecResult,

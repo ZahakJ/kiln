@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **6.4 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **6.7 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,26 +12,26 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 6.4 % | 782 | 0 | 24 | 42 | 716 | 20 |
-| Kiln Write | 5.9 % | 231 | 0 | 0 | 25 | 206 | 1 |
+| **Overall** | 6.7 % | 782 | 0 | 26 | 43 | 713 | 20 |
+| Kiln Write | 6.9 % | 231 | 0 | 2 | 25 | 204 | 1 |
 | Kiln Grid | 13.4 % | 261 | 0 | 24 | 14 | 223 | 6 |
 | Kiln Deck | 0.0 % | 184 | 0 | 0 | 0 | 184 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
-| Suite | 2.6 % | 62 | 0 | 0 | 3 | 59 | 9 |
+| Suite | 3.3 % | 62 | 0 | 0 | 4 | 58 | 9 |
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 7.5 % | 462 | 0 | 18 | 33 | 411 | 0 |
-| commonly-missed | 3.3 % | 224 | 0 | 4 | 7 | 213 | 0 |
+| critical | 7.8 % | 462 | 0 | 20 | 32 | 410 | 0 |
+| commonly-missed | 3.8 % | 224 | 0 | 4 | 9 | 211 | 0 |
 | niche | 3.1 % | 96 | 0 | 2 | 2 | 92 | 20 |
 
 | App | Critical | Commonly-missed | Niche |
 |---|---:|---:|---:|
-| Kiln Write | 6.5 % (146) | 4.3 % (58) | 1.9 % (27) |
+| Kiln Write | 7.5 % (146) | 5.2 % (58) | 1.9 % (27) |
 | Kiln Grid | 16.8 % (143) | 5.4 % (83) | 7.1 % (35) |
 | Kiln Deck | 0.0 % (119) | 0.0 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
-| Suite | 3.2 % (31) | 1.7 % (29) | 0.0 % (2) |
+| Suite | 3.2 % (31) | 3.4 % (29) | 0.0 % (2) |
 
 ## Better than Office
 
@@ -106,7 +106,9 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `write.layout.keep-rules` | Keep with next, keep lines together, widow/orphan control, page break before | missing | partial |
 | `write.layout.sections` | Sections with different page size, orientation, margins, columns and headers | missing | partial |
 | `write.layout.bidi-text` | Bidirectional text (Arabic, Hebrew) shaping and caret movement in documents | missing | partial |
-| `write.files.docx-open` | Open .docx with styles, numbering, sections, tables, images, fields, comments and revisions | missing | partial |
+| `write.files.docx-open` | Open .docx with styles, numbering, sections, tables, images, fields, comments and revisions | missing | done |
+| `write.files.docx-save` | Save .docx that opens in Word without repair; untouched parts byte-identical | missing | done |
+| `write.files.docm-preserve` | Open and save .docm/.dotx/.dotm keeping macros and templates intact | missing | partial |
 | `grid.home.number.format-combo` | Number format combo: General, Number, Currency, Accounting, Short/Long Date, Time, Percentage, Fraction, Scientific, Text | missing | partial |
 | `grid.home.number.custom-formats` | Custom number format codes (sections, colours, conditions, elapsed time, fractions, text placeholders) | missing | partial |
 | `grid.formulas.library.function-count` | At least 484 Excel functions in v0.1 and all 520+ worksheet functions except cube, RTD and web services in the loop | missing | partial |
@@ -147,6 +149,7 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `grid.formulas.functions.date-time.NETWORKDAYS-INTL` | NETWORKDAYS.INTL and WORKDAY.INTL with weekend masks and holidays | missing | done |
 | `suite.files.byte-preserving` | Byte-preserving saves: every part not edited is byte-identical after save | missing | partial |
 | `suite.files.macros-preserve` | Macro-enabled files (.docm/.xlsm/.pptm): vbaProject.bin preserved, never run | missing | partial |
+| `suite.files.compatibility-checker` | Compatibility checker: features that will not survive .docx/.xlsx/.pptx | missing | partial |
 | `suite.security.hostile-files` | Hostile files refused cleanly (zip bombs, billion laughs, deep nesting) | missing | partial |
 
 ## Excel worksheet functions
@@ -205,7 +208,7 @@ Out of scope:
 
 ## Kiln Write
 
-Score 5.9 % over 231 rows in scope; 0 better, 0 done, 25 partial, 206 missing, 1 out of scope.
+Score 6.9 % over 231 rows in scope; 0 better, 2 done, 25 partial, 204 missing, 1 out of scope.
 
 ### Home ▸ Clipboard
 
@@ -663,9 +666,9 @@ Score 5.9 % over 231 rows in scope; 0 better, 0 done, 25 partial, 206 missing, 1
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ◐ | Open .docx with styles, numbering, sections, tables, images, fields, comments and revisions | Word ▸ Open .docx | critical | P0 | WP-62 | `write.files.docx-open` |
-| ○ | Save .docx that opens in Word without repair; untouched parts byte-identical | Word ▸ Save .docx | critical | P0 | WP-65 | `write.files.docx-save` |
-| ○ | Open and save .docm/.dotx/.dotm keeping macros and templates intact | Word ▸ macro-enabled documents | commonly-missed | P0 | WP-65 | `write.files.docm-preserve` |
+| ● | Open .docx with styles, numbering, sections, tables, images, fields, comments and revisions | Word ▸ Open .docx | critical | P0 | WP-62 | `write.files.docx-open` |
+| ● | Save .docx that opens in Word without repair; untouched parts byte-identical | Word ▸ Save .docx | critical | P0 | WP-65 | `write.files.docx-save` |
+| ◐ | Open and save .docm/.dotx/.dotm keeping macros and templates intact | Word ▸ macro-enabled documents | commonly-missed | P0 | WP-65 | `write.files.docm-preserve` |
 | ○ | Export to Markdown and HTML | — | commonly-missed | P0 | WP-65 | `write.files.markdown-export` |
 | ○ | Open Markdown files as styled documents | Word ▸ (no equivalent) | commonly-missed | P1 | WP-65 | `write.files.markdown-import` |
 | ○ | Open and save RTF | Word ▸ Rich Text Format | niche | P2 | WP-64 | `write.files.rtf` |
@@ -1547,7 +1550,7 @@ Score 0.0 % over 44 rows in scope; 0 better, 0 done, 0 partial, 44 missing, 1 ou
 
 ## Suite
 
-Score 2.6 % over 62 rows in scope; 0 better, 0 done, 3 partial, 59 missing, 9 out of scope.
+Score 3.3 % over 62 rows in scope; 0 better, 0 done, 4 partial, 58 missing, 9 out of scope.
 
 ### Chrome
 
@@ -1586,7 +1589,7 @@ Score 2.6 % over 62 rows in scope; 0 better, 0 done, 3 partial, 59 missing, 9 ou
 | ○ | Export PDF with fonts subset, outlines from headings and tagged PDF | Office ▸ Export ▸ PDF | critical | P0 | WP-67 | `suite.files.pdf-export` |
 | ○ | Print with preview (Ctrl+P): printer, pages, copies, orientation, scaling, margins | Office ▸ File ▸ Print | critical | P0 | WP-67 | `suite.files.print` |
 | ○ | File associations and open-with on desktop and Android | Office ▸ file associations | critical | P0 | WP-88 | `suite.files.file-association` |
-| ○ | Compatibility checker: features that will not survive .docx/.xlsx/.pptx | Office ▸ File ▸ Info ▸ Check for Issues | commonly-missed | P0 | WP-85 | `suite.files.compatibility-checker` |
+| ◐ | Compatibility checker: features that will not survive .docx/.xlsx/.pptx | Office ▸ File ▸ Info ▸ Check for Issues | commonly-missed | P0 | WP-85 | `suite.files.compatibility-checker` |
 | ○ | Document properties (title, author, words, pages, created, modified) | Office ▸ File ▸ Info ▸ Properties | critical | P0 | WP-85 | `suite.files.properties` |
 | ○ | Password-protected files: open and save encrypted | Office ▸ Protect ▸ Encrypt with Password | commonly-missed | P1 | WP-95 | `suite.files.encryption` |
 | ○ | Large files: 300-page document, 1M-cell workbook, 200-slide deck within the §3.9 budgets | Office ▸ large files | critical | P0 | WP-94 | `suite.files.large-files` |

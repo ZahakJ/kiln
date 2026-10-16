@@ -4,11 +4,51 @@ Written by `cargo xtask fidelity` (`kiln-cli fidelity`, scorer in `crates/kiln-t
 
 - Formats: docx, xlsx, pptx
 - Oracle: LibreOffice (`/usr/bin/soffice`) through `tools/oracle-soffice.sh`; pages rendered by `pdftoppm` at 60 dpi
-- Result: **pass**
+- Result: **FAIL**
 
 ## Summary
 
-No formats registered: no reader/writer has registered a `Roundtrip` adapter in `crates/kiln-testing/src/formats/mod.rs` yet. The `.docx` adapter arrives with WP-62/WP-65, `.xlsx` with WP-70 and `.pptx` with WP-77/WP-79; until then only the OPC passthrough baseline below is measured.
+Lowest value of any file of the format (— = not measured).
+
+| Format | Adapter | Files | Passing | structural | text | visual | values | formulas | oracle_opens | byte_identical_untouched |
+|---|---|---|---|---|---|---|---|---|---|---|
+| docx | kiln-io-docx | 31 | 30 | 1.000 | 1.000 | 0.916 | — | — | yes | yes |
+
+## Files
+
+| File | Result | structural | text | visual | values | formulas | oracle_opens | byte_identical_untouched | Notes |
+|---|---|---|---|---|---|---|---|---|---|
+| `docx/features/breaks.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/comments.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/fields.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/footnotes.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/headers-footers.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/hyperlinks.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/images-anchored.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/images-inline.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/long-text.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/numbering.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/page-setup.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/paragraphs.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/properties.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/rtl.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/sections.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/styles.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/tables.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/text-boxes.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/features/tracked-changes.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `docx/manual/foreign-prefixes.docx` | pass | 1.000 | 1.000 | 0.916 | — | — | yes | yes |  |
+| `docx/manual/minimal.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/docx/poi-ComplexNumberedLists.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/docx/poi-FieldCodes.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/docx/poi-Headers.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/docx/poi-Numbering.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/docx/poi-SampleDoc.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/docx/poi-Styles.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/docx/poi-deep-table-cell.docx` | **fail** | — | — | — | — | — | — | — | read: not a Word document: /word/document.xml: XML: elements nested deeper than 2000 levels |
+| `external/docx/poi-endnotes.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/docx/poi-footnotes.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/docx/poi-headerPic.docx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
 
 ## OPC passthrough baseline
 
@@ -18,6 +58,9 @@ Every package opened and saved by `kiln-ooxml` without edits (what `kiln-cli rep
 |---|---|---|---|---|
 | `docx/features` | 19 | 325 | 325 | pass |
 | `docx/manual` | 2 | 10 | 10 | pass |
+| `external/docx` | 10 | 123 | 123 | pass |
 | `xlsx/features` | 20 | 196 | 196 | pass |
 | `xlsx/manual` | 1 | 4 | 4 | pass |
+| `external/xlsx` | 10 | 124 | 124 | pass |
 | `pptx/features` | 19 | 900 | 900 | pass |
+| `external/pptx` | 10 | 426 | 426 | pass |

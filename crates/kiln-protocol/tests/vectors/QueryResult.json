@@ -177,6 +177,27 @@
       "Text": "Kiln\nWrite"
     },
     {
+      "CompatReport": []
+    },
+    {
+      "CompatReport": [
+        {
+          "code": "image.missing",
+          "severity": "Loss",
+          "message": "Pictures whose image data is not available are not saved — «Ünïcödé».",
+          "count": 300,
+          "origin": "Save"
+        },
+        {
+          "code": "drawing.smartArt",
+          "severity": "Info",
+          "message": "SmartArt is kept in the file but shown as a placeholder.",
+          "count": 1,
+          "origin": "Open"
+        }
+      ]
+    },
+    {
       "Documents": [
         {
           "doc": 0,

@@ -433,6 +433,52 @@
         }
       }
     },
+    "CompatIssue": {
+      "STRUCT": [
+        {
+          "code": "STR"
+        },
+        {
+          "severity": {
+            "TYPENAME": "CompatSeverity"
+          }
+        },
+        {
+          "message": "STR"
+        },
+        {
+          "count": "U32"
+        },
+        {
+          "origin": {
+            "TYPENAME": "CompatOrigin"
+          }
+        }
+      ]
+    },
+    "CompatOrigin": {
+      "ENUM": {
+        "0": {
+          "Save": "UNIT"
+        },
+        "1": {
+          "Open": "UNIT"
+        }
+      }
+    },
+    "CompatSeverity": {
+      "ENUM": {
+        "0": {
+          "Loss": "UNIT"
+        },
+        "1": {
+          "Change": "UNIT"
+        },
+        "2": {
+          "Info": "UNIT"
+        }
+      }
+    },
     "CoreInfo": {
       "STRUCT": [
         {
@@ -1700,6 +1746,19 @@
         },
         "6": {
           "SelectedText": "UNIT"
+        },
+        "7": {
+          "CompatReport": {
+            "STRUCT": [
+              {
+                "format": {
+                  "OPTION": {
+                    "TYPENAME": "FileFormat"
+                  }
+                }
+              }
+            ]
+          }
         }
       }
     },
@@ -1754,6 +1813,15 @@
         "6": {
           "Text": {
             "NEWTYPE": "STR"
+          }
+        },
+        "7": {
+          "CompatReport": {
+            "NEWTYPE": {
+              "SEQ": {
+                "TYPENAME": "CompatIssue"
+              }
+            }
           }
         }
       }
