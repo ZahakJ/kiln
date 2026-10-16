@@ -3,7 +3,7 @@
 //! robustness against hostile parts and sizes.
 
 use kiln_charts::edit::{insert_from_range, set_data_labels, set_legend, set_title};
-use kiln_charts::layout::{ChartElement, ChartLayout, layout_chart};
+use kiln_charts::layout::{ChartElement, ChartLayout, HitShape, layout_chart};
 use kiln_charts::palette::{ChartColors, ColorMode};
 use kiln_charts::render::{draw, selection_ops};
 use kiln_charts::text::{OutlineSink, TextMeasurer, default_fonts};
@@ -342,4 +342,63 @@ fn regex_lite_replace(s: &str, value: &str) -> String {
     }
     out.push_str(rest);
     out
+}
+
+#[test]
+fn inside_labels_on_slivers_of_a_stack_are_dropped() {
+    let mut wb = Workbook::new();
+    let id = wb.add_sheet(Some("Data"), None, None).unwrap();
+    for (c, h) in ["Quarter", "Big", "Sliver"].iter().enumerate() {
+        wb.load_value(id, 0, c as u32, CellValue::text(*h)).unwrap();
+    }
+    for r in 1..=4u32 {
+        wb.load_value(id, r, 0, CellValue::text(format!("Q{r}")))
+            .unwrap();
+        wb.load_value(id, r, 1, CellValue::Number(1000.0 + f64::from(r) * 50.0))
+            .unwrap();
+        wb.load_value(id, r, 2, CellValue::Number(f64::from(r)))
+            .unwrap();
+    }
+    for (kind, position) in [
+        (ChartKind::ColumnStacked, ChartLabelPosition::Center),
+        (ChartKind::ColumnStacked, ChartLabelPosition::InsideEnd),
+        (ChartKind::ColumnStacked, ChartLabelPosition::InsideBase),
+        (ChartKind::BarStacked, ChartLabelPosition::Center),
+    ] {
+        let mut cs = insert_from_range(&wb, "Data", Range::new(0, 0, 4, 2), Some(kind)).unwrap();
+        set_data_labels(&mut cs, Some(position));
+        let l = lay(&cs, 480.0, 360.0);
+        let labels = |series: usize| {
+            l.texts
+                .iter()
+                .filter(|t| {
+                    matches!(t.element, ChartElement::DataLabels { series: s, .. } if s == series)
+                })
+                .collect::<Vec<_>>()
+        };
+        assert!(
+            labels(1).is_empty(),
+            "{kind:?} {position:?}: sliver labelled"
+        );
+        let big = labels(0);
+        assert_eq!(big.len(), 4, "{kind:?} {position:?}");
+        let segments: Vec<_> = l
+            .hits
+            .iter()
+            .filter_map(|(e, h)| match (e, h) {
+                (ChartElement::Point { series: 0, .. }, HitShape::Rect(r)) => Some(*r),
+                _ => None,
+            })
+            .collect();
+        for t in big {
+            let b = t.bounds;
+            assert!(
+                segments.iter().any(|r| b.y >= r.y - 0.5
+                    && b.bottom() <= r.bottom() + 0.5
+                    && b.x >= r.x - 0.5
+                    && b.right() <= r.right() + 0.5),
+                "{kind:?} {position:?}: label {b:?} spills out of its segment"
+            );
+        }
+    }
 }

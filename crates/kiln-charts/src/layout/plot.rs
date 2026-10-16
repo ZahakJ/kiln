@@ -1742,6 +1742,10 @@ enum Anchor {
     Right(f32, f32),
     /// Left of a point.
     Left(f32, f32),
+    /// Centred on a point inside a bar segment. The label is dropped when it
+    /// is longer than the segment along the value axis (`true` when that axis
+    /// runs horizontally), as Excel does for slivers of a stacked bar.
+    Within(f32, f32, Bounds, bool),
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -1778,6 +1782,23 @@ fn push_label(
     let gap = 3.0;
     let raw = match anchor {
         Anchor::Center(x, y) => Bounds::new(x - w / 2.0, y - h / 2.0, w, h),
+        Anchor::Within(x, y, segment, horizontal) => {
+            let fits = if horizontal {
+                w <= segment.w
+            } else {
+                h <= segment.h
+            };
+            if !fits {
+                return;
+            }
+            // Keep the label inside the segment along the value axis.
+            let (x, y) = if horizontal {
+                (x.clamp(segment.x + w / 2.0, segment.right() - w / 2.0), y)
+            } else {
+                (x, y.clamp(segment.y + h / 2.0, segment.bottom() - h / 2.0))
+            };
+            Bounds::new(x - w / 2.0, y - h / 2.0, w, h)
+        }
         Anchor::Above(x, y, up) => {
             if up {
                 Bounds::new(x - w / 2.0, y - gap - h, w, h)
@@ -1788,7 +1809,7 @@ fn push_label(
         Anchor::Right(x, y) => Bounds::new(x + gap + 2.0, y - h / 2.0, w, h),
         Anchor::Left(x, y) => Bounds::new(x - gap - 2.0 - w, y - h / 2.0, w, h),
     };
-    let b = if matches!(anchor, Anchor::Center(..)) {
+    let b = if matches!(anchor, Anchor::Center(..) | Anchor::Within(..)) {
         raw
     } else {
         placer.place(raw, area)
@@ -1925,22 +1946,28 @@ fn draw_group(
                         });
                         let (cx, cy) = (rect.x + rect.w / 2.0, rect.y + rect.h / 2.0);
                         let anchor = match (pos, f.swapped) {
-                            (LabelPosition::Center, _) => Anchor::Center(cx, cy),
-                            (LabelPosition::InsideEnd, false) => Anchor::Center(
+                            (LabelPosition::Center, swapped) => {
+                                Anchor::Within(cx, cy, rect, swapped)
+                            }
+                            (LabelPosition::InsideEnd, false) => Anchor::Within(
                                 cx,
                                 if positive {
                                     rect.y + 10.0
                                 } else {
                                     rect.bottom() - 10.0
                                 },
+                                rect,
+                                false,
                             ),
-                            (LabelPosition::InsideBase, false) => Anchor::Center(
+                            (LabelPosition::InsideBase, false) => Anchor::Within(
                                 cx,
                                 if positive {
                                     rect.bottom() - 10.0
                                 } else {
                                     rect.y + 10.0
                                 },
+                                rect,
+                                false,
                             ),
                             (LabelPosition::InsideEnd, true) => Anchor::Left(
                                 if positive {
@@ -1971,7 +1998,7 @@ fn draw_group(
                                 }
                             }
                         };
-                        let inside = matches!(anchor, Anchor::Center(..));
+                        let inside = matches!(anchor, Anchor::Center(..) | Anchor::Within(..));
                         push_label(
                             ctx,
                             out,
