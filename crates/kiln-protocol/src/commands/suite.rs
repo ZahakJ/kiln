@@ -56,6 +56,99 @@ pub enum SuiteCommand {
         /// Any text.
         text: String,
     },
+    // ── Charts (WP-73): shared by Grid, Write and Deck; the app's document model applies them
+    // to the selected chart (or, for `ChartInsert`, to the selection) through `kiln-charts`.
+    /// Insert a chart from the selected cells (Grid) or with sample data (Write, Deck). `None`
+    /// inserts the first Recommended Chart for the selection's shape.
+    ChartInsert {
+        /// The chart type.
+        kind: Option<ChartKind>,
+    },
+    /// Change the selected chart's type (Chart Design ▸ Change Chart Type).
+    ChartChangeType {
+        /// The new type.
+        kind: ChartKind,
+    },
+    /// Swap the data's rows and columns (Chart Design ▸ Switch Row/Column).
+    ChartSwitchRowColumn,
+    /// Point the chart at another range (Chart Design ▸ Select Data), e.g. `Sheet1!$A$1:$D$5`.
+    ChartSelectData {
+        /// The chart data range.
+        range: String,
+    },
+    /// Add or remove a chart element (Chart Design ▸ Add Chart Element, the + button).
+    ChartSetElement {
+        /// The element.
+        element: ChartElementKind,
+        /// Show (`true`) or remove it.
+        on: bool,
+    },
+    /// Place or hide the legend.
+    ChartSetLegend {
+        /// The position; `None` removes the legend.
+        position: Option<ChartLegendPosition>,
+    },
+    /// Show data labels at a position, or remove them.
+    ChartSetDataLabels {
+        /// The position; `None` removes the labels.
+        position: Option<ChartLabelPosition>,
+    },
+    /// Apply one of Office's quick layouts (1–11).
+    ChartQuickLayout {
+        /// The layout number.
+        layout: u8,
+    },
+    /// Apply a chart style (1–48, Office's numbering).
+    ChartSetStyle {
+        /// The style number.
+        style: u8,
+    },
+    /// Change colours (Chart Design ▸ Change Colors): 0 = colourful, 1–6 = shades of one accent,
+    /// 7 = greys.
+    ChartSetColors {
+        /// The colour set.
+        palette: u8,
+    },
+    /// Set the chart title text (an empty text removes the title).
+    ChartSetTitle {
+        /// The title.
+        text: String,
+    },
+    /// Move the chart to its own chart sheet or to another sheet (Grid).
+    ChartMove {
+        /// The target.
+        to: ChartMoveTarget,
+    },
+    /// Format a series (Format pane ▸ Series Options, Fill & Line).
+    ChartFormatSeries {
+        /// The series' `idx`.
+        series: u32,
+        /// Fill colour `RRGGBB`; `None` keeps it, an empty string makes it automatic.
+        fill: Option<String>,
+        /// Line colour `RRGGBB`; `None` keeps it, an empty string makes it automatic.
+        line: Option<String>,
+        /// Line width in points.
+        line_width: Option<f32>,
+        /// Plot the series on the secondary axis.
+        secondary: Option<bool>,
+    },
+    /// Set axis options (Format pane ▸ Axis Options). `None` fields are left alone.
+    ChartFormatAxis {
+        /// Which axis.
+        axis: ChartAxisTarget,
+        /// Minimum.
+        min: Option<ChartBound>,
+        /// Maximum.
+        max: Option<ChartBound>,
+        /// Major unit.
+        major_unit: Option<ChartBound>,
+        /// Logarithmic scale base (`Auto` turns the log scale off).
+        log_base: Option<ChartBound>,
+        /// Values in reverse order.
+        reversed: Option<bool>,
+        /// Number format code (an empty string links to the source).
+        number_format: Option<String>,
+    },
 }
 
 crate::command_table! {
@@ -108,9 +201,271 @@ crate::command_table! {
         id: "suite.dev.echo", keytip: None, group: "dev",
         tier: P0, apps: AppMask::ALL, availability: Always,
     };
+    Self::ChartInsert { .. } => {
+        id: "suite.chart.insert", keytip: Some("C"), group: "chart",
+        tier: P0, apps: CHART_APPS, availability: Editable,
+    };
+    Self::ChartChangeType { .. } => {
+        id: "suite.chart.change_type", keytip: Some("C"), group: "chart",
+        tier: P0, apps: CHART_APPS, availability: Editable,
+    };
+    Self::ChartSwitchRowColumn => {
+        id: "suite.chart.switch_row_column", keytip: Some("W"), group: "chart",
+        tier: P0, apps: CHART_APPS, availability: Editable,
+    };
+    Self::ChartSelectData { .. } => {
+        id: "suite.chart.select_data", keytip: Some("E"), group: "chart",
+        tier: P0, apps: CHART_APPS, availability: Editable,
+    };
+    Self::ChartSetElement { .. } => {
+        id: "suite.chart.element", keytip: Some("A"), group: "chart",
+        tier: P0, apps: CHART_APPS, availability: Editable,
+    };
+    Self::ChartSetLegend { .. } => {
+        id: "suite.chart.legend", keytip: None, group: "chart",
+        tier: P0, apps: CHART_APPS, availability: Editable,
+    };
+    Self::ChartSetDataLabels { .. } => {
+        id: "suite.chart.data_labels", keytip: None, group: "chart",
+        tier: P0, apps: CHART_APPS, availability: Editable,
+    };
+    Self::ChartQuickLayout { .. } => {
+        id: "suite.chart.quick_layout", keytip: Some("L"), group: "chart",
+        tier: P0, apps: CHART_APPS, availability: Editable,
+    };
+    Self::ChartSetStyle { .. } => {
+        id: "suite.chart.style", keytip: Some("S"), group: "chart",
+        tier: P0, apps: CHART_APPS, availability: Editable,
+    };
+    Self::ChartSetColors { .. } => {
+        id: "suite.chart.colors", keytip: Some("H"), group: "chart",
+        tier: P0, apps: CHART_APPS, availability: Editable,
+    };
+    Self::ChartSetTitle { .. } => {
+        id: "suite.chart.title", keytip: None, group: "chart",
+        tier: P0, apps: CHART_APPS, availability: Editable,
+    };
+    Self::ChartMove { .. } => {
+        id: "suite.chart.move", keytip: Some("M"), group: "chart",
+        tier: P0, apps: AppMask::GRID, availability: Editable,
+    };
+    Self::ChartFormatSeries { .. } => {
+        id: "suite.chart.format_series", keytip: None, group: "chart",
+        tier: P0, apps: CHART_APPS, availability: Editable,
+    };
+    Self::ChartFormatAxis { .. } => {
+        id: "suite.chart.format_axis", keytip: None, group: "chart",
+        tier: P0, apps: CHART_APPS, availability: Editable,
+    };
 }
 
 impl SuiteCommand {
     /// The smallest and largest zoom factors (10 %–500 %, as in Office).
     pub const ZOOM_RANGE: std::ops::RangeInclusive<f32> = 0.1..=5.0;
+}
+
+// ── Charts (WP-73) ───────────────────────────────────────────────────────────────────────────
+
+/// The apps that host charts.
+const CHART_APPS: AppMask = AppMask::GRID.union(AppMask::WRITE).union(AppMask::DECK);
+
+/// The chart types of the Insert ▸ Charts galleries and Change Chart Type.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, TS)]
+pub enum ChartKind {
+    /// Clustered column.
+    ColumnClustered,
+    /// Stacked column.
+    ColumnStacked,
+    /// 100 % stacked column.
+    ColumnPercent,
+    /// Clustered bar.
+    BarClustered,
+    /// Stacked bar.
+    BarStacked,
+    /// 100 % stacked bar.
+    BarPercent,
+    /// Line.
+    Line,
+    /// Line with markers.
+    LineMarkers,
+    /// Stacked line.
+    LineStacked,
+    /// 100 % stacked line.
+    LinePercent,
+    /// Smooth line with markers.
+    LineSmooth,
+    /// Area.
+    Area,
+    /// Stacked area.
+    AreaStacked,
+    /// 100 % stacked area.
+    AreaPercent,
+    /// Pie.
+    Pie,
+    /// Pie with the first slice pulled out.
+    PieExploded,
+    /// Doughnut.
+    Doughnut,
+    /// Scatter with markers only.
+    ScatterMarkers,
+    /// Scatter with straight lines and markers.
+    ScatterLines,
+    /// Scatter with smooth lines.
+    ScatterSmooth,
+    /// Bubble.
+    Bubble,
+    /// Radar.
+    Radar,
+    /// Radar with markers.
+    RadarMarkers,
+    /// Filled radar.
+    RadarFilled,
+    /// Clustered column and line.
+    ComboColumnLine,
+    /// Clustered column and line on a secondary axis.
+    ComboColumnLineSecondary,
+    /// Treemap.
+    Treemap,
+    /// Sunburst.
+    Sunburst,
+}
+
+impl ChartKind {
+    /// Every kind, in gallery order.
+    pub const ALL: [ChartKind; 28] = [
+        Self::ColumnClustered,
+        Self::ColumnStacked,
+        Self::ColumnPercent,
+        Self::BarClustered,
+        Self::BarStacked,
+        Self::BarPercent,
+        Self::Line,
+        Self::LineMarkers,
+        Self::LineStacked,
+        Self::LinePercent,
+        Self::LineSmooth,
+        Self::Area,
+        Self::AreaStacked,
+        Self::AreaPercent,
+        Self::Pie,
+        Self::PieExploded,
+        Self::Doughnut,
+        Self::ScatterMarkers,
+        Self::ScatterLines,
+        Self::ScatterSmooth,
+        Self::Bubble,
+        Self::Radar,
+        Self::RadarMarkers,
+        Self::RadarFilled,
+        Self::ComboColumnLine,
+        Self::ComboColumnLineSecondary,
+        Self::Treemap,
+        Self::Sunburst,
+    ];
+}
+
+/// Chart elements that can be added or removed.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, TS)]
+pub enum ChartElementKind {
+    /// The chart title.
+    ChartTitle,
+    /// Primary horizontal axis.
+    PrimaryHorizontalAxis,
+    /// Primary vertical axis.
+    PrimaryVerticalAxis,
+    /// Primary horizontal axis title.
+    PrimaryHorizontalAxisTitle,
+    /// Primary vertical axis title.
+    PrimaryVerticalAxisTitle,
+    /// Major gridlines of the value axis.
+    MajorGridlines,
+    /// Minor gridlines of the value axis.
+    MinorGridlines,
+    /// Vertical (category) gridlines.
+    CategoryGridlines,
+    /// The legend (at the right when added).
+    Legend,
+    /// Data labels (at the default position when added).
+    DataLabels,
+    /// A linear trendline on every series that can have one.
+    LinearTrendline,
+    /// An exponential trendline.
+    ExponentialTrendline,
+    /// A two-period moving average.
+    MovingAverage,
+}
+
+/// Legend positions.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, TS)]
+pub enum ChartLegendPosition {
+    /// Right.
+    Right,
+    /// Top.
+    Top,
+    /// Left.
+    Left,
+    /// Bottom.
+    Bottom,
+    /// Top right corner.
+    TopRight,
+}
+
+/// Data label positions.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, TS)]
+pub enum ChartLabelPosition {
+    /// Centre.
+    Center,
+    /// Inside end.
+    InsideEnd,
+    /// Inside base.
+    InsideBase,
+    /// Outside end.
+    OutsideEnd,
+    /// Best fit (pie).
+    BestFit,
+    /// Left.
+    Left,
+    /// Right.
+    Right,
+    /// Above.
+    Above,
+    /// Below.
+    Below,
+}
+
+/// Where Move Chart puts a chart.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, TS)]
+pub enum ChartMoveTarget {
+    /// A new chart sheet with this name.
+    NewSheet {
+        /// The sheet name.
+        name: String,
+    },
+    /// An object on an existing sheet.
+    ObjectIn {
+        /// The sheet name.
+        sheet: String,
+    },
+}
+
+/// The axis a Format Axis command changes.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, TS)]
+pub enum ChartAxisTarget {
+    /// The primary value (vertical) axis.
+    PrimaryValue,
+    /// The primary category (horizontal) axis.
+    PrimaryCategory,
+    /// The secondary value axis.
+    SecondaryValue,
+    /// The secondary category axis.
+    SecondaryCategory,
+}
+
+/// An axis option that is either automatic or fixed (Format pane's "Auto" / "Reset").
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize, TS)]
+pub enum ChartBound {
+    /// Office chooses (or, for a log base, no log scale).
+    Auto,
+    /// A fixed value.
+    Fixed(f64),
 }

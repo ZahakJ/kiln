@@ -26,7 +26,10 @@ mod write;
 pub use deck::{DECK_COMMANDS, DeckCommand};
 pub use grid::{GRID_COMMANDS, GridCommand};
 pub use notes::{NOTES_COMMANDS, NotesCommand};
-pub use suite::{SUITE_COMMANDS, SuiteCommand};
+pub use suite::{
+    ChartAxisTarget, ChartBound, ChartElementKind, ChartKind, ChartLabelPosition,
+    ChartLegendPosition, ChartMoveTarget, SUITE_COMMANDS, SuiteCommand,
+};
 pub use write::{CaretMotion, SelectUnit, WRITE_COMMANDS, WriteCommand};
 
 use serde::{Deserialize, Serialize};

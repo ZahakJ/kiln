@@ -142,6 +142,126 @@
     },
     {
       "Write": "CancelComposition"
+    },
+    {
+      "Suite": {
+        "ChartInsert": {
+          "kind": "ComboColumnLineSecondary"
+        }
+      }
+    },
+    {
+      "Suite": {
+        "ChartInsert": {
+          "kind": null
+        }
+      }
+    },
+    {
+      "Suite": {
+        "ChartChangeType": {
+          "kind": "Sunburst"
+        }
+      }
+    },
+    {
+      "Suite": "ChartSwitchRowColumn"
+    },
+    {
+      "Suite": {
+        "ChartSelectData": {
+          "range": "'Ventes Q1 «été»'!$A$1:$D$300"
+        }
+      }
+    },
+    {
+      "Suite": {
+        "ChartSetElement": {
+          "element": "PrimaryVerticalAxisTitle",
+          "on": true
+        }
+      }
+    },
+    {
+      "Suite": {
+        "ChartSetLegend": {
+          "position": "TopRight"
+        }
+      }
+    },
+    {
+      "Suite": {
+        "ChartSetDataLabels": {
+          "position": null
+        }
+      }
+    },
+    {
+      "Suite": {
+        "ChartQuickLayout": {
+          "layout": 11
+        }
+      }
+    },
+    {
+      "Suite": {
+        "ChartSetStyle": {
+          "style": 48
+        }
+      }
+    },
+    {
+      "Suite": {
+        "ChartSetColors": {
+          "palette": 7
+        }
+      }
+    },
+    {
+      "Suite": {
+        "ChartSetTitle": {
+          "text": "Spend by quarter — 2026 ✦"
+        }
+      }
+    },
+    {
+      "Suite": {
+        "ChartMove": {
+          "to": {
+            "NewSheet": {
+              "name": "Chart1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "ChartFormatSeries": {
+          "series": 70000,
+          "fill": "1D8A60",
+          "line": "",
+          "line_width": 2.25,
+          "secondary": null
+        }
+      }
+    },
+    {
+      "Suite": {
+        "ChartFormatAxis": {
+          "axis": "SecondaryValue",
+          "min": {
+            "Fixed": -12.5
+          },
+          "max": "Auto",
+          "major_unit": {
+            "Fixed": 0.25
+          },
+          "log_base": null,
+          "reversed": true,
+          "number_format": "\"£\"#,##0"
+        }
+      }
     }
   ]
 }

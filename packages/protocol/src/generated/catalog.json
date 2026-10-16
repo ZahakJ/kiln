@@ -175,6 +175,186 @@
       "availability": "Always"
     },
     {
+      "id": "suite.chart.insert",
+      "label_key": "cmd.suite.chart.insert",
+      "keytip": "C",
+      "group": "chart",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Grid",
+        "Deck"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.chart.change_type",
+      "label_key": "cmd.suite.chart.change_type",
+      "keytip": "C",
+      "group": "chart",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Grid",
+        "Deck"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.chart.switch_row_column",
+      "label_key": "cmd.suite.chart.switch_row_column",
+      "keytip": "W",
+      "group": "chart",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Grid",
+        "Deck"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.chart.select_data",
+      "label_key": "cmd.suite.chart.select_data",
+      "keytip": "E",
+      "group": "chart",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Grid",
+        "Deck"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.chart.element",
+      "label_key": "cmd.suite.chart.element",
+      "keytip": "A",
+      "group": "chart",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Grid",
+        "Deck"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.chart.legend",
+      "label_key": "cmd.suite.chart.legend",
+      "keytip": null,
+      "group": "chart",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Grid",
+        "Deck"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.chart.data_labels",
+      "label_key": "cmd.suite.chart.data_labels",
+      "keytip": null,
+      "group": "chart",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Grid",
+        "Deck"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.chart.quick_layout",
+      "label_key": "cmd.suite.chart.quick_layout",
+      "keytip": "L",
+      "group": "chart",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Grid",
+        "Deck"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.chart.style",
+      "label_key": "cmd.suite.chart.style",
+      "keytip": "S",
+      "group": "chart",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Grid",
+        "Deck"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.chart.colors",
+      "label_key": "cmd.suite.chart.colors",
+      "keytip": "H",
+      "group": "chart",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Grid",
+        "Deck"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.chart.title",
+      "label_key": "cmd.suite.chart.title",
+      "keytip": null,
+      "group": "chart",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Grid",
+        "Deck"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.chart.move",
+      "label_key": "cmd.suite.chart.move",
+      "keytip": "M",
+      "group": "chart",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.chart.format_series",
+      "label_key": "cmd.suite.chart.format_series",
+      "keytip": null,
+      "group": "chart",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Grid",
+        "Deck"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.chart.format_axis",
+      "label_key": "cmd.suite.chart.format_axis",
+      "keytip": null,
+      "group": "chart",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Grid",
+        "Deck"
+      ],
+      "availability": "Editable"
+    },
+    {
       "id": "write.edit.insert_text",
       "label_key": "cmd.write.edit.insert_text",
       "keytip": null,

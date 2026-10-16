@@ -1,0 +1,14 @@
+{
+  "type": "ChartLegendPosition",
+  "format": {
+    "TYPENAME": "ChartLegendPosition"
+  },
+  "values": [
+    "Right",
+    "Top",
+    "Left",
+    "Bottom",
+    "TopRight",
+    "Right"
+  ]
+}

@@ -2464,6 +2464,15 @@ name = "kiln-charts"
 version = "0.1.0"
 dependencies = [
  "kiln-common",
+ "kiln-formula",
+ "kiln-ooxml",
+ "kiln-protocol",
+ "kiln-raster",
+ "kiln-scene",
+ "kiln-sheet",
+ "kiln-text",
+ "kurbo",
+ "proptest",
 ]
 
 [[package]]

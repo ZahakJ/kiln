@@ -47,8 +47,211 @@
     },
     "Repaint",
     {
+      "ChartInsert": {
+        "kind": "ComboColumnLineSecondary"
+      }
+    },
+    {
+      "ChartInsert": {
+        "kind": null
+      }
+    },
+    {
+      "ChartChangeType": {
+        "kind": "Sunburst"
+      }
+    },
+    "ChartSwitchRowColumn",
+    {
+      "ChartSelectData": {
+        "range": "'Ventes Q1 «été»'!$A$1:$D$300"
+      }
+    },
+    {
+      "ChartSetElement": {
+        "element": "PrimaryVerticalAxisTitle",
+        "on": true
+      }
+    },
+    {
+      "ChartSetLegend": {
+        "position": "TopRight"
+      }
+    },
+    {
+      "ChartSetDataLabels": {
+        "position": null
+      }
+    },
+    {
+      "ChartQuickLayout": {
+        "layout": 11
+      }
+    },
+    {
+      "ChartSetStyle": {
+        "style": 48
+      }
+    },
+    {
+      "ChartSetColors": {
+        "palette": 7
+      }
+    },
+    {
+      "ChartSetTitle": {
+        "text": "Spend by quarter — 2026 ✦"
+      }
+    },
+    {
+      "ChartMove": {
+        "to": {
+          "NewSheet": {
+            "name": "Chart1"
+          }
+        }
+      }
+    },
+    {
+      "ChartFormatSeries": {
+        "series": 70000,
+        "fill": "1D8A60",
+        "line": "",
+        "line_width": 2.25,
+        "secondary": null
+      }
+    },
+    {
+      "ChartFormatAxis": {
+        "axis": "SecondaryValue",
+        "min": {
+          "Fixed": -12.5
+        },
+        "max": "Auto",
+        "major_unit": {
+          "Fixed": 0.25
+        },
+        "log_base": null,
+        "reversed": true,
+        "number_format": "\"£\"#,##0"
+      }
+    },
+    {
       "Open": {
         "path": ""
+      }
+    },
+    {
+      "New": {
+        "kind": "Write"
+      }
+    },
+    "Save",
+    {
+      "SaveAs": {
+        "path": "",
+        "format": "Md"
+      }
+    },
+    "Close",
+    "Undo",
+    "Redo",
+    {
+      "SetZoom": {
+        "zoom": 0.0
+      }
+    },
+    {
+      "SetViewMode": {
+        "mode": "PrintLayout"
+      }
+    },
+    "Repaint",
+    "Ping",
+    {
+      "Echo": {
+        "text": ""
+      }
+    },
+    {
+      "ChartInsert": {
+        "kind": "ColumnClustered"
+      }
+    },
+    {
+      "ChartChangeType": {
+        "kind": "ColumnClustered"
+      }
+    },
+    "ChartSwitchRowColumn",
+    {
+      "ChartSelectData": {
+        "range": ""
+      }
+    },
+    {
+      "ChartSetElement": {
+        "element": "ChartTitle",
+        "on": false
+      }
+    },
+    {
+      "ChartSetLegend": {
+        "position": "Right"
+      }
+    },
+    {
+      "ChartSetDataLabels": {
+        "position": "Center"
+      }
+    },
+    {
+      "ChartQuickLayout": {
+        "layout": 0
+      }
+    },
+    {
+      "ChartSetStyle": {
+        "style": 0
+      }
+    },
+    {
+      "ChartSetColors": {
+        "palette": 0
+      }
+    },
+    {
+      "ChartSetTitle": {
+        "text": ""
+      }
+    },
+    {
+      "ChartMove": {
+        "to": {
+          "ObjectIn": {
+            "sheet": ""
+          }
+        }
+      }
+    },
+    {
+      "ChartFormatSeries": {
+        "series": 0,
+        "fill": "",
+        "line": "",
+        "line_width": 0.0,
+        "secondary": false
+      }
+    },
+    {
+      "ChartFormatAxis": {
+        "axis": "PrimaryValue",
+        "min": "Auto",
+        "max": "Auto",
+        "major_unit": "Auto",
+        "log_base": "Auto",
+        "reversed": false,
+        "number_format": ""
       }
     }
   ]

@@ -12,8 +12,9 @@ use crate::OpenHint;
 use crate::a11y::{A11yNode, A11yRole, A11yTree};
 use crate::app::{App, DocKind, FileFormat};
 use crate::commands::{
-    Availability, CaretMotion, Command, CommandInfo, SelectUnit, SuiteCommand, Tier, WriteCommand,
-    catalog,
+    Availability, CaretMotion, ChartAxisTarget, ChartBound, ChartElementKind, ChartKind,
+    ChartLabelPosition, ChartLegendPosition, ChartMoveTarget, Command, CommandInfo, SelectUnit,
+    SuiteCommand, Tier, WriteCommand, catalog,
 };
 use crate::error::ErrorInfo;
 use crate::event::{Event, Progress, RecoveryEntry};
@@ -112,6 +113,62 @@ pub fn commands() -> Vec<Command> {
         }
         .into(),
         WriteCommand::CancelComposition.into(),
+        // WP-73: chart commands.
+        SuiteCommand::ChartInsert {
+            kind: Some(ChartKind::ComboColumnLineSecondary),
+        }
+        .into(),
+        SuiteCommand::ChartInsert { kind: None }.into(),
+        SuiteCommand::ChartChangeType {
+            kind: ChartKind::Sunburst,
+        }
+        .into(),
+        SuiteCommand::ChartSwitchRowColumn.into(),
+        SuiteCommand::ChartSelectData {
+            range: "'Ventes Q1 «été»'!$A$1:$D$300".into(),
+        }
+        .into(),
+        SuiteCommand::ChartSetElement {
+            element: ChartElementKind::PrimaryVerticalAxisTitle,
+            on: true,
+        }
+        .into(),
+        SuiteCommand::ChartSetLegend {
+            position: Some(ChartLegendPosition::TopRight),
+        }
+        .into(),
+        SuiteCommand::ChartSetDataLabels { position: None }.into(),
+        SuiteCommand::ChartQuickLayout { layout: 11 }.into(),
+        SuiteCommand::ChartSetStyle { style: 48 }.into(),
+        SuiteCommand::ChartSetColors { palette: 7 }.into(),
+        SuiteCommand::ChartSetTitle {
+            text: "Spend by quarter — 2026 ✦".into(),
+        }
+        .into(),
+        SuiteCommand::ChartMove {
+            to: ChartMoveTarget::NewSheet {
+                name: "Chart1".into(),
+            },
+        }
+        .into(),
+        SuiteCommand::ChartFormatSeries {
+            series: 70_000,
+            fill: Some("1D8A60".into()),
+            line: Some(String::new()),
+            line_width: Some(2.25),
+            secondary: None,
+        }
+        .into(),
+        SuiteCommand::ChartFormatAxis {
+            axis: ChartAxisTarget::SecondaryValue,
+            min: Some(ChartBound::Fixed(-12.5)),
+            max: Some(ChartBound::Auto),
+            major_unit: Some(ChartBound::Fixed(0.25)),
+            log_base: None,
+            reversed: Some(true),
+            number_format: Some("\"£\"#,##0".into()),
+        }
+        .into(),
     ]
 }
 
@@ -416,4 +473,35 @@ fn core_info() -> CoreInfo {
         protocol: crate::PROTOCOL_VERSION,
         target: "wasm32".into(),
     }
+}
+
+// WP-73: every variant of the chart command arguments.
+samples! {
+    ChartKind => ChartKind::ALL.to_vec();
+    ChartElementKind => vec![
+        ChartElementKind::ChartTitle, ChartElementKind::PrimaryHorizontalAxis,
+        ChartElementKind::PrimaryVerticalAxis, ChartElementKind::PrimaryHorizontalAxisTitle,
+        ChartElementKind::PrimaryVerticalAxisTitle, ChartElementKind::MajorGridlines,
+        ChartElementKind::MinorGridlines, ChartElementKind::CategoryGridlines,
+        ChartElementKind::Legend, ChartElementKind::DataLabels, ChartElementKind::LinearTrendline,
+        ChartElementKind::ExponentialTrendline, ChartElementKind::MovingAverage,
+    ];
+    ChartLegendPosition => vec![
+        ChartLegendPosition::Right, ChartLegendPosition::Top, ChartLegendPosition::Left,
+        ChartLegendPosition::Bottom, ChartLegendPosition::TopRight,
+    ];
+    ChartLabelPosition => vec![
+        ChartLabelPosition::Center, ChartLabelPosition::InsideEnd, ChartLabelPosition::InsideBase,
+        ChartLabelPosition::OutsideEnd, ChartLabelPosition::BestFit, ChartLabelPosition::Left,
+        ChartLabelPosition::Right, ChartLabelPosition::Above, ChartLabelPosition::Below,
+    ];
+    ChartMoveTarget => vec![
+        ChartMoveTarget::NewSheet { name: "Chart1".into() },
+        ChartMoveTarget::ObjectIn { sheet: "Budget «2026»".into() },
+    ];
+    ChartBound => vec![ChartBound::Auto, ChartBound::Fixed(1e-3), ChartBound::Fixed(-2.5e9)];
+    ChartAxisTarget => vec![
+        ChartAxisTarget::PrimaryValue, ChartAxisTarget::PrimaryCategory,
+        ChartAxisTarget::SecondaryValue, ChartAxisTarget::SecondaryCategory,
+    ];
 }

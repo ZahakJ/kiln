@@ -66,6 +66,12 @@ pub fn visit_all(v: &mut impl Visitor) {
     );
     // WP-54: the display list (kiln-scene), including SceneDelta.
     crate::scene::samples::visit(v);
+    // WP-73: the arguments of the chart commands.
+    visit_types!(v;
+        commands::ChartKind, commands::ChartElementKind, commands::ChartLegendPosition,
+        commands::ChartLabelPosition, commands::ChartMoveTarget, commands::ChartAxisTarget,
+        commands::ChartBound,
+    );
 }
 
 /// The ts-rs configuration: 64-bit integers are JavaScript numbers (ids and revisions stay below

@@ -324,6 +324,237 @@
         }
       ]
     },
+    "ChartAxisTarget": {
+      "ENUM": {
+        "0": {
+          "PrimaryValue": "UNIT"
+        },
+        "1": {
+          "PrimaryCategory": "UNIT"
+        },
+        "2": {
+          "SecondaryValue": "UNIT"
+        },
+        "3": {
+          "SecondaryCategory": "UNIT"
+        }
+      }
+    },
+    "ChartBound": {
+      "ENUM": {
+        "0": {
+          "Auto": "UNIT"
+        },
+        "1": {
+          "Fixed": {
+            "NEWTYPE": "F64"
+          }
+        }
+      }
+    },
+    "ChartElementKind": {
+      "ENUM": {
+        "0": {
+          "ChartTitle": "UNIT"
+        },
+        "1": {
+          "PrimaryHorizontalAxis": "UNIT"
+        },
+        "2": {
+          "PrimaryVerticalAxis": "UNIT"
+        },
+        "3": {
+          "PrimaryHorizontalAxisTitle": "UNIT"
+        },
+        "4": {
+          "PrimaryVerticalAxisTitle": "UNIT"
+        },
+        "5": {
+          "MajorGridlines": "UNIT"
+        },
+        "6": {
+          "MinorGridlines": "UNIT"
+        },
+        "7": {
+          "CategoryGridlines": "UNIT"
+        },
+        "8": {
+          "Legend": "UNIT"
+        },
+        "9": {
+          "DataLabels": "UNIT"
+        },
+        "10": {
+          "LinearTrendline": "UNIT"
+        },
+        "11": {
+          "ExponentialTrendline": "UNIT"
+        },
+        "12": {
+          "MovingAverage": "UNIT"
+        }
+      }
+    },
+    "ChartKind": {
+      "ENUM": {
+        "0": {
+          "ColumnClustered": "UNIT"
+        },
+        "1": {
+          "ColumnStacked": "UNIT"
+        },
+        "2": {
+          "ColumnPercent": "UNIT"
+        },
+        "3": {
+          "BarClustered": "UNIT"
+        },
+        "4": {
+          "BarStacked": "UNIT"
+        },
+        "5": {
+          "BarPercent": "UNIT"
+        },
+        "6": {
+          "Line": "UNIT"
+        },
+        "7": {
+          "LineMarkers": "UNIT"
+        },
+        "8": {
+          "LineStacked": "UNIT"
+        },
+        "9": {
+          "LinePercent": "UNIT"
+        },
+        "10": {
+          "LineSmooth": "UNIT"
+        },
+        "11": {
+          "Area": "UNIT"
+        },
+        "12": {
+          "AreaStacked": "UNIT"
+        },
+        "13": {
+          "AreaPercent": "UNIT"
+        },
+        "14": {
+          "Pie": "UNIT"
+        },
+        "15": {
+          "PieExploded": "UNIT"
+        },
+        "16": {
+          "Doughnut": "UNIT"
+        },
+        "17": {
+          "ScatterMarkers": "UNIT"
+        },
+        "18": {
+          "ScatterLines": "UNIT"
+        },
+        "19": {
+          "ScatterSmooth": "UNIT"
+        },
+        "20": {
+          "Bubble": "UNIT"
+        },
+        "21": {
+          "Radar": "UNIT"
+        },
+        "22": {
+          "RadarMarkers": "UNIT"
+        },
+        "23": {
+          "RadarFilled": "UNIT"
+        },
+        "24": {
+          "ComboColumnLine": "UNIT"
+        },
+        "25": {
+          "ComboColumnLineSecondary": "UNIT"
+        },
+        "26": {
+          "Treemap": "UNIT"
+        },
+        "27": {
+          "Sunburst": "UNIT"
+        }
+      }
+    },
+    "ChartLabelPosition": {
+      "ENUM": {
+        "0": {
+          "Center": "UNIT"
+        },
+        "1": {
+          "InsideEnd": "UNIT"
+        },
+        "2": {
+          "InsideBase": "UNIT"
+        },
+        "3": {
+          "OutsideEnd": "UNIT"
+        },
+        "4": {
+          "BestFit": "UNIT"
+        },
+        "5": {
+          "Left": "UNIT"
+        },
+        "6": {
+          "Right": "UNIT"
+        },
+        "7": {
+          "Above": "UNIT"
+        },
+        "8": {
+          "Below": "UNIT"
+        }
+      }
+    },
+    "ChartLegendPosition": {
+      "ENUM": {
+        "0": {
+          "Right": "UNIT"
+        },
+        "1": {
+          "Top": "UNIT"
+        },
+        "2": {
+          "Left": "UNIT"
+        },
+        "3": {
+          "Bottom": "UNIT"
+        },
+        "4": {
+          "TopRight": "UNIT"
+        }
+      }
+    },
+    "ChartMoveTarget": {
+      "ENUM": {
+        "0": {
+          "NewSheet": {
+            "STRUCT": [
+              {
+                "name": "STR"
+              }
+            ]
+          }
+        },
+        "1": {
+          "ObjectIn": {
+            "STRUCT": [
+              {
+                "sheet": "STR"
+              }
+            ]
+          }
+        }
+      }
+    },
     "ColorRole": {
       "ENUM": {
         "0": {
@@ -2277,6 +2508,207 @@
             "STRUCT": [
               {
                 "text": "STR"
+              }
+            ]
+          }
+        },
+        "12": {
+          "ChartInsert": {
+            "STRUCT": [
+              {
+                "kind": {
+                  "OPTION": {
+                    "TYPENAME": "ChartKind"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "13": {
+          "ChartChangeType": {
+            "STRUCT": [
+              {
+                "kind": {
+                  "TYPENAME": "ChartKind"
+                }
+              }
+            ]
+          }
+        },
+        "14": {
+          "ChartSwitchRowColumn": "UNIT"
+        },
+        "15": {
+          "ChartSelectData": {
+            "STRUCT": [
+              {
+                "range": "STR"
+              }
+            ]
+          }
+        },
+        "16": {
+          "ChartSetElement": {
+            "STRUCT": [
+              {
+                "element": {
+                  "TYPENAME": "ChartElementKind"
+                }
+              },
+              {
+                "on": "BOOL"
+              }
+            ]
+          }
+        },
+        "17": {
+          "ChartSetLegend": {
+            "STRUCT": [
+              {
+                "position": {
+                  "OPTION": {
+                    "TYPENAME": "ChartLegendPosition"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "18": {
+          "ChartSetDataLabels": {
+            "STRUCT": [
+              {
+                "position": {
+                  "OPTION": {
+                    "TYPENAME": "ChartLabelPosition"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "19": {
+          "ChartQuickLayout": {
+            "STRUCT": [
+              {
+                "layout": "U8"
+              }
+            ]
+          }
+        },
+        "20": {
+          "ChartSetStyle": {
+            "STRUCT": [
+              {
+                "style": "U8"
+              }
+            ]
+          }
+        },
+        "21": {
+          "ChartSetColors": {
+            "STRUCT": [
+              {
+                "palette": "U8"
+              }
+            ]
+          }
+        },
+        "22": {
+          "ChartSetTitle": {
+            "STRUCT": [
+              {
+                "text": "STR"
+              }
+            ]
+          }
+        },
+        "23": {
+          "ChartMove": {
+            "STRUCT": [
+              {
+                "to": {
+                  "TYPENAME": "ChartMoveTarget"
+                }
+              }
+            ]
+          }
+        },
+        "24": {
+          "ChartFormatSeries": {
+            "STRUCT": [
+              {
+                "series": "U32"
+              },
+              {
+                "fill": {
+                  "OPTION": "STR"
+                }
+              },
+              {
+                "line": {
+                  "OPTION": "STR"
+                }
+              },
+              {
+                "line_width": {
+                  "OPTION": "F32"
+                }
+              },
+              {
+                "secondary": {
+                  "OPTION": "BOOL"
+                }
+              }
+            ]
+          }
+        },
+        "25": {
+          "ChartFormatAxis": {
+            "STRUCT": [
+              {
+                "axis": {
+                  "TYPENAME": "ChartAxisTarget"
+                }
+              },
+              {
+                "min": {
+                  "OPTION": {
+                    "TYPENAME": "ChartBound"
+                  }
+                }
+              },
+              {
+                "max": {
+                  "OPTION": {
+                    "TYPENAME": "ChartBound"
+                  }
+                }
+              },
+              {
+                "major_unit": {
+                  "OPTION": {
+                    "TYPENAME": "ChartBound"
+                  }
+                }
+              },
+              {
+                "log_base": {
+                  "OPTION": {
+                    "TYPENAME": "ChartBound"
+                  }
+                }
+              },
+              {
+                "reversed": {
+                  "OPTION": "BOOL"
+                }
+              },
+              {
+                "number_format": {
+                  "OPTION": "STR"
+                }
               }
             ]
           }

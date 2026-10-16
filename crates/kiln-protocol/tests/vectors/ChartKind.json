@@ -1,0 +1,37 @@
+{
+  "type": "ChartKind",
+  "format": {
+    "TYPENAME": "ChartKind"
+  },
+  "values": [
+    "ColumnClustered",
+    "ColumnStacked",
+    "ColumnPercent",
+    "BarClustered",
+    "BarStacked",
+    "BarPercent",
+    "Line",
+    "LineMarkers",
+    "LineStacked",
+    "LinePercent",
+    "LineSmooth",
+    "Area",
+    "AreaStacked",
+    "AreaPercent",
+    "Pie",
+    "PieExploded",
+    "Doughnut",
+    "ScatterMarkers",
+    "ScatterLines",
+    "ScatterSmooth",
+    "Bubble",
+    "Radar",
+    "RadarMarkers",
+    "RadarFilled",
+    "ComboColumnLine",
+    "ComboColumnLineSecondary",
+    "Treemap",
+    "Sunburst",
+    "ColumnClustered"
+  ]
+}

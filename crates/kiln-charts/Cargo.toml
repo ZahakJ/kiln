@@ -1,6 +1,6 @@
 [package]
 name = "kiln-charts"
-description = "The chart model (13 chart types in v0"
+description = "The chart model (13 chart types in v0.1), chart layout and Scene rendering, c:chartSpace and cx:chartSpace reading and writing, chart editing"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -11,6 +11,20 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+kiln-protocol.workspace = true
+kiln-scene.workspace = true
+kiln-ooxml.workspace = true
+kiln-formula = { workspace = true, default-features = false }
+kiln-sheet = { workspace = true, default-features = false }
+kiln-text = { workspace = true, default-features = false }
+kurbo.workspace = true
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+kiln-text = { workspace = true, default-features = false, features = ["bundled-fonts"] }
+
+[dev-dependencies]
+kiln-raster.workspace = true
+proptest.workspace = true
 
 [lints]
 workspace = true

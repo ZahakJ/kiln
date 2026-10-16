@@ -472,6 +472,30 @@ impl Session {
                 d.viewport.zoom = zoom;
                 self.finish(id, changed)
             }
+            // WP-73: chart commands go to the document model, which applies them to its chart
+            // through `kiln-charts` (Grid, Write and Deck host charts).
+            chart @ (SuiteCommand::ChartInsert { .. }
+            | SuiteCommand::ChartChangeType { .. }
+            | SuiteCommand::ChartSwitchRowColumn
+            | SuiteCommand::ChartSelectData { .. }
+            | SuiteCommand::ChartSetElement { .. }
+            | SuiteCommand::ChartSetLegend { .. }
+            | SuiteCommand::ChartSetDataLabels { .. }
+            | SuiteCommand::ChartQuickLayout { .. }
+            | SuiteCommand::ChartSetStyle { .. }
+            | SuiteCommand::ChartSetColors { .. }
+            | SuiteCommand::ChartSetTitle { .. }
+            | SuiteCommand::ChartMove { .. }
+            | SuiteCommand::ChartFormatSeries { .. }
+            | SuiteCommand::ChartFormatAxis { .. }) => {
+                let id = require(doc)?;
+                let d = self.doc_mut(id)?;
+                let change = d.model.execute(&Command::Suite(chart))?;
+                if change == Change::Content {
+                    d.revision += 1;
+                }
+                self.finish(id, change != Change::None)
+            }
             SuiteCommand::SetViewMode { mode } => {
                 let id = require(doc)?;
                 let d = self.doc_mut(id)?;

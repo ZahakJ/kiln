@@ -1,0 +1,28 @@
+{
+  "type": "ChartMoveTarget",
+  "format": {
+    "TYPENAME": "ChartMoveTarget"
+  },
+  "values": [
+    {
+      "NewSheet": {
+        "name": "Chart1"
+      }
+    },
+    {
+      "ObjectIn": {
+        "sheet": "Budget «2026»"
+      }
+    },
+    {
+      "NewSheet": {
+        "name": ""
+      }
+    },
+    {
+      "ObjectIn": {
+        "sheet": ""
+      }
+    }
+  ]
+}

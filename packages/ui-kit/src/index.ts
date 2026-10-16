@@ -14,6 +14,7 @@ export {
   type BackstagePageId,
   type BackstageProps,
 } from './backstage/Backstage.tsx';
+export * from './charts/index.ts';
 export * from './chrome/index.ts';
 export { CommandMenuItems, isCommandEntry, type MenuEntry } from './contextmenu/CommandMenuItems.tsx';
 export { ContextMenu, type ContextMenuProps } from './contextmenu/ContextMenu.tsx';

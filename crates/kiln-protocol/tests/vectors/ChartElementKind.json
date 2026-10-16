@@ -1,0 +1,22 @@
+{
+  "type": "ChartElementKind",
+  "format": {
+    "TYPENAME": "ChartElementKind"
+  },
+  "values": [
+    "ChartTitle",
+    "PrimaryHorizontalAxis",
+    "PrimaryVerticalAxis",
+    "PrimaryHorizontalAxisTitle",
+    "PrimaryVerticalAxisTitle",
+    "MajorGridlines",
+    "MinorGridlines",
+    "CategoryGridlines",
+    "Legend",
+    "DataLabels",
+    "LinearTrendline",
+    "ExponentialTrendline",
+    "MovingAverage",
+    "ChartTitle"
+  ]
+}

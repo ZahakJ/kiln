@@ -185,9 +185,23 @@ any part or extension Kiln does not know.
 (furigana) runs of strings are not kept; macros are not kept when an `.xlsm` is saved as
 `.xlsx`. Every part no edit touched is copied byte for byte.
 
-**Charts** (`kiln-charts`): column, bar, line, area, pie, doughnut, scatter, bubble, radar and
-combinations, with axes, legends, data labels and series formatting. 3-D bar
-charts are drawn in 2-D. Treemap and sunburst charts are read where possible.
+**Charts** (`kiln-charts`, shipped in WP-73): every chart part is read into Kiln's chart
+model and written back from it — `c:chartSpace` for column, bar, line, area, pie, doughnut,
+scatter, bubble and radar charts and their combinations (with a secondary axis), and Excel
+2016's `cx:chartSpace` for treemap and sunburst. Read and written: series with their
+references and cached values (or literal data), multi-level categories, axes (category, value
+and date; bounds, units, logarithmic scale, reversed order, number formats, titles, tick marks
+and labels, gridlines), legends and legend entries, titles (rich text or linked to a cell),
+data labels (value, category, series name, percentage, bubble size, position, number format,
+per-point labels), series and point formatting (fill, outline, markers, explosion, invert if
+negative), trendlines, chart styles and the chart and plot areas. Kept unchanged in place:
+everything else (error bars, up/down bars, drop and high-low lines, 3-D view and walls, data
+tables, `c:extLst` extensions, `mc:AlternateContent`), and every `c:spPr`, `c:txPr` and
+`c:rich` that was not edited. Every chart of the corpus round-trips with its structure intact
+(`crates/kiln-charts/tests/roundtrip.rs`: 1.000). 3-D charts are drawn in 2-D; stock, surface
+and bar-of-pie charts are kept and drawn as an empty plot area. Charts in Word documents and
+presentations keep their embedded workbook (`embeddings/*.xlsx`), which Kiln reads to edit
+the data.
 
 ## PowerPoint presentations (`.pptx`, `.potx`, `.pptm`) — `kiln-io-pptx`
 
