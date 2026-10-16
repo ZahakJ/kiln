@@ -133,3 +133,133 @@ fn no_function_panics_on_hostile_arguments() {
     assert!(panics.is_empty(), "panicked:\n{}", panics.join("\n"));
     assert!(slow.is_empty(), "slow:\n{}", slow.join("\n"));
 }
+
+/// Numbers spanning the domains of the distributions, with the large shapes, degrees of freedom
+/// and trial counts where series and continued fractions stop converging.
+const DIST_NUMBERS: &[&str] = &[
+    "0",
+    "1E-300",
+    "1E-10",
+    "0.001",
+    "0.3",
+    "0.5",
+    "1",
+    "1.5",
+    "2",
+    "3.7",
+    "10",
+    "30",
+    "99.5",
+    "100",
+    "1000",
+    "1E5",
+    "1E6",
+    "1E7",
+    "99990000",
+    "1E8",
+    "100010000",
+    "1E10",
+    "1E12",
+    "5E14",
+    "1E15",
+    "1E18",
+    "1E300",
+    "-1",
+    "-3.5",
+    "-1E8",
+];
+
+/// Probabilities, including the end points and values within an ulp of them.
+const DIST_PROBS: &[&str] = &[
+    "0",
+    "1E-15",
+    "2E-15",
+    "0.001",
+    "0.3",
+    "0.5",
+    "0.7",
+    "0.999",
+    "0.999999999999999",
+    "1",
+];
+
+/// Every cumulative distribution function returns a probability: a number in [0, 1] or an
+/// error, never a negative value, a value above 1 or a non-number. `N` is drawn from
+/// [`DIST_NUMBERS`], `P` from [`DIST_PROBS`]; `TRUE` selects the cumulative form.
+#[test]
+fn cumulative_distributions_return_probabilities() {
+    const CASES: &[(&str, &str)] = &[
+        ("NORM.DIST", "N,N,N,TRUE"),
+        ("NORMDIST", "N,N,N,TRUE"),
+        ("NORM.S.DIST", "N,TRUE"),
+        ("NORMSDIST", "N"),
+        ("LOGNORM.DIST", "N,N,N,TRUE"),
+        ("LOGNORMDIST", "N,N,N"),
+        ("T.DIST", "N,N,TRUE"),
+        ("T.DIST", "-N,N,TRUE"),
+        ("T.DIST.RT", "N,N"),
+        ("T.DIST.RT", "-N,N"),
+        ("T.DIST.2T", "N,N"),
+        ("TDIST", "N,N,1"),
+        ("TDIST", "N,N,2"),
+        ("CHISQ.DIST", "N,N,TRUE"),
+        ("CHISQ.DIST.RT", "N,N"),
+        ("CHIDIST", "N,N"),
+        ("F.DIST", "N,N,N,TRUE"),
+        ("F.DIST.RT", "N,N,N"),
+        ("FDIST", "N,N,N"),
+        ("BETA.DIST", "P,N,N,TRUE"),
+        ("BETADIST", "P,N,N"),
+        ("GAMMA.DIST", "N,N,N,TRUE"),
+        ("GAMMADIST", "N,N,N,TRUE"),
+        ("EXPON.DIST", "N,N,TRUE"),
+        ("EXPONDIST", "N,N,TRUE"),
+        ("WEIBULL.DIST", "N,N,N,TRUE"),
+        ("WEIBULL", "N,N,N,TRUE"),
+        ("BINOM.DIST", "N,N,P,TRUE"),
+        ("BINOMDIST", "N,N,P,TRUE"),
+        ("BINOM.DIST.RANGE", "N,P,N,N"),
+        ("POISSON.DIST", "N,N,TRUE"),
+        ("POISSON", "N,N,TRUE"),
+        ("NEGBINOM.DIST", "N,N,P,TRUE"),
+        ("HYPGEOM.DIST", "N,N,N,N,TRUE"),
+    ];
+    let mut engine = conformance_support::make_engine();
+    let calc = engine.sheet_id("Calc").expect("Calc");
+    let rounds: usize = std::env::var("KILN_FUZZ_ROUNDS")
+        .ok()
+        .and_then(|r| r.parse().ok())
+        .map_or(1000, |r: usize| r * 170);
+    let mut rng = Rng(0x0D15_7AB5);
+    let (mut calls, mut numbers, mut bad) = (0usize, 0usize, Vec::new());
+    for (name, shape) in CASES {
+        for _ in 0..rounds {
+            let args: Vec<String> = shape
+                .split(',')
+                .map(|a| match a {
+                    "N" => rng.pick(DIST_NUMBERS).to_string(),
+                    "-N" => format!("-{}", rng.pick(DIST_NUMBERS)),
+                    "P" => rng.pick(DIST_PROBS).to_string(),
+                    lit => lit.to_string(),
+                })
+                .collect();
+            let formula = format!("={name}({})", args.join(","));
+            calls += 1;
+            match engine.evaluate_at(&formula, calc, 0, 0, false) {
+                Ok(kiln_formula::Value::Number(v)) => {
+                    numbers += 1;
+                    if !(0.0..=1.0).contains(&v) {
+                        bad.push(format!("{formula} = {v}"));
+                    }
+                }
+                Ok(kiln_formula::Value::Error(_)) => {}
+                other => bad.push(format!("{formula} = {other:?}")),
+            }
+        }
+    }
+    println!(
+        "{calls} cumulative distribution calls, {numbers} numbers, {} outside [0, 1]",
+        bad.len()
+    );
+    assert!(bad.is_empty(), "not a probability:\n{}", bad.join("\n"));
+}

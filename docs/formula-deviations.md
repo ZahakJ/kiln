@@ -11,7 +11,7 @@ Thirteen functions v1.0 lacked were added with the port: `AMORDEGRC`, `AMORLINC`
 `ODDFYIELD`, `ODDLPRICE`, `ODDLYIELD`, `EUROCONVERT`, `ASC`, `JIS`, `DBCS`, `BAHTTEXT`, `PHONETIC`
 and `PERCENTOF`.
 The conformance suite lives in `conformance/` and runs with
-`cargo nextest run -p kiln-formula --test conformance` (`tests/conformance.rs`, 5,420 rows, 0
+`cargo nextest run -p kiln-formula --test conformance` (`tests/conformance.rs`, 5,450 rows, 0
 failures):
 
 - `curated-*.csv` rows are Microsoft's documented examples (copied from the function documentation in
@@ -50,11 +50,36 @@ logical coercion, so each function would have needed rewrapping or replacing any
 suite checks the native implementations directly. This also removes formulajs and its `jstat` and
 `bessel` dependencies from the shipped bundle.
 
-The Rust port keeps the native implementations. The gamma function, its logarithm and the error
-function come from `statrs`; the regularised incomplete beta and gamma functions are Kiln's own
-(continued fractions without `statrs`' 140-iteration cap, which loses digits for
-`BINOM.DIST(4900,10000,0.5,TRUE)`), and the distribution rows of `generated-dist.csv` check them to
-1e-9 relative. `DOLLARDE` and `DOLLARFR` use `rust_decimal` where v1.0 used decimal.js.
+The Rust port keeps the native implementations. The gamma function and its logarithm come from
+`statrs`. The error functions, the normal distribution and the regularised incomplete beta and gamma
+functions behind every other distribution are Kiln's own (`src/functions/special.rs`), accurate to
+about 1e-13 relative or better at any parameter size:
+
+- `erf`/`erfc` use a positive-term series and Legendre's continued fraction with `e^(−x²)` formed
+  without rounding `x²` (`statrs` 0.19's are off by up to 1e-10 relative between 0.5 and 3).
+- Small and moderate shapes use the power series and continued fractions run to convergence (the
+  beta fraction in its even contraction, written in `λ = a − (a+b)x` and `1 − x` so that a tail
+  within an ulp of 1, as in `T.DIST(0.5,1E15,TRUE)`, keeps its digits).
+- Large shapes near the mean, where those need O(√a) terms (10⁸ at a = 10¹⁵), use Temme's uniform
+  asymptotic expansions (DLMF 8.12 and 8.18) with coefficients generated at run time; each
+  evaluation checks that its series and the asymptotic sum have converged and otherwise falls back
+  to the classic method.
+- The prefactors `xᵃe⁻ˣ/Γ(a)` and `xᵃyᵇ/B(a,b)` go through Stirling's series and `ln(1+u) − u`, so
+  terms of size a·ln x cancel exactly instead of in floating point.
+- A method that does not converge gives `#NUM!`, never a partial sum, and cumulative results are
+  clamped to [0, 1]. `tests/conformance_fuzz.rs` requires every cumulative distribution function
+  to return a probability or an error over 34,000 calls with shapes, degrees of freedom and trial
+  counts up to 10¹⁸.
+
+`curated-statistical.csv` checks 30 large-parameter values (`GAMMA.DIST(1E8,1E8,1,TRUE)`,
+`BINOM.DIST(5E14,1E15,0.5,TRUE)`, `T.DIST(0.5,1E15,TRUE)`, `GAMMA.INV(0.5,1E7,1)` …) against 50-digit
+references computed with mpmath independently of Kiln (quadrature of the density, both tails
+normalised by their sum, and Temme's expansion with DLMF's closed-form coefficients); the unit
+tests in `special.rs` add references, an exact binomial sum, agreement between the asymptotic and
+classic methods, and monotonicity and [0, 1] bounds over a grid of shapes from 10⁻³ to 10¹⁸. Before
+this, the series stopped silently after 10,000 terms and returned values such as 0.3414 for
+`GAMMA.DIST(1E8,1E8,1,TRUE)` (0.500013) or −81.38 for `BINOM.DIST(5E14,1E15,0.5,TRUE)`.
+`DOLLARDE` and `DOLLARFR` use `rust_decimal` where v1.0 used decimal.js.
 
 ## Deviations from Excel
 
@@ -83,6 +108,7 @@ These are behaviours where Kiln is known, or not verified, to match Excel.
 | Number formats (`TEXT`, cell display) | Format `0` shows `0` for -0.4; `General` shows -0.0000001 and 0.000012345 in decimal. | May show `-0`, and `-1E-07` / `1.2345E-05` (not verified). | Follows the numfmt oracle of v1.0; LibreOffice 24.2 agrees. |
 | `LET` names that are function names | `=LET(fact,LAMBDA(…),fact(fact,5))` calls the built-in `FACT`, so it is `#VALUE!` here. | Not verified. | A name followed by `(` resolves to a worksheet function first; name `LET` variables that are not function names (`fac`). The conformance rows do. |
 | Criteria longer than 255 characters | `#VALUE!` in `COUNTIF(S)`, `SUMIF(S)`, `AVERAGEIF(S)`, `MAXIFS`, `MINIFS`. | `#VALUE!`. | Matches Excel's documented limit (and keeps a 32,767-character wildcard from costing seconds). |
+| Distributions with very large parameters | Accurate to about 1e-13 for any shape, degrees of freedom or trial count Excel accepts (see the implementation note); cumulative `HYPGEOM.DIST` sums over more than 10⁷ terms are `#NUM!`. | Not verified beyond about 10⁸. | Uniform asymptotic expansions where series would need billions of terms. |
 | Huge arguments | `MULTINOMIAL`, the Bessel functions and other functions with loops over an argument are computed in bounded time: they overflow to `#NUM!` (or underflow to 0) instead of iterating up to 10^308 times; dates beyond 9999-12-31 in the date, `YEARFRAC` and security functions are `#NUM!`. | Same results where Excel gives one. | `tests/conformance_fuzz.rs` calls every function with every arity and hostile arguments and requires an answer without a panic or a stall. v1.0 could hang on `MULTINOMIAL(1E+308)` and `BESSELJ(1,1E+15)`. |
 | Not implemented | `GROUPBY`, `PIVOTBY`, `TRIMRANGE`, `GETPIVOTDATA`, `FORECAST.ETS`, `FORECAST.ETS.CONFINT`, `FORECAST.ETS.SEASONALITY`, `FORECAST.ETS.STAT`, `IMAGE`, `WEBSERVICE`, `FILTERXML`, `CUBE*`, `RTD`, `CALL`, `REGISTER.ID`, `STOCKHISTORY`, `TRANSLATE`, `DETECTLANGUAGE`, `COPILOT`, `FIELDVALUE`, `PY`. | Available. | They return `#NAME?`. Pivot tables, external data, online services and Python are outside the v0.1 scope (the parity tracker lists each with its reason); `GROUPBY`, `PIVOTBY`, `TRIMRANGE` and the exponential-smoothing forecasts are planned. |
 | `AMORDEGRC` | Lives (1/rate) strictly between 0 and 1, 1 and 2, 2 and 3, or 4 and 5 years are `#NUM!`; the coefficient is 1.5 for 3–4 years, 2 for 5–6 and 2.5 beyond; basis 2 is `#NUM!` for both French functions; a schedule that a million periods do not exhaust is `#NUM!`. | As documented by Microsoft (the #NUM! ranges and coefficients). | LibreOffice computes a value for those lives (excluded rows). |

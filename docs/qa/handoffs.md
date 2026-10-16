@@ -228,3 +228,20 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   `GETPIVOTDATA` needs the pivot tables. When adding one: implement it in `src/functions/<family>.rs`,
   add its docs entry and conformance rows, list it in `POST_V1` in `tests/conformance_registry.rs`, run
   `KILN_BLESS=1 cargo nextest run -p kiln-formula --test conformance_registry`, then `cargo xtask parity`.
+
+## WP-57 fix round 1 → WP-56, the bridge's owner (function library)
+
+- For WP-56 (`values/number.rs`): `round15` formats every non-integer with 40 digits (`{:.39e}`) and
+  parses it back, about 7 µs a call; it dominated `UNIQUE` on a million random numbers (9.9 s). The
+  library now hashes through `functions::lookup::round15_fast` (17 correctly rounded digits decide
+  unless they end in `50`; a unit test checks it is bit-identical to `round15` on 200,000 values),
+  which brought `UNIQUE` to 0.7 s. The same idea inside `round15` would speed up `numbers_equal`,
+  exact-match lookups and every comparison that rounds to 15 digits.
+- For WP-56 (engine): a long array function cannot be interrupted. `MMULT` is now cache-blocked
+  (1000×1000 by 1000×1000 in 0.4 s instead of 2.7 s, bit-identical results), but 3000×3000 still takes
+  a few seconds with no way to cancel; a cancellation flag or deadline on `CallContext` would let the
+  matrix and array functions poll it.
+- For the bridge's owner: the 587 KB gzip figure for the library was measured on a probe cdylib, since
+  `kiln-bridge-wasm` does not link `kiln-formula` yet; measure it again on the real bridge when WP-69 or
+  a later package wires the sheet model in.
+- Outside the owned paths in this round: the crate README (row count and the new fuzz check) only.

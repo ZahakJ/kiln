@@ -68,7 +68,7 @@ fn t_inv_left(p: f64, df: f64) -> f64 {
     }
     // Solve on the upper tail for precision.
     let q = 1.0 - p;
-    invert_cdf(|x| -(1.0 - t_cdf(x, df)), -q, 0.0, 1.0, true)
+    invert_cdf(|x| -t_cdf(-x, df), -q, 0.0, 1.0, true)
 }
 
 fn t_dist(x: f64, df0: f64, cum: f64) -> F {
@@ -84,7 +84,7 @@ fn t_dist_rt(x: f64, df0: f64) -> F {
     if df < 1.0 {
         return Err(ErrorValue::Num);
     }
-    Ok(1.0 - t_cdf(x, df))
+    Ok(t_cdf(-x, df))
 }
 
 fn t_dist_2t(x: f64, df0: f64) -> F {
@@ -92,7 +92,7 @@ fn t_dist_2t(x: f64, df0: f64) -> F {
     if df < 1.0 || x < 0.0 {
         return Err(ErrorValue::Num);
     }
-    Ok(2.0 * (1.0 - t_cdf(x, df)))
+    Ok(prob(2.0 * t_cdf(-x, df)))
 }
 
 fn tdist_legacy(x: f64, df0: f64, tails0: f64) -> F {
@@ -100,7 +100,7 @@ fn tdist_legacy(x: f64, df0: f64, tails0: f64) -> F {
     if df < 1.0 || x < 0.0 || (tails != 1.0 && tails != 2.0) {
         return Err(ErrorValue::Num);
     }
-    Ok(tails * (1.0 - t_cdf(x, df)))
+    Ok(prob(tails * t_cdf(-x, df)))
 }
 
 fn t_inv(p: f64, df0: f64) -> F {
@@ -192,7 +192,7 @@ fn f_dist_rt(x: f64, a: f64, b: f64) -> F {
     if x == 0.0 {
         return Ok(1.0);
     }
-    Ok(beta_i(d2 / (d2 + d1 * x), d2 / 2.0, d1 / 2.0))
+    Ok(f_sf(x, d1, d2))
 }
 
 fn f_inv(p: f64, a: f64, b: f64) -> F {
@@ -217,13 +217,7 @@ fn f_inv_rt(p: f64, a: f64, b: f64) -> F {
     if p == 1.0 {
         return Ok(0.0);
     }
-    Ok(invert_cdf(
-        |x| -beta_i(d2 / (d2 + d1 * x), d2 / 2.0, d1 / 2.0),
-        -p,
-        0.0,
-        1.0,
-        true,
-    ))
+    Ok(invert_cdf(|x| -f_sf(x, d1, d2), -p, 0.0, 1.0, true))
 }
 
 // ── beta, gamma, exponential, Weibull ──────────────────────────────────────────────────────
@@ -234,7 +228,7 @@ fn beta_dist(x: f64, a: f64, b: f64, cum: f64, lo: f64, hi: f64) -> F {
     }
     let z = (x - lo) / (hi - lo);
     Ok(if on(cum) {
-        beta_i(z, a, b)
+        beta_ixy(z, (hi - x) / (hi - lo), a, b)
     } else {
         beta_pdf(z, a, b) / (hi - lo)
     })
@@ -327,7 +321,7 @@ fn binom_dist_range(n0: f64, p: f64, s0: f64, s20: f64) -> F {
         } else {
             0.0
         };
-        return Ok(binom_cdf(s2, n, p) - below);
+        return Ok(prob(binom_cdf(s2, n, p) - below));
     }
     let mut acc = 0.0;
     let mut k = s;
@@ -335,7 +329,7 @@ fn binom_dist_range(n0: f64, p: f64, s0: f64, s20: f64) -> F {
         acc += binom_pmf(k, n, p);
         k += 1.0;
     }
-    Ok(acc)
+    Ok(prob(acc))
 }
 
 /// Longest term-by-term summation; beyond it the closed forms are used.
@@ -352,7 +346,11 @@ fn binom_inv(n0: f64, p: f64, alpha: f64) -> F {
         let (mut lo, mut hi) = (0.0f64, n);
         while lo < hi {
             let mid = ((lo + hi) / 2.0).floor();
-            if binom_cdf(mid, n, p) >= target {
+            let c = binom_cdf(mid, n, p);
+            if c.is_nan() {
+                return Err(ErrorValue::Num);
+            }
+            if c >= target {
                 hi = mid;
             } else {
                 lo = mid + 1.0;
@@ -421,7 +419,7 @@ fn negbinom_dist(f0: f64, s0: f64, p: f64, cum: f64) -> F {
     if !on(cum) {
         return Ok(negbinom_pmf(f, s, p));
     }
-    Ok(beta_i(p, s, f + 1.0))
+    Ok(beta_ixy(p, 1.0 - p, s, f + 1.0))
 }
 
 /// The distribution functions.

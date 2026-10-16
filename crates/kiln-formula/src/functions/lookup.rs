@@ -771,36 +771,95 @@ fn sortby(args: &mut [Arg<'_>], ctx: &mut dyn CallContext) -> R<Value> {
 }
 
 /// A hash key consistent with [`lookup_equals`] for grouping rows.
-fn unique_key(row: &[Value]) -> Vec<u64> {
-    use std::hash::{Hash, Hasher};
-    row.iter()
-        .map(|v| {
-            let mut h = rustc_hash::FxHasher::default();
-            match v {
-                Value::Str(s) => {
-                    1u8.hash(&mut h);
-                    s.to_lowercase().hash(&mut h);
-                }
-                Value::Number(n) => {
-                    2u8.hash(&mut h);
-                    round15(*n).to_bits().hash(&mut h);
-                }
-                Value::Bool(b) => {
-                    3u8.hash(&mut h);
-                    b.hash(&mut h);
-                }
-                Value::Error(e) => {
-                    4u8.hash(&mut h);
-                    e.code().hash(&mut h);
-                }
-                _ => 5u8.hash(&mut h),
+/// [`round15`] at a fraction of its cost: the correctly rounded 17-digit expansion decides the
+/// 15-digit rounding unless its last two digits are exactly `50`, the only case in which the
+/// true value could lie on either side of the rounding midpoint; that case, integers and
+/// non-finite values go to [`round15`] itself, so the result is always identical to it.
+pub(crate) fn round15_fast(x: f64) -> f64 {
+    if x == 0.0 || !x.is_finite() || (x.fract() == 0.0 && x.abs() < 1e15) {
+        return round15(x);
+    }
+    let s = format!("{:.16e}", x.abs());
+    let Some((mant, exp)) = s.split_once('e') else {
+        return round15(x);
+    };
+    let Ok(mut exp) = exp.parse::<i32>() else {
+        return round15(x);
+    };
+    let mut d: Vec<u8> = mant
+        .bytes()
+        .filter(u8::is_ascii_digit)
+        .map(|b| b - b'0')
+        .collect();
+    if d.len() != 17 || (d[15] == 5 && d[16] == 0) {
+        return round15(x);
+    }
+    let up = d[15] >= 5;
+    d.truncate(15);
+    if up {
+        let mut i = 15;
+        loop {
+            if i == 0 {
+                d.insert(0, 1);
+                d.pop();
+                exp += 1;
+                break;
             }
-            h.finish()
-        })
-        .collect()
+            i -= 1;
+            if d[i] == 9 {
+                d[i] = 0;
+            } else {
+                d[i] += 1;
+                break;
+            }
+        }
+    }
+    let mut t = String::with_capacity(24);
+    if x < 0.0 {
+        t.push('-');
+    }
+    for (i, digit) in d.iter().enumerate() {
+        if i == 1 {
+            t.push('.');
+        }
+        t.push(char::from(b'0' + digit));
+    }
+    t.push('e');
+    t.push_str(&exp.to_string());
+    t.parse().unwrap_or_else(|_| round15(x))
+}
+
+/// A hash of row `r` consistent with [`lookup_equals`]: numbers at 15 significant digits, text
+/// ignoring case.
+fn unique_hash(a: &Array2D, r: usize) -> u64 {
+    use std::hash::{Hash, Hasher};
+    let mut h = rustc_hash::FxHasher::default();
+    for c in 0..a.cols() {
+        match a.get(r, c) {
+            Value::Str(s) => {
+                1u8.hash(&mut h);
+                s.to_lowercase().hash(&mut h);
+            }
+            Value::Number(n) => {
+                2u8.hash(&mut h);
+                round15_fast(*n).to_bits().hash(&mut h);
+            }
+            Value::Bool(b) => {
+                3u8.hash(&mut h);
+                b.hash(&mut h);
+            }
+            Value::Error(e) => {
+                4u8.hash(&mut h);
+                e.code().hash(&mut h);
+            }
+            _ => 5u8.hash(&mut h),
+        }
+    }
+    h.finish()
 }
 
 fn unique(args: &mut [Arg<'_>], ctx: &mut dyn CallContext) -> R<Value> {
+    const END: usize = usize::MAX;
     let v = value_at(args, 0, ctx);
     let arr = ctx.to_array(v)?;
     let by_col = flag_of(args, 1, ctx, false)?;
@@ -810,35 +869,36 @@ fn unique(args: &mut [Arg<'_>], ctx: &mut dyn CallContext) -> R<Value> {
     } else {
         arr
     };
-    let mut groups: Vec<(Vec<Value>, usize)> = Vec::new();
-    let mut index: FxHashMap<Vec<u64>, Vec<usize>> = FxHashMap::default();
-    for row in rows_of(&src) {
-        let k = unique_key(&row);
-        let cands = index.entry(k).or_default();
-        let hit = cands.iter().copied().find(|&g| {
-            groups[g]
-                .0
-                .iter()
-                .zip(&row)
-                .all(|(a, b)| lookup_equals(a, b))
-        });
-        match hit {
-            Some(g) => groups[g].1 += 1,
-            None => {
-                cands.push(groups.len());
-                groups.push((row, 1));
-            }
+    // Groups of equal rows, each held as its first row's index and a count; groups whose rows
+    // share a hash are chained through `next`, so nothing is cloned or allocated per row.
+    let (rows, cols) = (src.rows(), src.cols());
+    let mut heads: FxHashMap<u64, usize> = FxHashMap::default();
+    heads.reserve(rows.min(1 << 20));
+    let (mut first, mut count, mut next) = (Vec::new(), Vec::new(), Vec::new());
+    for r in 0..rows {
+        let h = unique_hash(&src, r);
+        let mut g = heads.get(&h).copied().unwrap_or(END);
+        while g != END && !(0..cols).all(|c| lookup_equals(src.get(first[g], c), src.get(r, c))) {
+            g = next[g];
+        }
+        if g == END {
+            next.push(heads.insert(h, first.len()).unwrap_or(END));
+            first.push(r);
+            count.push(1usize);
+        } else {
+            count[g] += 1;
         }
     }
-    let rows: Vec<Vec<Value>> = groups
-        .into_iter()
-        .filter(|(_, n)| !once || *n == 1)
-        .map(|(r, _)| r)
+    let out: Vec<Vec<Value>> = first
+        .iter()
+        .zip(&count)
+        .filter(|&(_, &n)| !once || n == 1)
+        .map(|(&r, _)| (0..cols).map(|c| src.get(r, c).clone()).collect())
         .collect();
-    if rows.is_empty() {
+    if out.is_empty() {
         return Err(ErrorValue::Calc);
     }
-    let out = Array2D::from_rows(rows).ok_or(ErrorValue::Calc)?;
+    let out = Array2D::from_rows(out).ok_or(ErrorValue::Calc)?;
     Ok(Value::array(if by_col { out.transpose() } else { out }))
 }
 
@@ -1131,4 +1191,56 @@ pub fn specs() -> Vec<FunctionSpec> {
         spec("XMATCH", 2, 4, imp!(xmatch_fn)).lift(ArgMask::of(&[0, 2, 3])),
         spec("HYPERLINK", 1, 2, imp!(hyperlink)).lift(ArgMask::ALL),
     ]
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn round15_fast_is_round15() {
+        let mut state = 0x5EED_u64;
+        let mut next = || {
+            state = state.wrapping_add(0x9E37_79B9_7F4A_7C15);
+            let mut z = state;
+            z = (z ^ (z >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
+            z = (z ^ (z >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
+            z ^ (z >> 31)
+        };
+        let mut xs = vec![
+            0.1 + 0.2,
+            1.000_000_000_000_005,
+            1_234_567_890_123_455.0,
+            9_999_999_999_999_995.0,
+            0.999_999_999_999_999_5,
+            -2.675_000_000_000_000_5,
+            5e-324,
+            f64::MAX,
+            1e15 + 0.5,
+        ];
+        for _ in 0..40_000 {
+            let bits = next();
+            let x = f64::from_bits(bits);
+            if x.is_finite() {
+                xs.push(x);
+            }
+            // Uniform values and values one ulp either side of 16-digit midpoints.
+            let u = (next() >> 11) as f64 / (1u64 << 53) as f64;
+            xs.push(u);
+            let m: f64 = format!("{u:.14e}")
+                .replacen('e', "5e", 1)
+                .parse()
+                .unwrap_or(u);
+            xs.push(m);
+            xs.push(f64::from_bits(m.to_bits() + 1));
+            xs.push(f64::from_bits(m.to_bits().saturating_sub(1)));
+        }
+        for x in xs {
+            let (fast, slow) = (round15_fast(x), round15(x));
+            assert!(
+                fast.to_bits() == slow.to_bits(),
+                "{x:e}: {fast:e} != {slow:e}"
+            );
+        }
+    }
 }

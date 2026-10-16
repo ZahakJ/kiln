@@ -386,9 +386,38 @@ fn mmult(args: &mut [Arg<'_>], ctx: &mut dyn CallContext) -> R<Value> {
     if a.len().saturating_mul(p) > MAX_CELLS {
         return Err(ErrorValue::Num);
     }
+    let c = matmul(&a, &b, p);
     Ok(Value::array(Array2D::build(a.len(), p, |i, j| {
-        Value::number((0..n).map(|k| a[i][k] * b[k][j]).sum())
+        Value::number(c[i * p + j])
     })))
+}
+
+/// `A·B` as a row-major `rows(A) × p` vector, cache-blocked: each output row is updated a row of
+/// `B` at a time (contiguous, vectorisable), `B` is walked in panels that stay in cache while a
+/// band of rows reuses them, and every element still sums its products in the order k = 0, 1, …
+/// (so results are bit-identical to the textbook triple loop).
+fn matmul(a: &[Vec<f64>], b: &[Vec<f64>], p: usize) -> Vec<f64> {
+    const ROWS: usize = 32;
+    const DEPTH: usize = 128;
+    let (m, n) = (a.len(), b.len());
+    let bf: Vec<f64> = b.iter().flatten().copied().collect();
+    let mut c = vec![0.0; m * p];
+    for i0 in (0..m).step_by(ROWS) {
+        let i1 = (i0 + ROWS).min(m);
+        for k0 in (0..n).step_by(DEPTH) {
+            let k1 = (k0 + DEPTH).min(n);
+            for i in i0..i1 {
+                let row = &mut c[i * p..(i + 1) * p];
+                for k in k0..k1 {
+                    let aik = a[i][k];
+                    for (cj, bj) in row.iter_mut().zip(&bf[k * p..(k + 1) * p]) {
+                        *cj += aik * bj;
+                    }
+                }
+            }
+        }
+    }
+    c
 }
 
 fn munit(args: &mut [Arg<'_>], ctx: &mut dyn CallContext) -> R<Value> {

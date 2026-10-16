@@ -118,11 +118,11 @@ assert!(doc.syntax.starts_with("XLOOKUP(lookup_value"));
   worked examples; `functions::docs()` lists them in Insert Function order and `functions::doc(name)` finds one
   (case-insensitive, `_xlfn.` allowed). Autocompletion, the Insert Function dialog and the Formula Lab read it.
 - **Conformance**: `tests/conformance.rs` evaluates every row of `conformance/curated-*.csv` and
-  `conformance/generated-*.csv` (5,420 rows: Microsoft's documented examples, curated Excel behaviours including
+  `conformance/generated-*.csv` (5,450 rows: Microsoft's documented examples, curated Excel behaviours including
   279 dynamic-array and LAMBDA rows, and LibreOffice-oracle rows) with 0 failures; `tests/docs.rs` checks that
   every function has exactly one documentation entry and that all 890 documented examples evaluate as stated;
   `tests/conformance_fuzz.rs` calls every function at every arity with hostile arguments and requires an answer
-  without a panic or a stall. Known differences from Excel: `docs/formula-deviations.md`.
+  without a panic or a stall, and requires every cumulative distribution function to return a probability. Known differences from Excel: `docs/formula-deviations.md`.
 - **Parity**: `conformance/functions-implemented.json` (kept current by `tests/conformance_registry.rs`; rewrite it
   with `KILN_BLESS=1`) tells `cargo xtask parity` which Excel functions are done.
 - `cargo run -p kiln-formula --example functions -- --count | --list [FAMILY] | --doc XLOOKUP` prints the library
