@@ -1,6 +1,6 @@
 [package]
 name = "kiln-formula"
-description = "The spreadsheet formula engine"
+description = "The spreadsheet formula engine: tokenizer, Pratt parser, references, dependency graph, incremental parallel recalculation, values and Excel number formats"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -9,8 +9,26 @@ authors.workspace = true
 repository.workspace = true
 publish.workspace = true
 
+[features]
+default = ["parallel"]
+# Evaluate independent cells of a topological level on a rayon pool. Builds without it (the
+# single-threaded wasm artefact) evaluate the same levels sequentially with identical results.
+parallel = ["dep:rayon"]
+
 [dependencies]
 kiln-common.workspace = true
+rayon = { workspace = true, optional = true }
+rustc-hash.workspace = true
+smallvec.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
+serde_json.workspace = true
+
+[[example]]
+name = "recalc_bench"
+required-features = ["parallel"]
 
 [lints]
 workspace = true

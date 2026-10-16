@@ -2432,6 +2432,12 @@ name = "kiln-formula"
 version = "0.1.0"
 dependencies = [
  "kiln-common",
+ "proptest",
+ "rayon",
+ "rustc-hash",
+ "serde_json",
+ "smallvec",
+ "thiserror 2.0.21",
 ]
 
 [[package]]

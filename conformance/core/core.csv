@@ -1,0 +1,35 @@
+formula,expected,type,notes
+"=AND(TRUE,1>2)",FALSE,boolean,curated-logical.csv: Microsoft documentation example (AND)
+"=AND(2>1,3>2)",TRUE,boolean,curated-logical.csv: Microsoft documentation example (AND)
+=FALSE(),FALSE,boolean,curated-logical.csv: Microsoft documentation example (FALSE)
+"=IF(2>1,""yes"",""no"")",yes,text,curated-logical.csv: Microsoft documentation example (IF)
+"=IF(1>2,""yes"")",FALSE,boolean,curated-logical.csv: Microsoft documentation example (IF)
+=NOT(TRUE),FALSE,boolean,curated-logical.csv: Microsoft documentation example (NOT)
+=NOT(1+1=3),TRUE,boolean,curated-logical.csv: Microsoft documentation example (NOT)
+"=OR(FALSE,1<2)",TRUE,boolean,curated-logical.csv: Microsoft documentation example (OR)
+"=OR(1>2,2>3)",FALSE,boolean,curated-logical.csv: Microsoft documentation example (OR)
+=TRUE(),TRUE,boolean,curated-logical.csv: Microsoft documentation example (TRUE)
+"=IF({TRUE,FALSE},""y"",""n"")","{""y"",""n""}",array,curated-logical.csv: Excel behaviour: lifted
+=AND(Data!B1:B3),#VALUE!,error,curated-logical.csv: Excel behaviour: no logical values
+=OR(Data!D1:D10),TRUE,boolean,curated-logical.csv: Excel behaviour
+=NOT(Data!D3),FALSE,boolean,curated-logical.csv: Excel behaviour
+"=SUM(1,2,3)",6,number,curated-math.csv: Microsoft documentation example (SUM)
+"=SUM({5,15,30},""2"",TRUE)",53,number,curated-math.csv: Microsoft documentation example (SUM)
+=SUM(Data!D1:D10),2.5,number,curated-math.csv: Excel behaviour: logicals and text in ranges are ignored
+"=SUM(""5"",TRUE,2)",8,number,curated-math.csv: Excel behaviour: typed-in text numbers and logicals count
+"=SUM(""x"")",#VALUE!,error,curated-math.csv: Excel behaviour
+=0.1+0.2=0.3,TRUE,boolean,curated-math.csv: WP-09 spot check: 15-digit comparison
+=1*(0.1+0.2)-0.3,5.55111512312578E-17,number,curated-math.csv: Excel behaviour: the raw difference is kept in arithmetic
+"=""a""&1.5&FALSE",a1.5FALSE,text,curated-text.csv: Excel behaviour
+=AND(Data!D1:D10),FALSE,boolean,generated-logical.csv: LibreOffice 24.2 oracle
+=OR(Data!D1:D10),TRUE,boolean,generated-logical.csv: LibreOffice 24.2 oracle
+"=AND(1>0,2>1,3>4)",FALSE,boolean,generated-logical.csv: LibreOffice 24.2 oracle
+"=OR(0,0,0)",FALSE,boolean,generated-logical.csv: LibreOffice 24.2 oracle
+=NOT(0),TRUE,boolean,generated-logical.csv: LibreOffice 24.2 oracle
+"=NOT(""a"")",#VALUE!,error,generated-logical.csv: LibreOffice 24.2 oracle
+"=IF(Data!E1>0,""pos"",""neg"")",neg,text,generated-logical.csv: LibreOffice 24.2 oracle
+"=IF(0,1)",FALSE,boolean,generated-logical.csv: LibreOffice 24.2 oracle
+"=IF(""x"",1,2)",#VALUE!,error,generated-logical.csv: LibreOffice 24.2 oracle
+=SUM(Data!A1:A10),550,number,generated-math.csv: LibreOffice 24.2 oracle
+"=SUM(Data!A1:A10,Data!E1:E10,5)",579.25,number,generated-math.csv: LibreOffice 24.2 oracle
+=SUM(Data!B1:B10),0,number,generated-math.csv: LibreOffice 24.2 oracle

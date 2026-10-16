@@ -1,0 +1,19 @@
+format,value,kind,expected
+@,abc,text,abc
+@,,text,
+@,Kiln Grid,text,Kiln Grid
+@,"  padded  ",text,"  padded  "
+@,TRUE,text,TRUE
+"""Name: ""@",Ada,text,Name: Ada
+"""Name: ""@",x,text,Name: x
+"@"" units""",5,text,5 units
+"@"" units""",many,text,many units
+"0;-0;0;""text: ""@",hello,text,text: hello
+0.00;-0.00;0;[Red]@,warn,text,warn
+General,plain,text,plain
+General,"a""b",text,"a""b"
+@@,ab,text,abab
+_(@_),pad,text," pad "
+General,true,bool,TRUE
+General,false,bool,FALSE
+0;-0;0;@,true,bool,TRUE
