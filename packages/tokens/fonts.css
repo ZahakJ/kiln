@@ -1,8 +1,26 @@
 /*
- * Kiln fonts: bundled document fonts (SIL OFL 1.1). UI fonts arrive with the brand kit (WP-51).
- * GENERATED from packages/tokens/src/tokens.ts by `pnpm --filter @kiln/tokens generate`.
+ * Kiln fonts: the brand UI faces and the bundled document fonts (all SIL OFL 1.1).
+ * GENERATED from brand/tokens.json by `pnpm --filter @kiln/tokens generate`.
  * Do not edit by hand.
  */
+/* Figtree (interface), variable 300–900, SIL OFL 1.1 — from the brand kit. */
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("../../assets/fonts/brand/Figtree/Figtree-VF.ttf") format("truetype");
+}
+
+/* Fraunces (display), variable 100–900, SIL OFL 1.1 — from the brand kit. */
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../../assets/fonts/brand/Fraunces/Fraunces-VF.ttf") format("truetype");
+}
+
 /* Liberation Sans Regular — metric-compatible with Arial. */
 @font-face {
   font-family: "Liberation Sans";

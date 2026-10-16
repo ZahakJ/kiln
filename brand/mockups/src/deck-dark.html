@@ -1,0 +1,252 @@
+<!doctype html><html data-theme="dark" data-app="deck"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../tokens.css"><link rel="stylesheet" href="kiln-ui.css">
+<style>body{width:1440px;height:900px}
+.rail { width: 196px; flex: none; padding: 10px 10px 10px 4px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+.th { display: flex; gap: 8px; align-items: flex-start; }
+.th .no { width: 16px; text-align: right; font-size: 11.5px; color: var(--kiln-faint); font-weight: 600; padding-top: 2px; }
+.th .sl { width: 160px; height: 90px; border-radius: 6px; overflow: hidden; border: 1px solid var(--kiln-line); position: relative; flex: none; }
+.th.on .sl { box-shadow: 0 0 0 2.5px var(--app), 0 0 0 5px color-mix(in srgb, var(--app) 22%, transparent); border-color: transparent; }
+.th.on .no { color: var(--app-text); }
+.stage { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; min-width: 0; padding-top: 14px; }
+.slide { width: 880px; height: 495px; border-radius: 6px; overflow: hidden; position: relative; background: #FFF6EA; color: #2B1C14; box-shadow: var(--kiln-shadow-page); flex: none; }
+.notes { width: 880px; flex: 1; margin-bottom: 0; border-radius: 12px 12px 0 0; padding: 12px 16px; font-size: 13px; line-height: 1.55; color: var(--kiln-fg); }
+.notes .h { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--kiln-faint); font-weight: 700; margin-bottom: 4px; }
+.ideas { width: 236px; flex: none; padding: 14px 12px; display: flex; flex-direction: column; gap: 10px; }
+.idea { border-radius: 10px; overflow: hidden; border: 1px solid var(--kiln-line); height: 118px; position: relative; }
+.idea.on { box-shadow: 0 0 0 2px var(--app); border-color: transparent; }
+.s-title { position: absolute; left: 64px; top: 58px; font: 800 52px/1.0 var(--kiln-font-display); font-variation-settings: 'SOFT' 40; letter-spacing: -.02em; width: 430px; }
+.s-kicker { position: absolute; left: 66px; top: 36px; font: 700 12px/1 var(--kiln-font-ui); letter-spacing: .14em; text-transform: uppercase; color: #B2431A; }
+.s-body { position: absolute; left: 66px; top: 250px; width: 380px; font: 400 16px/1.5 var(--kiln-font-ui); color: #6B5547; }
+.legend { position: absolute; left: 66px; bottom: 50px; display: grid; grid-template-columns: auto auto; gap: 10px 28px; font: 600 14px/1.2 var(--kiln-font-ui); }
+.legend span { display: flex; align-items: center; gap: 9px; }
+.legend i { width: 14px; height: 14px; border-radius: 7px 7px 2px 2px; }
+.legend b { font: 800 18px/1 var(--kiln-font-display); font-variation-settings: 'SOFT' 40; margin-left: 4px; }
+.foot { position: absolute; left: 66px; right: 40px; bottom: 18px; display: flex; justify-content: space-between; font: 500 11px/1 var(--kiln-font-ui); color: #8F7A6A; }
+.present { position: absolute; }
+</style></head><body><div class="app"><div class="tb">
+  <div class="brand"><img src="../../icons/svg/deck-32.svg"><b>Deck</b></div>
+  <div class="qa"><svg class="i " viewBox="0 0 24 24">
+      <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+      <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" />
+      <path d="M7 3v4a1 1 0 0 0 1 1h7" />
+    </svg></div><div class="qa"><svg class="i " viewBox="0 0 24 24">
+      <path d="M9 14 4 9l5-5" />
+      <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11" />
+    </svg></div><div class="qa"><svg class="i " viewBox="0 0 24 24">
+      <path d="m15 14 5-5-5-5" />
+      <path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13" />
+    </svg></div>
+  <div class="title">Open studio weekend<span class="ext">.pptx</span><span class="chip"><svg class="fl" viewBox="120 50 260 390" width="11" height="13"><path d="M236 428C178 414 132 370 128 306C124 240 162 200 180 156C190 130 190 108 178 84C177 78 183 75 188 78C246 116 274 164 272 224Z" fill="#D93D12"/><path d="M256 432C188 432 144 386 144 324C144 262 184 222 218 186C250 152 272 118 280 66C282 56 292 52 298 60C316 98 338 132 352 178C364 216 368 262 368 316C368 384 324 432 256 432Z" fill="#FF7A2E"/></svg>Saved to Studio</span></div>
+  <div class="search"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.3-4.3" />
+    </svg><span>Search</span><span class="kbd">Alt Q</span></div>
+  <div class="avatar">MA</div>
+  <div class="win"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+    </svg></div><div class="win"><svg class="i s14" viewBox="0 0 24 24">
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+    </svg></div><div class="win"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg></div>
+</div><div class="tabs"><div class="file"><svg class="sp" viewBox="0 0 24 24" width="14" height="14"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>File</div><div class="tab on">Home</div><div class="tab">Insert</div><div class="tab">Design</div><div class="tab">Transitions</div><div class="tab">Animations</div><div class="tab">Slide Show</div><div class="tab">Review</div><div class="tab">View</div><div class="right"><div class="btn ghost"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>Comments</div><div class="btn"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5" />
+      <rect x="2" y="6" width="14" height="12" rx="2" />
+    </svg>Record</div><div class="btn solid"><svg class="i s14" viewBox="0 0 24 24">
+      <polygon points="6 3 20 12 6 21 6 3" />
+    </svg>Present<svg class="i s14" viewBox="0 0 24 24">
+      <path d="m6 9 6 6 6-6" />
+    </svg></div><div class="btn"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="18" cy="5" r="3" />
+      <circle cx="6" cy="12" r="3" />
+      <circle cx="18" cy="19" r="3" />
+      <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
+      <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
+    </svg>Share</div></div></div><div class="ribbon"><div class="grp"><div class="body"><div class="big"><div class="ic"><svg class="i s24" viewBox="0 0 24 24">
+      <path d="M15 2H9a1 1 0 0 0-1 1v2c0 .6.4 1 1 1h6c.6 0 1-.4 1-1V3c0-.6-.4-1-1-1Z" />
+      <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M16 4h2a2 2 0 0 1 2 2v2M11 14h10" />
+      <path d="m17 10 4 4-4 4" />
+    </svg></div>Paste</div><div class="col" style="gap:2px;padding-top:0"><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="6" cy="6" r="3" />
+      <path d="M8.12 8.12 12 12" />
+      <path d="M20 4 8.12 15.88" />
+      <circle cx="6" cy="18" r="3" />
+      <path d="M14.8 14.8 20 20" />
+    </svg>Cut</div><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+    </svg>Copy</div><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="m14.622 17.897-10.68-2.913" />
+      <path d="M18.376 2.622a1 1 0 1 1 3.002 3.002L17.36 9.643a.5.5 0 0 0 0 .707l.944.944a2.41 2.41 0 0 1 0 3.408l-.944.944a.5.5 0 0 1-.707 0L8.354 7.348a.5.5 0 0 1 0-.707l.944-.944a2.41 2.41 0 0 1 3.408 0l.944.944a.5.5 0 0 0 .707 0z" />
+      <path d="M9 8c-1.804 2.71-3.97 3.46-6.583 3.948a.507.507 0 0 0-.302.819l7.32 8.883a1 1 0 0 0 1.185.204C12.735 20.405 16 16.792 16 15" />
+    </svg>Format</div></div></div><div class="lbl">Clipboard</div></div><div class="grp"><div class="body"><div class="big"><div class="ic app"><svg class="i s24" viewBox="0 0 24 24">
+      <rect width="18" height="7" x="3" y="3" rx="1" />
+      <rect width="9" height="7" x="3" y="14" rx="1" />
+      <rect width="5" height="7" x="16" y="14" rx="1" />
+    </svg></div>New slide</div><div class="col" style="gap:2px"><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path d="M3 9h18" />
+      <path d="M9 21V9" />
+    </svg>Layout</div><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+      <path d="M3 3v5h5" />
+    </svg>Reset</div><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path d="M21 9H3" />
+      <path d="M21 15H3" />
+    </svg>Section</div></div></div><div class="lbl">Slides</div></div><div class="grp"><div class="body"><div class="col"><div class="row" style="gap:4px"><div class="dd" style="width:118px"><span>Fraunces</span><svg class="i s14" viewBox="0 0 24 24">
+      <path d="m6 9 6 6 6-6" />
+    </svg></div><div class="dd" style="width:52px"><span>52</span><svg class="i s14" viewBox="0 0 24 24">
+      <path d="m6 9 6 6 6-6" />
+    </svg></div></div>
+             <div class="row"><div class="ib on "><svg class="i " viewBox="0 0 24 24">
+      <path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <line x1="19" x2="10" y1="4" y2="4" />
+      <line x1="14" x2="5" y1="20" y2="20" />
+      <line x1="15" x2="9" y1="4" y2="20" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M6 4v6a6 6 0 0 0 12 0V4" />
+      <line x1="4" x2="20" y1="20" y2="20" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M4 20h16" />
+      <path d="m6 16 6-12 6 12" />
+      <path d="M8 12h8" />
+    </svg><i class="bar" style="background:#E05A27"></i></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="m9 11-6 6v3h9l3-3" />
+      <path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4" />
+    </svg><i class="bar" style="background:#F5B73F"></i></div></div></div></div><div class="lbl">Font</div></div><div class="grp"><div class="body"><div class="col"><div class="row"><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M3 12h.01" />
+      <path d="M3 18h.01" />
+      <path d="M3 6h.01" />
+      <path d="M8 12h13" />
+      <path d="M8 18h13" />
+      <path d="M8 6h13" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M10 12h11" />
+      <path d="M10 18h11" />
+      <path d="M10 6h11" />
+      <path d="M4 10h2" />
+      <path d="M4 6h1v4" />
+      <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M21 12H11" />
+      <path d="M21 18H11" />
+      <path d="M21 6H11" />
+      <path d="m3 8 4 4-4 4" />
+    </svg></div></div>
+             <div class="row"><div class="ib on "><svg class="i " viewBox="0 0 24 24">
+      <path d="M15 12H3" />
+      <path d="M17 18H3" />
+      <path d="M21 6H3" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M17 12H7" />
+      <path d="M19 18H5" />
+      <path d="M21 6H3" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M21 12H9" />
+      <path d="M21 18H7" />
+      <path d="M21 6H3" />
+    </svg></div></div></div></div><div class="lbl">Paragraph</div></div><div class="grp"><div class="body"><div class="col"><div class="row"><div class="ib"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></div><div class="ib"><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></div><div class="ib"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 13.5V8a5 5 0 0 1 10 0v5.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></div><div class="ib"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 2.5 13.5 13h-11Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></div><div class="ib"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2.5 8h10m-3.5-3.5L12.5 8 9 11.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="row"><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="m19 11-8-8-8.6 8.6a2 2 0 0 0 0 2.8l5.2 5.2c.8.8 2 .8 2.8 0L19 11Z" />
+      <path d="m5 2 5 5" />
+      <path d="M2 13h15" />
+      <path d="M22 20a2 2 0 1 1-4 0c0-1.6 1.7-2.4 2-4 .3 1.6 2 2.4 2 4Z" />
+    </svg><i class="bar" style="background:#E05A27"></i></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M12 20h9" />
+      <path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M8.3 10a.7.7 0 0 1-.626-1.079L11.4 3a.7.7 0 0 1 1.198-.043L16.3 8.9a.7.7 0 0 1-.572 1.1Z" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <circle cx="17.5" cy="17.5" r="3.5" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z" />
+      <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+    </svg></div></div></div></div><div class="lbl">Drawing</div></div><div class="grp"><div class="body"><div class="col" style="gap:2px"><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <rect width="7" height="7" x="3" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="14" rx="1" />
+      <rect width="7" height="7" x="3" y="14" rx="1" />
+    </svg>Arrange</div><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+      <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+      <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
+      <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
+    </svg>Quick styles</div><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+      <path d="M18 17V9" />
+      <path d="M13 17V5" />
+      <path d="M8 17v-3" />
+    </svg>Chart</div></div></div><div class="lbl">Arrange</div></div><div class="grp"><div class="body"><div class="big"><div class="ic app"><svg class="i s24" viewBox="0 0 24 24">
+      <path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72" />
+      <path d="m14 7 3 3" />
+      <path d="M5 6v4" />
+      <path d="M19 14v4" />
+      <path d="M10 2v2" />
+      <path d="M7 8H3" />
+      <path d="M21 16h-4" />
+      <path d="M11 3H9" />
+    </svg></div>Ideas</div></div><div class="lbl">Kiln</div></div></div><div class="work"><div class="rail"><div class="th"><div class="no">1</div><div class="sl" style="background:#21140D"><div style="position:absolute;right:-16px;bottom:-34px;width:84px;height:100px;border-radius:50% 50% 8px 8px/60% 60% 8px 8px;background:radial-gradient(circle at 50% 80%,#FF9A3C,#C2481C 45%,#3A2318 72%)"></div><div style="position:absolute;left:12px;top:22px;font:800 15px/1 Fraunces;color:#FFF1DF;font-variation-settings:'SOFT' 40">Open Studio<br>Weekend</div><div style="position:absolute;left:12px;top:62px;font:600 8px/1 Figtree;color:#F7976B;letter-spacing:.1em">15–16 NOV</div></div></div><div class="th"><div class="no">2</div><div class="sl" style="background:#FFF6EA"><div style="position:absolute;left:12px;top:14px;font:800 11px/1 Fraunces;color:#2B1C14">This year</div><div style="position:absolute;left:12px;top:34px;width:90px;height:6px;border-radius:3px;background:#E4D6C4"></div><div style="position:absolute;left:12px;top:48px;width:76px;height:6px;border-radius:3px;background:#E4D6C4"></div><div style="position:absolute;left:12px;top:62px;width:62px;height:6px;border-radius:3px;background:#E4D6C4"></div><div style="position:absolute;left:12px;top:76px;width:48px;height:6px;border-radius:3px;background:#E4D6C4"></div></div></div><div class="th on"><div class="no">3</div><div class="sl" style="background:#FFF6EA"><svg width="160" height="90"><g transform="scale(0.1818)"><path d="M671.3,239.5 L671.3,81.5 A158,158 0 0 1 747.4,378.0 Z" fill="#E05A27" stroke="#FFF6EA" stroke-width="5" stroke-linejoin="round"/><path d="M650.0,245.0 L726.1,383.5 A158,158 0 0 1 516.6,329.7 Z" fill="#1D8A60" stroke="#FFF6EA" stroke-width="5" stroke-linejoin="round"/><path d="M650.0,245.0 L516.6,329.7 A158,158 0 0 1 522.2,152.1 Z" fill="#3159C6" stroke="#FFF6EA" stroke-width="5" stroke-linejoin="round"/><path d="M650.0,245.0 L522.2,152.1 A158,158 0 0 1 650.0,87.0 Z" fill="#E8A82C" stroke="#FFF6EA" stroke-width="5" stroke-linejoin="round"/></g></svg><div style="position:absolute;left:12px;top:12px;font:800 10px/1.05 Fraunces;color:#2B1C14;width:70px">Every ticket fires the next kiln.</div></div></div><div class="th"><div class="no">4</div><div class="sl" style="background:#1D8A60"><div style="position:absolute;inset:0;background:linear-gradient(135deg,#1D8A60,#0D4A34)"></div><div style="position:absolute;left:12px;bottom:12px;font:800 12px/1 Fraunces;color:#FFF6E8">The schedule</div><div style="position:absolute;left:14px;top:22px;width:24px;height:24px;border-radius:12px 12px 4px 4px;background:rgba(255,246,232,0.9)"></div><div style="position:absolute;left:48px;top:22px;width:24px;height:24px;border-radius:12px 12px 4px 4px;background:rgba(255,246,232,0.72)"></div><div style="position:absolute;left:82px;top:22px;width:24px;height:24px;border-radius:12px 12px 4px 4px;background:rgba(255,246,232,0.54)"></div><div style="position:absolute;left:116px;top:22px;width:24px;height:24px;border-radius:12px 12px 4px 4px;background:rgba(255,246,232,0.36)"></div></div></div><div class="th"><div class="no">5</div><div class="sl" style="background:#FFF6EA"><div style="position:absolute;left:12px;top:14px;font:800 11px/1 Fraunces;color:#2B1C14">Who does what</div><div style="position:absolute;left:12px;top:34px;width:40px;height:20px;border-radius:5px;background:#FBE8DE"></div><div style="position:absolute;left:58px;top:34px;width:40px;height:20px;border-radius:5px;background:#E2F2EA"></div><div style="position:absolute;left:104px;top:34px;width:40px;height:20px;border-radius:5px;background:#E7ECFA"></div><div style="position:absolute;left:12px;top:60px;width:40px;height:20px;border-radius:5px;background:#FAF0D9"></div><div style="position:absolute;left:58px;top:60px;width:40px;height:20px;border-radius:5px;background:#FBE8DE"></div><div style="position:absolute;left:104px;top:60px;width:40px;height:20px;border-radius:5px;background:#E2F2EA"></div></div></div><div class="th"><div class="no">6</div><div class="sl" style="background:#C2481C"><div style="position:absolute;left:0;right:0;top:30px;text-align:center;font:800 16px/1 Fraunces;color:#FFF1DF">See you<br>by the fire.</div></div></div></div><div class="stage"><div class="slide glowpage">
+      <svg width="880" height="495" style="position:absolute;inset:0">
+        <defs><radialGradient id="sg" cx="640" cy="250" r="300" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFD9B8"/><stop offset="1" stop-color="#FFF6EA" stop-opacity="0"/></radialGradient></defs>
+        <rect width="880" height="495" fill="url(#sg)"/>
+        <path d="M671.3,239.5 L671.3,81.5 A158,158 0 0 1 747.4,378.0 Z" fill="#E05A27" stroke="#FFF6EA" stroke-width="5" stroke-linejoin="round"/><text x="769.3" y="222.4" text-anchor="middle" font-family="Fraunces" font-weight="800" font-size="24" fill="#FFF6EA" style="font-variation-settings:'SOFT' 40">42%</text><path d="M650.0,245.0 L726.1,383.5 A158,158 0 0 1 516.6,329.7 Z" fill="#1D8A60" stroke="#FFF6EA" stroke-width="5" stroke-linejoin="round"/><text x="624.9" y="350.9" text-anchor="middle" font-family="Fraunces" font-weight="800" font-size="24" fill="#FFF6EA" style="font-variation-settings:'SOFT' 40">24%</text><path d="M650.0,245.0 L516.6,329.7 A158,158 0 0 1 522.2,152.1 Z" fill="#3159C6" stroke="#FFF6EA" stroke-width="5" stroke-linejoin="round"/><text x="548.9" y="249.8" text-anchor="middle" font-family="Fraunces" font-weight="800" font-size="24" fill="#FFF6EA" style="font-variation-settings:'SOFT' 40">19%</text><path d="M650.0,245.0 L522.2,152.1 A158,158 0 0 1 650.0,87.0 Z" fill="#E8A82C" stroke="#FFF6EA" stroke-width="5" stroke-linejoin="round"/><text x="604.1" y="162.9" text-anchor="middle" font-family="Fraunces" font-weight="800" font-size="24" fill="#1C0D06" style="font-variation-settings:'SOFT' 40">15%</text>
+      </svg>
+      <div class="s-kicker">Open Studio Weekend · 15–16 Nov</div>
+      <div class="s-title">Every ticket fires the next kiln.</div>
+      <div class="s-body">Ticket money goes straight back into the studio. Here is where last year’s £6,400 went.</div>
+      <div class="legend"><span><i style="background:#E05A27"></i>Gas and kiln time</span><span><i style="background:#1D8A60"></i>Clay and glaze</span><span><i style="background:#3159C6"></i>Bursaries</span><span><i style="background:#E8A82C"></i>Shelves and repairs</span></div>
+      <div class="foot"><span>Kiln Co-op</span><span>3</span></div>
+    </div><div class="notes pane"><div class="h">Speaker notes</div>
+      Start with the number people remember: <b>42% goes on gas</b>. Then point at the jade slice: that’s every bag of clay we bought for members this year.</div></div><div class="ideas pane"><h4>Design ideas <svg class="i s14" viewBox="0 0 24 24">
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg></h4><div class="faint" style="font-size:12px;margin-top:-4px">Three ways to lay out this slide.</div><div class="idea on" style="background:#FFF6EA"><svg width="212" height="118"><g transform="translate(110 8) scale(0.30) translate(-490 -80)"><path d="M671.3,239.5 L671.3,81.5 A158,158 0 0 1 747.4,378.0 Z" fill="#E05A27" stroke="#FFF6EA" stroke-width="5" stroke-linejoin="round"/><path d="M650.0,245.0 L726.1,383.5 A158,158 0 0 1 516.6,329.7 Z" fill="#1D8A60" stroke="#FFF6EA" stroke-width="5" stroke-linejoin="round"/><path d="M650.0,245.0 L516.6,329.7 A158,158 0 0 1 522.2,152.1 Z" fill="#3159C6" stroke="#FFF6EA" stroke-width="5" stroke-linejoin="round"/><path d="M650.0,245.0 L522.2,152.1 A158,158 0 0 1 650.0,87.0 Z" fill="#E8A82C" stroke="#FFF6EA" stroke-width="5" stroke-linejoin="round"/></g></svg>
+      <div style="position:absolute;left:12px;top:16px;font:800 14px/1.05 Fraunces;color:#2B1C14;width:96px;font-variation-settings:'SOFT' 40">Every ticket fires the next kiln.</div></div><div class="idea" style="background:#21140D"><div style="position:absolute;left:12px;top:14px;font:800 14px/1.05 Fraunces;color:#FFF1DF;width:110px">Every ticket fires the next kiln.</div>
+      <div style="position:absolute;left:12px;right:12px;bottom:14px;display:flex;height:16px;border-radius:8px;overflow:hidden"><i style="flex:42;background:#E05A27"></i><i style="flex:24;background:#1D8A60"></i><i style="flex:19;background:#3159C6"></i><i style="flex:15;background:#E8A82C"></i></div></div><div class="idea" style="background:#FBE8DE"><div style="position:absolute;left:12px;top:14px;font:800 30px/1 Fraunces;color:#B2431A">42%</div>
+      <div style="position:absolute;left:12px;top:52px;font:600 11px/1.3 Figtree;color:#6B5547;width:120px">of every ticket buys gas and kiln time</div>
+      <div style="position:absolute;right:-14px;bottom:-20px;width:90px;height:100px;border-radius:50% 50% 8px 8px/60% 60% 8px 8px;background:#E05A27"></div></div></div></div><div class="sb"><div class="it">Slide 3 of 12</div><div class="it"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="m5 8 6 6" />
+      <path d="m4 14 6-6 2-3" />
+      <path d="M2 5h12" />
+      <path d="M7 2h1" />
+      <path d="m22 22-5-10-5 10" />
+      <path d="M14 18h6" />
+    </svg>English (UK)</div><div class="it"><svg class="fl" viewBox="120 50 260 390" width="10" height="12"><path d="M236 428C178 414 132 370 128 306C124 240 162 200 180 156C190 130 190 108 178 84C177 78 183 75 188 78C246 116 274 164 272 224Z" fill="#D93D12"/><path d="M256 432C188 432 144 386 144 324C144 262 184 222 218 186C250 152 272 118 280 66C282 56 292 52 298 60C316 98 338 132 352 178C364 216 368 262 368 316C368 384 324 432 256 432Z" fill="#FF7A2E"/></svg><span>Saved just now</span></div><div class="it ok"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>No issues</div><span class="sp"></span><div class="it"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+      <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+      <path d="M10 9H8" />
+      <path d="M16 13H8" />
+      <path d="M16 17H8" />
+    </svg>Notes</div><div class="vm"><span class="on"><svg class="i s14" viewBox="0 0 24 24">
+      <rect width="7" height="18" x="3" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="14" rx="1" />
+    </svg></span><span><svg class="i s14" viewBox="0 0 24 24">
+      <rect width="7" height="7" x="3" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="14" rx="1" />
+      <rect width="7" height="7" x="3" y="14" rx="1" />
+    </svg></span><span><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M12 7v14" />
+      <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+    </svg></span><span><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M10 7.75a.75.75 0 0 1 1.142-.638l3.664 2.249a.75.75 0 0 1 0 1.278l-3.664 2.25a.75.75 0 0 1-1.142-.64z" />
+      <path d="M12 17v4" />
+      <path d="M8 21h8" />
+      <rect x="2" y="3" width="20" height="14" rx="2" />
+    </svg></span></div><div class="zoom"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+    </svg><div class="track"><i></i></div><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+      <path d="M12 5v14" />
+    </svg><span class="tnum" style="width:36px">72%</span></div></div></div></body></html>

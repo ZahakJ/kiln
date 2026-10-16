@@ -1,38 +1,42 @@
-/* Layout of the gallery page only (not part of the kit). */
+/* Layout of the gallery page only (not part of the kit). Panels follow the mockups' .pane. */
 html,
 body {
   margin: 0;
-  background: var(--kiln-bg-canvas);
+  background: var(--kiln-bg);
   color: var(--kiln-fg);
   font-family: var(--kiln-font-ui);
   font-size: var(--kiln-text-base);
+  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
 }
 .gx-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-  gap: 16px;
-  padding: 16px;
+  gap: 12px;
+  padding: 14px;
   max-width: 1440px;
   margin: 0 auto;
 }
 .gx-card {
   box-sizing: border-box;
   padding: 14px 16px 16px;
-  border: 1px solid var(--kiln-border);
-  border-radius: var(--kiln-radius-menu);
-  background: var(--kiln-bg-surface);
+  border: 1px solid var(--kiln-line);
+  border-radius: 14px;
+  background: var(--kiln-panel);
   box-shadow: var(--kiln-shadow-1);
   min-width: 0;
 }
 .gx-card--wide {
   grid-column: 1 / -1;
 }
+/* Card titles are eyebrows: Figtree 800, uppercase, +12 % tracking, in the ember text colour. */
 .gx-card__title {
-  margin: 0 0 12px;
-  color: var(--kiln-fg-muted);
-  font-size: var(--kiln-text-sm);
-  font-weight: var(--kiln-weight-semibold);
+  margin: 0 0 14px;
+  color: var(--kiln-ember-text);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 .gx-card__body {
   display: flex;
@@ -47,8 +51,9 @@ body {
 .gx-row__label {
   width: 72px;
   flex: none;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-faint);
   font-size: var(--kiln-text-sm);
+  font-weight: 500;
 }
 .gx-row__items {
   display: flex;
@@ -57,32 +62,37 @@ body {
   gap: 8px;
 }
 .gx-muted {
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
 }
 .gx-pad {
   padding: 12px 4px 0;
 }
 
+/* The ribbon slab of the mockups: panel, hairline, 14 px radius, labelled groups. */
 .gx-ribbon {
   display: flex;
   align-items: stretch;
   gap: 4px;
-  padding: 6px 8px 4px;
+  padding: 8px 6px 0;
   overflow-x: auto;
-  border: 1px solid var(--kiln-border);
-  border-radius: var(--kiln-radius-menu);
-  background: var(--kiln-bg-surface);
+  border: 1px solid var(--kiln-line);
+  border-radius: 14px;
+  background: var(--kiln-panel);
+  box-shadow: var(--kiln-shadow-1);
+}
+.gx-ribbon > .kiln-separator {
+  margin: 4px 4px 22px;
 }
 .gx-ribbon__group {
   position: relative;
   display: flex;
   align-items: flex-start;
-  gap: 2px;
-  padding-bottom: 20px;
+  gap: 4px;
+  padding: 0 4px 22px;
 }
 .gx-ribbon__group--font {
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 .gx-ribbon__line {
   display: flex;
@@ -92,7 +102,7 @@ body {
 .gx-ribbon__stack {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
 }
 .gx-ribbon__stack .kiln-btn {
   justify-content: flex-start;
@@ -101,10 +111,72 @@ body {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 2px;
-  color: var(--kiln-fg-muted);
+  bottom: 3px;
+  color: var(--kiln-faint);
   font-size: var(--kiln-text-xs);
+  font-weight: 500;
   text-align: center;
+  white-space: nowrap;
+}
+
+/* Style gallery previews (Aa Bb over the style name, as in the Write mockup). */
+.gx-style {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  align-self: stretch;
+  width: 100%;
+  padding: 6px 8px;
+  box-sizing: border-box;
+}
+.gx-style__sample {
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.gx-style__name {
+  color: var(--kiln-faint);
+  font-size: 10.5px;
+}
+
+.gx-archslab {
+  height: 22px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 0 12px 12px 12px;
+  background: var(--kiln-panel);
+}
+.gx-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--kiln-sunken);
+  color: var(--kiln-fg);
+}
+.gx-mark--app {
+  background: var(--app-solid);
+  color: var(--app-on-solid);
+}
+.gx-tiles {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: var(--kiln-sunken);
+}
+.gx-flamechip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px 0 8px;
+  border-radius: 999px;
+  background: var(--kiln-sunken);
+  color: var(--kiln-muted);
+  font-size: var(--kiln-text-sm);
+  font-weight: 500;
   white-space: nowrap;
 }
 
@@ -118,8 +190,9 @@ body {
 .gx-colorpanel {
   align-self: flex-start;
   padding: 12px;
-  border: 1px solid var(--kiln-border);
-  border-radius: var(--kiln-radius-menu);
+  border: 1px solid var(--kiln-line);
+  border-radius: 12px;
+  background: var(--kiln-panel);
   box-shadow: var(--kiln-shadow-2);
 }
 .gx-tablegrid {
@@ -132,23 +205,25 @@ body {
   width: 16px;
   height: 16px;
   box-sizing: border-box;
-  border: 1px solid var(--kiln-border-strong);
-  background: var(--kiln-bg-surface);
+  border: 1px solid var(--kiln-line-strong);
+  border-radius: 3px;
+  background: var(--kiln-raised);
 }
 .gx-tablegrid span.is-on {
-  border-color: var(--kiln-accent);
-  background: var(--kiln-accent-subtle);
+  border-color: var(--app);
+  background: var(--app-tint);
 }
 .gx-scrollbox {
-  border: 1px solid var(--kiln-border);
-  border-radius: var(--kiln-radius-control);
+  border: 1px solid var(--kiln-line);
+  border-radius: 10px;
+  background: var(--kiln-raised);
 }
 .gx-scrollitem {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 10px;
-  border-bottom: 1px solid var(--kiln-border);
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--kiln-line);
 }
 .gx-glyphs {
   display: grid;
@@ -160,7 +235,7 @@ body {
   align-items: center;
   gap: 8px;
   padding: 6px;
-  border-radius: var(--kiln-radius-control);
+  border-radius: 7px;
   color: var(--kiln-fg);
   font-size: 10.5px;
   overflow: hidden;
@@ -169,7 +244,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
 }
 .gx-glyph:hover {
   background: var(--kiln-bg-hover);
@@ -183,7 +258,7 @@ body {
   flex-direction: column;
   gap: 14px;
   padding: 20px;
-  background: var(--kiln-bg-surface);
+  background: var(--kiln-panel);
   color: var(--kiln-fg);
 }
 @media (max-width: 640px) {

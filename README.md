@@ -2,7 +2,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/media/banner.png">
     <source media="(prefers-color-scheme: light)" srcset="docs/media/banner-light.png">
-    <img src="docs/media/banner.png" alt="Kiln" width="820">
+    <img src="docs/media/banner.png" alt="Kiln: where work gets made. An office suite with a little fire in it." width="820">
   </picture>
 </p>
 
@@ -77,6 +77,8 @@ Android are built by the release workflow from a version tag
 | [DESIGN.md](docs/DESIGN.md) | Architecture: crates, packages, runtime, threads, rendering |
 | [FORMATS.md](docs/FORMATS.md) | What each file-format crate covers and the fidelity targets |
 | [SHORTCUTS.md](docs/SHORTCUTS.md) | The Office keyboard shortcuts Kiln implements |
+| [BRAND.md](brand/BRAND.md) | The brand: mark, app icons, colour, type, voice |
+| [Design](docs/design/README.md) | The brand kit in the code, the mockups and which work package implements each |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Development loop, tests, code style |
 | [SECURITY.md](SECURITY.md) | Reporting a vulnerability |
 | [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) | Third-party components and their licences |

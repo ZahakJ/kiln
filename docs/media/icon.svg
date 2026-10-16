@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <!-- Neutral placeholder (WP-50). The brand kit's app icon replaces it in WP-51. -->
-  <title>Kiln</title>
-  <rect x="16" y="16" width="480" height="480" rx="108" fill="#26272B"/>
-  <text x="256" y="300" text-anchor="middle" font-family="Liberation Sans, Arial, sans-serif" font-weight="700" font-size="150" letter-spacing="-4" fill="#F4F2EE">Kiln</text>
-</svg>

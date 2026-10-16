@@ -1,5 +1,5 @@
 {
-  "$comment": "Extra (non-npm) assets bundled by @kiln/tokens. Read by tools/check-licenses.mjs --notices and appended to THIRD-PARTY-NOTICES.md. Fetched by packages/tokens/scripts/fetch-fonts.mjs.",
+  "$comment": "Extra (non-npm) assets bundled by @kiln/tokens. Read by tools/check-licenses.mjs --notices and appended to THIRD-PARTY-NOTICES.md. The document fonts are fetched by packages/tokens/scripts/fetch-fonts.mjs; the brand UI fonts (Figtree, Fraunces) come from the brand kit via tools/import-brand.sh into assets/fonts/brand/.",
   "assets": [
     {
       "name": "Liberation Fonts (Sans, Serif, Mono)",
@@ -40,6 +40,24 @@
       "homepage": "https://github.com/huertatipografica/Caladea",
       "files": ["Caladea-Regular.ttf", "Caladea-Bold.ttf", "Caladea-Italic.ttf", "Caladea-BoldItalic.ttf"],
       "licenseFile": "LICENSE-Caladea.txt"
+    },
+    {
+      "name": "Figtree",
+      "version": "variable (brand kit)",
+      "license": "OFL-1.1",
+      "author": "Erik Kennedy",
+      "homepage": "https://github.com/erikdkennedy/figtree",
+      "files": ["../../../assets/fonts/brand/Figtree/Figtree-VF.ttf"],
+      "licenseFile": "../../../assets/fonts/brand/Figtree/OFL.txt"
+    },
+    {
+      "name": "Fraunces",
+      "version": "variable (brand kit)",
+      "license": "OFL-1.1",
+      "author": "Undercase Type (Phaedra Charles, Flavia Zimbardi)",
+      "homepage": "https://github.com/undercasetype/Fraunces",
+      "files": ["../../../assets/fonts/brand/Fraunces/Fraunces-VF.ttf"],
+      "licenseFile": "../../../assets/fonts/brand/Fraunces/OFL.txt"
     }
   ]
 }

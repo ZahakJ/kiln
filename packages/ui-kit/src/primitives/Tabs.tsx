@@ -6,8 +6,11 @@ import { cx } from './cx.ts';
 export const Tabs = RT.Root;
 
 export interface TabsListProps extends ComponentPropsWithRef<typeof RT.List> {
-  /** `underline`: ribbon-style accent underline. `segmented`: compact pill switcher. */
-  variant?: 'underline' | 'segmented';
+  /**
+   * `underline`: app-coloured underline. `segmented`: a sunken well with a raised chip (pane switchers).
+   * `arch`: the brand's arch-topped door for the active tab (ribbon tabs; BRAND.md §5).
+   */
+  variant?: 'underline' | 'segmented' | 'arch';
 }
 
 export function TabsList({ variant = 'underline', className, ...rest }: TabsListProps) {

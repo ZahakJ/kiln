@@ -2,12 +2,13 @@ import type { ComponentPropsWithRef, ReactNode } from 'react';
 import { cx } from './cx.ts';
 import { ariaKeyShortcuts } from './shortcut.ts';
 
-export type ButtonVariant = 'default' | 'primary' | 'ghost' | 'toolbar' | 'split' | 'danger';
+export type ButtonVariant = 'default' | 'primary' | 'ember' | 'ghost' | 'toolbar' | 'split' | 'danger';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 export interface ButtonProps extends ComponentPropsWithRef<'button'> {
   /**
-   * `default` outlined, `primary` filled accent, `ghost` borderless, `toolbar` ribbon command,
+   * `default` outlined, `primary` solid in the app's colour (Share, OK), `ember` solid ember for
+   * suite-level actions only (Home's New, the tour), `ghost` borderless, `toolbar` ribbon command,
    * `split` a segment of a SplitButton, `danger` destructive confirmation.
    */
   variant?: ButtonVariant;

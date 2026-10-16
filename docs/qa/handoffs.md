@@ -674,3 +674,26 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   reported 35 stale files that a fresh build did not). While two agents build in the shared `target/`, a
   `cargo check` can also fail with "can't find crate" or "extern location … does not exist" mid-run; rerunning
   after the other build finishes clears it. Worth a line in `docs/qa/env.md`.
+
+## WP-51 → WP-58 (chrome), WP-91 (web, packaging), WP-90 (mobile), WP-50 (Android project)
+
+- For WP-58 (chrome): the tokens are now the brand kit's. Everything in `packages/ui-kit/src/{chrome,ribbon,
+  statusbar,backstage,palette,panes,…}` already re-skins through the semantic aliases (`--kiln-bg-surface` = kit
+  panel, `--kiln-accent-strong` = the app's text colour, …), but the layouts are still the prototype's. Build the
+  frame from `brand/mockups/src/kiln-ui.css` and the mockups (`docs/design/README.md` maps each to its WP): the File
+  button is `--app-solid`/`--app-on-solid` with `<Spark>`, the active ribbon tab is `<TabsList variant="arch">`'s
+  shape, the flame chip uses `<Flame>`, the title-bar mark is `<AppTile app size={20}>` (it picks the kit's
+  flat `-32` drawing), and new primitives exist for the Home sidebar (`<Button variant="ember">`). `AppMark.tsx`
+  still draws the old placeholder square. `src/index.ts`'s header comment still says "Horizon".
+- For WP-58 / WP-91 (web shell): `apps/web/index.html` still has the old `theme-color` values
+  (`#EEF1F6`/`#15171C`; the kit's are `#F6EFE6`/`#17110E`) and does not link `public/manifest.webmanifest`
+  (added, with the kit's PWA icons, maskable 192/512 and `.docx/.xlsx/.pptx` file handlers). `apps/web/src/index.css`
+  defines its own provisional `--kiln-*` values that override the generated ones once `@kiln/tokens/index.css`
+  is imported: delete them when the Home is rebuilt.
+- For WP-90 / WP-50 (Android): the launcher icons under `apps/desktop/src-tauri/icons/android/` are the kit's
+  adaptive layers (background, foreground, monochrome). The generated Gradle project in
+  `apps/desktop/src-tauri/gen/android/app/src/main/res/` still holds the old icons; re-run `pnpm tauri android
+  init` or copy the `mipmap-*` folders over.
+- For WP-91 (packaging): per-document icons `apps/desktop/src-tauri/icons/{write,grid,deck,notes}.png` exist for
+  `bundle.fileAssociations` (`.docx` → write, `.xlsx` → grid, `.pptx` → deck); `tauri.conf.json` does not declare
+  the associations yet.

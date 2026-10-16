@@ -2,7 +2,7 @@
   "name": "@kiln/tokens",
   "version": "0.1.0",
   "private": true,
-  "description": "Design tokens of the \"Horizon\" design language.",
+  "description": "Design tokens generated from the Kiln brand kit.",
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "exports": {

@@ -1,13 +1,32 @@
 /*
  * Tailwind 4 theme for Kiln: `@import "@kiln/tokens/theme.css";` after `@import "tailwindcss";`.
- * GENERATED from packages/tokens/src/tokens.ts by `pnpm --filter @kiln/tokens generate`.
+ * GENERATED from brand/tokens.json by `pnpm --filter @kiln/tokens generate`.
  * Do not edit by hand.
  */
 @theme inline {
   --spacing: 4px;
   --font-sans: var(--kiln-font-ui);
-  --font-mono: var(--kiln-font-mono);
-  --color-canvas: var(--kiln-bg-canvas);
+  --font-display: var(--kiln-font-display);
+  --color-bg: var(--kiln-bg);
+  --color-panel: var(--kiln-panel);
+  --color-raised: var(--kiln-raised);
+  --color-sunken: var(--kiln-sunken);
+  --color-page: var(--kiln-page);
+  --color-canvas: var(--kiln-canvas);
+  --color-fg: var(--kiln-fg);
+  --color-muted: var(--kiln-muted);
+  --color-faint: var(--kiln-faint);
+  --color-line: var(--kiln-line);
+  --color-line-strong: var(--kiln-line-strong);
+  --color-ember: var(--kiln-ember);
+  --color-ember-text: var(--kiln-ember-text);
+  --color-on-ember: var(--kiln-on-ember);
+  --color-selection: var(--kiln-selection);
+  --color-app: var(--app);
+  --color-app-solid: var(--app-solid);
+  --color-app-on-solid: var(--app-on-solid);
+  --color-app-text: var(--app-text);
+  --color-app-tint: var(--app-tint);
   --color-surface: var(--kiln-bg-surface);
   --color-surface-2: var(--kiln-bg-surface-2);
   --color-surface-3: var(--kiln-bg-surface-3);
@@ -15,36 +34,54 @@
   --color-pressed: var(--kiln-bg-pressed);
   --color-checked: var(--kiln-bg-checked);
   --color-input: var(--kiln-bg-input);
-  --color-fg: var(--kiln-fg);
-  --color-muted: var(--kiln-fg-muted);
   --color-disabled: var(--kiln-fg-disabled);
-  --color-line: var(--kiln-border);
-  --color-line-strong: var(--kiln-border-strong);
   --color-accent: var(--kiln-accent);
   --color-accent-strong: var(--kiln-accent-strong);
   --color-accent-subtle: var(--kiln-accent-subtle);
   --color-on-accent: var(--kiln-on-accent);
-  --color-selection: var(--kiln-selection);
-  --color-write: var(--kiln-accent-write);
-  --color-grid: var(--kiln-accent-grid);
-  --color-deck: var(--kiln-accent-deck);
-  --color-notes: var(--kiln-accent-notes);
-  --color-hub: var(--kiln-accent-hub);
   --color-danger: var(--kiln-danger);
   --color-warning: var(--kiln-warning);
   --color-success: var(--kiln-success);
   --color-info: var(--kiln-info);
+  --color-write: var(--kiln-write-fill);
+  --color-grid: var(--kiln-grid-fill);
+  --color-deck: var(--kiln-deck-fill);
+  --color-notes: var(--kiln-notes-fill);
+  --color-home: var(--kiln-home-fill);
+  --color-hub: var(--kiln-home-fill);
+  --color-fire-core: var(--kiln-fire-core);
+  --color-fire-flame: var(--kiln-fire-flame);
+  --color-fire-ember: var(--kiln-fire-ember);
+  --color-fire-tongue: var(--kiln-fire-tongue);
+  --color-fire-glow: var(--kiln-fire-glow);
+  --color-bone: var(--kiln-bone);
+  --color-bisque: var(--kiln-bisque);
+  --color-terracotta: var(--kiln-terracotta);
+  --color-clay: var(--kiln-clay);
+  --color-tenmoku: var(--kiln-tenmoku);
+  --color-soot: var(--kiln-soot);
+  --color-char: var(--kiln-char);
+  --radius-xs: var(--kiln-radius-xs);
+  --radius-sm: var(--kiln-radius-sm);
+  --radius-md: var(--kiln-radius-md);
+  --radius-lg: var(--kiln-radius-lg);
+  --radius-xl: var(--kiln-radius-xl);
   --radius-control: var(--kiln-radius-control);
   --radius-menu: var(--kiln-radius-menu);
   --radius-dialog: var(--kiln-radius-dialog);
-  --shadow-of-1: var(--kiln-shadow-1);
-  --shadow-of-2: var(--kiln-shadow-2);
-  --shadow-of-3: var(--kiln-shadow-3);
+  --radius-pill: var(--kiln-radius-pill);
+  --shadow-kiln-1: var(--kiln-shadow-1);
+  --shadow-kiln-2: var(--kiln-shadow-2);
+  --shadow-kiln-3: var(--kiln-shadow-3);
+  --shadow-kiln-page: var(--kiln-shadow-page);
   --text-xs: var(--kiln-text-xs);
   --text-sm: var(--kiln-text-sm);
   --text-base: var(--kiln-text-base);
   --text-md: var(--kiln-text-md);
   --text-lg: var(--kiln-text-lg);
   --text-xl: var(--kiln-text-xl);
-  --ease-out: var(--kiln-ease-out);
+  --text-2xl: var(--kiln-text-2xl);
+  --text-3xl: var(--kiln-text-3xl);
+  --text-hero: var(--kiln-text-hero);
+  --ease-kiln: var(--kiln-ease);
 }

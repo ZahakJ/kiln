@@ -1,6 +1,13 @@
 /*
- * Kiln "Horizon" UI primitives. Every value comes from @kiln/tokens (--kiln-*), so the light,
- * dark and high-contrast themes and the per-app accent work without per-component overrides.
+ * Kiln UI primitives, styled after the brand kit's component styles (brand/mockups/src/kiln-ui.css,
+ * the mockups in docs/design/mockups/). Every value comes from @kiln/tokens: the kit's names
+ * (--kiln-panel, --kiln-line, --app-solid, …) and the semantic names (--kiln-bg-hover, --kiln-focus-ring, …),
+ * so light, dark, high contrast and the per-app colour (data-app) work without per-component overrides.
+ *
+ * Shape language (from the mockups): 9 px radius on 30 px buttons, 7 px on 28 px icon buttons and
+ * dropdowns, 8 px on 32 px fields, 10 px on large ribbon icon wells, 12 px on menus and popovers, 16 px
+ * on dialogs; hairlines in --kiln-line; selected states take the app tint and app text colour; solid
+ * buttons carry a 2 px inner foot like glaze pooling at the base of a tile.
  */
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -20,10 +27,18 @@
 }
 
 .kiln-glyph,
-.kiln-icon {
+.kiln-icon,
+.kiln-brand-mark {
   display: inline-block;
   vertical-align: middle;
   flex: none;
+}
+
+.kiln-app-tile {
+  display: inline-block;
+  vertical-align: middle;
+  flex: none;
+  user-select: none;
 }
 
 /* A glyph's filled accent part (e.g. the colour bar of Font Colour) can be tinted with --kiln-glyph-accent. */
@@ -31,7 +46,7 @@
   fill: var(--kiln-glyph-accent, currentColor);
 }
 
-/* Office 2019-style colourful icons (opt-in with data-icon-style="colorful" on any ancestor). */
+/* Colourful icons (opt-in with data-icon-style="colorful" on any ancestor): accents in the app colour. */
 [data-icon-style="colorful"] .kiln-glyph [data-accent] {
   stroke: var(--kiln-accent-strong);
 }
@@ -39,6 +54,7 @@
   fill: var(--kiln-glyph-accent, var(--kiln-accent-strong));
 }
 
+/* The focus ring follows the app colour (BRAND.md §5). */
 :where(
   .kiln-btn,
   .kiln-field,
@@ -50,7 +66,7 @@
 ):focus-visible,
 :where(.kiln-scroll, .kiln-split__main, .kiln-split__arrow):focus-visible {
   outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
-  outline-offset: 1px;
+  outline-offset: 2px;
 }
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -58,46 +74,50 @@
 /* ---------------------------------------------------------------------------------------------- */
 
 .kiln-btn {
-  --btn-h: var(--kiln-control-h);
-  --btn-px: 10px;
+  --btn-h: var(--kiln-button-h);
+  --btn-px: 12px;
+  --btn-r: 9px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 7px;
   box-sizing: border-box;
   height: var(--btn-h);
   min-width: var(--btn-h);
   padding: 0 var(--btn-px);
   margin: 0;
-  border: var(--kiln-border-width) solid var(--kiln-border-strong);
-  border-radius: var(--kiln-radius-control);
-  background: var(--kiln-bg-surface);
+  border: var(--kiln-border-width) solid var(--kiln-line-strong);
+  border-radius: var(--btn-r);
+  background: var(--kiln-raised);
   color: var(--kiln-fg);
   font: inherit;
   font-family: var(--kiln-font-ui);
   font-size: var(--kiln-text-base);
-  font-weight: var(--kiln-weight-regular);
+  font-weight: var(--kiln-weight-semibold);
   line-height: 1;
   white-space: nowrap;
   cursor: default;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   transition:
-    background-color var(--kiln-duration-fast) ease-out,
-    border-color var(--kiln-duration-fast) ease-out,
-    color var(--kiln-duration-fast) ease-out;
+    background-color var(--kiln-duration-fast) var(--kiln-ease),
+    border-color var(--kiln-duration-fast) var(--kiln-ease),
+    box-shadow var(--kiln-duration-fast) var(--kiln-ease),
+    color var(--kiln-duration-fast) var(--kiln-ease);
 }
 .kiln-btn:hover {
-  background: color-mix(in srgb, var(--kiln-bg-surface), var(--kiln-fg) 5%);
+  border-color: color-mix(in srgb, var(--kiln-line-strong), var(--kiln-fg) 18%);
+  background: color-mix(in srgb, var(--kiln-raised), var(--kiln-fg) 4%);
 }
 .kiln-btn:active {
-  background: color-mix(in srgb, var(--kiln-bg-surface), var(--kiln-fg) 10%);
+  background: color-mix(in srgb, var(--kiln-raised), var(--kiln-fg) 9%);
 }
 .kiln-btn:disabled,
 .kiln-btn[aria-disabled="true"] {
   color: var(--kiln-fg-disabled);
-  border-color: var(--kiln-border);
-  background: var(--kiln-bg-surface);
+  border-color: var(--kiln-line);
+  background: var(--kiln-raised);
+  box-shadow: none;
   pointer-events: none;
 }
 .kiln-btn[aria-busy="true"] {
@@ -108,11 +128,13 @@
 .kiln-btn--sm {
   --btn-h: var(--kiln-control-h-sm);
   --btn-px: 8px;
+  --btn-r: 7px;
+  gap: 6px;
   font-size: var(--kiln-text-sm);
 }
 .kiln-btn--lg {
   --btn-h: var(--kiln-control-h-lg);
-  --btn-px: 14px;
+  --btn-px: 16px;
 }
 .kiln-btn--icon-only {
   padding: 0;
@@ -127,51 +149,77 @@
 }
 .kiln-btn__icon-after {
   margin-inline-start: -2px;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-faint);
 }
 .kiln-btn__label {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* Solid: the app's colour (Share, Reply, OK). A 2 px inner foot gives the glaze some weight. */
 .kiln-btn--primary {
-  background: var(--kiln-accent-strong);
-  border-color: var(--kiln-accent-strong);
-  color: var(--kiln-on-accent);
-  font-weight: var(--kiln-weight-medium);
+  border-color: transparent;
+  background: var(--app-solid);
+  color: var(--app-on-solid);
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.14);
 }
 .kiln-btn--primary:hover {
-  background: var(--kiln-accent-hover);
-  border-color: var(--kiln-accent-hover);
+  border-color: transparent;
+  background: color-mix(in srgb, var(--app-solid), var(--app-on-solid) 10%);
 }
 .kiln-btn--primary:active {
-  background: var(--kiln-accent-pressed);
-  border-color: var(--kiln-accent-pressed);
+  background: color-mix(in srgb, var(--app-solid), #000 10%);
+  box-shadow: inset 0 1px 0 rgb(0 0 0 / 0.16);
+}
+.kiln-btn--primary .kiln-btn__icon-after {
+  color: inherit;
 }
 .kiln-btn--primary:disabled {
-  background: var(--kiln-bg-surface-3);
-  border-color: var(--kiln-bg-surface-3);
+  border-color: var(--kiln-line);
+  background: var(--kiln-sunken);
+}
+
+/* Ember: suite-level actions only (Home's New, the onboarding tour, brand moments). */
+.kiln-btn--ember {
+  border-color: transparent;
+  background: var(--kiln-ember);
+  color: var(--kiln-on-ember);
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.14);
+}
+.kiln-btn--ember:hover {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--kiln-ember), var(--kiln-on-ember) 10%);
+}
+.kiln-btn--ember:active {
+  background: color-mix(in srgb, var(--kiln-ember), #000 10%);
+  box-shadow: inset 0 1px 0 rgb(0 0 0 / 0.16);
+}
+.kiln-btn--ember:disabled {
+  border-color: var(--kiln-line);
+  background: var(--kiln-sunken);
 }
 
 .kiln-btn--danger {
+  border-color: transparent;
   background: var(--kiln-danger);
-  border-color: var(--kiln-danger);
-  color: var(--kiln-on-accent);
-  font-weight: var(--kiln-weight-medium);
+  color: var(--kiln-bg);
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.14);
 }
 .kiln-btn--danger:hover {
+  border-color: transparent;
   background: color-mix(in srgb, var(--kiln-danger), var(--kiln-fg) 12%);
 }
 
 .kiln-btn--ghost,
 .kiln-btn--toolbar,
 .kiln-btn--split {
-  background: transparent;
   border-color: transparent;
+  background: transparent;
 }
 .kiln-btn--ghost:hover,
 .kiln-btn--toolbar:hover,
 .kiln-btn--split:hover {
+  border-color: transparent;
   background: var(--kiln-bg-hover);
 }
 .kiln-btn--ghost:active,
@@ -182,32 +230,63 @@
 .kiln-btn--ghost:disabled,
 .kiln-btn--toolbar:disabled,
 .kiln-btn--split:disabled {
-  background: transparent;
   border-color: transparent;
+  background: transparent;
 }
 
+/* Ribbon command: 28 px square icon buttons, 24 px text rows (Cut, Copy, Format). */
 .kiln-btn--toolbar {
+  --btn-h: var(--kiln-control-h);
   --btn-px: 6px;
-  gap: 4px;
+  --btn-r: 7px;
+  gap: 7px;
+  font-size: var(--kiln-text-sm);
+  font-weight: var(--kiln-weight-regular);
+}
+.kiln-btn--toolbar.kiln-btn--sm {
+  --btn-h: var(--kiln-control-h-sm);
+  --btn-r: 6px;
 }
 .kiln-btn--toolbar.kiln-btn--icon-only {
   padding: 0;
 }
+.kiln-btn--ghost {
+  font-weight: var(--kiln-weight-medium);
+}
 
-/* Classic-ribbon large button: icon above a (possibly two-line) label. */
+/* Classic-ribbon large button: a 40 px icon well above a (possibly two-line) label. */
 .kiln-btn--stacked {
   flex-direction: column;
   justify-content: flex-start;
   gap: 4px;
   height: auto;
   min-height: 66px;
-  min-width: 44px;
+  min-width: 52px;
   max-width: 76px;
-  padding: 6px 4px 4px;
+  padding: 2px 4px 4px;
+  border-color: transparent;
+  background: transparent;
+  font-size: var(--kiln-text-sm);
+  font-weight: var(--kiln-weight-medium);
   white-space: normal;
 }
 .kiln-btn--stacked .kiln-btn__icon {
-  height: 32px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--kiln-sunken);
+  transition: background-color var(--kiln-duration-fast) var(--kiln-ease);
+}
+.kiln-btn--stacked:hover,
+.kiln-btn--stacked:active {
+  border-color: transparent;
+  background: transparent;
+}
+.kiln-btn--stacked:hover .kiln-btn__icon {
+  background: color-mix(in srgb, var(--kiln-sunken), var(--kiln-fg) 7%);
+}
+.kiln-btn--stacked:active .kiln-btn__icon {
+  background: color-mix(in srgb, var(--kiln-sunken), var(--kiln-fg) 12%);
 }
 .kiln-btn--stacked .kiln-btn__label {
   font-size: var(--kiln-text-sm);
@@ -215,41 +294,55 @@
   text-align: center;
   white-space: normal;
 }
+.kiln-btn--stacked:disabled .kiln-btn__icon {
+  background: transparent;
+}
 
-/* Toggle (aria-pressed). */
+/* Toggle (aria-pressed): the app tint with a hairline of the app colour (Bold on, Align left). */
 .kiln-toggle[aria-pressed="true"] {
-  background: var(--kiln-accent-subtle);
-  border-color: color-mix(in srgb, var(--kiln-accent) 35%, transparent);
-  color: var(--kiln-fg);
+  border-color: transparent;
+  background: var(--app-tint);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--app) 30%, transparent);
+  color: var(--app-text);
 }
 .kiln-toggle[aria-pressed="true"]:hover {
-  background: color-mix(in srgb, var(--kiln-accent) 20%, transparent);
+  background: color-mix(in srgb, var(--app-tint), var(--app) 10%);
 }
 .kiln-toggle[aria-pressed="true"] .kiln-btn__icon {
-  color: var(--kiln-accent-strong);
+  color: var(--app-text);
+}
+.kiln-btn--stacked.kiln-toggle[aria-pressed="true"] {
+  background: transparent;
+  box-shadow: none;
+}
+.kiln-btn--stacked.kiln-toggle[aria-pressed="true"] .kiln-btn__icon {
+  background: var(--app-tint);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--app) 30%, transparent);
 }
 [data-theme="hc"] .kiln-toggle[aria-pressed="true"] {
-  background: var(--kiln-accent);
-  color: var(--kiln-on-accent);
+  background: var(--kiln-fg);
+  box-shadow: none;
+  color: var(--kiln-bg);
 }
 [data-theme="hc"] .kiln-toggle[aria-pressed="true"] .kiln-btn__icon {
-  color: var(--kiln-on-accent);
+  color: var(--kiln-bg);
 }
 
 /* Split button. */
 .kiln-split {
   display: inline-flex;
   align-items: stretch;
-  border-radius: var(--kiln-radius-control);
   border: var(--kiln-border-width) solid transparent;
+  border-radius: 7px;
+  transition: border-color var(--kiln-duration-fast) var(--kiln-ease);
 }
 .kiln-split > .kiln-btn {
   border: 0;
 }
 .kiln-split > .kiln-split__main {
   border-radius: 0;
-  border-start-start-radius: var(--kiln-radius-control);
-  border-end-start-radius: var(--kiln-radius-control);
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
   padding-block: 0;
   padding-inline: 6px 4px;
 }
@@ -263,9 +356,9 @@
   width: 16px;
   padding: 0;
   border-radius: 0;
-  border-start-end-radius: var(--kiln-radius-control);
-  border-end-end-radius: var(--kiln-radius-control);
-  color: var(--kiln-fg-muted);
+  border-start-end-radius: 6px;
+  border-end-end-radius: 6px;
+  color: var(--kiln-faint);
 }
 .kiln-split--stacked {
   flex-direction: column;
@@ -274,33 +367,38 @@
 .kiln-split.kiln-split--stacked > .kiln-split__main {
   flex-direction: column;
   height: auto;
-  min-height: 46px;
-  padding: 6px 4px 2px;
-  border-radius: var(--kiln-radius-control) var(--kiln-radius-control) 0 0;
+  min-height: 48px;
+  padding: 2px 4px 0;
+  border-radius: 6px 6px 0 0;
 }
 .kiln-split.kiln-split--stacked > .kiln-split__main > .kiln-btn__icon {
-  height: 32px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--kiln-sunken);
 }
 .kiln-split.kiln-split--stacked > .kiln-split__main > .kiln-btn__label {
   font-size: var(--kiln-text-sm);
+  font-weight: var(--kiln-weight-medium);
 }
 .kiln-split.kiln-split--stacked > .kiln-split__arrow {
   width: auto;
   height: 18px;
-  border-radius: 0 0 var(--kiln-radius-control) var(--kiln-radius-control);
+  border-radius: 0 0 6px 6px;
 }
 .kiln-split:hover,
 .kiln-split.is-open {
-  border-color: var(--kiln-border);
+  border-color: var(--kiln-line);
 }
 .kiln-split:hover .kiln-split__arrow {
-  box-shadow: inset 1px 0 0 var(--kiln-border);
+  box-shadow: inset 1px 0 0 var(--kiln-line);
 }
 .kiln-split.is-open .kiln-split__arrow {
   background: var(--kiln-bg-pressed);
+  color: var(--kiln-fg);
 }
 .kiln-split--stacked:hover > .kiln-split__arrow {
-  box-shadow: inset 0 1px 0 var(--kiln-border);
+  box-shadow: inset 0 1px 0 var(--kiln-line);
 }
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -318,21 +416,23 @@
   justify-content: center;
   box-sizing: border-box;
   min-width: 20px;
-  height: 20px;
-  padding: 0 5px;
-  border: 1px solid var(--kiln-border-strong);
+  height: 19px;
+  padding: 3px 5px 2px;
+  border: 1px solid var(--kiln-line-strong);
   border-bottom-width: 2px;
-  border-radius: var(--kiln-radius-control);
-  background: var(--kiln-bg-surface-2);
-  color: var(--kiln-fg);
+  border-radius: 5px;
+  background: var(--kiln-raised);
+  color: var(--kiln-muted);
   font-family: var(--kiln-font-ui);
   font-size: var(--kiln-text-xs);
-  font-weight: var(--kiln-weight-medium);
+  font-weight: var(--kiln-weight-semibold);
   line-height: 1;
+  white-space: nowrap;
 }
 .kiln-kbd-inline {
   font-family: var(--kiln-font-ui);
   font-size: inherit;
+  font-variant-numeric: tabular-nums;
   color: inherit;
 }
 
@@ -344,7 +444,7 @@
   animation: kiln-spin 0.8s linear infinite;
 }
 .kiln-spinner__track {
-  stroke: var(--kiln-border);
+  stroke: var(--kiln-line);
 }
 .kiln-spinner__arc {
   stroke: currentColor;
@@ -362,7 +462,7 @@
 
 .kiln-separator {
   flex: none;
-  background: var(--kiln-border);
+  background: var(--kiln-line);
 }
 .kiln-separator[data-orientation="horizontal"] {
   height: 1px;
@@ -384,36 +484,36 @@
   z-index: var(--kiln-z-tooltip);
   box-sizing: border-box;
   max-width: 300px;
-  padding: 5px 8px;
-  border: 1px solid var(--kiln-border);
-  border-radius: var(--kiln-radius-control);
-  background: var(--kiln-bg-surface);
+  padding: 6px 9px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 8px;
+  background: var(--kiln-raised);
   box-shadow: var(--kiln-shadow-2);
   color: var(--kiln-fg);
   font-family: var(--kiln-font-ui);
   font-size: var(--kiln-text-sm);
   line-height: var(--kiln-leading-normal);
   user-select: none;
-  animation: kiln-fade-in var(--kiln-duration-menu) var(--kiln-ease-out);
+  animation: kiln-fade-in var(--kiln-duration-menu) var(--kiln-ease);
 }
 .kiln-tooltip--rich {
-  padding: 8px 10px;
+  padding: 10px 12px;
 }
 .kiln-tooltip__title {
   display: block;
-  font-weight: var(--kiln-weight-semibold);
+  font-weight: var(--kiln-weight-bold);
 }
 .kiln-tooltip:not(.kiln-tooltip--rich) .kiln-tooltip__title {
-  font-weight: var(--kiln-weight-regular);
+  font-weight: var(--kiln-weight-medium);
 }
 .kiln-tooltip__shortcut {
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
   font-weight: var(--kiln-weight-regular);
 }
 .kiln-tooltip__description {
   display: block;
   margin-top: 4px;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
 }
 
 @keyframes kiln-fade-in {
@@ -442,14 +542,14 @@
 .kiln-popover {
   z-index: var(--kiln-z-menu);
   box-sizing: border-box;
-  min-width: 180px;
+  min-width: 200px;
   max-height: var(--radix-dropdown-menu-content-available-height, 80vh);
   overflow: auto;
-  padding: 4px;
-  border: 1px solid var(--kiln-border);
+  padding: 5px;
+  border: 1px solid var(--kiln-line);
   border-radius: var(--kiln-radius-menu);
-  background: var(--kiln-bg-surface);
-  box-shadow: var(--kiln-shadow-3);
+  background: var(--kiln-panel);
+  box-shadow: var(--kiln-shadow-2);
   color: var(--kiln-fg);
   font-family: var(--kiln-font-ui);
   font-size: var(--kiln-text-base);
@@ -458,7 +558,7 @@
     --radix-dropdown-menu-content-transform-origin,
     var(--radix-popover-content-transform-origin)
   );
-  animation: kiln-pop-in var(--kiln-duration-menu) var(--kiln-ease-out);
+  animation: kiln-pop-in var(--kiln-duration-menu) var(--kiln-ease);
   scrollbar-width: thin;
   scrollbar-color: var(--kiln-scrollbar) transparent;
 }
@@ -472,8 +572,8 @@
   padding: 0;
 }
 .kiln-popover__arrow {
-  fill: var(--kiln-bg-surface);
-  stroke: var(--kiln-border);
+  fill: var(--kiln-panel);
+  stroke: var(--kiln-line);
 }
 
 .kiln-menu__item {
@@ -488,7 +588,7 @@
   padding: 4px 10px 4px 6px;
   margin: 0;
   border: 0;
-  border-radius: var(--kiln-radius-control);
+  border-radius: 7px;
   background: transparent;
   color: var(--kiln-fg);
   font: inherit;
@@ -503,7 +603,7 @@ button.kiln-menu__item:hover {
 }
 .kiln-menu__item[data-highlighted]:focus-visible {
   outline: none;
-  box-shadow: inset 0 0 0 1px var(--kiln-border-strong);
+  box-shadow: inset 0 0 0 1px var(--kiln-line-strong);
 }
 [data-theme="hc"] .kiln-menu__item[data-highlighted] {
   outline: 2px solid var(--kiln-focus-ring);
@@ -520,14 +620,14 @@ button.kiln-menu__item:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--kiln-accent-strong);
+  color: var(--app-text);
 }
 .kiln-menu__icon {
   grid-column: 2;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
 }
 .kiln-menu__item[data-highlighted] .kiln-menu__icon {
   color: var(--kiln-fg);
@@ -544,7 +644,7 @@ button.kiln-menu__item:hover {
   white-space: nowrap;
 }
 .kiln-menu__description {
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
   font-size: var(--kiln-text-sm);
   white-space: normal;
 }
@@ -552,8 +652,9 @@ button.kiln-menu__item:hover {
 .kiln-menu__chevron {
   grid-column: 4;
   margin-inline-start: 24px;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-faint);
   font-size: var(--kiln-text-sm);
+  font-variant-numeric: tabular-nums;
 }
 .kiln-menu__chevron {
   margin-inline-start: 12px;
@@ -562,18 +663,19 @@ button.kiln-menu__item:hover {
 .kiln-menu__item--sub[data-state="open"] {
   background: var(--kiln-bg-hover);
 }
+/* Group labels are eyebrows: Figtree 800, uppercase, +12 % tracking (BRAND.md §4). */
 .kiln-menu__group-label {
-  padding: 8px 10px 4px 10px;
-  color: var(--kiln-fg-muted);
-  font-size: var(--kiln-text-xs);
-  font-weight: var(--kiln-weight-semibold);
-  letter-spacing: 0.02em;
-  text-transform: none;
+  padding: 9px 10px 5px;
+  color: var(--kiln-faint);
+  font-size: 10.5px;
+  font-weight: var(--kiln-weight-heavy);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 .kiln-menu__separator {
   height: 1px;
-  margin: 4px -4px;
-  background: var(--kiln-border);
+  margin: 5px -5px;
+  background: var(--kiln-line);
 }
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -588,22 +690,24 @@ button.kiln-menu__item:hover {
   box-sizing: border-box;
   height: var(--field-h);
   min-width: 0;
-  padding: 0 8px;
-  border: var(--kiln-border-width) solid var(--kiln-border-strong);
-  border-radius: var(--kiln-radius-control);
-  background: var(--kiln-bg-input);
+  padding: 0 6px 0 9px;
+  border: var(--kiln-border-width) solid var(--kiln-line);
+  border-radius: 7px;
+  background: var(--kiln-raised);
   color: var(--kiln-fg);
   font-family: var(--kiln-font-ui);
-  font-size: var(--kiln-text-base);
-  transition: border-color var(--kiln-duration-fast) ease-out;
+  font-size: 12.5px;
+  transition:
+    border-color var(--kiln-duration-fast) var(--kiln-ease),
+    box-shadow var(--kiln-duration-fast) var(--kiln-ease);
 }
 .kiln-field:hover {
-  border-color: color-mix(in srgb, var(--kiln-border-strong), var(--kiln-fg) 25%);
+  border-color: var(--kiln-line-strong);
 }
 .kiln-field:focus-within,
 .kiln-field[data-state="open"] {
-  border-color: var(--kiln-accent);
-  box-shadow: inset 0 -1px 0 var(--kiln-accent);
+  border-color: var(--app-text);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--app) 22%, transparent);
 }
 .kiln-field:has(:focus-visible),
 .kiln-field.kiln-select:focus-visible {
@@ -611,17 +715,22 @@ button.kiln-menu__item:hover {
 }
 .kiln-field--sm {
   --field-h: var(--kiln-control-h-sm);
+  border-radius: 6px;
   font-size: var(--kiln-text-sm);
+}
+.kiln-field--lg {
+  --field-h: var(--kiln-control-h-lg);
+  border-radius: 8px;
 }
 .kiln-field.is-disabled,
 .kiln-field:disabled {
   color: var(--kiln-fg-disabled);
-  border-color: var(--kiln-border);
-  background: var(--kiln-bg-surface-2);
+  border-color: var(--kiln-line);
+  background: var(--kiln-sunken);
 }
 .kiln-field.is-invalid {
   border-color: var(--kiln-danger);
-  box-shadow: inset 0 -1px 0 var(--kiln-danger);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--kiln-danger) 20%, transparent);
 }
 
 .kiln-select {
@@ -639,11 +748,11 @@ button.kiln-menu__item:hover {
 }
 .kiln-select__value [data-placeholder],
 .kiln-select[data-placeholder] .kiln-select__value {
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-faint);
 }
 .kiln-select__chevron {
   display: inline-flex;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-faint);
 }
 .kiln-select__content {
   min-width: var(--radix-select-trigger-width);
@@ -652,7 +761,7 @@ button.kiln-menu__item:hover {
   overflow: hidden;
 }
 .kiln-select__viewport {
-  padding: 4px;
+  padding: 5px;
 }
 .kiln-select__item {
   grid-template-columns: 16px auto 1fr;
@@ -664,7 +773,7 @@ button.kiln-menu__item:hover {
   display: flex;
   justify-content: center;
   padding: 2px;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-faint);
 }
 
 .kiln-combobox {
@@ -676,7 +785,7 @@ button.kiln-menu__item:hover {
   min-width: 0;
   height: 100%;
   box-sizing: border-box;
-  padding: 0 0 0 8px;
+  padding: 0 0 0 9px;
   border: 0;
   outline: none;
   background: transparent;
@@ -684,7 +793,7 @@ button.kiln-menu__item:hover {
   font: inherit;
 }
 .kiln-combobox__input::placeholder {
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-faint);
 }
 .kiln-combobox__input::selection,
 .kiln-number__input::selection {
@@ -696,15 +805,15 @@ button.kiln-menu__item:hover {
   align-items: center;
   justify-content: center;
   flex: none;
-  width: 20px;
+  width: 22px;
   height: 100%;
   padding: 0;
   margin: 0;
   border: 0;
-  border-start-end-radius: var(--kiln-radius-control);
-  border-end-end-radius: var(--kiln-radius-control);
+  border-start-end-radius: 6px;
+  border-end-end-radius: 6px;
   background: transparent;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-faint);
 }
 .kiln-combobox__toggle:hover {
   background: var(--kiln-bg-hover);
@@ -716,7 +825,7 @@ button.kiln-menu__item:hover {
 }
 .kiln-combobox__list {
   overflow-y: auto;
-  padding: 4px;
+  padding: 5px;
   scrollbar-width: thin;
   scrollbar-color: var(--kiln-scrollbar) transparent;
 }
@@ -724,9 +833,9 @@ button.kiln-menu__item:hover {
   display: flex;
   align-items: center;
   gap: 12px;
-  min-height: 28px;
+  min-height: 30px;
   padding: 3px 10px;
-  border-radius: var(--kiln-radius-control);
+  border-radius: 7px;
   cursor: default;
   user-select: none;
 }
@@ -737,12 +846,14 @@ button.kiln-menu__item:hover {
   outline: 2px solid var(--kiln-focus-ring);
   outline-offset: -2px;
 }
+/* The current value: app tint with the app bar on the leading edge, like the navigation pane. */
 .kiln-combobox__option[aria-selected="true"] {
-  background: var(--kiln-accent-subtle);
-  box-shadow: inset 2px 0 0 var(--kiln-accent);
+  background: var(--app-tint);
+  box-shadow: inset 3px 0 0 var(--app);
+  color: var(--app-text);
 }
 .kiln-combobox__option[aria-selected="true"][data-active] {
-  background: color-mix(in srgb, var(--kiln-accent) 20%, transparent);
+  background: color-mix(in srgb, var(--app-tint), var(--app) 10%);
 }
 .kiln-combobox__option-label {
   flex: 1;
@@ -751,17 +862,17 @@ button.kiln-menu__item:hover {
   white-space: nowrap;
 }
 .kiln-combobox__hint {
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-faint);
   font-size: var(--kiln-text-sm);
 }
 .kiln-combobox__group + .kiln-combobox__group {
-  margin-top: 4px;
-  padding-top: 4px;
-  border-top: 1px solid var(--kiln-border);
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid var(--kiln-line);
 }
 .kiln-combobox__empty {
   padding: 8px 10px;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
 }
 
 .kiln-number {
@@ -769,14 +880,14 @@ button.kiln-menu__item:hover {
 }
 .kiln-number__input {
   text-align: start;
-  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
 }
 .kiln-number__spin {
   display: flex;
   flex-direction: column;
   align-self: stretch;
   width: 18px;
-  border-inline-start: 1px solid var(--kiln-border);
+  border-inline-start: 1px solid var(--kiln-line);
 }
 .kiln-number__spin button {
   flex: 1;
@@ -787,7 +898,7 @@ button.kiln-menu__item:hover {
   margin: 0;
   border: 0;
   background: transparent;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-faint);
 }
 .kiln-number__spin button:hover:not(:disabled) {
   background: var(--kiln-bg-hover);
@@ -797,10 +908,10 @@ button.kiln-menu__item:hover {
   color: var(--kiln-fg-disabled);
 }
 .kiln-number__spin button:first-child {
-  border-start-end-radius: var(--kiln-radius-control);
+  border-start-end-radius: 6px;
 }
 .kiln-number__spin button:last-child {
-  border-end-end-radius: var(--kiln-radius-control);
+  border-end-end-radius: 6px;
 }
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -812,7 +923,7 @@ button.kiln-menu__item:hover {
   inset: 0;
   z-index: var(--kiln-z-dialog);
   background: var(--kiln-overlay);
-  animation: kiln-fade-in var(--kiln-duration-pane) var(--kiln-ease-out);
+  animation: kiln-fade-in var(--kiln-duration-pane) var(--kiln-ease);
 }
 .kiln-dialog {
   position: fixed;
@@ -824,16 +935,16 @@ button.kiln-menu__item:hover {
   box-sizing: border-box;
   width: min(calc(100vw - 32px), var(--dialog-w, 480px));
   max-height: calc(100vh - 48px);
-  border: 1px solid var(--kiln-border);
+  border: 1px solid var(--kiln-line);
   border-radius: var(--kiln-radius-dialog);
-  background: var(--kiln-bg-surface);
+  background: var(--kiln-panel);
   box-shadow: var(--kiln-shadow-3);
   color: var(--kiln-fg);
   font-family: var(--kiln-font-ui);
   font-size: var(--kiln-text-base);
   transform: translate(-50%, -50%);
   outline: none;
-  animation: kiln-dialog-in var(--kiln-duration-pane) var(--kiln-ease-out);
+  animation: kiln-dialog-in var(--kiln-duration-pane) var(--kiln-ease);
 }
 .kiln-dialog--sm {
   --dialog-w: 360px;
@@ -849,28 +960,33 @@ button.kiln-menu__item:hover {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 14px 12px 6px 20px;
+  padding: 16px 12px 4px 22px;
 }
+/* Dialog titles are display type: Fraunces 700, SOFT 40 (BRAND.md §4). */
 .kiln-dialog__title {
   margin: 0;
-  font-size: var(--kiln-text-md);
-  font-weight: var(--kiln-weight-semibold);
+  font-family: var(--kiln-font-display);
+  font-size: var(--kiln-text-xl);
+  font-variation-settings: var(--kiln-display-settings);
+  font-optical-sizing: auto;
+  font-weight: var(--kiln-weight-bold);
+  letter-spacing: -0.01em;
   line-height: var(--kiln-leading-tight);
 }
 .kiln-dialog__close {
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
 }
 .kiln-dialog__description {
   margin: 0;
-  padding: 0 20px 4px;
-  color: var(--kiln-fg-muted);
+  padding: 0 22px 4px;
+  color: var(--kiln-muted);
   line-height: var(--kiln-leading-normal);
 }
 .kiln-dialog__body {
   flex: 1;
   min-height: 0;
   overflow: auto;
-  padding: 10px 20px 16px;
+  padding: 12px 22px 18px;
   line-height: var(--kiln-leading-normal);
 }
 .kiln-dialog__footer {
@@ -878,9 +994,9 @@ button.kiln-menu__item:hover {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 12px 20px 16px;
-  border-top: 1px solid var(--kiln-border);
-  background: var(--kiln-bg-surface-2);
+  padding: 12px 16px 14px 22px;
+  border-top: 1px solid var(--kiln-line);
+  background: var(--kiln-bg);
   border-end-start-radius: var(--kiln-radius-dialog);
   border-end-end-radius: var(--kiln-radius-dialog);
 }
@@ -890,7 +1006,7 @@ button.kiln-menu__item:hover {
   gap: 8px;
 }
 .kiln-dialog__footer-end .kiln-btn {
-  min-width: 80px;
+  min-width: 84px;
 }
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -909,58 +1025,103 @@ button.kiln-menu__item:hover {
   justify-content: center;
   gap: 6px;
   height: 32px;
-  padding: 0 12px;
+  padding: 0 14px;
   margin: 0;
   border: 0;
-  border-radius: var(--kiln-radius-control);
+  border-radius: 7px;
   background: transparent;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
   font: inherit;
   font-family: var(--kiln-font-ui);
   font-size: var(--kiln-text-base);
+  font-weight: var(--kiln-weight-medium);
   white-space: nowrap;
   cursor: default;
   user-select: none;
+  transition:
+    background-color var(--kiln-duration-fast) var(--kiln-ease),
+    color var(--kiln-duration-fast) var(--kiln-ease);
 }
 .kiln-tabs__tab:hover {
   background: var(--kiln-bg-hover);
   color: var(--kiln-fg);
 }
 .kiln-tabs__tab[data-state="active"] {
-  color: var(--kiln-fg);
-  font-weight: var(--kiln-weight-semibold);
+  color: var(--app-text);
+  font-weight: var(--kiln-weight-bold);
 }
 .kiln-tabs__tab[data-disabled] {
   color: var(--kiln-fg-disabled);
 }
-/* Reserve bold width so tabs do not shift when activated. */
+
 .kiln-tabs--underline .kiln-tabs__tab::after {
   content: "";
   position: absolute;
-  left: 10px;
-  right: 10px;
+  left: 12px;
+  right: 12px;
   bottom: 0;
   height: 3px;
   border-radius: 3px 3px 0 0;
   background: transparent;
-  transition: background-color var(--kiln-duration-menu) var(--kiln-ease-out);
+  transition: background-color var(--kiln-duration-menu) var(--kiln-ease);
 }
 .kiln-tabs--underline .kiln-tabs__tab[data-state="active"]::after {
-  background: var(--kiln-accent);
+  background: var(--app);
 }
+
+/* The arch: the active tab is an arch-topped door with a dot of the app colour (BRAND.md §5). */
+.kiln-tabs--arch {
+  align-items: flex-end;
+  gap: 2px;
+}
+.kiln-tabs--arch .kiln-tabs__tab {
+  height: 34px;
+  padding: 0 15px;
+  border-radius: 9px 9px 0 0;
+}
+.kiln-tabs--arch .kiln-tabs__tab[data-state="active"] {
+  height: 38px;
+  margin-bottom: -1px;
+  padding: 6px 22px 0;
+  border: 1px solid var(--kiln-line);
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0 / 26px 26px 0 0;
+  background: var(--kiln-panel);
+}
+.kiln-tabs--arch .kiln-tabs__tab[data-state="active"]::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--app);
+}
+
+/* Segmented: a sunken well with a raised chip for the current choice (Headings | Pages | Results). */
 .kiln-tabs--segmented {
   display: inline-flex;
-  padding: 2px;
-  border-radius: var(--kiln-radius-menu);
-  background: var(--kiln-bg-surface-3);
+  gap: 2px;
+  padding: 3px;
+  border-radius: 9px;
+  background: var(--kiln-sunken);
 }
 .kiln-tabs--segmented .kiln-tabs__tab {
+  flex: 1;
   height: 26px;
-  padding: 0 12px;
+  padding: 0 10px;
+  font-size: var(--kiln-text-sm);
+}
+.kiln-tabs--segmented .kiln-tabs__tab:hover {
+  background: color-mix(in srgb, var(--kiln-raised) 50%, transparent);
 }
 .kiln-tabs--segmented .kiln-tabs__tab[data-state="active"] {
-  background: var(--kiln-bg-surface);
+  background: var(--kiln-raised);
   box-shadow: var(--kiln-shadow-1);
+  color: var(--kiln-fg);
+  font-weight: var(--kiln-weight-semibold);
 }
 [data-theme="hc"] .kiln-tabs--segmented .kiln-tabs__tab[data-state="active"] {
   outline: 1px solid var(--kiln-fg);
@@ -1008,14 +1169,14 @@ button.kiln-menu__item:hover {
   flex: 1;
   height: 4px;
   border-radius: 2px;
-  background: var(--kiln-border-strong);
+  background: var(--kiln-line-strong);
 }
 .kiln-slider__fill {
   position: absolute;
   inset-block: 0;
   inset-inline-start: 0;
   border-radius: 2px;
-  background: var(--kiln-fg-muted);
+  background: var(--app);
 }
 .kiln-slider__mark {
   position: absolute;
@@ -1024,7 +1185,7 @@ button.kiln-menu__item:hover {
   height: 12px;
   margin-inline-start: -1px;
   border-radius: 1px;
-  background: var(--kiln-fg-muted);
+  background: var(--kiln-faint);
 }
 /* The thumb's centre sits on the value: pad + (inner width × p), shifted back by half its size. */
 .kiln-slider__thumb {
@@ -1035,23 +1196,26 @@ button.kiln-menu__item:hover {
   width: 14px;
   height: 14px;
   margin-top: -7px;
-  border: 2px solid var(--kiln-bg-surface);
+  border: 2px solid var(--app);
   border-radius: 50%;
-  background: var(--kiln-fg);
-  box-shadow:
-    0 0 0 1px var(--kiln-border-strong),
-    var(--kiln-shadow-1);
-  transition: background-color var(--kiln-duration-fast) ease-out;
+  background: var(--kiln-raised);
+  box-shadow: var(--kiln-shadow-1);
+  transition:
+    transform var(--kiln-duration-fast) var(--kiln-ease),
+    border-color var(--kiln-duration-fast) var(--kiln-ease);
 }
 .kiln-slider:hover .kiln-slider__thumb,
 .kiln-slider__thumb:focus-visible {
-  background: var(--kiln-accent-strong);
+  transform: scale(1.12);
 }
 .kiln-slider__thumb:focus-visible {
   outline-offset: 2px;
 }
 .kiln-slider.is-disabled {
   opacity: 0.5;
+}
+.kiln-slider.is-disabled .kiln-slider__thumb {
+  border-color: var(--kiln-faint);
 }
 
 .kiln-zoom {
@@ -1061,30 +1225,28 @@ button.kiln-menu__item:hover {
 }
 .kiln-zoom__label {
   min-width: 44px;
-  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
 }
 
 /* ---------------------------------------------------------------------------------------------- */
-/* Gallery                                                                                         */
+/* Gallery (Styles, Shape styles, …): raised cards like the kit's Styles gallery                  */
 /* ---------------------------------------------------------------------------------------------- */
 
 .kiln-gallery {
   display: inline-flex;
   align-items: stretch;
+  gap: 6px;
   box-sizing: border-box;
-  border: 1px solid var(--kiln-border);
-  border-radius: var(--kiln-radius-control);
-  background: var(--kiln-bg-surface);
 }
 .kiln-gallery__row {
   display: flex;
-  gap: 2px;
-  padding: 2px;
+  gap: 6px;
+  padding: 0;
 }
 .kiln-gallery__grid {
   display: grid;
-  gap: 4px;
-  padding: 8px;
+  gap: 6px;
+  padding: 10px;
 }
 .kiln-gallery__item {
   display: flex;
@@ -1094,21 +1256,23 @@ button.kiln-menu__item:hover {
   width: var(--gallery-item-w);
   height: var(--gallery-item-h);
   overflow: hidden;
-  border: 1px solid transparent;
-  border-radius: var(--kiln-radius-control);
-  background: var(--kiln-bg-surface);
+  border: 1px solid var(--kiln-line);
+  border-radius: 9px;
+  background: var(--kiln-raised);
   color: var(--kiln-fg);
   cursor: default;
   user-select: none;
+  transition:
+    border-color var(--kiln-duration-fast) var(--kiln-ease),
+    box-shadow var(--kiln-duration-fast) var(--kiln-ease);
 }
 .kiln-gallery__item:hover {
-  border-color: var(--kiln-border-strong);
-  background: var(--kiln-bg-hover);
+  border-color: var(--kiln-line-strong);
+  box-shadow: var(--kiln-shadow-1);
 }
 .kiln-gallery__item[aria-selected="true"] {
-  border-color: var(--kiln-accent);
-  box-shadow: inset 0 0 0 1px var(--kiln-accent);
-  background: var(--kiln-accent-subtle);
+  border-color: var(--app);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--app) 22%, transparent);
 }
 .kiln-gallery__item[aria-disabled="true"] {
   opacity: 0.45;
@@ -1126,8 +1290,10 @@ button.kiln-menu__item:hover {
 .kiln-gallery__scroller {
   display: flex;
   flex-direction: column;
-  width: 16px;
-  border-inline-start: 1px solid var(--kiln-border);
+  width: 20px;
+  overflow: hidden;
+  border: 1px solid var(--kiln-line);
+  border-radius: 7px;
 }
 .kiln-gallery__scroller button {
   position: relative;
@@ -1139,10 +1305,10 @@ button.kiln-menu__item:hover {
   margin: 0;
   border: 0;
   background: transparent;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-faint);
 }
 .kiln-gallery__scroller button + button {
-  border-top: 1px solid var(--kiln-border);
+  border-top: 1px solid var(--kiln-line);
 }
 .kiln-gallery__scroller button:hover:not(:disabled) {
   background: var(--kiln-bg-hover);
@@ -1154,18 +1320,15 @@ button.kiln-menu__item:hover {
 .kiln-gallery__more-bar {
   position: absolute;
   top: 3px;
-  left: 4px;
-  right: 4px;
+  left: 5px;
+  right: 5px;
   height: 1.5px;
   background: currentColor;
   border-radius: 1px;
 }
-.kiln-gallery__more:last-child {
-  border-end-end-radius: var(--kiln-radius-control);
-}
 .kiln-gallery__footer {
-  padding: 4px;
-  border-top: 1px solid var(--kiln-border);
+  padding: 5px;
+  border-top: 1px solid var(--kiln-line);
 }
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -1197,17 +1360,19 @@ button.kiln-menu__item:hover {
 .kiln-color__auto-chip {
   width: 16px;
   height: 16px;
-  border-radius: 3px;
+  border-radius: 4px;
   background: var(--kiln-fg);
 }
 .kiln-color__check {
-  color: var(--kiln-accent-strong);
+  color: var(--app-text);
 }
 .kiln-color__heading {
-  padding: 6px 2px 6px 0;
-  color: var(--kiln-fg-muted);
-  font-size: var(--kiln-text-xs);
-  font-weight: var(--kiln-weight-semibold);
+  padding: 8px 2px 6px 0;
+  color: var(--kiln-faint);
+  font-size: 10.5px;
+  font-weight: var(--kiln-weight-heavy);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 .kiln-color__section {
   display: flex;
@@ -1228,13 +1393,19 @@ button.kiln-menu__item:hover {
   height: var(--swatch-size);
   padding: 0;
   margin: 0;
-  border: 1px solid color-mix(in srgb, var(--kiln-fg) 18%, transparent);
-  border-radius: 3px;
+  border: 1px solid color-mix(in srgb, var(--kiln-fg) 16%, transparent);
+  border-radius: 4px;
   background: var(--swatch);
   cursor: default;
 }
 .kiln-color__row--variants .kiln-color__swatch {
   border-radius: 0;
+}
+.kiln-color__row--variants:nth-child(2 of .kiln-color__row--variants) .kiln-color__swatch {
+  border-radius: 4px 4px 0 0;
+}
+.kiln-color__row--variants:last-child .kiln-color__swatch {
+  border-radius: 0 0 4px 4px;
 }
 .kiln-color__row--variants + .kiln-color__row--variants .kiln-color__swatch {
   border-top-width: 0;
@@ -1246,7 +1417,7 @@ button.kiln-menu__item:hover {
 }
 .kiln-color__swatch[aria-pressed="true"] {
   z-index: 1;
-  outline: 2px solid var(--kiln-accent);
+  outline: 2px solid var(--app-text);
   outline-offset: 1px;
 }
 .kiln-color__swatch:focus-visible {
@@ -1263,11 +1434,11 @@ button.kiln-menu__item:hover {
   height: 150px;
 }
 .kiln-color__custom .react-colorful__saturation {
-  border-radius: var(--kiln-radius-control) var(--kiln-radius-control) 0 0;
+  border-radius: 8px 8px 0 0;
 }
 .kiln-color__custom .react-colorful__hue {
   height: 14px;
-  border-radius: 0 0 var(--kiln-radius-control) var(--kiln-radius-control);
+  border-radius: 0 0 8px 8px;
 }
 .kiln-color__custom .react-colorful__pointer {
   width: 16px;
@@ -1282,8 +1453,8 @@ button.kiln-menu__item:hover {
   width: 24px;
   height: 24px;
   flex: none;
-  border: 1px solid var(--kiln-border-strong);
-  border-radius: var(--kiln-radius-control);
+  border: 1px solid var(--kiln-line-strong);
+  border-radius: 7px;
 }
 .kiln-color__hex {
   display: inline-flex;
@@ -1291,14 +1462,15 @@ button.kiln-menu__item:hover {
   gap: 6px;
   flex: 1;
   min-width: 0;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
   font-size: var(--kiln-text-sm);
 }
 .kiln-color__hex-input {
   flex: 1;
   width: 0;
   min-width: 0;
-  font-family: var(--kiln-font-mono);
+  font-family: var(--kiln-font-ui);
+  font-variant-numeric: tabular-nums;
   text-transform: uppercase;
 }
 
@@ -1322,22 +1494,33 @@ button.kiln-menu__item:hover {
   list-style: none;
 }
 .kiln-toast {
+  position: relative;
   display: flex;
   align-items: flex-start;
   gap: 10px;
   box-sizing: border-box;
   width: min(380px, calc(100vw - 32px));
-  padding: 10px 6px 10px 12px;
-  border: 1px solid var(--kiln-border);
-  border-inline-start: 3px solid var(--toast-tone);
-  border-radius: var(--kiln-radius-menu);
-  background: var(--kiln-bg-surface);
-  box-shadow: var(--kiln-shadow-3);
+  padding: 12px 8px 12px 16px;
+  overflow: hidden;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-lg);
+  background: var(--kiln-panel);
+  box-shadow: var(--kiln-shadow-2);
   color: var(--kiln-fg);
   font-family: var(--kiln-font-ui);
   font-size: var(--kiln-text-base);
   pointer-events: auto;
-  animation: kiln-toast-in var(--kiln-duration-pane) var(--kiln-ease-out);
+  animation: kiln-toast-in var(--kiln-duration-pane) var(--kiln-ease);
+}
+/* A short bar of the tone colour on the leading edge. */
+.kiln-toast::before {
+  content: "";
+  position: absolute;
+  inset-block: 12px;
+  inset-inline-start: 0;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--toast-tone);
 }
 @keyframes kiln-toast-in {
   from {
@@ -1346,7 +1529,7 @@ button.kiln-menu__item:hover {
   }
 }
 .kiln-toast--info {
-  --toast-tone: var(--kiln-info);
+  --toast-tone: var(--app-text);
 }
 .kiln-toast--success {
   --toast-tone: var(--kiln-success);
@@ -1365,21 +1548,21 @@ button.kiln-menu__item:hover {
 .kiln-toast__body {
   flex: 1;
   min-width: 0;
-  padding-top: 2px;
+  padding-top: 1px;
   line-height: var(--kiln-leading-normal);
 }
 .kiln-toast__title {
-  font-weight: var(--kiln-weight-semibold);
+  font-weight: var(--kiln-weight-bold);
 }
 .kiln-toast__description {
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
 }
 .kiln-toast__action {
-  color: var(--kiln-accent-strong);
+  color: var(--app-text);
   font-weight: var(--kiln-weight-semibold);
 }
 .kiln-toast__close {
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
 }
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -1456,4 +1639,20 @@ button.kiln-menu__item:hover {
 [data-theme="hc"] .kiln-tabs__tab:hover {
   outline: 1px solid var(--kiln-focus-ring);
   outline-offset: -1px;
+}
+
+/* Reduced motion: no pop, slide or scale; colour changes stay. */
+@media (prefers-reduced-motion: reduce) {
+  .kiln-menu,
+  .kiln-popover,
+  .kiln-tooltip,
+  .kiln-dialog,
+  .kiln-dialog-overlay,
+  .kiln-toast {
+    animation: none;
+  }
+  .kiln-slider:hover .kiln-slider__thumb,
+  .kiln-slider__thumb:focus-visible {
+    transform: none;
+  }
 }

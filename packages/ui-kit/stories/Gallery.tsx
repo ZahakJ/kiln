@@ -1,7 +1,8 @@
 /**
  * The ui-kit gallery: every primitive, rendered in a theme scope. Used for screenshots and visual review
  * (not Storybook). `GalleryPage` renders one theme with controls; `ThemeMatrix` renders the static
- * primitives in light, dark and high contrast side by side.
+ * primitives in light, dark and high contrast side by side. `pnpm --filter @kiln/ui-kit shots` captures
+ * both into stories/out/primitives-{light,dark}.png for review against the brand kit's mockups.
  */
 import type { AppId, ResolvedTheme } from '@kiln/tokens';
 import {
@@ -24,6 +25,9 @@ import {
 import { type ReactNode, useState } from 'react';
 import { glyphList } from '../src/icons/glyphs/index.ts';
 import {
+  AppGlyph,
+  AppTile,
+  type BrandApp,
   Button,
   type ColorChoice,
   ColorPicker,
@@ -33,6 +37,7 @@ import {
   DialogClose,
   DialogContent,
   DialogTrigger,
+  Flame,
   Gallery,
   type GalleryItem,
   Icon,
@@ -55,6 +60,7 @@ import {
   Select,
   Separator,
   Slider,
+  Spark,
   Spinner,
   SplitButton,
   Submenu,
@@ -72,18 +78,26 @@ import {
   ZoomSlider,
 } from '../src/index.ts';
 
+// The "Kiln" document theme: Fraunces headings, Figtree body (BRAND.md §4).
 const FONTS: ComboboxOption[] = [
-  { value: 'Caladea', group: 'Theme Fonts', hint: 'Headings', style: { fontFamily: 'Caladea' } },
-  { value: 'Carlito', group: 'Theme Fonts', hint: 'Body', style: { fontFamily: 'Carlito' } },
+  { value: 'Fraunces', group: 'Theme Fonts', hint: 'Headings', style: { fontFamily: 'Fraunces' } },
+  { value: 'Figtree', group: 'Theme Fonts', hint: 'Body', style: { fontFamily: 'Figtree' } },
   ...[
     'Caladea',
     'Carlito',
-    'Inter Variable',
-    'JetBrains Mono',
+    'Figtree',
+    'Fraunces',
     'Liberation Mono',
     'Liberation Sans',
     'Liberation Serif',
   ].map((f) => ({ value: f, group: 'All Fonts', style: { fontFamily: `'${f}'` } })),
+];
+const APPS: Array<{ app: BrandApp; name: string }> = [
+  { app: 'home', name: 'Kiln Home' },
+  { app: 'write', name: 'Kiln Write' },
+  { app: 'grid', name: 'Kiln Grid' },
+  { app: 'deck', name: 'Kiln Deck' },
+  { app: 'notes', name: 'Kiln Notes' },
 ];
 const SIZES: ComboboxOption[] = [8, 9, 10, 10.5, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72].map(
   (s) => ({
@@ -95,33 +109,40 @@ const parseFontSize = (t: string) => {
   return Number.isFinite(n) && n >= 1 && n <= 1638 ? String(Math.round(n * 2) / 2) : null;
 };
 
+// The Styles gallery of the "Kiln" document theme, as in the Write mockup (Aa Bb in Fraunces/Figtree).
 const STYLES: GalleryItem[] = [
   { id: 'normal', label: 'Normal', preview: <StylePreview name="Normal" /> },
   { id: 'nospacing', label: 'No Spacing', preview: <StylePreview name="No Spacing" /> },
   {
     id: 'h1',
     label: 'Heading 1',
-    preview: <StylePreview name="Heading 1" color="#2F5496" size={15} font="Caladea" />,
+    preview: <StylePreview name="Heading 1" color="var(--app-text)" font="Fraunces" bold />,
   },
   {
     id: 'h2',
     label: 'Heading 2',
-    preview: <StylePreview name="Heading 2" color="#2F5496" size={13} font="Caladea" />,
+    preview: <StylePreview name="Heading 2" font="Fraunces" bold />,
   },
   {
     id: 'h3',
     label: 'Heading 3',
-    preview: <StylePreview name="Heading 3" color="#1F3763" size={12} font="Caladea" />,
+    preview: <StylePreview name="Heading 3" size={15} font="Fraunces" bold />,
   },
-  { id: 'title', label: 'Title', preview: <StylePreview name="Title" size={20} font="Caladea" /> },
-  { id: 'subtitle', label: 'Subtitle', preview: <StylePreview name="Subtitle" color="#5A5A5A" /> },
+  { id: 'title', label: 'Title', preview: <StylePreview name="Title" font="Fraunces" bold /> },
+  { id: 'subtitle', label: 'Subtitle', preview: <StylePreview name="Subtitle" color="var(--kiln-muted)" /> },
   { id: 'emphasis', label: 'Emphasis', preview: <StylePreview name="Emphasis" italic /> },
   { id: 'strong', label: 'Strong', preview: <StylePreview name="Strong" bold /> },
-  { id: 'quote', label: 'Quote', preview: <StylePreview name="Quote" italic color="#404040" /> },
+  {
+    id: 'quote',
+    label: 'Quote',
+    preview: <StylePreview name="Quote" sample="“Aa”" font="Fraunces" italic />,
+  },
   {
     id: 'intense',
     label: 'Intense Quote',
-    preview: <StylePreview name="Intense Quote" italic color="#4472C4" />,
+    preview: (
+      <StylePreview name="Intense Quote" sample="“Aa”" font="Fraunces" italic color="var(--app-text)" />
+    ),
   },
   { id: 'list', label: 'List Paragraph', preview: <StylePreview name="List Paragraph" /> },
 ];
@@ -129,10 +150,11 @@ const STYLES: GalleryItem[] = [
 function StylePreview({
   name,
   color,
-  size = 13,
-  font = 'Carlito',
+  size = 17,
+  font = 'Figtree',
   italic,
   bold,
+  sample = 'Aa Bb',
 }: {
   name: string;
   color?: string;
@@ -140,23 +162,24 @@ function StylePreview({
   font?: string;
   italic?: boolean;
   bold?: boolean;
+  sample?: string;
 }) {
   return (
-    <>
+    <span className="gx-style">
       <span
+        className="gx-style__sample"
         style={{
           fontFamily: font,
           fontSize: size,
-          color: color ? `light-dark(${color}, color-mix(in srgb, ${color}, white 45%))` : undefined,
+          color,
           fontStyle: italic ? 'italic' : undefined,
-          fontWeight: bold ? 700 : undefined,
-          lineHeight: 1.1,
+          fontWeight: bold ? 800 : undefined,
         }}
       >
-        AaBbCcDd
+        {sample}
       </span>
-      <span style={{ fontSize: 11, color: 'var(--kiln-fg-muted)' }}>{name}</span>
-    </>
+      <span className="gx-style__name">{name}</span>
+    </span>
   );
 }
 
@@ -187,6 +210,9 @@ export function StaticPrimitives() {
       <Row label="Button">
         <Button>Default</Button>
         <Button variant="primary">Primary</Button>
+        <Button variant="ember" icon={<Spark size={14} />}>
+          New
+        </Button>
         <Button variant="ghost">Ghost</Button>
         <Button variant="danger">Delete</Button>
         <Button disabled>Disabled</Button>
@@ -227,6 +253,15 @@ export function StaticPrimitives() {
       <Row label="Zoom">
         <ZoomSlider value={zoom} onValueChange={setZoom} />
       </Row>
+      <Row label="Tabs">
+        <Tabs defaultValue="home">
+          <TabsList variant="arch" aria-label="Ribbon tabs (sample)">
+            <TabsTrigger value="home">Home</TabsTrigger>
+            <TabsTrigger value="insert">Insert</TabsTrigger>
+            <TabsTrigger value="layout">Layout</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </Row>
       <Row label="Misc">
         <Kbd shortcut="Mod+Shift+P" platform="other" />
         <Spinner />
@@ -236,6 +271,14 @@ export function StaticPrimitives() {
             <TabsTrigger value="b">Web</TabsTrigger>
           </TabsList>
         </Tabs>
+      </Row>
+      <Row label="Brand">
+        {APPS.map(({ app, name }) => (
+          <AppTile key={app} app={app} size={20} label={name} />
+        ))}
+        <span className="gx-flamechip">
+          <Flame size={13} /> Saved to Studio
+        </span>
       </Row>
     </>
   );
@@ -291,7 +334,7 @@ function ToastDemo() {
 
 /** The full gallery for one theme (the page applies the theme to <html> so overlays match). */
 export function GalleryPage() {
-  const [font, setFont] = useState('Carlito');
+  const [font, setFont] = useState('Figtree');
   const [size, setSize] = useState('11');
   const [marks, setMarks] = useState({ bold: true, italic: false, underline: false, strike: false });
   const [fontColor, setFontColor] = useState<ColorChoice>({
@@ -323,7 +366,7 @@ export function GalleryPage() {
                 <SplitButton
                   label="Paste"
                   layout="stacked"
-                  icon={<Icon icon="Paste" size={32} strokeWidth={1.1} />}
+                  icon={<Icon icon="Paste" size={24} />}
                   onClick={() => {}}
                   shortcut="Mod+V"
                 >
@@ -490,6 +533,9 @@ export function GalleryPage() {
             <Row label="Variants">
               <Button>Default</Button>
               <Button variant="primary">Primary</Button>
+              <Button variant="ember" icon={<Spark size={14} />}>
+                New
+              </Button>
               <Button variant="ghost">Ghost</Button>
               <Button variant="toolbar" icon={<Icon icon="Spelling" />}>
                 Toolbar
@@ -506,32 +552,16 @@ export function GalleryPage() {
               <Button busy>Saving…</Button>
             </Row>
             <Row label="Stacked">
-              <Button
-                variant="toolbar"
-                layout="stacked"
-                icon={<Icon icon="InsertTable" size={32} strokeWidth={1.1} />}
-              >
+              <Button variant="toolbar" layout="stacked" icon={<Icon icon="InsertTable" size={24} />}>
                 Table
               </Button>
-              <Button
-                variant="toolbar"
-                layout="stacked"
-                icon={<Icon icon="ChartColumn" size={32} strokeWidth={1.1} />}
-              >
+              <Button variant="toolbar" layout="stacked" icon={<Icon icon="ChartColumn" size={24} />}>
                 Recommended Charts
               </Button>
-              <Button
-                variant="toolbar"
-                layout="stacked"
-                icon={<Icon icon="TrackChanges" size={32} strokeWidth={1.1} />}
-              >
+              <Button variant="toolbar" layout="stacked" icon={<Icon icon="TrackChanges" size={24} />}>
                 Track Changes
               </Button>
-              <Button
-                variant="toolbar"
-                layout="stacked"
-                icon={<Icon icon="NewSlide" size={32} strokeWidth={1.1} />}
-              >
+              <Button variant="toolbar" layout="stacked" icon={<Icon icon="NewSlide" size={24} />}>
                 New Slide
               </Button>
             </Row>
@@ -779,7 +809,17 @@ export function GalleryPage() {
 
           <Section title="Tabs">
             <Tabs defaultValue="home">
-              <TabsList aria-label="Ribbon tabs">
+              <TabsList variant="arch" aria-label="Ribbon tabs">
+                {['Home', 'Insert', 'Layout', 'References', 'Review', 'View'].map((t) => (
+                  <TabsTrigger key={t} value={t.toLowerCase()}>
+                    {t}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              <div className="gx-archslab" />
+            </Tabs>
+            <Tabs defaultValue="home">
+              <TabsList aria-label="Underlined tabs">
                 {['File', 'Home', 'Insert', 'Layout', 'References', 'Review', 'View'].map((t) => (
                   <TabsTrigger key={t} value={t.toLowerCase()}>
                     {t}
@@ -794,13 +834,54 @@ export function GalleryPage() {
               </TabsContent>
             </Tabs>
             <Row label="Segmented">
-              <Tabs defaultValue="all">
-                <TabsList variant="segmented" aria-label="Comments filter">
-                  <TabsTrigger value="all">All</TabsTrigger>
-                  <TabsTrigger value="open">Open</TabsTrigger>
-                  <TabsTrigger value="resolved">Resolved</TabsTrigger>
+              <Tabs defaultValue="headings">
+                <TabsList variant="segmented" aria-label="Navigation pane">
+                  <TabsTrigger value="headings">Headings</TabsTrigger>
+                  <TabsTrigger value="pages">Pages</TabsTrigger>
+                  <TabsTrigger value="results">Results</TabsTrigger>
                 </TabsList>
               </Tabs>
+            </Row>
+          </Section>
+
+          <Section title="Brand glyph set">
+            <Row label="Marks">
+              {APPS.map(({ app, name }) => (
+                <span key={app} className="gx-mark" title={name}>
+                  <AppGlyph app={app} size={20} />
+                </span>
+              ))}
+              <span className="gx-mark gx-mark--app" title="Spark">
+                <Spark size={16} />
+              </span>
+              <span className="gx-mark" title="Flame">
+                <Flame size={18} />
+              </span>
+            </Row>
+            <Row label="Tiles">
+              {[16, 20, 32, 48].map((size) => (
+                <span key={size} className="gx-tiles">
+                  {APPS.map(({ app, name }) => (
+                    <AppTile key={app} app={app} size={size} label={`${name}, ${size} px`} />
+                  ))}
+                </span>
+              ))}
+            </Row>
+            <Row label="Hero">
+              {APPS.map(({ app, name }) => (
+                <AppTile key={app} app={app} size={72} label={name} />
+              ))}
+            </Row>
+            <Row label="Chips">
+              <span className="gx-flamechip">
+                <Flame size={13} /> Saved to Studio
+              </span>
+              <span className="gx-flamechip">
+                <Flame size={13} /> Autosave on
+              </span>
+              <Button variant="primary" icon={<Spark size={14} />}>
+                File
+              </Button>
             </Row>
           </Section>
 
@@ -850,7 +931,7 @@ export function GalleryPage() {
             </ScrollArea>
           </Section>
 
-          <Section title={`Kiln Glyphs (${glyphList().length})`} wide>
+          <Section title={`Kiln Glyphs — Office commands the kit does not draw (${glyphList().length})`} wide>
             <div className="gx-glyphs">
               {glyphList().map(([name, G]) => (
                 <div key={name} className="gx-glyph" title={G.glyphLabel}>

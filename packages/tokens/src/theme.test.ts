@@ -53,7 +53,7 @@ describe('theme runtime', () => {
     meta.name = 'theme-color';
     document.head.append(meta);
     applyTheme({ theme: 'dark' });
-    expect(meta.content).toBe('#262A31');
+    expect(meta.content).toBe('#17110E'); // the kit's dark window background
     meta.remove();
   });
 

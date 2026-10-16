@@ -1,14 +1,23 @@
 /**
- * Writes tokens.css, theme.css and fonts.css from src/tokens.ts.
- * Run: pnpm --filter @kiln/tokens generate
+ * Regenerates @kiln/tokens from the brand kit: parses `brand/tokens.json` (strictly), writes the typed
+ * kit object `src/generated/kit.ts` and renders `tokens.css`, `theme.css` and `fonts.css`, each
+ * formatted with Biome. Run: pnpm --filter @kiln/tokens generate (tools/import-brand.sh runs it too).
  */
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { renderFontsCss, renderThemeCss, renderTokensCss } from '../src/css.ts';
+import { parseKit, renderKitModule } from '../src/kit.ts';
+import { formatGenerated } from './format.ts';
 
-const out = (name: string) => fileURLToPath(new URL(`../${name}`, import.meta.url));
+const pkg = (name: string) => fileURLToPath(new URL(`../${name}`, import.meta.url));
+const kitPath = fileURLToPath(new URL('../../../brand/tokens.json', import.meta.url));
 
-writeFileSync(out('tokens.css'), renderTokensCss());
-writeFileSync(out('theme.css'), renderThemeCss());
-writeFileSync(out('fonts.css'), renderFontsCss());
-console.log('tokens: wrote tokens.css, theme.css, fonts.css');
+const kit = parseKit(JSON.parse(readFileSync(kitPath, 'utf8')));
+const emit = (name: string, source: string) => writeFileSync(pkg(name), formatGenerated(source, name));
+
+// The kit module first: css.ts imports tokens.ts, which imports it, so it must be current.
+emit('src/generated/kit.ts', renderKitModule(kit));
+const css = await import('../src/css.ts');
+emit('tokens.css', css.renderTokensCss(kit));
+emit('theme.css', css.renderThemeCss(kit));
+emit('fonts.css', css.renderFontsCss());
+console.log('tokens: wrote src/generated/kit.ts, tokens.css, theme.css, fonts.css from brand/tokens.json');

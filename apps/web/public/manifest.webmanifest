@@ -1,0 +1,83 @@
+{
+  "name": "Kiln",
+  "short_name": "Kiln",
+  "description": "Where work gets made. Kiln Write, Grid, Deck and Notes: an open-source office suite.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F6EFE6",
+  "theme_color": "#F6EFE6",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "./",
+      "accept": {
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"]
+      },
+      "icons": [
+        {
+          "src": "icons/write-256.png",
+          "sizes": "256x256",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "action": "./",
+      "accept": {
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"]
+      },
+      "icons": [
+        {
+          "src": "icons/grid-256.png",
+          "sizes": "256x256",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "action": "./",
+      "accept": {
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx"]
+      },
+      "icons": [
+        {
+          "src": "icons/deck-256.png",
+          "sizes": "256x256",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

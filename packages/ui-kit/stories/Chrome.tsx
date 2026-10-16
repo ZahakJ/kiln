@@ -44,7 +44,7 @@ import {
 } from '../src/index.ts';
 import './chrome.css';
 
-const FONTS = ['Calibri', 'Cambria', 'Arial', 'Times New Roman', 'Courier New', 'Inter', 'JetBrains Mono'];
+const FONTS = ['Figtree', 'Fraunces', 'Calibri', 'Cambria', 'Arial', 'Times New Roman', 'Courier New'];
 const SIZES = ['8', '9', '10', '10.5', '11', '12', '14', '16', '18', '20', '24', '28', '36', '48', '72'];
 const STYLE_ITEMS = [
   { id: 'p', label: 'Normal', preview: <span className="cx-style cx-style--normal">AaBbCcDd</span> },

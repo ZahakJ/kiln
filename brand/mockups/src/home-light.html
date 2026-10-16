@@ -1,0 +1,204 @@
+<!doctype html><html data-theme="light" data-app="home"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../tokens.css"><link rel="stylesheet" href="kiln-ui.css">
+<style>body{width:1440px;height:900px}
+.home { display: flex; height: 900px; }
+.side { width: 240px; flex: none; display: flex; flex-direction: column; padding: 16px 12px 14px; gap: 2px; }
+.side .logo { height: 30px; margin: 0 6px 18px; display: block; }
+.newbtn { height: 40px; border-radius: 11px; background: var(--kiln-ember); color: var(--kiln-on-ember); display: flex; align-items: center; gap: 8px; padding: 0 12px; font-weight: 700; font-size: 14px; margin-bottom: 12px; box-shadow: inset 0 -2px 0 rgba(0,0,0,.16), 0 6px 16px -6px rgba(194,72,28,.55); }
+.newbtn .kbd { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.25); color: inherit; }
+.nv { display: flex; align-items: center; gap: 11px; height: 36px; padding: 0 11px; border-radius: 9px; font-size: 13.5px; font-weight: 500; color: var(--kiln-fg); }
+.nv.on { background: var(--kiln-panel); box-shadow: var(--kiln-shadow-1); font-weight: 700; }
+.nv.on svg { color: var(--kiln-ember-text); }
+.nv img { width: 20px; height: 20px; }
+.nv .c { margin-left: auto; font-size: 11.5px; color: var(--kiln-faint); }
+.side .cap { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--kiln-faint); padding: 16px 11px 6px; }
+.local { margin-top: auto; border-radius: 12px; padding: 12px; background: var(--kiln-panel); border: 1px solid var(--kiln-line); font-size: 12px; color: var(--kiln-muted); }
+.local b { color: var(--kiln-fg); display: flex; align-items: center; gap: 6px; font-size: 12.5px; margin-bottom: 3px; }
+.local .m { height: 5px; background: var(--kiln-sunken); border-radius: 3px; margin: 9px 0 5px; overflow: hidden; }
+.local .m i { display: block; width: 12%; height: 100%; background: linear-gradient(90deg,#FF6A26,#FFB547); }
+.main { flex: 1; display: flex; flex-direction: column; background: var(--kiln-panel); border-left: 1px solid var(--kiln-line); position: relative; overflow: hidden; }
+.main::before { content: ''; position: absolute; left: -140px; top: -260px; width: 900px; height: 620px; background: radial-gradient(closest-side, color-mix(in srgb, #FF7A2A 13%, transparent), transparent); pointer-events: none; }
+[data-theme="dark"] .main::before { background: radial-gradient(closest-side, rgba(255,106,38,.16), transparent); }
+.mtb { height: 54px; display: flex; align-items: center; padding: 0 10px 0 36px; position: relative; z-index: 1; }
+.mtb .search { margin: 0 auto; width: 460px; height: 36px; background: var(--kiln-raised); border: 1px solid var(--kiln-line); }
+.content { padding: 4px 36px 0; position: relative; z-index: 1; display: flex; flex-direction: column; gap: 18px; flex: 1; min-height: 0; }
+.hello { display: flex; align-items: flex-end; justify-content: space-between; }
+.hello .eb { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--kiln-muted); margin-bottom: 6px; }
+.hello h1 { font: 800 46px/1.02 var(--kiln-font-display); font-variation-settings: 'SOFT' 40, 'WONK' 0; letter-spacing: -.022em; }
+.doors { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.door { height: 246px; clip-path: path('M1.28,221.8 L1.74,216.71 L2.28,211.46 L2.88,206.08 L3.55,200.59 L4.3,195 L5.11,189.32 L6,183.58 L6.95,177.79 L7.98,171.96 L9.07,166.09 L10.23,160.21 L11.47,154.33 L12.77,148.44 L14.14,142.57 L15.58,136.72 L17.09,130.9 L18.66,125.12 L20.31,119.39 L22.02,113.72 L23.8,108.11 L25.65,102.58 L27.56,97.12 L29.54,91.76 L31.59,86.49 L33.71,81.32 L35.89,76.26 L38.14,71.32 L40.46,66.5 L42.84,61.81 L45.3,57.25 L47.82,52.84 L50.41,48.56 L53.06,44.45 L55.79,40.48 L58.59,36.68 L61.46,33.05 L64.4,29.58 L67.42,26.29 L70.52,23.18 L73.69,20.25 L76.95,17.51 L80.3,14.96 L83.73,12.6 L87.27,10.43 L90.91,8.47 L94.67,6.7 L98.56,5.14 L102.6,3.78 L106.81,2.63 L111.24,1.68 L115.94,0.95 L121.04,0.42 L126.81,0.11 L135,0 L143.19,0.11 L148.96,0.42 L154.06,0.95 L158.76,1.68 L163.19,2.63 L167.4,3.78 L171.44,5.14 L175.33,6.7 L179.09,8.47 L182.73,10.43 L186.27,12.6 L189.7,14.96 L193.05,17.51 L196.31,20.25 L199.48,23.18 L202.58,26.29 L205.6,29.58 L208.54,33.05 L211.41,36.68 L214.21,40.48 L216.94,44.45 L219.59,48.56 L222.18,52.84 L224.7,57.25 L227.16,61.81 L229.54,66.5 L231.86,71.32 L234.11,76.26 L236.29,81.32 L238.41,86.49 L240.46,91.76 L242.44,97.12 L244.35,102.58 L246.2,108.11 L247.98,113.72 L249.69,119.39 L251.34,125.12 L252.91,130.9 L254.42,136.72 L255.86,142.57 L257.23,148.44 L258.53,154.33 L259.77,160.21 L260.93,166.09 L262.02,171.96 L263.05,177.79 L264,183.58 L264.89,189.32 L265.7,195 L266.45,200.59 L267.12,206.08 L267.72,211.46 L268.26,216.71 L268.72,221.8 C268.72,232.8 266.72,246 248.72,246 L21.28,246 C3.28,246 1.28,232.8 1.28,221.8 Z'); position: relative; overflow: hidden; padding: 0 24px 18px 30px; display: flex; flex-direction: column; justify-content: flex-end; color: var(--on); background: var(--solid); box-shadow: inset 0 -3px 0 rgba(0,0,0,.18), 0 14px 30px -18px var(--solid); }
+.door::before { content: ''; position: absolute; left: 50%; bottom: -70px; width: 420px; height: 260px; margin-left: -210px; background: radial-gradient(closest-side, rgba(255,214,150,.42), rgba(255,180,90,.12) 55%, transparent); pointer-events: none; }
+.door .rim { position: absolute; inset: 0; pointer-events: none; }
+.door .ic { position: absolute; left: 50%; top: 22px; width: 92px; height: 92px; margin-left: -46px; filter: drop-shadow(0 8px 12px rgba(0,0,0,.25)); }
+.door .k { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; opacity: .8; position: relative; }
+.door .t { font: 800 27px/1.05 var(--kiln-font-display); font-variation-settings: 'SOFT' 40; letter-spacing: -.01em; margin: 3px 0 4px; position: relative; }
+.door .d { font-size: 12.5px; opacity: .85; position: relative; }
+.door .meta { display: flex; gap: 6px; margin-top: 12px; position: relative; align-items: center; }
+.door .meta span { font-size: 11px; font-weight: 700; padding: 3px 7px; border-radius: 6px; background: rgba(255,255,255,.18); }
+.door.dk .meta span { background: rgba(28,13,6,.12); }
+.door .plus { margin-left: auto; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.22); }
+.door.dk .plus { background: rgba(28,13,6,.14); }
+.switch { display: flex; align-items: center; gap: 14px; padding: 12px 14px 12px 12px; border-radius: 14px; background: var(--kiln-bg); border: 1px solid var(--kiln-line); }
+.switch .fmt { display: flex; }
+.switch .fmt span { width: 40px; height: 48px; border-radius: 6px 12px 6px 6px; display: grid; place-items: end center; padding-bottom: 7px; font: 800 9.5px/1 var(--kiln-font-ui); color: #fff; margin-left: 5px; box-shadow: 0 0 0 2px var(--kiln-bg); transform: rotate(var(--r)); }
+.switch .fmt span:first-child { margin-left: 0; }
+.switch b { font-size: 14px; display: block; }
+.switch .tx { font-size: 12.5px; color: var(--kiln-muted); }
+.lower { display: flex; gap: 28px; flex: 1; min-height: 0; }
+.recent { flex: 1; min-width: 0; }
+.lh { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.lh h3 { font: 800 19px/1 var(--kiln-font-display); font-variation-settings: 'SOFT' 40; }
+.rt { width: 100%; border-collapse: collapse; font-size: 13px; }
+.rt th { text-align: left; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--kiln-faint); font-weight: 700; padding: 6px 10px; }
+.rt td { padding: 7px 10px; border-top: 1px solid var(--kiln-line); white-space: nowrap; }
+.rt td .nm { display: flex; align-items: center; gap: 11px; }
+.rt td .nm img { width: 24px; height: 24px; }
+.rt td .nm b { font-weight: 600; } .rt td .nm .x { color: var(--kiln-faint); font-weight: 500; }
+.rt td .nm small { display: block; color: var(--kiln-faint); font-size: 11.5px; }
+.rt tr.hl td { background: var(--kiln-bg); }
+.rt tr.hl td:first-child { border-radius: 10px 0 0 10px; } .rt tr.hl td:last-child { border-radius: 0 10px 10px 0; }
+.tpl { width: 400px; flex: none; }
+.tg { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tc .im { height: 104px; border-radius: 12px; border: 1px solid var(--kiln-line); overflow: hidden; position: relative; background: var(--kiln-bg); }
+.tc .nm { display: flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; margin-top: 7px; }
+.tc .nm img { width: 16px; height: 16px; }
+</style></head><body><div class="home"><div class="side">
+      <img class="logo" src="../../lockup-light.svg">
+      <div class="newbtn"><svg class="i s18" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+      <path d="M12 5v14" />
+    </svg>New<span class="kbd">Ctrl N</span></div>
+      <div class="nv on"><svg class="i s18" viewBox="0 0 24 24">
+      <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+      <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+    </svg>Home</div>
+      <div class="nv"><svg class="i s18" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>Recent</div>
+      <div class="nv"><svg class="i s18" viewBox="0 0 24 24">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>Shared with me<span class="c">3</span></div>
+      <div class="nv"><svg class="i s18" viewBox="0 0 24 24">
+      <path d="M12 17v5" />
+      <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
+    </svg>Pinned</div>
+      <div class="nv"><svg class="i s18" viewBox="0 0 24 24">
+      <rect width="18" height="7" x="3" y="3" rx="1" />
+      <rect width="9" height="7" x="3" y="14" rx="1" />
+      <rect width="5" height="7" x="16" y="14" rx="1" />
+    </svg>Templates</div>
+      <div class="nv"><svg class="i s18" viewBox="0 0 24 24">
+      <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" />
+    </svg>Open file<span class="c">Ctrl O</span></div>
+      <div class="cap">Apps</div>
+      <div class="nv"><img src="../../icons/svg/write-32.svg">Write</div><div class="nv"><img src="../../icons/svg/grid-32.svg">Grid</div><div class="nv"><img src="../../icons/svg/deck-32.svg">Deck</div><div class="nv"><img src="../../icons/svg/notes-32.svg">Notes</div>
+      <div class="local"><b><svg class="fl" viewBox="120 50 260 390" width="10" height="12"><path d="M236 428C178 414 132 370 128 306C124 240 162 200 180 156C190 130 190 108 178 84C177 78 183 75 188 78C246 116 274 164 272 224Z" fill="#D93D12"/><path d="M256 432C188 432 144 386 144 324C144 262 184 222 218 186C250 152 272 118 280 66C282 56 292 52 298 60C316 98 338 132 352 178C364 216 368 262 368 316C368 384 324 432 256 432Z" fill="#FF7A2E"/></svg>Local first</b>Your files live on this device. Sync is optional.<div class="m"><i></i></div><span class="tnum">7.6 GB of 64 GB</span></div>
+      <div class="nv" style="margin-top:8px"><svg class="i s18" viewBox="0 0 24 24">
+      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>Settings</div>
+    </div><div class="main"><div class="mtb"><div class="search"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.3-4.3" />
+    </svg><span>Search files, templates and help</span><span class="kbd">Ctrl K</span></div>
+        <div class="qa"><svg class="i s18" viewBox="0 0 24 24">
+      <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+      <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+    </svg></div><div class="avatar">MA</div><div class="win"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+    </svg></div><div class="win"><svg class="i s14" viewBox="0 0 24 24">
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+    </svg></div><div class="win"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg></div></div>
+      <div class="content">
+        <div class="hello"><div><div class="eb"><svg class="fl" viewBox="120 50 260 390" width="12" height="14"><path d="M236 428C178 414 132 370 128 306C124 240 162 200 180 156C190 130 190 108 178 84C177 78 183 75 188 78C246 116 274 164 272 224Z" fill="#D93D12"/><path d="M256 432C188 432 144 386 144 324C144 262 184 222 218 186C250 152 272 118 280 66C282 56 292 52 298 60C316 98 338 132 352 178C364 216 368 262 368 316C368 384 324 432 256 432Z" fill="#FF7A2E"/></svg>Good evening, Muthana. The kiln is warm.</div><h1>What are we making today?</h1></div>
+          <div style="display:flex;gap:8px"><div class="btn"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" />
+    </svg>Open file</div><div class="btn"><svg class="i s14" viewBox="0 0 24 24">
+      <rect width="18" height="7" x="3" y="3" rx="1" />
+      <rect width="9" height="7" x="3" y="14" rx="1" />
+      <rect width="5" height="7" x="16" y="14" rx="1" />
+    </svg>All templates</div></div></div>
+        <div class="doors"><div class="door" style="--solid:#2D4FB5;--on:#FFFFFF"><svg class="rim" width="270" height="246"><defs><linearGradient id="rwrite" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><path d="M1.28,221.8 L1.74,216.71 L2.28,211.46 L2.88,206.08 L3.55,200.59 L4.3,195 L5.11,189.32 L6,183.58 L6.95,177.79 L7.98,171.96 L9.07,166.09 L10.23,160.21 L11.47,154.33 L12.77,148.44 L14.14,142.57 L15.58,136.72 L17.09,130.9 L18.66,125.12 L20.31,119.39 L22.02,113.72 L23.8,108.11 L25.65,102.58 L27.56,97.12 L29.54,91.76 L31.59,86.49 L33.71,81.32 L35.89,76.26 L38.14,71.32 L40.46,66.5 L42.84,61.81 L45.3,57.25 L47.82,52.84 L50.41,48.56 L53.06,44.45 L55.79,40.48 L58.59,36.68 L61.46,33.05 L64.4,29.58 L67.42,26.29 L70.52,23.18 L73.69,20.25 L76.95,17.51 L80.3,14.96 L83.73,12.6 L87.27,10.43 L90.91,8.47 L94.67,6.7 L98.56,5.14 L102.6,3.78 L106.81,2.63 L111.24,1.68 L115.94,0.95 L121.04,0.42 L126.81,0.11 L135,0 L143.19,0.11 L148.96,0.42 L154.06,0.95 L158.76,1.68 L163.19,2.63 L167.4,3.78 L171.44,5.14 L175.33,6.7 L179.09,8.47 L182.73,10.43 L186.27,12.6 L189.7,14.96 L193.05,17.51 L196.31,20.25 L199.48,23.18 L202.58,26.29 L205.6,29.58 L208.54,33.05 L211.41,36.68 L214.21,40.48 L216.94,44.45 L219.59,48.56 L222.18,52.84 L224.7,57.25 L227.16,61.81 L229.54,66.5 L231.86,71.32 L234.11,76.26 L236.29,81.32 L238.41,86.49 L240.46,91.76 L242.44,97.12 L244.35,102.58 L246.2,108.11 L247.98,113.72 L249.69,119.39 L251.34,125.12 L252.91,130.9 L254.42,136.72 L255.86,142.57 L257.23,148.44 L258.53,154.33 L259.77,160.21 L260.93,166.09 L262.02,171.96 L263.05,177.79 L264,183.58 L264.89,189.32 L265.7,195 L266.45,200.59 L267.12,206.08 L267.72,211.46 L268.26,216.71 L268.72,221.8 C268.72,232.8 266.72,246 248.72,246 L21.28,246 C3.28,246 1.28,232.8 1.28,221.8 Z" fill="none" stroke="url(#rwrite)" stroke-width="3"/></svg><img class="ic" src="../../icons/svg/write.svg"><div class="k">Kiln Write</div><div class="t">Document</div><div class="d">Letters, essays, reports</div><div class="meta"><span>.docx</span><span>.odt</span><span>Ctrl Alt W</span><span class="plus"><svg class="i s18" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+      <path d="M12 5v14" />
+    </svg></span></div></div><div class="door" style="--solid:#17714E;--on:#FFFFFF"><svg class="rim" width="270" height="246"><defs><linearGradient id="rgrid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><path d="M1.28,221.8 L1.74,216.71 L2.28,211.46 L2.88,206.08 L3.55,200.59 L4.3,195 L5.11,189.32 L6,183.58 L6.95,177.79 L7.98,171.96 L9.07,166.09 L10.23,160.21 L11.47,154.33 L12.77,148.44 L14.14,142.57 L15.58,136.72 L17.09,130.9 L18.66,125.12 L20.31,119.39 L22.02,113.72 L23.8,108.11 L25.65,102.58 L27.56,97.12 L29.54,91.76 L31.59,86.49 L33.71,81.32 L35.89,76.26 L38.14,71.32 L40.46,66.5 L42.84,61.81 L45.3,57.25 L47.82,52.84 L50.41,48.56 L53.06,44.45 L55.79,40.48 L58.59,36.68 L61.46,33.05 L64.4,29.58 L67.42,26.29 L70.52,23.18 L73.69,20.25 L76.95,17.51 L80.3,14.96 L83.73,12.6 L87.27,10.43 L90.91,8.47 L94.67,6.7 L98.56,5.14 L102.6,3.78 L106.81,2.63 L111.24,1.68 L115.94,0.95 L121.04,0.42 L126.81,0.11 L135,0 L143.19,0.11 L148.96,0.42 L154.06,0.95 L158.76,1.68 L163.19,2.63 L167.4,3.78 L171.44,5.14 L175.33,6.7 L179.09,8.47 L182.73,10.43 L186.27,12.6 L189.7,14.96 L193.05,17.51 L196.31,20.25 L199.48,23.18 L202.58,26.29 L205.6,29.58 L208.54,33.05 L211.41,36.68 L214.21,40.48 L216.94,44.45 L219.59,48.56 L222.18,52.84 L224.7,57.25 L227.16,61.81 L229.54,66.5 L231.86,71.32 L234.11,76.26 L236.29,81.32 L238.41,86.49 L240.46,91.76 L242.44,97.12 L244.35,102.58 L246.2,108.11 L247.98,113.72 L249.69,119.39 L251.34,125.12 L252.91,130.9 L254.42,136.72 L255.86,142.57 L257.23,148.44 L258.53,154.33 L259.77,160.21 L260.93,166.09 L262.02,171.96 L263.05,177.79 L264,183.58 L264.89,189.32 L265.7,195 L266.45,200.59 L267.12,206.08 L267.72,211.46 L268.26,216.71 L268.72,221.8 C268.72,232.8 266.72,246 248.72,246 L21.28,246 C3.28,246 1.28,232.8 1.28,221.8 Z" fill="none" stroke="url(#rgrid)" stroke-width="3"/></svg><img class="ic" src="../../icons/svg/grid.svg"><div class="k">Kiln Grid</div><div class="t">Workbook</div><div class="d">Budgets, lists, models</div><div class="meta"><span>.xlsx</span><span>.csv</span><span>Ctrl Alt G</span><span class="plus"><svg class="i s18" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+      <path d="M12 5v14" />
+    </svg></span></div></div><div class="door dk" style="--solid:#E05A27;--on:#1C0D06"><svg class="rim" width="270" height="246"><defs><linearGradient id="rdeck" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><path d="M1.28,221.8 L1.74,216.71 L2.28,211.46 L2.88,206.08 L3.55,200.59 L4.3,195 L5.11,189.32 L6,183.58 L6.95,177.79 L7.98,171.96 L9.07,166.09 L10.23,160.21 L11.47,154.33 L12.77,148.44 L14.14,142.57 L15.58,136.72 L17.09,130.9 L18.66,125.12 L20.31,119.39 L22.02,113.72 L23.8,108.11 L25.65,102.58 L27.56,97.12 L29.54,91.76 L31.59,86.49 L33.71,81.32 L35.89,76.26 L38.14,71.32 L40.46,66.5 L42.84,61.81 L45.3,57.25 L47.82,52.84 L50.41,48.56 L53.06,44.45 L55.79,40.48 L58.59,36.68 L61.46,33.05 L64.4,29.58 L67.42,26.29 L70.52,23.18 L73.69,20.25 L76.95,17.51 L80.3,14.96 L83.73,12.6 L87.27,10.43 L90.91,8.47 L94.67,6.7 L98.56,5.14 L102.6,3.78 L106.81,2.63 L111.24,1.68 L115.94,0.95 L121.04,0.42 L126.81,0.11 L135,0 L143.19,0.11 L148.96,0.42 L154.06,0.95 L158.76,1.68 L163.19,2.63 L167.4,3.78 L171.44,5.14 L175.33,6.7 L179.09,8.47 L182.73,10.43 L186.27,12.6 L189.7,14.96 L193.05,17.51 L196.31,20.25 L199.48,23.18 L202.58,26.29 L205.6,29.58 L208.54,33.05 L211.41,36.68 L214.21,40.48 L216.94,44.45 L219.59,48.56 L222.18,52.84 L224.7,57.25 L227.16,61.81 L229.54,66.5 L231.86,71.32 L234.11,76.26 L236.29,81.32 L238.41,86.49 L240.46,91.76 L242.44,97.12 L244.35,102.58 L246.2,108.11 L247.98,113.72 L249.69,119.39 L251.34,125.12 L252.91,130.9 L254.42,136.72 L255.86,142.57 L257.23,148.44 L258.53,154.33 L259.77,160.21 L260.93,166.09 L262.02,171.96 L263.05,177.79 L264,183.58 L264.89,189.32 L265.7,195 L266.45,200.59 L267.12,206.08 L267.72,211.46 L268.26,216.71 L268.72,221.8 C268.72,232.8 266.72,246 248.72,246 L21.28,246 C3.28,246 1.28,232.8 1.28,221.8 Z" fill="none" stroke="url(#rdeck)" stroke-width="3"/></svg><img class="ic" src="../../icons/svg/deck.svg"><div class="k">Kiln Deck</div><div class="t">Deck</div><div class="d">Talks, pitches, lessons</div><div class="meta"><span>.pptx</span><span>.odp</span><span>Ctrl Alt D</span><span class="plus"><svg class="i s18" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+      <path d="M12 5v14" />
+    </svg></span></div></div><div class="door dk" style="--solid:#E8A82C;--on:#1C0D06"><svg class="rim" width="270" height="246"><defs><linearGradient id="rnotes" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><path d="M1.28,221.8 L1.74,216.71 L2.28,211.46 L2.88,206.08 L3.55,200.59 L4.3,195 L5.11,189.32 L6,183.58 L6.95,177.79 L7.98,171.96 L9.07,166.09 L10.23,160.21 L11.47,154.33 L12.77,148.44 L14.14,142.57 L15.58,136.72 L17.09,130.9 L18.66,125.12 L20.31,119.39 L22.02,113.72 L23.8,108.11 L25.65,102.58 L27.56,97.12 L29.54,91.76 L31.59,86.49 L33.71,81.32 L35.89,76.26 L38.14,71.32 L40.46,66.5 L42.84,61.81 L45.3,57.25 L47.82,52.84 L50.41,48.56 L53.06,44.45 L55.79,40.48 L58.59,36.68 L61.46,33.05 L64.4,29.58 L67.42,26.29 L70.52,23.18 L73.69,20.25 L76.95,17.51 L80.3,14.96 L83.73,12.6 L87.27,10.43 L90.91,8.47 L94.67,6.7 L98.56,5.14 L102.6,3.78 L106.81,2.63 L111.24,1.68 L115.94,0.95 L121.04,0.42 L126.81,0.11 L135,0 L143.19,0.11 L148.96,0.42 L154.06,0.95 L158.76,1.68 L163.19,2.63 L167.4,3.78 L171.44,5.14 L175.33,6.7 L179.09,8.47 L182.73,10.43 L186.27,12.6 L189.7,14.96 L193.05,17.51 L196.31,20.25 L199.48,23.18 L202.58,26.29 L205.6,29.58 L208.54,33.05 L211.41,36.68 L214.21,40.48 L216.94,44.45 L219.59,48.56 L222.18,52.84 L224.7,57.25 L227.16,61.81 L229.54,66.5 L231.86,71.32 L234.11,76.26 L236.29,81.32 L238.41,86.49 L240.46,91.76 L242.44,97.12 L244.35,102.58 L246.2,108.11 L247.98,113.72 L249.69,119.39 L251.34,125.12 L252.91,130.9 L254.42,136.72 L255.86,142.57 L257.23,148.44 L258.53,154.33 L259.77,160.21 L260.93,166.09 L262.02,171.96 L263.05,177.79 L264,183.58 L264.89,189.32 L265.7,195 L266.45,200.59 L267.12,206.08 L267.72,211.46 L268.26,216.71 L268.72,221.8 C268.72,232.8 266.72,246 248.72,246 L21.28,246 C3.28,246 1.28,232.8 1.28,221.8 Z" fill="none" stroke="url(#rnotes)" stroke-width="3"/></svg><img class="ic" src="../../icons/svg/notes.svg"><div class="k">Kiln Notes</div><div class="t">Notebook</div><div class="d">Ideas, logs, clippings</div><div class="meta"><span>.one import</span><span>Ctrl Alt N</span><span class="plus"><svg class="i s18" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+      <path d="M12 5v14" />
+    </svg></span></div></div></div>
+        <div class="switch"><div class="fmt"><span style="background:#2D4FB5;--r:-6deg">.docx</span><span style="background:#17714E;--r:2deg">.xlsx</span><span style="background:#E05A27;--r:8deg">.pptx</span></div>
+      <div><b>Coming from Microsoft Office?</b><div class="tx">Your .docx, .xlsx and .pptx open as they are. The ribbon is where you left it, and your shortcuts still work.</div></div>
+      <div style="margin-left:auto;display:flex;gap:8px"><div class="btn ember"><svg class="sp" viewBox="0 0 24 24" width="13" height="13"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>Take the 2‑minute tour</div><div class="btn"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M12 3v12" />
+      <path d="m8 11 4 4 4-4" />
+      <path d="M8 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4" />
+    </svg>Import settings</div><div class="qa"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg></div></div></div>
+        <div class="lower"><div class="recent"><div class="lh"><div class="seg" style="width:300px"><span class="on">Recent</span><span>Pinned</span><span>Shared with me</span></div>
+      <div style="display:flex;gap:4px;color:var(--kiln-faint)"><div class="qa"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M3 12h.01" />
+      <path d="M3 18h.01" />
+      <path d="M3 6h.01" />
+      <path d="M8 12h13" />
+      <path d="M8 18h13" />
+      <path d="M8 6h13" />
+    </svg></div><div class="qa"><svg class="i s14" viewBox="0 0 24 24">
+      <rect width="7" height="7" x="3" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="14" rx="1" />
+      <rect width="7" height="7" x="3" y="14" rx="1" />
+    </svg></div></div></div>
+      <table class="rt"><tr><th>Name</th><th>Modified</th><th>Shared</th><th></th></tr><tr class="hl"><td><div class="nm"><img src="../../icons/svg/write-32.svg"><div><b>Autumn firing plan</b><span class="x">.docx</span><small>Studio › Co-op</small></div></div></td><td class="muted">10 minutes ago</td><td class="muted"><svg class="i s14" viewBox="0 0 24 24" style="vertical-align:-2px;margin-right:5px">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>Rana, Jun</td><td style="text-align:right;color:var(--kiln-faint)"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M12 17v5" />
+      <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
+    </svg></td></tr><tr class=""><td><div class="nm"><img src="../../icons/svg/grid-32.svg"><div><b>Studio budget 2026</b><span class="x">.xlsx</span><small>Studio › Accounts</small></div></div></td><td class="muted">1 hour ago</td><td class="muted">Only you</td><td style="text-align:right;color:var(--kiln-faint)"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M12 17v5" />
+      <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
+    </svg></td></tr><tr class=""><td><div class="nm"><img src="../../icons/svg/deck-32.svg"><div><b>Open studio weekend</b><span class="x">.pptx</span><small>Desktop</small></div></div></td><td class="muted">Yesterday, 18:40</td><td class="muted">Only you</td><td style="text-align:right;color:var(--kiln-faint)"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="1" />
+      <circle cx="19" cy="12" r="1" />
+      <circle cx="5" cy="12" r="1" />
+    </svg></td></tr><tr class=""><td><div class="nm"><img src="../../icons/svg/notes-32.svg"><div><b>Studio notebook</b><span class="x"></span><small>Notes › Studio</small></div></div></td><td class="muted">Yesterday, 09:12</td><td class="muted"><svg class="i s14" viewBox="0 0 24 24" style="vertical-align:-2px;margin-right:5px">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>Co-op</td><td style="text-align:right;color:var(--kiln-faint)"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="1" />
+      <circle cx="19" cy="12" r="1" />
+      <circle cx="5" cy="12" r="1" />
+    </svg></td></tr><tr class=""><td><div class="nm"><img src="../../icons/svg/write-32.svg"><div><b>Residency application</b><span class="x">.docx</span><small>Documents</small></div></div></td><td class="muted">Monday</td><td class="muted">Only you</td><td style="text-align:right;color:var(--kiln-faint)"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="1" />
+      <circle cx="19" cy="12" r="1" />
+      <circle cx="5" cy="12" r="1" />
+    </svg></td></tr><tr class=""><td><div class="nm"><img src="../../icons/svg/grid-32.svg"><div><b>Clay order tracker</b><span class="x">.xlsx</span><small>Studio › Supplies</small></div></div></td><td class="muted">Sunday</td><td class="muted"><svg class="i s14" viewBox="0 0 24 24" style="vertical-align:-2px;margin-right:5px">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>Jun</td><td style="text-align:right;color:var(--kiln-faint)"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="1" />
+      <circle cx="19" cy="12" r="1" />
+      <circle cx="5" cy="12" r="1" />
+    </svg></td></tr></table></div><div class="tpl"><div class="lh"><h3>Fresh from the kiln</h3><span style="color:var(--kiln-ember-text);font-weight:600;font-size:12.5px">All templates ›</span></div>
+      <div class="tg"><div class="tc"><div class="im"><div style="position:absolute;left:50%;top:14px;width:84px;margin-left:-42px;bottom:-6px;background:var(--kiln-page);border-radius:4px;box-shadow:var(--kiln-shadow-2);padding:10px"><div style="width:30px;height:5px;border-radius:3px;background:#3159C6;margin-bottom:8px"></div><div style="height:3px;border-radius:2px;background:var(--kiln-line-strong);margin-bottom:5px;width:100%"></div><div style="height:3px;border-radius:2px;background:var(--kiln-line-strong);margin-bottom:5px;width:92%"></div><div style="height:3px;border-radius:2px;background:var(--kiln-line-strong);margin-bottom:5px;width:96%"></div><div style="height:3px;border-radius:2px;background:var(--kiln-line-strong);margin-bottom:5px;width:70%"></div><div style="height:3px;border-radius:2px;background:var(--kiln-line-strong);margin-bottom:5px;width:100%"></div><div style="height:3px;border-radius:2px;background:var(--kiln-line-strong);margin-bottom:5px;width:84%"></div></div></div><div class="nm"><img src="../../icons/svg/write-16.svg">Studio letter</div></div><div class="tc"><div class="im"><div style="position:absolute;left:12px;top:14px;width:92px;display:grid;grid-template-columns:repeat(4,1fr);gap:4px"><div style="height:9px;border-radius:2px;background:#1D8A60"></div><div style="height:9px;border-radius:2px;background:#1D8A60"></div><div style="height:9px;border-radius:2px;background:#1D8A60"></div><div style="height:9px;border-radius:2px;background:#1D8A60"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div><div style="height:9px;border-radius:2px;background:var(--kiln-line)"></div></div><div style="position:absolute;right:14px;bottom:12px;display:flex;gap:4px;align-items:flex-end"><i style="width:9px;height:24px;border-radius:3px 3px 0 0;background:#1D8A60"></i><i style="width:9px;height:36px;border-radius:3px 3px 0 0;background:#1D8A60"></i><i style="width:9px;height:30px;border-radius:3px 3px 0 0;background:#1D8A60"></i><i style="width:9px;height:52px;border-radius:3px 3px 0 0;background:#E05A27"></i></div></div><div class="nm"><img src="../../icons/svg/grid-16.svg">Monthly budget</div></div><div class="tc"><div class="im"><div style="position:absolute;inset:12px;border-radius:6px;background:#21140D;overflow:hidden"><div style="position:absolute;left:10px;top:12px;font:800 15px/1 Fraunces;color:#FFF1DF;font-variation-settings:'SOFT' 40">Warm<br>pitch</div><div style="position:absolute;right:-6px;bottom:-26px;width:70px;height:80px;border-radius:50% 50% 6px 6px/60% 60% 6px 6px;background:radial-gradient(circle at 50% 85%,#FFB547,#E05A27 40%,#4A1A0A 75%)"></div></div></div><div class="nm"><img src="../../icons/svg/deck-16.svg">Warm pitch</div></div><div class="tc"><div class="im"><div style="position:absolute;left:24px;top:12px;width:120px;bottom:-10px;background:#FCE6A8;border-radius:4px;transform:rotate(-4deg);padding:10px;box-shadow:var(--kiln-shadow-2)"><div style="font:800 12px/1 Fraunces;color:#6B4A0A;margin-bottom:8px">Daily log</div><div style="display:flex;gap:5px;align-items:center;margin-bottom:5px"><i style="width:8px;height:8px;border-radius:2px;border:1.5px solid #B97A0C;background:#E8A82C"></i><i style="height:3px;width:60px;border-radius:2px;background:#E2C27A"></i></div><div style="display:flex;gap:5px;align-items:center;margin-bottom:5px"><i style="width:8px;height:8px;border-radius:2px;border:1.5px solid #B97A0C;background:#E8A82C"></i><i style="height:3px;width:48px;border-radius:2px;background:#E2C27A"></i></div><div style="display:flex;gap:5px;align-items:center;margin-bottom:5px"><i style="width:8px;height:8px;border-radius:2px;border:1.5px solid #B97A0C;background:transparent"></i><i style="height:3px;width:70px;border-radius:2px;background:#E2C27A"></i></div></div></div><div class="nm"><img src="../../icons/svg/notes-16.svg">Daily log</div></div></div></div></div>
+      </div></div></div></body></html>
