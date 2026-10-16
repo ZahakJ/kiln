@@ -22,6 +22,7 @@ kiln-scene.workspace = true
 kiln-raster.workspace = true
 # `inspect`, `repack`.
 kiln-ooxml.workspace = true
+kiln-io-docx.workspace = true
 # `eval`.
 kiln-formula.workspace = true
 # `repack` comparison and `fidelity` (the scorer and its adapter registry).

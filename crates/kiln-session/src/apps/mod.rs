@@ -3,6 +3,7 @@
 //! append-only shared file, PLAN.md §4.7).
 
 pub mod scratch;
+pub mod write;
 
 use crate::model::AppFactory;
 
@@ -11,5 +12,6 @@ use crate::model::AppFactory;
 pub fn builtin() -> Vec<Box<dyn AppFactory>> {
     vec![
         Box::new(scratch::ScratchApp), // WP-52: plain paragraphs, proves the bridge loop
+        Box::new(write::WriteApp),     // WP-62: .docx/.dotx/.docm through kiln-io-docx
     ]
 }

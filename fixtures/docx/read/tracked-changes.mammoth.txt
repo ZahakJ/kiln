@@ -1,0 +1,8 @@
+Tracked changes
+
+Unchanged start. Inserted words. Unchanged end.
+
+Formatting change: made bold.
+
+Paragraph property change: centred.
+

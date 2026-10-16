@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-//! `kiln-cli inspect <file> [--xml <part>] [--json]`: the parts of an Office (OPC) package with
-//! their content types and sizes, and the relationships of every source part; `--xml` prints one
-//! part's XML indented, exactly as stored (prefixes are not normalised).
+//! `kiln-cli inspect <file> [--xml <part>] [--docx] [--json]`: the parts of an Office (OPC)
+//! package with their content types and sizes, and the relationships of every source part;
+//! `--xml` prints one part's XML indented, exactly as stored (prefixes are not normalised);
+//! `--docx` reads a Word document with `kiln-io-docx` and prints its heading outline, counts and
+//! import diagnostics.
 
 use std::fmt::Write as _;
 use std::path::PathBuf;
@@ -15,12 +17,13 @@ use serde_json::json;
 use crate::CliError;
 
 /// Usage text.
-pub const USAGE: &str = "kiln-cli inspect <file> [--xml <part>] [--json]";
+pub const USAGE: &str = "kiln-cli inspect <file> [--xml <part>] [--docx] [--json]";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct Options {
     input: PathBuf,
     xml: Option<String>,
+    docx: bool,
     json: bool,
 }
 
@@ -28,6 +31,7 @@ fn parse(args: &[String]) -> Result<Options, CliError> {
     let mut input = None;
     let mut xml = None;
     let mut json = false;
+    let mut docx = false;
     let mut it = args.iter();
     while let Some(a) = it.next() {
         match a.as_str() {
@@ -39,6 +43,7 @@ fn parse(args: &[String]) -> Result<Options, CliError> {
                 );
             }
             "--json" => json = true,
+            "--docx" => docx = true,
             s if s.starts_with('-') => {
                 return Err(CliError::usage(format!("unknown option '{s}'"), USAGE));
             }
@@ -49,6 +54,7 @@ fn parse(args: &[String]) -> Result<Options, CliError> {
     Ok(Options {
         input: input.ok_or_else(|| CliError::usage("a file is required", USAGE))?,
         xml,
+        docx,
         json,
     })
 }
@@ -290,6 +296,43 @@ fn listing_json(pkg: &OpcPackage) -> Result<String, CliError> {
     serde_json::to_string_pretty(&doc).map_err(|e| CliError::Failed(e.to_string()))
 }
 
+/// `--docx`: the document as Kiln Write reads it.
+fn docx_summary(path: &std::path::Path, as_json: bool) -> Result<String, CliError> {
+    let bytes =
+        std::fs::read(path).map_err(|e| CliError::Failed(format!("{}: {e}", path.display())))?;
+    let read = kiln_io_docx::read_docx(&bytes)
+        .map_err(|e| CliError::Failed(format!("{}: {e}", path.display())))?;
+    let s = kiln_io_docx::Summary::of(&read);
+    if as_json {
+        let doc = json!({
+            "format": s.kind,
+            "outline": s.outline.iter().map(|e| json!({"level": e.level + 1, "text": e.text})).collect::<Vec<_>>(),
+            "counts": {
+                "sections": s.sections, "paragraphs": s.paragraphs, "tables": s.tables,
+                "list_paragraphs": s.list_paragraphs, "headers_footers": s.headers_footers,
+                "footnotes": s.footnotes, "endnotes": s.endnotes, "comments": s.comments,
+                "revisions": s.revisions, "pictures": s.pictures, "drawings": s.drawings,
+                "fields": s.fields, "bookmarks": s.bookmarks, "equations": s.equations,
+                "styles": s.styles, "lists": s.lists, "words": s.words,
+                "passthrough_parts": s.passthrough_parts,
+            },
+            "warnings": read.warnings.iter().map(|w| json!({
+                "code": w.code.as_str(), "severity": w.severity.as_str(),
+                "message": w.message, "part": w.part, "path": w.path,
+            })).collect::<Vec<_>>(),
+        });
+        return serde_json::to_string_pretty(&doc).map_err(|e| CliError::Failed(e.to_string()));
+    }
+    let mut out = format!("{}\n\n{}", path.display(), s.to_text());
+    if !read.warnings.is_empty() {
+        out.push_str("\nDiagnostics\n");
+        for w in &read.warnings {
+            let _ = writeln!(out, "  {w}");
+        }
+    }
+    Ok(out.trim_end().to_owned())
+}
+
 /// Runs the subcommand.
 ///
 /// # Errors
@@ -297,6 +340,15 @@ fn listing_json(pkg: &OpcPackage) -> Result<String, CliError> {
 /// Usage errors, unreadable files and missing parts.
 pub fn run(args: &[String]) -> Result<String, CliError> {
     let o = parse(args)?;
+    if o.docx {
+        if o.xml.is_some() {
+            return Err(CliError::usage(
+                "--docx and --xml cannot be combined",
+                USAGE,
+            ));
+        }
+        return docx_summary(&o.input, o.json);
+    }
     let pkg = open(&o.input)?;
     match (&o.xml, o.json) {
         (Some(part), _) => show_xml(&pkg, part),
@@ -363,6 +415,31 @@ mod tests {
         ])
         .unwrap();
         assert!(ct.contains("<Types"));
+    }
+
+    #[test]
+    fn docx_prints_the_outline_and_counts() {
+        let out = run(&["--docx".into(), fixture("docx/features/long-text.docx")]).unwrap();
+        assert!(out.contains("Outline\n"), "{out}");
+        assert!(out.contains("  paragraphs "), "{out}");
+        assert!(out.contains("  tables "), "{out}");
+        let json = run(&[
+            fixture("docx/features/tables.docx"),
+            "--docx".into(),
+            "--json".into(),
+        ])
+        .unwrap();
+        let v: serde_json::Value = serde_json::from_str(&json).unwrap();
+        assert_eq!(v["format"], "docx");
+        assert_eq!(v["counts"]["tables"], 4);
+        assert!(matches!(
+            run(&[fixture("xlsx/features/styles.xlsx"), "--docx".into()]),
+            Err(CliError::Failed(_))
+        ));
+        assert!(matches!(
+            run(&["a.docx".into(), "--docx".into(), "--xml".into(), "x".into()]),
+            Err(CliError::Usage(_))
+        ));
     }
 
     #[test]

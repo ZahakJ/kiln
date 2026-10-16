@@ -1,0 +1,94 @@
+Tables
+
+Grid table with header row:
+
+Header 1
+
+Header 2
+
+Header 3
+
+Header 4
+
+R2C1
+
+R2C2
+
+R2C3
+
+R2C4
+
+R3C1
+
+R3C2
+
+R3C3
+
+R3C4
+
+R4C1
+
+R4C2
+
+R4C3
+
+R4C4
+
+Styled table (Light Grid Accent 1) with horizontal and vertical merges:
+
+0,0
+
+0,1
+
+0,2
+
+0,3
+
+Merged across three columns
+
+1,3
+
+2,0
+
+2,1
+
+2,2
+
+Merged down three rows
+
+3,0
+
+3,1
+
+3,2
+
+4,0
+
+4,1
+
+4,2
+
+Shaded cells, widths and a nested table:
+
+fill FFF2CC
+
+fill E2EFDA
+
+fill DDEBF7
+
+Outer cell
+
+
+
+inner 00
+
+inner 01
+
+inner 10
+
+inner 11
+
+
+
+Verticallines
+

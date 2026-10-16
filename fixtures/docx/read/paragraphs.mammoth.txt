@@ -1,0 +1,48 @@
+Paragraph formatting
+
+[LEFT] Elit tempor eiusmod cillum ad dolor ex ullamco amet enim cupidatat nulla anim dolore non mollit commodo amet sit cillum in in eu occaecat est ad minim ut nisi sit minim reprehenderit minim magna anim anim cillum anim veniam proident.
+
+[CENTER] Sint est cillum esse cillum proident enim pariatur in est aliquip officia consequat deserunt mollit anim esse sunt in velit sunt officia laboris reprehenderit ad commodo qui dolor irure mollit id mollit excepteur dolor exercitation officia anim cillum do voluptate.
+
+[RIGHT] Ipsum quis ut elit adipiscing commodo nisi ut id magna commodo aliquip exercitation elit occaecat amet elit cillum cillum minim aliquip sit eiusmod labore sed sit consectetur dolor dolore ex dolore enim veniam id lorem fugiat consectetur aliquip ut amet.
+
+[JUSTIFY] Lorem velit labore duis voluptate officia sit dolor proident consectetur ea pariatur ut culpa laboris tempor in ut sit proident dolore id nulla officia anim reprehenderit aliqua voluptate ea ea sint dolor magna elit ex amet dolore enim ad incididunt.
+
+[left indent 2 cm] Sunt nisi anim amet aliquip nisi non do ex eiusmod nisi cillum ex occaecat consequat est lorem ut amet fugiat excepteur enim labore anim tempor ut ut incididunt dolor veniam.
+
+[right indent 2 cm] Nisi ut ullamco sit id in sunt dolor laborum eu ullamco exercitation cupidatat occaecat anim dolor adipiscing sint est veniam incididunt qui cillum dolor id et cillum aute dolore dolor.
+
+[first line 1.27 cm] Dolor excepteur incididunt ut dolor nostrud dolor proident elit excepteur officia in exercitation do lorem duis sit dolore dolor do laboris officia quis labore dolore nulla in magna velit nulla.
+
+[hanging 1.27 cm] Et ex et et eiusmod in nulla ullamco ut sit culpa consectetur deserunt aute esse sunt aliqua dolore commodo qui est qui sint officia aute nulla nisi enim officia ea.
+
+[space before 18 pt / after 6 pt] Occaecat eiusmod incididunt do esse minim aliqua sint sed tempor amet dolore aute fugiat nisi in non minim est duis labore ut occaecat incididunt in id aliquip anim ex ad.
+
+[line spacing single] Enim in ut pariatur esse aliqua in non sit fugiat veniam nulla anim adipiscing qui consequat pariatur ex excepteur culpa cillum in eiusmod laboris laborum quis pariatur eu ipsum in in est in minim incididunt.
+
+[line spacing 1.5 lines] Dolor pariatur ullamco fugiat ullamco incididunt fugiat nostrud consequat quis officia magna ipsum cupidatat qui ex anim minim in exercitation do velit lorem officia laborum sed officia in sunt commodo mollit sunt sit eiusmod velit.
+
+[line spacing double] Minim pariatur ex magna adipiscing enim deserunt eu in aute ut ipsum duis in lorem cillum amet laborum eu non exercitation dolor deserunt magna qui laborum irure do ea in irure in dolor nulla id.
+
+[line spacing exactly 20 pt] Tempor anim exercitation nulla est ut mollit tempor dolor consectetur nisi sunt nisi id consequat elit labore labore eu cillum ullamco in esse do in sunt cillum ad deserunt non aute in magna non ullamco.
+
+[line spacing at least 24 pt] Commodo reprehenderit enim incididunt ut culpa quis dolore veniam esse magna magna nisi commodo eu pariatur voluptate consequat mollit reprehenderit pariatur aute laborum do dolore dolor nulla qui minim ea esse non qui tempor veniam.
+
+[line spacing multiple 1.15] In eu dolore sit ut velit ad esse do cupidatat ipsum reprehenderit ut fugiat duis culpa ut cillum in nostrud deserunt incididunt aliqua exercitation in ex aliqua sint cillum ex tempor voluptate quis aliquip ut.
+
+Keep with next: this paragraph stays with the next one.
+
+Keep lines together. Consectetur voluptate dolore elit aliqua minim sed cupidatat non commodo dolore reprehenderit id labore voluptate nulla nisi adipiscing nulla culpa officia in tempor anim laborum deserunt pariatur sunt ad excepteur fugiat est proident consectetur ut proident dolore et mollit minim do nulla dolor sunt ipsum ex ut velit laboris minim.
+
+Widow control off. Sit aliqua occaecat tempor voluptate in adipiscing culpa ut sed qui magna sit magna mollit elit adipiscing nostrud lorem id.
+
+Borders and shading
+
+Boxed paragraph with shading. Voluptate est ut magna dolore officia lorem dolore labore aliquip ut in ullamco adipiscing ullamco eu voluptate nulla est mollit.
+
+Tab stops
+
+Left	Centre	Right	1234.56
+
+Page break before this paragraph.
+

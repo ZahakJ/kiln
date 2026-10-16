@@ -1,0 +1,66 @@
+Text styles matrix
+
+Heading 1
+
+Heading 2
+
+Heading 3
+
+Heading 4
+
+Heading 5
+
+Heading 6
+
+Paragraph in the Title style.
+
+Paragraph in the Subtitle style.
+
+Paragraph in the Quote style.
+
+Paragraph in the Intense Quote style.
+
+Paragraph in the List Paragraph style.
+
+Paragraph in the No Spacing style.
+
+Paragraph in the Caption style.
+
+Character formatting
+
+bold · italic · bold italic · strike · double strike · small caps · all caps · superscript · subscript · hidden · 
+
+Underlines
+
+underline single  underline double  underline dotted  underline dash  underline wavy  underline thick  underline words  
+
+Sizes and fonts
+
+8pt 9pt 10pt 11pt 12pt 14pt 16pt 18pt 20pt 24pt 28pt 36pt 
+
+The quick brown fox in Calibri
+
+The quick brown fox in Cambria
+
+The quick brown fox in Arial
+
+The quick brown fox in Times New Roman
+
+The quick brown fox in Courier New
+
+The quick brown fox in Georgia
+
+The quick brown fox in Verdana
+
+Colours and highlights
+
+#C00000 #FF0000 #FFC000 #FFFF00 #92D050 #00B050 #00B0F0 #0070C0 #002060 #7030A0 
+
+yellow bright_green turquoise pink gray_25 
+
+theme accent_1 theme accent_2 theme accent_6 theme text_2 
+
+Character spacing
+
+spacing -20 spacing 0 spacing 20 spacing 60 
+

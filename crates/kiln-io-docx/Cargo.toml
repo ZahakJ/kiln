@@ -1,6 +1,6 @@
 [package]
 name = "kiln-io-docx"
-description = "Reads and writes "
+description = "Reads and writes .docx, .dotx and .docm files to and from the Kiln Write model"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -11,6 +11,13 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+kiln-doc.workspace = true
+kiln-ooxml.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+kiln-testing.workspace = true
+proptest.workspace = true
 
 [lints]
 workspace = true

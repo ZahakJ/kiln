@@ -267,7 +267,9 @@ pub fn render_file(o: &FileOptions) -> Result<Vec<RenderedPage>, String> {
         .open(&bytes, hint)
         .map_err(|e| format!("{}: {e}", o.input.display()))?
         .doc;
+    // Kinds whose app has no layout yet (Write before WP-63) open but have no pages.
     crate::pages::render(&mut session, doc, &o.pages)
+        .map_err(|e| format!("{}: {e}", o.input.display()))
 }
 
 /// Runs `render` with the arguments after the subcommand name.

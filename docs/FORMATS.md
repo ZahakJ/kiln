@@ -32,23 +32,67 @@ format cannot hold or that Kiln will not carry through.
 
 ## Word documents (`.docx`, `.dotx`, `.docm`) — `kiln-io-docx`
 
-**Read and written:** paragraphs and runs with style inheritance (document
-defaults, styles, theme fonts and colours); tables with merged cells, borders,
-shading and table styles; sections with page size, margins, columns, different
-first page and odd/even headers and footers; numbering and multi-level lists;
-footnotes and endnotes; comments and threaded replies; tracked insertions,
-deletions and formatting changes; fields (TOC, PAGE, NUMPAGES, DATE, REF and
-HYPERLINK are live, other fields keep their last result); inline and floating
-pictures with wrapping; text boxes; hyperlinks and bookmarks; symbols;
-document properties.
+Reading (WP-62) is in place; writing arrives with WP-65. Until then Kiln
+Write opens Word files and saving one reports that the writer is not there yet.
 
-**Kept, not edited:** equations (`m:oMath`, shown and preserved), VML drawings
-from older files (read-only), embedded OLE objects, the VBA project of a `.docm`,
-custom XML.
+**Read into the document model:** paragraphs and runs with every paragraph and
+font setting Word stores (styles, document defaults, theme fonts and colours with
+tints and shades, toggles, character spacing, borders, shading, languages,
+right-to-left); the style sheet with `basedOn`, linked and table styles and their
+conditional formats; numbering (abstract lists, instances, level overrides,
+legal numbering, picture bullet ids); tables in Word's own cell model (grid
+spans, vertical merges, legacy horizontal merges, `gridBefore`/`gridAfter`,
+nested and floating tables, widths in every unit); sections (page size and
+orientation, margins and gutter, columns, break type, different first page,
+headers and footers by kind and shared between sections, page and line
+numbering, vertical alignment, document grid); footnotes and endnotes with
+custom marks; comments with Word 2013+ threads, resolved state and authors
+(`people.xml`); tracked insertions, deletions, moves, formatting and paragraph
+property changes and row insertions/deletions; fields — simple and complex,
+nested field codes written as `{ … }`, cached results, TOC/INDEX/BIBLIOGRAPHY/TOA
+as multi-paragraph field blocks, HYPERLINK fields as links; hyperlinks and
+bookmarks; symbols (`w:sym`, font and code kept, with the Symbol/Wingdings/Webdings
+mapping to Unicode for display); content controls (block ones wrap their blocks,
+inline ones are marks; checkbox, list, date, building-block galleries); pictures
+inline and floating with every wrap mode, wrap side and polygon, alignment or
+offset positions, crop, rotation, flips, alt text and the decorative flag;
+shapes and text boxes (`wps:wsp`) with their text; equations as OMML; settings
+(default tab stop, even/odd headers, mirror margins, track changes, colour
+mapping, compatibility mode, note settings); core, app and custom properties.
 
-**Approximate:** text wrap around floating objects follows Word's rules with
-square and tight wrapping, so a line can break one word differently from Word.
-The target is within one line per page on the fixture corpus.
+**Kept as written, not edited:** every part the reader does not model goes to
+the passthrough with its relationships (custom XML, font table, web settings,
+glossary, `vbaProject.bin`, embedded objects, chart parts, SmartArt, thumbnails,
+printer settings); unmodelled properties are kept as raw XML beside the model
+(`DocxExtras`: `w:framePr`, `w:cnfStyle`, `w14` text effects, `w:noProof`,
+`w:tblPrChange`, page borders, `w:paperSrc`, latent styles, the settings part,
+`w14:paraId`); charts, groups, SmartArt, canvases, ink, OLE objects and VML
+shapes other than pictures and text boxes keep their XML and show as
+placeholders; `w:altChunk` imports are opaque blocks. Each of these is reported
+with its part and XPath to the Compatibility Checker.
+
+**Approximate or dropped (reported):** positions given as a percentage of the
+page read as an offset of zero; phonetic guides (ruby) keep the base text only;
+alignment tabs (`w:ptab`) become ordinary tabs; editing permission ranges and
+subdocument links are dropped; legacy form fields become plain fields; a field
+whose result spans paragraphs (other than TOC-like fields) keeps its result as
+text; content nested more than 64 containers deep (or text boxes more than 4
+deep) is kept as XML without its text. Packages that are encrypted, legacy
+binary `.doc`, not zip files or beyond the zip limits are refused with a typed
+error; a malformed secondary part is skipped with a diagnostic, never a crash.
+
+**Verified by:** `cargo nextest run -p kiln-io-docx` — structural assertions for
+every feature fixture, the v1.0 element tests ported, body text equal to
+mammoth's (an independent reader) on all 19 feature fixtures, every
+`fixtures/docx` file and the real-world corpus read into valid documents,
+hostile nesting read on a 1 MiB stack, corrupted bytes never panic, 300 pages
+read in about 50 ms (release). `kiln-cli inspect --docx <file>` prints the heading
+outline, counts and diagnostics.
+
+**Approximate in layout (WP-63):** text wrap around floating objects follows
+Word's rules with square and tight wrapping, so a line can break one word
+differently from Word. The target is within one line per page on the fixture
+corpus.
 
 ## Excel workbooks (`.xlsx`, `.xltx`, `.xlsm`) — `kiln-io-xlsx`
 

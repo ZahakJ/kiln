@@ -5,7 +5,7 @@
 //! apps use, driven from a shell or an agent (PLAN.md §3.1 principle 2).
 //!
 //! ```text
-//! kiln-cli inspect <file> [--xml <part>] [--json]     parts, content types, sizes, relationships
+//! kiln-cli inspect <file> [--xml <part>] [--docx] [--json]  parts, relationships; --docx: outline and counts
 //! kiln-cli repack <in> <out>                          passthrough round trip, identical parts
 //! kiln-cli render <file> --png out/page-%03d.png      pages to PNG [--page N] [--dpi 96] [--dark]
 //! kiln-cli render --scratch <file.txt> --png <out>    one viewport of a scratch document

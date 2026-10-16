@@ -8,6 +8,7 @@ it with `cargo run -p kiln-cli --`.
 ```sh
 kiln-cli inspect report.docx                      # parts, content types, sizes, relationships
 kiln-cli inspect report.docx --xml word/document.xml
+kiln-cli inspect report.docx --docx               # heading outline, counts, import diagnostics
 kiln-cli repack book.xlsx /tmp/book.xlsx          # open and save without edits
 kiln-cli render notes.txt --png out/page-%03d.png --dpi 150
 kiln-cli eval '=SUM(1,2,3)/4'                     # 1.5
@@ -22,15 +23,16 @@ command is one); `kiln-cli help` prints the summary and exits 0. Output piped in
 early (`kiln-cli inspect a.docx --xml /word/document.xml | head`) ends quietly.
 
 What works today: `inspect`, `repack` and `fidelity` handle any `.docx`, `.xlsx` or `.pptx` package;
-`render` and `control` open the document kinds whose app is in the build, which is currently the plain-text
-scratch document (`.txt`, `.md`). Word, Excel and PowerPoint files join `render` and `control` as their
+`render` and `control` open the document kinds whose app is in the build: the plain-text scratch document
+(`.txt`, `.md`) and, since the Word reader (WP-62), `.docx`, `.dotx` and `.docm` — which `control` opens and
+queries today and `render` paints once the Write layout lands (WP-63). Excel and PowerPoint files join as their
 readers land, with no change to the commands. `eval` knows the engine's core functions (`SUM`, `IF`, `AND`,
 `OR`, `NOT`, `TRUE`, `FALSE` and every operator) until the full function library arrives.
 
 ## inspect
 
 ```text
-kiln-cli inspect <file> [--xml <part>] [--json]
+kiln-cli inspect <file> [--xml <part>] [--docx] [--json]
 ```
 
 Lists every part of an Office package (the zip inside a `.docx`, `.xlsx` or `.pptx`) with its uncompressed
@@ -38,6 +40,12 @@ size and content type, then the relationships of each part (`rId`, type, resolve
 links outside the package). `--xml <part>` prints one part's XML indented, with the prefixes exactly as the file
 uses them (`word/document.xml` and `/word/document.xml` both work, and so does `[Content_Types].xml`).
 `--json` prints the listing as JSON (`main`, `parts`, `relationships`) for scripts.
+
+`--docx` reads a Word document the way Kiln Write does and prints its heading outline (indented by level), then
+the counts — sections, paragraphs, tables, list paragraphs, headers and footers, footnotes, endnotes, comments,
+tracked changes, pictures, other drawings, fields, bookmarks, equations, styles, list definitions, words and parts
+kept verbatim — and every import diagnostic with its part and location (what the Compatibility Checker will list).
+With `--json` the same comes as `format`, `outline`, `counts` and `warnings`.
 
 Password-protected files and old binary `.doc`/`.xls`/`.ppt` files are recognised and refused with a message
 saying so; so are archives that would inflate beyond Kiln's safety limits.

@@ -11,6 +11,8 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+kiln-doc.workspace = true
+kiln-io-docx.workspace = true
 kiln-protocol.workspace = true
 kiln-scene.workspace = true
 # Layout of the scratch document. The web core gets no default features (no system fonts, no

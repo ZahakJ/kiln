@@ -2402,6 +2402,7 @@ version = "0.1.0"
 dependencies = [
  "kiln-common",
  "kiln-formula",
+ "kiln-io-docx",
  "kiln-ooxml",
  "kiln-protocol",
  "kiln-raster",
@@ -2531,6 +2532,11 @@ name = "kiln-io-odf"
 version = "0.1.0"
 dependencies = [
  "kiln-common",
+ "kiln-doc",
+ "kiln-ooxml",
+ "kiln-testing",
+ "proptest",
+ "thiserror 2.0.21",
 ]
 
 [[package]]
@@ -2620,6 +2626,8 @@ version = "0.1.0"
 dependencies = [
  "flume",
  "kiln-common",
+ "kiln-doc",
+ "kiln-io-docx",
  "kiln-protocol",
  "kiln-raster",
  "kiln-scene",
