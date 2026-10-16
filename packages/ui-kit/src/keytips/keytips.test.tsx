@@ -85,7 +85,7 @@ describe('KeyTipsLayer', () => {
     await frame();
     key('F');
     expect(badges()).toEqual(['FF', 'FS']);
-    expect(document.querySelector('.of-keytip__typed')).toHaveTextContent('F');
+    expect(document.querySelector('.kiln-keytip__typed')).toHaveTextContent('F');
     key('Escape'); // clear typed letters
     expect(badges()).toEqual(['1', 'FF', 'FS']);
     key('Escape'); // back to tabs

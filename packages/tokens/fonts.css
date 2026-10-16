@@ -1,14 +1,8 @@
 /*
- * Officina fonts: UI (Inter Variable, JetBrains Mono) and bundled document fonts (SIL OFL 1.1).
- * GENERATED from packages/tokens/src/tokens.ts by `pnpm --filter @officina/tokens generate`.
+ * Kiln fonts: bundled document fonts (SIL OFL 1.1). UI fonts arrive with the brand kit (WP-51).
+ * GENERATED from packages/tokens/src/tokens.ts by `pnpm --filter @kiln/tokens generate`.
  * Do not edit by hand.
  */
-@import "@fontsource-variable/inter/wght.css";
-@import "@fontsource-variable/inter/wght-italic.css";
-@import "@fontsource/jetbrains-mono/400.css";
-@import "@fontsource/jetbrains-mono/500.css";
-@import "@fontsource/jetbrains-mono/700.css";
-
 /* Liberation Sans Regular — metric-compatible with Arial. */
 @font-face {
   font-family: "Liberation Sans";

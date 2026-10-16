@@ -7,11 +7,11 @@ import { defineConfig } from 'vitest/config';
 const repoRoot = fileURLToPath(new URL('../..', import.meta.url));
 const packagesDir = fileURLToPath(new URL('../../packages', import.meta.url));
 
-/** `@officina/<pkg>` -> `packages/<pkg>/src` (mirrors the `paths` in tsconfig.base.json). */
-const officinaAliases = readdirSync(packagesDir, { withFileTypes: true })
+/** `@kiln/<pkg>` -> `packages/<pkg>/src` (mirrors the `paths` in tsconfig.base.json). */
+const kilnAliases = readdirSync(packagesDir, { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
   .map((entry) => ({
-    find: new RegExp(`^@officina/${entry.name}$`),
+    find: new RegExp(`^@kiln/${entry.name}$`),
     replacement: `${packagesDir}/${entry.name}/src/index.ts`,
   }));
 
@@ -20,8 +20,8 @@ const suiteVersion: string = JSON.parse(readFileSync(`${repoRoot}/package.json`,
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  resolve: { alias: officinaAliases },
-  define: { __OFFICINA_VERSION__: JSON.stringify(suiteVersion) },
+  resolve: { alias: kilnAliases },
+  define: { __KILN_VERSION__: JSON.stringify(suiteVersion) },
   server: { port: 5173, strictPort: true },
   build: { target: 'es2023', sourcemap: true },
   test: {

@@ -8,7 +8,7 @@ import {
   type ThemePreference,
   type ThemeState,
   type ThemeStore,
-} from '@officina/tokens';
+} from '@kiln/tokens';
 import { createContext, type ReactNode, useContext, useEffect, useMemo, useSyncExternalStore } from 'react';
 
 export type IconStyle = 'mono' | 'colorful';

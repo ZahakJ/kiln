@@ -44,11 +44,11 @@ export function Button({
     <button
       type={type}
       className={cx(
-        'of-btn',
-        `of-btn--${variant}`,
-        `of-btn--${size}`,
-        layout === 'stacked' && 'of-btn--stacked',
-        !children && 'of-btn--icon-only',
+        'kiln-btn',
+        `kiln-btn--${variant}`,
+        `kiln-btn--${size}`,
+        layout === 'stacked' && 'kiln-btn--stacked',
+        !children && 'kiln-btn--icon-only',
         className,
       )}
       aria-keyshortcuts={shortcut ? ariaKeyShortcuts(shortcut) : undefined}
@@ -57,9 +57,9 @@ export function Button({
       onClick={busy ? (e) => e.preventDefault() : onClick}
       {...rest}
     >
-      {icon ? <span className="of-btn__icon">{icon}</span> : null}
-      {children != null && children !== false ? <span className="of-btn__label">{children}</span> : null}
-      {iconAfter ? <span className="of-btn__icon-after">{iconAfter}</span> : null}
+      {icon ? <span className="kiln-btn__icon">{icon}</span> : null}
+      {children != null && children !== false ? <span className="kiln-btn__label">{children}</span> : null}
+      {iconAfter ? <span className="kiln-btn__icon-after">{iconAfter}</span> : null}
     </button>
   );
 }

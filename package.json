@@ -1,14 +1,14 @@
 {
-  "name": "officina",
+  "name": "kiln",
   "version": "0.1.0",
   "private": true,
-  "description": "Open-source office suite for Linux, macOS, Windows and Android: documents, spreadsheets and slides that open and save Office files and feel like home.",
+  "description": "Kiln: an open-source office suite (Kiln Write, Kiln Grid, Kiln Deck, Kiln Notes) with a Rust core, for Linux, Windows, macOS, Android and the web.",
   "license": "AGPL-3.0-or-later",
   "author": "ZahakJ",
-  "homepage": "https://zahakj.github.io/officina/",
+  "homepage": "https://zahakj.github.io/kiln/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ZahakJ/officina.git"
+    "url": "git+https://github.com/ZahakJ/kiln.git"
   },
   "type": "module",
   "packageManager": "pnpm@12.11.2",
@@ -16,24 +16,20 @@
     "node": ">=24 <25"
   },
   "scripts": {
-    "dev": "turbo run dev --filter=@officina/web",
-    "build": "turbo run build",
+    "dev": "turbo run dev --filter=@kiln/web",
+    "build": "turbo run build --filter=!@kiln/desktop",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
-    "e2e": "turbo run e2e --filter=@officina/e2e",
-    "bench": "turbo run bench",
-    "fidelity": "turbo run fidelity",
+    "e2e": "turbo run e2e --filter=@kiln/e2e",
     "verify": "turbo run lint typecheck test",
     "format": "biome format --write .",
+    "tauri": "pnpm --filter @kiln/desktop exec tauri",
     "licenses:check": "node tools/check-licenses.mjs",
-    "licenses:notices": "node tools/check-licenses.mjs --notices",
-    "release:desktop": "turbo run release:desktop --",
-    "release:android": "turbo run release:android --",
+    "licenses:notices": "cargo xtask notices",
     "media:render": "node tools/render-media.mjs",
-    "parity": "tsx parity/generate.ts",
-    "parity:verify": "tsx parity/verify.ts",
-    "competitors": "node -e \"const fs=require('node:fs');const f='docs/COMPETITORS.md';if(!fs.existsSync(f)){console.error(f+' does not exist yet');process.exit(1)}const m=fs.readFileSync(f,'utf8').match(/\\d{4}-\\d{2}-\\d{2}/);console.log(m?f+' last reviewed '+m[0]:f+' has no date');\""
+    "parity": "cargo xtask parity",
+    "parity:verify": "cargo xtask parity --check"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",

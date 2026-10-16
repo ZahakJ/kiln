@@ -1,0 +1,163 @@
+# Kiln — Cargo workspace (PLAN.md §3.2, §4.2).
+#
+# Every third-party crate is pinned ONCE here with an exact `=x.y.z` version; member crates refer to
+# them with `{ workspace = true }`. This table is append-only (PLAN.md §4.7): add rows, never reorder
+# or bump another work package's pins without a plan change.
+
+[workspace]
+resolver = "3"
+members = ["crates/*", "xtask", "apps/desktop/src-tauri"]
+# The Tauri shell needs the WebKitGTK system libraries; every core build works without them.
+default-members = ["crates/*", "xtask"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.99.1"
+license = "AGPL-3.0-or-later"
+authors = ["ZahakJ and the Kiln contributors"]
+repository = "https://github.com/ZahakJ/kiln"
+homepage = "https://zahakj.github.io/kiln/"
+publish = false
+
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+missing_debug_implementations = "warn"
+rust_2018_idioms = { level = "warn", priority = -1 }
+
+[workspace.lints.clippy]
+dbg_macro = "warn"
+todo = "warn"
+unimplemented = "warn"
+
+[workspace.dependencies]
+# --- Kiln crates (path dependencies; versions follow [workspace.package]) ---
+kiln-common = { path = "crates/kiln-common" }
+kiln-protocol = { path = "crates/kiln-protocol" }
+kiln-text = { path = "crates/kiln-text" }
+kiln-scene = { path = "crates/kiln-scene" }
+kiln-raster = { path = "crates/kiln-raster" }
+kiln-ooxml = { path = "crates/kiln-ooxml" }
+kiln-doc = { path = "crates/kiln-doc" }
+kiln-doc-layout = { path = "crates/kiln-doc-layout" }
+kiln-formula = { path = "crates/kiln-formula" }
+kiln-sheet = { path = "crates/kiln-sheet" }
+kiln-sheet-layout = { path = "crates/kiln-sheet-layout" }
+kiln-deck = { path = "crates/kiln-deck" }
+kiln-deck-layout = { path = "crates/kiln-deck-layout" }
+kiln-charts = { path = "crates/kiln-charts" }
+kiln-io-docx = { path = "crates/kiln-io-docx" }
+kiln-io-xlsx = { path = "crates/kiln-io-xlsx" }
+kiln-io-pptx = { path = "crates/kiln-io-pptx" }
+kiln-io-odf = { path = "crates/kiln-io-odf" }
+kiln-io-csv = { path = "crates/kiln-io-csv" }
+kiln-io-pdf = { path = "crates/kiln-io-pdf" }
+kiln-spell = { path = "crates/kiln-spell" }
+kiln-search = { path = "crates/kiln-search" }
+kiln-collab = { path = "crates/kiln-collab" }
+kiln-storage = { path = "crates/kiln-storage" }
+kiln-session = { path = "crates/kiln-session" }
+kiln-testing = { path = "crates/kiln-testing" }
+
+# --- Shell: Tauri 2 (desktop + Android) ---
+tauri = "=2.12.4"
+tauri-build = "=2.7.3"
+tauri-plugin-fs = "=2.7.1"
+tauri-plugin-dialog = "=2.8.3"
+tauri-plugin-opener = "=2.7.2"
+tauri-plugin-store = "=2.5.0"
+tauri-plugin-window-state = "=2.5.0"
+tauri-plugin-updater = "=2.14.0"
+tauri-plugin-os = "=2.4.0"
+tauri-plugin-process = "=2.4.0"
+tauri-plugin-shell = "=2.5.0"
+tauri-plugin-clipboard-manager = "=2.5.0"
+
+# --- Web bridge ---
+wasm-bindgen = "=0.2.129"
+wasm-bindgen-futures = "=0.4.79"
+js-sys = "=0.3.106"
+web-sys = "=0.3.106"
+console_error_panic_hook = "=0.1.7"
+wasm-bindgen-rayon = "=1.3.0"
+
+# --- Protocol encoding ---
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.154"
+postcard = { version = "=1.1.3", features = ["alloc"] }
+ts-rs = "=12.0.1"
+
+# --- Text layout, shaping, fonts ---
+parley = "=0.12.0"
+fontique = "=0.12.0"
+harfrust = "=0.14.0"
+skrifa = "=0.48.0"
+swash = "=0.2.10"
+fontdb = "=0.24.0"
+
+# --- Unicode ---
+unicode-bidi = "=0.3.18"
+unicode-segmentation = "=1.13.3"
+unicode-linebreak = "=0.1.5"
+hyphenation = "=0.8.4"
+icu = "=2.3.1"
+
+# --- Geometry, paint, raster, images ---
+kurbo = "=0.13.1"
+peniko = "=0.6.1"
+tiny-skia = "=0.12.0"
+image = { version = "=0.25.10", default-features = false }
+png = "=0.18.1"
+resvg = "=0.48.1"
+usvg = "=0.48.1"
+
+# --- File formats ---
+quick-xml = "=0.42.0"
+zip = { version = "=9.0.3", default-features = false }
+encoding_rs = "=0.8.42"
+csv = "=1.4.0"
+krilla = "=0.8.2"
+
+# --- Threading, IO, server ---
+rayon = "=1.12.0"
+crossbeam = "=0.8.5"
+flume = "=0.12.0"
+parking_lot = "=0.12.5"
+dashmap = "=6.2.1"
+tokio = "=1.53.3"
+axum = "=0.8.9"
+
+# --- Collaboration, storage, spell check ---
+loro = "=1.16.2"
+redb = "=4.4.0"
+spellbook = "=0.4.2"
+
+# --- Numerics ---
+rust_decimal = "=1.43.0"
+statrs = "=0.19.1"
+libm = "=0.2.16"
+num-traits = "=0.2.19"
+rand = "=0.10.3"
+
+# --- Utilities ---
+chrono = "=0.4.45"
+uuid = "=1.28.0"
+indexmap = "=2.14.2"
+smallvec = "=1.16.3"
+hashbrown = "=0.17.1"
+rustc-hash = "=2.1.3"
+petgraph = "=0.8.3"
+ropey = "=1.6.1"
+regex = "=1.13.1"
+memchr = "=2.8.3"
+ordered-float = "=5.5.0"
+bytemuck = "=1.25.2"
+thiserror = "=2.0.21"
+anyhow = "=1.0.104"
+tracing = "=0.1.44"
+getrandom = "=0.4.3"
+
+# --- Dev / test ---
+insta = "=1.49.0"
+proptest = "=1.12.0"
+criterion = "=0.8.2"

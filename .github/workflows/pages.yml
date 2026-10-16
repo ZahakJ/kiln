@@ -1,0 +1,66 @@
+# Builds the landing page, the manual and the web app into one site (PLAN.md §4.6). Pages is still
+# served from the `docs/` folder of `main` until WP-91 switches the source to GitHub Actions; until
+# then the deploy job only runs when the repository variable PAGES_WORKFLOW is '1'.
+name: pages
+
+on:
+  push:
+    branches: [main]
+    paths: ['docs/**', 'apps/web/**', 'crates/**', 'packages/**', '.github/workflows/pages.yml']
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  TURBO_TELEMETRY_DISABLED: 1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build the web app under /kiln/app/
+        run: pnpm --filter @kiln/web exec vite build --base /kiln/app/ --outDir dist-pages
+
+      - name: Assemble the site
+        run: |
+          mkdir -p site
+          cp -r docs/. site/
+          rm -rf site/adr site/qa
+          mkdir -p site/app
+          cp -r apps/web/dist-pages/. site/app/
+          ls site
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    if: vars.PAGES_WORKFLOW == '1'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

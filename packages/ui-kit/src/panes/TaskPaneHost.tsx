@@ -116,7 +116,7 @@ export function TaskPaneHost({
 
   return (
     <aside
-      className={cx('of-taskpane', `of-taskpane--${side}`, className)}
+      className={cx('kiln-taskpane', `kiln-taskpane--${side}`, className)}
       style={{ '--pane-width': `${width}px` } as CSSProperties}
       aria-label={active.title}
       onKeyDown={(e) => {
@@ -124,7 +124,7 @@ export function TaskPaneHost({
           e.key === 'Escape' &&
           onClose &&
           !e.defaultPrevented &&
-          (e.target as HTMLElement).closest('.of-taskpane__header')
+          (e.target as HTMLElement).closest('.kiln-taskpane__header')
         ) {
           e.preventDefault();
           onClose(active.id);
@@ -134,7 +134,7 @@ export function TaskPaneHost({
       {/* biome-ignore lint/a11y/useSemanticElements: a focusable window splitter (WAI-ARIA separator), not an <hr> */}
       <div
         ref={splitterRef}
-        className="of-taskpane__splitter"
+        className="kiln-taskpane__splitter"
         role="separator"
         aria-orientation="vertical"
         aria-label={`Resize ${active.title} pane`}
@@ -148,9 +148,9 @@ export function TaskPaneHost({
         onPointerCancel={onPointerUp}
         onKeyDown={onSplitterKey}
       />
-      <div className="of-taskpane__header">
+      <div className="kiln-taskpane__header">
         {panes.length > 1 ? (
-          <div className="of-taskpane__tabs" role="tablist" aria-label="Panes">
+          <div className="kiln-taskpane__tabs" role="tablist" aria-label="Panes">
             {panes.map((p, i) => (
               <button
                 key={p.id}
@@ -160,7 +160,7 @@ export function TaskPaneHost({
                 aria-selected={p.id === active.id}
                 aria-controls={`${id}-panel`}
                 tabIndex={p.id === active.id ? 0 : -1}
-                className={cx('of-taskpane__tab', p.id === active.id && 'is-active')}
+                className={cx('kiln-taskpane__tab', p.id === active.id && 'is-active')}
                 onClick={() => activate(p.id)}
                 onKeyDown={(e) => onTabKey(e, i)}
               >
@@ -170,17 +170,17 @@ export function TaskPaneHost({
             ))}
           </div>
         ) : (
-          <h2 className="of-taskpane__title" id={`${id}-tab-${active.id}`}>
+          <h2 className="kiln-taskpane__title" id={`${id}-tab-${active.id}`}>
             {active.title}
           </h2>
         )}
-        <div className="of-taskpane__actions">
+        <div className="kiln-taskpane__actions">
           <Menu modal={false}>
             <Tooltip content="Task pane options">
               <MenuTrigger asChild>
                 <button
                   type="button"
-                  className="of-btn of-btn--ghost of-btn--sm of-btn--icon-only"
+                  className="kiln-btn kiln-btn--ghost kiln-btn--sm kiln-btn--icon-only"
                   aria-label="Task pane options"
                 >
                   <Icon icon={ChevronDown} size={14} />
@@ -206,7 +206,7 @@ export function TaskPaneHost({
             <Tooltip content={`Close ${active.title}`}>
               <button
                 type="button"
-                className="of-btn of-btn--ghost of-btn--sm of-btn--icon-only"
+                className="kiln-btn kiln-btn--ghost kiln-btn--sm kiln-btn--icon-only"
                 aria-label={`Close ${active.title}`}
                 onClick={() => onClose(active.id)}
               >
@@ -217,7 +217,7 @@ export function TaskPaneHost({
         </div>
       </div>
       <div
-        className="of-taskpane__body"
+        className="kiln-taskpane__body"
         id={`${id}-panel`}
         {...(panes.length > 1 ? { role: 'tabpanel', 'aria-labelledby': `${id}-tab-${active.id}` } : {})}
       >

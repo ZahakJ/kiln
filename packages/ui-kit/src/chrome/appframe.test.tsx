@@ -42,10 +42,10 @@ function setup(extra: Partial<Parameters<typeof AppFrame>[0]> = {}) {
 describe('AppFrame', () => {
   it('lays out the title bar, ribbon, document and status bar', () => {
     setup();
-    expect(screen.getByRole('img', { name: 'Scriba' })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Kiln Write' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Search commands' })).toHaveTextContent('Alt+Q');
     expect(screen.getByRole('tablist', { name: 'Ribbon tabs' })).toBeInTheDocument();
-    expect(screen.getByRole('main', { name: 'Scriba document' })).toContainElement(
+    expect(screen.getByRole('main', { name: 'Kiln Write document' })).toContainElement(
       screen.getByRole('textbox', { name: 'Document text' }),
     );
     expect(screen.getByText('status')).toBeInTheDocument();
@@ -108,9 +108,9 @@ describe('AppFrame', () => {
     const user = userEvent.setup();
     setup();
     await user.click(screen.getByRole('button', { name: 'File' }));
-    expect(screen.getByRole('dialog', { name: /Scriba File menu/ })).toHaveTextContent('Info page');
+    expect(screen.getByRole('dialog', { name: /Kiln Write File menu/ })).toHaveTextContent('Info page');
     await user.click(screen.getByRole('button', { name: 'Options' }));
-    expect(await screen.findByRole('dialog', { name: 'Scriba Options' })).toBeInTheDocument();
+    expect(await screen.findByRole('dialog', { name: 'Kiln Write Options' })).toBeInTheDocument();
   });
 
   it('renames the document inline', async () => {

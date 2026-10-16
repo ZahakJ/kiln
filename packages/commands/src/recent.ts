@@ -2,7 +2,7 @@ import { defaultStorage, readJson, type StorageLike, writeJson } from './storage
 
 export interface RecentCommandsOptions {
   storage?: StorageLike;
-  /** Storage key; one list per app is typical (`officina.recentCommands.write`). */
+  /** Storage key; one list per app is typical (`kiln.recentCommands.write`). */
   key?: string;
   /** Max entries kept. Default 8 (the palette shows them as "Recent"). */
   limit?: number;
@@ -10,7 +10,7 @@ export interface RecentCommandsOptions {
 
 /**
  * Most-recently-used command ids, newest first, for the palette's "Recent" section. Stored only on
- * this device; never transmitted (Officina has no telemetry).
+ * this device; never transmitted (Kiln has no telemetry).
  */
 export class RecentCommands {
   readonly #storage: StorageLike;
@@ -21,7 +21,7 @@ export class RecentCommands {
 
   constructor(options: RecentCommandsOptions = {}) {
     this.#storage = options.storage ?? defaultStorage();
-    this.#key = options.key ?? 'officina.recentCommands';
+    this.#key = options.key ?? 'kiln.recentCommands';
     this.#limit = Math.max(1, options.limit ?? 8);
     const stored = readJson<unknown>(this.#storage, this.#key, []);
     this.#ids = Array.isArray(stored)

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Officina test oracle: convert a document with LibreOffice headless (PLAN.md §4.5).
+# Kiln test oracle: convert a document with LibreOffice headless (PLAN.md §4.5).
 #
 #   tools/oracle-soffice.sh <input-file> <format> <outdir>
 #
@@ -7,8 +7,8 @@
 #   tools/oracle-soffice.sh book.xlsx csv out/      # LibreOffice-recalculated values (formula oracle)
 #   tools/oracle-soffice.sh report.docx pdf out/    # reference rendering; then `pdftoppm -r 60 -png`
 #
-# Uses a dedicated LibreOffice profile (default /tmp/officina-lo-profile, override with
-# OFFICINA_LO_PROFILE) seeded on first run with "always recalculate on load" for OOXML and ODF files,
+# Uses a dedicated LibreOffice profile (default /tmp/kiln-lo-profile, override with
+# KILN_LO_PROFILE) seeded on first run with "always recalculate on load" for OOXML and ODF files,
 # so converting .xlsx -> .csv yields values computed by LibreOffice rather than cached ones.
 # Conversions are serialised with flock because a LibreOffice profile cannot be shared concurrently.
 set -euo pipefail
@@ -23,7 +23,7 @@ in="$1" fmt="$2" outdir="$3"
 SOFFICE="${SOFFICE:-/usr/bin/soffice}"
 [ -x "$SOFFICE" ] || { echo "oracle-soffice: LibreOffice not found at $SOFFICE" >&2; exit 69; }
 
-profile="${OFFICINA_LO_PROFILE:-/tmp/officina-lo-profile}"
+profile="${KILN_LO_PROFILE:-/tmp/kiln-lo-profile}"
 xcu="$profile/user/registrymodifications.xcu"
 if [ ! -f "$xcu" ] || ! grep -q 'OOXMLRecalcMode' "$xcu"; then
   mkdir -p "$profile/user"

@@ -1,0 +1,30 @@
+{
+  "name": "@kiln-ref/sheet-model",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The Kiln Grid workbook model: sparse cell store, styles, sheet metadata, command log, calculation binding and number formatting.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "bench": "vitest bench --run --reporter=verbose"
+  },
+  "dependencies": {
+    "@kiln-ref/formula": "workspace:*",
+    "@kiln-ref/ooxml": "workspace:*",
+    "fflate": "catalog:",
+    "numfmt": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

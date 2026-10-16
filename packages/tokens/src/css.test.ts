@@ -17,7 +17,7 @@ describe('generated CSS', () => {
   it('declares every colour token for light, OS-dark, explicit dark and high contrast', () => {
     const css = renderTokensCss();
     for (const name of Object.keys(colors.light)) {
-      const count = css.split(`--of-${name}:`).length - 1;
+      const count = css.split(`--kiln-${name}:`).length - 1;
       expect(count, name).toBe(4);
     }
     expect(css).toContain('[data-theme="dark"]');
@@ -29,23 +29,25 @@ describe('generated CSS', () => {
   it('switches the accent per app with data-app', () => {
     const css = renderTokensCss();
     for (const app of APPS) {
-      expect(css).toContain(`[data-app="${app}"] {\n  --of-accent: var(--of-accent-${app});`);
+      expect(css).toContain(`[data-app="${app}"] {\n  --kiln-accent: var(--kiln-accent-${app});`);
     }
-    expect(css).toContain('--of-selection: color-mix(in srgb, var(--of-accent) var(--of-selection-alpha)');
+    expect(css).toContain(
+      '--kiln-selection: color-mix(in srgb, var(--kiln-accent) var(--kiln-selection-alpha)',
+    );
   });
 
   it('declares every scale token once and zeroes motion for reduced motion', () => {
     const css = renderTokensCss();
     for (const name of Object.keys(scale))
-      expect(css).toContain(`--of-${name}: ${scale[name as keyof typeof scale].replace(/'/g, '"')};`);
-    expect(css).toMatch(/prefers-reduced-motion: reduce\)\s*{\s*:root\s*{\s*--of-duration-fast: 0ms/);
+      expect(css).toContain(`--kiln-${name}: ${scale[name as keyof typeof scale].replace(/'/g, '"')};`);
+    expect(css).toMatch(/prefers-reduced-motion: reduce\)\s*{\s*:root\s*{\s*--kiln-duration-fast: 0ms/);
   });
 
   it('exposes a Tailwind 4 @theme block', () => {
     const css = renderThemeCss();
     expect(css).toContain('@theme inline {');
-    expect(css).toContain('--color-accent: var(--of-accent);');
-    expect(css).toContain('--radius-dialog: var(--of-radius-dialog);');
+    expect(css).toContain('--color-accent: var(--kiln-accent);');
+    expect(css).toContain('--radius-dialog: var(--kiln-radius-dialog);');
   });
 
   it('registers every bundled document font face, and the files exist', () => {
@@ -57,8 +59,7 @@ describe('generated CSS', () => {
         expect(existsSync(pkg(file)), file).toBe(true);
       }
     }
-    expect(css).toContain('@import "@fontsource-variable/inter/wght.css";');
-    expect(css).toContain('@import "@fontsource/jetbrains-mono/400.css";');
+    expect(css).not.toContain('@import');
   });
 
   it('lists every bundled font with an OFL licence in fonts/NOTICES.json', () => {

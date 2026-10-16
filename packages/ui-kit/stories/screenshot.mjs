@@ -2,7 +2,7 @@
 // Captures review screenshots of the ui-kit gallery (light, dark, high contrast; desktop and phone;
 // open menus, panels and dialogs). Starts the gallery's Vite server, drives Chromium, writes PNGs.
 //
-//   node packages/ui-kit/stories/screenshot.mjs [outDir]     (default: $TMPDIR/officina-ui-gallery)
+//   node packages/ui-kit/stories/screenshot.mjs [outDir]     (default: $TMPDIR/kiln-ui-gallery)
 import { spawn } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -10,7 +10,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
-const out = process.argv[2] ?? join(tmpdir(), 'officina-ui-gallery');
+const out = process.argv[2] ?? join(tmpdir(), 'kiln-ui-gallery');
 mkdirSync(out, { recursive: true });
 const pkg = fileURLToPath(new URL('..', import.meta.url));
 const PORT = 5180;
@@ -57,41 +57,41 @@ try {
     await page.getByRole('button', { name: 'Edit' }).click();
     await page.getByRole('menuitem', { name: 'Paste Options' }).hover();
     await page.getByRole('menuitemradio', { name: 'Merge Formatting' }).waitFor();
-    await shot('menu', { clip: await clipAround(page, '.of-menu', 40) });
+    await shot('menu', { clip: await clipAround(page, '.kiln-menu', 40) });
     await page.keyboard.press('Escape');
     await page.keyboard.press('Escape');
 
     // Font colour panel from the ribbon split button.
     await page.getByRole('button', { name: 'More options for Font Colour' }).click();
-    await page.locator('.of-popover .of-color').waitFor();
-    await shot('colorpanel', { clip: await clipAround(page, '.of-popover', 60) });
+    await page.locator('.kiln-popover .kiln-color').waitFor();
+    await shot('colorpanel', { clip: await clipAround(page, '.kiln-popover', 60) });
     await page.keyboard.press('Escape');
 
     // Paste split menu.
     await page.getByRole('button', { name: 'More options for Paste' }).click();
     await page.getByRole('menuitem', { name: 'Keep Text Only' }).waitFor();
-    await shot('paste', { clip: await clipAround(page, '.of-menu', 60) });
+    await shot('paste', { clip: await clipAround(page, '.kiln-menu', 60) });
     await page.keyboard.press('Escape');
 
     // Styles gallery expanded.
     await page.getByRole('button', { name: 'More Styles' }).click();
-    await page.locator('.of-gallery__panel').waitFor();
-    await shot('gallery', { clip: await clipAround(page, '.of-gallery__panel', 40) });
+    await page.locator('.kiln-gallery__panel').waitFor();
+    await shot('gallery', { clip: await clipAround(page, '.kiln-gallery__panel', 40) });
     await page.keyboard.press('Escape');
 
     // Font combobox open and filtered.
     const fontBox = page.getByRole('combobox', { name: 'Font', exact: true });
     await fontBox.click();
     await page.keyboard.type('Lib');
-    await page.locator('.of-combobox__popup').waitFor();
-    await shot('combobox', { clip: await clipAround(page, '.of-combobox__popup', 60) });
+    await page.locator('.kiln-combobox__popup').waitFor();
+    await shot('combobox', { clip: await clipAround(page, '.kiln-combobox__popup', 60) });
     await page.keyboard.press('Escape');
     await page.keyboard.press('Escape');
 
     // Super tooltip.
     await page.getByRole('button', { name: 'Bold', exact: true }).first().hover();
-    await page.locator('.of-tooltip').waitFor();
-    await shot('tooltip', { clip: await clipAround(page, '.of-tooltip', 80) });
+    await page.locator('.kiln-tooltip').waitFor();
+    await shot('tooltip', { clip: await clipAround(page, '.kiln-tooltip', 80) });
     await page.mouse.move(0, 0);
 
     // Dialog.

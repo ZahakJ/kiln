@@ -11,9 +11,9 @@ import { PYTHON_DIR } from '../paths.ts';
 
 const run = promisify(execFile);
 
-/** The interpreter: `OFFICINA_PYTHON`, else `~/.venvs/officina/bin/python`. */
+/** The interpreter: `KILN_PYTHON`, else `~/.venvs/kiln/bin/python`. */
 export function pythonInterpreter(): string {
-  return process.env.OFFICINA_PYTHON ?? join(homedir(), '.venvs', 'officina', 'bin', 'python');
+  return process.env.KILN_PYTHON ?? join(homedir(), '.venvs', 'kiln', 'bin', 'python');
 }
 
 let available: boolean | undefined;

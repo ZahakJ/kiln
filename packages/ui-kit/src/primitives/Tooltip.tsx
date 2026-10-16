@@ -73,24 +73,24 @@ export function Tooltip({
       <RadixTooltip.Trigger asChild>{children}</RadixTooltip.Trigger>
       <RadixTooltip.Portal>
         <RadixTooltip.Content
-          className={description ? 'of-tooltip of-tooltip--rich' : 'of-tooltip'}
+          className={description ? 'kiln-tooltip kiln-tooltip--rich' : 'kiln-tooltip'}
           side={side}
           align={align}
           sideOffset={6}
           collisionPadding={8}
         >
-          <span className="of-tooltip__title">
+          <span className="kiln-tooltip__title">
             {content}
             {shortcut ? (
               <>
                 {' '}
-                <span className="of-tooltip__shortcut">
+                <span className="kiln-tooltip__shortcut">
                   (<Kbd shortcut={shortcut} variant="inline" />)
                 </span>
               </>
             ) : null}
           </span>
-          {description ? <span className="of-tooltip__description">{description}</span> : null}
+          {description ? <span className="kiln-tooltip__description">{description}</span> : null}
         </RadixTooltip.Content>
       </RadixTooltip.Portal>
     </RadixTooltip.Root>

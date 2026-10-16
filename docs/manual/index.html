@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Manual · Officina</title>
-<meta name="description" content="The Officina manual: installing, Scriba, Tabula, Scena and Notula, collaboration, file formats and troubleshooting.">
+<title>Manual · Kiln</title>
+<meta name="description" content="The Kiln manual: installing, Kiln Write, Kiln Grid, Kiln Deck and Kiln Notes, collaboration, file formats and troubleshooting.">
 <meta name="color-scheme" content="dark light">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='114' fill='%233F6FE0'/%3E%3Cpath fill='%23fff' d='M348 412.95A170 170 0 1 0 164 412.95V270A92 92 0 0 1 348 270Z'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect x='16' y='16' width='480' height='480' rx='108' fill='%2326272B'/%3E%3Ctext x='256' y='300' text-anchor='middle' font-family='Arial,sans-serif' font-weight='700' font-size='150' fill='%23F4F2EE'%3EKiln%3C/text%3E%3C/svg%3E">
 <style>
 /* The manual is the Markdown in this folder, rendered here by marked (MIT, docs/assets/marked.min.js). */
 @font-face{font-family:Inter;src:url(../assets/inter.woff2) format('woff2');font-weight:100 900;font-display:swap}
@@ -49,9 +49,9 @@ article img{max-width:100%;border-radius:10px;border:1px solid var(--line)}
 </head>
 <body>
 <header class="top">
-  <a class="logo" href="../"><svg viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="114" fill="#3F6FE0"/><path fill="#fff" d="M348 412.95A170 170 0 1 0 164 412.95V270A92 92 0 0 1 348 270Z"/></svg>Officina <span>Manual</span></a>
+  <a class="logo" href="../"><svg viewBox="0 0 512 512" aria-hidden="true"><rect x="16" y="16" width="480" height="480" rx="108" fill="#26272B"/><text x="256" y="300" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="150" fill="#F4F2EE">Kiln</text></svg>Kiln <span>Manual</span></a>
   <button class="menu" type="button" aria-expanded="false" aria-controls="toc">Contents</button>
-  <nav><a class="opt" href="../">Home</a><a class="opt" href="https://github.com/ZahakJ/officina/releases/latest">Download</a><a href="https://github.com/ZahakJ/officina">GitHub</a></nav>
+  <nav><a class="opt" href="../">Home</a><a class="opt" href="https://github.com/ZahakJ/kiln/releases/latest">Download</a><a href="https://github.com/ZahakJ/kiln">GitHub</a></nav>
 </header>
 <div class="layout">
   <aside id="toc" aria-label="Manual contents"></aside>
@@ -60,14 +60,14 @@ article img{max-width:100%;border-radius:10px;border:1px solid var(--line)}
 <script src="../assets/marked.min.js"></script>
 <script>
 "use strict";
-const REPO = "https://github.com/ZahakJ/officina/blob/main/docs/";
+const REPO = "https://github.com/ZahakJ/kiln/blob/main/docs/";
 const page = document.getElementById("page"), toc = document.getElementById("toc"), menu = document.querySelector(".menu");
 const slug = (t) => t.toLowerCase().trim().replace(/[^\p{L}\p{N}\s-]/gu, "").replace(/\s+/g, "-");
 const current = () => (new URLSearchParams(location.search).get("p") || "index").replace(/^\/+|\.md$/g, "");
 
 /* Links and images in a page are relative to its folder. Manual pages stay in the viewer;
    files elsewhere in the repository open on GitHub. */
-const REPO_ROOT = "https://github.com/ZahakJ/officina/blob/main/";
+const REPO_ROOT = "https://github.com/ZahakJ/kiln/blob/main/";
 function route(href, from, isImage) {
   if (/^([a-z][a-z0-9+.-]*:|#|\/)/i.test(href)) return null;
   const [path, hash] = href.split("#");
@@ -102,7 +102,7 @@ function render(md, name) {
     if (to) img.setAttribute("src", to.startsWith("http") ? to.replace("/blob/", "/raw/") : to);
   }
   const h1 = page.querySelector("h1");
-  document.title = (h1 ? h1.textContent + " · " : "") + "Officina manual";
+  document.title = (h1 ? h1.textContent + " · " : "") + "Kiln manual";
 }
 
 function markToc(name) {
@@ -125,11 +125,11 @@ async function show(push) {
       const listed = [...toc.querySelectorAll("a[data-page]")].find((a) => a.dataset.page === name);
       if (listed) {
         const title = listed.textContent.replace(/[<>&"]/g, "");
-        page.innerHTML = `<h1>${title}</h1><div class="notice"><strong>This page hasn’t been written yet.</strong> It is planned and will appear here as the feature it describes lands. Until then, the <a href="?p=README">contents</a> show what is available, and you can follow progress on <a href="https://github.com/ZahakJ/officina">GitHub</a>.</div>`;
-        document.title = title + " (coming soon) · Officina manual";
+        page.innerHTML = `<h1>${title}</h1><div class="notice"><strong>This page hasn’t been written yet.</strong> It is planned and will appear here as the feature it describes lands. Until then, the <a href="?p=README">contents</a> show what is available, and you can follow progress on <a href="https://github.com/ZahakJ/kiln">GitHub</a>.</div>`;
+        document.title = title + " (coming soon) · Kiln manual";
       } else {
         page.innerHTML = `<h1>Page not found</h1><div class="notice">There is no manual page called <code>${safe}.md</code>. The <a href="?p=README">contents</a> list every page.</div>`;
-        document.title = "Page not found · Officina manual";
+        document.title = "Page not found · Kiln manual";
       }
     }
   }

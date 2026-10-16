@@ -1,4 +1,4 @@
-/** Scena (Deck) shortcuts: the "Scena (presentations)" column and the slide-show table of docs/SHORTCUTS.md. */
+/** Kiln Deck shortcuts: the "Kiln Deck (presentations)" column and the slide-show table of docs/SHORTCUTS.md. */
 import type { KeyBinding } from '../keymap.ts';
 import { bind, SLIDE_SHOW_ROW as S } from './bind.ts';
 

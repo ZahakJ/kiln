@@ -65,8 +65,8 @@ export function ToastProvider({
   const api = useMemo(() => ({ toast, dismiss }), [toast, dismiss]);
 
   const region = (
-    <section className="of-toast-region" aria-label={label}>
-      <ol className="of-toast-list">
+    <section className="kiln-toast-region" aria-label={label}>
+      <ol className="kiln-toast-list">
         {toasts.map((t) => (
           <ToastView key={t.id} toast={t} onDismiss={() => dismiss(t.id)} />
         ))}
@@ -100,7 +100,7 @@ function ToastView({ toast, onDismiss }: { toast: ToastRecord; onDismiss: () => 
   const urgent = toast.tone === 'danger' || toast.tone === 'warning';
   return (
     <li
-      className={cx('of-toast', `of-toast--${toast.tone}`)}
+      className={cx('kiln-toast', `kiln-toast--${toast.tone}`)}
       role={urgent ? 'alert' : 'status'}
       aria-live={urgent ? 'assertive' : 'polite'}
       aria-atomic="true"
@@ -115,28 +115,28 @@ function ToastView({ toast, onDismiss }: { toast: ToastRecord; onDismiss: () => 
         }
       }}
     >
-      <span className="of-toast__icon" aria-hidden="true">
+      <span className="kiln-toast__icon" aria-hidden="true">
         <Icon icon={TONE_ICON[toast.tone]} size={18} />
       </span>
-      <div className="of-toast__body">
-        <div className="of-toast__title">{toast.title}</div>
-        {toast.description ? <div className="of-toast__description">{toast.description}</div> : null}
+      <div className="kiln-toast__body">
+        <div className="kiln-toast__title">{toast.title}</div>
+        {toast.description ? <div className="kiln-toast__description">{toast.description}</div> : null}
       </div>
       {toast.action ? (
         <button
           type="button"
-          className="of-btn of-btn--ghost of-btn--sm of-toast__action"
+          className="kiln-btn kiln-btn--ghost kiln-btn--sm kiln-toast__action"
           onClick={() => {
             toast.action?.onClick();
             onDismiss();
           }}
         >
-          <span className="of-btn__label">{toast.action.label}</span>
+          <span className="kiln-btn__label">{toast.action.label}</span>
         </button>
       ) : null}
       <button
         type="button"
-        className="of-btn of-btn--ghost of-btn--sm of-btn--icon-only of-toast__close"
+        className="kiln-btn kiln-btn--ghost kiln-btn--sm kiln-btn--icon-only kiln-toast__close"
         aria-label="Dismiss notification"
         onClick={onDismiss}
       >

@@ -1,13 +1,13 @@
 # ADR 0001: Technology stack and licence
 
-- **Status:** accepted
+- **Status:** superseded by [ADR 0002](0002-kiln-rust-core.md) (stack); the licence decision stands
 - **Date:** 2026-10-15
 - **Work package:** WP-01 (source: PLAN.md §0, §1.1a, §3, §4)
 
 ## Context
 
-Officina is an office suite (Scriba for documents, Tabula for spreadsheets, Scena for presentations,
-Notula for notes, Atrium as the start screen) that must open, edit and save real Microsoft Office files,
+Kiln is an office suite (Kiln Write for documents, Kiln Grid for spreadsheets, Kiln Deck for presentations,
+Kiln Notes for notes, Kiln Home as the start screen) that must open, edit and save real Microsoft Office files,
 feel familiar to Office users, and run on Linux, Windows, macOS, Android and the web. It is built by a
 small team of agents working concurrently on a 4-CPU, 7 GB machine without root, Rust or Docker.
 
@@ -23,7 +23,7 @@ small team of agents working concurrently on a 4-CPU, 7 GB machine without root,
 - **Turborepo 2** runs `lint`, `typecheck`, `test` (cached), `build` (depends on `^build`), `e2e` (depends on
   the web build) and the uncached `release:*` tasks.
 - Packages are consumed **from source**: each `package.json` exports `./src/index.ts`, TypeScript resolves
-  `@officina/*` through `paths` in `tsconfig.base.json`, and Vite through matching aliases. There is no
+  `@kiln/*` through `paths` in `tsconfig.base.json`, and Vite through matching aliases. There is no
   per-package build step; only apps run `vite build`.
 - **Biome 2** replaces ESLint + Prettier (recommended rules, 2 spaces, single quotes, 110 columns,
   organised imports). **Vitest 5** for unit tests (jsdom for UI packages), **Playwright 1.64** with headless
@@ -48,11 +48,11 @@ small team of agents working concurrently on a 4-CPU, 7 GB machine without root,
 
 - **Write:** TipTap 3 / ProseMirror with our own pagination layer. Lexical was rejected because
   TipTap/ProseMirror has more mature table support and Yjs bindings.
-- **Grid:** a custom canvas grid and **our own formula engine** (`@officina/formula`). HyperFormula was not
+- **Grid:** a custom canvas grid and **our own formula engine** (`@kiln/formula`). HyperFormula was not
   adopted (see the licence section) and fast-formula-parser is unmaintained.
 - **Deck:** a custom DOM/SVG slide stage with TipTap text bodies (Konva and Fabric were rejected in favour of
   DOM/SVG, which keeps text editable and accessible).
-- **File formats:** our own OOXML layer (`@officina/ooxml`: OPC container over `fflate`, XML through
+- **File formats:** our own OOXML layer (`@kiln/ooxml`: OPC container over `fflate`, XML through
   `fast-xml-parser`) with opaque-part passthrough for round-trip fidelity. JSZip was rejected (dual MIT/GPL,
   slower than fflate); the `xlsx` package on npm (stale SheetJS CE 0.18.5 with known CVEs) was rejected.
 - **Collaboration, undo, offline:** Yjs with `y-prosemirror`, `y-indexeddb` and Hocuspocus.
@@ -62,7 +62,7 @@ small team of agents working concurrently on a 4-CPU, 7 GB machine without root,
 
 ## Licence
 
-Officina is licensed under the **GNU Affero General Public License v3.0 or later**.
+Kiln is licensed under the **GNU Affero General Public License v3.0 or later**.
 
 1. The suite ships a collaboration server and a PWA, so it can be offered as a hosted service. The AGPL keeps
    hosted forks open; ONLYOFFICE, Collabora and Euro-Office chose the same licence for the same reason.
@@ -76,7 +76,7 @@ Officina is licensed under the **GNU Affero General Public License v3.0 or later
    `Zlib` was added to the PLAN.md list in WP-01 because `pako` (a dependency of `pdf-lib`) is
    `(MIT AND Zlib)`; the zlib licence is permissive and GPL-compatible.
 3. GPL-3.0-only code such as HyperFormula could legally be combined with an AGPL-3.0 work (GPLv3 §13). We
-   still build our own formula engine, for control over Excel semantics and so that `@officina/formula`
+   still build our own formula engine, for control over Excel semantics and so that `@kiln/formula`
    could later be relicensed permissively. HyperFormula and Univer's Apache-2.0 formula engine remain
    admissible fallbacks.
 4. LibreOffice (MPL-2.0) is used only as a development-time test oracle and is never bundled.

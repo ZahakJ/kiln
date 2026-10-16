@@ -273,15 +273,15 @@ export function Combobox({
       role="option"
       aria-selected={o.value === value}
       data-active={i === active || undefined}
-      className="of-combobox__option"
+      className="kiln-combobox__option"
       onMouseDown={(e) => e.preventDefault()}
       onMouseMove={() => setActive(i)}
       onClick={() => commitOption(o)}
     >
-      <span className="of-combobox__option-label" style={o.style}>
+      <span className="kiln-combobox__option-label" style={o.style}>
         {labelOf(o)}
       </span>
-      {o.hint ? <span className="of-combobox__hint">{o.hint}</span> : null}
+      {o.hint ? <span className="kiln-combobox__hint">{o.hint}</span> : null}
     </div>
   );
 
@@ -290,13 +290,19 @@ export function Combobox({
       <RP.Anchor asChild>
         <div
           ref={wrapperRef}
-          className={cx('of-field', 'of-combobox', `of-field--${size}`, disabled && 'is-disabled', className)}
+          className={cx(
+            'kiln-field',
+            'kiln-combobox',
+            `kiln-field--${size}`,
+            disabled && 'is-disabled',
+            className,
+          )}
           style={width !== undefined ? { width } : undefined}
         >
           <input
             ref={inputRef}
             id={id}
-            className="of-combobox__input"
+            className="kiln-combobox__input"
             role="combobox"
             aria-label={aria['aria-label']}
             aria-expanded={open}
@@ -326,7 +332,7 @@ export function Combobox({
           />
           <button
             type="button"
-            className="of-combobox__toggle"
+            className="kiln-combobox__toggle"
             tabIndex={-1}
             aria-label={`Show ${aria['aria-label']} list`}
             aria-controls={listId}
@@ -348,7 +354,7 @@ export function Combobox({
       </RP.Anchor>
       <RP.Portal>
         <RP.Content
-          className="of-menu of-combobox__popup"
+          className="kiln-menu kiln-combobox__popup"
           align="start"
           sideOffset={4}
           collisionPadding={8}
@@ -364,15 +370,20 @@ export function Combobox({
             id={listId}
             role="listbox"
             aria-label={aria['aria-label']}
-            className="of-combobox__list"
+            className="kiln-combobox__list"
             style={{ maxHeight: listHeight }}
           >
-            {visible.length === 0 ? <div className="of-combobox__empty">{emptyText}</div> : null}
+            {visible.length === 0 ? <div className="kiln-combobox__empty">{emptyText}</div> : null}
             {groups.map((g, gi) =>
               g.name ? (
                 // biome-ignore lint/a11y/useSemanticElements: role=group inside a listbox is the ARIA pattern
-                <div key={`${g.name}-${gi}`} role="group" aria-label={g.name} className="of-combobox__group">
-                  <div className="of-menu__group-label" aria-hidden="true">
+                <div
+                  key={`${g.name}-${gi}`}
+                  role="group"
+                  aria-label={g.name}
+                  className="kiln-combobox__group"
+                >
+                  <div className="kiln-menu__group-label" aria-hidden="true">
                     {g.name}
                   </div>
                   {g.items.map(renderOption)}

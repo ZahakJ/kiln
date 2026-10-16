@@ -1,0 +1,56 @@
+# cargo-deny configuration (PLAN.md §1.2, §4.2). Run: cargo deny check
+# Every runtime dependency must be permissive; Kiln's own crates are AGPL-3.0-or-later.
+
+[graph]
+all-features = false
+
+[licenses]
+# The allow-list of PLAN.md §4.2 (shared with tools/check-licenses.mjs).
+allow = [
+  "MIT",
+  "Apache-2.0",
+  "Apache-2.0 WITH LLVM-exception",
+  "BSD-2-Clause",
+  "BSD-3-Clause",
+  "ISC",
+  "0BSD",
+  "MPL-2.0",
+  "Zlib",
+  "Unicode-3.0",
+  "Unicode-DFS-2016",
+  "OFL-1.1",
+  "CC0-1.0",
+  "Unlicense",
+  "BlueOak-1.0.0",
+  "BSL-1.0",
+]
+confidence-threshold = 0.9
+# The allow-list is shared with the npm gate; not every licence occurs in the Rust graph yet.
+unused-allowed-license = "allow"
+# GPL-*, SSPL, BUSL, CC-BY-NC-* and unknown licences are denied by not being allowed.
+# The single exception: our own crates, which are AGPL-3.0-or-later.
+exceptions = []
+
+[licenses.private]
+# Workspace crates are `publish = false`; they are ours and licensed AGPL-3.0-or-later.
+ignore = true
+
+[advisories]
+version = 2
+yanked = "deny"
+# PLAN.md asks for unmaintained = warn. cargo-deny's v2 schema has no warn level; the closest is to
+# fail only when a crate we depend on directly is unmaintained and report nothing for transitive
+# ones (Tauri's Linux stack still uses the unmaintained GTK 3 bindings, which we cannot replace).
+unmaintained = "workspace"
+ignore = []
+
+[bans]
+multiple-versions = "allow"
+wildcards = "deny"
+allow-wildcard-paths = true
+deny = []
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]

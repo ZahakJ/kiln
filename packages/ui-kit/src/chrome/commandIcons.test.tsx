@@ -1,4 +1,4 @@
-import { COMMAND_CATALOG } from '@officina/commands';
+import { COMMAND_CATALOG } from '@kiln/commands';
 import { render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { CommandIcon, hasCommandIcon, registerCommandIcons, resolveCommandIcon } from './commandIcons.tsx';

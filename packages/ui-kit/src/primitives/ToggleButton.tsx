@@ -35,7 +35,7 @@ export function ToggleButton({
       data-state={isOn ? 'on' : 'off'}
       variant={variant}
       shortcut={shortcut}
-      className={cx('of-toggle', className)}
+      className={cx('kiln-toggle', className)}
       onClick={(e) => {
         onClick?.(e);
         if (e.defaultPrevented) return;

@@ -1,2 +1,1 @@
-# Large generated files (python3 -I tools/make-fixtures.py --large)
-fixtures/xlsx/large/
+# Large generated fixtures now live in /fixtures (ignored by the root .gitignore).

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Generate Officina's synthetic .docx/.xlsx/.pptx fixture corpus (PLAN.md §5).
+"""Generate Kiln's synthetic .docx/.xlsx/.pptx fixture corpus (PLAN.md §5).
 
-    python3 -I tools/make-fixtures.py --out packages/testing/fixtures [--large] [--only docx,xlsx,pptx]
+    python3 -I tools/make-fixtures.py --out fixtures [--large] [--only docx,xlsx,pptx]
 
 Files go to <out>/<format>/features/<name>.<ext>. The ``--large`` flag also writes the 100 000-row
 workbook to <out>/xlsx/large/ (gitignored; too big for the repository and for PDF conversion tests).
@@ -11,7 +11,7 @@ entry order, so regenerating produces byte-identical files and the committed cor
 this script does.
 
 The script needs python-docx, openpyxl and python-pptx. When they are not importable it re-executes
-itself with the project virtualenv (~/.venvs/officina, PLAN.md §4.5), creating it first if necessary.
+itself with the project virtualenv (~/.venvs/kiln, PLAN.md §4.5), creating it first if necessary.
 """
 
 from __future__ import annotations
@@ -27,12 +27,12 @@ import sys
 import zipfile
 from pathlib import Path
 
-VENV = Path.home() / ".venvs" / "officina"
+VENV = Path.home() / ".venvs" / "kiln"
 REQUIREMENTS = ["openpyxl==3.1.*", "python-docx==1.1.*", "python-pptx==1.0.*"]
 FIXED_DATE = dt.datetime(2026, 1, 15, 9, 30, 0)
 FIXED_W3CDTF = "2026-01-15T09:30:00Z"
 ZIP_DATE = (1980, 1, 1, 0, 0, 0)
-AUTHOR = "Officina Fixtures"
+AUTHOR = "Kiln Fixtures"
 
 
 def ensure_dependencies() -> None:
@@ -492,7 +492,7 @@ def docx_headers_footers(w: Writer) -> None:
     d = new_document()
     s = d.sections[0]
     hp = s.header.paragraphs[0]
-    hp.text = "Officina fixtures\tHeaders and footers\tConfidential"
+    hp.text = "Kiln fixtures\tHeaders and footers\tConfidential"
     footer = s.footer.paragraphs[0]
     footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
     add_field_runs(footer, "Page ", "PAGE", "1")
@@ -778,7 +778,7 @@ def docx_rtl(w: Writer) -> None:
     texts = [
         "هذه فقرة باللغة العربية لاختبار اتجاه النص من اليمين إلى اليسار.",
         "זוהי פסקה בעברית לבדיקת כיוון הטקסט מימין לשמאל.",
-        "مختلط: Officina 2026 مع أرقام 12345 ونص لاتيني.",
+        "مختلط: Kiln 2026 مع أرقام 12345 ونص لاتيني.",
     ]
     for t in texts:
         p = d.add_paragraph()
@@ -892,13 +892,13 @@ def docx_properties(w: Writer) -> None:
     d = new_document()
     cp = d.core_properties
     cp.subject = "Fixture subject"
-    cp.keywords = "officina; fixture; properties"
+    cp.keywords = "kiln; fixture; properties"
     cp.comments = "Description of the document"
     cp.category = "Testing"
     cp.content_status = "Draft"
     cp.language = "en-GB"
     cp.version = "1.0"
-    cp.identifier = "urn:officina:fixture:properties"
+    cp.identifier = "urn:kiln:fixture:properties"
     d.add_heading("Document properties", 1)
     d.add_paragraph("Core properties are set; custom properties are added below.")
 
@@ -906,7 +906,7 @@ def docx_properties(w: Writer) -> None:
         '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
         '<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties" '
         'xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">'
-        '<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="2" name="Project"><vt:lpwstr>Officina</vt:lpwstr></property>'
+        '<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="2" name="Project"><vt:lpwstr>Kiln</vt:lpwstr></property>'
         '<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="3" name="Build"><vt:i4>42</vt:i4></property>'
         '<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="4" name="Ratio"><vt:r8>0.75</vt:r8></property>'
         '<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="5" name="Reviewed"><vt:bool>true</vt:bool></property>'
@@ -1198,10 +1198,10 @@ FORMULAS = {
     ],
     "Text": [
         'CONCATENATE("Offi","cina")', '_xlfn.CONCAT("A","B","C")', 'Data!B1&" "&Data!B2', 'TEXT(1234.5,"#,##0.00")',
-        'TEXT(46037,"yyyy-mm-dd")', '_xlfn.TEXTJOIN(", ",TRUE,Data!B1:B5)', 'LEFT("Officina",4)', 'RIGHT("Officina",3)',
-        'MID("Officina",3,4)', 'LEN("Officina")', 'FIND("c","Officina")', 'SEARCH("I","Officina")',
-        'SUBSTITUTE("a-b-c","-","+")', 'REPLACE("Officina",1,1,"o")', 'TRIM("  spaced   out  ")', "CLEAN(CHAR(7)&\"x\")",
-        'UPPER("officina")', 'LOWER("OFFICINA")', 'PROPER("hello world")', 'VALUE("42")',
+        'TEXT(46037,"yyyy-mm-dd")', '_xlfn.TEXTJOIN(", ",TRUE,Data!B1:B5)', 'LEFT("Kiln",4)', 'RIGHT("Kiln",3)',
+        'MID("Kiln",3,4)', 'LEN("Kiln")', 'FIND("c","Kiln")', 'SEARCH("I","Kiln")',
+        'SUBSTITUTE("a-b-c","-","+")', 'REPLACE("Kiln",1,1,"o")', 'TRIM("  spaced   out  ")', "CLEAN(CHAR(7)&\"x\")",
+        'UPPER("kiln")', 'LOWER("KILN")', 'PROPER("hello world")', 'VALUE("42")',
         '_xlfn.NUMBERVALUE("1.234,5",",",".")', 'REPT("ab",3)', "CHAR(65)", 'CODE("A")', "_xlfn.UNICHAR(9731)",
         '_xlfn.UNICODE("A")', 'EXACT("a","A")', "DOLLAR(1234.567,2)", "FIXED(1234.567,1)", 'T("text")',
         "LEN(Data!B3)", 'LEFT(Data!B4,2)&"…"', 'UPPER(Data!B5)', 'SUBSTITUTE(Data!B6,"a","A")', 'TEXT(0.256,"0.0%")',
@@ -1718,7 +1718,7 @@ def xlsx_protection(w: Writer) -> None:
         c = ws.cell(r, 2, r)
         c.protection = Protection(locked=False)
     ws.protection.sheet = True
-    ws.protection.password = "officina"
+    ws.protection.password = "kiln"
     ws.protection.formatCells = False
     wb.security.lockStructure = True
     save_xlsx(w, "protection", wb, "Protection")
@@ -2345,7 +2345,7 @@ def make_pptx(out: Path) -> int:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--out", required=True, type=Path, help="fixtures root (packages/testing/fixtures)")
+    ap.add_argument("--out", required=True, type=Path, help="fixtures root (fixtures)")
     ap.add_argument("--only", default="docx,xlsx,pptx", help="comma-separated formats to generate")
     ap.add_argument("--large", action="store_true", help="also write the 100k-row workbook to xlsx/large/")
     args = ap.parse_args()

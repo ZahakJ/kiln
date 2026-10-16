@@ -23,7 +23,7 @@
     "skipLibCheck": true,
     "types": ["node"],
     "paths": {
-      "@officina/*": ["./packages/*/src"]
+      "@kiln/*": ["./packages/*/src"]
     }
   }
 }

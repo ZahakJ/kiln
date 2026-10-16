@@ -7,7 +7,7 @@ import {
   formatShortcut,
   type Keymap,
   type Platform,
-} from '@officina/commands';
+} from '@kiln/commands';
 import {
   createContext,
   type ReactNode,
@@ -52,7 +52,7 @@ function detect(): Platform {
 
 export function useCommands(): CommandsContextValue {
   const v = useContext(Ctx);
-  if (!v) throw new Error('Officina chrome components need a <CommandsProvider> (or <AppFrame>) above them');
+  if (!v) throw new Error('Kiln chrome components need a <CommandsProvider> (or <AppFrame>) above them');
   return v;
 }
 

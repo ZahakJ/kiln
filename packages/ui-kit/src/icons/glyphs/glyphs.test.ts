@@ -3,7 +3,7 @@ import { REQUIRED_GLYPH_NAMES, REQUIRED_GLYPHS } from '../required-glyphs.ts';
 import * as exported from './index.ts';
 import { glyphList, glyphs, glyphToSvg } from './index.ts';
 
-describe('Officina Glyphs', () => {
+describe('Kiln Glyphs', () => {
   it('ships at least 120 glyphs (PLAN.md §1.2)', () => {
     expect(glyphList().length).toBeGreaterThanOrEqual(120);
   });

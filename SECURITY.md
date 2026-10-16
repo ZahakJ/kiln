@@ -1,6 +1,6 @@
 # Security policy
 
-Officina opens files that other people send you. A `.docx`, `.xlsx` or `.pptx`
+Kiln opens files that other people send you. A `.docx`, `.xlsx` or `.pptx`
 is a zip archive of XML parts, and every one of them is untrusted input, so the
 readers are the part of the suite we most want reports about.
 
@@ -19,7 +19,7 @@ which version and platform (desktop, Android or web) you tested.
 
 Use GitHub's private vulnerability reporting: the *Security* tab of this
 repository, then *Report a vulnerability*
-(<https://github.com/ZahakJ/officina/security/advisories/new>). That opens a
+(<https://github.com/ZahakJ/kiln/security/advisories/new>). That opens a
 private thread with the maintainer and is the only channel watched for this.
 
 Please do not open a public issue, and do not post a proof of concept in a
@@ -31,7 +31,7 @@ from it first.
 
 ## Response time
 
-Officina is maintained in spare time. What that gets you:
+Kiln is maintained in spare time. What that gets you:
 
 - Acknowledgement within 7 days. If you have heard nothing by then, assume the
   notification was missed and comment on the advisory.
@@ -49,13 +49,14 @@ In scope:
   CPU exhaustion beyond the documented limits (2 GB uncompressed, 64,000 parts
   per package); XML entity expansion.
 - **Formulas.** Anything that lets a formula run code or reach outside the
-  workbook. Formulas are evaluated by Officina's own interpreter; there is no
+  workbook. Formulas are evaluated by Kiln's own interpreter; there is no
   `eval`.
 - **Links and embedded content.** A hyperlink or embedded object that opens or
   runs something without the user choosing to, or an allowed-scheme bypass.
-- **The desktop shell.** Escaping the Electron renderer sandbox, reaching Node
-  from page content, or abusing the IPC surface between renderer and main
-  process.
+- **The desktop shell.** Escaping the Tauri WebView, invoking a command or
+  plugin that the window's capabilities do not grant, loading remote script past
+  the content security policy, or abusing the IPC surface between the WebView
+  and the Rust core.
 - **The Android shell.** Reading or writing files outside what the user picked,
   or abusing the app's intent filters.
 - **Collaboration.** Reading or changing a shared document without the session
@@ -65,9 +66,9 @@ In scope:
 Out of scope:
 
 - Macros. VBA projects are preserved through a save and never run, so a
-  malicious macro in a file is inert in Officina.
+  malicious macro in a file is inert in Kiln.
 - Anyone holding your unlocked device.
-- Dependency vulnerabilities with no exploitable path through Officina. Report
+- Dependency vulnerabilities with no exploitable path through Kiln. Report
   those upstream.
 - Scanner output with no demonstrated impact.
 

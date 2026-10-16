@@ -16,16 +16,16 @@ export function Kbd({ shortcut, platform, variant = 'keys', className, ...rest }
   const label = shortcutLabel(shortcut, platform);
   if (variant === 'inline') {
     return (
-      <kbd className={cx('of-kbd-inline', className)} {...rest}>
+      <kbd className={cx('kiln-kbd-inline', className)} {...rest}>
         {label}
       </kbd>
     );
   }
   return (
-    <kbd className={cx('of-kbd', className)} {...rest}>
-      <span className="of-visually-hidden">{label}</span>
+    <kbd className={cx('kiln-kbd', className)} {...rest}>
+      <span className="kiln-visually-hidden">{label}</span>
       {keys.map((k, i) => (
-        <span key={`${i}-${k}`} className="of-kbd__key" aria-hidden="true">
+        <span key={`${i}-${k}`} className="kiln-kbd__key" aria-hidden="true">
           {k}
         </span>
       ))}

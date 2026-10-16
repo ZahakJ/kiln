@@ -1,5 +1,5 @@
 /**
- * Officina Glyphs — Office-specific command icons that Lucide lacks (PLAN.md §1.2).
+ * Kiln Glyphs — Office-specific command icons that Lucide lacks (PLAN.md §1.2).
  * 20×20 viewBox, 1.5 px strokes, `currentColor`. Each glyph is a named React component export;
  * `glyphs` maps export names to components and `glyphList()` lists them (galleries, tests, docs).
  */

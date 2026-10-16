@@ -1,4 +1,4 @@
-/** Tabula (Grid) commands: PLAN.md §1.4 "Grid" and the Grid column of §1.7. */
+/** Kiln Grid commands: PLAN.md §1.4 "Grid" and the Grid column of §1.7. */
 import { c, GRID, section } from './define.ts';
 
 const G = { apps: GRID };

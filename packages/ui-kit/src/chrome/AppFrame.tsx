@@ -1,4 +1,4 @@
-import type { AppId, CommandDefinition, CommandRegistry, Disposable, Keymap } from '@officina/commands';
+import type { AppId, CommandDefinition, CommandRegistry, Disposable, Keymap } from '@kiln/commands';
 import { ChevronDown, Redo2, Save, Search, Share2, Undo2 } from 'lucide-react';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { Backstage, type BackstagePageId } from '../backstage/Backstage.tsx';
@@ -54,7 +54,7 @@ export interface AppFrameProps {
   className?: string;
 }
 
-const COLLAPSE_KEY = 'officina.ribbonCollapsed';
+const COLLAPSE_KEY = 'kiln.ribbonCollapsed';
 
 function readCollapsed(): boolean {
   try {
@@ -230,11 +230,11 @@ function AppFrameInner({
   return (
     <div
       ref={rootRef}
-      className={cx('of-appframe', options.general.classicLook && 'of-appframe--classic', className)}
+      className={cx('kiln-appframe', options.general.classicLook && 'kiln-appframe--classic', className)}
       data-app={app}
     >
-      <header className="of-titlebar">
-        <div className="of-titlebar__start">
+      <header className="kiln-titlebar">
+        <div className="kiln-titlebar__start">
           <AppMark size={22} label={appName} />
           {autoSave ? <AutoSaveSwitch {...autoSave} /> : null}
           <TitleBarCommand command="file.save" icon={Save} label="Save" keyTip="3" />
@@ -242,13 +242,13 @@ function AppFrameInner({
           <TitleBarCommand command="edit.redo" icon={Redo2} label="Redo" keyTip="2" />
           <DocumentTitle title={title} appName={appName} onRename={onRename} saveStatus={saveStatus} />
         </div>
-        <div className="of-titlebar__center">
+        <div className="kiln-titlebar__center">
           <SearchBox onOpen={() => setPaletteOpen(true)} />
         </div>
-        <div className="of-titlebar__end">
-          {presence ? <div className="of-titlebar__presence">{presence}</div> : null}
+        <div className="kiln-titlebar__end">
+          {presence ? <div className="kiln-titlebar__presence">{presence}</div> : null}
           <ShareButton />
-          {windowControls ? <div className="of-titlebar__window">{windowControls}</div> : null}
+          {windowControls ? <div className="kiln-titlebar__window">{windowControls}</div> : null}
         </div>
       </header>
       {ribbon ? (
@@ -262,9 +262,9 @@ function AppFrameInner({
           onFileClick={backstage ? () => setBackstageOpen(true) : undefined}
         />
       ) : null}
-      <div className="of-appframe__body">
+      <div className="kiln-appframe__body">
         {leftPane}
-        <main className="of-appframe__canvas" aria-label={`${appName} document`}>
+        <main className="kiln-appframe__canvas" aria-label={`${appName} document`}>
           {children}
         </main>
         {rightPane}
@@ -317,7 +317,7 @@ function TitleBarCommand({
     <Tooltip content={label} shortcut={shortcut}>
       <button
         type="button"
-        className="of-titlebar__btn"
+        className="kiln-titlebar__btn"
         aria-label={label}
         aria-disabled={!state.enabled || undefined}
         data-keytip={keyTip}
@@ -341,14 +341,14 @@ function AutoSaveSwitch({ enabled, onChange, disabledReason }: NonNullable<AppFr
         role="switch"
         aria-checked={enabled}
         aria-disabled={!!disabledReason || undefined}
-        className="of-autosave"
+        className="kiln-autosave"
         onClick={() => !disabledReason && onChange(!enabled)}
       >
-        <span className="of-autosave__label">AutoSave</span>
-        <span className="of-autosave__track" aria-hidden="true">
-          <span className="of-autosave__thumb" />
+        <span className="kiln-autosave__label">AutoSave</span>
+        <span className="kiln-autosave__track" aria-hidden="true">
+          <span className="kiln-autosave__thumb" />
         </span>
-        <span className="of-autosave__state" aria-hidden="true">
+        <span className="kiln-autosave__state" aria-hidden="true">
           {enabled ? 'On' : 'Off'}
         </span>
       </button>
@@ -385,7 +385,7 @@ function DocumentTitle({
     return (
       <input
         ref={inputRef}
-        className="of-titlebar__title-input"
+        className="kiln-titlebar__title-input"
         aria-label="Document name"
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
@@ -403,16 +403,16 @@ function DocumentTitle({
   }
   const content = (
     <>
-      <span className="of-titlebar__title-text">{title}</span>
-      {saveStatus ? <span className="of-titlebar__status"> · {saveStatus}</span> : null}
-      {onRename ? <Icon icon={ChevronDown} size={12} className="of-titlebar__title-chevron" /> : null}
+      <span className="kiln-titlebar__title-text">{title}</span>
+      {saveStatus ? <span className="kiln-titlebar__status"> · {saveStatus}</span> : null}
+      {onRename ? <Icon icon={ChevronDown} size={12} className="kiln-titlebar__title-chevron" /> : null}
     </>
   );
   return onRename ? (
     <Tooltip content="Rename" description={`${title} — ${appName}`}>
       <button
         type="button"
-        className="of-titlebar__title"
+        className="kiln-titlebar__title"
         onClick={() => {
           setDraft(title);
           setEditing(true);
@@ -422,7 +422,7 @@ function DocumentTitle({
       </button>
     </Tooltip>
   ) : (
-    <span className="of-titlebar__title">{content}</span>
+    <span className="kiln-titlebar__title">{content}</span>
   );
 }
 
@@ -431,7 +431,7 @@ function SearchBox({ onOpen }: { onOpen: () => void }) {
   return (
     <button
       type="button"
-      className="of-searchbox"
+      className="kiln-searchbox"
       onClick={onOpen}
       data-keytip="Q"
       data-keytip-level="root"
@@ -439,8 +439,8 @@ function SearchBox({ onOpen }: { onOpen: () => void }) {
       aria-haspopup="dialog"
     >
       <Icon icon={Search} size={15} />
-      <span className="of-searchbox__text">Search</span>
-      {shortcut ? <Kbd shortcut={shortcut} variant="inline" className="of-searchbox__kbd" /> : null}
+      <span className="kiln-searchbox__text">Search</span>
+      {shortcut ? <Kbd shortcut={shortcut} variant="inline" className="kiln-searchbox__kbd" /> : null}
     </button>
   );
 }
@@ -453,16 +453,16 @@ function ShareButton() {
   return (
     <button
       type="button"
-      className="of-btn of-btn--primary of-btn--sm of-titlebar__share"
+      className="kiln-btn kiln-btn--primary kiln-btn--sm kiln-titlebar__share"
       data-keytip="ZS"
       data-keytip-level="root"
       aria-disabled={!state.enabled || undefined}
       onClick={() => state.enabled && execute('file.share')}
     >
-      <span className="of-btn__icon">
+      <span className="kiln-btn__icon">
         <Icon icon={Share2} size={14} />
       </span>
-      <span className="of-btn__label">Share</span>
+      <span className="kiln-btn__label">Share</span>
     </button>
   );
 }

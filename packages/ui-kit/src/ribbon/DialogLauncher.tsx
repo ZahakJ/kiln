@@ -9,7 +9,14 @@ import { Tooltip } from '../primitives/Tooltip.tsx';
 /** Office's group-corner launcher icon: a corner bracket with a diagonal arrow. */
 function LauncherIcon() {
   return (
-    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false" className="of-icon">
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 12 12"
+      aria-hidden="true"
+      focusable="false"
+      className="kiln-icon"
+    >
       <path d="M1.5 4.5V1.5h3" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
       <path
         d="M4 4l6 6M10 6.5V10H6.5"
@@ -46,7 +53,7 @@ export function DialogLauncher({ command, label, groupLabel, keyTip, keyTipLevel
     <Tooltip content={name} shortcut={shortcut} description={meta?.description}>
       <button
         type="button"
-        className="of-ribbon__launcher"
+        className="kiln-ribbon__launcher"
         aria-label={name}
         aria-disabled={!state.enabled || undefined}
         data-command={command}

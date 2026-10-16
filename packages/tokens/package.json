@@ -1,5 +1,5 @@
 {
-  "name": "@officina/tokens",
+  "name": "@kiln/tokens",
   "version": "0.1.0",
   "private": true,
   "description": "Design tokens of the \"Horizon\" design language.",
@@ -22,10 +22,6 @@
     "lint": "biome check .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "node scripts/fetch-fonts.mjs --check && vitest run"
-  },
-  "dependencies": {
-    "@fontsource-variable/inter": "catalog:",
-    "@fontsource/jetbrains-mono": "catalog:"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",

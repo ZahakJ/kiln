@@ -1,4 +1,4 @@
-/** Tabula (Grid) shortcuts: the "Tabula (spreadsheets)" column of docs/SHORTCUTS.md (PLAN.md §1.7). */
+/** Kiln Grid shortcuts: the "Kiln Grid (spreadsheets)" column of docs/SHORTCUTS.md (PLAN.md §1.7). */
 import type { KeyBinding } from '../keymap.ts';
 import { bind } from './bind.ts';
 

@@ -64,7 +64,7 @@ export function ScrollArea({
         if (typeof ref === 'function') ref(node);
         else if (ref) ref.current = node;
       }}
-      className={cx('of-scroll', `of-scroll--${orientation}`, className)}
+      className={cx('kiln-scroll', `kiln-scroll--${orientation}`, className)}
       data-scroll-top={edges.top || undefined}
       data-scroll-bottom={edges.bottom || undefined}
       data-scroll-left={edges.left || undefined}

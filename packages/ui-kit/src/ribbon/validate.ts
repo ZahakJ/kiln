@@ -1,4 +1,4 @@
-import { type CommandRegistry, normalizeKeyTip } from '@officina/commands';
+import { type CommandRegistry, normalizeKeyTip } from '@kiln/commands';
 import { hasCommandIcon } from '../chrome/commandIcons.tsx';
 import { isCommandEntry, type MenuEntry } from '../contextmenu/CommandMenuItems.tsx';
 import { itemId, leafItems } from './builders.ts';
@@ -11,7 +11,7 @@ export interface RibbonSpecIssue {
 }
 
 export interface ValidateRibbonSpecOptions {
-  /** Icon resolver; default: Officina glyphs + curated Lucide icons + registered extras. */
+  /** Icon resolver; default: Kiln glyphs + curated Lucide icons + registered extras. */
   hasIcon?: (name: string) => boolean;
 }
 

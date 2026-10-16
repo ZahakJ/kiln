@@ -1,4 +1,4 @@
-/** Scriba (Write) commands: PLAN.md §1.4 "Write" and the Write column of §1.7. */
+/** Kiln Write commands: PLAN.md §1.4 "Write" and the Write column of §1.7. */
 import { c, section, WRITE } from './define.ts';
 
 const W = { apps: WRITE };

@@ -1,3 +1,3 @@
-/* Officina tokens + fonts in one import: `@import "@officina/tokens/index.css";`. */
+/* Kiln tokens + fonts in one import: `@import "@kiln/tokens/index.css";`. */
 @import "./fonts.css";
 @import "./tokens.css";

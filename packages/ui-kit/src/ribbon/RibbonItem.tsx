@@ -1,4 +1,4 @@
-import { isTierEnabled } from '@officina/commands';
+import { isTierEnabled } from '@kiln/commands';
 import { ChevronDown } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 import {
@@ -55,9 +55,9 @@ function TipBody({
   if (!description && !office && !pending) return null;
   return (
     <>
-      {description ? <span className="of-ribbon__tip-text">{description}</span> : null}
-      {office ? <span className="of-ribbon__tip-office">In Microsoft Office: {office}</span> : null}
-      {pending ? <span className="of-ribbon__tip-pending">Not available yet in this build.</span> : null}
+      {description ? <span className="kiln-ribbon__tip-text">{description}</span> : null}
+      {office ? <span className="kiln-ribbon__tip-office">In Microsoft Office: {office}</span> : null}
+      {pending ? <span className="kiln-ribbon__tip-pending">Not available yet in this build.</span> : null}
     </>
   );
 }
@@ -88,7 +88,7 @@ export function RibbonItemView({ item, size, layout, keyTip, keyTipLevel }: Ribb
   const command = 'command' in item ? item.command : undefined;
   const tip = useTip(command, 'label' in item ? item.label : undefined);
   const execute = useExecute();
-  if (item.kind === 'spacer') return <span className="of-ribbon__spacer" aria-hidden="true" />;
+  if (item.kind === 'spacer') return <span className="kiln-ribbon__spacer" aria-hidden="true" />;
   if ('tier' in item && item.tier && !isTierEnabled(item.tier, registry.tiers)) return null;
   if (command && !tip.state.visible) return null;
 
@@ -109,11 +109,11 @@ export function RibbonItemView({ item, size, layout, keyTip, keyTipLevel }: Ribb
           <button
             type="button"
             className={cx(
-              'of-btn of-btn--toolbar of-ribbon__btn',
-              `of-ribbon__btn--${size}`,
-              size === 'large' && 'of-btn--stacked',
-              !showLabel && 'of-btn--icon-only',
-              item.kind === 'toggle' && 'of-toggle',
+              'kiln-btn kiln-btn--toolbar kiln-ribbon__btn',
+              `kiln-ribbon__btn--${size}`,
+              size === 'large' && 'kiln-btn--stacked',
+              !showLabel && 'kiln-btn--icon-only',
+              item.kind === 'toggle' && 'kiln-toggle',
             )}
             aria-label={showLabel ? undefined : tip.title}
             aria-pressed={pressed}
@@ -123,17 +123,21 @@ export function RibbonItemView({ item, size, layout, keyTip, keyTipLevel }: Ribb
             {...kt}
             onClick={() => run(item.args)}
           >
-            <span className="of-btn__icon">
+            <span className="kiln-btn__icon">
               <RibbonIcon name={iconName} size={ICON_SIZE[size]} />
             </span>
-            {showLabel ? <span className="of-btn__label">{tip.title}</span> : null}
+            {showLabel ? <span className="kiln-btn__label">{tip.title}</span> : null}
           </button>
         </Tooltip>
       );
     }
     case 'split':
       return (
-        <span className={cx('of-ribbon__split', `of-ribbon__split--${size}`)} {...kt} data-command={command}>
+        <span
+          className={cx('kiln-ribbon__split', `kiln-ribbon__split--${size}`)}
+          {...kt}
+          data-command={command}
+        >
           <SplitButton
             label={tip.title}
             iconOnly={!showLabel}
@@ -157,20 +161,20 @@ export function RibbonItemView({ item, size, layout, keyTip, keyTipLevel }: Ribb
               <button
                 type="button"
                 className={cx(
-                  'of-btn of-btn--toolbar of-ribbon__btn of-ribbon__dropdown',
-                  `of-ribbon__btn--${size}`,
-                  size === 'large' && 'of-btn--stacked',
-                  !showLabel && 'of-btn--icon-only',
+                  'kiln-btn kiln-btn--toolbar kiln-ribbon__btn kiln-ribbon__dropdown',
+                  `kiln-ribbon__btn--${size}`,
+                  size === 'large' && 'kiln-btn--stacked',
+                  !showLabel && 'kiln-btn--icon-only',
                 )}
                 aria-label={showLabel ? undefined : label}
                 data-command={command}
                 {...kt}
               >
-                <span className="of-btn__icon">
+                <span className="kiln-btn__icon">
                   <RibbonIcon name={iconName} size={ICON_SIZE[size]} />
                 </span>
-                {showLabel ? <span className="of-btn__label">{label}</span> : null}
-                <span className="of-btn__icon-after">
+                {showLabel ? <span className="kiln-btn__label">{label}</span> : null}
+                <span className="kiln-btn__icon-after">
                   <Icon icon={ChevronDown} size={12} />
                 </span>
               </button>
@@ -184,7 +188,7 @@ export function RibbonItemView({ item, size, layout, keyTip, keyTipLevel }: Ribb
     }
     case 'gallery':
       return (
-        <div className="of-ribbon__gallery" data-command={command} {...kt}>
+        <div className="kiln-ribbon__gallery" data-command={command} {...kt}>
           <Gallery
             label={tip.title}
             items={item.items}
@@ -203,7 +207,7 @@ export function RibbonItemView({ item, size, layout, keyTip, keyTipLevel }: Ribb
             itemHeight={layout === 'simplified' ? 30 : (item.itemHeight ?? 60)}
             footer={
               item.footer ? (
-                <div className="of-ribbon__gallery-footer">
+                <div className="kiln-ribbon__gallery-footer">
                   <GalleryFooter entries={item.footer} />
                 </div>
               ) : undefined
@@ -214,7 +218,7 @@ export function RibbonItemView({ item, size, layout, keyTip, keyTipLevel }: Ribb
     case 'combobox':
       return (
         <Tooltip content={tip.title} shortcut={tip.shortcut} description={tip.description}>
-          <span className="of-ribbon__field" data-command={command} {...kt}>
+          <span className="kiln-ribbon__field" data-command={command} {...kt}>
             <Combobox
               aria-label={tip.title}
               value={tip.state.value == null ? '' : String(tip.state.value)}
@@ -243,9 +247,9 @@ export function RibbonItemView({ item, size, layout, keyTip, keyTipLevel }: Ribb
       );
     case 'numberinput':
       return (
-        <span className="of-ribbon__number" data-command={command} {...kt}>
+        <span className="kiln-ribbon__number" data-command={command} {...kt}>
           {showLabel ? (
-            <span className="of-ribbon__number-label" aria-hidden="true">
+            <span className="kiln-ribbon__number-label" aria-hidden="true">
               <RibbonIcon name={iconName} size={16} />
               {tip.title}
             </span>
@@ -266,7 +270,7 @@ export function RibbonItemView({ item, size, layout, keyTip, keyTipLevel }: Ribb
       );
     case 'custom':
       return (
-        <span className="of-ribbon__custom" data-ribbon-custom={item.id} {...kt}>
+        <span className="kiln-ribbon__custom" data-ribbon-custom={item.id} {...kt}>
           {item.render({ layout, context: registry.context })}
         </span>
       );
@@ -286,11 +290,11 @@ function GalleryFooter({ entries }: { entries: RibbonGalleryFooterEntries }) {
           <button
             key={i}
             type="button"
-            className="of-btn of-btn--ghost of-btn--sm of-ribbon__gallery-action"
+            className="kiln-btn kiln-btn--ghost kiln-btn--sm kiln-ribbon__gallery-action"
             onClick={() => execute(e.command, e.args)}
           >
             <RibbonIcon name={e.icon ?? registry.get(e.command)?.icon} size={16} />
-            <span className="of-btn__label">{e.label ?? registry.get(e.command)?.title ?? e.command}</span>
+            <span className="kiln-btn__label">{e.label ?? registry.get(e.command)?.title ?? e.command}</span>
           </button>
         ) : null,
       )}
@@ -303,7 +307,7 @@ type RibbonGalleryFooterEntries = NonNullable<Extract<RibbonLeafItem, { kind: 'g
 function colorHex(c: ColorChoice | undefined, fallback: string): string {
   if (!c) return fallback;
   if (c.type === 'rgb' || c.type === 'theme') return c.hex;
-  if (c.type === 'auto') return 'var(--of-fg)';
+  if (c.type === 'auto') return 'var(--kiln-fg)';
   return 'transparent';
 }
 
@@ -335,14 +339,14 @@ function ColorItem({
     if (enabled) execute(item.command, { color: choice });
   };
   const icon: ReactNode = (
-    <span className="of-ribbon__color-icon">
+    <span className="kiln-ribbon__color-icon">
       <RibbonIcon name={iconName} size={size === 'large' ? 32 : 20} />
-      <span className="of-ribbon__color-bar" style={{ background: colorHex(last, fallback) }} />
+      <span className="kiln-ribbon__color-bar" style={{ background: colorHex(last, fallback) }} />
     </span>
   );
   return (
     <span
-      className={cx('of-ribbon__split', `of-ribbon__split--${size}`)}
+      className={cx('kiln-ribbon__split', `kiln-ribbon__split--${size}`)}
       data-keytip={keyTip}
       data-keytip-level={keyTipLevel}
       data-command={item.command}

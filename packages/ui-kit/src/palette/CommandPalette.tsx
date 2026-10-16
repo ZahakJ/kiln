@@ -1,4 +1,4 @@
-import { type CommandMatch, type RegisteredCommand, searchCommands } from '@officina/commands';
+import { type CommandMatch, type RegisteredCommand, searchCommands } from '@kiln/commands';
 import * as RD from '@radix-ui/react-dialog';
 import { Command } from 'cmdk';
 import { Search } from 'lucide-react';
@@ -81,23 +81,23 @@ export function CommandPalette({ open, onOpenChange, placeholder, limit = 60 }: 
         value={`${group}:${c.id}`}
         disabled={!state.enabled}
         onSelect={() => run(c.id)}
-        className="of-palette__item"
+        className="kiln-palette__item"
         data-command={c.id}
       >
-        <span className="of-palette__icon" aria-hidden="true">
+        <span className="kiln-palette__icon" aria-hidden="true">
           <CommandIcon name={c.icon} size={18} />
         </span>
-        <span className="of-palette__text">
-          <span className="of-palette__title">{c.title}</span>
+        <span className="kiln-palette__text">
+          <span className="kiln-palette__title">{c.title}</span>
           {hint ? (
-            <span className="of-palette__hint">{hint}</span>
+            <span className="kiln-palette__hint">{hint}</span>
           ) : c.category ? (
-            <span className="of-palette__hint">{c.category}</span>
+            <span className="kiln-palette__hint">{c.category}</span>
           ) : null}
         </span>
-        {state.pending ? <span className="of-palette__badge">Coming soon</span> : null}
-        {state.checked ? <span className="of-palette__badge of-palette__badge--on">On</span> : null}
-        {shortcut ? <Kbd shortcut={shortcut} className="of-palette__kbd" /> : null}
+        {state.pending ? <span className="kiln-palette__badge">Coming soon</span> : null}
+        {state.checked ? <span className="kiln-palette__badge kiln-palette__badge--on">On</span> : null}
+        {shortcut ? <Kbd shortcut={shortcut} className="kiln-palette__kbd" /> : null}
       </Command.Item>
     );
   };
@@ -119,9 +119,9 @@ export function CommandPalette({ open, onOpenChange, placeholder, limit = 60 }: 
       }}
     >
       <RD.Portal>
-        <RD.Overlay className="of-palette-overlay" />
+        <RD.Overlay className="kiln-palette-overlay" />
         <RD.Content
-          className="of-palette"
+          className="kiln-palette"
           aria-describedby={undefined}
           onCloseAutoFocus={(e) => {
             e.preventDefault();
@@ -130,20 +130,20 @@ export function CommandPalette({ open, onOpenChange, placeholder, limit = 60 }: 
             if (el?.isConnected) el.focus();
           }}
         >
-          <RD.Title className="of-visually-hidden">Search commands</RD.Title>
+          <RD.Title className="kiln-visually-hidden">Search commands</RD.Title>
           <Command label="Search commands" shouldFilter={false} loop>
-            <div className="of-palette__search">
+            <div className="kiln-palette__search">
               <Icon icon={Search} size={18} />
               <Command.Input
-                className="of-palette__input"
+                className="kiln-palette__input"
                 value={query}
                 onValueChange={setQuery}
                 placeholder={placeholder ?? 'Search for a command, or type what you want to do'}
               />
-              <Kbd shortcut="Esc" variant="inline" className="of-palette__esc" />
+              <Kbd shortcut="Esc" variant="inline" className="kiln-palette__esc" />
             </div>
-            <Command.List className="of-palette__list">
-              <Command.Empty className="of-palette__empty">No commands match “{query}”.</Command.Empty>
+            <Command.List className="kiln-palette__list">
+              <Command.Empty className="kiln-palette__empty">No commands match “{query}”.</Command.Empty>
               {query.trim() ? (
                 <Command.Group heading="Best matches">
                   {results.map((m) => renderItem(m.command, hintFor(m)))}
@@ -159,14 +159,16 @@ export function CommandPalette({ open, onOpenChange, placeholder, limit = 60 }: 
                 </>
               )}
             </Command.List>
-            <div className="of-palette__footer" aria-hidden="true">
+            <div className="kiln-palette__footer" aria-hidden="true">
               <span>
                 <Kbd shortcut="ArrowUp" /> <Kbd shortcut="ArrowDown" /> to move
               </span>
               <span>
                 <Kbd shortcut="Enter" /> to run
               </span>
-              <span className="of-palette__footer-tip">Office names work too: try “Merge &amp; Center”</span>
+              <span className="kiln-palette__footer-tip">
+                Office names work too: try “Merge &amp; Center”
+              </span>
             </div>
           </Command>
         </RD.Content>

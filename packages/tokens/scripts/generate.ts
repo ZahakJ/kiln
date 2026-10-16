@@ -1,6 +1,6 @@
 /**
  * Writes tokens.css, theme.css and fonts.css from src/tokens.ts.
- * Run: pnpm --filter @officina/tokens generate
+ * Run: pnpm --filter @kiln/tokens generate
  */
 import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';

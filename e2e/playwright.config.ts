@@ -24,7 +24,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'pnpm --filter @officina/web dev',
+    command: 'pnpm --filter @kiln/web dev',
     cwd: repoRoot,
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,

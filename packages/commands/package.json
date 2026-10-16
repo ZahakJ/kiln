@@ -1,5 +1,5 @@
 {
-  "name": "@officina/commands",
+  "name": "@kiln/commands",
   "version": "0.1.0",
   "private": true,
   "description": "The command registry every app registers into.",

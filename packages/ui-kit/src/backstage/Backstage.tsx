@@ -91,7 +91,7 @@ export interface BackstageProps {
   actions?: readonly BackstageActionId[];
   /** Office shows "Save a Copy" instead of "Save As" while AutoSave is on. */
   autoSave?: boolean;
-  /** App name for the accessible title ("Scriba"). */
+  /** App name for the accessible title ("Kiln Write"). */
   appName?: string;
   /** Document title shown at the top of the rail. */
   documentTitle?: string;
@@ -113,7 +113,7 @@ export function Backstage({
   onAction,
   actions = ['save', 'close', 'options'],
   autoSave = false,
-  appName = 'Officina',
+  appName = 'Kiln',
   documentTitle,
   className,
 }: BackstageProps) {
@@ -161,7 +161,7 @@ export function Backstage({
 
   const renderEntry = (e: NavEntry, i: number) => {
     if (e.kind === 'divider') {
-      return <li key={`d${i}`} className="of-backstage__divider" aria-hidden="true" />;
+      return <li key={`d${i}`} className="kiln-backstage__divider" aria-hidden="true" />;
     }
     if (hidden(e)) return null;
     const current = e.kind === 'page' && e.id === page;
@@ -169,7 +169,7 @@ export function Backstage({
       <li key={e.id}>
         <button
           type="button"
-          className={cx('of-backstage__nav-item', current && 'is-current')}
+          className={cx('kiln-backstage__nav-item', current && 'is-current')}
           aria-current={current ? 'page' : undefined}
           data-backstage={e.id}
           onClick={() => (e.kind === 'page' ? go(e.id) : runAction(e))}
@@ -185,7 +185,7 @@ export function Backstage({
     <RD.Root open={open} onOpenChange={onOpenChange}>
       <RD.Portal>
         <RD.Content
-          className={cx('of-backstage', className)}
+          className={cx('kiln-backstage', className)}
           aria-describedby={undefined}
           onCloseAutoFocus={(e) => {
             e.preventDefault();
@@ -196,32 +196,32 @@ export function Backstage({
           onOpenAutoFocus={(e) => {
             e.preventDefault();
             (e.currentTarget as HTMLElement | null)
-              ?.querySelector<HTMLElement>('.of-backstage__back')
+              ?.querySelector<HTMLElement>('.kiln-backstage__back')
               ?.focus();
           }}
         >
-          <RD.Title className="of-visually-hidden">
+          <RD.Title className="kiln-visually-hidden">
             {appName} File menu{documentTitle ? `: ${documentTitle}` : ''}
           </RD.Title>
-          <nav className="of-backstage__rail" aria-label="File menu">
-            <RD.Close className="of-backstage__back" aria-label="Back to the document">
+          <nav className="kiln-backstage__rail" aria-label="File menu">
+            <RD.Close className="kiln-backstage__back" aria-label="Back to the document">
               <Icon icon={ArrowLeft} size={20} />
             </RD.Close>
             {documentTitle ? (
-              <div className="of-backstage__doc" title={documentTitle}>
+              <div className="kiln-backstage__doc" title={documentTitle}>
                 {documentTitle}
               </div>
             ) : null}
-            <ul className="of-backstage__nav">{TOP.map(renderEntry)}</ul>
-            <ul className="of-backstage__nav of-backstage__nav--bottom">{BOTTOM.map(renderEntry)}</ul>
+            <ul className="kiln-backstage__nav">{TOP.map(renderEntry)}</ul>
+            <ul className="kiln-backstage__nav kiln-backstage__nav--bottom">{BOTTOM.map(renderEntry)}</ul>
           </nav>
-          <main ref={contentRef} className="of-backstage__content" data-page={page}>
+          <main ref={contentRef} className="kiln-backstage__content" data-page={page}>
             {page ? (
               <>
-                <h1 className="of-backstage__title" tabIndex={-1}>
+                <h1 className="kiln-backstage__title" tabIndex={-1}>
                   {BACKSTAGE_PAGE_TITLES[page]}
                 </h1>
-                <div className="of-backstage__page">{pages[page]}</div>
+                <div className="kiln-backstage__page">{pages[page]}</div>
               </>
             ) : null}
           </main>

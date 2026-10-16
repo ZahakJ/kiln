@@ -1,34 +1,34 @@
-.of-minitoolbar {
+.kiln-minitoolbar {
   position: fixed;
-  z-index: var(--of-z-popover);
+  z-index: var(--kiln-z-popover);
   transition: opacity 80ms linear;
-  animation: of-mini-pop var(--of-duration-menu) var(--of-ease-out);
+  animation: kiln-mini-pop var(--kiln-duration-menu) var(--kiln-ease-out);
 }
-@keyframes of-mini-pop {
+@keyframes kiln-mini-pop {
   from {
     transform: translateY(4px);
   }
 }
-.of-minitoolbar--below {
-  animation-name: of-mini-pop-below;
+.kiln-minitoolbar--below {
+  animation-name: kiln-mini-pop-below;
 }
-@keyframes of-mini-pop-below {
+@keyframes kiln-mini-pop-below {
   from {
     transform: translateY(-4px);
   }
 }
-.of-minitoolbar__bar {
+.kiln-minitoolbar__bar {
   display: flex;
   align-items: center;
   gap: 2px;
   padding: 4px;
-  background: var(--of-bg-surface);
-  border: var(--of-border-width) solid var(--of-border);
-  border-radius: var(--of-radius-menu);
-  box-shadow: var(--of-shadow-2);
+  background: var(--kiln-bg-surface);
+  border: var(--kiln-border-width) solid var(--kiln-border);
+  border-radius: var(--kiln-radius-menu);
+  box-shadow: var(--kiln-shadow-2);
 }
 @media (prefers-reduced-motion: reduce) {
-  .of-minitoolbar {
+  .kiln-minitoolbar {
     animation: none;
     transition: none;
   }

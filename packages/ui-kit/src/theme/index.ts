@@ -1,4 +1,4 @@
-export type { AppId, ResolvedTheme, ThemePreference } from '@officina/tokens';
+export type { AppId, ResolvedTheme, ThemePreference } from '@kiln/tokens';
 export {
   type IconStyle,
   ThemeProvider,

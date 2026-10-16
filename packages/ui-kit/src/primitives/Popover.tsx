@@ -28,14 +28,14 @@ export function PopoverContent({
   return (
     <RP.Portal>
       <RP.Content
-        className={cx('of-popover', flush && 'of-popover--flush', className)}
+        className={cx('kiln-popover', flush && 'kiln-popover--flush', className)}
         sideOffset={sideOffset}
         align={align}
         collisionPadding={collisionPadding}
         {...rest}
       >
         {children}
-        {arrow ? <RP.Arrow className="of-popover__arrow" width={12} height={6} /> : null}
+        {arrow ? <RP.Arrow className="kiln-popover__arrow" width={12} height={6} /> : null}
       </RP.Content>
     </RP.Portal>
   );

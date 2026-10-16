@@ -1,4 +1,4 @@
-import { type KeyTipNode, KeyTipSession } from '@officina/commands';
+import { type KeyTipNode, KeyTipSession } from '@kiln/commands';
 import { type RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import './keytips.css';
@@ -216,17 +216,17 @@ export function KeyTipsLayer({ active, onExit, rootRef, initialKeys }: KeyTipsLa
 
   if (!active || typeof document === 'undefined') return null;
   return createPortal(
-    <div className="of-keytips" aria-live="polite" data-testid="keytips">
-      <span className="of-visually-hidden">Key Tips on. Type a letter, or press Escape to go back.</span>
+    <div className="kiln-keytips" aria-live="polite" data-testid="keytips">
+      <span className="kiln-visually-hidden">Key Tips on. Type a letter, or press Escape to go back.</span>
       {badges.map((b) => (
         <span
           key={b.id}
-          className="of-keytip"
+          className="kiln-keytip"
           data-keytip-badge={b.tip}
           data-disabled={b.disabled || undefined}
           style={{ left: b.x, top: b.y }}
         >
-          <span className="of-keytip__typed">{b.tip.slice(0, prefix.length)}</span>
+          <span className="kiln-keytip__typed">{b.tip.slice(0, prefix.length)}</span>
           {b.tip.slice(prefix.length)}
         </span>
       ))}

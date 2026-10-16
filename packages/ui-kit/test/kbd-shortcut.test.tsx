@@ -19,8 +19,8 @@ describe('shortcut formatting', () => {
 
   it('Kbd renders one keycap per key with an accessible label', () => {
     const { container } = render(<Kbd shortcut="Mod+Shift+P" platform="other" />);
-    expect(container.querySelectorAll('.of-kbd__key')).toHaveLength(3);
-    expect(container.querySelector('.of-visually-hidden')?.textContent).toBe('Ctrl+Shift+P');
+    expect(container.querySelectorAll('.kiln-kbd__key')).toHaveLength(3);
+    expect(container.querySelector('.kiln-visually-hidden')?.textContent).toBe('Ctrl+Shift+P');
     const inline = render(<Kbd shortcut="Mod+C" platform="mac" variant="inline" />);
     expect(inline.container.textContent).toBe('⌘C');
   });

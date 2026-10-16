@@ -106,19 +106,19 @@ describe('Keymap', () => {
     expect(again.resolve(ctrl('b'), { app: 'write' })?.command).toBe('format.bold');
     again.assign('format.italic', 'Mod+Alt+I', 'write');
     again.resetAll();
-    expect(storage.getItem('officina.keymap')).toBeNull();
+    expect(storage.getItem('kiln.keymap')).toBeNull();
     expect(again.shortcutsFor('format.italic', 'write')).toEqual(['Mod+I']);
   });
 
   it('ignores corrupt stored overrides', () => {
     const storage = new MemoryStorage();
     storage.setItem(
-      'officina.keymap',
+      'kiln.keymap',
       '{"version":1,"layers":{"write":{"format.bold":["Mod+Nope", 7]},"bogus":{}}}',
     );
     const km = createDefaultKeymap({ platform: 'other', storage });
     expect(km.shortcutsFor('format.bold', 'write')).toEqual([]);
-    storage.setItem('officina.keymap', 'not json');
+    storage.setItem('kiln.keymap', 'not json');
     expect(createDefaultKeymap({ platform: 'other', storage }).shortcutsFor('format.bold', 'write')).toEqual([
       'Mod+B',
     ]);

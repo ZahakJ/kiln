@@ -2,10 +2,10 @@
 html,
 body {
   margin: 0;
-  background: var(--of-bg-canvas);
-  color: var(--of-fg);
-  font-family: var(--of-font-ui);
-  font-size: var(--of-text-base);
+  background: var(--kiln-bg-canvas);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-base);
   -webkit-font-smoothing: antialiased;
 }
 .gx-grid {
@@ -19,10 +19,10 @@ body {
 .gx-card {
   box-sizing: border-box;
   padding: 14px 16px 16px;
-  border: 1px solid var(--of-border);
-  border-radius: var(--of-radius-menu);
-  background: var(--of-bg-surface);
-  box-shadow: var(--of-shadow-1);
+  border: 1px solid var(--kiln-border);
+  border-radius: var(--kiln-radius-menu);
+  background: var(--kiln-bg-surface);
+  box-shadow: var(--kiln-shadow-1);
   min-width: 0;
 }
 .gx-card--wide {
@@ -30,9 +30,9 @@ body {
 }
 .gx-card__title {
   margin: 0 0 12px;
-  color: var(--of-fg-muted);
-  font-size: var(--of-text-sm);
-  font-weight: var(--of-weight-semibold);
+  color: var(--kiln-fg-muted);
+  font-size: var(--kiln-text-sm);
+  font-weight: var(--kiln-weight-semibold);
 }
 .gx-card__body {
   display: flex;
@@ -47,8 +47,8 @@ body {
 .gx-row__label {
   width: 72px;
   flex: none;
-  color: var(--of-fg-muted);
-  font-size: var(--of-text-sm);
+  color: var(--kiln-fg-muted);
+  font-size: var(--kiln-text-sm);
 }
 .gx-row__items {
   display: flex;
@@ -57,7 +57,7 @@ body {
   gap: 8px;
 }
 .gx-muted {
-  color: var(--of-fg-muted);
+  color: var(--kiln-fg-muted);
 }
 .gx-pad {
   padding: 12px 4px 0;
@@ -69,9 +69,9 @@ body {
   gap: 4px;
   padding: 6px 8px 4px;
   overflow-x: auto;
-  border: 1px solid var(--of-border);
-  border-radius: var(--of-radius-menu);
-  background: var(--of-bg-surface);
+  border: 1px solid var(--kiln-border);
+  border-radius: var(--kiln-radius-menu);
+  background: var(--kiln-bg-surface);
 }
 .gx-ribbon__group {
   position: relative;
@@ -94,7 +94,7 @@ body {
   flex-direction: column;
   gap: 1px;
 }
-.gx-ribbon__stack .of-btn {
+.gx-ribbon__stack .kiln-btn {
   justify-content: flex-start;
 }
 .gx-ribbon__label {
@@ -102,8 +102,8 @@ body {
   left: 0;
   right: 0;
   bottom: 2px;
-  color: var(--of-fg-muted);
-  font-size: var(--of-text-xs);
+  color: var(--kiln-fg-muted);
+  font-size: var(--kiln-text-xs);
   text-align: center;
   white-space: nowrap;
 }
@@ -118,9 +118,9 @@ body {
 .gx-colorpanel {
   align-self: flex-start;
   padding: 12px;
-  border: 1px solid var(--of-border);
-  border-radius: var(--of-radius-menu);
-  box-shadow: var(--of-shadow-2);
+  border: 1px solid var(--kiln-border);
+  border-radius: var(--kiln-radius-menu);
+  box-shadow: var(--kiln-shadow-2);
 }
 .gx-tablegrid {
   display: grid;
@@ -132,23 +132,23 @@ body {
   width: 16px;
   height: 16px;
   box-sizing: border-box;
-  border: 1px solid var(--of-border-strong);
-  background: var(--of-bg-surface);
+  border: 1px solid var(--kiln-border-strong);
+  background: var(--kiln-bg-surface);
 }
 .gx-tablegrid span.is-on {
-  border-color: var(--of-accent);
-  background: var(--of-accent-subtle);
+  border-color: var(--kiln-accent);
+  background: var(--kiln-accent-subtle);
 }
 .gx-scrollbox {
-  border: 1px solid var(--of-border);
-  border-radius: var(--of-radius-control);
+  border: 1px solid var(--kiln-border);
+  border-radius: var(--kiln-radius-control);
 }
 .gx-scrollitem {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 6px 10px;
-  border-bottom: 1px solid var(--of-border);
+  border-bottom: 1px solid var(--kiln-border);
 }
 .gx-glyphs {
   display: grid;
@@ -160,8 +160,8 @@ body {
   align-items: center;
   gap: 8px;
   padding: 6px;
-  border-radius: var(--of-radius-control);
-  color: var(--of-fg);
+  border-radius: var(--kiln-radius-control);
+  color: var(--kiln-fg);
   font-size: 10.5px;
   overflow: hidden;
 }
@@ -169,10 +169,10 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--of-fg-muted);
+  color: var(--kiln-fg-muted);
 }
 .gx-glyph:hover {
-  background: var(--of-bg-hover);
+  background: var(--kiln-bg-hover);
 }
 .gx-matrix {
   display: grid;
@@ -183,8 +183,8 @@ body {
   flex-direction: column;
   gap: 14px;
   padding: 20px;
-  background: var(--of-bg-surface);
-  color: var(--of-fg);
+  background: var(--kiln-bg-surface);
+  color: var(--kiln-fg);
 }
 @media (max-width: 640px) {
   .gx-grid {

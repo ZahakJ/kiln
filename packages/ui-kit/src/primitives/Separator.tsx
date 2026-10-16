@@ -20,7 +20,7 @@ export function Separator({
         ? { role: 'none' }
         : { role: 'separator', 'aria-orientation': orientation === 'vertical' ? orientation : undefined })}
       data-orientation={orientation}
-      className={cx('of-separator', className)}
+      className={cx('kiln-separator', className)}
       {...rest}
     />
   );

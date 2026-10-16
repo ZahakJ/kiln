@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react';
 
-export const SUITE_VERSION: string = __OFFICINA_VERSION__;
+export const SUITE_VERSION: string = __KILN_VERSION__;
 
 interface Product {
   id: 'write' | 'grid' | 'deck' | 'notes';
@@ -22,15 +22,15 @@ const stroke = {
 const PRODUCTS: Product[] = [
   {
     id: 'write',
-    name: 'Scriba',
+    name: 'Kiln Write',
     kind: 'Documents',
     office: 'Word',
     formats: '.docx · .odt · .md',
-    glyph: <path {...stroke} d="M16 7.5c-1.2-1.6-6.5-1.8-6.5 1.4 0 3.4 6.8 2 6.8 5.6 0 3.3-5.6 3-7.3 1.3" />,
+    glyph: <path {...stroke} d="M6 18l1-4 8.5-8.5a2.1 2.1 0 0 1 3 3L10 17l-4 1zM14 7l3 3" />,
   },
   {
     id: 'grid',
-    name: 'Tabula',
+    name: 'Kiln Grid',
     kind: 'Spreadsheets',
     office: 'Excel',
     formats: '.xlsx · .csv · .ods',
@@ -44,7 +44,7 @@ const PRODUCTS: Product[] = [
   },
   {
     id: 'deck',
-    name: 'Scena',
+    name: 'Kiln Deck',
     kind: 'Presentations',
     office: 'PowerPoint',
     formats: '.pptx · .odp',
@@ -57,7 +57,7 @@ const PRODUCTS: Product[] = [
   },
   {
     id: 'notes',
-    name: 'Notula',
+    name: 'Kiln Notes',
     kind: 'Notebooks',
     office: 'OneNote',
     formats: 'notebook folders',
@@ -65,27 +65,24 @@ const PRODUCTS: Product[] = [
   },
 ];
 
-function Mark({ size = 28 }: { size?: number }) {
+/** Neutral wordmark placeholder; WP-51 imports the brand kit's mark and WP-58 builds Kiln Home. */
+function Wordmark() {
   return (
-    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true">
-      <rect width="64" height="64" rx="14" fill="var(--of-accent-hub)" />
-      <path
-        d="M20 46V32a12 12 0 0 1 24 0v14"
-        fill="none"
-        stroke="#fff"
-        strokeWidth="7"
-        strokeLinecap="round"
-      />
-    </svg>
+    <span
+      aria-hidden="true"
+      className="grid h-7 place-items-center rounded-md bg-fg px-2 text-[12px] font-bold tracking-tight text-canvas"
+    >
+      Kiln
+    </span>
   );
 }
 
 function ProductCard({ product }: { product: Product }) {
-  const accent = { '--card-accent': `var(--of-accent-${product.id})` } as CSSProperties;
+  const accent = { '--card-accent': `var(--kiln-accent-${product.id})` } as CSSProperties;
   return (
     <li
       style={accent}
-      className="group relative flex flex-col gap-4 overflow-hidden rounded-md border border-line bg-surface p-5 shadow-(--of-shadow-1)"
+      className="group relative flex flex-col gap-4 overflow-hidden rounded-md border border-line bg-surface p-5 shadow-(--kiln-shadow-1)"
       aria-label={`${product.name}, ${product.kind}`}
     >
       <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-(--card-accent)" />
@@ -114,16 +111,18 @@ function ProductCard({ product }: { product: Product }) {
   );
 }
 
-/** Placeholder start screen (Atrium). The real Hub (§1.6) is built by WP-08. */
+/**
+ * Placeholder start screen. The real Kiln Home (PLAN.md §1.6) is built by WP-58 from the brand kit's
+ * mockups; until then this page shows the suite name, its version and the four apps.
+ */
 export function Hub() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="flex h-12 items-center gap-3 border-b border-line bg-surface px-4 sm:px-6">
-        <Mark />
-        <span className="text-[15px] font-semibold tracking-tight">Officina</span>
-        <span className="hidden text-muted sm:inline">Atrium</span>
+        <Wordmark />
+        <span className="text-[15px] font-semibold tracking-tight">Kiln Home</span>
         <span
-          className="ml-auto rounded-full border border-line bg-surface-2 px-2.5 py-0.5 text-[11px] font-medium text-muted tabular-nums"
+          className="ml-auto rounded-full border border-line bg-surface-2 px-2.5 py-0.5 text-[11px] font-medium text-muted [font-feature-settings:'tnum']"
           data-testid="suite-version"
         >
           Version {SUITE_VERSION}
@@ -132,10 +131,10 @@ export function Hub() {
 
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-4 py-10 sm:px-6 sm:py-14">
         <section className="flex flex-col gap-2">
-          <h1 className="m-0 text-[28px] font-semibold tracking-tight sm:text-[32px]">Welcome to Officina</h1>
+          <h1 className="m-0 text-[28px] font-semibold tracking-tight sm:text-[32px]">Welcome to Kiln</h1>
           <p className="m-0 max-w-2xl text-[15px] leading-relaxed text-muted">
-            Documents, spreadsheets and slides that feel like home. Officina opens and saves Office files on
-            Linux, macOS, Windows and Android, and in your browser.
+            Kiln is an open-source office suite for documents, spreadsheets, presentations and notes. It is
+            being rebuilt on a native Rust core; the apps below are in development.
           </p>
         </section>
 
@@ -153,11 +152,8 @@ export function Hub() {
 
       <footer className="border-t border-line bg-surface-2 py-3 text-[12px] text-muted">
         <div className="mx-auto flex max-w-5xl flex-wrap px-4 sm:px-6 items-center justify-between gap-2">
-          <span>Officina {SUITE_VERSION} · Free software under the GNU AGPL v3 or later</span>
-          <a
-            className="text-hub underline-offset-2 hover:underline"
-            href="https://github.com/ZahakJ/officina"
-          >
+          <span>Kiln {SUITE_VERSION} · Free software under the GNU AGPL v3 or later</span>
+          <a className="text-hub underline-offset-2 hover:underline" href="https://github.com/ZahakJ/kiln">
             Source code
           </a>
         </div>

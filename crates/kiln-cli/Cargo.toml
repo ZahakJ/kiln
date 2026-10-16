@@ -1,0 +1,20 @@
+[package]
+name = "kiln-cli"
+description = "The kiln-cli command line (installed as kiln by the Linux packages)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "kiln-cli"
+path = "src/main.rs"
+
+[dependencies]
+kiln-common.workspace = true
+
+[lints]
+workspace = true

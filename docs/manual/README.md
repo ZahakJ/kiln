@@ -1,13 +1,13 @@
-# The Officina manual
+# The Kiln manual
 
 The manual is plain Markdown in this folder. On the web it is read at
-<https://zahakj.github.io/officina/manual/>, where `index.html` renders each
+<https://zahakj.github.io/kiln/manual/>, where `index.html` renders each
 page in the browser; on GitHub the same files read as they are.
 
 ## Getting started
 
 - [Welcome](index.md)
-- [Getting started](getting-started.md): Atrium, opening and saving files, the ribbon, the File menu and the command palette
+- [Getting started](getting-started.md): Kiln Home, opening and saving files, the ribbon, the File menu and the command palette
 
 ## Installing
 
@@ -17,11 +17,11 @@ page in the browser; on GitHub the same files read as they are.
 
 ## The applications
 
-- [Scriba](write.md): documents
-- [Tabula](grid.md): spreadsheets
-- [Scena](deck.md): presentations
-- [Notula](notes.md): notebooks
-- [Officina on a phone or tablet](mobile.md)
+- [Kiln Write](write.md): documents
+- [Kiln Grid](grid.md): spreadsheets
+- [Kiln Deck](deck.md): presentations
+- [Kiln Notes](notes.md): notebooks
+- [Kiln on a phone or tablet](mobile.md)
 
 ## Working with others
 

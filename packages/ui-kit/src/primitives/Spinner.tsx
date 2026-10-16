@@ -13,14 +13,14 @@ export function Spinner({ size = 16, label = 'Loading', className, style, ...res
   return (
     <span
       role="status"
-      className={cx('of-spinner', className)}
+      className={cx('kiln-spinner', className)}
       style={{ width: size, height: size, ...style }}
       {...rest}
     >
       <svg viewBox="0 0 20 20" width={size} height={size} aria-hidden="true" focusable="false">
-        <circle className="of-spinner__track" cx="10" cy="10" r="8" fill="none" strokeWidth="2.25" />
+        <circle className="kiln-spinner__track" cx="10" cy="10" r="8" fill="none" strokeWidth="2.25" />
         <circle
-          className="of-spinner__arc"
+          className="kiln-spinner__arc"
           cx="10"
           cy="10"
           r="8"
@@ -30,7 +30,7 @@ export function Spinner({ size = 16, label = 'Loading', className, style, ...res
           strokeDasharray="14 50.3"
         />
       </svg>
-      <span className="of-visually-hidden">{label}</span>
+      <span className="kiln-visually-hidden">{label}</span>
     </span>
   );
 }

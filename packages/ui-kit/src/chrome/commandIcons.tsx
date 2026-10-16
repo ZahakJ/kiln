@@ -5,7 +5,7 @@ import { LUCIDE_COMMAND_ICONS } from './lucideIcons.ts';
 const extra = new Map<string, IconSource>();
 
 /**
- * Resolves an icon name from command metadata or a ribbon spec: an Officina glyph (`FormatPainter`),
+ * Resolves an icon name from command metadata or a ribbon spec: an Kiln glyph (`FormatPainter`),
  * a curated Lucide icon (`Bold`), or one added with `registerCommandIcons`.
  */
 export function resolveCommandIcon(name: string | undefined): IconSource | undefined {

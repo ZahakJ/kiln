@@ -2,118 +2,88 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/media/banner.png">
     <source media="(prefers-color-scheme: light)" srcset="docs/media/banner-light.png">
-    <img src="docs/media/banner.png" alt="Officina" width="820">
+    <img src="docs/media/banner.png" alt="Kiln" width="820">
   </picture>
 </p>
 
 <p align="center">
-  <a href="https://github.com/ZahakJ/officina/actions/workflows/ci.yml"><img src="https://github.com/ZahakJ/officina/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="https://github.com/ZahakJ/officina/releases/latest"><img src="https://img.shields.io/github/v/release/ZahakJ/officina?color=3f6fe0&label=release" alt="Latest release"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/licence-AGPL--3.0--or--later-3f6fe0" alt="AGPL-3.0-or-later"></a>
+  <a href="https://github.com/ZahakJ/kiln/actions/workflows/ci.yml"><img src="https://github.com/ZahakJ/kiln/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/licence-AGPL--3.0--or--later-555" alt="AGPL-3.0-or-later"></a>
 </p>
 
-Officina is an open-source office suite: a word processor (**Scriba**), a
-spreadsheet (**Tabula**), a presentation editor (**Scena**) and a notebook
-(**Notula**), started from one hall, **Atrium**. It keeps the layout Microsoft
-Office users already know (the ribbon, the File menu, the status bar and the
-same keyboard shortcuts) and adds a command palette, version history and live
-collaboration.
+Kiln is an open-source office suite in development: a word processor (**Kiln
+Write**), a spreadsheet (**Kiln Grid**), a presentation editor (**Kiln Deck**)
+and a notebook (**Kiln Notes**), opened from **Kiln Home**. The aim is a suite
+that opens and saves Word, Excel and PowerPoint files faithfully, keeps the
+layout Office users know (ribbon, File menu, status bar, Office shortcuts) and
+runs on Linux, Windows, macOS, Android and in the browser.
 
-It opens and saves Word, Excel and PowerPoint files (`.docx`, `.xlsx`,
-`.pptx`), imports and exports the OpenDocument formats, reads CSV, and exports
-PDF. Parts of a file it does not understand, such as macros or embedded
-objects, are carried through a save unchanged rather than dropped, and the
-Compatibility Checker lists anything that will not survive before you save.
+**Status.** Kiln is being rebuilt on a native Rust core; there is no release
+yet. What exists today:
 
-The same application runs as a desktop app on Linux, macOS and Windows, as an
-Android app, and in the browser as an installable web app that works offline.
-There is no account and nothing is sent anywhere unless you start a shared
-session on a collaboration server you choose.
+- the Cargo workspace with every core crate of the architecture (models,
+  layout, formulas, file formats, collaboration, storage, the session facade,
+  the WebAssembly bridge and the command line), each building, linted with
+  Clippy and tested in CI, but without its engine yet;
+- the Tauri 2 shell for desktop and Android, which opens the web build in a
+  window and measures its own start-up time;
+- the web app with a placeholder Kiln Home, and the user-interface building
+  blocks from the first prototype (ribbon, File menu, status bar, command
+  palette, Key Tips, dialogs and design tokens);
+- the test oracles for the port: 5,300 formula conformance cases, a corpus of
+  61 Word, Excel and PowerPoint fixtures, and the prototype's TypeScript
+  engines kept read-only in `reference/ts-core/`.
 
-```sh
-curl -fsSL https://github.com/ZahakJ/officina/releases/download/v0.1.0/officina-0.1.0-linux-x86_64.AppImage -o officina && chmod +x officina && ./officina
-```
+The plan, the work packages and their order are in [PLAN.md](PLAN.md).
 
-Windows, macOS and Android builds are on the
-[releases page](https://github.com/ZahakJ/officina/releases/latest), with
-`SHA256SUMS.txt`.
+## How it is built
 
-![Officina: opening a template from Atrium, editing with the ribbon, finding a command in the palette and saving as .docx](docs/media/demo.gif)
-
-<p align="center"><img src="docs/media/screenshots/write-light.png" width="400" align="top" alt="Scriba, the word processor, in the light theme"><img src="docs/media/screenshots/grid-dark.png" width="400" align="top" alt="Tabula, the spreadsheet, with a chart, in the dark theme"><br><img src="docs/media/screenshots/deck-light.png" width="400" align="top" alt="Scena, the presentation editor, in the light theme"><img src="docs/media/screenshots/phone-write.png" width="400" align="top" alt="Scriba on an Android phone"></p>
-
-## Features
-
-**Scriba (documents)**
-
-- **Pages as Word lays them out.** Headers and footers, sections, columns, footnotes, tables, floating pictures with text wrap, and Office's default styles, so a `.docx` paginates the way it does in Word.
-- **Review.** Track changes with accept and reject, threaded comments, word count and spelling.
-- **References.** Table of contents, captions, cross-references and bookmarks.
-- **Markdown shortcuts** as you type (`#` for a heading, `-` for a list, `**bold**`), a focus mode, and the Format Painter.
-
-**Tabula (spreadsheets)**
-
-- **A formula engine with Excel's semantics:** more than 350 functions, dynamic arrays that spill, `LET` and `LAMBDA`, structured table references, and autocomplete that shows each function's arguments as you type.
-- **The tools of the Excel ribbon:** sort and filter, conditional formatting, data validation, Format as Table, pivot tables, sparklines, Goal Seek, freeze panes and Page Layout.
-- **Charts** that follow the data: column, bar, line, area, pie, scatter and combinations, read from and written to `.xlsx`.
-- **Formula Lab,** a pane that shows how a formula is evaluated, step by step.
-
-**Scena (presentations)**
-
-- **Masters, layouts and themes** as PowerPoint defines them, with smart guides when you move shapes.
-- **Slide show and presenter view,** with notes, a timer and the next slide, plus transitions and animations.
-- **Handouts and notes pages** to print or export as PDF.
-
-**Everywhere**
-
-- **The Office layout:** ribbon, File menu (Backstage), status bar, Key Tips on Alt, and the Office shortcuts listed in [SHORTCUTS.md](docs/SHORTCUTS.md).
-- **Command palette** (Ctrl+Shift+P) that also answers to Office's names for things.
-- **Version history** for every document, with named versions, preview and restore.
-- **Live collaboration** on documents and slides through a server you run, with presence and shared comments.
-- **AutoSave and document recovery** after a crash.
-- **Light, dark and high-contrast themes,** and English, German and Arabic with right-to-left layout.
-- **Notula,** notebooks with sections, pages and tags, written with the same editor as Scriba.
-
-## Compared with Microsoft Office
-
-- **Opens and saves your files:** `.docx`, `.xlsx` and `.pptx` are the formats Officina reads and writes, not an import step. What it cannot edit it keeps.
-- **No subscription, no account:** install it and use it. Nothing is tied to a sign-in.
-- **Version history built in:** every document keeps its own history on your device, without OneDrive or SharePoint.
-- **Collaboration you host:** live co-editing runs through a small server you control, on your own machine or network.
-- **Find any command:** the palette searches every command by its Officina and its Office name.
-- **Open source** under the GNU Affero General Public License.
+Everything that computes (document models, layout, formulas, file formats,
+collaboration, storage, PDF) is Rust, in one Cargo workspace of `kiln-*`
+crates. Documents are laid out in Rust and painted onto a canvas from a display
+list, so pages look the same on every platform and in the PDF. The same core
+runs natively in the Tauri shell and as WebAssembly in a Web Worker for the web
+app. The interface around the document (ribbon, dialogs, panes) is a thin
+TypeScript and React layer with no business logic. [DESIGN.md](docs/DESIGN.md)
+is the map of the code; the decisions are recorded in [docs/adr](docs/adr).
 
 ## Building
 
-Node 24 and pnpm (the version is pinned in `package.json`).
+Rust 1.99.1 (pinned in `rust-toolchain.toml`), Node 24 and pnpm (pinned in
+`package.json`). The setup scripts install everything in user space.
 
 ```sh
-git clone https://github.com/ZahakJ/officina && cd officina && pnpm install
-pnpm dev        # the web app on http://localhost:5173
-pnpm verify     # lint, typecheck and unit tests across the workspace
-pnpm e2e        # Playwright end-to-end tests in headless Chromium
+git clone https://github.com/ZahakJ/kiln && cd kiln
+bash tools/setup-rust.sh && bash tools/setup-node.sh && bash tools/verify-env.sh
+pnpm install
+cargo xtask verify       # rustfmt, Clippy with warnings denied, cargo-nextest
+pnpm verify              # Biome, TypeScript, Vitest
+pnpm dev                 # the web app on http://localhost:5173
+pnpm e2e                 # Playwright end-to-end tests in headless Chromium
+cargo run -p kiln-cli -- --version
 ```
 
-`pnpm release:desktop --linux` builds the AppImage and `.deb`;
-`pnpm release:android` builds the APK. [RELEASING.md](docs/RELEASING.md) covers
-signing and publishing.
+The desktop shell needs the WebKitGTK development libraries on Linux
+(`libwebkit2gtk-4.1-dev` and friends, listed in [docs/qa/env.md](docs/qa/env.md));
+then `pnpm tauri dev` opens it. Release bundles for Linux, Windows, macOS and
+Android are built by the release workflow from a version tag
+([RELEASING.md](docs/RELEASING.md)).
 
 ## Documentation
 
-The manual is at **[zahakj.github.io/officina/manual](https://zahakj.github.io/officina/manual/)**:
-installing on each platform, each application, collaboration, file formats and
-troubleshooting. Its source is the Markdown in [docs/manual](docs/manual).
-
 | | |
 |---|---|
-| [DESIGN.md](docs/DESIGN.md) | How it is built: packages, document models, the formula engine, file formats |
-| [FORMATS.md](docs/FORMATS.md) | Fidelity notes for each file format |
-| [SHORTCUTS.md](docs/SHORTCUTS.md) | Keyboard shortcuts in Scriba, Tabula and Scena |
-| [SECURITY.md](SECURITY.md) | Reporting a vulnerability; known gaps |
+| [PLAN.md](PLAN.md) | The implementation plan: product, architecture, budgets, work packages |
+| [DESIGN.md](docs/DESIGN.md) | Architecture: crates, packages, runtime, threads, rendering |
+| [FORMATS.md](docs/FORMATS.md) | What each file-format crate covers and the fidelity targets |
+| [SHORTCUTS.md](docs/SHORTCUTS.md) | The Office keyboard shortcuts Kiln implements |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Development loop, tests, code style |
-| [RELEASING.md](docs/RELEASING.md) | Maintainer runbook |
-| [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) | Bundled dependencies, fonts and icons, and their licences |
+| [SECURITY.md](SECURITY.md) | Reporting a vulnerability |
+| [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) | Third-party components and their licences |
 
 ## Licence
 
 GNU Affero General Public License, version 3 or later. See [LICENSE](LICENSE).
+Every dependency is under a permissive licence (MIT, Apache-2.0, BSD, ISC,
+MPL-2.0, Zlib, Unicode or OFL), checked in CI by `cargo deny` and
+`pnpm licenses:check`.

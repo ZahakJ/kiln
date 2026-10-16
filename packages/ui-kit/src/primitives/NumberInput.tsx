@@ -146,9 +146,9 @@ export function NumberInput({
   return (
     <div
       className={cx(
-        'of-field',
-        'of-number',
-        `of-field--${size}`,
+        'kiln-field',
+        'kiln-number',
+        `kiln-field--${size}`,
         invalid && 'is-invalid',
         disabled && 'is-disabled',
         className,
@@ -157,7 +157,7 @@ export function NumberInput({
     >
       <input
         id={id ?? inputId}
-        className="of-number__input"
+        className="kiln-number__input"
         role="spinbutton"
         inputMode="decimal"
         autoComplete="off"
@@ -186,7 +186,7 @@ export function NumberInput({
           }
         }}
       />
-      <span className="of-number__spin" aria-hidden="true">
+      <span className="kiln-number__spin" aria-hidden="true">
         <button
           type="button"
           tabIndex={-1}

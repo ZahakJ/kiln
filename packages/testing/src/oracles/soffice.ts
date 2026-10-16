@@ -24,7 +24,7 @@ const run = promisify(execFile);
 
 export const SOFFICE = process.env.SOFFICE ?? '/usr/bin/soffice';
 export const ORACLE_SCRIPT = join(TOOLS_DIR, 'oracle-soffice.sh');
-const PROFILE = process.env.OFFICINA_LO_PROFILE ?? '/tmp/officina-lo-profile';
+const PROFILE = process.env.KILN_LO_PROFILE ?? '/tmp/kiln-lo-profile';
 
 export class SofficeError extends Error {
   override name = 'SofficeError';
@@ -70,7 +70,7 @@ export function targetExtension(format: string): string {
 
 function materialise(input: ConvertInput): string {
   if (typeof input === 'string') return resolve(input);
-  const dir = mkdtempSync(join(tmpdir(), 'officina-in-'));
+  const dir = mkdtempSync(join(tmpdir(), 'kiln-in-'));
   const path = join(dir, basename(input.name));
   writeFileSync(path, input.bytes);
   return path;
@@ -88,7 +88,7 @@ export async function convertWithSoffice(
 ): Promise<ConvertResult> {
   if (!sofficeAvailable()) throw new SofficeError(`LibreOffice not found at ${SOFFICE}`);
   const inPath = materialise(input);
-  const outDir = options.outDir ?? mkdtempSync(join(tmpdir(), 'officina-oracle-'));
+  const outDir = options.outDir ?? mkdtempSync(join(tmpdir(), 'kiln-oracle-'));
   mkdirSync(outDir, { recursive: true });
   const ext = targetExtension(format);
   const outPath = join(outDir, `${basename(inPath, extname(inPath))}.${ext}`);
@@ -187,7 +187,7 @@ export async function renderPdfPages(
   pdf: string | Uint8Array,
   options: { dpi?: number; firstPage?: number; lastPage?: number } = {},
 ): Promise<Buffer[]> {
-  const dir = mkdtempSync(join(tmpdir(), 'officina-pages-'));
+  const dir = mkdtempSync(join(tmpdir(), 'kiln-pages-'));
   try {
     let pdfPath: string;
     if (typeof pdf === 'string') pdfPath = resolve(pdf);

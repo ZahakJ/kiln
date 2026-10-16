@@ -195,7 +195,7 @@ export const viewCommonCommands = section('View', {}, [
   c('view.themeHighContrast', 'High Contrast Theme', 'Contrast', { synonyms: ['accessibility', 'contrast'] }),
   c('view.macros', 'Macros', 'Macros', {
     apps: ['write', 'grid', 'deck'],
-    description: 'Macros are never run in Officina; they are kept in the file so it is not damaged.',
+    description: 'Macros are never run in Kiln; they are kept in the file so it is not damaged.',
   }),
   c('view.taskPane', 'Close Pane', 'PanelRightClose', { palette: false }),
   c('help.assistant', 'Ask the Assistant', 'Sparkles', {

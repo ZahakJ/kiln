@@ -103,7 +103,7 @@ export function MiniToolbar({
     // biome-ignore lint/a11y/noStaticElementInteractions: preserves the selection; the controls inside are the interactive elements
     <div
       ref={ref}
-      className={cx('of-minitoolbar', pos?.below && 'of-minitoolbar--below', className)}
+      className={cx('kiln-minitoolbar', pos?.below && 'kiln-minitoolbar--below', className)}
       style={{
         left: pos?.left ?? anchor.left,
         top: pos?.top ?? anchor.top,
@@ -123,7 +123,7 @@ export function MiniToolbar({
           e.preventDefault();
       }}
     >
-      <Toolbar aria-label={ariaLabel} className="of-minitoolbar__bar">
+      <Toolbar aria-label={ariaLabel} className="kiln-minitoolbar__bar">
         {children}
       </Toolbar>
     </div>,

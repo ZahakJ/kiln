@@ -61,7 +61,7 @@ describe('RecentCommands', () => {
     expect(r.list()).toEqual(['a.four', 'a.one']);
     r.clear();
     expect(r.list()).toEqual([]);
-    storage.setItem('officina.recentCommands', '{"not":"an array"}');
+    storage.setItem('kiln.recentCommands', '{"not":"an array"}');
     expect(new RecentCommands({ storage }).list()).toEqual([]);
   });
 });

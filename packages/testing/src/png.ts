@@ -2,7 +2,7 @@
  * A small PNG codec for test rasters (pdftoppm output, diff images): 8-bit greyscale, RGB, palette,
  * grey+alpha and RGBA, non-interlaced. Decoding always yields RGBA.
  */
-import { unzlibSync, zlibSync } from 'fflate';
+import { deflateSync, inflateSync } from 'node:zlib';
 
 export interface RgbaImage {
   width: number;
@@ -78,7 +78,7 @@ export function decodePng(png: Uint8Array): RgbaImage {
     joined.set(d, off);
     off += d.length;
   }
-  const raw = unzlibSync(joined);
+  const raw = new Uint8Array(inflateSync(joined));
   const stride = width * channels;
   const pixels = new Uint8Array(height * stride);
   for (let y = 0; y < height; y++) {
@@ -172,7 +172,7 @@ export function encodePng(img: RgbaImage): Uint8Array {
   const parts = [
     new Uint8Array(SIGNATURE),
     chunk('IHDR', ihdr),
-    chunk('IDAT', zlibSync(raw, { level: 6 })),
+    chunk('IDAT', new Uint8Array(deflateSync(raw, { level: 6 }))),
     chunk('IEND', new Uint8Array()),
   ];
   const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));

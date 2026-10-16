@@ -1,46 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="600" viewBox="0 0 2000 600" role="img" aria-label="Officina: documents, spreadsheets and slides that feel like home">
-  <!-- Light variant of banner.svg, rendered to banner-light.png by `pnpm media:render`; Inter is embedded at render time. -->
-  <defs>
-    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#fbfbfc"/>
-      <stop offset="1" stop-color="#f3f5f8"/>
-    </linearGradient>
-    <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#3F6FE0"/>
-      <stop offset="1" stop-color="#7C5CFF"/>
-    </linearGradient>
-    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#4F7FF2"/>
-      <stop offset="1" stop-color="#2B58C7"/>
-    </linearGradient>
-    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.16"/>
-      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0"/>
-    </linearGradient>
-    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="60"/>
-    </filter>
-    <clipPath id="clip"><rect width="2000" height="600" rx="28"/></clipPath>
-  </defs>
-
-  <g clip-path="url(#clip)">
-    <rect width="2000" height="600" fill="url(#card)"/>
-    <ellipse cx="294" cy="300" rx="230" ry="210" fill="#3F6FE0" opacity="0.22" filter="url(#blur)"/>
-  </g>
-
-  <g transform="translate(144 150) scale(0.5859375)">
-    <rect width="512" height="512" rx="114" fill="url(#tile)"/>
-    <rect width="512" height="512" rx="114" fill="url(#sheen)"/>
-    <path d="M348 412.95A170 170 0 1 0 164 412.95V270A92 92 0 0 1 348 270Z" fill="#ffffff"/>
-  </g>
-
-  <text x="536" y="282" font-family="Inter, 'Inter Variable', sans-serif" font-weight="800" font-size="170" letter-spacing="-5" fill="#121418">officina</text>
-  <rect x="546" y="318" width="180" height="6" rx="3" fill="url(#rule)"/>
-  <text font-family="Inter, 'Inter Variable', sans-serif" font-weight="500" font-size="44" fill="#59616b">
-    <tspan x="542" y="404">Documents, spreadsheets and slides that feel like home.</tspan>
-    <tspan x="542" y="462">Opens and saves Office files. No subscription, no account.</tspan>
-  </text>
-  <text x="543" y="534" font-family="Inter, 'Inter Variable', sans-serif" font-weight="600" font-size="30" fill="#2B58C7" xml:space="preserve">DOCX · XLSX · PPTX    •    AGPL-3.0-or-later    •    Linux · macOS · Windows · Android</text>
-
-  <rect x="0.5" y="0.5" width="1999" height="599" rx="28" fill="none" stroke="#e2e5ea"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 600" width="2000" height="600">
+  <!-- Neutral placeholder banner, light (WP-50). The brand kit's banner replaces it in WP-51. -->
+  <title>Kiln</title>
+  <rect width="2000" height="600" fill="#F6F4F0"/>
+  <text x="1000" y="330" text-anchor="middle" font-family="Liberation Sans, Arial, sans-serif" font-weight="700" font-size="220" letter-spacing="-6" fill="#1D1E21">Kiln</text>
+  <text x="1000" y="430" text-anchor="middle" font-family="Liberation Sans, Arial, sans-serif" font-size="48" fill="#5E5C58">An open-source office suite</text>
 </svg>

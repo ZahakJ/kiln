@@ -167,7 +167,7 @@ export function Gallery({
       tabIndex={index === focusIndex ? 0 : -1}
       data-index={index}
       title={item.label}
-      className="of-gallery__item"
+      className="kiln-gallery__item"
       onClick={() => {
         apply(item);
         if (!inline) setExpanded(false);
@@ -188,24 +188,24 @@ export function Gallery({
       onMouseLeave={() => onPreview?.(null)}
       onBlur={() => onPreview?.(null)}
     >
-      <span className="of-gallery__preview">{item.preview ?? item.label}</span>
+      <span className="kiln-gallery__preview">{item.preview ?? item.label}</span>
     </div>
   );
 
   return (
     <RP.Root open={expanded} onOpenChange={setExpanded}>
       <RP.Anchor asChild>
-        <div className={cx('of-gallery', className)} style={style}>
+        <div className={cx('kiln-gallery', className)} style={style}>
           <div
             ref={listRef}
             role="listbox"
             aria-label={label}
             aria-orientation="horizontal"
-            className="of-gallery__row"
+            className="kiln-gallery__row"
           >
             {visible.map((item, i) => renderItem(item, row * columns + i, true))}
           </div>
-          <div className="of-gallery__scroller">
+          <div className="kiln-gallery__scroller">
             <button
               type="button"
               tabIndex={-1}
@@ -227,9 +227,9 @@ export function Gallery({
               <Icon icon={ChevronDown} size={12} />
             </button>
             <RP.Trigger asChild>
-              <button type="button" aria-label={`More ${label}`} className="of-gallery__more">
+              <button type="button" aria-label={`More ${label}`} className="kiln-gallery__more">
                 <Icon icon={ChevronDown} size={12} />
-                <span className="of-gallery__more-bar" aria-hidden="true" />
+                <span className="kiln-gallery__more-bar" aria-hidden="true" />
               </button>
             </RP.Trigger>
           </div>
@@ -237,7 +237,7 @@ export function Gallery({
       </RP.Anchor>
       <RP.Portal>
         <RP.Content
-          className="of-popover of-popover--flush of-gallery__panel"
+          className="kiln-popover kiln-popover--flush kiln-gallery__panel"
           align="start"
           sideOffset={-1}
           collisionPadding={8}
@@ -251,12 +251,12 @@ export function Gallery({
             ref={panelRef}
             role="listbox"
             aria-label={label}
-            className="of-gallery__grid"
+            className="kiln-gallery__grid"
             style={{ gridTemplateColumns: `repeat(${expandedColumns ?? columns}, var(--gallery-item-w))` }}
           >
             {items.map((item, i) => renderItem(item, i, false))}
           </div>
-          {footer ? <div className="of-gallery__footer">{footer}</div> : null}
+          {footer ? <div className="kiln-gallery__footer">{footer}</div> : null}
         </RP.Content>
       </RP.Portal>
     </RP.Root>

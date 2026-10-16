@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: Security vulnerability
-    url: https://github.com/ZahakJ/officina/security/advisories/new
+    url: https://github.com/ZahakJ/kiln/security/advisories/new
     about: Report it privately. Do not open a public issue for a security problem.
   - name: Questions and ideas
-    url: https://github.com/ZahakJ/officina/discussions
+    url: https://github.com/ZahakJ/kiln/discussions
     about: How do I…? Is it possible to…? Ask in Discussions.
   - name: The manual
-    url: https://zahakj.github.io/officina/manual/
+    url: https://zahakj.github.io/kiln/manual/
     about: Installing, each application, file formats and troubleshooting.

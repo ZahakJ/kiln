@@ -1,11 +1,11 @@
 /**
- * Public entry point of @officina/ui-kit: the Horizon UI primitives (PLAN.md §1.2, §3.10), icons
- * (Lucide + Officina Glyphs), theme bindings, and the Office chrome (PLAN.md §1.3–1.5): AppFrame,
+ * Public entry point of @kiln/ui-kit: the Horizon UI primitives (PLAN.md §1.2, §3.10), icons
+ * (Lucide + Kiln Glyphs), theme bindings, and the Office chrome (PLAN.md §1.3–1.5): AppFrame,
  * Ribbon, Backstage, StatusBar, CommandPalette, task panes, mini toolbar, context menus, Key Tips and
- * the Options dialog, all driven by the @officina/commands registry. Import
- * `@officina/tokens/index.css` once in the app for fonts and tokens; component styles are bundled.
+ * the Options dialog, all driven by the @kiln/commands registry. Import
+ * `@kiln/tokens/index.css` once in the app for fonts and tokens; component styles are bundled.
  */
-export const PACKAGE_NAME = '@officina/ui-kit' as const;
+export const PACKAGE_NAME = '@kiln/ui-kit' as const;
 
 export {
   BACKSTAGE_PAGE_TITLES,

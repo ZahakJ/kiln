@@ -2,7 +2,7 @@ import type { LucideIcon } from 'lucide-react';
 import type { ComponentType, CSSProperties, SVGProps } from 'react';
 import { type GlyphName, glyphs, isGlyphName } from './glyphs/index.ts';
 
-/** Anything `Icon` can render: an Officina glyph name, a Lucide icon, or any SVG component. */
+/** Anything `Icon` can render: an Kiln glyph name, a Lucide icon, or any SVG component. */
 export type IconSource =
   | GlyphName
   | LucideIcon
@@ -19,12 +19,12 @@ export interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'ref' | 'stroke
 }
 
 /**
- * Renders a Lucide icon or an Officina glyph with consistent size, 1.5 px stroke and `currentColor`.
+ * Renders a Lucide icon or an Kiln glyph with consistent size, 1.5 px stroke and `currentColor`.
  * Decorative by default (`aria-hidden`); pass `label` for a standalone meaningful icon.
  */
 export function Icon({ icon, size = 16, label, className, style, strokeWidth, ...rest }: IconProps) {
   const common = {
-    className: className ? `of-icon ${className}` : 'of-icon',
+    className: className ? `kiln-icon ${className}` : 'kiln-icon',
     style: { flex: 'none', ...style } as CSSProperties,
     width: size,
     height: size,
@@ -35,7 +35,7 @@ export function Icon({ icon, size = 16, label, className, style, strokeWidth, ..
     ...rest,
   };
   if (typeof icon === 'string') {
-    if (!isGlyphName(icon)) throw new Error(`Icon: unknown Officina glyph "${icon}"`);
+    if (!isGlyphName(icon)) throw new Error(`Icon: unknown Kiln glyph "${icon}"`);
     const Glyph = glyphs[icon];
     return <Glyph size={size} strokeWidth={strokeWidth} {...common} />;
   }

@@ -120,7 +120,7 @@ export function tintLabel(tint: number): string {
 
 // Recent colours ------------------------------------------------------------------------------------
 
-export const RECENT_COLORS_KEY = 'officina.recentColors';
+export const RECENT_COLORS_KEY = 'kiln.recentColors';
 const MAX_RECENT = 10;
 const listeners = new Set<() => void>();
 let recentCache: string[] | null = null;

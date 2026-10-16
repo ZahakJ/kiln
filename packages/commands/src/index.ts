@@ -1,9 +1,9 @@
 /**
- * @officina/commands — the command system every app registers into (PLAN.md §1.3, §1.7, §2.1):
+ * @kiln/commands — the command system every app registers into (PLAN.md §1.3, §1.7, §2.1):
  * registry, keymaps (Office shortcuts), Key Tips, tier gating, recent commands, Office synonyms,
  * fuzzy search for the palette, and the AssistantProvider hooks. UI-free; ui-kit renders it.
  */
-export const PACKAGE_NAME = '@officina/commands' as const;
+export const PACKAGE_NAME = '@kiln/commands' as const;
 
 export * from './assistant.ts';
 export { CATALOG_SIZE, type CreateRegistryOptions, createCommandRegistry } from './bootstrap.ts';

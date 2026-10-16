@@ -5,7 +5,7 @@
  *     group('clipboard', 'Clipboard', [split('edit.paste', pasteMenu, { size: 'large' }), button('edit.cut'), …]),
  *   ], { keyTip: 'H' })
  */
-import type { AppId } from '@officina/commands';
+import type { AppId } from '@kiln/commands';
 import type {
   MenuEntry,
   RibbonButtonItem,

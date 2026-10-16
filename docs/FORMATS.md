@@ -1,27 +1,36 @@
 # File formats and fidelity
 
-Officina reads and writes Office Open XML (`.docx`, `.xlsx`, `.pptx`) natively.
-This page says what each reader understands, what is kept without being
-understood, and what is lost. The numbers in the last section are the targets
-the test suite holds every release to.
+Kiln reads and writes Office Open XML (`.docx`, `.xlsx`, `.pptx`) natively, in
+the Rust crates `kiln-ooxml` (the shared package, XML and DrawingML layer) and
+`kiln-io-docx`, `kiln-io-xlsx`, `kiln-io-pptx`, `kiln-io-odf`, `kiln-io-csv` and
+`kiln-io-pdf`. This page says what each reader and writer covers, what is kept
+without being understood, and what is lost. The numbers in the last section are
+the targets the test suite holds every release to.
+
+> **Status (WP-50).** The crates exist as scaffolds; the coverage below is the
+> specification each one is built and tested against (the v1.0 lists, carried
+> over unchanged). Each format's work package keeps its section current and
+> marks what has shipped: `kiln-ooxml` WP-55, `kiln-io-docx` WP-62/65,
+> `kiln-io-xlsx` and `kiln-io-csv` WP-70, `kiln-io-pptx` WP-77/79, charts WP-73,
+> `kiln-io-pdf` WP-67, `kiln-io-odf` WP-87.
 
 ## The rule: keep what you don't understand
 
 An Office file is a zip package of XML parts linked by relationships. Each
-reader builds Officina's model from the parts it knows and keeps every other
+reader builds Kiln's model from the parts it knows and keeps every other
 part, and every part it only partly read, as the original bytes. On save the
 writer regenerates the parts it modelled and copies the kept parts back, with
 their relationships and content types fixed up.
 
 So a workbook with macros, an embedded spreadsheet in a document or a custom
-XML part comes back out of Officina with those parts intact, even though
-Officina cannot run or edit them.
+XML part comes back out of Kiln with those parts intact, even though
+Kiln cannot run or edit them.
 
 Before saving to an Office format, the **Compatibility Checker**
 (File ▸ Info ▸ Check for Issues) lists anything in the document that the target
-format cannot hold or that Officina will not carry through.
+format cannot hold or that Kiln will not carry through.
 
-## Word documents (`.docx`, `.dotx`, `.docm`)
+## Word documents (`.docx`, `.dotx`, `.docm`) — `kiln-io-docx`
 
 **Read and written:** paragraphs and runs with style inheritance (document
 defaults, styles, theme fonts and colours); tables with merged cells, borders,
@@ -41,7 +50,7 @@ custom XML.
 square and tight wrapping, so a line can break one word differently from Word.
 The target is within one line per page on the fixture corpus.
 
-## Excel workbooks (`.xlsx`, `.xltx`, `.xlsm`)
+## Excel workbooks (`.xlsx`, `.xltx`, `.xlsm`) — `kiln-io-xlsx`
 
 **Read and written:** sheets, cell values of every type, shared and rich-text
 strings, formulas (including shared formulas, legacy array formulas and dynamic
@@ -53,14 +62,14 @@ breaks, AutoFilter, tables, pictures and shapes in drawings, charts, notes and
 threaded comments, the 1900 and 1904 date systems.
 
 **Kept, not edited:** pivot tables and pivot caches are preserved and shown as
-their last values (Officina's own pivot tables are written in Excel's format and
+their last values (Kiln's own pivot tables are written in Excel's format and
 refresh in Excel), the VBA project of an `.xlsm`, external links, custom XML.
 
-**Charts:** column, bar, line, area, pie, doughnut, scatter, bubble, radar and
+**Charts** (`kiln-charts`): column, bar, line, area, pie, doughnut, scatter, bubble, radar and
 combinations, with axes, legends, data labels and series formatting. 3-D bar
 charts are drawn in 2-D. Treemap and sunburst charts are read where possible.
 
-## PowerPoint presentations (`.pptx`, `.potx`, `.pptm`)
+## PowerPoint presentations (`.pptx`, `.potx`, `.pptm`) — `kiln-io-pptx`
 
 **Read and written:** slide size, masters, layouts and slides with placeholder
 inheritance; shapes with all 187 preset geometries, fills, lines and effects;
@@ -69,32 +78,35 @@ cropping; tables; charts; groups and connectors; backgrounds; transitions;
 speaker notes; comments; sections.
 
 **Mapped:** SmartArt is imported as a group of ordinary shapes. Transitions map
-to Officina's set, and an unknown transition becomes Fade. Animations Officina
+to Kiln's set, and an unknown transition becomes Fade. Animations Kiln
 supports are editable; the others are kept in the file and dropped only if you
 change the shapes on that slide.
 
 **Kept, not edited:** embedded OLE objects, the VBA project of a `.pptm`,
 custom XML.
 
-## OpenDocument (`.odt`, `.ods`, `.odp`)
+## OpenDocument (`.odt`, `.ods`, `.odp`) — `kiln-io-odf`
 
 Imported into and exported from the same models as the Office formats.
-Officina's models are shaped like OOXML, so an ODF file goes through a mapping;
+Kiln's models are shaped like OOXML, so an ODF file goes through a mapping;
 features with no OOXML counterpart are reported by the Compatibility Checker.
 
 ## Other formats
 
-- **CSV and TSV:** RFC 4180, with the delimiter, quoting and encoding detected
+- **CSV and TSV** (`kiln-io-csv`): RFC 4180, with the delimiter, quoting and encoding detected
   (UTF-8 with or without BOM, UTF-16, Windows-1252).
 - **JSON:** an array of objects becomes a table.
-- **Markdown, plain text and HTML:** open in Scriba and export from it.
-- **PDF:** export only, from the same page layout you see on screen, with the
-  document outline as bookmarks.
+- **Markdown, plain text and HTML:** open in Kiln Write and export from it.
+- **PDF** (`kiln-io-pdf`, on `krilla`): export only, from the same Scene you
+  see on screen, with subset fonts, the document outline as bookmarks, page
+  labels and tagged structure.
 
 ## Fonts
 
-Office's default fonts are proprietary, so Officina bundles open fonts with the
-same metrics, which keeps line breaks and page breaks where Word put them:
+Office's default fonts are proprietary, so Kiln bundles open fonts with the
+same metrics, which keeps line breaks and page breaks where Word put them
+(`kiln-text` loads them on every platform; the table is
+`crates/kiln-text/src/substitution.rs` from WP-53):
 
 | In the file | Rendered with |
 |---|---|
@@ -103,15 +115,18 @@ same metrics, which keeps line breaks and page breaks where Word put them:
 | Arial | Liberation Sans |
 | Times New Roman | Liberation Serif |
 | Courier New | Liberation Mono |
-| Aptos | Inter (no metric-compatible open font exists; the Compatibility Checker says so) |
+| Aptos | the brand kit's UI sans (no metric-compatible open font exists; the Compatibility Checker says so) |
 
 The file keeps the original font names, so the document looks as intended
 again when opened in Office.
 
 ## Fidelity targets
 
-The fixture corpus is round-tripped (opened and saved) and compared with the
-original and with LibreOffice's rendering. `pnpm fidelity` runs it.
+The fixture corpus in `fixtures/` is round-tripped (opened and saved) and
+compared with the original and with LibreOffice's rendering.
+`cargo xtask fidelity` runs it and writes `docs/qa/fidelity.md` (WP-60).
+Untouched parts must be byte-identical after save, and LibreOffice must open
+every output.
 
 | Format | Text | Structure | Visual | Other |
 |---|---|---|---|---|

@@ -16,10 +16,10 @@ describe('tiers', () => {
   });
 
   it('lets the environment override tiers and release mode', () => {
-    const cfg = resolveTierConfig({ PROD: true, VITE_OFFICINA_TIERS: 'P1' });
+    const cfg = resolveTierConfig({ PROD: true, VITE_KILN_TIERS: 'P1' });
     expect(cfg.tiers).toEqual(new Set(['P0', 'P1'])); // P0 is never gated away
-    expect(resolveTierConfig({ PROD: true, OFFICINA_RELEASE: '0' }).release).toBe(false);
-    expect(resolveTierConfig({ OFFICINA_RELEASE: 'yes' }).release).toBe(true);
+    expect(resolveTierConfig({ PROD: true, KILN_RELEASE: '0' }).release).toBe(false);
+    expect(resolveTierConfig({ KILN_RELEASE: 'yes' }).release).toBe(true);
   });
 
   it('gates commands by tier and pending state', () => {

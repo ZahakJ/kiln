@@ -27,7 +27,7 @@ export function defaultStorage(): StorageLike {
   try {
     const ls = (globalThis as { localStorage?: StorageLike }).localStorage;
     if (ls) {
-      const probe = '__officina_probe__';
+      const probe = '__kiln_probe__';
       ls.setItem(probe, '1');
       ls.removeItem(probe);
       return ls;

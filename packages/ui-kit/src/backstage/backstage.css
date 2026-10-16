@@ -1,23 +1,23 @@
 /* Backstage (File menu): accent rail on the left, content on the canvas (PLAN.md §1.5). */
 
-.of-backstage {
+.kiln-backstage {
   position: fixed;
   inset: 0;
-  z-index: var(--of-z-dialog);
+  z-index: var(--kiln-z-dialog);
   display: flex;
-  background: var(--of-bg-surface);
-  color: var(--of-fg);
-  font-family: var(--of-font-ui);
-  font-size: var(--of-text-base);
-  animation: of-backstage-in var(--of-duration-pane) var(--of-ease-out);
+  background: var(--kiln-bg-surface);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-base);
+  animation: kiln-backstage-in var(--kiln-duration-pane) var(--kiln-ease-out);
 }
-@keyframes of-backstage-in {
+@keyframes kiln-backstage-in {
   from {
     opacity: 0;
     transform: translateX(-12px);
   }
 }
-.of-backstage__rail {
+.kiln-backstage__rail {
   display: flex;
   flex-direction: column;
   flex: none;
@@ -25,36 +25,36 @@
   padding: 12px 8px 12px;
   background: linear-gradient(
     180deg,
-    var(--of-accent-strong),
-    color-mix(in srgb, var(--of-accent-strong), #000 14%)
+    var(--kiln-accent-strong),
+    color-mix(in srgb, var(--kiln-accent-strong), #000 14%)
   );
-  color: var(--of-on-accent);
+  color: var(--kiln-on-accent);
   overflow-y: auto;
 }
-[data-theme="dark"] .of-backstage__rail {
+[data-theme="dark"] .kiln-backstage__rail {
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--of-accent) 28%, var(--of-bg-surface-2)),
-    color-mix(in srgb, var(--of-accent) 16%, var(--of-bg-surface-2))
+    color-mix(in srgb, var(--kiln-accent) 28%, var(--kiln-bg-surface-2)),
+    color-mix(in srgb, var(--kiln-accent) 16%, var(--kiln-bg-surface-2))
   );
-  color: var(--of-fg);
+  color: var(--kiln-fg);
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .of-backstage__rail {
+  :root:not([data-theme]) .kiln-backstage__rail {
     background: linear-gradient(
       180deg,
-      color-mix(in srgb, var(--of-accent) 28%, var(--of-bg-surface-2)),
-      color-mix(in srgb, var(--of-accent) 16%, var(--of-bg-surface-2))
+      color-mix(in srgb, var(--kiln-accent) 28%, var(--kiln-bg-surface-2)),
+      color-mix(in srgb, var(--kiln-accent) 16%, var(--kiln-bg-surface-2))
     );
-    color: var(--of-fg);
+    color: var(--kiln-fg);
   }
 }
-[data-theme="hc"] .of-backstage__rail {
-  background: var(--of-bg-surface);
-  color: var(--of-fg);
-  border-inline-end: 2px solid var(--of-border-strong);
+[data-theme="hc"] .kiln-backstage__rail {
+  background: var(--kiln-bg-surface);
+  color: var(--kiln-fg);
+  border-inline-end: 2px solid var(--kiln-border-strong);
 }
-.of-backstage__back {
+.kiln-backstage__back {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -66,18 +66,18 @@
   background: transparent;
   color: inherit;
 }
-.of-backstage__back:hover {
+.kiln-backstage__back:hover {
   background: color-mix(in srgb, currentColor 14%, transparent);
 }
-.of-backstage__doc {
+.kiln-backstage__doc {
   margin: 0 10px 10px;
-  font-size: var(--of-text-sm);
+  font-size: var(--kiln-text-sm);
   opacity: 0.85;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.of-backstage__nav {
+.kiln-backstage__nav {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -85,11 +85,11 @@
   flex-direction: column;
   gap: 1px;
 }
-.of-backstage__nav--bottom {
+.kiln-backstage__nav--bottom {
   margin-top: auto;
   padding-top: 12px;
 }
-.of-backstage__nav-item {
+.kiln-backstage__nav-item {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -97,53 +97,53 @@
   height: 40px;
   padding: 0 12px;
   border: 0;
-  border-radius: var(--of-radius-menu);
+  border-radius: var(--kiln-radius-menu);
   background: transparent;
   color: inherit;
   font: inherit;
-  font-size: var(--of-text-base);
+  font-size: var(--kiln-text-base);
   text-align: start;
 }
-.of-backstage__nav-item:hover {
+.kiln-backstage__nav-item:hover {
   background: color-mix(in srgb, currentColor 12%, transparent);
 }
-.of-backstage__nav-item.is-current {
+.kiln-backstage__nav-item.is-current {
   background: color-mix(in srgb, currentColor 20%, transparent);
-  font-weight: var(--of-weight-semibold);
+  font-weight: var(--kiln-weight-semibold);
 }
-.of-backstage__nav-item:focus-visible,
-.of-backstage__back:focus-visible {
+.kiln-backstage__nav-item:focus-visible,
+.kiln-backstage__back:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: -2px;
 }
-.of-backstage__divider {
+.kiln-backstage__divider {
   height: 1px;
   margin: 8px 10px;
   background: color-mix(in srgb, currentColor 25%, transparent);
 }
-.of-backstage__content {
+.kiln-backstage__content {
   flex: 1;
   min-width: 0;
   overflow: auto;
   padding: 28px 48px 48px;
-  background: var(--of-bg-surface);
+  background: var(--kiln-bg-surface);
 }
-.of-backstage__title {
+.kiln-backstage__title {
   margin: 0 0 20px;
   font-size: 30px;
-  font-weight: var(--of-weight-regular);
+  font-weight: var(--kiln-weight-regular);
   letter-spacing: -0.01em;
   outline: none;
 }
-.of-backstage__page {
+.kiln-backstage__page {
   max-width: 1080px;
 }
 
 @media (max-width: 639px) {
-  .of-backstage {
+  .kiln-backstage {
     flex-direction: column;
   }
-  .of-backstage__rail {
+  .kiln-backstage__rail {
     width: auto;
     flex-direction: row;
     align-items: center;
@@ -151,35 +151,35 @@
     overflow-x: auto;
     overflow-y: hidden;
   }
-  .of-backstage__back {
+  .kiln-backstage__back {
     margin: 0 8px 0 0;
     flex: none;
   }
-  .of-backstage__doc {
+  .kiln-backstage__doc {
     display: none;
   }
-  .of-backstage__nav,
-  .of-backstage__nav--bottom {
+  .kiln-backstage__nav,
+  .kiln-backstage__nav--bottom {
     flex-direction: row;
     margin: 0;
     padding: 0;
   }
-  .of-backstage__nav-item {
+  .kiln-backstage__nav-item {
     width: auto;
     white-space: nowrap;
   }
-  .of-backstage__divider {
+  .kiln-backstage__divider {
     width: 1px;
     height: 24px;
     margin: 0 4px;
   }
-  .of-backstage__content {
+  .kiln-backstage__content {
     padding: 20px 16px 32px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .of-backstage {
+  .kiln-backstage {
     animation: none;
   }
 }

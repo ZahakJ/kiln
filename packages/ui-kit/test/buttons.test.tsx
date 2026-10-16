@@ -14,8 +14,8 @@ describe('Button', () => {
     );
     const btn = screen.getByRole('button', { name: 'Save' });
     expect(btn.getAttribute('type')).toBe('button');
-    expect(btn.className).toContain('of-btn--primary');
-    expect(btn.className).toContain('of-btn--lg');
+    expect(btn.className).toContain('kiln-btn--primary');
+    expect(btn.className).toContain('kiln-btn--lg');
     expect(btn.getAttribute('aria-keyshortcuts')).toMatch(/^(Control|Meta)\+S$/);
     btn.focus();
     await userEvent.keyboard('{Enter}');
@@ -50,8 +50,8 @@ describe('Button', () => {
         <Button variant="split">Split</Button>
       </>,
     );
-    expect(screen.getByRole('button', { name: 'Table' }).className).toContain('of-btn--stacked');
-    expect(screen.getByRole('button', { name: 'Split' }).className).toContain('of-btn--split');
+    expect(screen.getByRole('button', { name: 'Table' }).className).toContain('kiln-btn--stacked');
+    expect(screen.getByRole('button', { name: 'Split' }).className).toContain('kiln-btn--split');
   });
 });
 

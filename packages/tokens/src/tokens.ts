@@ -2,7 +2,7 @@
  * "Horizon" design tokens (PLAN.md §1.2) — the single source of truth.
  *
  * `tokens.css` and `theme.css` (the Tailwind 4 `@theme` block) are generated from this file by
- * `pnpm --filter @officina/tokens generate`; a unit test fails when they drift.
+ * `pnpm --filter @kiln/tokens generate`; a unit test fails when they drift.
  */
 
 /** Themes that can be rendered. `hc` is the high-contrast theme. */
@@ -17,7 +17,7 @@ export type ThemePreference = (typeof THEME_PREFERENCES)[number];
 export const APPS = ['write', 'grid', 'deck', 'notes', 'hub'] as const;
 export type AppId = (typeof APPS)[number];
 
-/** Per-theme colour tokens. Keys map to `--of-<key>`. */
+/** Per-theme colour tokens. Keys map to `--kiln-<key>`. */
 export interface ColorTokens {
   /** Area behind pages/sheets/slides. */
   'bg-canvas': string;
@@ -75,7 +75,7 @@ export interface ColorTokens {
   /** Scrollbar thumb. */
   scrollbar: string;
   'scrollbar-hover': string;
-  /** Selection fill opacity of the accent (`--of-selection` = accent at this percentage). */
+  /** Selection fill opacity of the accent (`--kiln-selection` = accent at this percentage). */
   'selection-alpha': string;
   /** Box shadows (theme-dependent strength). */
   'shadow-1': string;
@@ -103,7 +103,7 @@ export const colors: Record<ResolvedTheme, ColorTokens> = {
     'fg-disabled': '#A1A7B3',
     border: '#D8DDE6',
     'border-strong': '#B4BBC8',
-    'focus-ring': 'var(--of-accent)',
+    'focus-ring': 'var(--kiln-accent)',
     'on-accent': '#FFFFFF',
     'accent-write': '#2B5FD9',
     'accent-grid': '#1F8A5B',
@@ -147,7 +147,7 @@ export const colors: Record<ResolvedTheme, ColorTokens> = {
     'fg-disabled': '#5D6470',
     border: '#333843',
     'border-strong': '#4A515E',
-    'focus-ring': 'var(--of-accent)',
+    'focus-ring': 'var(--kiln-accent)',
     'on-accent': '#0E1014',
     'accent-write': '#6B8FF0',
     'accent-grid': '#4FC08D',
@@ -220,7 +220,7 @@ export const colors: Record<ResolvedTheme, ColorTokens> = {
   },
 };
 
-/** Theme-independent tokens. Keys map to `--of-<key>`. */
+/** Theme-independent tokens. Keys map to `--kiln-<key>`. */
 export const scale = {
   // 4 px base grid.
   'space-0': '0px',
@@ -291,19 +291,19 @@ export type ScaleTokenName = keyof typeof scale;
  * `data-app` or `data-theme`, so nested scopes (e.g. app cards in the Hub) get the right colours.
  */
 export const derived = {
-  selection: 'color-mix(in srgb, var(--of-accent) var(--of-selection-alpha), transparent)',
-  'accent-subtle': 'color-mix(in srgb, var(--of-accent) 12%, transparent)',
-  'accent-hover': 'color-mix(in srgb, var(--of-accent-strong), var(--of-fg) 12%)',
-  'accent-pressed': 'color-mix(in srgb, var(--of-accent-strong), var(--of-fg) 22%)',
+  selection: 'color-mix(in srgb, var(--kiln-accent) var(--kiln-selection-alpha), transparent)',
+  'accent-subtle': 'color-mix(in srgb, var(--kiln-accent) 12%, transparent)',
+  'accent-hover': 'color-mix(in srgb, var(--kiln-accent-strong), var(--kiln-fg) 12%)',
+  'accent-pressed': 'color-mix(in srgb, var(--kiln-accent-strong), var(--kiln-fg) 22%)',
 } as const;
 
 export type DerivedTokenName = keyof typeof derived;
 
 export type TokenName = ColorTokenName | ScaleTokenName | DerivedTokenName | 'accent' | 'accent-strong';
 
-/** `var(--of-<name>)` with type-checked names, for inline styles. */
+/** `var(--kiln-<name>)` with type-checked names, for inline styles. */
 export function cssVar(name: TokenName): string {
-  return `var(--of-${name})`;
+  return `var(--kiln-${name})`;
 }
 
 /** Bundled document font families and their Office equivalents (metric-compatible, SIL OFL). */

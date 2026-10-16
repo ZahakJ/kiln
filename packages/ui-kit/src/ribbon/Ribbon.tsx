@@ -1,4 +1,4 @@
-import { assignKeyTips, isTierEnabled, normalizeKeyTip, TAB_KEYTIPS } from '@officina/commands';
+import { assignKeyTips, isTierEnabled, normalizeKeyTip, TAB_KEYTIPS } from '@kiln/commands';
 import { Check, ChevronDown, ChevronUp, Ellipsis } from 'lucide-react';
 import {
   Fragment,
@@ -222,9 +222,9 @@ export function Ribbon({
         aria-controls={selected && (!collapsed || floating) ? panelId : undefined}
         tabIndex={selected ? 0 : -1}
         className={cx(
-          'of-ribbon__tab',
+          'kiln-ribbon__tab',
           selected && 'is-active',
-          t.contextual && 'of-ribbon__tab--contextual',
+          t.contextual && 'kiln-ribbon__tab--contextual',
         )}
         data-keytip={tabTips.get(t.id)}
         data-keytip-level="root"
@@ -243,14 +243,19 @@ export function Ribbon({
   return (
     <div
       ref={rootRef}
-      className={cx('of-ribbon', `of-ribbon--${layout}`, collapsed && 'of-ribbon--collapsed', className)}
+      className={cx(
+        'kiln-ribbon',
+        `kiln-ribbon--${layout}`,
+        collapsed && 'kiln-ribbon--collapsed',
+        className,
+      )}
       data-layout={layout}
     >
-      <div className="of-ribbon__strip">
+      <div className="kiln-ribbon__strip">
         {onFileClick ? (
           <button
             type="button"
-            className="of-ribbon__file"
+            className="kiln-ribbon__file"
             onClick={onFileClick}
             data-keytip="F"
             data-keytip-level="root"
@@ -259,20 +264,20 @@ export function Ribbon({
             File
           </button>
         ) : null}
-        <div className="of-ribbon__tablist" role="tablist" aria-label="Ribbon tabs">
+        <div className="kiln-ribbon__tablist" role="tablist" aria-label="Ribbon tabs">
           {regular.map(renderTab)}
           {contextualSets.map(([set, s]) => (
-            <div key={set} className="of-ribbon__ctxset" role="presentation" data-set={set} title={s.label}>
-              <span className="of-ribbon__ctxlabel" aria-hidden="true">
+            <div key={set} className="kiln-ribbon__ctxset" role="presentation" data-set={set} title={s.label}>
+              <span className="kiln-ribbon__ctxlabel" aria-hidden="true">
                 {s.label}
               </span>
-              <div className="of-ribbon__ctxtabs" role="presentation">
+              <div className="kiln-ribbon__ctxtabs" role="presentation">
                 {s.tabs.map(renderTab)}
               </div>
             </div>
           ))}
         </div>
-        <div className="of-ribbon__strip-end">
+        <div className="kiln-ribbon__strip-end">
           {trailing}
           <RibbonDisplayMenu
             layout={layoutPref}
@@ -288,7 +293,7 @@ export function Ribbon({
           id={panelId}
           role="tabpanel"
           aria-labelledby={tabDomId(active.id)}
-          className={cx('of-ribbon__panel', floating && 'of-ribbon__panel--floating')}
+          className={cx('kiln-ribbon__panel', floating && 'kiln-ribbon__panel--floating')}
           onKeyDown={(e) => {
             if (e.key === 'Escape' && !e.defaultPrevented) {
               e.preventDefault();
@@ -302,7 +307,7 @@ export function Ribbon({
             <Tooltip content="Collapse the Ribbon" shortcut="Mod+F1">
               <button
                 type="button"
-                className="of-ribbon__collapse"
+                className="kiln-ribbon__collapse"
                 aria-label="Collapse the Ribbon"
                 onClick={() => onCollapsedChange(true)}
               >
@@ -314,7 +319,7 @@ export function Ribbon({
             <Tooltip content="Pin the Ribbon" shortcut="Mod+F1">
               <button
                 type="button"
-                className="of-ribbon__collapse"
+                className="kiln-ribbon__collapse"
                 aria-label="Pin the Ribbon"
                 onClick={() => onCollapsedChange(false)}
               >
@@ -355,7 +360,7 @@ function RibbonDisplayMenu({
         <MenuTrigger asChild>
           <button
             type="button"
-            className="of-btn of-btn--ghost of-btn--sm of-ribbon__display"
+            className="kiln-btn kiln-btn--ghost kiln-btn--sm kiln-ribbon__display"
             aria-label="Ribbon display options"
           >
             <Icon icon={ChevronDown} size={14} />
@@ -487,7 +492,7 @@ function ClassicGroups({ tab, groups, tips, level }: GroupsProps) {
   });
 
   return (
-    <Toolbar ref={containerRef} aria-label={`${tab.label} commands`} className="of-ribbon__groups">
+    <Toolbar ref={containerRef} aria-label={`${tab.label} commands`} className="kiln-ribbon__groups">
       {groups.map((g) =>
         collapsedIds.has(g.id) ? (
           <CollapsedGroup key={g.id} group={g} tips={tips} level={level} />
@@ -552,26 +557,26 @@ function ClassicGroup({
   return (
     // biome-ignore lint/a11y/useSemanticElements: a WAI-ARIA group of ribbon commands, not a form fieldset
     <div
-      className={cx('of-ribbon__group', `of-ribbon__group--rows-${group.rows ?? 3}`)}
+      className={cx('kiln-ribbon__group', `kiln-ribbon__group--rows-${group.rows ?? 3}`)}
       role="group"
       aria-label={group.label}
       data-ribbon-group={inPopover ? undefined : group.id}
     >
-      <div className="of-ribbon__group-body">
+      <div className="kiln-ribbon__group-body">
         {cols.map((col, ci) =>
           col.type === 'single' ? (
-            <div key={ci} className="of-ribbon__col of-ribbon__col--single">
+            <div key={ci} className="kiln-ribbon__col kiln-ribbon__col--single">
               {renderLeaf(col.item, false)}
             </div>
           ) : (
-            <div key={ci} className="of-ribbon__col of-ribbon__col--stack">
+            <div key={ci} className="kiln-ribbon__col kiln-ribbon__col--stack">
               {col.rows.map(({ item, index }) =>
                 item.kind === 'row' ? (
-                  <div key={item.id ?? `row-${index}`} className="of-ribbon__row">
+                  <div key={item.id ?? `row-${index}`} className="kiln-ribbon__row">
                     {item.items.map((leaf) => renderLeaf(leaf, true))}
                   </div>
                 ) : (
-                  <div key={itemId(item, index)} className="of-ribbon__row">
+                  <div key={itemId(item, index)} className="kiln-ribbon__row">
                     {renderLeaf(item, false)}
                   </div>
                 ),
@@ -580,7 +585,7 @@ function ClassicGroup({
           ),
         )}
       </div>
-      <div className="of-ribbon__group-label">
+      <div className="kiln-ribbon__group-label">
         <span>{group.label}</span>
         {group.launcher ? (
           <DialogLauncher
@@ -614,7 +619,7 @@ function CollapsedGroup({
   return (
     // biome-ignore lint/a11y/useSemanticElements: a WAI-ARIA group of ribbon commands, not a form fieldset
     <div
-      className="of-ribbon__group of-ribbon__group--collapsed"
+      className="kiln-ribbon__group kiln-ribbon__group--collapsed"
       role="group"
       aria-label={group.label}
       data-ribbon-group={group.id}
@@ -624,20 +629,20 @@ function CollapsedGroup({
         <PopoverTrigger asChild>
           <button
             type="button"
-            className="of-btn of-btn--toolbar of-btn--stacked of-ribbon__btn of-ribbon__btn--large"
+            className="kiln-btn kiln-btn--toolbar kiln-btn--stacked kiln-ribbon__btn kiln-ribbon__btn--large"
             data-keytip-level={level}
           >
-            <span className="of-btn__icon">
+            <span className="kiln-btn__icon">
               <RibbonIcon name={icon} size={32} />
             </span>
-            <span className="of-btn__label">
+            <span className="kiln-btn__label">
               {group.label}
               <Icon icon={ChevronDown} size={12} />
             </span>
           </button>
         </PopoverTrigger>
-        <PopoverContent className="of-ribbon__group-popover" aria-label={group.label}>
-          <Toolbar aria-label={group.label} className="of-ribbon__groups of-ribbon__groups--popover">
+        <PopoverContent className="kiln-ribbon__group-popover" aria-label={group.label}>
+          <Toolbar aria-label={group.label} className="kiln-ribbon__groups kiln-ribbon__groups--popover">
             <ClassicGroup group={group} tips={tips} level={level} inPopover />
           </Toolbar>
         </PopoverContent>
@@ -695,12 +700,12 @@ function SimplifiedGroups({ tab, groups, tips, level }: GroupsProps) {
     <Toolbar
       ref={containerRef}
       aria-label={`${tab.label} commands`}
-      className="of-ribbon__groups of-ribbon__groups--simplified"
+      className="kiln-ribbon__groups kiln-ribbon__groups--simplified"
     >
       {shown.map((e) => (
         <Fragment key={`${e.group.id}:${e.key}`}>
-          {e.first && e !== shown[0] ? <span className="of-ribbon__group-sep" aria-hidden="true" /> : null}
-          <span className="of-ribbon__entry" data-ribbon-entry={e.key}>
+          {e.first && e !== shown[0] ? <span className="kiln-ribbon__group-sep" aria-hidden="true" /> : null}
+          <span className="kiln-ribbon__entry" data-ribbon-entry={e.key}>
             <RibbonItemView
               item={e.item}
               size={defaultSize(e.item, 'simplified', false)}
@@ -717,22 +722,22 @@ function SimplifiedGroups({ tab, groups, tips, level }: GroupsProps) {
             <PopoverTrigger asChild>
               <button
                 type="button"
-                className="of-btn of-btn--toolbar of-btn--icon-only of-ribbon__more"
+                className="kiln-btn kiln-btn--toolbar kiln-btn--icon-only kiln-ribbon__more"
                 aria-label="More commands"
                 data-keytip="00"
                 data-keytip-level={level}
               >
-                <span className="of-btn__icon">
+                <span className="kiln-btn__icon">
                   <Icon icon={Ellipsis} size={20} />
                 </span>
               </button>
             </PopoverTrigger>
           </Tooltip>
-          <PopoverContent className="of-ribbon__overflow" align="end" aria-label="More commands">
-            <Toolbar orientation="vertical" aria-label="More commands" className="of-ribbon__overflow-list">
+          <PopoverContent className="kiln-ribbon__overflow" align="end" aria-label="More commands">
+            <Toolbar orientation="vertical" aria-label="More commands" className="kiln-ribbon__overflow-list">
               {overflow.map((e) => (
                 <Fragment key={`${e.group.id}:${e.key}`}>
-                  {e.first ? <div className="of-ribbon__overflow-heading">{e.group.label}</div> : null}
+                  {e.first ? <div className="kiln-ribbon__overflow-heading">{e.group.label}</div> : null}
                   <RibbonItemView
                     item={e.item}
                     size="medium"

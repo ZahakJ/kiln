@@ -9,7 +9,7 @@ describe('OptionsDialog', () => {
   it('lists the §1.5 sections and persists changes', async () => {
     resetOptionsCache();
     const user = userEvent.setup();
-    renderWithCommands(<OptionsDialog open onOpenChange={() => {}} appName="Scriba" />);
+    renderWithCommands(<OptionsDialog open onOpenChange={() => {}} appName="Kiln Write" />);
     const nav = screen.getByRole('navigation', { name: 'Options sections' });
     expect(
       within(nav)
@@ -24,7 +24,7 @@ describe('OptionsDialog', () => {
     await user.type(interval, '30{Enter}');
     expect(loadOptions().save.autoSaveInterval).toBe(30);
     resetOptionsCache();
-    expect(JSON.parse(localStorage.getItem('officina.options') ?? '{}').save.autoSaveInterval).toBe(30);
+    expect(JSON.parse(localStorage.getItem('kiln.options') ?? '{}').save.autoSaveInterval).toBe(30);
   });
 
   it('remaps a shortcut live from the Keyboard section, Office-style', async () => {

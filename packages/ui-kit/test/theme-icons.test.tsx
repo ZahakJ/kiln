@@ -25,11 +25,11 @@ describe('ThemeProvider / useTheme', () => {
     act(() => btn.click());
     expect(btn.textContent).toBe('dark:dark:grid');
     expect(document.documentElement.dataset.theme).toBe('dark');
-    expect(localStorage.getItem('officina.theme')).toBe('dark');
+    expect(localStorage.getItem('kiln.theme')).toBe('dark');
   });
 
   it('restores the persisted theme on mount', () => {
-    localStorage.setItem('officina.theme', 'hc');
+    localStorage.setItem('kiln.theme', 'hc');
     render(
       <ThemeProvider>
         <Probe />
@@ -59,6 +59,6 @@ describe('Icon', () => {
     render(<FormatPainter title="Format Painter" />);
     expect(screen.getByRole('img', { name: 'Format Painter' })).toBeTruthy();
     // @ts-expect-error unknown glyph names are a type error and a runtime error
-    expect(() => render(<Icon icon="NoSuchGlyph" />)).toThrow(/unknown Officina glyph/);
+    expect(() => render(<Icon icon="NoSuchGlyph" />)).toThrow(/unknown Kiln glyph/);
   });
 });

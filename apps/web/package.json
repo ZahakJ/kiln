@@ -1,8 +1,8 @@
 {
-  "name": "@officina/web",
+  "name": "@kiln/web",
   "version": "0.1.0",
   "private": true,
-  "description": "Officina web app: the Vite + React SPA/PWA that the desktop and Android shells wrap.",
+  "description": "Kiln web app: the Vite + React shell that hosts the WebAssembly core and that the Tauri shell loads.",
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "scripts": {
@@ -14,7 +14,6 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@fontsource-variable/inter": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

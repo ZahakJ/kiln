@@ -4,9 +4,9 @@
  * every command that is still only declared (`pending`).
  *
  * Configuration, read at build time (Vite `import.meta.env`) or run time (`process.env`):
- * - `OFFICINA_TIERS` / `VITE_OFFICINA_TIERS`: `P0,P1`, `all`. Default: all tiers in development,
+ * - `KILN_TIERS` / `VITE_KILN_TIERS`: `P0,P1`, `all`. Default: all tiers in development,
  *   `P0` in release builds.
- * - `OFFICINA_RELEASE` / `VITE_OFFICINA_RELEASE`: `1`/`true` forces a release build, `0`/`false`
+ * - `KILN_RELEASE` / `VITE_KILN_RELEASE`: `1`/`true` forces a release build, `0`/`false`
  *   forces development. Default: release when Vite's `PROD` is true or `NODE_ENV=production`.
  */
 import type { Tier } from './types.ts';
@@ -58,12 +58,12 @@ export function readEnv(): EnvLike {
 }
 
 export function resolveTierConfig(env: EnvLike = readEnv()): TierConfig {
-  const forced = truthy(env.VITE_OFFICINA_RELEASE ?? env.OFFICINA_RELEASE);
+  const forced = truthy(env.VITE_KILN_RELEASE ?? env.KILN_RELEASE);
   const release =
     forced ??
     (env.PROD === true || env.PROD === 'true' || env.NODE_ENV === 'production' || env.MODE === 'production');
   const listed = parseTierList(
-    (env.VITE_OFFICINA_TIERS as string | undefined) ?? (env.OFFICINA_TIERS as string | undefined),
+    (env.VITE_KILN_TIERS as string | undefined) ?? (env.KILN_TIERS as string | undefined),
   );
   // P0 is always on: the core product is never gated away.
   const tiers = listed ?? new Set<Tier>(release ? ['P0'] : TIERS);

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Officina — install Android cmdline-tools, platform-tools, platform 36 and build-tools 36.0.0
-# into ~/Android (user space, no root). Idempotent. See PLAN.md §4.4.
+# Kiln — install Android cmdline-tools, platform-tools, platform 36, build-tools 36.0.0 and NDK r29
+# (29.0.14206865) into ~/Android (user space, no root). Idempotent. See PLAN.md §4.4.
 #
 # Why cmdline-tools 22.0 (build 15859902) and not the newer 16111833 named in PLAN.md §4.4:
 # from 16111833 on, `sdkmanager` is a deprecated shim over the new native "Android CLI", whose
@@ -11,6 +11,7 @@ set -euo pipefail
 
 CMDLINE_TOOLS_BUILD="${CMDLINE_TOOLS_BUILD:-15859902}"
 CMDLINE_TOOLS_REVISION="${CMDLINE_TOOLS_REVISION:-22.0}"
+NDK_VERSION="${NDK_VERSION:-29.0.14206865}"
 export SDKMANAGER_OPTS="${SDKMANAGER_OPTS:--Djava.net.preferIPv4Stack=true}"
 export JAVA_HOME="${JAVA_HOME:-/usr/lib/jvm/java-21-openjdk-amd64}"
 export ANDROID_HOME="${ANDROID_HOME:-$HOME/Android}"
@@ -45,6 +46,7 @@ need=()
 [ -d "$ANDROID_HOME/platform-tools" ] || need+=("platform-tools")
 [ -d "$ANDROID_HOME/platforms/android-36" ] || need+=("platforms;android-36")
 [ -d "$ANDROID_HOME/build-tools/36.0.0" ] || need+=("build-tools;36.0.0")
+[ -f "$ANDROID_HOME/ndk/$NDK_VERSION/source.properties" ] || need+=("ndk;$NDK_VERSION")
 if [ "${#need[@]}" -gt 0 ]; then
   echo "==> Installing: ${need[*]}"
   sdkmanager --sdk_root="$ANDROID_HOME" "${need[@]}"
@@ -58,7 +60,10 @@ export ANDROID_HOME="$HOME/Android" ANDROID_SDK_ROOT="$HOME/Android"
 export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"'
 for rc in "$HOME/.bashrc" "$HOME/.profile"; do
   touch "$rc"
-  grep -q 'ANDROID_HOME="$HOME/Android"' "$rc" || printf '\n# Officina Android SDK\n%s\n' "$block" >> "$rc"
+  grep -q 'ANDROID_HOME="$HOME/Android"' "$rc" || printf '\n# Android SDK (Kiln)\n%s\n' "$block" >> "$rc"
+  grep -q 'export NDK_HOME=' "$rc" || printf '\n# Android NDK (Kiln, Tauri Android builds)\nexport NDK_HOME="$HOME/Android/ndk/%s"\n' "$NDK_VERSION" >> "$rc"
 done
+export NDK_HOME="$ANDROID_HOME/ndk/$NDK_VERSION"
+echo "==> NDK_HOME=$NDK_HOME" 
 
 sdkmanager --sdk_root="$ANDROID_HOME" --list_installed

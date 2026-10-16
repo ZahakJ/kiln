@@ -1,0 +1,32 @@
+{
+  "name": "@kiln-ref/io-docx",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Reads and writes .docx (and .dotx/.docm) to and from the Kiln Write document model.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@kiln-ref/doc-model": "workspace:*",
+    "@kiln-ref/ooxml": "workspace:*",
+    "@tiptap/pm": "catalog:",
+    "dingbat-to-unicode": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@kiln/testing": "workspace:*",
+    "@types/node": "catalog:",
+    "docx": "catalog:",
+    "mammoth": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

@@ -1,5 +1,5 @@
 /**
- * Chrome demo: a Scriba-like window wired to the real command registry, keymap, ribbon spec,
+ * Chrome demo: a Write-like window wired to the real command registry, keymap, ribbon spec,
  * Backstage, status bar, task panes, palette, mini toolbar, context menu and Key Tips. The document
  * is a contentEditable page whose formatting commands use the browser's editing commands, so every
  * ribbon state (Bold pressed, font name…) is live. Used for screenshots and manual review.
@@ -10,7 +10,7 @@ import {
   createCommandRegistry,
   createDefaultKeymap,
   type Keymap,
-} from '@officina/commands';
+} from '@kiln/commands';
 import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AppFrame,
@@ -784,7 +784,7 @@ export function ChromeDemo() {
     <>
       <button
         type="button"
-        className="of-btn of-btn--toolbar of-btn--icon-only cx-mini-btn"
+        className="kiln-btn kiln-btn--toolbar kiln-btn--icon-only cx-mini-btn"
         aria-label="Bold"
         onClick={() => registry.execute('format.bold')}
       >
@@ -792,7 +792,7 @@ export function ChromeDemo() {
       </button>
       <button
         type="button"
-        className="of-btn of-btn--toolbar of-btn--icon-only cx-mini-btn"
+        className="kiln-btn kiln-btn--toolbar kiln-btn--icon-only cx-mini-btn"
         aria-label="Italic"
         onClick={() => registry.execute('format.italic')}
       >
@@ -800,7 +800,7 @@ export function ChromeDemo() {
       </button>
       <button
         type="button"
-        className="of-btn of-btn--toolbar of-btn--icon-only cx-mini-btn"
+        className="kiln-btn kiln-btn--toolbar kiln-btn--icon-only cx-mini-btn"
         aria-label="Underline"
         onClick={() => registry.execute('format.underline')}
       >
@@ -808,14 +808,14 @@ export function ChromeDemo() {
       </button>
       <button
         type="button"
-        className="of-btn of-btn--toolbar of-btn--sm"
+        className="kiln-btn kiln-btn--toolbar kiln-btn--sm"
         onClick={() => registry.execute('format.highlight', { color: { type: 'rgb', hex: '#FFE066' } })}
       >
         Highlight
       </button>
       <button
         type="button"
-        className="of-btn of-btn--toolbar of-btn--sm"
+        className="kiln-btn kiln-btn--toolbar kiln-btn--sm"
         onClick={() => registry.execute('review.newComment')}
       >
         Comment
@@ -853,7 +853,7 @@ export function ChromeDemo() {
         }
         statusBar={
           <StatusBar
-            storageKey="officina.demo.statusbar"
+            storageKey="kiln.demo.statusbar"
             left={[
               { id: 'page', label: 'Page Number', content: 'Page 1 of 1' },
               {
@@ -962,7 +962,7 @@ export function ChromeDemo() {
         <DialogContent
           title="Font"
           footer={
-            <button type="button" className="of-btn of-btn--primary" onClick={() => setFontDialog(false)}>
+            <button type="button" className="kiln-btn kiln-btn--primary" onClick={() => setFontDialog(false)}>
               OK
             </button>
           }

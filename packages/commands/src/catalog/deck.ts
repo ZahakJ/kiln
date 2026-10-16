@@ -1,4 +1,4 @@
-/** Scena (Deck) and Notula (Notes) commands: PLAN.md §1.4 "Deck"/"Notes" and the Deck column of §1.7. */
+/** Kiln Deck and Kiln Notes commands: PLAN.md §1.4 "Deck"/"Notes" and the Deck column of §1.7. */
 import { c, DECK, NOTES, section } from './define.ts';
 
 const D = { apps: DECK };

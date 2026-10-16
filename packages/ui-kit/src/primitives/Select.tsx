@@ -42,18 +42,18 @@ const isGroup = (o: SelectOption | SelectGroupDef): o is SelectGroupDef => 'opti
 function Item({ option }: { option: SelectOption }) {
   return (
     <RS.Item
-      className="of-menu__item of-select__item"
+      className="kiln-menu__item kiln-select__item"
       value={option.value}
       disabled={option.disabled}
       textValue={option.textValue ?? (typeof option.label === 'string' ? option.label : option.value)}
     >
-      <span className="of-menu__indicator">
+      <span className="kiln-menu__indicator">
         <RS.ItemIndicator>
           <Icon icon={Check} size={14} />
         </RS.ItemIndicator>
       </span>
       {option.icon ? (
-        <span className="of-menu__icon" aria-hidden="true">
+        <span className="kiln-menu__icon" aria-hidden="true">
           {option.icon}
         </span>
       ) : null}
@@ -88,34 +88,34 @@ export function Select({
     >
       <RS.Trigger
         id={id}
-        className={cx('of-field', 'of-select', `of-field--${size}`, className)}
+        className={cx('kiln-field', 'kiln-select', `kiln-field--${size}`, className)}
         style={width !== undefined ? { width } : undefined}
         aria-label={aria['aria-label']}
         aria-labelledby={labelId}
       >
-        <span className="of-select__value">
+        <span className="kiln-select__value">
           <RS.Value placeholder={placeholder} />
         </span>
-        <RS.Icon className="of-select__chevron">
+        <RS.Icon className="kiln-select__chevron">
           <Icon icon={ChevronDown} size={14} />
         </RS.Icon>
       </RS.Trigger>
       <RS.Portal>
         <RS.Content
-          className="of-menu of-select__content"
+          className="kiln-menu kiln-select__content"
           position="popper"
           sideOffset={4}
           collisionPadding={8}
         >
-          <RS.ScrollUpButton className="of-select__scroll">
+          <RS.ScrollUpButton className="kiln-select__scroll">
             <Icon icon={ChevronUp} size={14} />
           </RS.ScrollUpButton>
-          <RS.Viewport className="of-select__viewport">
+          <RS.Viewport className="kiln-select__viewport">
             {options.map((o, i) =>
               isGroup(o) ? (
                 <RS.Group key={o.label}>
-                  {i > 0 ? <RS.Separator className="of-menu__separator" /> : null}
-                  <RS.Label className="of-menu__group-label">{o.label}</RS.Label>
+                  {i > 0 ? <RS.Separator className="kiln-menu__separator" /> : null}
+                  <RS.Label className="kiln-menu__group-label">{o.label}</RS.Label>
                   {o.options.map((opt) => (
                     <Item key={opt.value} option={opt} />
                   ))}
@@ -125,7 +125,7 @@ export function Select({
               ),
             )}
           </RS.Viewport>
-          <RS.ScrollDownButton className="of-select__scroll">
+          <RS.ScrollDownButton className="kiln-select__scroll">
             <Icon icon={ChevronDown} size={14} />
           </RS.ScrollDownButton>
         </RS.Content>

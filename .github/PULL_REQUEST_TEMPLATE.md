@@ -1,7 +1,7 @@
 ## What this changes
 
-<!-- One or two sentences, from the user's side. Which app: Scriba, Tabula,
-     Scena, Notula, Atrium, or the shells? -->
+<!-- One or two sentences, from the user's side. Which app: Kiln Write, Kiln Grid,
+     Kiln Deck, Kiln Notes, Kiln Home, or the shells? -->
 
 ## Why
 

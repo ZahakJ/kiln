@@ -1,7 +1,7 @@
-# @officina/commands
+# @kiln/commands
 
-The command system every Officina app registers into (PLAN.md §1.3, §1.7, §2.1). It is UI-free;
-`@officina/ui-kit` renders it as the ribbon, menus, palette, Key Tips and Options ▸ Keyboard.
+The command system every Kiln app registers into (PLAN.md §1.3, §1.7, §2.1). It is UI-free;
+`@kiln/ui-kit` renders it as the ribbon, menus, palette, Key Tips and Options ▸ Keyboard.
 
 **Public API.**
 
@@ -22,7 +22,7 @@ The command system every Officina app registers into (PLAN.md §1.3, §1.7, §2.
   `createDefaultKeymap()` builds the Office defaults.
 - Key Tips: `TAB_KEYTIPS` (Office letters), `assignKeyTips()` (unique, prefix-free letters, Office's
   preferred ones first) and the `KeyTipSession` state machine.
-- `tiers.ts`: P0/P1/P2 gating from `OFFICINA_TIERS` / `VITE_OFFICINA_TIERS` and release mode; release
+- `tiers.ts`: P0/P1/P2 gating from `KILN_TIERS` / `VITE_KILN_TIERS` and release mode; release
   builds hide P1/P2 and pending commands.
 - `RecentCommands` (local only, no telemetry), `createOfficeSynonyms()`, `searchCommands()` / `fuzzyScore()`
   (titles, Office names and synonyms).
@@ -31,6 +31,6 @@ The command system every Officina app registers into (PLAN.md §1.3, §1.7, §2.
 - `parseShortcutDoc()` / `expandShortcutExpression()` read docs/SHORTCUTS.md; `keymaps.test.ts` checks
   every row of the document against the keymaps.
 
-Scripts: `pnpm lint`, `pnpm typecheck`, `pnpm test`. Consumed from source through the `@officina/*` paths.
+Scripts: `pnpm lint`, `pnpm typecheck`, `pnpm test`. Consumed from source through the `@kiln/*` paths.
 
 Licence: AGPL-3.0-or-later.

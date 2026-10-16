@@ -158,7 +158,7 @@ describe('Ribbon', () => {
     setup({ collapsed: true, onCollapsedChange });
     expect(screen.queryByRole('tabpanel')).toBeNull();
     await user.click(screen.getByRole('tab', { name: 'Insert' }));
-    expect(screen.getByRole('tabpanel')).toHaveClass('of-ribbon__panel--floating');
+    expect(screen.getByRole('tabpanel')).toHaveClass('kiln-ribbon__panel--floating');
     await user.click(screen.getByRole('button', { name: 'Pin the Ribbon' }));
     expect(onCollapsedChange).toHaveBeenCalledWith(false);
   });
@@ -175,10 +175,10 @@ describe('Ribbon', () => {
   it('switches to the Simplified single-row layout', () => {
     setup({ layout: 'simplified' });
     const toolbar = screen.getByRole('toolbar', { name: 'Home commands' });
-    expect(toolbar).toHaveClass('of-ribbon__groups--simplified');
+    expect(toolbar).toHaveClass('kiln-ribbon__groups--simplified');
     // Large commands keep a label; the rest are icon-only.
     expect(screen.getAllByText('Paste').length).toBeGreaterThan(0);
-    expect(screen.getByRole('button', { name: 'Cut' })).toHaveClass('of-btn--icon-only');
+    expect(screen.getByRole('button', { name: 'Cut' })).toHaveClass('kiln-btn--icon-only');
   });
 
   it('opens the display options menu to change layout and collapse', async () => {

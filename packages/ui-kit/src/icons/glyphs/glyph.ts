@@ -1,5 +1,5 @@
 /**
- * Officina Glyphs: the factory and drawing helpers. Every glyph is a 20×20 `viewBox`, 1.5 px stroke,
+ * Kiln Glyphs: the factory and drawing helpers. Every glyph is a 20×20 `viewBox`, 1.5 px stroke,
  * round caps/joins and `currentColor` — consistent with Lucide at 20 px (PLAN.md §1.2).
  *
  * Parts flagged `accent` take the active app accent in the "colourful" icon style
@@ -56,7 +56,7 @@ export function glyph(name: string, label: string, input: readonly GlyphPartInpu
         strokeWidth,
         strokeLinecap: 'round',
         strokeLinejoin: 'round',
-        className: className ? `of-glyph ${className}` : 'of-glyph',
+        className: className ? `kiln-glyph ${className}` : 'kiln-glyph',
         'data-glyph': glyphId,
         role: title ? 'img' : undefined,
         'aria-hidden': title ? undefined : true,

@@ -163,13 +163,13 @@ export function ColorPicker({
     return (
       <div
         key={`${row.section}-${rowIndex}`}
-        className={cx('of-color__row', row.section === 'theme-variants' && 'of-color__row--variants')}
+        className={cx('kiln-color__row', row.section === 'theme-variants' && 'kiln-color__row--variants')}
       >
         {row.swatches.map((s, col) => (
           <button
             key={s.key}
             type="button"
-            className="of-color__swatch"
+            className="kiln-color__swatch"
             style={{ ['--swatch' as string]: s.hex }}
             data-row={rowIndex}
             data-col={col}
@@ -188,68 +188,68 @@ export function ColorPicker({
 
   const themeEnd = themeRows.length;
   return (
-    <div className={cx('of-color', className)}>
+    <div className={cx('kiln-color', className)}>
       {allowAuto || allowNone ? (
-        <div className="of-color__specials">
+        <div className="kiln-color__specials">
           {allowAuto ? (
             <button
               type="button"
-              className="of-menu__item of-color__special"
+              className="kiln-menu__item kiln-color__special"
               aria-pressed={value?.type === 'auto'}
               onClick={() => choose({ type: 'auto' })}
             >
-              <span className="of-color__auto-chip" aria-hidden="true" />
+              <span className="kiln-color__auto-chip" aria-hidden="true" />
               {autoLabel}
-              {value?.type === 'auto' ? <Icon icon={Check} size={14} className="of-color__check" /> : null}
+              {value?.type === 'auto' ? <Icon icon={Check} size={14} className="kiln-color__check" /> : null}
             </button>
           ) : null}
           {allowNone ? (
             <button
               type="button"
-              className="of-menu__item of-color__special"
+              className="kiln-menu__item kiln-color__special"
               aria-pressed={value?.type === 'none'}
               onClick={() => choose({ type: 'none' })}
             >
               <Icon icon={Ban} size={16} />
               {noneLabel}
-              {value?.type === 'none' ? <Icon icon={Check} size={14} className="of-color__check" /> : null}
+              {value?.type === 'none' ? <Icon icon={Check} size={14} className="kiln-color__check" /> : null}
             </button>
           ) : null}
         </div>
       ) : null}
       {/* biome-ignore lint/a11y/noStaticElementInteractions: arrow-key navigation delegated from the swatch buttons */}
       <div ref={gridRef} onKeyDown={onGridKeyDown}>
-        <div className="of-color__heading" id={`${titleId}-theme`}>
+        <div className="kiln-color__heading" id={`${titleId}-theme`}>
           Theme Colors
         </div>
         {/* biome-ignore lint/a11y/useSemanticElements: a group of swatch buttons */}
-        <div role="group" aria-labelledby={`${titleId}-theme`} className="of-color__section">
+        <div role="group" aria-labelledby={`${titleId}-theme`} className="kiln-color__section">
           {Array.from({ length: themeEnd }, (_, i) => renderRow(i))}
         </div>
-        <div className="of-color__heading" id={`${titleId}-std`}>
+        <div className="kiln-color__heading" id={`${titleId}-std`}>
           Standard Colors
         </div>
         {/* biome-ignore lint/a11y/useSemanticElements: a group of swatch buttons */}
-        <div role="group" aria-labelledby={`${titleId}-std`} className="of-color__section">
+        <div role="group" aria-labelledby={`${titleId}-std`} className="kiln-color__section">
           {renderRow(themeEnd)}
         </div>
         {recents.length ? (
           <>
-            <div className="of-color__heading" id={`${titleId}-recent`}>
+            <div className="kiln-color__heading" id={`${titleId}-recent`}>
               Recent Colors
             </div>
             {/* biome-ignore lint/a11y/useSemanticElements: a group of swatch buttons */}
-            <div role="group" aria-labelledby={`${titleId}-recent`} className="of-color__section">
+            <div role="group" aria-labelledby={`${titleId}-recent`} className="kiln-color__section">
               {renderRow(themeEnd + 1)}
             </div>
           </>
         ) : null}
       </div>
-      <div className="of-menu__separator" />
+      <div className="kiln-menu__separator" />
       {custom === null ? (
         <button
           type="button"
-          className="of-menu__item of-color__special"
+          className="kiln-menu__item kiln-color__special"
           onClick={() =>
             setCustom(value && value.type !== 'auto' && value.type !== 'none' ? value.hex : '#4472C4')
           }
@@ -258,14 +258,14 @@ export function ColorPicker({
           More Colors…
         </button>
       ) : (
-        <div className="of-color__custom">
+        <div className="kiln-color__custom">
           <HexColorPicker color={custom} onChange={(c) => setCustom(c.toUpperCase())} />
-          <div className="of-color__custom-row">
-            <span className="of-color__preview" style={{ background: custom }} aria-hidden="true" />
-            <span className="of-color__hex">
+          <div className="kiln-color__custom-row">
+            <span className="kiln-color__preview" style={{ background: custom }} aria-hidden="true" />
+            <span className="kiln-color__hex">
               <span aria-hidden="true">Hex</span>
               <HexColorInput
-                className="of-field of-field--sm of-color__hex-input"
+                className="kiln-field kiln-field--sm kiln-color__hex-input"
                 color={custom}
                 prefixed
                 onChange={(c) => setCustom(c.toUpperCase())}
@@ -274,7 +274,7 @@ export function ColorPicker({
             </span>
             <button
               type="button"
-              className="of-btn of-btn--primary of-btn--sm"
+              className="kiln-btn kiln-btn--primary kiln-btn--sm"
               onClick={() => {
                 const hex = normalizeHex(custom);
                 if (!hex) return;
@@ -283,7 +283,7 @@ export function ColorPicker({
                 choose({ type: 'rgb', hex });
               }}
             >
-              <span className="of-btn__label">OK</span>
+              <span className="kiln-btn__label">OK</span>
             </button>
           </div>
         </div>

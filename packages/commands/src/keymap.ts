@@ -83,7 +83,7 @@ export class Keymap {
     this.platform = options.platform ?? detectPlatform();
     this.#defaults = options.layers;
     this.#storage = options.storage ?? defaultStorage();
-    this.#storageKey = options.storageKey ?? 'officina.keymap';
+    this.#storageKey = options.storageKey ?? 'kiln.keymap';
     this.#overrides = sanitizeOverrides(readJson<unknown>(this.#storage, this.#storageKey, null));
     // Fail fast on malformed default keymaps (caught by tests, never at a user's desk).
     for (const [layer, list] of Object.entries(this.#defaults)) {

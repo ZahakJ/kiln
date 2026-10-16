@@ -32,7 +32,7 @@ export interface OptionsDialogProps {
   /** Controlled options; default: the persisted `useOfficeOptions()` store. */
   value?: OfficeOptions;
   onChange?: (patch: OptionsPatch) => void;
-  /** App name in the title ("Scriba Options"). */
+  /** App name in the title ("Kiln Write Options"). */
   appName?: string;
 }
 
@@ -68,11 +68,11 @@ function Check({
 }) {
   const id = useId();
   return (
-    <div className="of-options__check">
+    <div className="kiln-options__check">
       <input id={id} type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} />
       <label htmlFor={id}>
         {label}
-        {hint ? <span className="of-options__hint">{hint}</span> : null}
+        {hint ? <span className="kiln-options__hint">{hint}</span> : null}
       </label>
     </div>
   );
@@ -81,7 +81,7 @@ function Check({
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     // biome-ignore lint/a11y/noLabelWithoutControl: the label wraps its control, passed as children
-    <label className="of-options__field">
+    <label className="kiln-options__field">
       <span>{label}</span>
       {children}
     </label>
@@ -90,7 +90,7 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <fieldset className="of-options__section">
+    <fieldset className="kiln-options__section">
       <legend>{title}</legend>
       {children}
     </fieldset>
@@ -108,7 +108,7 @@ export function OptionsDialog({
   extraSections = [],
   value: valueProp,
   onChange,
-  appName = 'Officina',
+  appName = 'Kiln',
 }: OptionsDialogProps) {
   const [stored, update] = useOfficeOptions();
   const value = valueProp ?? stored;
@@ -143,7 +143,7 @@ export function OptionsDialog({
               />
               <Field label="Theme">
                 <select
-                  className="of-options__select"
+                  className="kiln-options__select"
                   value={theme.preference}
                   onChange={(e) => theme.setPreference(e.target.value as typeof theme.preference)}
                 >
@@ -154,23 +154,23 @@ export function OptionsDialog({
                 </select>
               </Field>
             </Section>
-            <Section title="Personalize your copy of Officina">
+            <Section title="Personalize your copy of Kiln">
               <Field label="User name">
                 <input
-                  className="of-options__input"
+                  className="kiln-options__input"
                   value={value.general.userName}
                   onChange={(e) => patch({ general: { userName: e.target.value } })}
                 />
               </Field>
               <Field label="Initials">
                 <input
-                  className="of-options__input of-options__input--short"
+                  className="kiln-options__input kiln-options__input--short"
                   maxLength={4}
                   value={value.general.initials}
                   onChange={(e) => patch({ general: { initials: e.target.value } })}
                 />
               </Field>
-              <p className="of-options__hint">
+              <p className="kiln-options__hint">
                 Used for comments, tracked changes and document properties. Stored only on this device.
               </p>
             </Section>
@@ -181,7 +181,7 @@ export function OptionsDialog({
           <Section title="Ribbon and ScreenTips">
             <Field label="Ribbon layout">
               <select
-                className="of-options__select"
+                className="kiln-options__select"
                 value={value.display.ribbonLayout}
                 onChange={(e) =>
                   patch({
@@ -196,7 +196,7 @@ export function OptionsDialog({
             </Field>
             <Field label="ScreenTip style">
               <select
-                className="of-options__select"
+                className="kiln-options__select"
                 value={value.display.screenTips}
                 onChange={(e) =>
                   patch({ display: { screenTips: e.target.value as OfficeOptions['display']['screenTips'] } })
@@ -286,7 +286,7 @@ export function OptionsDialog({
             </Field>
             <Field label="Save new files in">
               <select
-                className="of-options__select"
+                className="kiln-options__select"
                 value={value.save.defaultFormat}
                 onChange={(e) =>
                   patch({ save: { defaultFormat: e.target.value as OfficeOptions['save']['defaultFormat'] } })
@@ -304,7 +304,7 @@ export function OptionsDialog({
             <Section title="Display language">
               <Field label="Interface language">
                 <select
-                  className="of-options__select"
+                  className="kiln-options__select"
                   value={value.language.ui}
                   onChange={(e) => patch({ language: { ui: e.target.value } })}
                 >
@@ -315,7 +315,7 @@ export function OptionsDialog({
             <Section title="Editing language">
               <Field label="Default language for new documents">
                 <select
-                  className="of-options__select"
+                  className="kiln-options__select"
                   value={value.language.editing}
                   onChange={(e) => patch({ language: { editing: e.target.value } })}
                 >
@@ -326,7 +326,7 @@ export function OptionsDialog({
                   ))}
                 </select>
               </Field>
-              <p className="of-options__hint">
+              <p className="kiln-options__hint">
                 Sets the language of new text, which hyphenation and right-to-left layout follow.
               </p>
             </Section>
@@ -337,13 +337,12 @@ export function OptionsDialog({
       case 'privacy':
         return (
           <Section title="Privacy">
-            <p className="of-options__text">
-              Officina has no telemetry. Recent commands, recent files and your preferences stay on this
-              device.
+            <p className="kiln-options__text">
+              Kiln has no telemetry. Recent commands, recent files and your preferences stay on this device.
             </p>
             <Field label="Writing assistant">
               <select
-                className="of-options__select"
+                className="kiln-options__select"
                 value={value.privacy.assistant}
                 onChange={(e) =>
                   patch({ privacy: { assistant: e.target.value as OfficeOptions['privacy']['assistant'] } })
@@ -365,20 +364,20 @@ export function OptionsDialog({
       <DialogContent
         title={`${appName} Options`}
         size="xl"
-        className="of-options"
+        className="kiln-options"
         footer={
-          <button type="button" className="of-btn of-btn--primary" onClick={() => onOpenChange(false)}>
+          <button type="button" className="kiln-btn kiln-btn--primary" onClick={() => onOpenChange(false)}>
             Close
           </button>
         }
       >
-        <div className="of-options__layout">
-          <nav className="of-options__nav" aria-label="Options sections">
+        <div className="kiln-options__layout">
+          <nav className="kiln-options__nav" aria-label="Options sections">
             {all.map((s) => (
               <button
                 key={s.id}
                 type="button"
-                className={cx('of-options__nav-item', s.id === current?.id && 'is-current')}
+                className={cx('kiln-options__nav-item', s.id === current?.id && 'is-current')}
                 aria-current={s.id === current?.id ? 'page' : undefined}
                 onClick={() => setSection(s.id)}
               >
@@ -386,7 +385,7 @@ export function OptionsDialog({
               </button>
             ))}
           </nav>
-          <div className="of-options__body" data-section={current?.id}>
+          <div className="kiln-options__body" data-section={current?.id}>
             {body}
           </div>
         </div>

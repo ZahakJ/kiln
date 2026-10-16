@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Download real-world Office files for fidelity testing (PLAN.md §5) into
-# packages/testing/fixtures/external/<format>/ — a gitignored directory; nothing here is committed.
+# fixtures/external/<format>/ — a gitignored directory; nothing here is committed.
 #
 #   bash tools/fetch-corpus.sh [--force]
 #
@@ -15,7 +15,7 @@ POI_COMMIT="ebf602f1bc748f9ec9b29553070ff62170e3243b"
 BASE="https://raw.githubusercontent.com/apache/poi/${POI_COMMIT}/test-data"
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
-dest="$root/packages/testing/fixtures/external"
+dest="$root/fixtures/external"
 force=0
 [ "${1:-}" = "--force" ] && force=1
 

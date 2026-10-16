@@ -1,4 +1,4 @@
-.of-taskpane {
+.kiln-taskpane {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -6,25 +6,25 @@
   width: var(--pane-width, 320px);
   min-height: 0;
   max-width: 100%;
-  background: var(--of-bg-surface);
-  color: var(--of-fg);
-  font-family: var(--of-font-ui);
-  font-size: var(--of-text-base);
-  z-index: var(--of-z-pane);
-  animation: of-pane-in var(--of-duration-pane) var(--of-ease-out);
+  background: var(--kiln-bg-surface);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-base);
+  z-index: var(--kiln-z-pane);
+  animation: kiln-pane-in var(--kiln-duration-pane) var(--kiln-ease-out);
 }
-.of-taskpane--right {
-  border-inline-start: var(--of-border-width) solid var(--of-border);
+.kiln-taskpane--right {
+  border-inline-start: var(--kiln-border-width) solid var(--kiln-border);
 }
-.of-taskpane--left {
-  border-inline-end: var(--of-border-width) solid var(--of-border);
+.kiln-taskpane--left {
+  border-inline-end: var(--kiln-border-width) solid var(--kiln-border);
 }
-@keyframes of-pane-in {
+@keyframes kiln-pane-in {
   from {
     opacity: 0;
   }
 }
-.of-taskpane__splitter {
+.kiln-taskpane__splitter {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -33,41 +33,41 @@
   cursor: col-resize;
   touch-action: none;
 }
-.of-taskpane--right .of-taskpane__splitter {
+.kiln-taskpane--right .kiln-taskpane__splitter {
   left: -4px;
 }
-.of-taskpane--left .of-taskpane__splitter {
+.kiln-taskpane--left .kiln-taskpane__splitter {
   right: -4px;
 }
-.of-taskpane__splitter:hover,
-.of-taskpane__splitter:focus-visible {
+.kiln-taskpane__splitter:hover,
+.kiln-taskpane__splitter:focus-visible {
   background: linear-gradient(
     90deg,
     transparent 2px,
-    var(--of-accent) 2px,
-    var(--of-accent) 5px,
+    var(--kiln-accent) 2px,
+    var(--kiln-accent) 5px,
     transparent 5px
   );
   outline: none;
 }
-.of-taskpane__header {
+.kiln-taskpane__header {
   display: flex;
   align-items: center;
   gap: 6px;
   min-height: 44px;
   padding: 0 6px 0 14px;
-  border-bottom: 1px solid var(--of-border);
+  border-bottom: 1px solid var(--kiln-border);
 }
-.of-taskpane__title {
+.kiln-taskpane__title {
   flex: 1;
   margin: 0;
-  font-size: var(--of-text-md);
-  font-weight: var(--of-weight-semibold);
+  font-size: var(--kiln-text-md);
+  font-weight: var(--kiln-weight-semibold);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.of-taskpane__tabs {
+.kiln-taskpane__tabs {
   display: flex;
   flex: 1;
   gap: 2px;
@@ -77,7 +77,7 @@
   overflow-x: auto;
   scrollbar-width: none;
 }
-.of-taskpane__tab {
+.kiln-taskpane__tab {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -85,18 +85,18 @@
   padding: 0 8px;
   border: 0;
   background: transparent;
-  color: var(--of-fg-muted);
+  color: var(--kiln-fg-muted);
   font: inherit;
   white-space: nowrap;
 }
-.of-taskpane__tab:hover {
-  color: var(--of-fg);
+.kiln-taskpane__tab:hover {
+  color: var(--kiln-fg);
 }
-.of-taskpane__tab.is-active {
-  color: var(--of-fg);
-  font-weight: var(--of-weight-semibold);
+.kiln-taskpane__tab.is-active {
+  color: var(--kiln-fg);
+  font-weight: var(--kiln-weight-semibold);
 }
-.of-taskpane__tab.is-active::after {
+.kiln-taskpane__tab.is-active::after {
   content: "";
   position: absolute;
   left: 8px;
@@ -104,18 +104,18 @@
   bottom: 0;
   height: 3px;
   border-radius: 2px 2px 0 0;
-  background: var(--of-accent);
+  background: var(--kiln-accent);
 }
-.of-taskpane__tab:focus-visible {
-  outline: var(--of-focus-width) solid var(--of-focus-ring);
+.kiln-taskpane__tab:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
   outline-offset: -2px;
 }
-.of-taskpane__actions {
+.kiln-taskpane__actions {
   display: flex;
   gap: 2px;
   flex: none;
 }
-.of-taskpane__body {
+.kiln-taskpane__body {
   flex: 1;
   min-height: 0;
   overflow: auto;
@@ -123,7 +123,7 @@
 }
 
 @media (max-width: 639px) {
-  .of-taskpane {
+  .kiln-taskpane {
     position: fixed;
     left: 0;
     right: 0;
@@ -131,16 +131,16 @@
     width: auto;
     max-height: 70vh;
     border: 0;
-    border-top: 1px solid var(--of-border);
-    border-radius: var(--of-radius-dialog) var(--of-radius-dialog) 0 0;
-    box-shadow: var(--of-shadow-3);
+    border-top: 1px solid var(--kiln-border);
+    border-radius: var(--kiln-radius-dialog) var(--kiln-radius-dialog) 0 0;
+    box-shadow: var(--kiln-shadow-3);
   }
-  .of-taskpane__splitter {
+  .kiln-taskpane__splitter {
     display: none;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .of-taskpane {
+  .kiln-taskpane {
     animation: none;
   }
 }

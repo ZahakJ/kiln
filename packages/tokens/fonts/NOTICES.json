@@ -1,5 +1,5 @@
 {
-  "$comment": "Extra (non-npm) assets bundled by @officina/tokens. Read by tools/check-licenses.mjs --notices and appended to THIRD-PARTY-NOTICES.md. Fetched by packages/tokens/scripts/fetch-fonts.mjs.",
+  "$comment": "Extra (non-npm) assets bundled by @kiln/tokens. Read by tools/check-licenses.mjs --notices and appended to THIRD-PARTY-NOTICES.md. Fetched by packages/tokens/scripts/fetch-fonts.mjs.",
   "assets": [
     {
       "name": "Liberation Fonts (Sans, Serif, Mono)",

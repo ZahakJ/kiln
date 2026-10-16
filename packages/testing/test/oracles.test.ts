@@ -10,7 +10,6 @@ import {
   fixturePath,
   listFixtures,
   loadFixture,
-  oracleOpens,
   type PythonDocxDump,
   type PythonPptxDump,
   type PythonXlsxDump,
@@ -20,7 +19,6 @@ import {
   readWithPython,
   readXlsxWithExcelJS,
   renderPdfPages,
-  scoreRoundTrip,
   sofficeAvailable,
   targetExtension,
 } from '../src/index.ts';
@@ -104,7 +102,7 @@ describe.skipIf(!HAS_PYTHON)('Python reader (openpyxl / python-docx / python-ppt
 
 describe.skipIf(!HAS_SOFFICE)('LibreOffice oracle', () => {
   it('converts a .docx to PDF and renders pages', { timeout: 120_000 }, async () => {
-    const out = mkdtempSync(join(tmpdir(), 'officina-test-'));
+    const out = mkdtempSync(join(tmpdir(), 'kiln-test-'));
     const r = await convertWithSoffice(fixturePath('docx/features/styles.docx'), 'pdf', { outDir: out });
     expect(r.path).toBe(join(out, 'styles.pdf'));
     expect(new TextDecoder().decode(r.bytes.subarray(0, 5))).toBe('%PDF-');
@@ -135,23 +133,6 @@ describe.skipIf(!HAS_SOFFICE)('LibreOffice oracle', () => {
     expect(r.path.endsWith('rtl.odt')).toBe(true);
     expect(targetExtension('csv:Text - txt - csv (StarCalc):44,34,76')).toBe('csv');
   });
-
-  it('reports files LibreOffice cannot open', { timeout: 120_000 }, async () => {
-    expect(await oracleOpens(new TextEncoder().encode('not a document'), 'docx')).toBe(false);
-    expect(await oracleOpens(loadFixture('docx/features/breaks.docx'), 'docx')).toBe(true);
-  });
-
-  it('scores a visual round trip', { timeout: 180_000 }, async () => {
-    const original = loadFixture('pptx/features/groups.pptx');
-    const s = await scoreRoundTrip({
-      file: 'groups.pptx',
-      ext: 'pptx',
-      original,
-      rewritten: original,
-      visual: true,
-    });
-    expect(s).toMatchObject({ structural: 1, text: 1, visual: 1, oracle_opens: true });
-  });
 });
 
 describe.skipIf(!HAS_SOFFICE)('LibreOffice opens every generated fixture', () => {
@@ -163,7 +144,7 @@ describe.skipIf(!HAS_SOFFICE)('LibreOffice opens every generated fixture', () =>
   it(`converts all ${inputs.length} features/* and manual/* files to PDF without error`, {
     timeout: 900_000,
   }, async () => {
-    const out = mkdtempSync(join(tmpdir(), 'officina-all-'));
+    const out = mkdtempSync(join(tmpdir(), 'kiln-all-'));
     const results = await convertBatchWithSoffice(inputs, 'pdf', out);
     const failures = results.filter((r) => r.error);
     expect(failures).toEqual([]);

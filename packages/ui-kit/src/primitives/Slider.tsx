@@ -105,21 +105,21 @@ export function Slider({
   return (
     <div
       ref={trackRef}
-      className={cx('of-slider', disabled && 'is-disabled', className)}
+      className={cx('kiln-slider', disabled && 'is-disabled', className)}
       style={{ ['--p' as string]: p, ...(width !== undefined ? { width } : {}) }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
     >
-      <div className="of-slider__track" aria-hidden="true">
-        <div className="of-slider__fill" style={{ inlineSize: `${p * 100}%` }} />
+      <div className="kiln-slider__track" aria-hidden="true">
+        <div className="kiln-slider__fill" style={{ inlineSize: `${p * 100}%` }} />
         {marks?.map((m) => (
-          <span key={m} className="of-slider__mark" style={{ insetInlineStart: `${pos(m) * 100}%` }} />
+          <span key={m} className="kiln-slider__mark" style={{ insetInlineStart: `${pos(m) * 100}%` }} />
         ))}
       </div>
       <div
         role="slider"
         tabIndex={disabled ? -1 : 0}
-        className="of-slider__thumb"
+        className="kiln-slider__thumb"
         aria-label={aria['aria-label']}
         aria-labelledby={aria['aria-labelledby']}
         aria-valuemin={min}
@@ -158,10 +158,10 @@ export function ZoomSlider({ value, onValueChange, onLabelClick, className }: Zo
   const prev = [...ZOOM_STEPS].reverse().find((z) => z < value) ?? 10;
   const next = ZOOM_STEPS.find((z) => z > value) ?? 500;
   return (
-    <div className={cx('of-zoom', className)}>
+    <div className={cx('kiln-zoom', className)}>
       <button
         type="button"
-        className="of-btn of-btn--ghost of-btn--sm of-btn--icon-only"
+        className="kiln-btn kiln-btn--ghost kiln-btn--sm kiln-btn--icon-only"
         aria-label="Zoom out"
         disabled={value <= 10}
         onClick={() => onValueChange(prev)}
@@ -184,7 +184,7 @@ export function ZoomSlider({ value, onValueChange, onLabelClick, className }: Zo
       />
       <button
         type="button"
-        className="of-btn of-btn--ghost of-btn--sm of-btn--icon-only"
+        className="kiln-btn kiln-btn--ghost kiln-btn--sm kiln-btn--icon-only"
         aria-label="Zoom in"
         disabled={value >= 500}
         onClick={() => onValueChange(next)}
@@ -193,11 +193,11 @@ export function ZoomSlider({ value, onValueChange, onLabelClick, className }: Zo
       </button>
       <button
         type="button"
-        className="of-btn of-btn--ghost of-btn--sm of-zoom__label"
+        className="kiln-btn kiln-btn--ghost kiln-btn--sm kiln-zoom__label"
         onClick={onLabelClick}
         aria-label={`Zoom level ${value}%`}
       >
-        <span className="of-btn__label">{value}%</span>
+        <span className="kiln-btn__label">{value}%</span>
       </button>
     </div>
   );

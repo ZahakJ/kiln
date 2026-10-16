@@ -3,9 +3,9 @@ import { APPS, colors, contrastRatio, cssVar, PACKAGE_NAME, relativeLuminance, T
 
 const hex = (v: string) => /^#[0-9A-F]{6}$/i.test(v);
 
-describe('@officina/tokens values', () => {
+describe('@kiln/tokens values', () => {
   it('exports its package name', () => {
-    expect(PACKAGE_NAME).toBe('@officina/tokens');
+    expect(PACKAGE_NAME).toBe('@kiln/tokens');
   });
 
   it('matches the PLAN.md §1.2 colour table exactly', () => {
@@ -71,7 +71,7 @@ describe('@officina/tokens values', () => {
   }
 
   it('builds typed var() references', () => {
-    expect(cssVar('accent')).toBe('var(--of-accent)');
-    expect(cssVar('radius-dialog')).toBe('var(--of-radius-dialog)');
+    expect(cssVar('accent')).toBe('var(--kiln-accent)');
+    expect(cssVar('radius-dialog')).toBe('var(--kiln-radius-dialog)');
   });
 });

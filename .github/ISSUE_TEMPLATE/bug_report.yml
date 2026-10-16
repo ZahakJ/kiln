@@ -5,17 +5,17 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time. Found a security problem? Do not file it here; see [SECURITY.md](https://github.com/ZahakJ/officina/blob/main/SECURITY.md).
+        Thanks for taking the time. Found a security problem? Do not file it here; see [SECURITY.md](https://github.com/ZahakJ/kiln/blob/main/SECURITY.md).
   - type: dropdown
     id: app
     attributes:
       label: Application
       options:
-        - Scriba (documents)
-        - Tabula (spreadsheets)
-        - Scena (presentations)
-        - Notula (notebooks)
-        - Atrium (start screen)
+        - Kiln Write (documents)
+        - Kiln Grid (spreadsheets)
+        - Kiln Deck (presentations)
+        - Kiln Notes (notebooks)
+        - Kiln Home (start screen)
         - Several, or the shell itself
     validations:
       required: true
@@ -37,7 +37,7 @@ body:
     attributes:
       label: Version
       description: The version is under File ▸ Account. Add the operating system version, and the browser for the web app.
-      placeholder: Officina 0.1.0, Ubuntu 24.04
+      placeholder: Kiln 0.1.0, Ubuntu 24.04
     validations:
       required: true
   - type: textarea

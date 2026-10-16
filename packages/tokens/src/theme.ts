@@ -2,7 +2,7 @@
  * Theme runtime: apply a theme/app accent to the document and keep a tiny observable store of the
  * user's preference that follows `prefers-color-scheme` while the preference is `system`.
  *
- * React bindings (`useTheme`, `ThemeProvider`) live in `@officina/ui-kit/theme`; this module is
+ * React bindings (`useTheme`, `ThemeProvider`) live in `@kiln/ui-kit/theme`; this module is
  * framework-free so the desktop/Android shells can call it before React mounts (no flash of the wrong
  * theme).
  */
@@ -15,7 +15,7 @@ import {
   type ThemePreference,
 } from './tokens.ts';
 
-export const THEME_STORAGE_KEY = 'officina.theme';
+export const THEME_STORAGE_KEY = 'kiln.theme';
 
 export interface ThemeState {
   /** What the user chose. */

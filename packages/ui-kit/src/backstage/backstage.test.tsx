@@ -16,7 +16,7 @@ function Host(props: Partial<BackstageProps>) {
       <Backstage
         open={open}
         onOpenChange={setOpen}
-        appName="Scriba"
+        appName="Kiln Write"
         documentTitle="Report"
         pages={{
           home: <p>Recent files</p>,
@@ -36,7 +36,7 @@ describe('Backstage', () => {
     const user = userEvent.setup();
     renderWithCommands(<Host />);
     await user.click(screen.getByRole('button', { name: 'File' }));
-    const dialog = screen.getByRole('dialog', { name: /Scriba File menu: Report/ });
+    const dialog = screen.getByRole('dialog', { name: /Kiln Write File menu: Report/ });
     expect(dialog).toBeInTheDocument();
     const nav = screen.getByRole('navigation', { name: 'File menu' });
     const labels = [...nav.querySelectorAll('[data-backstage]')].map((b) => b.textContent);

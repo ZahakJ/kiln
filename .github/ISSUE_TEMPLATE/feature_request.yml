@@ -1,5 +1,5 @@
 name: Feature request
-description: Something Office does that Officina does not, or something neither does well.
+description: Something Office does that Kiln does not, or something neither does well.
 labels: [enhancement]
 body:
   - type: dropdown
@@ -7,11 +7,11 @@ body:
     attributes:
       label: Application
       options:
-        - Scriba (documents)
-        - Tabula (spreadsheets)
-        - Scena (presentations)
-        - Notula (notebooks)
-        - Atrium (start screen)
+        - Kiln Write (documents)
+        - Kiln Grid (spreadsheets)
+        - Kiln Deck (presentations)
+        - Kiln Notes (notebooks)
+        - Kiln Home (start screen)
         - All of them
     validations:
       required: true
@@ -36,5 +36,5 @@ body:
     attributes:
       label: Before you file
       options:
-        - label: I searched existing issues and [PARITY.md](https://github.com/ZahakJ/officina/blob/main/PARITY.md), which lists the Office features already planned or in progress.
+        - label: I searched existing issues and [PARITY.md](https://github.com/ZahakJ/kiln/blob/main/PARITY.md), which lists the Office features already planned or in progress.
           required: true

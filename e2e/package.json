@@ -1,8 +1,8 @@
 {
-  "name": "@officina/e2e",
+  "name": "@kiln/e2e",
   "version": "0.1.0",
   "private": true,
-  "description": "Officina end-to-end tests (Playwright, Chromium headless) with reviewed screenshots.",
+  "description": "Kiln end-to-end tests (Playwright, Chromium headless) with reviewed screenshots.",
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "scripts": {

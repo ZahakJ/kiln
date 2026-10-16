@@ -1,5 +1,5 @@
 /**
- * The Officina Glyphs set: one export per glyph. Import from `./index.ts`, which adds the registry.
+ * The Kiln Glyphs set: one export per glyph. Import from `./index.ts`, which adds the registry.
  * Drawing conventions: content inside 2–18, 1.5 px strokes, round caps; parts marked A() take the accent
  * in the colourful icon style, M() parts are de-emphasised details.
  */
@@ -228,7 +228,7 @@ export const BorderMore = glyph('BorderMore', 'More Borders', [
   F(circle(13.5, 10, 1)),
 ]);
 
-// Styles, editing, Officina extras ----------------------------------------------------------------------
+// Styles, editing, Kiln extras ----------------------------------------------------------------------
 
 export const StylesPane = glyph('StylesPane', 'Styles Pane', [
   rect(2.75, 3.25, 14.5, 13.5, 1.5),

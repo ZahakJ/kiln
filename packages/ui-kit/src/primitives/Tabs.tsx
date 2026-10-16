@@ -11,13 +11,13 @@ export interface TabsListProps extends ComponentPropsWithRef<typeof RT.List> {
 }
 
 export function TabsList({ variant = 'underline', className, ...rest }: TabsListProps) {
-  return <RT.List className={cx('of-tabs', `of-tabs--${variant}`, className)} {...rest} />;
+  return <RT.List className={cx('kiln-tabs', `kiln-tabs--${variant}`, className)} {...rest} />;
 }
 
 export function TabsTrigger({ className, ...rest }: ComponentPropsWithRef<typeof RT.Trigger>) {
-  return <RT.Trigger className={cx('of-tabs__tab', className)} {...rest} />;
+  return <RT.Trigger className={cx('kiln-tabs__tab', className)} {...rest} />;
 }
 
 export function TabsContent({ className, ...rest }: ComponentPropsWithRef<typeof RT.Content>) {
-  return <RT.Content className={cx('of-tabs__panel', className)} {...rest} />;
+  return <RT.Content className={cx('kiln-tabs__panel', className)} {...rest} />;
 }

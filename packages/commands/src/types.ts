@@ -1,9 +1,9 @@
 /**
- * Core types of the command system (PLAN.md §1.3, §1.7, §2.1). Everything a user can do in Officina
+ * Core types of the command system (PLAN.md §1.3, §1.7, §2.1). Everything a user can do in Kiln
  * (ribbon buttons, menu items, shortcuts, palette entries, Key Tips) is a command with a stable id.
  */
 
-/** The applications of the suite. `hub` is Atrium, the start screen. */
+/** The applications of the suite. `hub` is Kiln Home, the start screen. */
 export type AppId = 'write' | 'grid' | 'deck' | 'notes' | 'hub';
 
 export const APP_IDS: readonly AppId[] = ['write', 'grid', 'deck', 'notes', 'hub'];
@@ -28,7 +28,7 @@ export type CommandRun<Args = unknown> = (ctx: CommandContext, args: Args) => un
 export interface CommandMeta {
   /** Stable, dotted id: `format.bold`, `grid.freezePanes`. */
   id: string;
-  /** Title in Officina's words, shown in menus, tooltips and the palette. */
+  /** Title in Kiln's words, shown in menus, tooltips and the palette. */
   title: string;
   /** Microsoft Office's name for the command, when it differs from `title`. */
   officeName?: string;
@@ -36,7 +36,7 @@ export interface CommandMeta {
   synonyms?: readonly string[];
   /** One sentence for super tooltips and the palette. */
   description?: string;
-  /** Icon name: an Officina glyph (`FormatPainter`) or a Lucide icon (`Bold`), resolved by ui-kit. */
+  /** Icon name: an Kiln glyph (`FormatPainter`) or a Lucide icon (`Bold`), resolved by ui-kit. */
   icon?: string;
   /** Primary shortcut for display when no keymap is attached (`Mod+B`). Keymaps are authoritative. */
   shortcut?: string;

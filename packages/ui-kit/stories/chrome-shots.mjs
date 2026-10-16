@@ -2,7 +2,7 @@
 // Captures review screenshots of the chrome demo (AppFrame, ribbon, Backstage, palette, Key Tips,
 // mini toolbar, context menu, Options) in light and dark, desktop and phone.
 //
-//   node packages/ui-kit/stories/chrome-shots.mjs [outDir]     (default: $TMPDIR/officina-chrome)
+//   node packages/ui-kit/stories/chrome-shots.mjs [outDir]     (default: $TMPDIR/kiln-chrome)
 import { spawn } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -10,7 +10,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
-const out = process.argv[2] ?? join(tmpdir(), 'officina-chrome');
+const out = process.argv[2] ?? join(tmpdir(), 'kiln-chrome');
 mkdirSync(out, { recursive: true });
 const pkg = fileURLToPath(new URL('..', import.meta.url));
 const PORT = 5180;
@@ -46,7 +46,7 @@ try {
       page.on('console', (m) => m.type() === 'error' && errors.push(`${theme}: ${m.text()}`));
       await page.emulateMedia({ colorScheme: theme === 'dark' ? 'dark' : 'light' });
       await page.goto(`${base}&theme=${theme}${query}`);
-      await page.waitForSelector('.of-ribbon');
+      await page.waitForSelector('.kiln-ribbon');
       await page.evaluate(() => document.fonts.ready);
       return page;
     };
@@ -80,7 +80,7 @@ try {
     // Key Tips.
     await page.locator('.cx-page p').first().click();
     await page.keyboard.press('Alt');
-    await page.waitForSelector('.of-keytip');
+    await page.waitForSelector('.kiln-keytip');
     await shot(page, 'keytips-root', { clip: { x: 0, y: 0, width: 1440, height: 170 } });
     await page.keyboard.press('h');
     await page.waitForTimeout(200);
@@ -95,7 +95,7 @@ try {
     await page.mouse.down();
     await page.mouse.move(box.x + 260, box.y + 8, { steps: 6 });
     await page.mouse.up();
-    await page.waitForSelector('.of-minitoolbar');
+    await page.waitForSelector('.kiln-minitoolbar');
     await page.waitForTimeout(150);
     await shot(page, 'minitoolbar', {
       clip: { x: Math.max(0, box.x - 40), y: Math.max(0, box.y - 90), width: 640, height: 200 },
@@ -103,7 +103,7 @@ try {
 
     // Context menu.
     await page.mouse.click(box.x + 120, box.y + 30, { button: 'right' });
-    await page.waitForSelector('.of-menu');
+    await page.waitForSelector('.kiln-menu');
     await shot(page, 'contextmenu', {
       clip: { x: Math.max(0, box.x - 20), y: Math.max(0, box.y - 60), width: 520, height: 420 },
     });
@@ -111,7 +111,7 @@ try {
 
     // Palette.
     await page.keyboard.press('Control+Shift+P');
-    await page.waitForSelector('.of-palette');
+    await page.waitForSelector('.kiln-palette');
     await shot(page, 'palette-empty');
     await page.keyboard.type('merge');
     await page.waitForTimeout(100);
@@ -120,12 +120,12 @@ try {
 
     // Task pane via Find.
     await page.keyboard.press('Control+f');
-    await page.waitForSelector('.of-taskpane');
+    await page.waitForSelector('.kiln-taskpane');
     await shot(page, 'taskpane');
 
     // Backstage.
     await page.getByRole('button', { name: 'File', exact: true }).click();
-    await page.waitForSelector('.of-backstage');
+    await page.waitForSelector('.kiln-backstage');
     await page.waitForTimeout(250);
     await shot(page, 'backstage');
     await page.keyboard.press('Escape');
@@ -134,7 +134,7 @@ try {
     await page.keyboard.press('Control+Shift+P');
     await page.keyboard.type('options');
     await page.keyboard.press('Enter');
-    await page.waitForSelector('.of-options');
+    await page.waitForSelector('.kiln-options');
     await shot(page, 'options-general');
     await page.getByRole('button', { name: 'Keyboard', exact: true }).click();
     await page.locator('[data-command-row="format.bold"]').click();
@@ -144,7 +144,7 @@ try {
 
     // Zoom popover.
     await page.getByRole('button', { name: /Zoom level/ }).click();
-    await page.waitForSelector('.of-statusbar__zoom-popover');
+    await page.waitForSelector('.kiln-statusbar__zoom-popover');
     await shot(page, 'zoom', { clip: { x: 1440 - 420, y: 900 - 360, width: 420, height: 360 } });
     await page.keyboard.press('Escape');
     await page.close();

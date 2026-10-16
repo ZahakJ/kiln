@@ -21,7 +21,7 @@ export function createCommandRegistry(options: CreateRegistryOptions): CommandRe
   const { app, declareCatalog = true, ...rest } = options;
   const registry = new CommandRegistry({
     tiers: resolveTierConfig(),
-    recent: new RecentCommands({ key: `officina.recentCommands.${app}` }),
+    recent: new RecentCommands({ key: `kiln.recentCommands.${app}` }),
     ...rest,
     context: { app },
   });

@@ -1,4 +1,4 @@
-/** Scriba (Write) shortcuts: the "Scriba (documents)" column of docs/SHORTCUTS.md (PLAN.md §1.7). */
+/** Kiln Write shortcuts: the "Kiln Write (documents)" column of docs/SHORTCUTS.md (PLAN.md §1.7). */
 import type { KeyBinding } from '../keymap.ts';
 import { bind } from './bind.ts';
 

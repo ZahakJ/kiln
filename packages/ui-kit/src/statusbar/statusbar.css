@@ -1,133 +1,133 @@
-.of-statusbar {
+.kiln-statusbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   height: 28px;
   padding: 0 8px 0 12px;
-  background: var(--of-bg-surface-2);
-  border-top: var(--of-border-width) solid var(--of-border);
-  color: var(--of-fg-muted);
-  font-family: var(--of-font-ui);
-  font-size: var(--of-text-sm);
+  background: var(--kiln-bg-surface-2);
+  border-top: var(--kiln-border-width) solid var(--kiln-border);
+  color: var(--kiln-fg-muted);
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-sm);
   user-select: none;
   min-width: 0;
 }
-.of-statusbar__left,
-.of-statusbar__right {
+.kiln-statusbar__left,
+.kiln-statusbar__right {
   display: flex;
   align-items: center;
   gap: 2px;
   min-width: 0;
 }
-.of-statusbar__left {
+.kiln-statusbar__left {
   overflow: hidden;
 }
-.of-statusbar__right {
+.kiln-statusbar__right {
   flex: none;
 }
-.of-statusbar__cell {
+.kiln-statusbar__cell {
   display: contents;
 }
-.of-statusbar__item {
+.kiln-statusbar__item {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   height: 22px;
   padding: 0 8px;
   border: 0;
-  border-radius: var(--of-radius-control);
+  border-radius: var(--kiln-radius-control);
   background: transparent;
   color: inherit;
   font: inherit;
   white-space: nowrap;
 }
-.of-statusbar__item--button:hover {
-  background: var(--of-bg-hover);
-  color: var(--of-fg);
+.kiln-statusbar__item--button:hover {
+  background: var(--kiln-bg-hover);
+  color: var(--kiln-fg);
 }
-.of-statusbar__item--button:focus-visible,
-.of-statusbar__view:focus-visible {
-  outline: var(--of-focus-width) solid var(--of-focus-ring);
+.kiln-statusbar__item--button:focus-visible,
+.kiln-statusbar__view:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
   outline-offset: -1px;
 }
-.of-statusbar__views {
+.kiln-statusbar__views {
   display: inline-flex;
   gap: 1px;
   margin: 0 6px;
 }
-.of-statusbar__view {
+.kiln-statusbar__view {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 26px;
   height: 22px;
   border: 0;
-  border-radius: var(--of-radius-control);
+  border-radius: var(--kiln-radius-control);
   background: transparent;
-  color: var(--of-fg-muted);
+  color: var(--kiln-fg-muted);
 }
-.of-statusbar__view:hover {
-  background: var(--of-bg-hover);
-  color: var(--of-fg);
+.kiln-statusbar__view:hover {
+  background: var(--kiln-bg-hover);
+  color: var(--kiln-fg);
 }
-.of-statusbar__view.is-active {
-  background: var(--of-bg-checked);
-  color: var(--of-accent-strong);
+.kiln-statusbar__view.is-active {
+  background: var(--kiln-bg-checked);
+  color: var(--kiln-accent-strong);
 }
-.of-statusbar__zoom {
+.kiln-statusbar__zoom {
   display: inline-flex;
 }
-.of-statusbar__zoom .of-zoom {
+.kiln-statusbar__zoom .kiln-zoom {
   gap: 2px;
 }
-.of-statusbar__zoom-popover {
+.kiln-statusbar__zoom-popover {
   width: 236px;
   padding: 10px;
 }
-.of-statusbar__zoom-title {
+.kiln-statusbar__zoom-title {
   margin: 0 2px 6px;
-  font-weight: var(--of-weight-semibold);
-  color: var(--of-fg);
+  font-weight: var(--kiln-weight-semibold);
+  color: var(--kiln-fg);
 }
-.of-statusbar__zoom-presets {
+.kiln-statusbar__zoom-presets {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2px;
 }
-.of-statusbar__zoom-fits {
+.kiln-statusbar__zoom-fits {
   display: flex;
   flex-direction: column;
   gap: 2px;
   margin-top: 6px;
   padding-top: 6px;
-  border-top: 1px solid var(--of-border);
+  border-top: 1px solid var(--kiln-border);
 }
-.of-statusbar__preset {
+.kiln-statusbar__preset {
   justify-content: flex-start;
 }
-.of-statusbar__preset.is-active {
-  background: var(--of-bg-checked);
-  color: var(--of-accent-strong);
-  font-weight: var(--of-weight-semibold);
+.kiln-statusbar__preset.is-active {
+  background: var(--kiln-bg-checked);
+  color: var(--kiln-accent-strong);
+  font-weight: var(--kiln-weight-semibold);
 }
-.of-statusbar__zoom-custom {
+.kiln-statusbar__zoom-custom {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px solid var(--of-border);
-  color: var(--of-fg);
+  border-top: 1px solid var(--kiln-border);
+  color: var(--kiln-fg);
 }
-.of-statusbar__zoom-custom > span {
+.kiln-statusbar__zoom-custom > span {
   flex: 1;
 }
 
 @media (max-width: 639px) {
-  .of-statusbar__left > :nth-child(n + 3),
-  .of-statusbar__views,
-  .of-statusbar .of-slider {
+  .kiln-statusbar__left > :nth-child(n + 3),
+  .kiln-statusbar__views,
+  .kiln-statusbar .kiln-slider {
     display: none;
   }
 }

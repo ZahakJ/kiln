@@ -70,21 +70,21 @@ export function SplitButton({
   const main = (
     <button
       type="button"
-      className={cx('of-btn', 'of-btn--split', 'of-split__main', iconOnly && 'of-btn--icon-only')}
+      className={cx('kiln-btn', 'kiln-btn--split', 'kiln-split__main', iconOnly && 'kiln-btn--icon-only')}
       aria-label={iconOnly ? label : undefined}
       aria-keyshortcuts={shortcut ? ariaKeyShortcuts(shortcut) : undefined}
       disabled={disabled}
       onClick={onClick}
       onKeyDown={onMainKeyDown}
     >
-      {icon ? <span className="of-btn__icon">{icon}</span> : null}
-      {!iconOnly ? <span className="of-btn__label">{label}</span> : null}
+      {icon ? <span className="kiln-btn__icon">{icon}</span> : null}
+      {!iconOnly ? <span className="kiln-btn__label">{label}</span> : null}
     </button>
   );
   const arrow = (
     <button
       type="button"
-      className="of-btn of-btn--split of-split__arrow"
+      className="kiln-btn kiln-btn--split kiln-split__arrow"
       aria-label={menuLabel ?? `More options for ${label}`}
     >
       <Icon icon={ChevronDown} size={12} />
@@ -92,7 +92,12 @@ export function SplitButton({
   );
   const shell = (trigger: ReactNode) => (
     <span
-      className={cx('of-split', layout === 'stacked' && 'of-split--stacked', open && 'is-open', className)}
+      className={cx(
+        'kiln-split',
+        layout === 'stacked' && 'kiln-split--stacked',
+        open && 'is-open',
+        className,
+      )}
     >
       {iconOnly ? (
         <Tooltip content={label} shortcut={shortcut} description={description}>

@@ -1,4 +1,4 @@
-import type { AppId, CommandContext, Tier } from '@officina/commands';
+import type { AppId, CommandContext, Tier } from '@kiln/commands';
 import type { ReactNode } from 'react';
 import type { MenuEntry } from '../contextmenu/CommandMenuItems.tsx';
 import type { ComboboxOption } from '../primitives/Combobox.tsx';

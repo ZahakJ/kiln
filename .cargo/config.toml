@@ -1,0 +1,42 @@
+# Kiln Cargo configuration (PLAN.md §4.1). Tuned for a 4-CPU / 7 GB development machine.
+
+[build]
+jobs = 3                                   # 4 CPUs: leave one for the webview/tests; CARGO_BUILD_JOBS overrides
+rustc-wrapper = "sccache"                  # tools/setup-rust.sh removes this line if sccache is absent
+
+[profile.dev]
+debug = "line-tables-only"
+split-debuginfo = "unpacked"
+incremental = true
+
+[profile.dev.package."*"]
+opt-level = 2                              # dependencies optimised once; our crates stay fast to compile
+
+[profile.test]
+inherits = "dev"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 16
+debug = false
+strip = "symbols"
+panic = "unwind"
+
+[profile.dist]                             # CI release bundles and budgets only
+inherits = "release"
+lto = "fat"
+codegen-units = 1
+
+[profile.wasm-release]
+inherits = "release"
+opt-level = "s"
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+
+[target.wasm32-unknown-unknown]
+rustflags = ["--cfg", "getrandom_backend=\"wasm_js\""]
+
+[alias]
+xtask = "run -q -p xtask --"

@@ -1,4 +1,4 @@
-import type { CommandRegistry, Keymap } from '@officina/commands';
+import type { CommandRegistry, Keymap } from '@kiln/commands';
 import { useEffect, useRef } from 'react';
 
 export interface GlobalShortcutsOptions {
@@ -12,7 +12,7 @@ export interface GlobalShortcutsOptions {
 }
 
 /** Elements that opt out (modal dialogs other than the palette, the Options keyboard capture box). */
-const OPT_OUT = '[data-of-shortcuts="off"]';
+const OPT_OUT = '[data-kiln-shortcuts="off"]';
 
 /**
  * Dispatches key presses through the keymap to the registry. Only implemented, enabled commands

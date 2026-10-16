@@ -33,7 +33,7 @@ export interface ContextMenuProps {
   'aria-label'?: string;
 }
 
-const insideMini = (t: EventTarget | null) => t instanceof Element && !!t.closest('.of-contextmenu__mini');
+const insideMini = (t: EventTarget | null) => t instanceof Element && !!t.closest('.kiln-contextmenu__mini');
 
 interface Point {
   x: number;
@@ -113,11 +113,11 @@ export function ContextMenu({
               </MenuContent>
               {miniToolbar ? (
                 <div
-                  className="of-contextmenu__mini"
+                  className="kiln-contextmenu__mini"
                   style={{ left: at?.x ?? 0, top: Math.max(8, (at?.y ?? 0) - 52) }}
                   data-toolbar-skip
                 >
-                  <Toolbar aria-label="Formatting" className="of-minitoolbar__bar">
+                  <Toolbar aria-label="Formatting" className="kiln-minitoolbar__bar">
                     {miniToolbar}
                   </Toolbar>
                 </div>

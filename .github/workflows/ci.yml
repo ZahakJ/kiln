@@ -1,5 +1,8 @@
-# Every push to main and every pull request: the same gate as `pnpm verify`
-# locally, plus coverage, the licence check and the Playwright suite.
+# Every push to main and every pull request (PLAN.md §4.6): the Rust core (fmt, clippy, nextest,
+# cargo-deny, protocol, wasm, budgets, fidelity, parity), the web build (lint, typecheck, unit tests,
+# licences, Playwright) and a startup smoke test of the Tauri desktop shell.
+# Steps whose tooling arrives with a later work package call the `--ci`/`--check` variant of their
+# xtask, which prints "skipped: not implemented yet (WP-xx)" until then.
 name: ci
 
 on:
@@ -15,13 +18,89 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  CARGO_TERM_COLOR: always
+  TURBO_TELEMETRY_DISABLED: 1
+  # sccache is the rustc wrapper in .cargo/config.toml; on CI it uses the GitHub Actions cache.
+  SCCACHE_GHA_ENABLED: 'true'
+  RUSTC_WRAPPER: sccache
+
 jobs:
-  verify:
+  rust:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v7
+
+      # The toolchain, components and targets pinned in rust-toolchain.toml.
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.1
+          components: rustfmt, clippy, rust-src
+          targets: wasm32-unknown-unknown
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: kiln
+
+      - uses: mozilla-actions/sccache-action@v0.0.11
+
+      - name: Tauri Linux libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev \
+            librsvg2-dev libxdo-dev libssl-dev patchelf file
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest@0.9.148,cargo-deny@0.20.2
+
+      - name: Format
+        run: cargo fmt --all --check
+
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: Tests
+        run: cargo nextest run --workspace --exclude kiln-desktop
+
+      - name: Desktop shell compiles
+        run: cargo check -p kiln-desktop
+
+      - name: cargo-deny (licences, advisories, bans, sources)
+        run: cargo deny check
+
+      - name: Protocol is up to date
+        run: cargo xtask protocol --check
+
+      # Until WP-52 adds `cargo xtask wasm`, build the bridge for wasm32 directly.
+      - name: WebAssembly core
+        run: |
+          cargo build --target wasm32-unknown-unknown -p kiln-bridge-wasm
+          cargo xtask wasm --release --ci
+
+      - name: Performance budgets
+        run: cargo xtask budgets --ci
+
+      - name: Fidelity
+        run: cargo xtask fidelity --ci
+
+      - name: Parity tracker
+        run: cargo xtask parity --check
+
+      - name: Upload performance report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: perf-${{ github.run_id }}
+          path: docs/qa/perf.md
+          if-no-files-found: ignore
+          retention-days: 14
+
+  web:
+    needs: rust
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      # Turborepo would otherwise print its telemetry notice on every run.
-      TURBO_TELEMETRY_DISABLED: 1
     steps:
       - uses: actions/checkout@v7
 
@@ -48,9 +127,21 @@ jobs:
       - name: Licence check
         run: pnpm licenses:check
 
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.1
+
+      - uses: mozilla-actions/sccache-action@v0.0.11
+
+      - name: Third-party notices are up to date
+        run: cargo xtask notices --check
+
+      - name: Build
+        run: pnpm build
+
       # The browser build matches the Playwright version pinned in the e2e package.
       - name: Install Chromium for Playwright
-        run: pnpm --filter @officina/e2e exec playwright install --with-deps chromium
+        run: pnpm --filter @kiln/e2e exec playwright install --with-deps chromium
 
       - name: End-to-end tests
         run: pnpm e2e
@@ -66,3 +157,56 @@ jobs:
             e2e/playwright-report
           if-no-files-found: ignore
           retention-days: 14
+
+  desktop-smoke:
+    needs: rust
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.1
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: kiln
+
+      - uses: mozilla-actions/sccache-action@v0.0.11
+
+      - name: Tauri Linux libraries and a virtual display
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev \
+            librsvg2-dev libxdo-dev libssl-dev patchelf file xvfb
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      # The shell embeds apps/web/dist (custom-protocol), so the probe does not need a dev server.
+      - name: Build the web app
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm --filter @kiln/web build
+
+      - name: Build the desktop shell
+        run: cargo build -p kiln-desktop --features custom-protocol
+
+      # B1 (cold start < 700 ms) and B2 (idle RSS < 150 MB) are measured here; the assertion is
+      # informational until WP-94 tunes the budgets for CI runners (1.5x tolerance, PLAN.md §3.9).
+      - name: Startup probe
+        run: |
+          out="$(timeout 120 xvfb-run -a target/debug/kiln --startup-probe)"
+          echo "$out"
+          ms="$(printf '%s\n' "$out" | sed -n 's/^startup-ms=//p')"
+          test -n "$ms"
+          {
+            echo "### Desktop startup probe"
+            echo
+            printf '%s\n' "$out" | sed 's/^/- /'
+          } >> "$GITHUB_STEP_SUMMARY"

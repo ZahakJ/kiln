@@ -8,7 +8,7 @@ afterEach(cleanup);
 describe('Hub placeholder', () => {
   it('shows the suite name', () => {
     render(<Hub />);
-    expect(screen.getByRole('heading', { level: 1 }).textContent).toContain('Officina');
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toContain('Kiln');
   });
 
   it('shows the suite version from the root package.json', () => {
@@ -19,7 +19,7 @@ describe('Hub placeholder', () => {
 
   it('lists the four apps by their product names', () => {
     render(<Hub />);
-    for (const name of ['Scriba', 'Tabula', 'Scena', 'Notula']) {
+    for (const name of ['Kiln Write', 'Kiln Grid', 'Kiln Deck', 'Kiln Notes']) {
       expect(screen.getByRole('heading', { level: 3, name })).toBeTruthy();
     }
   });

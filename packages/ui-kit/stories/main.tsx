@@ -1,6 +1,6 @@
-import '@officina/tokens/index.css';
+import '@kiln/tokens/index.css';
 import './gallery.css';
-import { applyTheme, isAppId, isThemePreference } from '@officina/tokens';
+import { applyTheme, isAppId, isThemePreference } from '@kiln/tokens';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ThemeProvider } from '../src/theme/ThemeProvider.tsx';

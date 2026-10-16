@@ -1,10 +1,26 @@
 # Changelog
 
-All notable changes to Officina are recorded here. The format follows
+All notable changes to Kiln (called Officina until WP-50) are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Changed
+
+- The suite is now called **Kiln**: Kiln Write (formerly Scriba), Kiln Grid (Tabula), Kiln Deck (Scena), Kiln Notes (Notula) and Kiln Home (Atrium). Package scope `@kiln/*`, application identifier `io.github.zahakj.kiln`, repository `ZahakJ/kiln`, website `zahakj.github.io/kiln`. The reasons and the new architecture are recorded in `docs/adr/0002-kiln-rust-core.md`.
+- Kiln is being rebuilt on a native Rust core: a Cargo workspace with all 30 core crates (document, sheet and presentation models, layout, formulas, file formats, PDF, spell check, search, collaboration, storage, the session facade, the WebAssembly bridge, the command line, benchmarks and test support) and `cargo xtask` for repository tasks. The crates are scaffolds that build and are tested in CI; their engines follow.
+- The desktop and Android shell is now Tauri 2 (`apps/desktop/src-tauri`), replacing Electron and Capacitor; it opens the web app in a window and can measure its own start-up time and memory (`kiln --startup-probe`).
+- The v1.0 TypeScript engines (OOXML, formulas, document and sheet models, DOCX reader and writer, XLSX reader, fidelity scorer) moved to `reference/ts-core/` as a read-only oracle for the port; the formula conformance cases moved to `conformance/` and the test documents to `fixtures/`.
+- Continuous integration now checks the Rust core (formatting, Clippy, tests, licences and advisories with cargo-deny, the WebAssembly build) and starts the desktop shell under a virtual display; the release workflow builds Tauri bundles for Linux, Windows and macOS, split Android APKs and a web archive, and checks installer sizes; a Pages workflow builds the landing page, manual and web app together.
+- The landing page, README banner, social preview and app icons are neutral placeholders until the brand kit is imported.
+- The interface no longer loads the Inter and JetBrains Mono web fonts; the brand kit's fonts replace them.
+
+### Removed
+
+- Placeholder packages for charts, collaboration, storage, printing, the ODF/PPTX/XLSX readers, the deck model, the Write, Grid and Deck editors, Notes, templates and i18n (recreated as thin views when their work packages start), and the Electron, Capacitor and Hocuspocus apps; TipTap, ProseMirror, Yjs, ECharts, fflate, fast-xml-parser, papaparse, numfmt, decimal.js, mathlive, nspell, pdf-lib, pdfjs-dist, dexie, comlink, immer and fontsource left the dependency catalog.
+
+## v1.0 prototype (TypeScript, as Officina; not released)
 
 ### Added
 
@@ -51,4 +67,4 @@ All notable changes to Officina are recorded here. The format follows
 - Numbers display exactly as Excel shows them: the General format's 11-character rule with automatic scientific notation, rounding half away from zero, dates and times (including elapsed `[h]:mm`), percentages, fractions, scientific, accounting layouts with the currency symbol pinned left, `[Red]`/`[Color n]` colours, conditional sections and localised separators and month names.
 - Workbook snapshots as plain JSON (gzip-compressed for storage) for version history, crash journals and background workers.
 
-[Unreleased]: https://github.com/ZahakJ/officina/commits/main
+[Unreleased]: https://github.com/ZahakJ/kiln/commits/main

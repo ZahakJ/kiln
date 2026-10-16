@@ -1,50 +1,50 @@
 /*
- * Tailwind 4 theme for Officina: `@import "@officina/tokens/theme.css";` after `@import "tailwindcss";`.
- * GENERATED from packages/tokens/src/tokens.ts by `pnpm --filter @officina/tokens generate`.
+ * Tailwind 4 theme for Kiln: `@import "@kiln/tokens/theme.css";` after `@import "tailwindcss";`.
+ * GENERATED from packages/tokens/src/tokens.ts by `pnpm --filter @kiln/tokens generate`.
  * Do not edit by hand.
  */
 @theme inline {
   --spacing: 4px;
-  --font-sans: var(--of-font-ui);
-  --font-mono: var(--of-font-mono);
-  --color-canvas: var(--of-bg-canvas);
-  --color-surface: var(--of-bg-surface);
-  --color-surface-2: var(--of-bg-surface-2);
-  --color-surface-3: var(--of-bg-surface-3);
-  --color-hover: var(--of-bg-hover);
-  --color-pressed: var(--of-bg-pressed);
-  --color-checked: var(--of-bg-checked);
-  --color-input: var(--of-bg-input);
-  --color-fg: var(--of-fg);
-  --color-muted: var(--of-fg-muted);
-  --color-disabled: var(--of-fg-disabled);
-  --color-line: var(--of-border);
-  --color-line-strong: var(--of-border-strong);
-  --color-accent: var(--of-accent);
-  --color-accent-strong: var(--of-accent-strong);
-  --color-accent-subtle: var(--of-accent-subtle);
-  --color-on-accent: var(--of-on-accent);
-  --color-selection: var(--of-selection);
-  --color-write: var(--of-accent-write);
-  --color-grid: var(--of-accent-grid);
-  --color-deck: var(--of-accent-deck);
-  --color-notes: var(--of-accent-notes);
-  --color-hub: var(--of-accent-hub);
-  --color-danger: var(--of-danger);
-  --color-warning: var(--of-warning);
-  --color-success: var(--of-success);
-  --color-info: var(--of-info);
-  --radius-control: var(--of-radius-control);
-  --radius-menu: var(--of-radius-menu);
-  --radius-dialog: var(--of-radius-dialog);
-  --shadow-of-1: var(--of-shadow-1);
-  --shadow-of-2: var(--of-shadow-2);
-  --shadow-of-3: var(--of-shadow-3);
-  --text-xs: var(--of-text-xs);
-  --text-sm: var(--of-text-sm);
-  --text-base: var(--of-text-base);
-  --text-md: var(--of-text-md);
-  --text-lg: var(--of-text-lg);
-  --text-xl: var(--of-text-xl);
-  --ease-out: var(--of-ease-out);
+  --font-sans: var(--kiln-font-ui);
+  --font-mono: var(--kiln-font-mono);
+  --color-canvas: var(--kiln-bg-canvas);
+  --color-surface: var(--kiln-bg-surface);
+  --color-surface-2: var(--kiln-bg-surface-2);
+  --color-surface-3: var(--kiln-bg-surface-3);
+  --color-hover: var(--kiln-bg-hover);
+  --color-pressed: var(--kiln-bg-pressed);
+  --color-checked: var(--kiln-bg-checked);
+  --color-input: var(--kiln-bg-input);
+  --color-fg: var(--kiln-fg);
+  --color-muted: var(--kiln-fg-muted);
+  --color-disabled: var(--kiln-fg-disabled);
+  --color-line: var(--kiln-border);
+  --color-line-strong: var(--kiln-border-strong);
+  --color-accent: var(--kiln-accent);
+  --color-accent-strong: var(--kiln-accent-strong);
+  --color-accent-subtle: var(--kiln-accent-subtle);
+  --color-on-accent: var(--kiln-on-accent);
+  --color-selection: var(--kiln-selection);
+  --color-write: var(--kiln-accent-write);
+  --color-grid: var(--kiln-accent-grid);
+  --color-deck: var(--kiln-accent-deck);
+  --color-notes: var(--kiln-accent-notes);
+  --color-hub: var(--kiln-accent-hub);
+  --color-danger: var(--kiln-danger);
+  --color-warning: var(--kiln-warning);
+  --color-success: var(--kiln-success);
+  --color-info: var(--kiln-info);
+  --radius-control: var(--kiln-radius-control);
+  --radius-menu: var(--kiln-radius-menu);
+  --radius-dialog: var(--kiln-radius-dialog);
+  --shadow-of-1: var(--kiln-shadow-1);
+  --shadow-of-2: var(--kiln-shadow-2);
+  --shadow-of-3: var(--kiln-shadow-3);
+  --text-xs: var(--kiln-text-xs);
+  --text-sm: var(--kiln-text-sm);
+  --text-base: var(--kiln-text-base);
+  --text-md: var(--kiln-text-md);
+  --text-lg: var(--kiln-text-lg);
+  --text-xl: var(--kiln-text-xl);
+  --ease-out: var(--kiln-ease-out);
 }

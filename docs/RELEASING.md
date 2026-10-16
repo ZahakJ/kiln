@@ -7,15 +7,16 @@ automated except the Linux and Android builds that can also be made locally.
 
 ```
 git tag -a vX.Y.Z  ->  .github/workflows/release.yml
-                         linux    (ubuntu)   pnpm release:desktop --linux   -> AppImage, .deb
-                         windows  (windows)  pnpm release:desktop --win     -> NSIS installer x64, portable .exe
-                         macos    (macos)    pnpm release:desktop --mac     -> .dmg arm64 and x64, unsigned
-                         android  (ubuntu)   pnpm release:android           -> signed release APK
-                         publish  needs all four: SHA256SUMS.txt over every file,
-                                  upload to the GitHub Release for the tag
-                                  (created if missing, appended to otherwise)
-                     ->  README and the landing page link to the release assets;
-                         GitHub Pages serves docs/ from main
+                         linux        (ubuntu-22.04)  tauri-action, profile dist  -> AppImage, .deb
+                         windows      (windows)       tauri-action, profile dist  -> NSIS .exe, .msi
+                         macos-arm64  (macos)         tauri-action, profile dist  -> .dmg (unsigned)
+                         macos-x64    (macos)         tauri-action, profile dist  -> .dmg (unsigned)
+                         android      (ubuntu)        pnpm tauri android build --apk --split-per-abi
+                                                      -> arm64-v8a, armeabi-v7a, x86_64 APKs
+                         web          (ubuntu)        wasm core + pnpm build      -> kiln-web-X.Y.Z.tar.gz
+                         every job asserts the installer size budgets (PLAN.md §3.9, B13)
+                         publish  needs all: SHA256SUMS.txt over every file, upload to the
+                                  GitHub Release for the tag (softprops/action-gh-release)
 ```
 
 The workflow can also be started by hand (**Actions ▸ release ▸ Run
@@ -24,9 +25,11 @@ publish a release.
 
 ## Checklist
 
-1. `main` is green in CI and `pnpm verify` and `pnpm e2e` pass locally.
-2. Set the version everywhere:
-   `pnpm -r exec npm version X.Y.Z --no-git-tag-version` and the same in the root
+1. `main` is green in CI and `cargo xtask verify`, `pnpm verify` and `pnpm e2e`
+   pass locally.
+2. Set the version everywhere: `[workspace.package] version` in `Cargo.toml`,
+   `version` in `apps/desktop/src-tauri/tauri.conf.json`,
+   `pnpm -r exec npm version X.Y.Z --no-git-tag-version` and the root
    `package.json`.
 3. In `CHANGELOG.md`, rename `Unreleased` to `[X.Y.Z] - YYYY-MM-DD`, add a new
    empty `Unreleased` above it, and update the compare links at the bottom.
@@ -43,13 +46,13 @@ publish a release.
 7. Tag and push the tag:
 
    ```sh
-   git tag -a vX.Y.Z -m "Officina X.Y.Z"
+   git tag -a vX.Y.Z -m "Kiln X.Y.Z"
    git push origin vX.Y.Z
    gh run watch "$(gh run list --workflow release.yml --limit 1 --json databaseId -q '.[0].databaseId')" --exit-status
    ```
 
-8. Check the release page: six platform files and `SHA256SUMS.txt`. Then check
-   that every download button on <https://zahakj.github.io/officina/> resolves:
+8. Check the release page: the desktop, Android and web files and `SHA256SUMS.txt`. Then check
+   that every download button on <https://zahakj.github.io/kiln/> resolves:
 
    ```sh
    gh release view vX.Y.Z --json assets -q '.assets[].url' | xargs -n1 curl -sIL -o /dev/null -w '%{http_code} %{url_effective}\n'
@@ -59,65 +62,58 @@ publish a release.
 
 ## Asset names
 
+Desktop file names are Tauri's defaults for product name `Kiln`; Android and web
+names are set by the workflow.
+
 | Platform | File |
 |---|---|
-| Linux AppImage | `officina-X.Y.Z-linux-x86_64.AppImage` |
-| Linux Debian/Ubuntu | `officina_X.Y.Z_amd64.deb` |
-| Windows installer | `Officina-Setup-X.Y.Z.exe` |
-| Windows portable | `Officina-X.Y.Z-portable.exe` |
-| macOS Apple silicon | `Officina-X.Y.Z-arm64.dmg` |
-| macOS Intel | `Officina-X.Y.Z-x64.dmg` |
-| Android | `officina-X.Y.Z-android.apk` |
+| Linux AppImage | `Kiln_X.Y.Z_amd64.AppImage` |
+| Linux Debian/Ubuntu | `Kiln_X.Y.Z_amd64.deb` |
+| Windows installer | `Kiln_X.Y.Z_x64-setup.exe`, `Kiln_X.Y.Z_x64_en-US.msi` |
+| macOS | `Kiln_X.Y.Z_aarch64.dmg`, `Kiln_X.Y.Z_x64.dmg` |
+| Android | `kiln-X.Y.Z-arm64-v8a.apk`, `kiln-X.Y.Z-armeabi-v7a.apk`, `kiln-X.Y.Z-x86_64.apk` |
+| Web | `kiln-web-X.Y.Z.tar.gz` |
 | Checksums | `SHA256SUMS.txt` |
 
-## Building locally and uploading
+## Building locally
 
-The Linux and Android builds can be made on a Linux machine and attached to the
-release before or instead of the workflow's copies (the workflow overwrites
-files of the same name).
+The Linux bundles can be built on a Linux machine with the WebKitGTK
+development libraries (docs/qa/env.md); never while another heavy build runs on
+the shared development machine (PLAN.md §4.7).
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm release:desktop --linux      # -> apps/desktop/dist/officina-X.Y.Z-linux-x86_64.AppImage, officina_X.Y.Z_amd64.deb
-pnpm release:android                 # -> apps/android/dist/officina-X.Y.Z-android.apk
-sha256sum apps/desktop/dist/officina[-_]X.Y.Z* apps/android/dist/officina-X.Y.Z-android.apk > SHA256SUMS-local.txt
-
-gh release create vX.Y.Z --title "Officina X.Y.Z" --notes-file notes.md \
-  apps/desktop/dist/officina-X.Y.Z-linux-x86_64.AppImage \
-  apps/desktop/dist/officina_X.Y.Z_amd64.deb \
-  apps/android/dist/officina-X.Y.Z-android.apk
-# or, if the release exists already:
-gh release upload vX.Y.Z <files> --clobber
+pnpm tauri build --bundles appimage,deb -- --profile dist
+ls target/dist/bundle/appimage target/dist/bundle/deb
+pnpm tauri android build --apk --target aarch64 --split-per-abi   # one ABI locally (memory)
 ```
 
-Create the release before pushing the tag if you want the local files in it:
-the workflow's `publish` job appends to an existing release and recomputes
-`SHA256SUMS.txt` over its own files.
+Attach local files with `gh release upload vX.Y.Z <files> --clobber`; the
+workflow's `publish` job recomputes `SHA256SUMS.txt` over its own files.
 
 ## Signing
 
 - **Android.** The release APK is signed with the key in
-  `~/.officina-keys/release.jks` (never in the repository). CI reads the same
+  `~/.kiln-keys/release.jks` (never in the repository). CI reads the same
   key from the secrets `ANDROID_KEYSTORE_B64` and `ANDROID_KEYSTORE_PASSWORD`:
 
   ```sh
-  gh secret set ANDROID_KEYSTORE_B64 --body "$(base64 -w0 ~/.officina-keys/release.jks)"
+  gh secret set ANDROID_KEYSTORE_B64 --body "$(base64 -w0 ~/.kiln-keys/release.jks)"
   gh secret set ANDROID_KEYSTORE_PASSWORD --body "$PW"
   ```
 
-  Without the secrets the workflow signs with a throwaway key and names the file
-  `…-unsigned-key.apk`, so nobody mistakes it for the real one. Such an APK
-  installs, but it cannot update an install signed with the real key: set the
-  secrets before tagging, or delete that asset and upload the locally signed
-  APK.
+  Without the secrets the workflow signs with a throwaway key and prints a
+  warning in the run. Such an APK installs, but it cannot update an install
+  signed with the real key: set the secrets before tagging.
 - **Windows and macOS** builds are unsigned. Windows SmartScreen and macOS
-  Gatekeeper warn on first launch; the manual explains how to proceed. The
-  release workflow honours `CSC_LINK`/`CSC_KEY_PASSWORD` and the Apple
-  notarisation variables if they are ever added as secrets.
+  Gatekeeper warn on first launch; the manual explains how to proceed. Signing
+  is added through tauri-action's signing variables when certificates exist.
 
 ## GitHub Pages
 
-Pages serves the `docs/` folder of `main` at <https://zahakj.github.io/officina/>
+Until WP-91 switches the source to GitHub Actions (`pages.yml`, which also
+publishes the web app under `/kiln/app/`), Pages serves the `docs/` folder of
+`main` at <https://zahakj.github.io/kiln/>
 (`docs/.nojekyll` turns off Jekyll, so files are served as they are). The
 landing page is `docs/index.html`; the manual is the Markdown in `docs/manual/`,
 rendered in the browser by `docs/manual/index.html`. Pages rebuilds a minute or

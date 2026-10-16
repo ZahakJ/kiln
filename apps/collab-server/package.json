@@ -1,9 +1,0 @@
-{
-  "name": "@officina/collab-server",
-  "version": "0.1.0",
-  "private": true,
-  "description": "Officina collaboration server (Hocuspocus with SQLite persistence). Implemented by WP-29.",
-  "license": "AGPL-3.0-or-later",
-  "type": "module",
-  "scripts": {}
-}

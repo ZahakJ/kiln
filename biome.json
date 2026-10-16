@@ -14,9 +14,14 @@
       "!**/out",
       "!**/.turbo",
       "!**/coverage",
+      "!**/target",
       "!pnpm-lock.yaml",
       "!PLAN.md",
-      "!plan"
+      "!plan",
+      "!reference",
+      "!apps/desktop/src-tauri/gen",
+      "!apps/web/src/wasm",
+      "!docs/assets"
     ]
   },
   "formatter": {
@@ -52,5 +57,47 @@
         "organizeImports": "on"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["packages/**", "apps/**", "!packages/testing/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "paths": {
+                  "fflate": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "fast-xml-parser": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "papaparse": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "decimal.js": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "numfmt": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "exceljs": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "mammoth": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "docx": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "pptxgenjs": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "docx-preview": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "pdf-lib": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "pdfjs-dist": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "@pdf-lib/fontkit": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "echarts": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "yjs": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "@tiptap/core": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "@tiptap/pm": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "prosemirror-model": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "prosemirror-view": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "formulajs": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "@formulajs/formulajs": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "hyperformula": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "xlsx": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core.",
+                  "jszip": "Thinness contract (PLAN.md \u00a73.7): packages/* and apps/* present and dispatch; document formats, formulas and layout live in the Rust core."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }

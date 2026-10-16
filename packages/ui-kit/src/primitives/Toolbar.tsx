@@ -103,7 +103,7 @@ export function Toolbar({
       }}
       role="toolbar"
       aria-orientation={orientation}
-      className={cx('of-toolbar', `of-toolbar--${orientation}`, className)}
+      className={cx('kiln-toolbar', `kiln-toolbar--${orientation}`, className)}
       onKeyDown={handleKeyDown}
       onFocus={(e) => {
         onFocus?.(e);

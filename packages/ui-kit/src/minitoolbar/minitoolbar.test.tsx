@@ -30,7 +30,7 @@ describe('MiniToolbar', () => {
         <button type="button">B</button>
       </MiniToolbar>,
     );
-    expect(document.querySelector('.of-minitoolbar--below')).toBeInTheDocument();
+    expect(document.querySelector('.kiln-minitoolbar--below')).toBeInTheDocument();
   });
 
   it('is dismissed by typing in the document and by Escape inside it', () => {

@@ -79,7 +79,7 @@ export function mergeOptions(base: OfficeOptions, patch: OptionsPatch): OfficeOp
   return out;
 }
 
-const STORAGE_KEY = 'officina.options';
+const STORAGE_KEY = 'kiln.options';
 const listeners = new Set<() => void>();
 let cache: OfficeOptions | null = null;
 

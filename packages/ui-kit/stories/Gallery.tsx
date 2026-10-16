@@ -3,7 +3,7 @@
  * (not Storybook). `GalleryPage` renders one theme with controls; `ThemeMatrix` renders the static
  * primitives in light, dark and high contrast side by side.
  */
-import type { AppId, ResolvedTheme } from '@officina/tokens';
+import type { AppId, ResolvedTheme } from '@kiln/tokens';
 import {
   Bold,
   ChevronDown,
@@ -155,7 +155,7 @@ function StylePreview({
       >
         AaBbCcDd
       </span>
-      <span style={{ fontSize: 11, color: 'var(--of-fg-muted)' }}>{name}</span>
+      <span style={{ fontSize: 11, color: 'var(--kiln-fg-muted)' }}>{name}</span>
     </>
   );
 }
@@ -466,17 +466,17 @@ export function GalleryPage() {
                   itemHeight={58}
                   footer={
                     <>
-                      <button type="button" className="of-menu__item">
-                        <span className="of-menu__icon">
+                      <button type="button" className="kiln-menu__item">
+                        <span className="kiln-menu__icon">
                           <Icon icon="StylesPane" />
                         </span>
-                        <span className="of-menu__text">Create a Style</span>
+                        <span className="kiln-menu__text">Create a Style</span>
                       </button>
-                      <button type="button" className="of-menu__item">
-                        <span className="of-menu__icon">
+                      <button type="button" className="kiln-menu__item">
+                        <span className="kiln-menu__icon">
                           <Icon icon="ClearFormatting" />
                         </span>
-                        <span className="of-menu__text">Clear Formatting</span>
+                        <span className="kiln-menu__text">Clear Formatting</span>
                       </button>
                     </>
                   }
@@ -850,7 +850,7 @@ export function GalleryPage() {
             </ScrollArea>
           </Section>
 
-          <Section title={`Officina Glyphs (${glyphList().length})`} wide>
+          <Section title={`Kiln Glyphs (${glyphList().length})`} wide>
             <div className="gx-glyphs">
               {glyphList().map(([name, G]) => (
                 <div key={name} className="gx-glyph" title={G.glyphLabel}>
@@ -873,7 +873,7 @@ function ColorIcon({ glyph, color }: { glyph: 'FontColor' | 'TextHighlight'; col
       icon={glyph}
       size={16}
       className="gx-coloricon"
-      style={{ ['--of-glyph-accent' as string]: color }}
+      style={{ ['--kiln-glyph-accent' as string]: color }}
     />
   );
 }

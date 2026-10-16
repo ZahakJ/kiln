@@ -1,7 +1,7 @@
 # Keyboard shortcuts
 
-Officina keeps Microsoft Office's default shortcuts. On macOS, use ⌘ where the
-table says Ctrl. Shortcuts marked ★ are Officina additions that Office does not
+Kiln keeps Microsoft Office's default shortcuts. On macOS, use ⌘ where the
+table says Ctrl. Shortcuts marked ★ are Kiln additions that Office does not
 have. A dash means the shortcut does nothing in that application.
 
 The table below is the specification. The keymaps in
@@ -10,7 +10,7 @@ ribbon's Key Tips and the desktop menus, and `e2e/shortcuts.spec.ts` checks
 every row. In the application, **Ctrl+/** ★ shows the shortcuts for the current
 app, and **File ▸ Options ▸ Keyboard** lists and remaps them.
 
-| Shortcut | Scriba (documents) | Tabula (spreadsheets) | Scena (presentations) |
+| Shortcut | Kiln Write (documents) | Kiln Grid (spreadsheets) | Kiln Deck (presentations) |
 |---|---|---|---|
 | Ctrl+N / O / S / P / W | New / Open / Save / Print / Close | same | same |
 | F12 or Ctrl+Shift+S | Save As | Save As | Save As |

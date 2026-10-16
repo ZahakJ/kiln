@@ -1,6 +1,6 @@
 /**
  * AI-ready hooks (PLAN.md §2.1, ★ P1). Apps call an `AssistantProvider` for four tasks: summarise,
- * rewrite, formula from text and slides from an outline. Officina ships no network provider and makes
+ * rewrite, formula from text and slides from an outline. Kiln ships no network provider and makes
  * no network calls by default: the default is `NullProvider` ("no assistant configured"), and
  * `EchoProvider` is a deterministic local sample that shows the plumbing end to end.
  */

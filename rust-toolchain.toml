@@ -1,0 +1,6 @@
+# Kiln pins one Rust toolchain for every developer and CI runner (PLAN.md §4.1).
+[toolchain]
+channel = "1.99.1"
+profile = "minimal"
+components = ["rustfmt", "clippy", "rust-src"]
+targets = ["wasm32-unknown-unknown", "aarch64-linux-android", "armv7-linux-androideabi", "x86_64-linux-android"]

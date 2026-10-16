@@ -1,32 +1,32 @@
 /* Ribbon (PLAN.md §1.2–1.4): tab strip on surface-2, commands on surface, accent underline. */
 
-.of-ribbon {
+.kiln-ribbon {
   --ribbon-row-h: 26px;
   --ribbon-body-h: 84px;
   position: relative;
   display: flex;
   flex-direction: column;
   min-width: 0;
-  background: var(--of-bg-surface);
-  color: var(--of-fg);
-  font-family: var(--of-font-ui);
-  font-size: var(--of-text-base);
-  z-index: var(--of-z-ribbon);
-  border-bottom: var(--of-border-width) solid var(--of-border);
+  background: var(--kiln-bg-surface);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-base);
+  z-index: var(--kiln-z-ribbon);
+  border-bottom: var(--kiln-border-width) solid var(--kiln-border);
 }
 
 /* Tab strip ------------------------------------------------------------------------------------ */
 
-.of-ribbon__strip {
+.kiln-ribbon__strip {
   display: flex;
   align-items: flex-end;
   gap: 2px;
   min-height: 36px;
   padding: 0 8px;
-  background: var(--of-bg-surface-2);
+  background: var(--kiln-bg-surface-2);
   overflow: hidden;
 }
-.of-ribbon__tablist {
+.kiln-ribbon__tablist {
   display: flex;
   align-items: flex-end;
   gap: 2px;
@@ -35,35 +35,35 @@
   overflow-x: auto;
   scrollbar-width: none;
 }
-.of-ribbon__tablist::-webkit-scrollbar {
+.kiln-ribbon__tablist::-webkit-scrollbar {
   display: none;
 }
-.of-ribbon__file,
-.of-ribbon__tab {
+.kiln-ribbon__file,
+.kiln-ribbon__tab {
   position: relative;
   flex: none;
   height: 32px;
   padding: 0 12px;
   border: 0;
-  border-radius: var(--of-radius-control) var(--of-radius-control) 0 0;
+  border-radius: var(--kiln-radius-control) var(--kiln-radius-control) 0 0;
   background: transparent;
-  color: var(--of-fg);
+  color: var(--kiln-fg);
   font: inherit;
-  font-size: var(--of-text-base);
+  font-size: var(--kiln-text-base);
   cursor: default;
   white-space: nowrap;
-  transition: background-color var(--of-duration-fast) ease-out;
+  transition: background-color var(--kiln-duration-fast) ease-out;
 }
-.of-ribbon__tab:hover,
-.of-ribbon__file:hover {
-  background: var(--of-bg-hover);
+.kiln-ribbon__tab:hover,
+.kiln-ribbon__file:hover {
+  background: var(--kiln-bg-hover);
 }
-.of-ribbon__tab.is-active {
-  font-weight: var(--of-weight-semibold);
-  color: var(--of-fg);
+.kiln-ribbon__tab.is-active {
+  font-weight: var(--kiln-weight-semibold);
+  color: var(--kiln-fg);
 }
 /* The accent underline, Horizon's signature: a short rounded bar under the active tab. */
-.of-ribbon__tab::after {
+.kiln-ribbon__tab::after {
   content: "";
   position: absolute;
   left: 50%;
@@ -71,54 +71,54 @@
   width: 0;
   height: 3px;
   border-radius: 2px;
-  background: var(--of-accent);
+  background: var(--kiln-accent);
   transform: translateX(-50%);
-  transition: width var(--of-duration-menu) var(--of-ease-out);
+  transition: width var(--kiln-duration-menu) var(--kiln-ease-out);
 }
-.of-ribbon__tab.is-active::after {
+.kiln-ribbon__tab.is-active::after {
   width: min(calc(100% - 20px), 40px);
 }
-.of-ribbon__file {
-  color: var(--of-accent-strong);
-  font-weight: var(--of-weight-semibold);
+.kiln-ribbon__file {
+  color: var(--kiln-accent-strong);
+  font-weight: var(--kiln-weight-semibold);
   margin-inline-end: 4px;
 }
-.of-ribbon__tab:focus-visible,
-.of-ribbon__file:focus-visible {
-  outline: var(--of-focus-width) solid var(--of-focus-ring);
+.kiln-ribbon__tab:focus-visible,
+.kiln-ribbon__file:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
   outline-offset: -2px;
 }
 
 /* Contextual tab sets: the set's colour bar and label above its tabs. */
-.of-ribbon__ctxset {
+.kiln-ribbon__ctxset {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   margin-inline-start: 6px;
   padding-top: 2px;
-  border-radius: var(--of-radius-control) var(--of-radius-control) 0 0;
-  background: color-mix(in srgb, var(--of-accent) 9%, transparent);
-  box-shadow: inset 0 3px 0 var(--of-accent);
+  border-radius: var(--kiln-radius-control) var(--kiln-radius-control) 0 0;
+  background: color-mix(in srgb, var(--kiln-accent) 9%, transparent);
+  box-shadow: inset 0 3px 0 var(--kiln-accent);
 }
-.of-ribbon__ctxlabel {
+.kiln-ribbon__ctxlabel {
   padding: 3px 10px 0;
   font-size: 10px;
-  font-weight: var(--of-weight-semibold);
+  font-weight: var(--kiln-weight-semibold);
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: var(--of-accent-strong);
+  color: var(--kiln-accent-strong);
   white-space: nowrap;
   line-height: 1;
 }
-.of-ribbon__ctxtabs {
+.kiln-ribbon__ctxtabs {
   display: flex;
 }
-.of-ribbon__ctxtabs .of-ribbon__tab {
+.kiln-ribbon__ctxtabs .kiln-ribbon__tab {
   height: 26px;
-  color: var(--of-accent-strong);
+  color: var(--kiln-accent-strong);
 }
-.of-ribbon__strip-end {
+.kiln-ribbon__strip-end {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -128,29 +128,29 @@
 
 /* Panel ----------------------------------------------------------------------------------------- */
 
-.of-ribbon__panel {
+.kiln-ribbon__panel {
   position: relative;
   display: flex;
   min-width: 0;
   padding: 4px 32px 2px 6px;
-  background: var(--of-bg-surface);
-  animation: of-ribbon-in var(--of-duration-menu) var(--of-ease-out);
+  background: var(--kiln-bg-surface);
+  animation: kiln-ribbon-in var(--kiln-duration-menu) var(--kiln-ease-out);
 }
-@keyframes of-ribbon-in {
+@keyframes kiln-ribbon-in {
   from {
     opacity: 0.4;
   }
 }
-.of-ribbon__panel--floating {
+.kiln-ribbon__panel--floating {
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
-  border-bottom: var(--of-border-width) solid var(--of-border);
-  box-shadow: var(--of-shadow-2);
-  z-index: var(--of-z-popover);
+  border-bottom: var(--kiln-border-width) solid var(--kiln-border);
+  box-shadow: var(--kiln-shadow-2);
+  z-index: var(--kiln-z-popover);
 }
-.of-ribbon__collapse {
+.kiln-ribbon__collapse {
   position: absolute;
   right: 6px;
   bottom: 6px;
@@ -160,19 +160,19 @@
   width: 22px;
   height: 22px;
   border: 0;
-  border-radius: var(--of-radius-control);
+  border-radius: var(--kiln-radius-control);
   background: transparent;
-  color: var(--of-fg-muted);
+  color: var(--kiln-fg-muted);
 }
-.of-ribbon__collapse:hover {
-  background: var(--of-bg-hover);
-  color: var(--of-fg);
+.kiln-ribbon__collapse:hover {
+  background: var(--kiln-bg-hover);
+  color: var(--kiln-fg);
 }
-.of-ribbon__display {
-  color: var(--of-fg-muted);
+.kiln-ribbon__display {
+  color: var(--kiln-fg-muted);
 }
 
-.of-ribbon__groups {
+.kiln-ribbon__groups {
   display: flex;
   align-items: stretch;
   flex: 1;
@@ -181,76 +181,76 @@
   gap: 0;
 }
 /* Disabled ribbon commands keep their tooltip (it explains why), but do nothing. */
-.of-ribbon .of-btn[aria-disabled="true"],
-.of-ribbon__overflow .of-btn[aria-disabled="true"] {
+.kiln-ribbon .kiln-btn[aria-disabled="true"],
+.kiln-ribbon__overflow .kiln-btn[aria-disabled="true"] {
   pointer-events: auto;
 }
-.of-ribbon .of-btn--toolbar[aria-disabled="true"],
-.of-ribbon .of-btn--split[aria-disabled="true"],
-.of-ribbon .of-btn--toolbar:disabled,
-.of-ribbon .of-btn--split:disabled,
-.of-ribbon__overflow .of-btn--toolbar[aria-disabled="true"] {
+.kiln-ribbon .kiln-btn--toolbar[aria-disabled="true"],
+.kiln-ribbon .kiln-btn--split[aria-disabled="true"],
+.kiln-ribbon .kiln-btn--toolbar:disabled,
+.kiln-ribbon .kiln-btn--split:disabled,
+.kiln-ribbon__overflow .kiln-btn--toolbar[aria-disabled="true"] {
   border-color: transparent;
   background: transparent;
 }
 
-.of-ribbon__group {
+.kiln-ribbon__group {
   position: relative;
   display: flex;
   flex-direction: column;
   flex: none;
   padding: 0 6px;
 }
-.of-ribbon__group + .of-ribbon__group::before {
+.kiln-ribbon__group + .kiln-ribbon__group::before {
   content: "";
   position: absolute;
   left: 0;
   top: 6px;
   bottom: 6px;
   width: 1px;
-  background: var(--of-border);
+  background: var(--kiln-border);
 }
-.of-ribbon__group-body {
+.kiln-ribbon__group-body {
   display: flex;
   align-items: stretch;
   gap: 2px;
   height: var(--ribbon-body-h);
 }
-.of-ribbon__col {
+.kiln-ribbon__col {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
-.of-ribbon__col--single {
+.kiln-ribbon__col--single {
   justify-content: flex-start;
 }
-.of-ribbon__col--stack {
+.kiln-ribbon__col--stack {
   gap: 2px;
   justify-content: flex-start;
   padding-top: 1px;
 }
-.of-ribbon__group--rows-2 .of-ribbon__col--stack {
+.kiln-ribbon__group--rows-2 .kiln-ribbon__col--stack {
   gap: 8px;
   padding-top: 6px;
 }
-.of-ribbon__row {
+.kiln-ribbon__row {
   display: flex;
   align-items: center;
   gap: 1px;
   min-height: var(--ribbon-row-h);
 }
-.of-ribbon__group-label {
+.kiln-ribbon__group-label {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 18px;
-  font-size: var(--of-text-xs);
-  color: var(--of-fg-muted);
+  font-size: var(--kiln-text-xs);
+  color: var(--kiln-fg-muted);
   white-space: nowrap;
   padding: 0 14px;
 }
-.of-ribbon__launcher {
+.kiln-ribbon__launcher {
   position: absolute;
   right: -4px;
   bottom: 1px;
@@ -263,229 +263,229 @@
   border: 0;
   border-radius: 3px;
   background: transparent;
-  color: var(--of-fg-muted);
+  color: var(--kiln-fg-muted);
 }
-.of-ribbon__launcher:hover {
-  background: var(--of-bg-hover);
-  color: var(--of-fg);
+.kiln-ribbon__launcher:hover {
+  background: var(--kiln-bg-hover);
+  color: var(--kiln-fg);
 }
-.of-ribbon__launcher:focus-visible {
-  outline: var(--of-focus-width) solid var(--of-focus-ring);
+.kiln-ribbon__launcher:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
 }
 
 /* Commands ------------------------------------------------------------------------------------ */
 
-.of-ribbon__btn {
+.kiln-ribbon__btn {
   --btn-h: var(--ribbon-row-h);
 }
-.of-ribbon__btn--small {
+.kiln-ribbon__btn--small {
   width: var(--ribbon-row-h);
   min-width: var(--ribbon-row-h);
 }
-.of-ribbon__btn--medium {
+.kiln-ribbon__btn--medium {
   justify-content: flex-start;
 }
-.of-ribbon__btn--large {
+.kiln-ribbon__btn--large {
   min-height: calc(var(--ribbon-body-h) - 4px);
   max-width: 72px;
   justify-content: flex-start;
   padding-top: 6px;
 }
-.of-ribbon__btn--large .of-btn__icon {
+.kiln-ribbon__btn--large .kiln-btn__icon {
   height: 34px;
 }
-.of-ribbon__btn--large .of-btn__label {
+.kiln-ribbon__btn--large .kiln-btn__label {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
-.of-ribbon__dropdown.of-btn--stacked .of-btn__icon-after {
+.kiln-ribbon__dropdown.kiln-btn--stacked .kiln-btn__icon-after {
   margin: -2px 0 0;
 }
-.of-ribbon__group--collapsed .of-ribbon__btn--large .of-btn__label {
+.kiln-ribbon__group--collapsed .kiln-ribbon__btn--large .kiln-btn__label {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
 }
-.of-ribbon__split {
+.kiln-ribbon__split {
   display: inline-flex;
 }
-.of-ribbon__split .of-split > .of-btn {
+.kiln-ribbon__split .kiln-split > .kiln-btn {
   height: var(--ribbon-row-h);
 }
-.of-ribbon__split--large .of-split {
+.kiln-ribbon__split--large .kiln-split {
   height: calc(var(--ribbon-body-h) - 4px);
 }
-.of-ribbon__split--large .of-split.of-split--stacked > .of-split__main {
+.kiln-ribbon__split--large .kiln-split.kiln-split--stacked > .kiln-split__main {
   height: auto;
   flex: 1;
   min-height: 0;
   min-width: 48px;
 }
-.of-ribbon__split--large .of-split.of-split--stacked > .of-split__arrow {
+.kiln-ribbon__split--large .kiln-split.kiln-split--stacked > .kiln-split__arrow {
   height: 20px;
 }
-.of-ribbon__color-icon {
+.kiln-ribbon__color-icon {
   position: relative;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
 }
-.of-ribbon__color-icon .of-icon {
+.kiln-ribbon__color-icon .kiln-icon {
   margin-bottom: 2px;
 }
-.of-ribbon__color-bar {
+.kiln-ribbon__color-bar {
   position: absolute;
   left: 1px;
   right: 1px;
   bottom: -2px;
   height: 4px;
   border-radius: 1px;
-  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--of-fg) 25%, transparent);
+  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--kiln-fg) 25%, transparent);
 }
-.of-ribbon__spacer {
+.kiln-ribbon__spacer {
   align-self: stretch;
   width: 1px;
   margin: 4px 4px;
-  background: var(--of-border);
+  background: var(--kiln-border);
 }
-.of-ribbon__field {
+.kiln-ribbon__field {
   display: inline-flex;
 }
-.of-ribbon__number {
+.kiln-ribbon__number {
   display: inline-flex;
   align-items: center;
   gap: 6px;
 }
-.of-ribbon__number-label {
+.kiln-ribbon__number-label {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   min-width: 64px;
-  font-size: var(--of-text-sm);
-  color: var(--of-fg);
+  font-size: var(--kiln-text-sm);
+  color: var(--kiln-fg);
 }
-.of-ribbon__gallery {
+.kiln-ribbon__gallery {
   display: flex;
   align-items: flex-start;
   padding-top: 2px;
 }
-.of-ribbon__gallery-footer {
+.kiln-ribbon__gallery-footer {
   display: flex;
   flex-direction: column;
   padding: 4px;
 }
-.of-ribbon__gallery-action {
+.kiln-ribbon__gallery-action {
   justify-content: flex-start;
 }
 
 /* Super tooltip extras. */
-.of-ribbon__tip-text,
-.of-ribbon__tip-office,
-.of-ribbon__tip-pending {
+.kiln-ribbon__tip-text,
+.kiln-ribbon__tip-office,
+.kiln-ribbon__tip-pending {
   display: block;
 }
-.of-ribbon__tip-office {
+.kiln-ribbon__tip-office {
   margin-top: 4px;
   opacity: 0.75;
   font-style: italic;
 }
-.of-ribbon__tip-pending {
+.kiln-ribbon__tip-pending {
   margin-top: 4px;
   opacity: 0.75;
 }
 
 /* Collapsed group popover. */
-.of-ribbon__group-popover {
+.kiln-ribbon__group-popover {
   padding: 6px 0 2px;
 }
-.of-ribbon__groups--popover {
+.kiln-ribbon__groups--popover {
   overflow: visible;
 }
 
 /* Simplified layout ----------------------------------------------------------------------------- */
 
-.of-ribbon--simplified {
+.kiln-ribbon--simplified {
   --ribbon-row-h: 30px;
 }
-.of-ribbon--simplified .of-ribbon__panel {
+.kiln-ribbon--simplified .kiln-ribbon__panel {
   padding: 4px 36px 4px 8px;
 }
-.of-ribbon__groups--simplified {
+.kiln-ribbon__groups--simplified {
   align-items: center;
   gap: 2px;
   height: 32px;
 }
-.of-ribbon__entry {
+.kiln-ribbon__entry {
   display: inline-flex;
   align-items: center;
   flex: none;
 }
-.of-ribbon__group-sep {
+.kiln-ribbon__group-sep {
   flex: none;
   width: 1px;
   height: 20px;
   margin: 0 4px;
-  background: var(--of-border);
+  background: var(--kiln-border);
 }
-.of-ribbon--simplified .of-ribbon__gallery {
+.kiln-ribbon--simplified .kiln-ribbon__gallery {
   padding: 0;
 }
-.of-ribbon--simplified .of-gallery {
+.kiln-ribbon--simplified .kiln-gallery {
   height: 32px;
 }
-.of-ribbon__more {
+.kiln-ribbon__more {
   flex: none;
   margin-inline-start: auto;
 }
-.of-ribbon__overflow {
+.kiln-ribbon__overflow {
   max-height: min(70vh, 520px);
   overflow: auto;
   padding: 4px;
   min-width: 220px;
 }
-.of-ribbon__overflow-list {
+.kiln-ribbon__overflow-list {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 1px;
 }
-.of-ribbon__overflow-list .of-btn,
-.of-ribbon__overflow-list .of-split {
+.kiln-ribbon__overflow-list .kiln-btn,
+.kiln-ribbon__overflow-list .kiln-split {
   width: 100%;
   justify-content: flex-start;
 }
-.of-ribbon__overflow-heading {
+.kiln-ribbon__overflow-heading {
   padding: 8px 8px 2px;
-  font-size: var(--of-text-xs);
-  font-weight: var(--of-weight-semibold);
-  color: var(--of-fg-muted);
+  font-size: var(--kiln-text-xs);
+  font-weight: var(--kiln-weight-semibold);
+  color: var(--kiln-fg-muted);
 }
 
-.of-ribbon--collapsed .of-ribbon__strip {
+.kiln-ribbon--collapsed .kiln-ribbon__strip {
   min-height: 36px;
 }
 
 @media (max-width: 639px) {
-  .of-ribbon__strip {
+  .kiln-ribbon__strip {
     padding: 0 4px;
   }
-  .of-ribbon__file,
-  .of-ribbon__tab {
+  .kiln-ribbon__file,
+  .kiln-ribbon__tab {
     padding: 0 9px;
   }
-  .of-ribbon--simplified .of-ribbon__panel {
+  .kiln-ribbon--simplified .kiln-ribbon__panel {
     padding-right: 8px;
   }
-  .of-ribbon__collapse {
+  .kiln-ribbon__collapse {
     display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .of-ribbon__panel,
-  .of-ribbon__tab::after {
+  .kiln-ribbon__panel,
+  .kiln-ribbon__tab::after {
     animation: none;
     transition: none;
   }

@@ -94,14 +94,14 @@ export function StatusBar({ left = [], right = [], views, zoom, storageKey, clas
     const body = item.onClick ? (
       <button
         type="button"
-        className="of-statusbar__item of-statusbar__item--button"
+        className="kiln-statusbar__item kiln-statusbar__item--button"
         onClick={item.onClick}
         data-status={item.id}
       >
         {item.content}
       </button>
     ) : (
-      <span className="of-statusbar__item" data-status={item.id}>
+      <span className="kiln-statusbar__item" data-status={item.id}>
         {item.content}
       </span>
     );
@@ -110,7 +110,7 @@ export function StatusBar({ left = [], right = [], views, zoom, storageKey, clas
         {body}
       </Tooltip>
     ) : (
-      <span key={item.id} className="of-statusbar__cell">
+      <span key={item.id} className="kiln-statusbar__cell">
         {body}
       </span>
     );
@@ -118,7 +118,7 @@ export function StatusBar({ left = [], right = [], views, zoom, storageKey, clas
 
   return (
     <section
-      className={cx('of-statusbar', className)}
+      className={cx('kiln-statusbar', className)}
       aria-label="Status bar"
       onContextMenu={(e) => {
         if (all.length === 0) return;
@@ -126,13 +126,13 @@ export function StatusBar({ left = [], right = [], views, zoom, storageKey, clas
         setMenuAt({ x: e.clientX, y: e.clientY });
       }}
     >
-      <div className="of-statusbar__left" role="status" aria-live="polite">
+      <div className="kiln-statusbar__left" role="status" aria-live="polite">
         {left.map(renderItem)}
       </div>
-      <div className="of-statusbar__right">
+      <div className="kiln-statusbar__right">
         {right.map(renderItem)}
         {views ? (
-          <div className="of-statusbar__views" role="radiogroup" aria-label="Views">
+          <div className="kiln-statusbar__views" role="radiogroup" aria-label="Views">
             {views.options.map((v) => (
               <Tooltip key={v.id} content={v.label} side="top">
                 {/* biome-ignore lint/a11y/useSemanticElements: icon toggle buttons acting as radios (Office view switcher) */}
@@ -141,7 +141,7 @@ export function StatusBar({ left = [], right = [], views, zoom, storageKey, clas
                   role="radio"
                   aria-checked={views.value === v.id}
                   aria-label={v.label}
-                  className={cx('of-statusbar__view', views.value === v.id && 'is-active')}
+                  className={cx('kiln-statusbar__view', views.value === v.id && 'is-active')}
                   onClick={() => views.onChange(v.id)}
                   onKeyDown={(e) => {
                     const i = views.options.findIndex((o) => o.id === v.id);
@@ -224,30 +224,30 @@ export function ZoomControl({ value, onChange, presets = DEFAULT_PRESETS, fits =
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverAnchor asChild>
-        <div className="of-statusbar__zoom">
+        <div className="kiln-statusbar__zoom">
           <ZoomSlider value={value} onValueChange={onChange} onLabelClick={() => setOpen(true)} />
         </div>
       </PopoverAnchor>
       <PopoverContent
         side="top"
         align="end"
-        className="of-statusbar__zoom-popover"
+        className="kiln-statusbar__zoom-popover"
         aria-label="Zoom"
         onOpenAutoFocus={(e) => {
           e.preventDefault();
           firstRef.current?.focus();
         }}
       >
-        <div className="of-statusbar__zoom-title">Zoom</div>
+        <div className="kiln-statusbar__zoom-title">Zoom</div>
         {/* biome-ignore lint/a11y/useSemanticElements: a group of buttons, not form fields */}
-        <div className="of-statusbar__zoom-presets" role="group" aria-label="Zoom presets">
+        <div className="kiln-statusbar__zoom-presets" role="group" aria-label="Zoom presets">
           {presets.map((p, i) => (
             <button
               key={p}
               ref={i === 0 ? firstRef : undefined}
               type="button"
               className={cx(
-                'of-btn of-btn--ghost of-btn--sm of-statusbar__preset',
+                'kiln-btn kiln-btn--ghost kiln-btn--sm kiln-statusbar__preset',
                 p === value && 'is-active',
               )}
               aria-pressed={p === value}
@@ -259,12 +259,12 @@ export function ZoomControl({ value, onChange, presets = DEFAULT_PRESETS, fits =
         </div>
         {fits.length ? (
           // biome-ignore lint/a11y/useSemanticElements: a group of buttons, not form fields
-          <div className="of-statusbar__zoom-fits" role="group" aria-label="Fit">
+          <div className="kiln-statusbar__zoom-fits" role="group" aria-label="Fit">
             {fits.map((f) => (
               <button
                 key={f.id}
                 type="button"
-                className="of-btn of-btn--ghost of-btn--sm of-statusbar__preset"
+                className="kiln-btn kiln-btn--ghost kiln-btn--sm kiln-statusbar__preset"
                 onClick={() => {
                   f.onSelect();
                   setOpen(false);
@@ -276,7 +276,7 @@ export function ZoomControl({ value, onChange, presets = DEFAULT_PRESETS, fits =
           </div>
         ) : null}
         <form
-          className="of-statusbar__zoom-custom"
+          className="kiln-statusbar__zoom-custom"
           onSubmit={(e) => {
             e.preventDefault();
             choose(customRef.current);
@@ -295,7 +295,7 @@ export function ZoomControl({ value, onChange, presets = DEFAULT_PRESETS, fits =
             width={92}
             size="sm"
           />
-          <button type="submit" className="of-btn of-btn--primary of-btn--sm">
+          <button type="submit" className="kiln-btn kiln-btn--primary kiln-btn--sm">
             OK
           </button>
         </form>

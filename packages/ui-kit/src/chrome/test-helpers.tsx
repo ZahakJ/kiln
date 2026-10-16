@@ -8,7 +8,7 @@ import {
   type Keymap,
   MemoryStorage,
   RecentCommands,
-} from '@officina/commands';
+} from '@kiln/commands';
 import { render } from '@testing-library/react';
 import type { ReactElement } from 'react';
 import { TooltipProvider } from '../primitives/Tooltip.tsx';

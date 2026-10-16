@@ -26,7 +26,7 @@ function cells(line: string): string[] {
   return inner.split('|').map((c) => c.trim().replace(/^`(.*)`$/, '$1'));
 }
 
-/** Parses the main table (Shortcut | Scriba | Tabula | Scena) and the "During a slide show" table. */
+/** Parses the main table (Shortcut | Kiln Write | Kiln Grid | Kiln Deck) and the "During a slide show" table. */
 export function parseShortcutDoc(markdown: string): ShortcutDoc {
   const doc: ShortcutDoc = { rows: [], slideShow: [] };
   const lines = markdown.split(/\r?\n/);

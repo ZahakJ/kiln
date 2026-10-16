@@ -1,4 +1,4 @@
-import { formatChord, parseShortcut } from '@officina/commands';
+import { formatChord, parseShortcut } from '@kiln/commands';
 import { useMemo, useState } from 'react';
 import { Dialog, DialogContent } from '../primitives/Dialog.tsx';
 import { useCommands, useKeymapRevision } from './CommandContext.tsx';
@@ -54,26 +54,26 @@ export function ShortcutSheet({ open, onOpenChange }: ShortcutSheetProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent title="Keyboard shortcuts" size="xl" className="of-shortcut-sheet">
+      <DialogContent title="Keyboard shortcuts" size="xl" className="kiln-shortcut-sheet">
         <input
-          className="of-options__input of-shortcut-sheet__filter"
+          className="kiln-options__input kiln-shortcut-sheet__filter"
           type="search"
           placeholder="Filter shortcuts"
           aria-label="Filter shortcuts"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
         />
-        <div className="of-shortcut-sheet__grid">
+        <div className="kiln-shortcut-sheet__grid">
           {groups.map((g) => (
-            <section key={g.name} className="of-shortcut-sheet__group">
+            <section key={g.name} className="kiln-shortcut-sheet__group">
               <h3>{g.name}</h3>
               <dl>
                 {g.rows.map((r) => (
-                  <div key={r.title} className="of-shortcut-sheet__row">
+                  <div key={r.title} className="kiln-shortcut-sheet__row">
                     <dt>{r.title}</dt>
                     <dd>
                       {r.keys.map((k) => (
-                        <kbd key={k} className="of-options-keyboard__key">
+                        <kbd key={k} className="kiln-options-keyboard__key">
                           {k}
                         </kbd>
                       ))}

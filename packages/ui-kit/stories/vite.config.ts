@@ -5,18 +5,18 @@ import { defineConfig } from 'vite';
 
 const packagesDir = fileURLToPath(new URL('../..', import.meta.url));
 
-/** `@officina/<pkg>` → `packages/<pkg>/src/index.ts`, mirroring tsconfig paths and apps/web. */
-const officinaAliases = readdirSync(packagesDir, { withFileTypes: true })
+/** `@kiln/<pkg>` → `packages/<pkg>/src/index.ts`, mirroring tsconfig paths and apps/web. */
+const kilnAliases = readdirSync(packagesDir, { withFileTypes: true })
   .filter((e) => e.isDirectory())
   .map((e) => ({
-    find: new RegExp(`^@officina/${e.name}$`),
+    find: new RegExp(`^@kiln/${e.name}$`),
     replacement: `${packagesDir}/${e.name}/src/index.ts`,
   }));
 
 export default defineConfig({
   root: fileURLToPath(new URL('.', import.meta.url)),
   plugins: [react()],
-  resolve: { alias: officinaAliases, dedupe: ['react', 'react-dom'] },
+  resolve: { alias: kilnAliases, dedupe: ['react', 'react-dom'] },
   server: {
     port: 5180,
     strictPort: true,

@@ -39,18 +39,18 @@ export function DialogContent({
 }: DialogContentProps) {
   return (
     <RD.Portal>
-      <RD.Overlay className="of-dialog-overlay" />
+      <RD.Overlay className="kiln-dialog-overlay" />
       <RD.Content
-        className={cx('of-dialog', `of-dialog--${size}`, className)}
+        className={cx('kiln-dialog', `kiln-dialog--${size}`, className)}
         // Without a description, tell Radix there is intentionally none (no console warning).
         {...(description ? {} : { 'aria-describedby': undefined })}
         {...rest}
       >
-        <div className="of-dialog__header">
-          <RD.Title className="of-dialog__title">{title}</RD.Title>
+        <div className="kiln-dialog__header">
+          <RD.Title className="kiln-dialog__title">{title}</RD.Title>
           {closeButton ? (
             <RD.Close
-              className="of-btn of-btn--ghost of-btn--sm of-btn--icon-only of-dialog__close"
+              className="kiln-btn kiln-btn--ghost kiln-btn--sm kiln-btn--icon-only kiln-dialog__close"
               aria-label={closeLabel}
             >
               <Icon icon={X} size={16} />
@@ -58,13 +58,13 @@ export function DialogContent({
           ) : null}
         </div>
         {description ? (
-          <RD.Description className="of-dialog__description">{description}</RD.Description>
+          <RD.Description className="kiln-dialog__description">{description}</RD.Description>
         ) : null}
-        <div className="of-dialog__body">{children}</div>
+        <div className="kiln-dialog__body">{children}</div>
         {footer || footerStart ? (
-          <div className="of-dialog__footer">
-            <div className="of-dialog__footer-start">{footerStart}</div>
-            <div className="of-dialog__footer-end">{footer}</div>
+          <div className="kiln-dialog__footer">
+            <div className="kiln-dialog__footer-start">{footerStart}</div>
+            <div className="kiln-dialog__footer-end">{footer}</div>
           </div>
         ) : null}
       </RD.Content>
