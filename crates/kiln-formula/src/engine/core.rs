@@ -1384,7 +1384,7 @@ impl<H: EngineHost> Engine<H> {
             buf.clear();
             if let Some(fc) = self.cell(n) {
                 self.graph
-                    .dependents_of(fc.sheet, fc.row, fc.col, fc.claim.as_ref(), buf);
+                    .value_dependents_of(fc.sheet, fc.row, fc.col, fc.claim.as_ref(), buf);
             }
             out.extend(buf.iter().copied().filter(|&d| in_pass(d)));
         };

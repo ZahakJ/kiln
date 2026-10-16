@@ -136,6 +136,39 @@ fn spills_dynamic_arrays_and_reports_spill_when_blocked() {
 }
 
 #[test]
+fn a_spill_blocked_by_formulas_reading_each_other_is_not_circular() {
+    // D4 spills over E4:E5, which hold formulas, and E5 reads E4. Blocking depends only on the
+    // formulas being there, so a full recalculation (as after opening the file or renaming the
+    // sheet) must give #SPILL!, not a circular-reference 0.
+    let mut f = setup(&["One"]);
+    let s = f.id(0);
+    f.set(s, "E4", "=1");
+    f.set(s, "E5", "=E4+1");
+    f.set(s, "D4", "=SEQUENCE(2,2)");
+    assert_eq!(f.err(s, "D4"), "#SPILL!");
+    f.wb.recalc_all();
+    assert_eq!(f.err(s, "D4"), "#SPILL!");
+    assert_eq!(f.num(s, "E5"), 2.0);
+    assert!(f.wb.circular_cells().is_empty());
+    f.exec(Command::RenameSheet {
+        sheet: s,
+        name: "Renamed".into(),
+    });
+    f.wb.recalc_all();
+    assert_eq!(f.err(s, "D4"), "#SPILL!");
+    let mut fresh = Workbook::from_snapshot(f.wb.snapshot(), Default::default()).expect("rebuilds");
+    fresh.recalc_all();
+    assert!(fresh.circular_cells().is_empty());
+    assert_eq!(
+        fresh.value(s, 3, 3),
+        CellValue::Error(kiln_formula::values::ErrorValue::Spill)
+    );
+    f.set(s, "E4", ());
+    f.set(s, "E5", ());
+    assert_eq!(f.num(s, "E5"), 4.0);
+}
+
+#[test]
 fn resolves_structured_references_through_the_tables_model() {
     let mut f = setup(&["Sheet1"]);
     let s = f.id(0);

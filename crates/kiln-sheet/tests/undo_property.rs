@@ -572,6 +572,11 @@ fn run(steps: &[[u32; 8]]) {
 proptest! {
     #![proptest_config(ProptestConfig {
         cases: std::env::var("PROPTEST_CASES").ok().and_then(|v| v.parse().ok()).unwrap_or(48),
+        // Integration tests have no lib.rs/main.rs for the default `SourceParallel` lookup;
+        // persist shrunk failures next to this file so they are committed and replayed.
+        failure_persistence: Some(Box::new(
+            proptest::test_runner::FileFailurePersistence::WithSource("proptest-regressions"),
+        )),
         ..ProptestConfig::default()
     })]
 

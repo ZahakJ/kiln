@@ -1158,6 +1158,32 @@ fn adds_renames_reorders_and_removes_sheets_with_undo() {
 }
 
 #[test]
+fn undoing_a_rename_restores_dangling_references_to_the_new_name() {
+    // A formula that already names the rename target (here a dangling reference to a removed
+    // sheet) is rewritten by the inverse's reverse rename; undo must put it back verbatim.
+    let mut f = setup(&["One", "Two"]);
+    let one = f.id(0);
+    let two = f.id(1);
+    f.exec(Command::RemoveSheet { sheet: two });
+    f.set(one, "A1", "=SUM(Two!B1:B5)");
+    assert_eq!(f.err(one, "A1"), "#REF!");
+    let before = state(&f.wb);
+    f.exec(Command::RenameSheet {
+        sheet: one,
+        name: "Two".into(),
+    });
+    let after = state(&f.wb);
+    f.undo();
+    assert_eq!(f.formula(one, "A1").as_deref(), Some("SUM(Two!B1:B5)"));
+    assert_eq!(state(&f.wb), before);
+    support::assert_engine_in_sync(&f.wb);
+    f.redo();
+    assert_eq!(state(&f.wb), after);
+    f.undo();
+    assert_eq!(state(&f.wb), before);
+}
+
+#[test]
 fn keeps_at_least_one_visible_sheet() {
     let mut f = setup(&["Sheet1"]);
     let s = f.id(0);

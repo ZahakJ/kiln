@@ -13,81 +13,17 @@
 //! Run with `cargo run --release -p kiln-sheet --example edit_bench`. Exits with status 1 when a
 //! budget is missed.
 
-use std::sync::Arc;
 use std::time::Instant;
 
+use kiln_sheet::CellValue;
 use kiln_sheet::commands::{CellInput, Command};
-use kiln_sheet::{CellValue, SheetId, Workbook, WorkbookOptions};
+
+#[path = "../tests/support/b9.rs"]
+mod b9;
+use b9::build;
 
 const B8_MS: f64 = 2000.0;
 const B9_MS: f64 = 2.0;
-
-/// Formula columns B..J for row `r` (1-based).
-fn row_formulas(r: u32) -> [String; 9] {
-    let window = if r >= 10 {
-        format!("SUM(G{}:G{r})", r - 9)
-    } else {
-        format!("SUM(G1:G{r})")
-    };
-    [
-        format!("A{r}*2+1"),
-        format!("IF(B{r}>1000,B{r}-1000,B{r}+0.5)"),
-        format!("SUM(A{r}:C{r})"),
-        format!("INDEX(Data!$B$1:$B$1000,A{r}+1)"),
-        format!("E{r}*C{r}-D{r}"),
-        format!("IF(AND(F{r}>0,E{r}<500),F{r},-F{r})"),
-        window,
-        format!("H{r}/2+D{r}"),
-        format!("IF(OR(I{r}<0,G{r}>100),1,0)*I{r}"),
-    ]
-}
-
-fn build(rows: u32) -> (Workbook, SheetId) {
-    let mut wb = Workbook::with_options(WorkbookOptions {
-        sheets: Some(vec!["Model".into(), "Data".into()]),
-        clock: Some(Arc::new(|| 45306.5)),
-        ..WorkbookOptions::default()
-    });
-    let (model, data) = (wb.sheets()[0].id(), wb.sheets()[1].id());
-    let mut props = wb.props().clone();
-    // Build without recalculating after every cell, as a file reader does.
-    props.calc.mode = kiln_sheet::meta::CalcMode::Manual;
-    wb.apply(&Command::SetProps {
-        props: Box::new(props),
-    })
-    .expect("props");
-    for i in 0..1000u32 {
-        wb.load_value(data, i, 0, CellValue::Number(f64::from(i)))
-            .expect("data");
-        wb.load_value(
-            data,
-            i,
-            1,
-            CellValue::Number(f64::from((i * 7919) % 1000) / 4.0),
-        )
-        .expect("data");
-    }
-    for r in 1..=rows {
-        wb.load_value(
-            model,
-            r - 1,
-            0,
-            CellValue::Number(f64::from((r * 37) % 1000)),
-        )
-        .expect("input");
-        for (i, f) in row_formulas(r).iter().enumerate() {
-            wb.load_formula(model, r - 1, 1 + i as u32, f, CellValue::Blank, false)
-                .expect("formula");
-        }
-    }
-    let mut props = wb.props().clone();
-    props.calc.mode = kiln_sheet::meta::CalcMode::Auto;
-    wb.apply(&Command::SetProps {
-        props: Box::new(props),
-    })
-    .expect("props");
-    (wb, model)
-}
 
 fn rss_mb() -> f64 {
     std::fs::read_to_string("/proc/self/status")

@@ -500,3 +500,21 @@ WP-54 had to touch these files outside its owned paths; every change is additive
 - For the bridge's owner: `kiln-sheet` is not linked into `kiln-bridge-wasm` yet. Build it with
   `--no-default-features` there (no rayon, no ICU collation data); it pulls in `kiln-formula` and its library
   (about 587 KB gzip measured by WP-57).
+
+## WP-69 fix round 1 → WP-56 (formula engine core)
+
+- `crates/kiln-formula/src/engine/graph.rs`, `engine/core.rs`: a recalculation pass now orders formulas with
+  `Graph::value_dependents_of` — `dependents_of` without the spill anchors whose claim merely covers the formula's
+  cell. A formula there blocks the anchor by existing (`spill_blocked` checks `formula_at`), not by its value, so
+  that edge only created false cycles: `D4: =SEQUENCE(2,2)`, `E4: =1`, `E5: =E4+1` made D4 ↔ E5 a strongly
+  connected component in `recalc_all` (D4 → E5 through the claim, E5 → D4 through `claims_at`), and D4 showed 0
+  flagged circular instead of `#SPILL!`; incremental recalculation was right, so a workbook's values depended on
+  how it was calculated (found by kiln-sheet's undo property test at 1,500 cases). `mark_dirty` and
+  `apply_result` still use `dependents_of`, so a value change at a covered cell still re-evaluates the anchor.
+  Regression test: `crates/kiln-sheet/tests/calc.rs`
+  `a_spill_blocked_by_formulas_reading_each_other_is_not_circular`; an engine-level test belongs in
+  `tests/engine*` (WP-56's).
+- Measured for WP-94 (performance): `cargo run --release -p kiln-sheet --example fill_bench` — AutoFill of one
+  cell down a whole column takes 1.0–2.2 s for values and 6.2 s for a relative formula (a million formulas bound
+  and calculated); undo/redo 0.7–4.8 s. Excel fills a column in about a second; the formula case is the one to
+  profile (perf is not permitted on the build machine, `perf_event_paranoid = 4`).

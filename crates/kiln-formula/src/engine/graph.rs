@@ -248,6 +248,13 @@ impl Graph {
         col: u32,
         out: &mut Vec<FormulaId>,
     ) {
+        self.readers_at(sheet, row, col, out);
+        self.claims_at(sheet, row, col, &mut |id, _| out.push(id));
+    }
+
+    /// Formulas reading the cell at (sheet, row, col) (single-cell edges and ranges), without
+    /// the spill anchors whose claim covers it.
+    fn readers_at(&self, sheet: SheetId, row: u32, col: u32, out: &mut Vec<FormulaId>) {
         if let Some(list) = self.cell_deps.get(&cell_key(sheet, row, col)) {
             out.extend_from_slice(list);
         }
@@ -260,7 +267,6 @@ impl Graph {
                 }
             });
         }
-        self.claims_at(sheet, row, col, &mut |id, _| out.push(id));
     }
 
     /// Formulas reading any cell of a rectangle (single-cell edges and overlapping ranges).
@@ -307,6 +313,26 @@ impl Graph {
         out: &mut Vec<FormulaId>,
     ) {
         self.dependents_at(sheet, row, col, out);
+        if let Some(c) = claim {
+            self.dependents_in_rect(sheet, c, out);
+        }
+    }
+
+    /// The formulas whose *result* depends on the result of the formula at (sheet, row, col):
+    /// [`Self::dependents_of`] without the spill anchors whose claim merely covers the cell. A
+    /// formula there blocks such an anchor by existing, whatever its value
+    /// (`Engine::spill_blocked`), so ordering a recalculation pass by that edge only adds false
+    /// cycles: an anchor whose blocked claim holds a formula that reads another cell of the claim
+    /// (`D4: =SEQUENCE(2,2)`, `E4: =1`, `E5: =E4+1`) would otherwise be resolved as circular.
+    pub(crate) fn value_dependents_of(
+        &self,
+        sheet: SheetId,
+        row: u32,
+        col: u32,
+        claim: Option<&Bounds>,
+        out: &mut Vec<FormulaId>,
+    ) {
+        self.readers_at(sheet, row, col, out);
         if let Some(c) = claim {
             self.dependents_in_rect(sheet, c, out);
         }

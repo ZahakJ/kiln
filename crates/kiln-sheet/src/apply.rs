@@ -1983,8 +1983,16 @@ impl Workbook {
         }
         let meta_before = self.all_meta();
         let names_before = self.names.clone();
-        let changes =
-            self.changed_formula_records(&|t, _, _| rename_sheet_in_formula(t, &old, name).ok());
+        // The inverse replays `RenameSheet(new → old)` before restoring, and that reverse
+        // rename also rewrites formulas which already named `new` (e.g. a dangling
+        // `#REF!`-valued reference to a deleted sheet of that name). Snapshot every
+        // formula either direction touches so the restore puts all of them back exactly.
+        let changes = self.changed_formula_records(&|t, _, _| {
+            rename_sheet_in_formula(t, &old, name)
+                .ok()
+                .filter(|x| x != t)
+                .or_else(|| rename_sheet_in_formula(t, name, &old).ok())
+        });
         self.engine
             .rename_sheet(sheet, name)
             .map_err(|e| ModelError::invalid(e.to_string()))?;
