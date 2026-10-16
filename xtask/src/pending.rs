@@ -25,10 +25,6 @@ const PENDING: &[Pending] = &[
         name: "budgets",
         owner: "WP-60",
     },
-    Pending {
-        name: "parity",
-        owner: "WP-59",
-    },
 ];
 
 /// Finds a pending command by name.
@@ -72,7 +68,7 @@ mod tests {
 
     #[test]
     fn every_pending_command_names_its_owner() {
-        for name in ["fidelity", "budgets", "parity"] {
+        for name in ["fidelity", "budgets"] {
             let task = lookup(name).expect("pending command");
             assert!(task.owner.starts_with("WP-"));
             assert_eq!(
@@ -80,7 +76,7 @@ mod tests {
                 format!("skipped: not implemented yet ({})", task.owner)
             );
         }
-        assert!(lookup("verify").is_none());
+        assert!(lookup("verify").is_none() && lookup("parity").is_none());
         assert!(lookup("protocol").is_none() && lookup("wasm").is_none());
         assert!(protocol_implemented());
     }

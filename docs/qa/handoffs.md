@@ -96,3 +96,32 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   machine: full recalculation of 1,000,008 formulas 867 ms on 4 threads (1,487 ms on 1), single-edit
   recalculation p95 0.12 ms in the 100,008-formula workbook and 0.12 ms in the million-formula one;
   building the million-formula workbook takes 3.1 s and 447 MB.
+
+## WP-59 → WP-50, WP-57, WP-60, WP-98 (parity tracker)
+
+- `xtask/src/main.rs`, `xtask/src/pending.rs`, `xtask/Cargo.toml`, `Cargo.lock`: registered the
+  `parity` subcommand (owned by WP-59 in `xtask/src/parity.rs`), removed it from the pending list,
+  and added the workspace `regex` dependency to `xtask` (schema patterns, test-title matching).
+- For WP-57 (function library): `cargo xtask parity` reads `conformance/functions-implemented.json`
+  (`{"NAME": "implemented" | "planned"}`; a list of names is also accepted). When it lands, run
+  `cargo xtask parity` and commit the regenerated `parity/functions.json` (computed `done` statuses),
+  `PARITY.md` and `docs/parity-badge.json`, or `parity --check` fails CI. Every implemented name must
+  be listed in `parity/functions.json` (523 Excel names; add a name there if Excel has one we missed).
+  Flip the family rows `grid.formulas.functions.<family>` to `partial`/`done` only as far as the
+  counts allow (`parity --check` enforces it), and the key-function rows
+  (`grid.formulas.functions.lookup.XLOOKUP`…) with their `conformance:<csv>#<NAME>` ids.
+- For WP-60 (`cargo xtask fidelity`, `docs/qa/fidelity.md`): `fidelity:<format>:<metric>>=<value>`
+  verify ids read a summary table in `docs/qa/fidelity.md` with a `Format` column and one column per
+  metric (`structural`, `text`, `visual`, `values`, `formulas`, `oracle_opens`,
+  `byte_identical_untouched`), one row per format; values may be ratios, percentages or yes/no
+  (contract in `parity/README.md`). The corpus manifest for the fidelity runner is
+  `parity/corpus.json` (`files[].file` relative to `fixtures/`, `files[].checks`).
+- For WP-98 (release) and every release after it: run `cargo xtask parity --snapshot vX.Y.Z` before
+  tagging so PARITY.md lists the status flips since that release; add the badge
+  `https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/ZahakJ/kiln/main/docs/parity-badge.json`
+  to README.md (WP-59 does not own README.md).
+- For WP-50 (`biome.json`): `parity/parity.json`, `parity/corpus.json` and `parity/functions.json`
+  keep one row per line so parallel work packages flipping different rows never conflict;
+  `biome format` at the root would expand them (and make `functions.json` stale). Please add
+  `"!parity/parity.json"`, `"!parity/corpus.json"`, `"!parity/functions.json"` and `"!PARITY.md"`
+  to `files.includes`. CI's `pnpm lint` runs per package, so nothing fails today.

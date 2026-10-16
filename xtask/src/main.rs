@@ -7,12 +7,13 @@
 //! cargo xtask wasm [--release] [--size]             wasm32 build + wasm-bindgen + wasm-opt (WP-52)
 //! cargo xtask fidelity [--ci]                       round-trip fidelity over fixtures/ (WP-60)
 //! cargo xtask budgets [--ci]                        performance budgets of §3.9 (WP-60)
-//! cargo xtask parity [--check]                      parity/parity.json → PARITY.md (WP-59)
+//! cargo xtask parity [--check | --verify | --snapshot <tag>]  parity/parity.json → PARITY.md (WP-59)
 //! cargo xtask notices [--check]                     THIRD-PARTY-NOTICES.md from Cargo and pnpm metadata
 //! ```
 #![forbid(unsafe_code)]
 
 mod notices;
+mod parity;
 mod pending;
 mod protocol;
 mod util;
@@ -29,7 +30,8 @@ const USAGE: &str =
   wasm [--release] [--size]             build the web core (WP-52)
   fidelity [--ci]                       round-trip fidelity report (WP-60)
   budgets [--ci]                        performance budgets (WP-60)
-  parity [--check]                      regenerate PARITY.md (WP-59)
+  parity [--check | --verify [--dry-run] [--app <app>] [--row <id>] | --snapshot <tag>]
+                                        validate the parity tracker, regenerate PARITY.md (WP-59)
   notices [--check]                     regenerate THIRD-PARTY-NOTICES.md";
 
 fn main() -> ExitCode {
@@ -42,6 +44,7 @@ fn main() -> ExitCode {
     let result = match cmd.as_str() {
         "verify" => verify::run(&rest),
         "notices" => notices::run(&rest),
+        "parity" => parity::run(&rest),
         "protocol" => protocol::run(&rest),
         "wasm" => wasm::run(&rest),
         "-h" | "--help" | "help" => {
