@@ -1,6 +1,6 @@
 [package]
 name = "kiln-ooxml"
-description = "The Office Open XML foundation"
+description = "The Office Open XML foundation: OPC packages, an order-preserving XML layer, simple types, units, DrawingML (colours, fills, lines, effects, text, themes, 187 preset geometries), passthrough and document properties"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -11,6 +11,19 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+# Deflate through flate2's pure-Rust zlib-rs backend: fast, deterministic and builds for wasm32.
+zip = { workspace = true, features = ["deflate-flate2-zlib-rs"] }
+quick-xml.workspace = true
+encoding_rs.workspace = true
+kurbo.workspace = true
+thiserror.workspace = true
+indexmap.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
+
+[[example]]
+name = "repack_bench"
 
 [lints]
 workspace = true
