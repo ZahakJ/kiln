@@ -71,3 +71,28 @@ WP-54 had to touch these files outside its owned paths; every change is additive
 - For WP-94 (web fonts): the web core embeds Carlito Regular only (`apps/scratch/fonts.rs`); CJK and
   Arabic need fonts loaded at run time with `FontStore::add_font_data`.
 
+
+## WP-56 → WP-57, WP-69, WP-60 (formula engine core)
+
+- For WP-57 (function library): register families with `FunctionTable::register` (or implement
+  `FunctionRegistry`) and pass the registry in `EngineOptions::registry`. An implementation is
+  `fn(&mut [Arg], &mut dyn CallContext) -> EvalValue`; lazy positions (`FunctionSpec::lazy`, e.g.
+  `ArgMask::ALL` for `IFS`/`LET`/`LAMBDA`, `ArgMask::bits(0).and_from(1)` for `CHOOSE`) arrive as
+  `Arg::Lazy` (use `LazyArg::expr()`, `expr().as_local_name()` for LET/LAMBDA names, `ctx.evaluate(expr,
+  scope)` with `Scope::bind`, `ctx.make_lambda`, `ctx.invoke`); lifted positions (`lift`) arrive as
+  scalars and the engine broadcasts arrays. `crates/kiln-formula/tests/engine_support/mod.rs` has small
+  test-only LET, LAMBDA, ISOMITTED, SEQUENCE, ROW, COLUMN, NOW, INDIRECT, OFFSET, COUNT, COUNTA, IFERROR
+  and INDEX implementations that show the pattern (and that the library's versions should replace in
+  those tests if it wants). `TEXT` should use `numfmt::NumberFormat` and map `FormatError::DateOutOfRange`
+  to `#VALUE!`. `DocsHandle::Key` is there for the docs JSON. Circular references show 0 and are
+  flagged (Excel's behaviour), not a `#CIRCULAR` error.
+- For WP-69 (sheet model): implement `EngineHost` over the SparseStore (`cell_value`, `set_cell_value`,
+  `used_bounds`, tables, `apply_structural_edit`, `row_visibility`); call `cell_changed` for edits made
+  directly in the store and `tables_changed` when tables change. Spans in `ParseError` and the AST are
+  byte offsets (convert to UTF-16 for the formula bar). Structural edits currently re-parse every
+  formula (about 3 s per million formulas); shifting compiled formulas directly would make them instant.
+- For WP-60 (`cargo xtask budgets`, docs/qa/perf.md): `cargo run --release -p kiln-formula --example
+  recalc_bench` prints `full_recalc_ms` (B8) and `incremental_ms_p95` (B9). On 2026-10-16 on this
+  machine: full recalculation of 1,000,008 formulas 867 ms on 4 threads (1,487 ms on 1), single-edit
+  recalculation p95 0.12 ms in the 100,008-formula workbook and 0.12 ms in the million-formula one;
+  building the million-formula workbook takes 3.1 s and 447 MB.

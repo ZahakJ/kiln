@@ -311,3 +311,19 @@ fn deep_formulas_stay_within_a_small_thread_stack() {
     assert_eq!(results[5], Some(error(ErrorValue::Num)));
     assert!(matches!(results[6], Some(Value::Number(n)) if n > 5.7e262));
 }
+
+proptest::proptest! {
+    #![proptest_config(proptest::prelude::ProptestConfig::with_cases(1500))]
+
+    #[test]
+    fn arbitrary_formulas_evaluate_without_panicking(
+        s in "=[A-D1-4:,()+\\-*/^&%<>=@#{};\"TRUESUMIFANDORNOTLAMBDALET .]{0,28}"
+    ) {
+        let mut e = sheet(&[("A1", 1.into()), ("B2", "x".into()), ("C3", "=A1*2".into())]);
+        if e.set_formula("Sheet1", 4, 4, &s).is_ok() {
+            e.recalc();
+            let _ = e.value("Sheet1", 4, 4);
+        }
+        let _ = e.evaluate(&s);
+    }
+}

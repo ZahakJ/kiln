@@ -296,3 +296,25 @@ fn never_panics_on_garbage() {
         let _ = parse(s, &ParseOptions::r1c1(3, 3));
     }
 }
+
+proptest::proptest! {
+    #![proptest_config(proptest::prelude::ProptestConfig::with_cases(2000))]
+
+    #[test]
+    fn arbitrary_text_never_panics(s in "\\PC{0,40}") {
+        let _ = parse(&s, &ParseOptions::default());
+        let _ = parse(&s, &ParseOptions::r1c1(2, 2));
+        let _ = kiln_formula::parser::tokenize(&s, &ParseOptions::default(), 0);
+    }
+
+    #[test]
+    fn formula_like_text_never_panics_and_round_trips(
+        s in "=[A-Z0-9$:!,;'\"()\\[\\]{}#@%&^*/+\\-<>= .]{0,30}"
+    ) {
+        if let Ok(ast) = parse(&s, &ParseOptions::default()) {
+            let printed = print(&ast, &PrintOptions::formula());
+            let again = parse(&printed, &ParseOptions::default());
+            proptest::prop_assert_eq!(again.map(|n| n.without_spans()), Ok(ast.without_spans()));
+        }
+    }
+}
