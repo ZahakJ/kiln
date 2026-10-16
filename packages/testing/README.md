@@ -30,6 +30,16 @@ oracles `convertWithSoffice(input, format)`, `convertBatchWithSoffice`, `renderP
 image comparison `compareImages` and `visualScore` (pixelmatch); a small PNG codec (`decodePng`,
 `encodePng`, `solidImage`).
 
+**Playwright helpers** (`@kiln/testing/playwright`, for `e2e/specs`): `openScratch(page, { text })` opens the
+playground route with a scratch document, painted and focused; `typeViaProxy` types through the hidden input
+proxy as a user would; `composeIme(page, steps, commit)` drives a real IME composition over CDP;
+`scratchParagraphs` reads the document back from the core; `settleFrames` waits until painting stops;
+`screenshotName`/`screenshotPath` follow the PLAN.md §5 convention
+(`e2e/screenshots/<spec>/<name>-<light|dark|hc>-<desktop|phone|tablet>.png`, `VIEWPORTS`); `axeScan`,
+`blockingViolations` and `expectNoSeriousA11yViolations` wrap `@axe-core/playwright` (WCAG 2.2 AA tags);
+`layoutScan(page, { viewport, touch })` is the first version of the layout scan (clipped text without an
+ellipsis, controls outside the viewport, overlapping controls, touch targets under 24 px).
+
 Scripts: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm fixtures` (regenerate the corpus).
 
 Licence: AGPL-3.0-or-later. The downloaded Apache POI files are Apache-2.0 and never committed.

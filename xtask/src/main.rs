@@ -5,13 +5,15 @@
 //! cargo xtask verify [--workspace | -p <crate>…]   fmt --check, clippy -D warnings, nextest, protocol --check
 //! cargo xtask protocol [--check]                    ts-rs export of kiln-protocol (WP-52)
 //! cargo xtask wasm [--release] [--size]             wasm32 build + wasm-bindgen + wasm-opt (WP-52)
-//! cargo xtask fidelity [--ci]                       round-trip fidelity over fixtures/ (WP-60)
+//! cargo xtask fidelity [--ci] [--format f]          round-trip fidelity over fixtures/ (WP-60)
 //! cargo xtask budgets [--ci]                        performance budgets of §3.9 (WP-60)
 //! cargo xtask parity [--check | --verify | --snapshot <tag>]  parity/parity.json → PARITY.md (WP-59)
 //! cargo xtask notices [--check]                     THIRD-PARTY-NOTICES.md from Cargo and pnpm metadata
 //! ```
 #![forbid(unsafe_code)]
 
+mod budgets;
+mod fidelity;
 mod notices;
 mod parity;
 mod pending;
@@ -28,8 +30,8 @@ const USAGE: &str =
   verify [--workspace | -p <crate>...]  fmt --check, clippy -D warnings, nextest, protocol --check
   protocol [--check]                    generate the TypeScript protocol (WP-52)
   wasm [--release] [--size]             build the web core (WP-52)
-  fidelity [--ci]                       round-trip fidelity report (WP-60)
-  budgets [--ci]                        performance budgets (WP-60)
+  fidelity [--ci] [--format f]...       round-trip fidelity report → docs/qa/fidelity.md (WP-60)
+  budgets [--ci]                        performance budgets → docs/qa/perf.md (WP-60)
   parity [--check | --verify [--dry-run] [--app <app>] [--row <id>] | --snapshot <tag>]
                                         validate the parity tracker, regenerate PARITY.md (WP-59)
   notices [--check]                     regenerate THIRD-PARTY-NOTICES.md";
@@ -44,6 +46,8 @@ fn main() -> ExitCode {
     let result = match cmd.as_str() {
         "verify" => verify::run(&rest),
         "notices" => notices::run(&rest),
+        "fidelity" => fidelity::run(&rest),
+        "budgets" => budgets::run(&rest),
         "parity" => parity::run(&rest),
         "protocol" => protocol::run(&rest),
         "wasm" => wasm::run(&rest),

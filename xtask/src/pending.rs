@@ -16,16 +16,9 @@ pub struct Pending {
     pub owner: &'static str,
 }
 
-const PENDING: &[Pending] = &[
-    Pending {
-        name: "fidelity",
-        owner: "WP-60",
-    },
-    Pending {
-        name: "budgets",
-        owner: "WP-60",
-    },
-];
+/// Every subcommand has an implementation now (fidelity and budgets arrived with WP-60); the
+/// mechanism stays for subcommands a plan change adds before their work package runs.
+const PENDING: &[Pending] = &[];
 
 /// Finds a pending command by name.
 pub fn lookup(name: &str) -> Option<Pending> {
@@ -68,16 +61,19 @@ mod tests {
 
     #[test]
     fn every_pending_command_names_its_owner() {
-        for name in ["fidelity", "budgets"] {
-            let task = lookup(name).expect("pending command");
+        for task in PENDING {
             assert!(task.owner.starts_with("WP-"));
+            assert_eq!(lookup(task.name), Some(*task));
             assert_eq!(
-                message(task),
+                message(*task),
                 format!("skipped: not implemented yet ({})", task.owner)
             );
         }
-        assert!(lookup("verify").is_none() && lookup("parity").is_none());
-        assert!(lookup("protocol").is_none() && lookup("wasm").is_none());
+        for implemented in [
+            "verify", "parity", "protocol", "wasm", "fidelity", "budgets",
+        ] {
+            assert!(lookup(implemented).is_none(), "{implemented}");
+        }
         assert!(protocol_implemented());
     }
 

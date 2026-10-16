@@ -1,0 +1,4 @@
+# Generated on demand by `python3 -I tools/make-fixtures.py --synthetic-large` (PLAN.md §3.9);
+# too large for the repository.
+*
+!.gitignore

@@ -1,0 +1,123 @@
+# Performance budgets (PLAN.md §3.9), asserted by `kiln-bench assert` through `cargo xtask budgets`.
+#
+# Append-only and shared (PLAN.md §4.7): a work package that lands a benchmark replaces the
+# `pending` line of its row with `bench = "<name>"` (and `metric` when it is not p95).
+#
+# Each row has exactly one of: `bench` (a benchmark of `kiln-bench list`, read at `metric`:
+# p50, p95, mean, min, max, rss or an extra figure; p95 for ms, rss for MB by default), `pending`
+# (the work packages that add the benchmark) or `manual` (measured elsewhere). Time limits are
+# multiplied by the machine factor (calibration time / calibration_reference_ms, between 1 and
+# max_machine_factor) and, with --ci, by ci_tolerance; MB limits are not scaled.
+
+version = 1
+ci_tolerance = 1.5
+# `kiln-bench calibrate` on the reference machine (4 CPUs, 7.5 GB, docs/qa/env.md), release build.
+calibration_reference_ms = 101.4
+max_machine_factor = 3.0
+
+[[budget]]
+id = "B3"
+part = "first page painted"
+scenario = "Open a 300-page .docx (mixed text, tables, images) to the first painted page"
+limit = 400.0
+unit = "ms"
+pending = "WP-62, WP-63: doc-open"
+
+[[budget]]
+id = "B3"
+part = "fully paginated"
+scenario = "Open a 300-page .docx (mixed text, tables, images) until fully paginated"
+limit = 1500.0
+unit = "ms"
+pending = "WP-62, WP-63: doc-open"
+
+[[budget]]
+id = "B7"
+part = "first paint"
+scenario = "Open a 10 MB .xlsx with 500k populated cells to the first paint"
+limit = 1200.0
+unit = "ms"
+pending = "WP-70, WP-71: xlsx-open"
+
+[[budget]]
+id = "B7"
+part = "full calc"
+scenario = "Open a 10 MB .xlsx with 500k populated cells, fully calculated"
+limit = 2500.0
+unit = "ms"
+pending = "WP-70: xlsx-open"
+
+[[budget]]
+id = "B8"
+scenario = "Full recalculation of 1M formula cells (arithmetic, IF, AND, SUM ranges; 4 threads)"
+limit = 2000.0
+unit = "ms"
+bench = "recalc-full"
+
+[[budget]]
+id = "B9"
+scenario = "Incremental recalculation after one edit in a 100k-formula workbook"
+limit = 2.0
+unit = "ms"
+bench = "recalc-incremental"
+
+[[budget]]
+id = "B10"
+scenario = "Open a 200-slide .pptx to the first painted slide"
+limit = 800.0
+unit = "ms"
+pending = "WP-77, WP-78: pptx-open"
+
+[[budget]]
+id = "B11"
+scenario = "PDF export of the 300-page document"
+limit = 2000.0
+unit = "ms"
+pending = "WP-67: pdf-export"
+
+[[budget]]
+id = "B14"
+scenario = "Collaboration: apply 1,000 remote operations"
+limit = 50.0
+unit = "ms"
+pending = "WP-82: collab-apply"
+
+[[budget]]
+id = "B15"
+part = "clean build"
+scenario = "Clean build of the whole workspace (dev profile, this machine, warm sccache)"
+limit = 360000.0
+unit = "ms"
+manual = "B15 table below"
+
+[[budget]]
+id = "B15"
+part = "CI pipeline"
+scenario = "CI full pipeline (ci.yml)"
+limit = 1500000.0
+unit = "ms"
+manual = "duration of the ci.yml run"
+
+[[budget]]
+id = "text-layout-1000"
+scenario = "Lay out 1,000 mixed paragraphs at 600 px, warm caches (kiln-text, WP-53)"
+limit = 60.0
+unit = "ms"
+bench = "text-layout-1000"
+group = "component"
+
+[[budget]]
+id = "scratch-frame-production"
+scenario = "Produce the frame after a scroll jump in a 60-page document (kiln-session, WP-54)"
+limit = 16.0
+unit = "ms"
+bench = "scratch-frame-production"
+group = "component"
+
+[[budget]]
+id = "ooxml-repack-large"
+scenario = "Open, inflate every part and save a 1M-cell .xlsx package (kiln-ooxml, WP-55)"
+limit = 300.0
+unit = "ms"
+bench = "ooxml-repack-large"
+group = "component"

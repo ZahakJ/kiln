@@ -2318,6 +2318,15 @@ name = "kiln-bench"
 version = "0.1.0"
 dependencies = [
  "kiln-common",
+ "kiln-formula",
+ "kiln-ooxml",
+ "kiln-protocol",
+ "kiln-session",
+ "kiln-text",
+ "rayon",
+ "serde",
+ "serde_json",
+ "toml 1.1.8+spec-1.1.0",
 ]
 
 [[package]]
@@ -2348,10 +2357,15 @@ name = "kiln-cli"
 version = "0.1.0"
 dependencies = [
  "kiln-common",
+ "kiln-formula",
+ "kiln-ooxml",
  "kiln-protocol",
  "kiln-raster",
  "kiln-scene",
  "kiln-session",
+ "kiln-testing",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -2591,6 +2605,10 @@ name = "kiln-testing"
 version = "0.1.0"
 dependencies = [
  "kiln-common",
+ "kiln-ooxml",
+ "kiln-raster",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

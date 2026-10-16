@@ -1,6 +1,6 @@
 [package]
 name = "kiln-testing"
-description = "Test support"
+description = "Test support: fixture discovery, the LibreOffice oracle, the round-trip fidelity scorer, the conformance CSV runner and image diffing"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -11,6 +11,12 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+# OPC packages: part-by-part comparison and the passthrough baseline of the fidelity report.
+kiln-ooxml.workspace = true
+# PNG decoding/encoding and the perceptual pixel metric shared with the golden-image tests.
+kiln-raster.workspace = true
+serde.workspace = true
+serde_json.workspace = true
 
 [lints]
 workspace = true

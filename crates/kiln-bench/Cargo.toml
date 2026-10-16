@@ -1,6 +1,6 @@
 [package]
 name = "kiln-bench"
-description = "Benchmark binaries and the performance-budget assertions of PLAN"
+description = "Benchmarks, the timing harness and the performance-budget assertions of PLAN.md §3.9"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -9,8 +9,23 @@ authors.workspace = true
 repository.workspace = true
 publish.workspace = true
 
+[[bin]]
+name = "kiln-bench"
+path = "src/main.rs"
+
 [dependencies]
 kiln-common.workspace = true
+# The measured crates.
+kiln-text.workspace = true
+kiln-protocol.workspace = true
+kiln-session.workspace = true
+kiln-ooxml.workspace = true
+kiln-formula.workspace = true
+# B8/B9 run on a fixed 4-thread pool, as the budget specifies.
+rayon.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+toml.workspace = true
 
 [lints]
 workspace = true

@@ -163,3 +163,7 @@ getrandom = "=0.4.3"
 insta = "=1.49.0"
 proptest = "=1.12.0"
 criterion = "=0.8.2"
+
+# --- Benchmarks (WP-60) ---
+# bench/budgets.toml, the performance budgets of PLAN.md §3.9 (already in Cargo.lock through Tauri).
+toml = { version = "=1.1.8", default-features = false, features = ["std", "serde", "parse"] }

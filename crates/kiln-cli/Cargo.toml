@@ -15,11 +15,19 @@ path = "src/main.rs"
 
 [dependencies]
 kiln-common.workspace = true
-# `render --scratch` (WP-54): text → scratch layout → SceneDelta → raster PNG.
+# Documents, commands and frames: the same facade the apps use.
 kiln-protocol.workspace = true
 kiln-session.workspace = true
 kiln-scene.workspace = true
 kiln-raster.workspace = true
+# `inspect`, `repack`.
+kiln-ooxml.workspace = true
+# `eval`.
+kiln-formula.workspace = true
+# `repack` comparison and `fidelity` (the scorer and its adapter registry).
+kiln-testing.workspace = true
+serde.workspace = true
+serde_json.workspace = true
 
 [lints]
 workspace = true

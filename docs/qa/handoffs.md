@@ -153,3 +153,33 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   `biome format` at the root would expand them (and make `functions.json` stale). Please add
   `"!parity/parity.json"`, `"!parity/corpus.json"`, `"!parity/functions.json"` and `"!PARITY.md"`
   to `files.includes`. CI's `pnpm lint` runs per package, so nothing fails today.
+
+## WP-60 → WP-50, WP-53, WP-62/65/70/77/79, WP-94, WP-96, the manual's owner (CLI, testing, budgets)
+
+- `xtask/src/main.rs`, `xtask/src/pending.rs`: registered the `fidelity` and `budgets` subcommands
+  (owned by WP-60 in `xtask/src/fidelity.rs` and `xtask/src/budgets.rs`) and emptied the pending
+  list; the pending mechanism stays for subcommands a plan change adds later.
+- For the format work packages (WP-62/65 docx, WP-70 xlsx, WP-77/79 pptx): implement
+  `kiln_testing::Roundtrip` (`snapshot` = facts/text/cells of a file, `roundtrip` = read → write
+  bytes plus the part names the writer regenerated) in `crates/kiln-testing/src/formats/<format>.rs`
+  and add one `pub mod` line and one `Box::new(..)` line to `formats/mod.rs`. `cargo xtask fidelity`
+  then scores every fixture against `parity/corpus.json` and the summary table in
+  `docs/qa/fidelity.md` feeds the `fidelity:<format>:<metric>` parity ids. Register your document
+  kind in `kiln-session/src/apps/mod.rs` and `kiln-cli render`/`control` open your files with no
+  CLI change.
+- For the benchmark owners (WP-62/63 `doc-open`, WP-70/71 `xlsx-open`, WP-77/78 `pptx-open`, WP-67
+  `pdf-export`, WP-82 `collab-apply`): add a scenario in `crates/kiln-bench/src/scenarios/` (WP-60
+  owns the crate: add the file and one line in `scenarios::all`, as a registration), then replace
+  the `pending` line of your row in `bench/budgets.toml` with `bench = "<name>"`. Inputs:
+  `fixtures/large/{doc-300p.docx,sheet-1m.xlsx,deck-200.pptx}` from
+  `~/.venvs/kiln/bin/python tools/make-fixtures.py --synthetic-large` (gitignored; CI must run the
+  generator before `cargo xtask budgets --ci` once a benchmark reads them, which needs python-docx,
+  openpyxl and python-pptx on the runner — a ci.yml step for WP-94).
+- For WP-96 (`suite.automation.cli`, `docs/control-protocol.md`): `kiln-cli` has no `convert` yet;
+  the control channel's verbs and JSON shapes are documented in `docs/manual/cli.md` and the module
+  docs of `crates/kiln-cli/src/control.rs`.
+- For WP-53 (text): the playground shows tofu for CJK text typed through an IME (`日本` after
+  `composeIme`); the bundled fonts have no CJK coverage and the fallback chain found no system CJK
+  font on this machine.
+- For the manual's owner: link `docs/manual/cli.md` from `docs/manual/README.md` (For developers or
+  Reference); WP-60 does not own the README.

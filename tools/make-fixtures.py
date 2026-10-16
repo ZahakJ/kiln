@@ -2,9 +2,16 @@
 """Generate Kiln's synthetic .docx/.xlsx/.pptx fixture corpus (PLAN.md §5).
 
     python3 -I tools/make-fixtures.py --out fixtures [--large] [--only docx,xlsx,pptx]
+    python3 -I tools/make-fixtures.py --synthetic-large [--only docx,xlsx,pptx]
 
-Files go to <out>/<format>/features/<name>.<ext>. The ``--large`` flag also writes the 100 000-row
-workbook to <out>/xlsx/large/ (gitignored; too big for the repository and for PDF conversion tests).
+Files go to <out>/<format>/features/<name>.<ext> (``--out`` defaults to the repository's fixtures/). The
+``--large`` flag also writes the 100 000-row workbook to <out>/xlsx/large/ (gitignored; too big for the
+repository and for PDF conversion tests).
+
+``--synthetic-large`` writes only the performance-budget inputs of PLAN.md §3.9 to <out>/large/
+(gitignored, regenerated on demand): ``doc-300p.docx`` (300 pages of headings, body text, tables and
+pictures, one page per explicit page break), ``sheet-1m.xlsx`` (1 000 000 populated cells, 200 000 of them
+formulas) and ``deck-200.pptx`` (200 slides: bullets, two columns, pictures, tables, shapes, charts).
 
 Output is deterministic: fixed random seeds, a fixed document date, fixed zip timestamps and a fixed
 entry order, so regenerating produces byte-identical files and the committed corpus only changes when
@@ -1758,6 +1765,170 @@ def make_large_xlsx(out: Path) -> Path:
     return path
 
 
+# ------------------------------------------------------------------ synthetic large (§3.9)
+
+LARGE_DOC_PAGES = 300
+LARGE_SHEET_ROWS = 100_000  # × 10 columns = 1 000 000 cells, columns I and J are formulas
+LARGE_DECK_SLIDES = 200
+
+
+def large_doc(path: Path) -> None:
+    """300 pages: each page is a heading, body text and either a table or a picture, closed by an
+    explicit page break, with content that fits one Letter/A4 page so the page count is exact."""
+    from docx.enum.text import WD_BREAK
+    from docx.shared import Cm, Pt
+
+    rng = random.Random(300)
+    d = new_document()
+    normal = d.styles["Normal"]
+    normal.font.name = "Calibri"
+    normal.font.size = Pt(11)
+    pictures = [png_bytes(480, 240, 300 + i) for i in range(6)]
+    for page in range(1, LARGE_DOC_PAGES + 1):
+        if page % 25 == 1:
+            d.add_heading(f"Part {page // 25 + 1}: {lorem(rng, 4).rstrip('.')}", 1)
+        d.add_heading(f"{page}. {lorem(rng, 5).rstrip('.')}", 2)
+        kind = page % 3
+        for _ in range(2 if kind else 1):
+            d.add_paragraph(lorem(rng, 70))
+        if kind == 0:
+            t = d.add_table(rows=6, cols=4)
+            t.style = "Light Grid Accent 1"
+            for c, head in enumerate(["Batch", "Clay body", "Cone", "Shrinkage %"]):
+                t.cell(0, c).text = head
+            for r in range(1, 6):
+                t.cell(r, 0).text = f"{page:03d}-{r}"
+                t.cell(r, 1).text = rng.choice(["stoneware", "porcelain", "earthenware", "raku"])
+                t.cell(r, 2).text = str(rng.choice([6, 8, 10, 11]))
+                t.cell(r, 3).text = f"{rng.uniform(9, 14):.1f}"
+            d.add_paragraph(lorem(rng, 40))
+        elif kind == 1:
+            run = d.add_paragraph().add_run()
+            run.add_picture(io.BytesIO(pictures[page % len(pictures)]), width=Cm(12))
+            d.add_paragraph(f"Figure {page}: {lorem(rng, 8)}", style="Caption")
+        else:
+            for _ in range(2):
+                d.add_paragraph(lorem(rng, 60))
+        if page < LARGE_DOC_PAGES:
+            d.paragraphs[-1].add_run().add_break(WD_BREAK.PAGE)
+    d.core_properties.title = "300 pages"
+    buf = io.BytesIO()
+    d.save(buf)
+    path.write_bytes(normalize_package(buf.getvalue()))
+
+
+def large_sheet(path: Path) -> None:
+    """100 000 rows × 10 columns: id, category, amount, quantity, unit cost, date serial, region and a
+    flag as values, then a product (I) and a row sum (J) as formulas. A second sheet explains it."""
+    import openpyxl
+
+    wb = openpyxl.Workbook(write_only=True)
+    wb.properties.creator = AUTHOR
+    wb.properties.created = FIXED_DATE
+    wb.properties.modified = FIXED_DATE
+    about = wb.create_sheet("About")
+    for line in [
+        ["Synthetic 1M-cell workbook for the Kiln performance budgets (PLAN.md 3.9)."],
+        ["Sheet Data: 100,000 rows x 10 columns = 1,000,000 cells; columns I and J are formulas."],
+        ["A id, B category, C amount, D quantity, E unit cost, F date serial, G region, H flag,"],
+        ["I = C*D, J = SUM(C:E)+I."],
+    ]:
+        about.append(line)
+    ws = wb.create_sheet("Data")
+    rng = random.Random(1_000_000)
+    cats = ["Bowls", "Cups", "Plates", "Vases", "Tiles", "Jars"]
+    regions = ["North", "South", "East", "West"]
+    for r in range(1, LARGE_SHEET_ROWS + 1):
+        ws.append([
+            r,
+            cats[rng.randrange(len(cats))],
+            round(rng.uniform(1, 1000), 2),
+            rng.randrange(1, 100),
+            round(rng.uniform(0.5, 50), 2),
+            45_000 + rng.randrange(0, 1500),
+            regions[rng.randrange(len(regions))],
+            rng.random() < 0.5,
+            f"=C{r}*D{r}",
+            f"=SUM(C{r}:E{r})+I{r}",
+        ])
+    buf = io.BytesIO()
+    wb.save(buf)
+    path.write_bytes(normalize_package(buf.getvalue()))
+
+
+def large_deck(path: Path) -> None:
+    """200 slides cycling through bullets, two columns, a picture, a table, preset shapes and (every
+    tenth slide) a chart, with a section header every 25 slides and speaker notes on each."""
+    from pptx.chart.data import CategoryChartData
+    from pptx.enum.chart import XL_CHART_TYPE
+    from pptx.enum.shapes import MSO_SHAPE
+    from pptx.util import Emu, Pt
+
+    rng = random.Random(200)
+    prs = new_presentation()
+    pictures = [png_bytes(640, 360, 200 + i) for i in range(6)]
+    shapes = [MSO_SHAPE.ROUNDED_RECTANGLE, MSO_SHAPE.OVAL, MSO_SHAPE.CHEVRON, MSO_SHAPE.HEXAGON, MSO_SHAPE.STAR_5_POINT]
+    for i in range(1, LARGE_DECK_SLIDES + 1):
+        if i % 25 == 1:
+            s = prs.slides.add_slide(prs.slide_layouts[2])  # Section Header
+            s.shapes.title.text = f"Section {i // 25 + 1}"
+            s.placeholders[1].text = lorem(rng, 8)
+        elif i % 10 == 0:
+            s = blank_slide(prs, f"Slide {i}: results")
+            cd = CategoryChartData()
+            cd.categories = ["Q1", "Q2", "Q3", "Q4"]
+            for name in ["Kiln A", "Kiln B"]:
+                cd.add_series(name, [round(rng.uniform(10, 40), 1) for _ in range(4)])
+            s.shapes.add_chart(XL_CHART_TYPE.COLUMN_CLUSTERED, Emu(1219200), Emu(1371600), Emu(9753600), Emu(4876800), cd)
+        elif i % 5 == 1:
+            s = prs.slides.add_slide(prs.slide_layouts[3])  # Two Content
+            s.shapes.title.text = f"Slide {i}: compare"
+            s.placeholders[1].text = "\n".join(lorem(rng, 6) for _ in range(3))
+            s.placeholders[2].text = "\n".join(lorem(rng, 6) for _ in range(3))
+        elif i % 5 == 2:
+            s = blank_slide(prs, f"Slide {i}: picture")
+            s.shapes.add_picture(io.BytesIO(pictures[i % len(pictures)]), Emu(1828800), Emu(1371600), Emu(8534400), Emu(4800600))
+        elif i % 5 == 3:
+            s = blank_slide(prs, f"Slide {i}: table")
+            t = s.shapes.add_table(5, 4, Emu(609600), Emu(1524000), Emu(10972800), Emu(3048000)).table
+            for r in range(5):
+                for c in range(4):
+                    t.cell(r, c).text = f"Column {c + 1}" if r == 0 else f"{rng.randrange(1000)}"
+        elif i % 5 == 4:
+            s = blank_slide(prs, f"Slide {i}: shapes")
+            for k, shape in enumerate(shapes):
+                sp = s.shapes.add_shape(shape, Emu(609600 + k * 2286000), Emu(2286000), Emu(1828800), Emu(1828800))
+                sp.text_frame.text = shape.name.replace("_", " ").lower()
+                sp.text_frame.paragraphs[0].runs[0].font.size = Pt(12)
+        else:
+            s = prs.slides.add_slide(prs.slide_layouts[1])  # Title and Content
+            s.shapes.title.text = f"Slide {i}: {lorem(rng, 4).rstrip('.')}"
+            body = s.placeholders[1].text_frame
+            body.text = lorem(rng, 10)
+            for level in (1, 1, 0, 1):
+                para = body.add_paragraph()
+                para.text = lorem(rng, 9)
+                para.level = level
+        s.notes_slide.notes_text_frame.text = f"Notes for slide {i}. " + lorem(rng, 20)
+    prs.core_properties.title = "200 slides"
+    buf = io.BytesIO()
+    prs.save(buf)
+    path.write_bytes(normalize_package(buf.getvalue()))
+
+
+def make_synthetic_large(out: Path, formats: list[str]) -> list[Path]:
+    d = out / "large"
+    d.mkdir(parents=True, exist_ok=True)
+    jobs = {"docx": ("doc-300p.docx", large_doc), "xlsx": ("sheet-1m.xlsx", large_sheet), "pptx": ("deck-200.pptx", large_deck)}
+    written = []
+    for fmt in formats:
+        name, make = jobs[fmt]
+        path = d / name
+        make(path)
+        written.append(path)
+    return written
+
+
 def make_xlsx(out: Path) -> int:
     w = Writer(out, "xlsx")
     for fn in [
@@ -2345,9 +2516,19 @@ def make_pptx(out: Path) -> int:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--out", required=True, type=Path, help="fixtures root (fixtures)")
+    ap.add_argument(
+        "--out",
+        type=Path,
+        default=Path(__file__).resolve().parent.parent / "fixtures",
+        help="fixtures root (default: the repository's fixtures/)",
+    )
     ap.add_argument("--only", default="docx,xlsx,pptx", help="comma-separated formats to generate")
     ap.add_argument("--large", action="store_true", help="also write the 100k-row workbook to xlsx/large/")
+    ap.add_argument(
+        "--synthetic-large",
+        action="store_true",
+        help="write only the budget inputs large/doc-300p.docx, sheet-1m.xlsx, deck-200.pptx",
+    )
     args = ap.parse_args()
     ensure_dependencies()
     out: Path = args.out
@@ -2356,6 +2537,11 @@ def main() -> None:
     for fmt in formats:
         if fmt not in makers:
             sys.exit(f"make-fixtures: unknown format {fmt}")
+    if args.synthetic_large:
+        for path in make_synthetic_large(out, formats):
+            print(f"{path} ({path.stat().st_size:,} bytes)")
+        return
+    for fmt in formats:
         n = makers[fmt](out)
         print(f"{fmt}: {n} files in {out / fmt / 'features'}")
     if args.large and "xlsx" in formats:

@@ -1,8 +1,3 @@
 # kiln-cli
 
-The `kiln-cli` command line (installed as `kiln` by the Linux packages): convert, render, inspect, fidelity, benchmarks, the function list and the JSON control channel over stdio. This crate is a scaffold created by WP-50: it builds, is linted and tested in CI, and carries no engine logic yet; the work package that owns it in PLAN.md §11 fills it in.
-
-Available now (WP-54): `kiln-cli render --scratch <file.txt> --png <out.png> [--width 1000] [--height 900]
-[--zoom 1] [--dpr 1] [--scroll-x <px>] [--scroll-y 0] [--theme light|dark]` lays a text file out as a scratch
-document and writes the frame the canvas surface would show, painted by `kiln-raster` (the page is centred
-like the surface does unless `--scroll-x` is given).
+The `kiln-cli` command line (installed as `kiln` by the Linux packages; `cargo run -p kiln-cli --` from a checkout) drives the same `kiln-session` facade as the apps, so agents and scripts can work without a GUI (PLAN.md §3.1). Subcommands: `inspect <file> [--xml <part>] [--json]` lists the OPC parts of a `.docx`/`.xlsx`/`.pptx` with sizes, content types and relationships, or pretty-prints one part; `repack <in> <out>` opens and saves a package without edits and reports `identical parts: N/N`; `render <file> --png out/page-%03d.png [--page N] [--dpi 96] [--dark]` paints a document's pages with `kiln-raster` for every document kind registered in `kiln-session` (the scratch document today), and `render --scratch` paints one editor viewport; `control` is the newline-delimited JSON control channel over stdio (`new`, `open`, `execute`, `query`, `viewport`, `frame`, `render`, `save`, `subscribe`, `close`, `ping`) using the `kiln-protocol` types; `eval '=formula'` evaluates with `kiln-formula`; `fidelity [--ci] [--format f]` runs the `kiln-testing` round-trip scorer and writes the report; `version`. Exit status is 0 for success, 1 for failure and 2 for a usage error. The manual is `docs/manual/cli.md`.
