@@ -17,6 +17,7 @@ use kiln_doc::st::VMerge;
 use kiln_doc::{Block, Cell, OpaqueBlock, Paragraph, Row, SdtInfo, Table};
 use kiln_ooxml::xml::XmlElement;
 
+use super::context::MAX_DEPTH;
 use super::props::{parse_cell_props, parse_row_props, parse_table_props};
 use super::sdt::parse_sdt_info;
 use super::story::{BlockSink, SUPPORTED_MC, StoryReader};
@@ -149,17 +150,35 @@ fn has_content(b: &Block) -> bool {
 
 /// Reads a `w:tbl` into a table block.
 pub(crate) fn read_table(story: &mut StoryReader<'_, '_>, tbl: &XmlElement) -> Block {
+    // A table is only followed when its cells and their paragraphs fit under the depth limit
+    // too; otherwise the limit would cut the table open and drop its inner content. Too deep to
+    // follow: keep the whole table verbatim so a save loses nothing.
+    if story.ctx.depth.saturating_add(TABLE_HEADROOM) >= MAX_DEPTH {
+        story.warn(
+            WarningCode::NestingTooDeep,
+            Severity::Info,
+            "A table nested this deeply is kept unchanged in the file but not shown.",
+        );
+        return opaque_table(story, tbl);
+    }
     if !story.enter() {
-        // Too deep to follow: keep the table verbatim so a save loses nothing.
-        return Block::Opaque(OpaqueBlock {
-            id: story.ctx.doc.alloc_id(),
-            xml: story.raw_xml(tbl),
-            label: "Nested table".to_owned(),
-        });
+        return opaque_table(story, tbl);
     }
     let block = read_table_inner(story, tbl);
     story.leave();
     block
+}
+
+/// Container levels reserved inside a table for its cell, the cell's paragraphs and a few inline
+/// wrappers (hyperlinks, fields, content controls).
+const TABLE_HEADROOM: usize = 8;
+
+fn opaque_table(story: &mut StoryReader<'_, '_>, tbl: &XmlElement) -> Block {
+    Block::Opaque(OpaqueBlock {
+        id: story.ctx.doc.alloc_id(),
+        xml: story.raw_xml(tbl),
+        label: "Nested table".to_owned(),
+    })
 }
 
 fn read_table_inner(story: &mut StoryReader<'_, '_>, tbl: &XmlElement) -> Block {
@@ -246,7 +265,9 @@ fn read_table_inner(story: &mut StoryReader<'_, '_>, tbl: &XmlElement) -> Block 
                     open.remove(&col);
                 }
             }
-            if blocks.is_empty() {
+            if !matches!(blocks.last(), Some(Block::Paragraph(_))) {
+                // Word ends every cell with a paragraph (the end-of-cell mark), also when the
+                // file's cell is empty or ends with a nested table; the writer writes it.
                 blocks.push(empty_paragraph(story));
             }
             let id = story.ctx.doc.alloc_id();

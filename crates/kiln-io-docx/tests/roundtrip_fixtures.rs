@@ -15,9 +15,9 @@ use kiln_testing::fidelity::package::compare_packages;
 use kiln_testing::fixtures::{Fixture, FixtureFormat, FixtureKind, discover_in, fixtures_dir};
 use roundtrip_support::{differences, round_trip};
 
-/// The committed corpus (features and manual) plus the downloaded one when present; files the
-/// reader rejects by design (`external/docx/poi-deep-table-cell.docx` nests 15,005 elements,
-/// beyond the XML layer's hostile-input limit) are left out.
+/// The committed corpus (features and manual) plus the downloaded one when present (including
+/// `external/docx/poi-deep-table-cell.docx`, 15,005 elements deep, whose over-deep tables are kept
+/// verbatim); a file the reader refused would be left out.
 fn corpus() -> Vec<(Fixture, Vec<u8>)> {
     discover_in(
         &fixtures_dir(),

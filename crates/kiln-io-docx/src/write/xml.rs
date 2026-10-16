@@ -509,7 +509,12 @@ pub(crate) fn parse_many(fragments: &[&str]) -> Vec<Option<kiln_ooxml::xml::XmlE
         wrapper.push_str("</kiln-item>");
     }
     wrapper.push_str("</kiln-fragments>");
-    match parse_str_with(&wrapper, ParseOptions::default()) {
+    // Opaque content may nest beyond the parser's tree limit; keep that part verbatim.
+    let options = ParseOptions {
+        keep_too_deep_as_raw: true,
+        ..ParseOptions::default()
+    };
+    match parse_str_with(&wrapper, options) {
         Ok(doc) => doc
             .root
             .elements()

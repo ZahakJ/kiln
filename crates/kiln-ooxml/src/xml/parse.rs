@@ -38,6 +38,11 @@ pub struct ParseOptions {
     /// Maximum element nesting depth. Word nests tables inside tables, so real documents go well
     /// past 100 levels; hostile files go to tens of thousands. Default 2 000.
     pub max_depth: usize,
+    /// What happens to an element that would open beyond [`Self::max_depth`]: `false` (the
+    /// default) refuses the part; `true` keeps the element and everything inside it verbatim as
+    /// one [`XmlNode::Raw`] node (checked for well-formedness and made namespace-self-contained),
+    /// so a reader can still open the part and a writer can save the content unchanged.
+    pub keep_too_deep_as_raw: bool,
 }
 
 impl Default for ParseOptions {
@@ -46,6 +51,7 @@ impl Default for ParseOptions {
             normalize_prefixes: true,
             drop_inter_element_whitespace: true,
             max_depth: 2_000,
+            keep_too_deep_as_raw: false,
         }
     }
 }
@@ -194,6 +200,7 @@ pub fn parse_str_with(xml: &str, options: ParseOptions) -> Result<XmlDocument, X
     }];
 
     loop {
+        let event_start = reader.buffer_position();
         let event = reader.read_event().map_err(|e| {
             XmlParseError::new(format!(
                 "malformed XML at byte {}: {e}",
@@ -235,6 +242,13 @@ pub fn parse_str_with(xml: &str, options: ParseOptions) -> Result<XmlDocument, X
                 ));
             }
             Event::Start(s) => {
+                if stack.len() >= options.max_depth && options.keep_too_deep_as_raw {
+                    let raw = capture_raw(&mut reader, xml, event_start, &s, &scopes, &stack)?;
+                    if let Some(frame) = stack.last_mut() {
+                        frame.element.children.push(XmlNode::Raw(raw));
+                    }
+                    continue;
+                }
                 if stack.len() >= options.max_depth {
                     return Err(XmlParseError::new(format!(
                         "elements nested deeper than {} levels",
@@ -260,7 +274,9 @@ pub fn parse_str_with(xml: &str, options: ParseOptions) -> Result<XmlDocument, X
                 });
             }
             Event::Empty(s) => {
-                if stack.len() >= options.max_depth {
+                // An empty element is a leaf: with `keep_too_deep_as_raw` it may sit one level
+                // past the limit, as nothing can nest inside it.
+                if stack.len() >= options.max_depth && !options.keep_too_deep_as_raw {
                     return Err(XmlParseError::new(format!(
                         "elements nested deeper than {} levels",
                         options.max_depth
@@ -352,6 +368,104 @@ pub fn parse_str_with(xml: &str, options: ParseOptions) -> Result<XmlDocument, X
         prolog,
         root,
     })
+}
+
+/// Consumes the subtree of an element that opens beyond the depth limit (its start tag `s` was
+/// just read from `xml` at byte `start`) and returns its markup verbatim, with the namespace
+/// bindings in scope declared on its root so the fragment means the same wherever it is written.
+/// Nesting inside is only counted, never built, so any depth is safe.
+fn capture_raw(
+    reader: &mut quick_xml::Reader<&[u8]>,
+    xml: &str,
+    start: u64,
+    s: &BytesStart<'_>,
+    scopes: &[Scope],
+    stack: &[Frame],
+) -> Result<String, XmlParseError> {
+    let name_len = s.name().0.len();
+    let mut own: Vec<String> = Vec::new();
+    for a in s.attributes() {
+        let a = a.map_err(|e| XmlParseError::new(format!("bad attribute: {e}")))?;
+        let key: &str = a.key.0;
+        if key == "xmlns" || key.starts_with("xmlns:") {
+            own.push(key.to_owned());
+        }
+    }
+    let mut depth: usize = 1;
+    while depth > 0 {
+        let event = reader.read_event().map_err(|e| {
+            XmlParseError::new(format!(
+                "malformed XML at byte {}: {e}",
+                reader.error_position()
+            ))
+        })?;
+        match event {
+            Event::Start(_) => depth += 1,
+            Event::End(_) => depth -= 1,
+            Event::DocType(_) => {
+                return Err(XmlParseError::new(
+                    "DTDs are not allowed in Office Open XML parts",
+                ));
+            }
+            Event::Decl(_) => return Err(XmlParseError::new("misplaced XML declaration")),
+            Event::GeneralRef(r) => {
+                // Kept verbatim, so it must already be one the writer's readers understand.
+                let known = matches!(r.resolve_char_ref(), Ok(Some(_)))
+                    || quick_xml::escape::resolve_predefined_entity(&r).is_some();
+                if !known {
+                    return Err(XmlParseError::new(format!(
+                        "unknown entity &{};",
+                        r.as_ref()
+                    )));
+                }
+            }
+            Event::Eof => return Err(XmlParseError::new("unclosed element at end of input")),
+            _ => {}
+        }
+    }
+    let span = usize::try_from(start)
+        .ok()
+        .zip(usize::try_from(reader.buffer_position()).ok())
+        .and_then(|(a, b)| xml.get(a..b))
+        .ok_or_else(|| XmlParseError::new("element position out of range"))?;
+    // The tag name ends where the attributes (or `>`) begin.
+    let insert_at = 1 + name_len;
+    if !span.starts_with('<') || span.len() < insert_at {
+        return Err(XmlParseError::new("element position out of range"));
+    }
+    // Source prefix → URI for every binding in scope (the latest binding of a prefix wins).
+    let mut bindings: Vec<(&str, &str)> = Vec::new();
+    if let Some(scope) = scopes.get(scope_floor(stack)) {
+        for (src, target) in scope.rename.iter().rev() {
+            if bindings.iter().any(|(p, _)| p == src) {
+                continue;
+            }
+            if let Some(uri) = scope.out_uri(target) {
+                bindings.push((src, uri));
+            }
+        }
+    }
+    let mut decls = String::new();
+    for (prefix, uri) in bindings.iter().rev() {
+        let key = if prefix.is_empty() {
+            "xmlns".to_owned()
+        } else {
+            format!("xmlns:{prefix}")
+        };
+        if own.contains(&key) {
+            continue;
+        }
+        decls.push(' ');
+        decls.push_str(&key);
+        decls.push_str("=\"");
+        decls.push_str(&super::write::escape_attr(uri));
+        decls.push('"');
+    }
+    let mut out = String::with_capacity(span.len() + decls.len());
+    out.push_str(&span[..insert_at]);
+    out.push_str(&decls);
+    out.push_str(&span[insert_at..]);
+    Ok(out)
 }
 
 /// The highest scope index still referenced by an open element.

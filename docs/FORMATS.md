@@ -76,8 +76,12 @@ page read as an offset of zero; phonetic guides (ruby) keep the base text only;
 alignment tabs (`w:ptab`) become ordinary tabs; editing permission ranges and
 subdocument links are dropped; legacy form fields become plain fields; a field
 whose result spans paragraphs (other than TOC-like fields) keeps its result as
-text; content nested more than 64 containers deep (or text boxes more than 4
-deep) is kept as XML without its text. Packages that are encrypted, legacy
+text; tables nested so deep that their cells would pass 64 containers (about 28
+tables), text boxes more than 4 deep, and anything past the XML layer's
+2,000-element tree limit (Apache POI's 5,000-table `deep-table-cell.docx`) are
+kept verbatim as XML and saved unchanged, but not shown. A cell that ends with a
+nested table (or is empty) gets the end-of-cell paragraph Word gives it.
+Packages that are encrypted, legacy
 binary `.doc`, not zip files or beyond the zip limits are refused with a typed
 error; a malformed secondary part is skipped with a diagnostic, never a crash.
 

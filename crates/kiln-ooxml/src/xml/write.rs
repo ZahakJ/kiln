@@ -220,6 +220,7 @@ fn write_leaf(node: &XmlNode, out: &mut String) {
             }
             out.push_str("?>");
         }
+        XmlNode::Raw(markup) => out.push_str(markup),
         XmlNode::Element(_) => {}
     }
 }

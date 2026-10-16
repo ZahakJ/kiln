@@ -40,9 +40,11 @@ What is modelled, kept or approximated is listed in `docs/FORMATS.md` (Word docu
 - **Fields** are a stack across paragraphs: a field's result is collected and summarised into a
   `Field` object (instruction + cached result), released as plain text if it crosses a paragraph,
   turned into a link for `HYPERLINK`, or into a `FieldBlock` for TOC, INDEX, BIBLIOGRAPHY and TOA.
-- **Bounded nesting.** Containers deeper than 64 levels (tables are then kept as opaque XML) and
-  text boxes deeper than 4 are not followed, so hostile files cannot exhaust the stack; the XML
-  layer refuses elements nested beyond 2,000 levels.
+- **Bounded nesting.** Containers deeper than 64 levels and text boxes deeper than 4 are not
+  followed, so hostile files cannot exhaust the stack; a table is followed only when its cells fit
+  under that limit too, otherwise it is kept whole as opaque XML. Parts are parsed with
+  `keep_too_deep_as_raw`: elements past the XML layer's 2,000-level tree limit stay verbatim
+  markup, so such files open and save without loss instead of being refused.
 - **Symbols** keep font and code; `symbol_to_unicode` maps Symbol, Webdings and Wingdings 1–3 with
   the `dingbat-to-unicode` 1.0.2 table (BSD-2-Clause, © 2021 Michael Williamson; generated into
   `src/common/dingbats.rs`).
@@ -119,7 +121,11 @@ Design notes:
   sections, styles, numbering, settings; parts and relationships, properties, determinism,
   passthrough, macros, templates, Strict, new documents, issues.
 - `tests/write_touched.rs` — edits regenerate only the parts they touch.
-- `tests/write_hostile.rs` — arbitrary content (proptest) and deep nesting on a 1 MiB stack.
+- `tests/write_hostile.rs` — arbitrary content (proptest) and deep nesting on a 1 MiB stack, up
+  to 5,000 nested tables (every level's text saved).
+- `tests/roundtrip_edits.rs` — edited-then-saved golden files (`fixtures/docx/roundtrip/<case>/`):
+  the parts an edit regenerates must equal the committed expected output (`KILN_BLESS=1` rewrites
+  them), every other part is the original.
 
 `cargo run -p kiln-cli -- inspect --docx <file>` prints the outline, counts and diagnostics;
 `cargo run -p kiln-cli -- convert in.docx out.docx` saves a file the way Kiln does.

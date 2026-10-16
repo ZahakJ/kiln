@@ -137,6 +137,10 @@ pub enum XmlNode {
     Comment(String),
     /// A processing instruction.
     Pi(XmlPi),
+    /// Well-formed markup kept verbatim and written back unchanged: an element nested deeper than
+    /// the parser builds into the tree (see `ParseOptions::keep_too_deep_as_raw`). It declares
+    /// every namespace prefix it uses.
+    Raw(String),
 }
 
 impl XmlNode {

@@ -236,3 +236,65 @@ proptest! {
         prop_assert_eq!(texts_of(&third.document), texts_of(&back.document));
     }
 }
+
+/// Tables nested `depth` deep with a word in every level's cell and no trailing paragraphs, as
+/// Apache POI's `deep-table-cell.docx` is built.
+fn worded_nested_tables(depth: usize) -> Vec<u8> {
+    let mut body = String::new();
+    for i in 0..depth {
+        body.push_str(&format!(
+            "<w:tbl><w:tblGrid><w:gridCol w:w=\"2400\"/></w:tblGrid><w:tr><w:tc><w:p><w:r><w:t>level{i}</w:t></w:r></w:p>"
+        ));
+    }
+    for _ in 0..depth {
+        body.push_str("</w:tc></w:tr></w:tbl>");
+    }
+    build_docx(Build {
+        body,
+        ..Build::default()
+    })
+}
+
+fn main_part_text(bytes: &[u8]) -> String {
+    let pkg = kiln_ooxml::opc::OpcPackage::open(bytes).expect("package");
+    let part = pkg
+        .part("/word/document.xml")
+        .expect("readable")
+        .expect("present");
+    String::from_utf8(part.into_owned()).expect("UTF-8")
+}
+
+fn assert_every_level_saved(depth: usize) {
+    let read = read_docx(&worded_nested_tables(depth)).expect("reads");
+    let out = write_docx(&read.document, None, &WriteOptions::default()).expect("writes");
+    let xml = main_part_text(&out.bytes);
+    for i in 0..depth {
+        assert!(
+            xml.contains(&format!(">level{i}<")),
+            "level {i} of {depth} lost"
+        );
+    }
+    let back = read_docx(&out.bytes).expect("reads back");
+    assert_eq!(
+        kiln_io_docx::snapshot_facts(&back.document),
+        kiln_io_docx::snapshot_facts(&read.document)
+    );
+}
+
+#[test]
+fn tables_nested_past_the_followed_depth_keep_every_level_on_save() {
+    // Past the reader's container limit the remaining tables are kept verbatim; the limit must
+    // never cut a followed table open and drop the content of its innermost cell.
+    on_small_stack(|| {
+        for depth in [20, 40, 200] {
+            assert_every_level_saved(depth);
+        }
+    });
+}
+
+#[test]
+fn tables_nested_past_the_xml_depth_limit_open_and_save_losslessly() {
+    // 5,000 levels is 15,000 elements deep: far past the XML tree limit. The over-deep part is
+    // kept as verbatim markup, so the document opens and saves without losing a word.
+    on_small_stack(|| assert_every_level_saved(5_000));
+}

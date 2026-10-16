@@ -73,6 +73,16 @@ pub(crate) struct ReadContext<'p> {
     pub text_box_depth: usize,
 }
 
+/// How the reader parses parts: content nested beyond the XML parser's depth limit is kept
+/// verbatim ([`kiln_ooxml::xml::XmlNode::Raw`]) instead of refusing the part, so such a document
+/// opens and its over-deep content (already beyond [`MAX_DEPTH`], hence opaque) saves unchanged.
+pub(crate) fn part_parse_options() -> ParseOptions {
+    ParseOptions {
+        keep_too_deep_as_raw: true,
+        ..ParseOptions::default()
+    }
+}
+
 /// The deepest text box nesting whose text the reader follows; deeper text boxes keep their XML
 /// only.
 pub(crate) const MAX_TEXT_BOX_DEPTH: usize = 4;
@@ -134,7 +144,7 @@ impl<'p> ReadContext<'p> {
 
     /// Parses an XML part; `None` (with a diagnostic) when it is missing or malformed.
     pub fn load_part(&mut self, name: &str) -> Option<XmlDocument> {
-        match self.pkg.part_xml_with(name, ParseOptions::default()) {
+        match self.pkg.part_xml_with(name, part_parse_options()) {
             Ok(Some(doc)) => Some(doc),
             Ok(None) => {
                 self.warn(

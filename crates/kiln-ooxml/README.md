@@ -72,8 +72,11 @@ Conventions every format crate keeps:
 
 `quick-xml` 0.42 underneath, with no DTD support at all: `<!DOCTYPE` is an error, so entity expansion
 ("billion laughs") and external entities have nothing to work with; only the five predefined entities and
-character references expand. Nesting is capped at 2 000 levels (`ParseOptions::max_depth`); the writer and
-`descendants` are iterative. Bytes may be UTF-8 (with or without BOM), UTF-16 (BOM or sniffed) or any encoding
+character references expand. Nesting is capped at 2 000 levels (`ParseOptions::max_depth`): past it a part
+is refused, or, with `ParseOptions::keep_too_deep_as_raw`, the over-deep element is kept as one
+`XmlNode::Raw` node — its markup verbatim (still checked for well-formedness and entities, never built into a
+tree, so any depth is safe) with the namespace bindings in scope declared on it — and written back unchanged.
+The writer and `descendants` are iterative. Bytes may be UTF-8 (with or without BOM), UTF-16 (BOM or sniffed) or any encoding
 an XML declaration names (`windows-1252`, `Shift_JIS`, … via `encoding_rs`). Whitespace-only text between
 elements is dropped unless `xml:space="preserve"` applies. The writer escapes `& < >` (and CR) in text and
 `& < " \t \n \r` in attributes, strips characters XML 1.0 forbids, writes no indentation, and declares any

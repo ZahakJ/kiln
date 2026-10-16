@@ -388,3 +388,96 @@ mod queries {
         assert_eq!(split_qname("sheetData"), ("", "sheetData"));
     }
 }
+
+fn keep_raw(max_depth: usize) -> ParseOptions {
+    ParseOptions {
+        max_depth,
+        keep_too_deep_as_raw: true,
+        ..ParseOptions::default()
+    }
+}
+
+#[test]
+fn keeps_elements_beyond_the_depth_limit_as_verbatim_markup() {
+    let xml = format!(
+        r#"<ns0:a xmlns:ns0="{}" xmlns="urn:d"><ns0:b><ns0:c x="1">t &amp; &#65;<d/><!--k--></ns0:c><e/></ns0:b></ns0:a>"#,
+        ns::W
+    );
+    let doc = parse_str_with(&xml, keep_raw(2)).unwrap();
+    // The tree is normalised down to the limit; below it the source is kept as written, with the
+    // bindings in scope declared on its root so it means the same wherever it is written.
+    assert_eq!(doc.root.name, "w:a");
+    let b = doc.root.elements().next().unwrap();
+    assert_eq!(b.name, "w:b");
+    let raws: Vec<&str> = b
+        .children
+        .iter()
+        .filter_map(|c| match c {
+            XmlNode::Raw(r) => Some(r.as_str()),
+            _ => None,
+        })
+        .collect();
+    assert_eq!(
+        raws,
+        [format!(
+            r#"<ns0:c xmlns:ns0="{}" xmlns="urn:d" x="1">t &amp; &#65;<d/><!--k--></ns0:c>"#,
+            ns::W
+        )
+        .as_str()]
+    );
+    // Empty elements at the limit are leaves and stay in the tree.
+    assert_eq!(
+        b.elements().map(|e| e.name.as_str()).collect::<Vec<_>>(),
+        ["e"]
+    );
+    // Written back unchanged, and the result parses to the same text.
+    let written = fragment(&doc.root);
+    assert!(written.contains(raws[0]), "{written}");
+    let again = parse_xml_str(&written).unwrap();
+    assert_eq!(again.root.text(), "t & A");
+}
+
+#[test]
+fn verbatim_markup_keeps_its_own_declarations_and_any_depth() {
+    let deep = format!(
+        r#"<a xmlns:x="urn:x"><b xmlns:x="urn:y">{}{}</b></a>"#,
+        "<x:c>".repeat(50_000),
+        "</x:c>".repeat(50_000)
+    );
+    // On a small stack: the over-deep part is counted, never built.
+    let doc = std::thread::Builder::new()
+        .stack_size(1 << 20)
+        .spawn(move || parse_str_with(&deep, keep_raw(1)).unwrap())
+        .unwrap()
+        .join()
+        .unwrap();
+    let Some(XmlNode::Raw(raw)) = doc.root.children.first() else {
+        panic!("raw node expected");
+    };
+    // `b` redeclares `x`, so the outer binding is not added a second time.
+    assert!(
+        raw.starts_with(r#"<b xmlns:x="urn:y"><x:c>"#),
+        "{}",
+        &raw[..40]
+    );
+    assert!(raw.ends_with("</x:c></b>"));
+}
+
+#[test]
+fn verbatim_markup_is_still_checked() {
+    for bad in [
+        "<a><b><c></b></c></a>",
+        "<a><b><c>&nope;</c></b></a>",
+        "<a><b><c><!DOCTYPE x></c></b></a>",
+        "<a><b><c>",
+    ] {
+        assert!(parse_str_with(bad, keep_raw(1)).is_err(), "{bad}");
+    }
+    // Without the option the limit still refuses the part.
+    let strict = ParseOptions {
+        max_depth: 1,
+        ..ParseOptions::default()
+    };
+    assert!(parse_str_with("<a><b></b></a>", strict).is_err());
+    assert!(parse_str_with("<a><b></b></a>", keep_raw(1)).is_ok());
+}

@@ -235,6 +235,781 @@ struct PartNames {
     headers_footers: BTreeMap<NodeId, String>,
 }
 
+/// The target of the original main part's internal relationship of type `rt`.
+fn original_main_target(
+    original_rels: &BTreeMap<String, BTreeMap<String, RelTarget>>,
+    main_original: Option<&str>,
+    rt: &str,
+) -> Option<String> {
+    let m = main_original?;
+    original_rels
+        .iter()
+        .find(|(k, _)| part_key(k) == part_key(m))
+        .and_then(|(_, rels)| {
+            rels.values()
+                .find(|t| !t.external && rel_type_matches(&t.rel_type, rt))
+                .map(|t| t.target.clone())
+        })
+}
+
+/// Plans the names of the parts the writer produces: the original names where the source had
+/// the part, Word's defaults otherwise, never one a passthrough part holds. Returns the plan and
+/// the main part's directory.
+fn plan_part_names(
+    doc: &Document,
+    extras: &DocxExtras,
+    source: Option<&WriteSource<'_>>,
+    passthrough: &PassthroughSet,
+    original_rels: &BTreeMap<String, BTreeMap<String, RelTarget>>,
+) -> (PartNames, String) {
+    let main_original = source.map(|s| s.main_part.to_owned());
+    let main = main_original
+        .clone()
+        .filter(|m| m.ends_with(".xml") && validate_part_name(m).is_ok())
+        .unwrap_or_else(|| "/word/document.xml".to_owned());
+    let dir = directory_of(&main).to_owned();
+    let original_target =
+        |rt: &str| original_main_target(original_rels, main_original.as_deref(), rt);
+    let mut taken: BTreeSet<String> = passthrough.parts().map(|p| part_key(&p.name)).collect();
+    taken.insert(part_key(&main));
+    let mut pick = |preferred: Option<String>, fallback: String| -> String {
+        let candidates = preferred
+            .into_iter()
+            .chain(std::iter::once(fallback.clone()));
+        for c in candidates {
+            if validate_part_name(&c).is_ok() && taken.insert(part_key(&c)) {
+                return c;
+            }
+        }
+        let dot = fallback.rfind('.').unwrap_or(fallback.len());
+        let stem = fallback[..dot]
+            .trim_end_matches(|c: char| c.is_ascii_digit())
+            .to_owned();
+        let ext = fallback[dot..].to_owned();
+        let mut n = 1u32;
+        loop {
+            let c = format!("{stem}{n}{ext}");
+            if taken.insert(part_key(&c)) {
+                return c;
+            }
+            n += 1;
+        }
+    };
+    let has_notes = |k: NoteKind| doc.notes.iter().any(|n| n.kind == k);
+    let mut names = PartNames {
+        main: main.clone(),
+        ..PartNames::default()
+    };
+    // Styles, settings and the theme are written for new documents, for documents that had them
+    // and whenever the model holds more than the defaults a missing part stands for.
+    let o_styles = original_target(rel_type::STYLES);
+    if source.is_none()
+        || o_styles.is_some()
+        || !doc.styles.is_empty()
+        || doc.styles.doc_defaults != kiln_doc::DocDefaults::default()
+    {
+        names.styles = Some(pick(o_styles, format!("{dir}styles.xml")));
+    }
+    let o_settings = original_target(rel_type::SETTINGS);
+    if source.is_none()
+        || o_settings.is_some()
+        || doc.settings != kiln_doc::Settings::default()
+        || extras.settings != crate::common::extras::SettingsExtras::default()
+        || doc.notes.iter().any(|n| n.note_type == NoteType::Normal)
+    {
+        names.settings = Some(pick(o_settings, format!("{dir}settings.xml")));
+    }
+    let o_numbering = original_target(rel_type::NUMBERING);
+    if !doc.numbering.abstracts.is_empty()
+        || !doc.numbering.instances.is_empty()
+        || !extras.num_pic_bullets.is_empty()
+        || o_numbering.is_some()
+    {
+        names.numbering = Some(pick(o_numbering, format!("{dir}numbering.xml")));
+    }
+    let o_footnotes = original_target(rel_type::FOOTNOTES);
+    if has_notes(NoteKind::Footnote) || o_footnotes.is_some() {
+        names.footnotes = Some(pick(o_footnotes, format!("{dir}footnotes.xml")));
+    }
+    let o_endnotes = original_target(rel_type::ENDNOTES);
+    if has_notes(NoteKind::Endnote) || o_endnotes.is_some() {
+        names.endnotes = Some(pick(o_endnotes, format!("{dir}endnotes.xml")));
+    }
+    let o_comments = original_target(rel_type::COMMENTS);
+    if !doc.comments.is_empty() || o_comments.is_some() {
+        names.comments = Some(pick(o_comments, format!("{dir}comments.xml")));
+    }
+    let o_ext = original_target(rel_type::COMMENTS_EXTENDED);
+    let threads = doc
+        .comments
+        .iter()
+        .any(|c| c.meta.parent.is_some() || c.meta.resolved);
+    if names.comments.is_some()
+        && !doc.comments.is_empty()
+        && (o_ext.is_some() || source.is_none() || threads)
+    {
+        names.comments_extended = Some(pick(o_ext, format!("{dir}commentsExtended.xml")));
+    }
+    let o_people = original_target(rel_type::PEOPLE);
+    if o_people.is_some()
+        || !extras.people.is_empty()
+        || (source.is_none() && !doc.comments.is_empty())
+    {
+        names.people = Some(pick(o_people, format!("{dir}people.xml")));
+    }
+    let o_theme = original_target(rel_type::THEME);
+    if source.is_none() || o_theme.is_some() || doc.theme != kiln_doc::DocTheme::office() {
+        names.theme = Some(pick(o_theme, format!("{dir}theme/theme1.xml")));
+    }
+    let has_font_table = passthrough
+        .parts()
+        .any(|p| p.content_type == wml("fontTable"));
+    if source.is_none() && !has_font_table {
+        names.font_table = Some(pick(None, format!("{dir}fontTable.xml")));
+    }
+    let referenced: Vec<NodeId> = doc
+        .sections
+        .iter()
+        .flat_map(|s| {
+            [
+                HeaderFooterKind::Default,
+                HeaderFooterKind::Even,
+                HeaderFooterKind::First,
+            ]
+            .into_iter()
+            .flat_map(move |k| [s.headers.get(k), s.footers.get(k)])
+            .flatten()
+        })
+        .collect();
+    for id in referenced {
+        if names.headers_footers.contains_key(&id) {
+            continue;
+        }
+        let Some(story) = doc.headers_footers.iter().find(|h| h.id == id) else {
+            continue;
+        };
+        let footer = story.part == kiln_doc::HeaderFooterPart::Footer;
+        let fallback = format!("{dir}{}1.xml", if footer { "footer" } else { "header" });
+        let name = pick(extras.header_footer_parts.get(&id).cloned(), fallback);
+        names.headers_footers.insert(id, name);
+    }
+    (names, dir)
+}
+
+/// The parts kept byte for byte from the original package: those no transaction touched whose
+/// relationships all still lead somewhere in the new package `pkg`. Also returns the first
+/// bookmark id regenerated parts may use (above every id in a copied part).
+fn plan_preserved(
+    doc: &Document,
+    names: &PartNames,
+    pkg: &OpcPackage,
+    original_pkg: Option<&OpcPackage>,
+    options: &WriteOptions<'_>,
+) -> (BTreeSet<String>, u64) {
+    let mut preserved: BTreeSet<String> = BTreeSet::new();
+    let mut first_bookmark = 0u64;
+    if let (Some(touched), Some(orig)) = (options.preserve, original_pkg)
+        && !touched.everything
+    {
+        let can = |name: &str| -> bool {
+            if !orig.has(name) || orig.content_type(name) != pkg.content_type(name) {
+                return false;
+            }
+            let Ok(rels) = orig.relationships(name) else {
+                return false;
+            };
+            rels.all().iter().all(|r| {
+                r.is_external()
+                    || rels
+                        .resolve(r)
+                        .is_some_and(|t| pkg.has(&t) || doc.media.contains_key(&t))
+            })
+        };
+        let mut candidates: Vec<(bool, Option<&String>)> = vec![
+            (touched.body, Some(&names.main)),
+            (touched.styles, names.styles.as_ref()),
+            (touched.numbering, names.numbering.as_ref()),
+            (touched.settings, names.settings.as_ref()),
+            (touched.footnotes, names.footnotes.as_ref()),
+            (touched.endnotes, names.endnotes.as_ref()),
+            (touched.comments, names.comments.as_ref()),
+            (touched.comments, names.comments_extended.as_ref()),
+            (touched.comments, names.people.as_ref()),
+        ];
+        for (id, name) in &names.headers_footers {
+            candidates.push((touched.header_footer(*id), Some(name)));
+        }
+        for (touched_flag, name) in candidates {
+            if let Some(n) = name
+                && !touched_flag
+                && can(n)
+            {
+                preserved.insert(n.clone());
+            }
+        }
+        // Bookmarks written into regenerated parts are numbered above those of copied parts.
+        for p in &preserved {
+            if let Ok(b) = orig.part_bytes(p) {
+                let max = max_bookmark_id(&String::from_utf8_lossy(&b));
+                first_bookmark = first_bookmark.max(max + 1);
+            }
+        }
+    }
+    (preserved, first_bookmark)
+}
+
+/// Copies the preserved parts' original bytes and relationships into the new package, adding
+/// the structural relationships the writer needs that the original part lacks.
+fn copy_preserved(
+    ctx: &mut WriteContext<'_>,
+    orig: &OpcPackage,
+    preserved: &BTreeSet<String>,
+) -> Result<(), DocxWriteError> {
+    for name in preserved {
+        let bytes = orig.part_bytes(name)?.into_owned();
+        let structural: Vec<(String, String, String)> = ctx
+            .pkg
+            .relationships(name)
+            .map(|r| {
+                r.all()
+                    .iter()
+                    .filter(|x| !x.is_external())
+                    .map(|x| {
+                        (
+                            x.id.clone(),
+                            x.rel_type.clone(),
+                            r.resolve(x).unwrap_or_else(|| x.target.clone()),
+                        )
+                    })
+                    .collect()
+            })
+            .unwrap_or_default();
+        let current_ids: Vec<String> = ctx
+            .pkg
+            .relationships(name)
+            .map(|r| r.all().iter().map(|x| x.id.clone()).collect())
+            .unwrap_or_default();
+        for id in current_ids {
+            ctx.pkg.remove_relationship(name, &id)?;
+        }
+        let originals = orig.relationships(name)?.into_owned();
+        for r in originals.all() {
+            if !r.is_external()
+                && let Some(t) = originals.resolve(r)
+                && !ctx.pkg.has(&t)
+            {
+                let _ = ctx.media_part(&t);
+            }
+            ctx.pkg.add_relationship_raw(
+                name,
+                &r.rel_type,
+                &r.target,
+                Some(&r.id),
+                r.target_mode,
+            )?;
+        }
+        ctx.forget_rels(name);
+        // Structural relationships the writer needs that the original part lacks (a
+        // numbering part added since, for example).
+        for (_, rt, target) in structural {
+            let present = originals.all().iter().any(|r| {
+                rel_type_matches(&r.rel_type, &rt)
+                    && originals
+                        .resolve(r)
+                        .is_some_and(|t| part_key(&t) == part_key(&target))
+            });
+            let structural_type = [
+                rel_type::STYLES,
+                rel_type::SETTINGS,
+                rel_type::NUMBERING,
+                rel_type::FOOTNOTES,
+                rel_type::ENDNOTES,
+                rel_type::COMMENTS,
+                rel_type::COMMENTS_EXTENDED,
+                rel_type::COMMENTS_IDS,
+                rel_type::PEOPLE,
+                rel_type::THEME,
+                rel_type::FONT_TABLE,
+            ]
+            .iter()
+            .any(|s| rel_type_matches(&rt, s));
+            if !present && structural_type {
+                ctx.rel(name, &rt, &target, false);
+            }
+        }
+        ctx.pkg.set_part(name, bytes)?;
+    }
+    Ok(())
+}
+
+/// Puts back the original bytes of every relationships part whose relationships did not change;
+/// returns their keys.
+fn restore_unchanged_rels(
+    ctx: &mut WriteContext<'_>,
+    orig: &OpcPackage,
+) -> Result<BTreeSet<String>, DocxWriteError> {
+    let mut restored: BTreeSet<String> = BTreeSet::new();
+    let rels_parts: Vec<String> = ctx
+        .pkg
+        .all_part_names()
+        .filter(|n| is_rels_part(n))
+        .map(str::to_owned)
+        .collect();
+    for r in rels_parts {
+        let Some(source_part) = source_part_of_rels(&r) else {
+            continue;
+        };
+        if !orig.has(&r) {
+            continue;
+        }
+        if rel_facts(&ctx.pkg, &source_part) == rel_facts(orig, &source_part)
+            && let Ok(bytes) = orig.part_bytes(&r)
+        {
+            let bytes = bytes.into_owned();
+            ctx.pkg.set_part(&r, bytes)?;
+            restored.insert(part_key(&r));
+        }
+    }
+    Ok(restored)
+}
+
+/// What the story writers share: the model, the part plan and the parts kept byte for byte.
+struct StoryPlan<'p, 'd> {
+    doc: &'d Document,
+    extras: &'d DocxExtras,
+    names: &'p PartNames,
+    ids: &'p StoryIds<'d>,
+    preserved: &'p BTreeSet<String>,
+    /// No original package: a document created in Kiln.
+    new_document: bool,
+}
+
+/// Writes every header and footer part that is not kept byte for byte.
+fn write_headers_footers<'d>(
+    ctx: &mut WriteContext<'d>,
+    plan: &StoryPlan<'_, 'd>,
+    written: &mut Vec<(String, String)>,
+) {
+    let StoryPlan {
+        doc, names, ids, ..
+    } = *plan;
+    let is_preserved = |n: &str| plan.preserved.contains(n);
+    for (id, name) in &names.headers_footers {
+        let Some(story) = doc.headers_footers.iter().find(|h| h.id == *id) else {
+            continue;
+        };
+        if is_preserved(name) {
+            continue;
+        }
+        let mut w = StoryWriter::new(ctx, ids, name, None);
+        let mut body = w.story(&story.blocks, BlockOpts::default());
+        if !matches!(story.blocks.last(), Some(Block::Paragraph(_))) {
+            body.push_str("<w:p/>");
+        }
+        let root = if story.part == kiln_doc::HeaderFooterPart::Footer {
+            "w:ftr"
+        } else {
+            "w:hdr"
+        };
+        written.push((name.clone(), xml::part(root, &body, &["w", "r"])));
+    }
+}
+
+/// Writes the main document part (sections, their properties and header/footer references).
+fn write_body<'d>(
+    ctx: &mut WriteContext<'d>,
+    plan: &StoryPlan<'_, 'd>,
+    written: &mut Vec<(String, String)>,
+) {
+    let StoryPlan {
+        doc,
+        extras,
+        names,
+        ids,
+        ..
+    } = *plan;
+    let is_preserved = |n: &str| plan.preserved.contains(n);
+    if !is_preserved(&names.main) {
+        // References in the order of the stories (the reader numbers stories as it meets them).
+        let story_index = |id: NodeId| doc.headers_footers.iter().position(|h| h.id == id);
+        let mut refs_of: Vec<Vec<HeaderFooterRef>> = Vec::new();
+        for s in &doc.sections {
+            let mut refs = Vec::new();
+            for (footer, list) in [(false, &s.headers), (true, &s.footers)] {
+                let mut kinds: Vec<(usize, HeaderFooterKind, NodeId)> = [
+                    HeaderFooterKind::Default,
+                    HeaderFooterKind::Even,
+                    HeaderFooterKind::First,
+                ]
+                .into_iter()
+                .filter_map(|k| {
+                    let id = list.get(k)?;
+                    Some((story_index(id).unwrap_or(usize::MAX), k, id))
+                })
+                .collect();
+                kinds.sort_by_key(|(i, _, _)| *i);
+                for (_, k, id) in kinds {
+                    let Some(part) = names.headers_footers.get(&id) else {
+                        continue;
+                    };
+                    let rt = if footer {
+                        rel_type::FOOTER
+                    } else {
+                        rel_type::HEADER
+                    };
+                    let rel_id = ctx.rel(&names.main, rt, part, false);
+                    refs.push(HeaderFooterRef {
+                        footer,
+                        kind: k,
+                        rel_id,
+                    });
+                }
+            }
+            refs_of.push(refs);
+        }
+        let mut w = StoryWriter::new(ctx, ids, &names.main, None);
+        let parts: Vec<&[Block]> = doc.sections.iter().map(|s| s.blocks.as_slice()).collect();
+        w.prepare_comments(&parts);
+        let mut body = String::new();
+        let n = doc.sections.len();
+        for (i, s) in doc.sections.iter().enumerate() {
+            let sect = section_props_xml(&s.props, extras.sections.get(&s.id), &refs_of[i]);
+            if i + 1 == n {
+                body.push_str(&w.blocks(&s.blocks, BlockOpts::default()));
+                body.push_str(&sect);
+            } else {
+                body.push_str(&w.blocks(
+                    &s.blocks,
+                    BlockOpts {
+                        sect_pr: Some(sect),
+                        ..BlockOpts::default()
+                    },
+                ));
+            }
+        }
+        let inner = format!(
+            "{}<w:body>{body}</w:body>",
+            extras.background.as_deref().unwrap_or_default()
+        );
+        let strict = extras.document_root_attrs.iter().any(|(k, v)| {
+            k == "w:conformance" || (k.starts_with("xmlns") && v.contains("purl.oclc.org"))
+        });
+        let xml_text = if extras.document_root_attrs.is_empty() || strict {
+            xml::part("w:document", &inner, &["w", "r"])
+        } else {
+            xml::part_with_root_attrs("w:document", &extras.document_root_attrs, &inner)
+        };
+        written.push((names.main.clone(), xml_text));
+    }
+}
+
+/// Writes the footnotes and endnotes parts; returns the separator note ids per kind for the
+/// settings part.
+fn write_notes<'d>(
+    ctx: &mut WriteContext<'d>,
+    plan: &StoryPlan<'_, 'd>,
+    written: &mut Vec<(String, String)>,
+) -> HashMap<NoteKind, Vec<String>> {
+    let StoryPlan {
+        doc, names, ids, ..
+    } = *plan;
+    let is_preserved = |n: &str| plan.preserved.contains(n);
+    let mut separators: HashMap<NoteKind, Vec<String>> = HashMap::new();
+    for (kind, name) in [
+        (NoteKind::Footnote, &names.footnotes),
+        (NoteKind::Endnote, &names.endnotes),
+    ] {
+        let notes: Vec<_> = doc.notes.iter().filter(|n| n.kind == kind).collect();
+        let mut seps: Vec<String> = notes
+            .iter()
+            .filter(|n| n.note_type != NoteType::Normal)
+            .filter_map(|n| ids.notes.get(&n.id).cloned())
+            .collect();
+        let Some(name) = name else {
+            continue;
+        };
+        let el = match kind {
+            NoteKind::Footnote => "w:footnote",
+            NoteKind::Endnote => "w:endnote",
+        };
+        let mut body = String::new();
+        let has_separators = notes.iter().any(|n| n.note_type == NoteType::Separator);
+        if !has_separators && notes.iter().any(|n| n.note_type == NoteType::Normal) {
+            // Notes created in the editor: Word's separator notes.
+            let used: HashSet<&String> = ids.notes.values().collect();
+            let mut free = (-1i64..).step_by(1);
+            let mut pick_id = || loop {
+                let v = free.next().unwrap_or(-1);
+                let s = v.to_string();
+                if !used.contains(&s) {
+                    return s;
+                }
+            };
+            let (sep, cont) = (pick_id(), pick_id());
+            for (t, id) in [("separator", &sep), ("continuationSeparator", &cont)] {
+                body.push_str(&format!(
+                    "<{el} w:type=\"{t}\" w:id=\"{id}\"><w:p><w:pPr><w:spacing w:after=\"0\" w:line=\"240\" w:lineRule=\"auto\"/></w:pPr><w:r><w:{t}/></w:r></w:p></{el}>"
+                ));
+            }
+            seps = vec![sep, cont];
+        }
+        separators.insert(kind, seps);
+        if is_preserved(name) {
+            continue;
+        }
+        for n in notes {
+            let id = ids.notes.get(&n.id).cloned().unwrap_or_default();
+            let mut w = StoryWriter::new(ctx, ids, name, Some(n.id));
+            let content = w.story(
+                &n.blocks,
+                BlockOpts {
+                    first_prefix: separator_run(n.note_type).map(str::to_owned),
+                    ..BlockOpts::default()
+                },
+            );
+            let ty = (n.note_type != NoteType::Normal).then(|| n.note_type.as_str());
+            body.push_str(
+                &xml::El::new(el)
+                    .opt("w:type", ty)
+                    .attr("w:id", id)
+                    .wrap(&content),
+            );
+        }
+        let root = match kind {
+            NoteKind::Footnote => "w:footnotes",
+            NoteKind::Endnote => "w:endnotes",
+        };
+        written.push((name.clone(), xml::part(root, &body, &["w", "r"])));
+    }
+    separators
+}
+
+/// Writes the comments part and keeps commentsExtended, commentsIds and commentsExtensible in
+/// step; returns the parts it rewrote in place in the package.
+fn write_comments<'d>(
+    ctx: &mut WriteContext<'d>,
+    plan: &StoryPlan<'_, 'd>,
+    dir: &str,
+    written: &mut Vec<(String, String)>,
+) -> Result<Vec<String>, DocxWriteError> {
+    let StoryPlan {
+        doc,
+        extras,
+        names,
+        ids,
+        new_document,
+        ..
+    } = *plan;
+    let is_preserved = |n: &str| plan.preserved.contains(n);
+    let mut regenerated_extra: Vec<String> = Vec::new();
+    if let Some(cname) = &names.comments {
+        let mut used_para: BTreeSet<String> = extras
+            .paragraphs
+            .values()
+            .filter_map(|p| p.para_id.clone())
+            .collect();
+        let mut entries: Vec<CommentEx> = Vec::new();
+        let mut para_of: HashMap<NodeId, String> = HashMap::new();
+        // Threads (commentsExtended) and durable ids (commentsIds) key comments by the paraId of
+        // their last paragraph.
+        let needs_para_ids = names.comments_extended.is_some()
+            || !ctx.pkg.parts_by_content_type(COMMENTS_IDS_TYPE).is_empty()
+            || new_document;
+        for (i, c) in doc.comments.iter().enumerate() {
+            let own = match c.blocks.last() {
+                Some(Block::Paragraph(p)) => {
+                    extras.paragraphs.get(&p.id).and_then(|x| x.para_id.clone())
+                }
+                _ => None,
+            };
+            let wid = ids.comments.get(&c.id).cloned().unwrap_or_default();
+            let para = match own {
+                Some(p) => Some(p),
+                None if needs_para_ids => {
+                    Some(make_hex_id(&format!("comment:{wid}:{i}"), &mut used_para))
+                }
+                None => None,
+            };
+            if let Some(p) = para {
+                para_of.insert(c.id, p);
+            }
+        }
+        let mut body = String::new();
+        if !is_preserved(cname) {
+            for c in &doc.comments {
+                let wid = ids.comments.get(&c.id).cloned().unwrap_or_default();
+                let style = if ids.comment_reference_style {
+                    "<w:rPr><w:rStyle w:val=\"CommentReference\"/></w:rPr>"
+                } else {
+                    ""
+                };
+                let mut w = StoryWriter::new(ctx, ids, cname, None);
+                let content = w.story(
+                    &c.blocks,
+                    BlockOpts {
+                        first_prefix: Some(format!("<w:r>{style}<w:annotationRef/></w:r>")),
+                        last_para_id: para_of.get(&c.id).cloned(),
+                        ..BlockOpts::default()
+                    },
+                );
+                body.push_str(
+                    &xml::El::new("w:comment")
+                        .attr("w:id", &wid)
+                        .attr("w:author", &c.meta.author)
+                        .opt("w:date", c.meta.date.as_deref())
+                        .opt("w:initials", c.meta.initials.as_deref())
+                        .wrap(&content),
+                );
+            }
+            written.push((cname.clone(), xml::part("w:comments", &body, &["w", "r"])));
+        }
+        for c in &doc.comments {
+            if let Some(p) = para_of.get(&c.id) {
+                entries.push(CommentEx {
+                    para_id: p.clone(),
+                    parent: c.meta.parent.and_then(|pid| para_of.get(&pid).cloned()),
+                    done: c.meta.resolved,
+                });
+            }
+        }
+        if let Some(ext) = &names.comments_extended
+            && !is_preserved(ext)
+        {
+            written.push((ext.clone(), parts::comments_extended_part(&entries)));
+        }
+        // commentsIds / commentsExtensible (Word 2016+), kept in step with the comments.
+        let current: Vec<String> = doc
+            .comments
+            .iter()
+            .filter_map(|c| para_of.get(&c.id).cloned())
+            .collect();
+        let ids_part = ctx
+            .pkg
+            .parts_by_content_type(COMMENTS_IDS_TYPE)
+            .first()
+            .map(|s| (*s).to_owned());
+        match ids_part {
+            Some(p) if !is_preserved(cname) => {
+                let parsed = ctx.pkg.part_xml(&p).ok().flatten().map(|d| d.root);
+                let map: Vec<(String, String)> = parsed
+                    .as_ref()
+                    .map(|r| {
+                        r.elements()
+                            .filter_map(|e| {
+                                Some((
+                                    e.attr("w16cid:paraId")?.to_owned(),
+                                    e.attr("w16cid:durableId")?.to_owned(),
+                                ))
+                            })
+                            .collect()
+                    })
+                    .unwrap_or_default();
+                let old: BTreeSet<&String> = map.iter().map(|(p, _)| p).collect();
+                let new: BTreeSet<&String> = current.iter().collect();
+                if old != new {
+                    let mut used: BTreeSet<String> = map.iter().map(|(_, d)| d.clone()).collect();
+                    let entries: Vec<(String, String)> = current
+                        .iter()
+                        .map(|para| {
+                            let durable = map
+                                .iter()
+                                .find(|(p, _)| p == para)
+                                .map(|(_, d)| d.clone())
+                                .unwrap_or_else(|| {
+                                    make_hex_id(&format!("durable:{para}"), &mut used)
+                                });
+                            (para.clone(), durable)
+                        })
+                        .collect();
+                    let durable: BTreeSet<String> =
+                        entries.iter().map(|(_, d)| d.clone()).collect();
+                    ctx.pkg
+                        .set_part(&p, parts::comments_ids_part(&entries).into_bytes())?;
+                    regenerated_extra.push(p.clone());
+                    // Drop extensible entries of removed comments.
+                    let ext_part = ctx
+                        .pkg
+                        .parts_by_content_type(COMMENTS_EXTENSIBLE_TYPE)
+                        .first()
+                        .map(|s| (*s).to_owned());
+                    if let Some(ep) = ext_part
+                        && let Ok(Some(mut d)) = ctx.pkg.part_xml(&ep)
+                    {
+                        d.root.children.retain(|c| {
+                            c.as_element().is_none_or(|e| {
+                                e.attr("w16cex:durableId")
+                                    .is_none_or(|v| durable.contains(v))
+                            })
+                        });
+                        let bytes = kiln_ooxml::xml::document_to_bytes(&d).unwrap_or_default();
+                        ctx.pkg.set_part(&ep, bytes)?;
+                        regenerated_extra.push(ep);
+                    }
+                }
+            }
+            None if new_document && !doc.comments.is_empty() => {
+                let p = format!("{dir}commentsIds.xml");
+                if !ctx.pkg.has(&p) {
+                    let mut used: BTreeSet<String> = BTreeSet::new();
+                    let entries: Vec<(String, String)> = current
+                        .iter()
+                        .map(|para| {
+                            (
+                                para.clone(),
+                                make_hex_id(&format!("durable:{para}"), &mut used),
+                            )
+                        })
+                        .collect();
+                    ctx.pkg.add_part(
+                        &p,
+                        COMMENTS_IDS_TYPE,
+                        parts::comments_ids_part(&entries).into_bytes(),
+                    )?;
+                    ctx.produced.insert(part_key(&p));
+                    ctx.rel(&names.main, rel_type::COMMENTS_IDS, &p, false);
+                    regenerated_extra.push(p);
+                }
+            }
+            _ => {}
+        }
+    }
+    Ok(regenerated_extra)
+}
+
+/// Writes the people part (comment authors).
+fn write_people(plan: &StoryPlan<'_, '_>, written: &mut Vec<(String, String)>) {
+    let StoryPlan {
+        doc,
+        extras,
+        names,
+        new_document,
+        ..
+    } = *plan;
+    let is_preserved = |n: &str| plan.preserved.contains(n);
+    if let Some(pname) = &names.people
+        && !is_preserved(pname)
+    {
+        let mut people: Vec<Person> = extras.people.clone();
+        if !extras.people.is_empty() || new_document {
+            // Authors of comments written in Kiln join the list, as Word adds them.
+            for c in doc
+                .comments
+                .iter()
+                .filter(|c| !extras.comment_ids.contains_key(&c.id))
+            {
+                if !people.iter().any(|p| p.author == c.meta.author) {
+                    people.push(Person {
+                        author: c.meta.author.clone(),
+                        provider_id: Some("None".to_owned()),
+                        user_id: Some(c.meta.author.clone()),
+                    });
+                }
+            }
+        }
+        written.push((pname.clone(), parts::people_part(&people)));
+    }
+}
+
 /// Every id the model's revisions use (new revisions are numbered above).
 fn max_revision_id(doc: &Document) -> u32 {
     let mut max = 0u32;
@@ -465,7 +1240,6 @@ fn rel_facts(pkg: &OpcPackage, source: &str) -> Option<BTreeSet<(String, String,
 /// [`DocxWriteError::InvalidDocument`] when the model is not consistent,
 /// [`DocxWriteError::Package`] when the package cannot be assembled (an invalid part name in the
 /// passthrough, for example).
-#[allow(clippy::too_many_lines)]
 pub fn write_docx(
     doc: &Document,
     source: Option<&WriteSource<'_>>,
@@ -519,148 +1293,10 @@ pub fn write_docx(
     }
 
     // ---- part names
+    let (names, dir) = plan_part_names(doc, extras, source, &passthrough, &original_rels);
     let main_original = source.map(|s| s.main_part.to_owned());
-    let main = main_original
-        .clone()
-        .filter(|m| m.ends_with(".xml") && validate_part_name(m).is_ok())
-        .unwrap_or_else(|| "/word/document.xml".to_owned());
-    let dir = directory_of(&main).to_owned();
-    let main_rels = main_original.as_ref().and_then(|m| {
-        original_rels
-            .iter()
-            .find(|(k, _)| part_key(k) == part_key(m))
-            .map(|(_, v)| v)
-    });
-    let original_target = |rt: &str| -> Option<String> {
-        main_rels.and_then(|rels| {
-            rels.values()
-                .find(|t| !t.external && rel_type_matches(&t.rel_type, rt))
-                .map(|t| t.target.clone())
-        })
-    };
-    let mut taken: BTreeSet<String> = passthrough.parts().map(|p| part_key(&p.name)).collect();
-    taken.insert(part_key(&main));
-    let mut pick = |preferred: Option<String>, fallback: String| -> String {
-        let candidates = preferred
-            .into_iter()
-            .chain(std::iter::once(fallback.clone()));
-        for c in candidates {
-            if validate_part_name(&c).is_ok() && taken.insert(part_key(&c)) {
-                return c;
-            }
-        }
-        let dot = fallback.rfind('.').unwrap_or(fallback.len());
-        let stem = fallback[..dot]
-            .trim_end_matches(|c: char| c.is_ascii_digit())
-            .to_owned();
-        let ext = fallback[dot..].to_owned();
-        let mut n = 1u32;
-        loop {
-            let c = format!("{stem}{n}{ext}");
-            if taken.insert(part_key(&c)) {
-                return c;
-            }
-            n += 1;
-        }
-    };
-    let has_notes = |k: NoteKind| doc.notes.iter().any(|n| n.kind == k);
-    let mut names = PartNames {
-        main: main.clone(),
-        ..PartNames::default()
-    };
-    // Styles, settings and the theme are written for new documents, for documents that had them
-    // and whenever the model holds more than the defaults a missing part stands for.
-    let o_styles = original_target(rel_type::STYLES);
-    if source.is_none()
-        || o_styles.is_some()
-        || !doc.styles.is_empty()
-        || doc.styles.doc_defaults != kiln_doc::DocDefaults::default()
-    {
-        names.styles = Some(pick(o_styles, format!("{dir}styles.xml")));
-    }
-    let o_settings = original_target(rel_type::SETTINGS);
-    if source.is_none()
-        || o_settings.is_some()
-        || doc.settings != kiln_doc::Settings::default()
-        || extras.settings != crate::common::extras::SettingsExtras::default()
-        || doc.notes.iter().any(|n| n.note_type == NoteType::Normal)
-    {
-        names.settings = Some(pick(o_settings, format!("{dir}settings.xml")));
-    }
-    let o_numbering = original_target(rel_type::NUMBERING);
-    if !doc.numbering.abstracts.is_empty()
-        || !doc.numbering.instances.is_empty()
-        || !extras.num_pic_bullets.is_empty()
-        || o_numbering.is_some()
-    {
-        names.numbering = Some(pick(o_numbering, format!("{dir}numbering.xml")));
-    }
-    let o_footnotes = original_target(rel_type::FOOTNOTES);
-    if has_notes(NoteKind::Footnote) || o_footnotes.is_some() {
-        names.footnotes = Some(pick(o_footnotes, format!("{dir}footnotes.xml")));
-    }
-    let o_endnotes = original_target(rel_type::ENDNOTES);
-    if has_notes(NoteKind::Endnote) || o_endnotes.is_some() {
-        names.endnotes = Some(pick(o_endnotes, format!("{dir}endnotes.xml")));
-    }
-    let o_comments = original_target(rel_type::COMMENTS);
-    if !doc.comments.is_empty() || o_comments.is_some() {
-        names.comments = Some(pick(o_comments, format!("{dir}comments.xml")));
-    }
-    let o_ext = original_target(rel_type::COMMENTS_EXTENDED);
-    let threads = doc
-        .comments
-        .iter()
-        .any(|c| c.meta.parent.is_some() || c.meta.resolved);
-    if names.comments.is_some()
-        && !doc.comments.is_empty()
-        && (o_ext.is_some() || source.is_none() || threads)
-    {
-        names.comments_extended = Some(pick(o_ext, format!("{dir}commentsExtended.xml")));
-    }
-    let o_people = original_target(rel_type::PEOPLE);
-    if o_people.is_some()
-        || !extras.people.is_empty()
-        || (source.is_none() && !doc.comments.is_empty())
-    {
-        names.people = Some(pick(o_people, format!("{dir}people.xml")));
-    }
-    let o_theme = original_target(rel_type::THEME);
-    if source.is_none() || o_theme.is_some() || doc.theme != kiln_doc::DocTheme::office() {
-        names.theme = Some(pick(o_theme, format!("{dir}theme/theme1.xml")));
-    }
-    let has_font_table = passthrough
-        .parts()
-        .any(|p| p.content_type == wml("fontTable"));
-    if source.is_none() && !has_font_table {
-        names.font_table = Some(pick(None, format!("{dir}fontTable.xml")));
-    }
-    let referenced: Vec<NodeId> = doc
-        .sections
-        .iter()
-        .flat_map(|s| {
-            [
-                HeaderFooterKind::Default,
-                HeaderFooterKind::Even,
-                HeaderFooterKind::First,
-            ]
-            .into_iter()
-            .flat_map(move |k| [s.headers.get(k), s.footers.get(k)])
-            .flatten()
-        })
-        .collect();
-    for id in referenced {
-        if names.headers_footers.contains_key(&id) {
-            continue;
-        }
-        let Some(story) = doc.headers_footers.iter().find(|h| h.id == id) else {
-            continue;
-        };
-        let footer = story.part == kiln_doc::HeaderFooterPart::Footer;
-        let fallback = format!("{dir}{}1.xml", if footer { "footer" } else { "header" });
-        let name = pick(extras.header_footer_parts.get(&id).cloned(), fallback);
-        names.headers_footers.insert(id, name);
-    }
+    let original_target =
+        |rt: &str| original_main_target(&original_rels, main_original.as_deref(), rt);
 
     // ---- placeholders, so relationships to and from them survive the passthrough
     let mut pkg = OpcPackage::new();
@@ -736,55 +1372,7 @@ pub fn write_docx(
 
     // ---- what is preserved byte for byte: untouched parts whose relationships all still lead
     // somewhere
-    let mut preserved: BTreeSet<String> = BTreeSet::new();
-    let mut first_bookmark = 0u64;
-    if let (Some(touched), Some(orig)) = (options.preserve, original_pkg)
-        && !touched.everything
-    {
-        let can = |name: &str| -> bool {
-            if !orig.has(name) || orig.content_type(name) != pkg.content_type(name) {
-                return false;
-            }
-            let Ok(rels) = orig.relationships(name) else {
-                return false;
-            };
-            rels.all().iter().all(|r| {
-                r.is_external()
-                    || rels
-                        .resolve(r)
-                        .is_some_and(|t| pkg.has(&t) || doc.media.contains_key(&t))
-            })
-        };
-        let mut candidates: Vec<(bool, Option<&String>)> = vec![
-            (touched.body, Some(&names.main)),
-            (touched.styles, names.styles.as_ref()),
-            (touched.numbering, names.numbering.as_ref()),
-            (touched.settings, names.settings.as_ref()),
-            (touched.footnotes, names.footnotes.as_ref()),
-            (touched.endnotes, names.endnotes.as_ref()),
-            (touched.comments, names.comments.as_ref()),
-            (touched.comments, names.comments_extended.as_ref()),
-            (touched.comments, names.people.as_ref()),
-        ];
-        for (id, name) in &names.headers_footers {
-            candidates.push((touched.header_footer(*id), Some(name)));
-        }
-        for (touched_flag, name) in candidates {
-            if let Some(n) = name
-                && !touched_flag
-                && can(n)
-            {
-                preserved.insert(n.clone());
-            }
-        }
-        // Bookmarks written into regenerated parts are numbered above those of copied parts.
-        for p in &preserved {
-            if let Ok(b) = orig.part_bytes(p) {
-                let max = max_bookmark_id(&String::from_utf8_lossy(&b));
-                first_bookmark = first_bookmark.max(max + 1);
-            }
-        }
-    }
+    let (preserved, first_bookmark) = plan_preserved(doc, &names, &pkg, original_pkg, options);
 
     let mut ctx = WriteContext::new(
         pkg,
@@ -871,365 +1459,20 @@ pub fn write_docx(
     };
     let mut written: Vec<(String, String)> = Vec::new();
 
-    // ---- headers and footers
-    for (id, name) in &names.headers_footers {
-        let Some(story) = doc.headers_footers.iter().find(|h| h.id == *id) else {
-            continue;
-        };
-        if is_preserved(name) {
-            continue;
-        }
-        let mut w = StoryWriter::new(&mut ctx, &ids, name, None);
-        let mut body = w.story(&story.blocks, BlockOpts::default());
-        if !matches!(story.blocks.last(), Some(Block::Paragraph(_))) {
-            body.push_str("<w:p/>");
-        }
-        let root = if story.part == kiln_doc::HeaderFooterPart::Footer {
-            "w:ftr"
-        } else {
-            "w:hdr"
-        };
-        written.push((name.clone(), xml::part(root, &body, &["w", "r"])));
-    }
-
-    // ---- body
-    if !is_preserved(&names.main) {
-        // References in the order of the stories (the reader numbers stories as it meets them).
-        let story_index = |id: NodeId| doc.headers_footers.iter().position(|h| h.id == id);
-        let mut refs_of: Vec<Vec<HeaderFooterRef>> = Vec::new();
-        for s in &doc.sections {
-            let mut refs = Vec::new();
-            for (footer, list) in [(false, &s.headers), (true, &s.footers)] {
-                let mut kinds: Vec<(usize, HeaderFooterKind, NodeId)> = [
-                    HeaderFooterKind::Default,
-                    HeaderFooterKind::Even,
-                    HeaderFooterKind::First,
-                ]
-                .into_iter()
-                .filter_map(|k| {
-                    let id = list.get(k)?;
-                    Some((story_index(id).unwrap_or(usize::MAX), k, id))
-                })
-                .collect();
-                kinds.sort_by_key(|(i, _, _)| *i);
-                for (_, k, id) in kinds {
-                    let Some(part) = names.headers_footers.get(&id) else {
-                        continue;
-                    };
-                    let rt = if footer {
-                        rel_type::FOOTER
-                    } else {
-                        rel_type::HEADER
-                    };
-                    let rel_id = ctx.rel(&names.main, rt, part, false);
-                    refs.push(HeaderFooterRef {
-                        footer,
-                        kind: k,
-                        rel_id,
-                    });
-                }
-            }
-            refs_of.push(refs);
-        }
-        let mut w = StoryWriter::new(&mut ctx, &ids, &names.main, None);
-        let parts: Vec<&[Block]> = doc.sections.iter().map(|s| s.blocks.as_slice()).collect();
-        w.prepare_comments(&parts);
-        let mut body = String::new();
-        let n = doc.sections.len();
-        for (i, s) in doc.sections.iter().enumerate() {
-            let sect = section_props_xml(&s.props, extras.sections.get(&s.id), &refs_of[i]);
-            if i + 1 == n {
-                body.push_str(&w.blocks(&s.blocks, BlockOpts::default()));
-                body.push_str(&sect);
-            } else {
-                body.push_str(&w.blocks(
-                    &s.blocks,
-                    BlockOpts {
-                        sect_pr: Some(sect),
-                        ..BlockOpts::default()
-                    },
-                ));
-            }
-        }
-        let inner = format!(
-            "{}<w:body>{body}</w:body>",
-            extras.background.as_deref().unwrap_or_default()
-        );
-        let strict = extras.document_root_attrs.iter().any(|(k, v)| {
-            k == "w:conformance" || (k.starts_with("xmlns") && v.contains("purl.oclc.org"))
-        });
-        let xml_text = if extras.document_root_attrs.is_empty() || strict {
-            xml::part("w:document", &inner, &["w", "r"])
-        } else {
-            xml::part_with_root_attrs("w:document", &extras.document_root_attrs, &inner)
-        };
-        written.push((names.main.clone(), xml_text));
-    }
-
-    // ---- notes
-    let mut separators: HashMap<NoteKind, Vec<String>> = HashMap::new();
-    for (kind, name) in [
-        (NoteKind::Footnote, &names.footnotes),
-        (NoteKind::Endnote, &names.endnotes),
-    ] {
-        let notes: Vec<_> = doc.notes.iter().filter(|n| n.kind == kind).collect();
-        let mut seps: Vec<String> = notes
-            .iter()
-            .filter(|n| n.note_type != NoteType::Normal)
-            .filter_map(|n| ids.notes.get(&n.id).cloned())
-            .collect();
-        let Some(name) = name else {
-            continue;
-        };
-        let el = match kind {
-            NoteKind::Footnote => "w:footnote",
-            NoteKind::Endnote => "w:endnote",
-        };
-        let mut body = String::new();
-        let has_separators = notes.iter().any(|n| n.note_type == NoteType::Separator);
-        if !has_separators && notes.iter().any(|n| n.note_type == NoteType::Normal) {
-            // Notes created in the editor: Word's separator notes.
-            let used: HashSet<&String> = ids.notes.values().collect();
-            let mut free = (-1i64..).step_by(1);
-            let mut pick_id = || loop {
-                let v = free.next().unwrap_or(-1);
-                let s = v.to_string();
-                if !used.contains(&s) {
-                    return s;
-                }
-            };
-            let (sep, cont) = (pick_id(), pick_id());
-            for (t, id) in [("separator", &sep), ("continuationSeparator", &cont)] {
-                body.push_str(&format!(
-                    "<{el} w:type=\"{t}\" w:id=\"{id}\"><w:p><w:pPr><w:spacing w:after=\"0\" w:line=\"240\" w:lineRule=\"auto\"/></w:pPr><w:r><w:{t}/></w:r></w:p></{el}>"
-                ));
-            }
-            seps = vec![sep, cont];
-        }
-        separators.insert(kind, seps);
-        if is_preserved(name) {
-            continue;
-        }
-        for n in notes {
-            let id = ids.notes.get(&n.id).cloned().unwrap_or_default();
-            let mut w = StoryWriter::new(&mut ctx, &ids, name, Some(n.id));
-            let content = w.story(
-                &n.blocks,
-                BlockOpts {
-                    first_prefix: separator_run(n.note_type).map(str::to_owned),
-                    ..BlockOpts::default()
-                },
-            );
-            let ty = (n.note_type != NoteType::Normal).then(|| n.note_type.as_str());
-            body.push_str(
-                &xml::El::new(el)
-                    .opt("w:type", ty)
-                    .attr("w:id", id)
-                    .wrap(&content),
-            );
-        }
-        let root = match kind {
-            NoteKind::Footnote => "w:footnotes",
-            NoteKind::Endnote => "w:endnotes",
-        };
-        written.push((name.clone(), xml::part(root, &body, &["w", "r"])));
-    }
-
-    // ---- comments
-    let mut regenerated_extra: Vec<String> = Vec::new();
-    if let Some(cname) = &names.comments {
-        let mut used_para: BTreeSet<String> = extras
-            .paragraphs
-            .values()
-            .filter_map(|p| p.para_id.clone())
-            .collect();
-        let mut entries: Vec<CommentEx> = Vec::new();
-        let mut para_of: HashMap<NodeId, String> = HashMap::new();
-        // Threads (commentsExtended) and durable ids (commentsIds) key comments by the paraId of
-        // their last paragraph.
-        let needs_para_ids = names.comments_extended.is_some()
-            || !ctx.pkg.parts_by_content_type(COMMENTS_IDS_TYPE).is_empty()
-            || source.is_none();
-        for (i, c) in doc.comments.iter().enumerate() {
-            let own = match c.blocks.last() {
-                Some(Block::Paragraph(p)) => {
-                    extras.paragraphs.get(&p.id).and_then(|x| x.para_id.clone())
-                }
-                _ => None,
-            };
-            let wid = ids.comments.get(&c.id).cloned().unwrap_or_default();
-            let para = match own {
-                Some(p) => Some(p),
-                None if needs_para_ids => {
-                    Some(make_hex_id(&format!("comment:{wid}:{i}"), &mut used_para))
-                }
-                None => None,
-            };
-            if let Some(p) = para {
-                para_of.insert(c.id, p);
-            }
-        }
-        let mut body = String::new();
-        if !is_preserved(cname) {
-            for c in &doc.comments {
-                let wid = ids.comments.get(&c.id).cloned().unwrap_or_default();
-                let style = if ids.comment_reference_style {
-                    "<w:rPr><w:rStyle w:val=\"CommentReference\"/></w:rPr>"
-                } else {
-                    ""
-                };
-                let mut w = StoryWriter::new(&mut ctx, &ids, cname, None);
-                let content = w.story(
-                    &c.blocks,
-                    BlockOpts {
-                        first_prefix: Some(format!("<w:r>{style}<w:annotationRef/></w:r>")),
-                        last_para_id: para_of.get(&c.id).cloned(),
-                        ..BlockOpts::default()
-                    },
-                );
-                body.push_str(
-                    &xml::El::new("w:comment")
-                        .attr("w:id", &wid)
-                        .attr("w:author", &c.meta.author)
-                        .opt("w:date", c.meta.date.as_deref())
-                        .opt("w:initials", c.meta.initials.as_deref())
-                        .wrap(&content),
-                );
-            }
-            written.push((cname.clone(), xml::part("w:comments", &body, &["w", "r"])));
-        }
-        for c in &doc.comments {
-            if let Some(p) = para_of.get(&c.id) {
-                entries.push(CommentEx {
-                    para_id: p.clone(),
-                    parent: c.meta.parent.and_then(|pid| para_of.get(&pid).cloned()),
-                    done: c.meta.resolved,
-                });
-            }
-        }
-        if let Some(ext) = &names.comments_extended
-            && !is_preserved(ext)
-        {
-            written.push((ext.clone(), parts::comments_extended_part(&entries)));
-        }
-        // commentsIds / commentsExtensible (Word 2016+), kept in step with the comments.
-        let current: Vec<String> = doc
-            .comments
-            .iter()
-            .filter_map(|c| para_of.get(&c.id).cloned())
-            .collect();
-        let ids_part = ctx
-            .pkg
-            .parts_by_content_type(COMMENTS_IDS_TYPE)
-            .first()
-            .map(|s| (*s).to_owned());
-        match ids_part {
-            Some(p) if !is_preserved(cname) => {
-                let parsed = ctx.pkg.part_xml(&p).ok().flatten().map(|d| d.root);
-                let map: Vec<(String, String)> = parsed
-                    .as_ref()
-                    .map(|r| {
-                        r.elements()
-                            .filter_map(|e| {
-                                Some((
-                                    e.attr("w16cid:paraId")?.to_owned(),
-                                    e.attr("w16cid:durableId")?.to_owned(),
-                                ))
-                            })
-                            .collect()
-                    })
-                    .unwrap_or_default();
-                let old: BTreeSet<&String> = map.iter().map(|(p, _)| p).collect();
-                let new: BTreeSet<&String> = current.iter().collect();
-                if old != new {
-                    let mut used: BTreeSet<String> = map.iter().map(|(_, d)| d.clone()).collect();
-                    let entries: Vec<(String, String)> = current
-                        .iter()
-                        .map(|para| {
-                            let durable = map
-                                .iter()
-                                .find(|(p, _)| p == para)
-                                .map(|(_, d)| d.clone())
-                                .unwrap_or_else(|| {
-                                    make_hex_id(&format!("durable:{para}"), &mut used)
-                                });
-                            (para.clone(), durable)
-                        })
-                        .collect();
-                    let durable: BTreeSet<String> =
-                        entries.iter().map(|(_, d)| d.clone()).collect();
-                    ctx.pkg
-                        .set_part(&p, parts::comments_ids_part(&entries).into_bytes())?;
-                    regenerated_extra.push(p.clone());
-                    // Drop extensible entries of removed comments.
-                    let ext_part = ctx
-                        .pkg
-                        .parts_by_content_type(COMMENTS_EXTENSIBLE_TYPE)
-                        .first()
-                        .map(|s| (*s).to_owned());
-                    if let Some(ep) = ext_part
-                        && let Ok(Some(mut d)) = ctx.pkg.part_xml(&ep)
-                    {
-                        d.root.children.retain(|c| {
-                            c.as_element().is_none_or(|e| {
-                                e.attr("w16cex:durableId")
-                                    .is_none_or(|v| durable.contains(v))
-                            })
-                        });
-                        let bytes = kiln_ooxml::xml::document_to_bytes(&d).unwrap_or_default();
-                        ctx.pkg.set_part(&ep, bytes)?;
-                        regenerated_extra.push(ep);
-                    }
-                }
-            }
-            None if source.is_none() && !doc.comments.is_empty() => {
-                let p = format!("{dir}commentsIds.xml");
-                if !ctx.pkg.has(&p) {
-                    let mut used: BTreeSet<String> = BTreeSet::new();
-                    let entries: Vec<(String, String)> = current
-                        .iter()
-                        .map(|para| {
-                            (
-                                para.clone(),
-                                make_hex_id(&format!("durable:{para}"), &mut used),
-                            )
-                        })
-                        .collect();
-                    ctx.pkg.add_part(
-                        &p,
-                        COMMENTS_IDS_TYPE,
-                        parts::comments_ids_part(&entries).into_bytes(),
-                    )?;
-                    ctx.produced.insert(part_key(&p));
-                    ctx.rel(&names.main, rel_type::COMMENTS_IDS, &p, false);
-                    regenerated_extra.push(p);
-                }
-            }
-            _ => {}
-        }
-    }
-    if let Some(pname) = &names.people
-        && !is_preserved(pname)
-    {
-        let mut people: Vec<Person> = extras.people.clone();
-        if !extras.people.is_empty() || source.is_none() {
-            // Authors of comments written in Kiln join the list, as Word adds them.
-            for c in doc
-                .comments
-                .iter()
-                .filter(|c| !extras.comment_ids.contains_key(&c.id))
-            {
-                if !people.iter().any(|p| p.author == c.meta.author) {
-                    people.push(Person {
-                        author: c.meta.author.clone(),
-                        provider_id: Some("None".to_owned()),
-                        user_id: Some(c.meta.author.clone()),
-                    });
-                }
-            }
-        }
-        written.push((pname.clone(), parts::people_part(&people)));
-    }
+    // ---- stories: headers and footers, body, notes, comments and their companion parts
+    let plan = StoryPlan {
+        doc,
+        extras,
+        names: &names,
+        ids: &ids,
+        preserved: &preserved,
+        new_document: source.is_none(),
+    };
+    write_headers_footers(&mut ctx, &plan, &mut written);
+    write_body(&mut ctx, &plan, &mut written);
+    let separators = write_notes(&mut ctx, &plan, &mut written);
+    let regenerated_extra = write_comments(&mut ctx, &plan, &dir, &mut written)?;
+    write_people(&plan, &mut written);
 
     // ---- styles, numbering, settings, theme, fonts
     let original_root = |name: Option<&str>| -> Option<XmlElement> {
@@ -1288,80 +1531,7 @@ pub fn write_docx(
 
     // ---- preserved parts: original bytes and relationships
     if let Some(orig) = original_pkg {
-        for name in &preserved {
-            let bytes = orig.part_bytes(name)?.into_owned();
-            let structural: Vec<(String, String, String)> = ctx
-                .pkg
-                .relationships(name)
-                .map(|r| {
-                    r.all()
-                        .iter()
-                        .filter(|x| !x.is_external())
-                        .map(|x| {
-                            (
-                                x.id.clone(),
-                                x.rel_type.clone(),
-                                r.resolve(x).unwrap_or_else(|| x.target.clone()),
-                            )
-                        })
-                        .collect()
-                })
-                .unwrap_or_default();
-            let current_ids: Vec<String> = ctx
-                .pkg
-                .relationships(name)
-                .map(|r| r.all().iter().map(|x| x.id.clone()).collect())
-                .unwrap_or_default();
-            for id in current_ids {
-                ctx.pkg.remove_relationship(name, &id)?;
-            }
-            let originals = orig.relationships(name)?.into_owned();
-            for r in originals.all() {
-                if !r.is_external()
-                    && let Some(t) = originals.resolve(r)
-                    && !ctx.pkg.has(&t)
-                {
-                    let _ = ctx.media_part(&t);
-                }
-                ctx.pkg.add_relationship_raw(
-                    name,
-                    &r.rel_type,
-                    &r.target,
-                    Some(&r.id),
-                    r.target_mode,
-                )?;
-            }
-            ctx.forget_rels(name);
-            // Structural relationships the writer needs that the original part lacks (a
-            // numbering part added since, for example).
-            for (_, rt, target) in structural {
-                let present = originals.all().iter().any(|r| {
-                    rel_type_matches(&r.rel_type, &rt)
-                        && originals
-                            .resolve(r)
-                            .is_some_and(|t| part_key(&t) == part_key(&target))
-                });
-                let structural_type = [
-                    rel_type::STYLES,
-                    rel_type::SETTINGS,
-                    rel_type::NUMBERING,
-                    rel_type::FOOTNOTES,
-                    rel_type::ENDNOTES,
-                    rel_type::COMMENTS,
-                    rel_type::COMMENTS_EXTENDED,
-                    rel_type::COMMENTS_IDS,
-                    rel_type::PEOPLE,
-                    rel_type::THEME,
-                    rel_type::FONT_TABLE,
-                ]
-                .iter()
-                .any(|s| rel_type_matches(&rt, s));
-                if !present && structural_type {
-                    ctx.rel(name, &rt, &target, false);
-                }
-            }
-            ctx.pkg.set_part(name, bytes)?;
-        }
+        copy_preserved(&mut ctx, orig, &preserved)?;
     }
 
     // ---- document properties
@@ -1369,30 +1539,10 @@ pub fn write_docx(
     write_document_properties(&mut ctx.pkg, &props)?;
 
     // ---- relationships parts that did not change: the original bytes
-    let mut restored: BTreeSet<String> = BTreeSet::new();
-    if let Some(orig) = original_pkg {
-        let rels_parts: Vec<String> = ctx
-            .pkg
-            .all_part_names()
-            .filter(|n| is_rels_part(n))
-            .map(str::to_owned)
-            .collect();
-        for r in rels_parts {
-            let Some(source_part) = source_part_of_rels(&r) else {
-                continue;
-            };
-            if !orig.has(&r) {
-                continue;
-            }
-            if rel_facts(&ctx.pkg, &source_part) == rel_facts(orig, &source_part)
-                && let Ok(bytes) = orig.part_bytes(&r)
-            {
-                let bytes = bytes.into_owned();
-                ctx.pkg.set_part(&r, bytes)?;
-                restored.insert(part_key(&r));
-            }
-        }
-    }
+    let restored = match original_pkg {
+        Some(orig) => restore_unchanged_rels(&mut ctx, orig)?,
+        None => BTreeSet::new(),
+    };
 
     // ---- what was regenerated
     let mut regenerated: Vec<String> = vec![kiln_ooxml::opc::CONTENT_TYPES_PART.to_owned()];

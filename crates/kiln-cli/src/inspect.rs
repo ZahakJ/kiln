@@ -147,6 +147,9 @@ fn pretty_node(out: &mut String, n: &XmlNode, depth: usize) {
         XmlNode::Pi(p) => {
             let _ = writeln!(out, "{pad}<?{} {}?>", p.target, p.content);
         }
+        XmlNode::Raw(markup) => {
+            let _ = writeln!(out, "{pad}{markup}");
+        }
     }
 }
 

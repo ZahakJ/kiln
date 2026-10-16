@@ -217,7 +217,7 @@ pub fn read_package(pkg: &OpcPackage) -> Result<DocxRead, DocxError> {
             }
         ))
     })?;
-    let main_doc = match pkg.part_xml(&main) {
+    let main_doc = match pkg.part_xml_with(&main, context::part_parse_options()) {
         Ok(Some(d)) => d,
         Ok(None) => return Err(not_word("the main part is missing")),
         Err(e) => return Err(not_word(e.to_string())),

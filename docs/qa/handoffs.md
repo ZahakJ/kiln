@@ -415,6 +415,36 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   the target format drops (macros into .docx, etc.) and what Kiln could not model (kept verbatim).
 - Strict-conformance relationship types in passthrough parts are kept as read, not converted to transitional.
 
+## WP-65 fix round 1 → WP-55 (OOXML), WP-62 (DOCX reader), WP-60 (CLI), the plan owner
+
+- Outside WP-65's paths, to make `external/docx/poi-deep-table-cell.docx` open (it was refused):
+  - `crates/kiln-ooxml` (WP-55): `ParseOptions::keep_too_deep_as_raw` (default `false`, so every other caller
+    still refuses over-deep parts) and `XmlNode::Raw(String)`: an element opening past `max_depth` is consumed by
+    counting (any depth, constant stack), checked (end names, entities, no DTD) and kept verbatim with the in-scope
+    namespace bindings declared on its root; the writer emits it as is. Tests appended to `tests/xml.rs`;
+    README updated. A new enum variant: exhaustive `match`es on `XmlNode` elsewhere need an arm
+    (`kiln-cli` `inspect.rs` got one).
+  - `crates/kiln-io-docx/src/read` (WP-62): parts are parsed with `keep_too_deep_as_raw` (`context.rs`
+    `part_parse_options`, `mod.rs` for the main part); `tables.rs` keeps a table whole as opaque XML when its
+    cells would pass `MAX_DEPTH` (`TABLE_HEADROOM` = 8) — before, the limit cut the 32nd nested table open and
+    `read_blocks` dropped its cell content, which a save then lost; a cell whose last block is not a paragraph
+    (empty, or ending with a nested table) gets an empty end-of-cell paragraph, as Word reads it and as the
+    writer writes it (a cell must end with a paragraph), so read → save → read gives the same model.
+- For the plan owner: with the file now read and saved losslessly (structural 1.000, text 1.000, untouched
+  parts identical, LibreOffice opens the output), its visual score is 0.009. LibreOffice renders the original —
+  whose cells end with a nested table and no paragraph, which the schema does not allow — with the 5,000 tables
+  stacked flat (105 pages); it renders Kiln's output, where every followed cell ends with the paragraph Word
+  requires, with the tables truly nested (1 page: the nested cells shrink to nothing past level ~10).
+  The writer is right and the oracle's rendering of the invalid input is the outlier; writing schema-invalid cells
+  back to match it would be wrong. `cargo xtask fidelity --format docx` therefore still exits 1 on this one file.
+  Deciding it needs a `parity/corpus.json` entry for the file (for example `{"structural": 0.95, "text": 1.0,
+  "oracle_opens": true, "byte_identical_untouched": true}` without `visual`, with a note) and, since the report's
+  summary line takes the minimum over all files, a summary that respects per-file checks.
+- `docx/manual/foreign-prefixes.docx` scores visual 0.916 because LibreOffice ignores the unprefixed
+  default-namespace `pgSz` in the original; Kiln's output, with a correctly prefixed A4 page, is the correct one.
+  `parity/corpus.json` `notes` are not shown in `docs/qa/fidelity.md` (`kiln-testing` `fidelity/mod.rs` only
+  shows the scorer's own notes); showing them would let such explanations sit next to the score.
+
 ## WP-69 → WP-70 (XLSX), WP-71/WP-72 (Grid surface and features), WP-73 (charts), WP-56/WP-94 (engine, performance), the bridge's owner
 
 - Outside WP-69's paths: the workspace pins `icu_collator = "=2.3.1"` and `icu_locale_core = "=2.3.0"` (Unicode-3.0,
