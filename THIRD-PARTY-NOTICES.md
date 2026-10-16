@@ -193,6 +193,8 @@ third-party software listed below, each under its own licence. This file is gene
 | iana-time-zone | 0.1.65 | MIT OR Apache-2.0 |
 | iana-time-zone-haiku | 0.1.2 | MIT OR Apache-2.0 |
 | ico | 0.5.0 | MIT |
+| icu_collator | 2.3.1 | Unicode-3.0 |
+| icu_collator_data | 2.3.0 | Unicode-3.0 |
 | icu_collections | 2.3.0 | Unicode-3.0 |
 | icu_locale_core | 2.3.0 | Unicode-3.0 |
 | icu_locale_fallback | 2.3.0 | Unicode-3.0 |
@@ -462,6 +464,7 @@ third-party software listed below, each under its own licence. This file is gene
 | unicode-segmentation | 1.13.3 | MIT OR Apache-2.0 |
 | url | 2.5.8 | MIT OR Apache-2.0 |
 | urlpattern | 0.6.0 | MIT |
+| utf16_iter | 1.0.5 | Apache-2.0 OR MIT |
 | utf8_iter | 1.0.4 | Apache-2.0 OR MIT |
 | uuid | 1.28.0 | Apache-2.0 OR MIT |
 | walkdir | 2.5.0 | Unlicense/MIT |
@@ -524,6 +527,7 @@ third-party software listed below, each under its own licence. This file is gene
 | winnow | 0.5.40 | MIT |
 | winnow | 1.0.4 | MIT |
 | wit-bindgen | 0.57.1 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
+| write16 | 1.0.0 | Apache-2.0 OR MIT |
 | writeable | 0.6.4 | Unicode-3.0 |
 | wry | 0.57.0 | Apache-2.0 OR MIT |
 | x11 | 2.21.0 | MIT |
@@ -1647,6 +1651,18 @@ third-party software listed below, each under its own licence. This file is gene
 - Licence: MIT
 - Repository: https://github.com/mdsteele/rust-ico
 - Licence files: [text 123](#rust-licence-text-123)
+
+### icu_collator 2.3.1
+
+- Licence: Unicode-3.0
+- Repository: https://github.com/unicode-org/icu4x
+- Licence files: [text 124](#rust-licence-text-124)
+
+### icu_collator_data 2.3.0
+
+- Licence: Unicode-3.0
+- Repository: https://github.com/unicode-org/icu4x
+- Licence files: [text 124](#rust-licence-text-124)
 
 ### icu_collections 2.3.0
 
@@ -3232,6 +3248,12 @@ third-party software listed below, each under its own licence. This file is gene
 - Repository: https://github.com/denoland/rust-urlpattern
 - Licence files: [text 245](#rust-licence-text-245)
 
+### utf16_iter 1.0.5
+
+- Licence: Apache-2.0 OR MIT
+- Repository: https://github.com/hsivonen/utf16_iter
+- Licence files: [text 74](#rust-licence-text-74), [text 78](#rust-licence-text-78)
+
 ### utf8_iter 1.0.4
 
 - Licence: Apache-2.0 OR MIT
@@ -3598,6 +3620,12 @@ third-party software listed below, each under its own licence. This file is gene
 - Licence: Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
 - Repository: https://github.com/bytecodealliance/wit-bindgen
 - Licence files: [text 14](#rust-licence-text-14), [text 147](#rust-licence-text-147), [text 3](#rust-licence-text-3)
+
+### write16 1.0.0
+
+- Licence: Apache-2.0 OR MIT
+- Repository: https://github.com/hsivonen/write16
+- Licence files: [text 74](#rust-licence-text-74), [text 78](#rust-licence-text-78)
 
 ### writeable 0.6.4
 
