@@ -67,6 +67,8 @@ pub struct RowBox {
     pub height: f32,
     /// Must not break across pages.
     pub cant_split: bool,
+    /// The height is exact (`hRule="exact"`): content beyond it is clipped.
+    pub exact: bool,
     /// A repeated header row.
     pub header: bool,
     /// Indices into [`TableBox::cells`] of the cells starting in this row.
@@ -324,6 +326,10 @@ impl Cx<'_> {
             .map(|(i, row)| RowBox {
                 height: 0.0,
                 cant_split: row.props.cant_split.unwrap_or(false),
+                exact: row
+                    .props
+                    .height
+                    .is_some_and(|h| matches!(h.rule, HeightRule::Exact)),
                 header: i < t.header_rows(),
                 cells: Vec::new(),
             })

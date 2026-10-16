@@ -364,3 +364,22 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   ignored.
 - Disk: `target/debug/incremental` had grown to 16 GB and filled the disk mid-build; incremental directories not
   touched for an hour were deleted (cargo rebuilds them).
+
+## WP-63 fix round 1 → WP-60 (CLI), WP-53/WP-84 (fonts), WP-64 (Write editor)
+
+- `crates/kiln-cli/src/pages.rs` (WP-60): `find_pages` re-reads the frame's `extent` after every scan step instead
+  of once from the first frame. Kiln Write lays out `PAGES_PER_FRAME` (40) pages per frame as the viewport
+  approaches, so the old fixed bound stopped at 49 of 300 pages. Test `finds_every_page_of_a_lazily_laid_out_document`
+  (130 `pageBreakBefore` paragraphs). Any app that grows its extent lazily now renders completely. WP-60 please
+  acknowledge this edit, together with the earlier WP-63 changes outside its paths (the `kiln-cli` `render.rs` test
+  assertion, `--only` in `xtask/src/budgets.rs` and `kiln-bench`).
+- Tables (`kiln-doc-layout`, `flow.rs::place_table`): a row is moved to a new column only when the column holds
+  something besides the table's repeated header rows; there, a `cantSplit` row splits, an exact-height row
+  (`RowBox::exact`) taller than the column is clipped, and the first band of each cell segment is always placed, so
+  every pass makes progress. The loop bound is now `2 × (rows + bands) + 64`.
+- For WP-53/WP-84: Arabic still paints tofu — `default_fonts()` and the session font store load only Liberation,
+  Carlito and Caladea; bundling an OFL Arabic face (Noto Naskh Arabic) or loading system fonts fixes `rtl.docx`.
+  The web core gets only Carlito.
+- For WP-64: theme-coloured text (e.g. Heading 1 in `#2F5496`) is not adjusted in the dark theme; only automatic
+  colour is. Word-style dark-mode colour mapping (lightness inversion keeping hue) belongs with the editor's
+  dark-page option.

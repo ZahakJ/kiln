@@ -106,18 +106,21 @@ pub fn find_pages(session: &mut Session, doc: DocId) -> Result<Vec<Bounds>, Stri
         .set_viewport(doc, viewport(Bounds::new(0.0, 0.0, 1.0, 1.0), SCAN_DPR))
         .map_err(e)?;
     let first = session.frame(doc).map_err(e)?;
-    let extent = first.extent;
+    let mut extent = first.extent;
     let mut found = BTreeMap::new();
     pages_in(&first, &mut found);
     let mut y = extent.y;
-    let bottom = extent.y + extent.h;
-    while y < bottom {
+    // Documents laid out lazily (Kiln Write pages a few dozen pages per frame as the viewport
+    // approaches) grow their extent while the scan moves down: it is re-read after every frame,
+    // so the scan ends only at the bottom of the complete document.
+    while y < extent.y + extent.h {
         let rect = Bounds::new(extent.x, y, extent.w.max(1.0), SCAN_STEP);
         session
             .set_viewport(doc, viewport(rect, SCAN_DPR))
             .map_err(e)?;
         let delta = session.frame(doc).map_err(e)?;
         pages_in(&delta, &mut found);
+        extent = delta.extent;
         y += SCAN_STEP;
     }
     let mut pages: Vec<Bounds> = found.into_values().collect();
@@ -302,6 +305,64 @@ pub fn write_pages(pages: &[RenderedPage], target: &str) -> Result<Vec<PathBuf>,
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A Word document of `n` one-line paragraphs, each starting a new page.
+    fn paged_docx(n: usize) -> Vec<u8> {
+        use kiln_ooxml::opc::{OpcPackage, RelationshipOptions, content_type, rel_type};
+        let mut body = String::new();
+        for i in 1..=n {
+            body.push_str(&format!(
+                "<w:p><w:pPr><w:pageBreakBefore/></w:pPr><w:r><w:t>Page {i}</w:t></w:r></w:p>"
+            ));
+        }
+        let xml = format!(
+            "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\
+             <w:document xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\">\
+             <w:body>{body}</w:body></w:document>"
+        );
+        let mut pkg = OpcPackage::new();
+        pkg.add_part("/word/document.xml", content_type::DOCX_DOCUMENT, xml)
+            .unwrap();
+        pkg.add_relationship(
+            "/",
+            rel_type::OFFICE_DOCUMENT,
+            "/word/document.xml",
+            RelationshipOptions::default(),
+        )
+        .unwrap();
+        pkg.save().unwrap()
+    }
+
+    #[test]
+    fn finds_every_page_of_a_lazily_laid_out_document() {
+        // Kiln Write lays out a few dozen pages per frame; the scan must not stop at the extent
+        // the first frame reported (it used to find 49 pages of 300).
+        let n = 130;
+        let mut session = Session::new(Box::new(kiln_session::DeferredHost::new(|| 0)));
+        let doc = session
+            .open(
+                &paged_docx(n),
+                kiln_protocol::OpenHint {
+                    name: Some("paged.docx".into()),
+                    ..kiln_protocol::OpenHint::default()
+                },
+            )
+            .unwrap()
+            .doc;
+        assert_eq!(find_pages(&mut session, doc).unwrap().len(), n);
+        let last = render(
+            &mut session,
+            doc,
+            &PageOptions {
+                dpi: 24,
+                dark: false,
+                pages: Some(vec![n]),
+            },
+        )
+        .unwrap();
+        assert_eq!(last.len(), 1);
+        assert_eq!(last[0].number, n);
+    }
 
     #[test]
     fn expands_printf_patterns() {

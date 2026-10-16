@@ -1306,11 +1306,21 @@ impl Flow<'_, '_> {
             .collect();
         let mut seg_top: Vec<Option<f32>> = vec![None; tb.cells.len()];
         let mut placed_any = false;
+        // Where this table's rows start in the current column when nothing but its repeated
+        // header rows sits above them. A row that cannot split but does not fit there either
+        // would fit nowhere: it is split (or, with an exact height, clipped) there, as Word
+        // does, instead of moving on to another empty column.
+        let mut fresh_y = (!self.st.has).then_some(self.st.y);
+        // Every pass places a row, moves to an empty column (at most once per row) or places
+        // at least one band, so this bound is never reached by a correct layout; it only
+        // guarantees termination.
+        let bands: usize = tb.cells.iter().map(|c| c.content.bands.len()).sum();
+        let limit = 2 * (tb.rows.len() + bands) + 64;
         let mut r = 0usize;
         let mut guard = 0usize;
         while r < tb.rows.len() {
             guard += 1;
-            if guard > tb.rows.len() * 64 + 1024 {
+            if guard > limit {
                 break;
             }
             let (cx0, _) = self.column();
@@ -1354,8 +1364,9 @@ impl Flow<'_, '_> {
                 r += 1;
                 continue;
             }
-            let can_split = !row.cant_split && avail > 12.0;
-            if !can_split && (self.st.has || placed_any) {
+            let empty = fresh_y.is_some_and(|f| (self.st.y - f).abs() < 0.5);
+            let can_split = !row.cant_split && !row.exact && avail > 12.0;
+            if !can_split && !empty {
                 if !placed_any && let Some(c) = self.chain_start(blocks, k) {
                     return Err(Stop::Backtrack(c));
                 }
@@ -1384,11 +1395,46 @@ impl Flow<'_, '_> {
                 self.page().items.extend(items);
                 self.next_column(true);
                 self.repeat_headers(&tb, r);
+                fresh_y = Some(self.st.y);
                 for (c, cell) in tb.cells.iter().enumerate() {
                     if cell.row < r && cell.row + cell.row_span > r {
                         seg_top[c] = Some(self.st.y);
                     }
                 }
+                continue;
+            }
+            let open = |c: usize| seg_top[c].is_some() && tb.cells[c].row <= r;
+            let nothing_left = (0..tb.cells.len()).all(|c| !open(c) || queue[c].is_empty());
+            if empty && (row.exact || nothing_left) {
+                // Taller than an empty column with an exact height (or only cell margins
+                // left): clip the row at the column bottom.
+                let y_end = self.col_bottom().max(self.st.y);
+                let mut items = Vec::new();
+                for (c, cell) in tb.cells.iter().enumerate() {
+                    if cell.row <= r
+                        && cell.row + cell.row_span - 1 == r
+                        && let Some(top) = seg_top[c].take()
+                    {
+                        flush_cell(
+                            cell,
+                            c,
+                            &mut queue[c],
+                            x,
+                            top,
+                            y_end,
+                            false,
+                            true,
+                            &mut items,
+                        );
+                        queue[c].clear();
+                    }
+                }
+                self.page().items.extend(items);
+                self.st.y = y_end;
+                self.st.has = true;
+                self.st.page_has = true;
+                placed_any = true;
+                r += 1;
                 continue;
             }
             // Split the row at the column bottom.
@@ -1408,7 +1454,8 @@ impl Flow<'_, '_> {
                         top,
                         y_end,
                         false,
-                        (top - col_top).abs() < 0.5,
+                        (top - col_top).abs() < 0.5
+                            || fresh_y.is_some_and(|f| (top - f).abs() < 0.5),
                         &mut items,
                     );
                     if cell.row + cell.row_span - 1 == r {
@@ -1425,6 +1472,7 @@ impl Flow<'_, '_> {
             heights[r] = rest.max(1.0);
             self.next_column(true);
             self.repeat_headers(&tb, r);
+            fresh_y = Some(self.st.y);
             for (c, cell) in tb.cells.iter().enumerate() {
                 if cell.row <= r && cell.row + cell.row_span > r {
                     seg_top[c] = Some(self.st.y);

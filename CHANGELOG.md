@@ -45,6 +45,8 @@ All notable changes to Kiln (called Officina until WP-50) are recorded here. The
 - The landing page, README banner, social preview and app icons are neutral placeholders until the brand kit is imported.
 - The interface no longer loads the Inter and JetBrains Mono web fonts; the brand kit's fonts replace them.
 
+- Kiln Write no longer runs away on table rows taller than a page (WP-63 fix round 1): a row that may not split, a repeated header row or a row of exact height that is taller than an empty page used to move to a new page again and again, producing over a thousand blank pages from a 1 KB file and dropping the rest of the table. Such a row now splits where the page is empty (as Word does), an exact-height row is clipped at the page bottom, and every row of the table is placed. `kiln-cli render` now writes every page of long Word documents (it stopped after 49 of the 300-page test document because Kiln Write lays out later pages lazily).
+
 ### Removed
 
 - Placeholder packages for charts, collaboration, storage, printing, the ODF/PPTX/XLSX readers, the deck model, the Write, Grid and Deck editors, Notes, templates and i18n (recreated as thin views when their work packages start), and the Electron, Capacitor and Hocuspocus apps; TipTap, ProseMirror, Yjs, ECharts, fflate, fast-xml-parser, papaparse, numfmt, decimal.js, mathlive, nspell, pdf-lib, pdfjs-dist, dexie, comlink, immer and fontsource left the dependency catalog.

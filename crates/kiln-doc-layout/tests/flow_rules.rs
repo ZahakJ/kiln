@@ -295,6 +295,137 @@ fn tables_repeat_header_rows_and_keep_unsplittable_rows_whole() {
     assert!(pages.contains(&0) && pages.contains(&1), "{pages:?}");
 }
 
+/// One-column rows: `tall` leading rows of `n` lines each with the given properties, then
+/// `body` one-line rows.
+fn tall_rows_table(
+    doc: &mut Document,
+    tall: usize,
+    n: usize,
+    props: &TableRowProps,
+    body: usize,
+) -> (Table, Vec<Block>, Vec<Block>) {
+    let mut rows = Vec::new();
+    let mut tall_blocks = Vec::new();
+    let mut body_blocks = Vec::new();
+    for r in 0..tall + body {
+        let mut c = cell(doc, &format!("b{r}-"));
+        let mut row_props = TableRowProps::default();
+        if r < tall {
+            c.blocks = vec![lines(doc, n, &format!("t{r}-"), exact())];
+            tall_blocks.push(c.blocks[0].clone());
+            row_props = props.clone();
+        } else {
+            body_blocks.push(c.blocks[0].clone());
+        }
+        rows.push(Row {
+            id: doc.alloc_id(),
+            props: row_props,
+            revision: None,
+            cells: vec![c],
+        });
+    }
+    let t = Table {
+        id: doc.alloc_id(),
+        props: Default::default(),
+        grid: vec![8640],
+        rows,
+    };
+    (t, tall_blocks, body_blocks)
+}
+
+#[test]
+fn unsplittable_rows_taller_than_a_page_split_instead_of_running_away() {
+    // A cantSplit row of 80 lines (2.5 pages) after a paragraph, then 5 short rows: it moves
+    // to the next page once, then splits there as Word does.
+    let mut doc = Document::new();
+    let mut blocks = filler(&mut doc, 1);
+    let props = TableRowProps {
+        cant_split: Some(true),
+        ..TableRowProps::default()
+    };
+    let (t, tall, body) = tall_rows_table(&mut doc, 1, 80, &props, 5);
+    blocks.push(Block::Table(t));
+    let l = build(blocks, &mut doc);
+    assert!(l.pages().len() <= 5, "{} pages", l.pages().len());
+    let tall_pages = pages_of(&l, &tall[0]);
+    assert_eq!(tall_pages.len(), 80, "every line of the tall row is placed");
+    assert_eq!(
+        tall_pages[0], 1,
+        "the row first moves off the non-empty page"
+    );
+    for w in tall_pages.windows(2) {
+        assert!(w[1] == w[0] || w[1] == w[0] + 1, "{tall_pages:?}");
+    }
+    let last = *tall_pages.last().unwrap();
+    for b in &body {
+        assert_eq!(pages_of(&l, b), vec![last], "body rows follow the tall row");
+    }
+    for p in 0..l.pages().len() {
+        assert!(!l.page_lines(p).is_empty(), "page {p} is blank");
+    }
+}
+
+#[test]
+fn header_rows_taller_than_a_page_do_not_run_away() {
+    // Three repeated, unsplittable header rows of 80 lines each (as in the reviewer's file):
+    // they are split like ordinary rows and are too tall to repeat.
+    let mut doc = Document::new();
+    let props = TableRowProps {
+        cant_split: Some(true),
+        header: Some(true),
+        ..TableRowProps::default()
+    };
+    let (t, tall, body) = tall_rows_table(&mut doc, 3, 80, &props, 5);
+    let l = build(vec![Block::Table(t)], &mut doc);
+    assert!(l.pages().len() <= 10, "{} pages", l.pages().len());
+    for b in &tall {
+        assert_eq!(pages_of(&l, b).len(), 80);
+    }
+    for b in &body {
+        assert_eq!(pages_of(&l, b).len(), 1, "every body row is placed");
+    }
+    for p in 0..l.pages().len() {
+        assert!(!l.page_lines(p).is_empty(), "page {p} is blank");
+    }
+
+    // A header that fills nearly the whole page leaves room for one line per page at most:
+    // the body still progresses (one forced band per page) and the layout ends.
+    let mut doc = Document::new();
+    let props = TableRowProps {
+        header: Some(true),
+        cant_split: Some(true),
+        ..TableRowProps::default()
+    };
+    let (t, _, body) = tall_rows_table(&mut doc, 1, 31, &props, 4);
+    let l = build(vec![Block::Table(t)], &mut doc);
+    assert!(l.pages().len() <= 6, "{} pages", l.pages().len());
+    for b in &body {
+        assert_eq!(pages_of(&l, b).len(), 1, "every body row is placed");
+    }
+}
+
+#[test]
+fn exact_rows_taller_than_a_page_are_clipped() {
+    let mut doc = Document::new();
+    let props = TableRowProps {
+        height: Some(kiln_doc::props::RowHeight {
+            value: 99_999_999,
+            rule: kiln_doc::st::HeightRule::Exact,
+        }),
+        cant_split: Some(true),
+        header: Some(true),
+        ..TableRowProps::default()
+    };
+    let (t, tall, body) = tall_rows_table(&mut doc, 3, 4, &props, 2);
+    let l = build(vec![Block::Table(t)], &mut doc);
+    // Each exact row fills one page, clipped; the body rows follow.
+    assert!(l.pages().len() <= 4, "{} pages", l.pages().len());
+    assert_eq!(pages_of(&l, &tall[0]), vec![0; 4]);
+    for b in &body {
+        assert_eq!(pages_of(&l, b).len(), 1, "every body row is placed");
+    }
+}
+
 #[test]
 fn footnotes_shorten_the_page() {
     let mut doc = Document::new();
