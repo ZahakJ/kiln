@@ -1,111 +1,83 @@
-# Officina — Implementation Plan
+# Kiln — Implementation Plan
 
-**Document status:** v1.0, 2026-10-15. This is the single source of truth for the autonomous build. Agents executing a work package (WP) read this file, the repo, and nothing else. Every WP's acceptance criteria are shell-verifiable.
+**Document status:** v2.0, 2026-10-15 (supersedes v1.0 "Officina"). This is the single source of truth for the autonomous build. Agents executing a work package (WP) read this file, the repo, and nothing else. Every WP's acceptance criteria are shell-verifiable.
 
-**Repository root:** `/home/muth/OfficeSuite` (this file lives at its root and is committed).
+**Repository root:** `/home/muth/OfficeSuite` (git remote `git@github.com:ZahakJ/kiln.git`, branch `main`, Pages at `https://zahakj.github.io/kiln/`).
 
-**Contents:** §0 Executive summary · §1 Naming, brand, design language, "feel at home" UX (ribbons, backstage, shortcuts, mobile) · §2 Feature matrix · §2A Competitive landscape and quality bars · §3 Architecture · §4 Toolchain, repository and commit cadence · §5 Testing & QA · §6 Milestones and work packages · §7 Parity matrix and continuous loop · §8 Effort estimate · §9 Risks and honesty · §10 Definition of Done · §11 Machine-readable work packages (JSON)
+**What changed in v2.0 (read this first if you knew v1.0):**
+
+1. **Rename.** The suite is **Kiln**; the apps are **Kiln Write**, **Kiln Grid**, **Kiln Deck**, **Kiln Notes** and **Kiln Home**. The old names (Officina, Scriba, Tabula, Scena, Notula, Atrium) must not appear anywhere in the repository after WP-50, except in `CHANGELOG.md` history and in the ADR that records the rename.
+2. **Stack.** The TypeScript-everywhere core (Electron + Capacitor + TipTap + Yjs) is replaced by a **native Rust core** (Cargo workspace, crates `kiln-*`) with a **thin, strictly typed TypeScript + React presentation layer** that contains no business logic. The same core runs natively under **Tauri 2** on Linux, Windows, macOS and Android, and compiles to **WebAssembly** for the web/PWA build. Document surfaces are laid out in Rust and painted from a Rust display list (Figma/Google-Docs architecture); UI chrome is HTML. Rationale, alternatives and the rejected options are in §3.
+3. **Brand.** A separate design team delivers the final brand kit (logo, app icons, `tokens.json`/`tokens.css`, fonts, banners, UI mockups for every app in light/dark and phone) in `/home/muth/kiln-brand/final/`. That kit is the **visual source of truth**; WP-51 imports it and every UI WP implements its mockups. The suite must look premium and have its own personality while Office users still feel at home (ribbon, File backstage, status bar, shortcuts).
+4. **Work packages** restart at **WP-50** (§6, §11). WP-01 … WP-16 of v1.0 are history (§3.13 says what is kept, ported or dropped).
+
+**Contents:** §0 Executive summary · §1 Product, brand, "feel at home" UX spec · §2 Feature matrix · §2A Competitive landscape and quality bars · §3 Architecture (Rust core, bridge, rendering decision, threading, performance budgets, keep/port/drop) · §4 Toolchain, repository, commit cadence · §5 Testing & QA · §6 Milestones and scheduling · §7 Parity matrix and continuous loop · §8 Effort estimate · §9 Risks and honesty · §10 Definition of Done · §11 Machine-readable work packages (JSON)
 
 ---
 
 ## 0. Executive summary
 
-Officina (Latin for "workshop", the root of the word *office*) is an open-source (AGPL-3.0-or-later) cross-platform office suite that opens, edits and saves real Microsoft Office files (`.docx`, `.xlsx`, `.pptx`, plus CSV, PDF export and ODF import/export) and feels immediately familiar to Office users (ribbon, backstage, status bar, Office shortcuts) while looking cleaner and adding features Office lacks (command palette, built-in version history, live collaboration, Markdown shortcuts, formula autocompletion with inline docs, presenter view everywhere, focus mode, AI-ready hooks).
+Kiln is an open-source (AGPL-3.0-or-later) cross-platform office suite that opens, edits and saves real Microsoft Office files (`.docx`, `.xlsx`, `.pptx`, plus CSV, PDF export and ODF import/export) and feels immediately familiar to Office users (ribbon, Backstage, status bar, Office shortcuts, Key Tips) while looking and feeling like its own product: warmer, calmer, faster, with features Office lacks (command palette with Office synonyms, built-in version history, self-hosted live collaboration, Markdown shortcuts, formula autocompletion with inline docs and a Formula Lab, presenter view everywhere, focus mode, a CLI and JSON control channel for agents, AI hooks that are off by default).
 
-| App | Office equivalent | Scope tier |
-|---|---|---|
-| **Scriba** (Write) | Word | Tier 1 (full) |
-| **Tabula** (Grid) | Excel | Tier 1 (full) |
-| **Scena** (Deck) | PowerPoint | Tier 1 (full) |
-| **Notula** (Notes) | OneNote (notebooks, sections, pages, tags) | Tier 2 (lite, reuses Write engine) |
-| **Atrium** (Hub) | Office start screen / Home | Tier 1 (launcher, recents, templates) |
-| Calendar / Mail / Tasks | Outlook | **Out of scope** (explicitly deferred; see §9) |
+| App | Office equivalent | Accent (from the brand kit) | Scope tier |
+|---|---|---|---|
+| **Kiln Write** | Word | cobalt | Tier 1 (full) |
+| **Kiln Grid** | Excel | jade | Tier 1 (full) |
+| **Kiln Deck** | PowerPoint | ember orange | Tier 1 (full) |
+| **Kiln Notes** | OneNote (notebooks, sections, pages, tags) | saffron | Tier 2 (lite, reuses the Write engine) |
+| **Kiln Home** | Office start screen / Home | brand neutral + kiln glow | Tier 1 (launcher, recents, templates) |
+| Calendar / Mail / Tasks | Outlook | — | **Out of scope** (deferred; §9) |
 
-**Stack (decided, versions verified against the npm registry on 2026-10-15):**
+**Stack (decided; every version and licence verified against crates.io / registry.npmjs.org on 2026-10-15, §4.2):**
 
-- One TypeScript + React 19 web core in a **pnpm + Turborepo monorepo**.
-- Desktop: **Electron 44** (`electron-vite`, `electron-builder` → AppImage/deb locally; NSIS/dmg via GitHub Actions).
-- Android: **Capacitor 8** (Java 21 + Android cmdline-tools in `~/Android`; debug APK built locally with Gradle wrapper).
-- Web: installable **PWA** (same build as the shells).
-- Document editor: **TipTap 3 / ProseMirror** with a custom pagination layer.
-- Spreadsheet: **custom canvas grid** + **our own MIT formula engine** (HyperFormula rejected: GPL-3.0-only).
-- Presentations: custom DOM/SVG slide stage with TipTap text bodies.
-- File formats: **our own OOXML layer** (OPC container over `fflate` + `fast-xml-parser`) with *opaque part passthrough* for round-trip fidelity; `mammoth`, `exceljs`, `docx`, `pptxgenjs`, `docx-preview` and **LibreOffice 24.2 headless (already installed at `/usr/bin/soffice`)** are used only as *test oracles*, never shipped.
-- Collaboration/undo/offline: **Yjs** (+ `y-prosemirror`, `y-indexeddb`, `@hocuspocus/server`).
-- Charts: **ECharts 6** (Apache-2.0).
-- Tests: Vitest 5, Playwright 1.64 (Chromium headless + screenshots that agents review visually), axe-core.
+- **Core: Rust 1.99.1 (stable, edition 2024), one Cargo workspace** of `kiln-*` crates: document models (Write/Grid/Deck/Notes), formula engine with incremental, multi-threaded recalculation (`rayon`), text shaping and layout/pagination (`parley` + `harfrust` + `skrifa` + `swash`), a retained display list ("Scene"), OOXML (`quick-xml` + `zip`) with opaque-part passthrough, ODF, CSV, PDF export (`krilla`), CRDT collaboration and version history (**Loro**), storage/autosave/recovery (`redb`), search, spell check (`spellbook`). The core has **no UI dependency** and is driven through one facade crate, `kiln-session`.
+- **Shells: Tauri 2** (desktop Linux/Windows/macOS **and** Android through Tauri 2 mobile; Capacitor and Electron are dropped) and a **WebAssembly build** (`wasm-bindgen`) running in a Web Worker for the web/PWA. One typed protocol (`kiln-protocol`, TypeScript generated by `ts-rs`) is shared by both bridges.
+- **Document surfaces:** Rust layout → Scene (glyph runs from a Rust-rasterised glyph atlas, paths, images, tiles) → painted onto `<canvas>` by a small TypeScript painter (`packages/surface`), with a hidden input proxy for IME, a shadow accessibility tree, Rust-computed selection and spell squiggles. The grid, pages and slides all use this one pipeline; PDF export and thumbnails render the *same* Scene with `krilla`/`tiny-skia`, so screen, print and export are identical. Rationale and the rejected DOM-based alternative: §3.6.
+- **UI chrome (ribbon, Backstage, dialogs, panes, Home):** TypeScript 5.9 + **React 19** as a thin presentation layer (Radix primitives for a11y, Tailwind 4 over brand tokens); it holds UI state only (open panes, active tab, dialog fields) and dispatches typed `Command`s to Rust. Why not Solid/Svelte or Leptos/Dioxus/Slint: §3.7.
+- **Tests:** `cargo nextest`, `insta` snapshots, `proptest`, the formula conformance CSVs and the OOXML fixture corpus inherited from v1.0 as **oracles for the port**, Playwright 1.64 against the web build (Chromium headless), `axe-core`, visual diffs, performance budgets enforced in CI (§3.9). LibreOffice 24.2 headless (installed) remains a dev-time oracle and is never shipped.
+- **Build/CI:** pnpm 12 + Turborepo for the JS workspace, Cargo for the Rust workspace, `sccache`, `cargo-deny` (licences/advisories), GitHub Actions: `ci.yml` (fmt/clippy/nextest/wasm/Playwright/budgets), `release.yml` (Tauri bundles for Linux/Windows/macOS, Android APKs), `pages.yml` (landing + manual + web app).
 
-**Why not Tauri 2?** No Rust toolchain is installed, agents cannot debug Rust compile issues cheaply at 2-way concurrency, Tauri's Android path still needs the NDK + Rust targets, and Tauri's WebView differs per OS (WebKitGTK on Linux), which hurts rendering fidelity for a WYSIWYG document editor. Electron ships Chromium everywhere, so pagination/print output is identical across desktop OSes. Cost: ~100 MB larger installers and ~150 MB more RAM. Accepted.
-
-**Why not Flutter / Kotlin native for Android?** One codebase is the only way to ship three editors on four platforms with two concurrent agents. Capacitor gives a native shell (file intents, share sheet, SAF file access, status bar, keyboard insets) around the same web core; the mobile UX is adapted in CSS/React (§1.6), not re-implemented.
+**Why this stack beats the v1.0 plan and the competitors it targets (§2A):** a single native core gives Excel-class recalculation (multi-threaded, no JS heap limits), Word-class pagination that we control line by line (identical on screen, in PDF and on every OS webview — the v1.0 objection to Tauri's per-OS webviews disappears because the webview no longer lays out documents), sub-second cold start and ~¼ of Electron's memory, installers an order of magnitude smaller than Microsoft 365/LibreOffice/ONLYOFFICE, and one codebase for desktop, Android and the web. The cost is a port of ~60k lines of TypeScript engine code to Rust; §3.13 shows that the TS code and its 5,300 conformance rows and 93 fixtures become the oracle for that port, so nothing of v1.0's engineering is wasted.
 
 ---
 
 ## 1. Product, brand, design language and "feel at home" UX spec
 
-### 1.1 Naming
+### 1.1 Naming and identifiers
 
-**Suite: officina** (Latin *officīna*, "workshop" — the word that became *office*; a place where things are made rather than administered). Repo `ZahakJ/officina`; written **Officina** in prose and in the UI; one word, lowercase, in the house style of `concord`, `astrolabe`, `abax`, `qarid`, `mimema`. The products are the rooms and tools of that workshop, all plain Latin nouns that an English speaker can say and spell, each hinting at what it does:
+**Suite: Kiln.** A kiln is where raw material becomes something durable: documents, sheets and slides are *fired* here. The apps are **Kiln Write**, **Kiln Grid**, **Kiln Deck** and **Kiln Notes**; the start screen is **Kiln Home**. In UI copy the suite word may be dropped once context is clear ("Open in Write"), but window titles, Home cards, file dialogs, the manual, README, landing page and store listings use the full product names.
 
-| Product | Meaning | Replaces | Native file type | Accent (light / dark) | Icon motif |
-|---|---|---|---|---|---|
-| **Scriba** | *scriba*, "scribe, the one who writes" | Word | `.scriba` (also `.docx .dotx .docm .odt .md .txt .html`) | blue `#2B5FD9` / `#6B8FF0` | nib stroke forming an S |
-| **Tabula** | *tabula*, "table, tablet, ledger" (as in *tabula rasa*) | Excel | `.tabula` (also `.xlsx .xltx .xlsm .csv .tsv .ods .json`) | green `#1F8A5B` / `#4FC08D` | 2×2 grid with one filled cell |
-| **Scena** | *scaena/scena*, "the stage" | PowerPoint | `.scena` (also `.pptx .potx .pptm .odp`) | orange `#D9552B` / `#F2825E` | 16:9 frame with a spotlight dot |
-| **Notula** | *notula*, "a little note" | OneNote | notebook folder of `.scriba` pages + `notebook.json` | violet `#7A3FD1` / `#A97CF0` | dog-eared page with a tag |
-| **Atrium** | *atrium*, "the entrance hall" | Office start screen / Home | — | brand accent | arch (doorway) |
+| Product | Replaces | Native file type (also opens) | Accent | Icon motif (final art from the brand kit) |
+|---|---|---|---|---|
+| **Kiln Write** | Word | `.kwrite` (`.docx .dotx .docm .odt .md .txt .html`) | cobalt | pen stroke |
+| **Kiln Grid** | Excel | `.kgrid` (`.xlsx .xltx .xlsm .csv .tsv .ods .json`) | jade | grid |
+| **Kiln Deck** | PowerPoint | `.kdeck` (`.pptx .potx .pptm .odp`) | ember orange | frame |
+| **Kiln Notes** | OneNote | notebook folder: `notebook.json` + `.kwrite` pages | saffron | tag |
+| **Kiln Home** | Office start screen | — | neutral + kiln glow | kiln arch |
 
-Office users map the set instantly by colour (Word blue, Excel green, PowerPoint orange, OneNote purple are kept) and by the name's hint (scribe → writing, table → spreadsheet, stage → presentations, note → notes, hall → the place you enter). The suite reads as one family: same Latin register, same two- or three-syllable rhythm, same icon style (one bold stroke inside a rounded square tinted with the product accent).
+**Identifiers.** npm scope `@kiln/*`; Cargo crates `kiln-*`; Tauri identifier and Android `applicationId` `io.github.zahakj.kiln`; executable `kiln` (desktop app) and `kiln-cli` (command line, installed as `kiln` on PATH by the deb); product name `Kiln`; MIME types `application/x-kiln-write`, `-grid`, `-deck`. **Internal code identifiers keep generic short names**: routes `/home /write /grid /deck /notes /present`, crates `kiln-doc`, `kiln-sheet`, `kiln-deck`, packages `editor-write`, `editor-grid`, `editor-deck`, `notes`. Throughout this plan **Write, Grid, Deck, Notes and Home** mean the four apps and the hub.
 
-**Identifiers.** npm scope `@officina/*`; Electron appId and Android applicationId `io.github.zahakj.officina`; executable `officina`; product name `Officina`. **Internal code identifiers keep generic short names** so the code reads plainly and never has to be renamed if marketing changes: routes `/write /grid /deck /notes /` and packages `editor-write`, `sheet-model`, `editor-deck`, `notes`, etc. Throughout this plan, the short names **Write, Grid, Deck, Notes and Hub** refer to **Scriba, Tabula, Scena, Notula and Atrium**; every user-facing string (window titles, ribbon, Backstage, Hub cards, file dialogs, manual, README, landing page, store listings) uses the product names.
+**Rename obligations (WP-50).** `grep -rIil 'officina\|scriba\|tabula\|scena\|notula\|atrium' --exclude-dir=node_modules --exclude-dir=target --exclude-dir=.git --exclude=PLAN.md .` must list only `CHANGELOG.md` (history) and `docs/adr/0002-kiln-rust-core.md` (the record of the rename); this plan is excluded because it documents the rename. This includes `package.json` names, `@officina/*` imports, CSS custom property prefixes (`--of-*` → `--kiln-*`), `data-*` attributes, the Android/Tauri identifier, GitHub workflow names, badges, `docs/index.html`, `docs/media/*` (replaced by the brand kit in WP-51; WP-50 installs neutral placeholders with the word "Kiln"), the e2e expectations, and the `.officina-keys` directory (`~/.kiln-keys`).
 
-**Availability check (2026-10-15):** `gh repo view ZahakJ/<name>` fails with "Could not resolve to a Repository" (= free) for `officina`, `scriba`, `tabula`, `scena`, `notula` and `atrium`. Only `officina` is created; the product names are not separate repos.
+### 1.2 Brand and design language: the brand kit is the source of truth
 
-**Runner-up name sets considered and rejected:**
+The design team's deliverable lives in **`/home/muth/kiln-brand/final/`** (expected contents: `tokens.json`, `tokens.css`, `logo/` (SVG mark + wordmark, light/dark), `icons/` (app icons as SVG + PNG sets, Kiln glyph set for Office-specific commands), `fonts/` (OFL fonts with licence files), `banners/` (repo banner light/dark, social preview), `mockups/` (PNG/SVG of every app: Home, Write, Grid, Deck, Notes, Backstage, dialogs, in light and dark, desktop and phone), `README.md` describing the system). **WP-51 imports it** into the repository (`brand/` for the raw kit, `packages/tokens` generated from `tokens.json`, fonts into `assets/fonts/`, icons into `packages/ui-kit/src/icons/` and `apps/desktop/src-tauri/icons/`), and every UI WP (WP-58, WP-64, WP-71, WP-78, WP-85, WP-86, WP-90) implements the corresponding mockups pixel-faithfully (visual review against the mockup is part of each acceptance). Until `final/` exists, WP-51 is blocked (its `depends_on` includes the path) and the engine WPs proceed; WP-58 and later UI WPs depend on WP-51.
 
-1. **diwan / qalam / jadwal / lawha / daftar / majlis** (Arabic: chancellery / pen / table / board / notebook / hall). Beautiful and in the house style, but *jadwal* and *lawha* mean nothing to most switchers and *lawha* is hard for English speakers to say; the mapping to Excel/PowerPoint would have to be learned. Rejected for opacity, kept as the Arabic locale's optional "classical names" Easter egg? No — one name set only (consistency beats cleverness).
-2. **ergon / grapho / pinax / theatron / mnema / stoa** (Greek: work / I-write / tablet / theatre / memory / colonnade). *grapho* reads as "graphics", *pinax* is obscure, *theatron* is long, and the set sounds academic rather than friendly. Rejected.
-3. **meridian + Write / Grid / Deck / Notes / Hub** (brand word plus generic English nouns, the way Office uses Word). Easy to map, but the generic nouns are unownable and collide with LibreOffice *Writer*, GridCraft, Pitch "Deck", Apple *Notes*; the set feels like a feature list, not a family. Rejected (the generic nouns survive as internal identifiers, where that is a virtue).
+**What the kit decides:** colour tokens (surfaces, text, hairlines, the four app accents named above, states), typography (UI face, display face, monospace, type scale), spacing/radius/shadow scales, motion durations and easings, iconography style, app icons and marks, light/dark/high-contrast themes, phone layouts. `packages/tokens` is *generated* from `tokens.json` (`pnpm --filter @kiln/tokens generate`), exposes CSS custom properties `--kiln-*`, a Tailwind 4 `@theme` block and a typed TS object, and a unit test fails when generated files drift from the kit. **No agent invents colours or type.** Where the kit is silent, the agent follows the mockup, then Office's layout, and records the gap in `docs/design/kit-gaps.md` for the design team.
 
-### 1.1a Brand, licence, repository
+**What the plan decides (behaviour, not looks):** the premium feel comes from the *product* as much as from the palette. Non-negotiables that every UI WP must honour:
 
-- **Tagline:** "Documents, spreadsheets and slides that feel like home." Banner spec line: `DOCX · XLSX · PPTX • AGPL-3.0-or-later • Linux · macOS · Windows · Android`.
-- **Mark:** a bold lowercase "o" whose stroke opens at the bottom into an arch — the workshop doorway — inside a rounded square; each app's icon replaces the inner glyph with its motif from the table above and tints the square with its accent. Source of truth: `docs/media/icon.svg` (+ `icon-scriba.svg`, `icon-tabula.svg`, `icon-scena.svg`, `icon-notula.svg`); every raster (Electron icons, Android mipmaps, PWA icons, favicon, banner, social preview) is generated from them by `tools/render-media.mjs` (Playwright screenshot of SVG), never hand-edited.
-- **Brand accent** (banner underline, badges, landing page `--accent`): `#3F6FE0` on dark, `#2B58C7` on light. Badge colour hex: `3f6fe0`.
-- **Licence: GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later).** Rationale: (1) the suite ships a collaboration server (`apps/collab-server`) and a PWA, i.e. it can be offered as a hosted service; AGPL keeps hosted forks open, the same reason `concord` is AGPL while the single-user tools (`astrolabe`, `abax`) are MIT; ONLYOFFICE, Euro-Office and Collabora chose the same licence for the same reason (§2A). (2) Every runtime dependency is permissive (MIT / Apache-2.0 / BSD / ISC / MPL-2.0 file-level / OFL-1.1 fonts), all combinable into an AGPL work; the audit lives in `THIRD-PARTY-NOTICES.md` and is enforced by `tools/check-licenses.mjs` in CI (denied: `GPL-2.0-only`, `SSPL`, `BUSL`, `CC-BY-NC-*`, unknown). (3) GPL-3.0-only code (e.g. HyperFormula) *is* legally combinable with an AGPL-3.0 work (GPLv3 §13); we still build our own formula engine (§3.4) for Excel-semantics control and so that `packages/formula` could later be relicensed permissively, but HyperFormula and Univer's Apache-2.0 `@univerjs/engine-formula` are admissible fallbacks if WP-08/WP-10 slip (§9). LibreOffice (MPL-2.0) is a dev-time test oracle only and is never bundled. Contributions are accepted under the same licence (no CLA; DCO sign-off requested in CONTRIBUTING.md).
-- **Repository:** public at `https://github.com/ZahakJ/officina`, default branch `main`, homepage `https://zahakj.github.io/officina/` (GitHub Pages from `/docs` on `main`), topics `office-suite, word-processor, spreadsheet, presentation, docx, xlsx, pptx, electron, capacitor, react, typescript, yjs, offline-first, android`. Description: "Open-source office suite for Linux, macOS, Windows and Android: documents, spreadsheets and slides that open and save Office files and feel like home." See §4.6 for repo hygiene and §4.7 for the commit cadence.
+1. **Own personality, not a clone.** No Office-blue title bar, no Segoe/Fluent imitation, no copied artwork. The ribbon keeps Office's *information architecture* (tab names, group names and order, command names, dialog launchers, Key Tips letters) because that is what "feel at home" means; its *visual treatment* (type, spacing, iconography, motion, surfaces) comes from the kit.
+2. **Quality bar is "finished".** No placeholder icons, no default browser controls, no clipped or overlapping UI at 1280×800, 1440×900 or 412×915 (automated scan, §5), no layout shift when panes open, consistent 4 px grid, focus rings on everything, hover/pressed states on everything, `prefers-reduced-motion` respected, dark theme designed (not inverted).
+3. **Fast by feel.** Every interaction paints within one frame; menus open in ≤ 120 ms; no spinners for local operations under 300 ms; big files open progressively (first page/viewport first) so the app never looks frozen.
+4. **Document surfaces are rendered by Kiln, not the browser** (§3.6): crisp text at every zoom, identical on all platforms, the same renderer for print and export.
+5. **Two densities, like Office:** Classic (3-row ribbon, default ≥ 1100 px) and Simplified (single row, default below 1100 px and in Notes); ribbon collapses with Ctrl+F1. Phone layout per the kit's phone mockups (§1.8).
+6. **Icons:** the kit's glyph set for Office-specific commands (Format Painter, Merge & Center, Freeze Panes, Track Changes, …) and Lucide (ISC) for generic UI, all `currentColor`, 20 px in the ribbon, 16 px in menus; the kit may override Lucide entirely.
+7. **Document fonts for fidelity** (independent of UI fonts): Liberation Sans/Serif/Mono (= Arial/Times New Roman/Courier New), Carlito (= Calibri), Caladea (= Cambria), all OFL, bundled and loaded by `kiln-text` on every platform; the substitution table (`crates/kiln-text/src/substitution.rs`) maps Office font names to bundled fonts so line breaks match Word. Aptos has no metric-compatible open font; Kiln substitutes the kit's UI sans and records it in the Compatibility Checker.
 
-### 1.2 Design language: "Horizon"
+**Licence: AGPL-3.0-or-later** (unchanged). Rationale: the suite ships a collaboration server and a PWA, i.e. it can be offered as a hosted service; AGPL keeps hosted forks open (ONLYOFFICE, Collabora and Euro-Office made the same choice). Every runtime dependency is permissive (MIT / Apache-2.0 / BSD / ISC / MPL-2.0 file-level / Zlib / Unicode-3.0 / OFL-1.1 fonts); `cargo deny check licenses` (Rust) and `tools/check-licenses.mjs` (npm) enforce the allow-list in CI; `THIRD-PARTY-NOTICES.md` is generated by `cargo about` + the npm notices script. LibreOffice (MPL-2.0) is a dev-time oracle only. Contributions under the same licence, DCO sign-off, no CLA.
 
-Design tokens live in `packages/tokens` as CSS custom properties (`--of-*`), exported also as a TS object and a Tailwind 4 `@theme` block. Light and dark themes plus a high-contrast theme; theme follows the OS by default and is user-switchable (View ▸ Theme and Backstage ▸ Account).
-
-**Colour tokens (light / dark):**
-
-| Token | Light | Dark | Use |
-|---|---|---|---|
-| `--of-bg-canvas` | `#EEF1F6` | `#15171C` | Area behind pages/sheets |
-| `--of-bg-surface` | `#FFFFFF` | `#1E2127` | Ribbon, panes, dialogs |
-| `--of-bg-surface-2` | `#F6F8FB` | `#262A31` | Ribbon tab strip, status bar |
-| `--of-fg` | `#1B1F27` | `#E8EAEE` | Primary text |
-| `--of-fg-muted` | `#5A6170` | `#9AA1AE` | Secondary text |
-| `--of-border` | `#D8DDE6` | `#333843` | Hairlines |
-| `--of-accent-write` | `#2B5FD9` | `#6B8FF0` | Write |
-| `--of-accent-grid` | `#1F8A5B` | `#4FC08D` | Grid |
-| `--of-accent-deck` | `#D9552B` | `#F2825E` | Deck |
-| `--of-accent-notes` | `#7A3FD1` | `#A97CF0` | Notes |
-| `--of-accent-hub` | `#2B5FD9` | `#6B8FF0` | Hub |
-| `--of-selection` | `accent @ 18%` | `accent @ 28%` | Selection fills |
-| `--of-danger / --of-warning / --of-success` | `#C8352B / #B7791F / #1F8A5B` | `#F07167 / #E0A52F / #4FC08D` | States |
-
-The active app's accent is exposed as `--of-accent`. Ribbon tabs underline in the accent; the title bar is neutral (not a solid coloured bar like Office 2013) to look lighter.
-
-**Typography:** UI font **Inter Variable** (`@fontsource-variable/inter` 5.3.0, OFL-1.1); monospace **JetBrains Mono** (`@fontsource/jetbrains-mono`, OFL-1.1). UI type scale: 11 / 12 / 13 (base) / 15 / 18 / 24 px. Document fonts bundled for fidelity (all SIL OFL, metric-compatible with Office defaults): **Liberation Sans/Serif/Mono** (= Arial / Times New Roman / Courier New), **Carlito** (= Calibri), **Caladea** (= Cambria). The font-substitution table in `packages/doc-model/src/fonts/substitution.ts` maps Office names → bundled fonts so line breaks and pagination match Word closely. **Aptos** (Office's current default) has no metric-compatible open font; we substitute Inter and record this in the Compatibility Checker.
-
-**Spacing & shape:** 4 px base grid; radii 4 (controls) / 6 (menus, cards) / 10 (dialogs); shadows `--of-shadow-1..3` (soft, low spread); 1 px borders only, no bevels. Motion: 120 ms ease-out for menus, 200 ms for panes, respects `prefers-reduced-motion`.
-
-**Iconography:** **Lucide** (ISC, `lucide-react` 1.57) for general UI; **custom "Officina Glyphs" SVG set** (`packages/ui-kit/src/icons/glyphs/`) for the ~120 Office-specific commands Lucide lacks (Format Painter, Increase Indent, Merge & Center, Wrap Text, Freeze Panes, Slide Layout, Track Changes, etc.). Icons are 20 px in the ribbon at the default density and 16 px in menus; stroke 1.5 px; monochrome using `currentColor`, with an optional "colourful" icon style toggle (Office 2019 style) for people who miss it.
-
-**Density:** two ribbon layouts, exactly like Office: **Classic** (3-row tall ribbon, default on desktop ≥ 1100 px wide) and **Simplified** (single-row, default below 1100 px and in Notes). Ribbon can be collapsed (Ctrl+F1) to tabs only.
+**Repository:** `https://github.com/ZahakJ/kiln` (public, already renamed; description and homepage set), default branch `main`, GitHub Pages at `https://zahakj.github.io/kiln/` (switched from branch `/docs` to Actions deployment in WP-91 so the wasm web app can be published alongside the landing page and manual). Topics after WP-50: `office-suite, word-processor, spreadsheet, presentation, docx, xlsx, pptx, rust, tauri, webassembly, react, typescript, crdt, offline-first, android`.
 
 ### 1.3 Familiar chrome: window anatomy (desktop/web)
 
@@ -133,17 +105,17 @@ The active app's accent is exposed as `--of-accent`. Ribbon tabs underline in th
 
 ### 1.4 Ribbon tabs and groups per app (exact)
 
-Each entry is `Tab ▸ Group: commands`. Items marked ★ are Officina extras (not in Office); items marked (P1)/(P2) ship in later tiers but their ribbon slots exist from the start (greyed with a "coming soon" tooltip is **not** acceptable in release builds — tier gating hides them instead).
+Each entry is `Tab ▸ Group: commands`. Items marked ★ are Kiln extras (not in Office); items marked (P1)/(P2) ship in later tiers but their ribbon slots exist from the start (greyed with a "coming soon" tooltip is **not** acceptable in release builds — tier gating hides them instead).
 
 **Write**
 
 - **File** → Backstage (§1.5)
 - **Home** ▸ Clipboard: Paste ▾ (Keep Source / Merge / Text only / Paste Special…), Cut, Copy, **Format Painter** ▸ Font: family, size, Grow/Shrink (Ctrl+]/[), Change Case, Clear Formatting, Bold, Italic, Underline ▾, Strikethrough, Subscript, Superscript, Text Effects (P2), Highlight ▾, Font Colour ▾ ▸ Paragraph: Bullets ▾, Numbering ▾, Multilevel ▾, Decrease/Increase Indent, Sort, Show ¶, Align L/C/R/Justify, Line & Paragraph Spacing ▾, Shading ▾, Borders ▾ ▸ Styles: style gallery (Normal, No Spacing, Heading 1–3, Title, Subtitle, Subtle Emphasis, Emphasis, Intense Emphasis, Strong, Quote, Intense Quote, Subtle/Intense Reference, Book Title, List Paragraph) + Styles pane launcher ▸ Editing: Find ▾ (Find, Advanced, Go To), Replace, Select ▾ ▸ ★Focus: Focus Mode, ★Command Palette
-- **Insert** ▸ Pages: Cover Page ▾, Blank Page, Page Break ▸ Tables: Table ▾ (grid picker, Insert Table…, Convert Text to Table, ★Paste Markdown table) ▸ Illustrations: Pictures ▾ (This device, ★Unsplash-style stock hook), Shapes ▾, Icons, Chart (via Grid chart engine), Screenshot (Electron only) ▸ Links: Link, Bookmark, Cross-reference ▸ Comments: Comment ▸ Header & Footer: Header ▾, Footer ▾, Page Number ▾ ▸ Text: Text Box ▾, Quick Parts/Fields ▾, WordArt (P2), Drop Cap, Date & Time, Object (P2) ▸ Symbols: Equation (P1, MathLive), Symbol ▾ ▸ ★Smart: Table of Contents (quick), ★Callout block, ★Code block with syntax highlighting
+- **Insert** ▸ Pages: Cover Page ▾, Blank Page, Page Break ▸ Tables: Table ▾ (grid picker, Insert Table…, Convert Text to Table, ★Paste Markdown table) ▸ Illustrations: Pictures ▾ (This device, ★Unsplash-style stock hook), Shapes ▾, Icons, Chart (via Grid chart engine), Screenshot (desktop only) ▸ Links: Link, Bookmark, Cross-reference ▸ Comments: Comment ▸ Header & Footer: Header ▾, Footer ▾, Page Number ▾ ▸ Text: Text Box ▾, Quick Parts/Fields ▾, WordArt (P2), Drop Cap, Date & Time, Object (P2) ▸ Symbols: Equation (P1, OMML model + Rust math layout), Symbol ▾ ▸ ★Smart: Table of Contents (quick), ★Callout block, ★Code block with syntax highlighting
 - **Layout** ▸ Page Setup: Margins ▾, Orientation ▾, Size ▾, Columns ▾, Breaks ▾, Line Numbers ▾ (P2), Hyphenation ▾ ▸ Paragraph: Indent Left/Right, Spacing Before/After ▸ Arrange: Position ▾, Wrap Text ▾, Bring Forward, Send Backward, Selection Pane, Align ▾, Group, Rotate
 - **References** ▸ Table of Contents: TOC ▾, Add Text, Update Table ▸ Footnotes: Insert Footnote, Insert Endnote, Next Footnote, Show Notes ▸ Citations & Bibliography (P2): Insert Citation, Manage Sources, Style, Bibliography ▸ Captions: Insert Caption, Table of Figures (P1), Cross-reference ▸ Index (P2)
-- **Review** ▸ Proofing: Spelling & Grammar (Hunspell via `nspell`), Thesaurus (P2), Word Count ▸ Language: Translate (hook), Language ▸ Comments: New, Delete ▾, Previous, Next, Show Comments ▸ Tracking: Track Changes ▾, display mode (Simple/All/None/Original), Show Markup ▾, Reviewing Pane ▸ Changes: Accept ▾, Reject ▾, Previous, Next ▸ Compare (P2) ▸ Protect: Restrict Editing (P2) ▸ ★History: Version History
-- **View** ▸ Views: Read Mode, Print Layout, Web Layout, Outline (P1), Draft ▸ Immersive: ★Focus, Immersive Reader (P2) ▸ Page Movement: Vertical, Side to Side ▸ Show: Ruler, Gridlines, Navigation Pane ▸ Zoom: Zoom, 100%, One Page, Multiple Pages, Page Width ▸ Window: New Window, Split, Side by Side (Electron) ▸ Theme: Light/Dark/System/High contrast ▸ Macros (greyed with explanation — not supported, §9)
+- **Review** ▸ Proofing: Spelling (Hunspell dictionaries via the `spellbook` crate in `kiln-spell`), Thesaurus (P2), Word Count ▸ Language: Translate (hook), Language ▸ Comments: New, Delete ▾, Previous, Next, Show Comments ▸ Tracking: Track Changes ▾, display mode (Simple/All/None/Original), Show Markup ▾, Reviewing Pane ▸ Changes: Accept ▾, Reject ▾, Previous, Next ▸ Compare (P2) ▸ Protect: Restrict Editing (P2) ▸ ★History: Version History
+- **View** ▸ Views: Read Mode, Print Layout, Web Layout, Outline (P1), Draft ▸ Immersive: ★Focus, Immersive Reader (P2) ▸ Page Movement: Vertical, Side to Side ▸ Show: Ruler, Gridlines, Navigation Pane ▸ Zoom: Zoom, 100%, One Page, Multiple Pages, Page Width ▸ Window: New Window, Split, Side by Side (desktop) ▸ Theme: Light/Dark/System/High contrast ▸ Macros (greyed with explanation — not supported, §9)
 - **Contextual:** Table Design (styles gallery, header row/banded rows toggles, shading, borders), Table Layout (insert/delete rows/cols, merge/split, cell size, distribute, alignment, repeat header rows, convert to text, formula), Picture Format (corrections, crop, wrap, position, alt text), Shape Format, Header & Footer tools (different first page, odd/even, link to previous, position).
 
 **Grid**
@@ -152,7 +124,7 @@ Each entry is `Tab ▸ Group: commands`. Items marked ★ are Officina extras (n
 - **Insert** ▸ Tables: PivotTable (P1), Table (Ctrl+T) ▸ Illustrations: Pictures, Shapes (P1), Icons ▸ Charts: Column/Bar, Line/Area, Pie/Doughnut, Scatter/Bubble, Hierarchy (treemap, sunburst), Statistic (histogram, box&whisker P1), Waterfall/Funnel (P1), Combo, Recommended Charts★(from selection shape) ▸ Sparklines: Line, Column, Win/Loss (P1) ▸ Filters: Slicer (P2), Timeline (P2) ▸ Links: Link ▸ Comments: Note, Threaded Comment ▸ Text: Text Box, Header & Footer, WordArt(P2) ▸ Symbols: Equation(P2), Symbol
 - **Page Layout** ▸ Themes (P1) ▸ Page Setup: Margins, Orientation, Size, Print Area, Breaks, Background, Print Titles ▸ Scale to Fit: Width, Height, Scale ▸ Sheet Options: Gridlines view/print, Headings view/print ▸ Arrange (shapes)
 - **Formulas** ▸ Function Library: Insert Function (fx dialog with search + inline docs), AutoSum, Recently Used, Financial, Logical, Text, Date & Time, Lookup & Reference, Math & Trig, More ▾ (Statistical, Engineering, Information, Web(P2), Cube✗) ▸ Defined Names: Name Manager, Define Name, Use in Formula, Create from Selection ▸ Formula Auditing: Trace Precedents, Trace Dependents, Remove Arrows, Show Formulas (Ctrl+`), Error Checking, Evaluate Formula, Watch Window (P1) ▸ Calculation: Calculation Options (Auto/Manual), Calculate Now (F9), Calculate Sheet (Shift+F9) ▸ ★Formula Lab: Formula explainer pane (AST tree + step values)
-- **Data** ▸ Get & Transform: From Text/CSV, From JSON★, From Web (P2), Refresh ▸ Sort & Filter: Sort A→Z, Z→A, Sort…, Filter, Clear, Reapply, Advanced (P2) ▸ Data Tools: Text to Columns, Flash Fill (P1), Remove Duplicates, Data Validation ▾, Consolidate (P2), Relationships✗ ▸ Forecast: What-If ▾ (Scenario Manager P2, Goal Seek P1, Data Table P2), Forecast Sheet (P2) ▸ Outline: Group, Ungroup, Subtotal (P1), Show/Hide Detail
+- **Data** ▸ Get & Transform: From Text/CSV, From JSON★, From Web (P2), Refresh ▸ Sort & Filter: Sort A→Z, Z→A, Sort…, Filter, Clear, Reapply, Advanced (P2) ▸ Data Tools: Text to Columns, Flash Fill (P1), Remove Duplicates, Data Validation ▾, Consolidate (P2), Relationships✗ ▸ Forecast: What-If ▾ (Kiln Deckrio Manager P2, Goal Seek P1, Data Table P2), Forecast Sheet (P2) ▸ Outline: Group, Ungroup, Subtotal (P1), Show/Hide Detail
 - **Review** ▸ Proofing: Spelling ▸ Comments: New, Delete, Previous, Next, Show ▸ Notes ▸ Protect: Protect Sheet (P1), Protect Workbook (P1), Allow Edit Ranges (P2) ▸ ★Version History
 - **View** ▸ Workbook Views: Normal, Page Break Preview, Page Layout, Custom Views (P2) ▸ Show: Ruler (page layout), Gridlines, Formula Bar, Headings ▸ Zoom: Zoom, 100%, Zoom to Selection ▸ Window: New Window, Arrange, **Freeze Panes ▾ (Freeze Panes / Top Row / First Column)**, Split, Hide/Unhide, Side by Side ▸ Theme ▸ Macros (greyed, §9)
 - **Contextual:** Table Design (table name, resize, remove duplicates, convert to range, style options, styles gallery), Chart Design (add element, quick layout, change colours, chart styles, switch row/column, select data, change type, move chart), Chart Format, PivotTable Analyze/Design (P1), Picture Format.
@@ -245,21 +217,21 @@ Office defaults are kept unchanged. Mac uses ⌘ for Ctrl except where noted.
 | B / W / N / P / Home / End / number+Enter / Esc / Ctrl+L / Ctrl+P / Ctrl+I | — | — | In slide show: black / white / next / previous / first / last / go to / end / laser / pen / highlighter |
 | Esc | Cancel / close pane | Cancel edit | Deselect / exit show |
 
-A single source of truth, `packages/commands/src/keymaps/*.ts`, drives the editors, the Electron native menu accelerators, the Key Tips, the Options ▸ Keyboard page, and the "Shortcut cheat sheet" (Ctrl+/ ★). Playwright test `e2e/shortcuts.spec.ts` iterates the table.
+A single source of truth, `packages/commands/src/keymaps/*.ts`, drives the editors, the Tauri native menu accelerators (desktop), the Key Tips, the Options ▸ Keyboard page, and the "Shortcut cheat sheet" (Ctrl+/ ★). Every binding resolves to a `Command` of the Rust protocol (§3.5); a unit test fails if a keymap names a command the generated catalog does not contain. Playwright test `e2e/specs/shortcuts.spec.ts` iterates the table.
 
-### 1.8 Mobile adaptation (Android, Capacitor) — "native-feeling"
+### 1.8 Mobile adaptation (Android, Tauri 2 mobile) — "native-feeling"
 
 Design reference: Office Mobile and Google Docs Android, but with our chrome.
 
 - **Breakpoints:** `< 640 px` phone layout; `640–1023 px` tablet (simplified ribbon, panes as modals); `≥ 1024` desktop layout even on tablets in landscape with keyboard.
-- **Top app bar (56 dp):** back (to Hub), document title (tap to rename), Undo, Redo, Search, overflow (Share, Save as, Print/PDF, Version history, Find & Replace, Settings). Title bar colour follows the system status bar (Capacitor StatusBar plugin), dark mode follows system.
+- **Top app bar (56 dp):** back (to Hub), document title (tap to rename), Undo, Redo, Search, overflow (Share, Save as, Print/PDF, Version history, Find & Replace, Settings). Title bar colour follows the system status bar (set from the Tauri Android activity), dark mode follows system.
 - **Bottom toolbar (48 dp) + "ribbon sheet":** a scrollable row of the most-used commands for the current context (text: B I U, colour, bullets, align, indent; cell: number format, B, fill, borders, merge, wrap; slide: new slide, layout, insert); the first button "**Home ▾**" opens a **bottom sheet** listing the full ribbon tabs as a horizontal chip row (Home / Insert / Layout / Review / View …) with groups rendered as vertically stacked tiles, exactly mirroring desktop group names so users can find things. The sheet uses the same command registry; no mobile-specific command definitions.
-- **Keyboard handling:** Capacitor Keyboard plugin reports height; the bottom toolbar docks above the keyboard (`env(keyboard-inset-height)` fallback). Grid pins the Formula Bar above the keyboard with ✓/✕ buttons and a "123 / fx / A→Z" quick keys row.
+- **Keyboard handling:** the Android WebView reports the keyboard through `visualViewport` resize events (Tauri sets `windowSoftInputMode=adjustResize`); the bottom toolbar docks above the keyboard (`env(keyboard-inset-height)` fallback). Grid pins the Formula Bar above the keyboard with ✓/✕ buttons and a "123 / fx / A→Z" quick keys row.
 - **Touch:** selection handles (teardrop) for text, cell range handles at the two corners, a floating context toolbar on selection (Copy/Cut/Paste/Comment/Format), long-press for context menu, pinch-to-zoom on canvas (Write page, Grid, Deck stage), double-tap to zoom to width. Minimum hit target 44 × 44 dp. Shape transform handles enlarge to 28 dp and show a rotation handle.
 - **Write:** continuous (reflow) view by default, "Print layout" toggle; Find bar overlays the top bar; comments as a bottom sheet.
 - **Grid:** sheet tabs become a bottom chip strip above the toolbar; column/row headers tap to select, drag header edge to resize; filter buttons open bottom sheets; frozen panes work.
 - **Deck:** vertical slide list in portrait with a FAB "+" for new slide; tapping a slide opens full-width edit; **Present** goes fullscreen landscape with swipe navigation, tap zones, and a presenter notes toggle; the device can act as a remote for a desktop presentation over the collab server (P2).
-- **Files:** open from Android file managers/share sheet via intent filters for the Office MIME types; Save uses SAF (document tree) through `@capacitor/filesystem` + `@capawesome/capacitor-file-picker`; recents stored in `@capacitor/preferences`.
+- **Files:** open from Android file managers/share sheet via intent filters for the Office MIME types; Save uses SAF (document tree) through `tauri-plugin-fs` + `tauri-plugin-dialog` (both support Android content URIs); recents are stored by `kiln-storage` in the app's data directory.
 - **Navigation:** Android back button closes sheets/dialogs before leaving the document; hardware keyboards get the full desktop shortcut table.
 
 ### 1.9 "Coming from Office" affordances
@@ -281,11 +253,11 @@ Legend: **P0** must ship for v1.0 (Definition of Done requires it); **P1** ship 
 |---|---|
 | Ribbon (Classic + Simplified), Backstage, status bar, zoom slider, Key Tips, mini toolbar, context menus, dialog launchers | P0 |
 | Open/save `.docx .xlsx .pptx .csv`; export PDF; native bundle format; Markdown/HTML export (Write), CSV/TSV (Grid), PNG per slide (Deck) | P0 |
-| ODF `.odt .ods .odp` import/export | P1 (WP-41) |
-| AutoSave + crash recovery (IndexedDB/OPFS journal; desktop recovery files) | P0 |
+| ODF `.odt .ods .odp` import/export | P1 (WP-87) |
+| AutoSave + crash recovery (`kiln-storage` journal: redb on desktop/Android, OPFS/IndexedDB on the web) | P0 |
 | ★ Command palette (Ctrl+Shift+P / Alt+Q) with fuzzy search, recent commands, Office synonyms | P0 |
 | ★ Built-in version history (automatic snapshots on save + named versions, diff view for Write, restore) | P0 (Write, Deck), P1 (Grid cell-diff) |
-| ★ Live collaboration (Yjs, cursors, presence, comments) via self-hostable server; offline-first merge | P1 (Write P1, Deck P1, Grid P2) |
+| ★ Live collaboration (Loro CRDT, cursors, presence, comments) via the self-hostable `kiln-collab-server`; offline-first merge | P1 (Write P1, Deck P1, Grid P2) |
 | Light/Dark/High-contrast themes; OS theme follow | P0 |
 | i18n (en, de, ar) with RTL layout and RTL text (bidi) in documents | P0 (en), P1 (de, ar) |
 | Accessibility: full keyboard operation, ARIA on ribbon (toolbar/menubar pattern), screen-reader announcements for status changes, focus rings, axe-clean | P0 |
@@ -305,7 +277,7 @@ Legend: **P0** must ship for v1.0 (Definition of Done requires it); **P1** ship 
 | Lists | Bulleted/numbered/multilevel with Word numbering definitions (`w:numbering`), restart numbering, continue, legal numbering | List styles | — |
 | Layout | Pages, sections, margins, orientation, size, page breaks, columns, headers/footers (first/odd/even), page numbers, footnotes/endnotes, line numbering off, **pagination that matches Word within ±1 line for standard fonts** | Watermarks, page borders | Line numbers |
 | Tables | Insert/delete, merge/split, borders/shading, table styles (banded), autofit, repeat header, nested tables (read), text→table | Formula in table, sort | — |
-| Objects | Inline & floating images with wrap (square/tight/top-bottom/behind/in-front), shapes (DrawingML presets), captions, charts (via charts pkg), links, bookmarks, cross-refs, symbols | Equations (OMML ↔ MathLive), icons, screenshots | SmartArt, embedded objects |
+| Objects | Inline & floating images with wrap (square/tight/top-bottom/behind/in-front), shapes (DrawingML presets), captions, charts (via charts pkg), links, bookmarks, cross-refs, symbols | Equations (OMML model, Rust layout; editor P1), icons, screenshots | SmartArt, embedded objects |
 | References | TOC (styles-based, clickable, update), footnotes/endnotes, captions, cross-references | Table of figures, index | Citations/bibliography |
 | Review | Comments (threaded, resolve), **Track changes** (insert/delete/format revisions, accept/reject, markup modes), word count, spelling | Compare documents | Restrict editing, password |
 | View | Print layout, read mode, web layout, draft, ruler, navigation pane (headings/pages/results), zoom, split | Outline view | Immersive reader |
@@ -316,11 +288,11 @@ Legend: **P0** must ship for v1.0 (Definition of Done requires it); **P1** ship 
 | Area | P0 | P1 | P2 |
 |---|---|---|---|
 | Grid | 1,048,576 × 16,384 addressable, virtualized canvas, freeze panes, split, hide/unhide, row/col resize/autofit, multiple sheets, tab colours, zoom, selection modes (range, row, col, multi, Ctrl-click), name box, formula bar | Custom views | Grouping/outline symbols (P1) |
-| Editing | In-cell edit (F2), autocomplete of values & function names, formula autocompletion with argument tooltips **and inline docs★**, fill handle (series, copy, linear, dates), Ctrl+Enter fill, AutoSum, clipboard with formats/values/transpose, undo/redo, find/replace (values/formulas), sort (multi-key, custom), filter (values, text/number/date/colour criteria), remove duplicates, text to columns, data validation (list, number, date, text length, custom; dropdowns; input/error messages), comments & notes, hyperlinks | Flash Fill, Goal Seek, Subtotal, group/outline | Scenario manager, data table, consolidate, Power-Query-style editor |
-| Formatting | Number formats (Excel format codes via `numfmt`), fonts, fills, borders (all styles), alignment, wrap, merge, indent, rotation, cell styles gallery, Format Cells dialog, conditional formatting (highlight rules, top/bottom, data bars, colour scales, icon sets, formula rules) | Themes | — |
+| Editing | In-cell edit (F2), autocomplete of values & function names, formula autocompletion with argument tooltips **and inline docs★**, fill handle (series, copy, linear, dates), Ctrl+Enter fill, AutoSum, clipboard with formats/values/transpose, undo/redo, find/replace (values/formulas), sort (multi-key, custom), filter (values, text/number/date/colour criteria), remove duplicates, text to columns, data validation (list, number, date, text length, custom; dropdowns; input/error messages), comments & notes, hyperlinks | Flash Fill, Goal Seek, Subtotal, group/outline | Kiln Deckrio manager, data table, consolidate, Power-Query-style editor |
+| Formatting | Number formats (Excel format codes, own implementation in `kiln-formula::numfmt`), fonts, fills, borders (all styles), alignment, wrap, merge, indent, rotation, cell styles gallery, Format Cells dialog, conditional formatting (highlight rules, top/bottom, data bars, colour scales, icon sets, formula rules) | Themes | — |
 | Formulas | ≥ 350 Excel functions (see §3.4), dynamic arrays & spill, structured references, 3-D refs, defined names (workbook/sheet scope), error values, iterative calc off, LAMBDA/LET, XLOOKUP/FILTER/SORT/UNIQUE/SEQUENCE, TEXTSPLIT, date system 1900, Excel precision rules | Locale separators, iterative calc, R1C1 | Cube/web functions, Python |
 | Analysis | Charts (column/bar/line/area/pie/doughnut/scatter/bubble/combo + treemap/sunburst), Format as Table (structured refs, totals row, banded styles), sparklines | Pivot tables (sum/count/avg/min/max, rows/cols/values/filters, drill), histogram/box/waterfall charts | Slicers, timelines, forecast sheet |
-| ★ Extras | Formula explainer pane (step evaluation), smart tables (auto-expand, column types), JSON import, command palette, instant stats in status bar, "Recommended charts" from selection shape, dark-mode-aware chart colours, version history | Collaboration, AI hook "formula from description" | Scripting (TypeScript macros via sandbox) |
+| ★ Extras | Formula explainer pane (step evaluation), smart tables (auto-expand, column types), JSON import, command palette, instant stats in status bar, "Recommended charts" from selection shape, dark-mode-aware chart colours, version history | Collaboration, AI hook "formula from description" | Scripting (sandboxed scripting over the control channel) |
 
 ### 2.4 Deck
 
@@ -329,10 +301,10 @@ Legend: **P0** must ship for v1.0 (Definition of Done requires it); **P1** ship 
 | Slides | Layouts/masters/themes (OOXML theme-compatible), new/duplicate/delete/reorder/hide, sections, slide size, background, notes pane, thumbnail rail, slide sorter, outline view | Reuse slides | Handout/notes masters |
 | Objects | Text boxes/placeholders with autofit, shapes (≥ 60 preset geometries), lines/connectors, pictures (crop), tables, charts, grouping, z-order, align/distribute, smart guides & snapping, rotate/flip, fill/outline/effects (shadow), icons | Video/audio, equations | SmartArt, 3D, zoom links |
 | Motion | Transitions (12), animations (entrance/emphasis/exit basics), animation pane, timing | Rehearse timings, morph-lite | Triggers, motion paths |
-| Show | Slide show (F5/Shift+F5), **Presenter view** (second window on Electron; second tab/window on web), notes, timer, next-slide preview, laser/pen/highlighter, blackout, go-to | Rehearse timings | Recording |
+| Show | Slide show (F5/Shift+F5), **Presenter view** (second Tauri window on desktop; second tab/window on web), notes, timer, next-slide preview, laser/pen/highlighter, blackout, go-to | Rehearse timings | Recording |
 | ★ Extras | Design Ideas (layout + theme variant suggestions for the current slide's content), code blocks, present in browser tab, PNG/PDF export, version history, command palette | Collaboration, mobile remote | Live Grid range embedding |
 
-### 2.5 Notes (Tier 2, WP-33)
+### 2.5 Notes (Tier 2, WP-86)
 
 Notebooks → sections → pages tree; page = Write document with title/timestamp; tags (To Do, Important, Question, custom) with a Tags summary pane; quick search across notebooks; local storage in an app-managed folder; export page to .docx/.md/.pdf. OneNote import (`.one`) is **out of scope**.
 
@@ -340,31 +312,31 @@ Notebooks → sections → pages tree; page = Write document with title/timestam
 
 ## 2A. Competitive landscape (October 2026) and the quality bars we must beat
 
-Researched 2026-10-15 with web search and the GitHub API (star counts are from the API on that day). Full write-up with sources is reproduced in the repo as `docs/COMPETITORS.md` (WP-03) and re-scanned every parity round (§7.3).
+Researched 2026-10-15 with web search and the GitHub API (star counts are from the API on that day). Full write-up with sources is reproduced in the repo as `docs/COMPETITORS.md` (WP-59) and re-scanned every parity round (§7.3).
 
 ### 2A.1 The field
 
-| Product | Stack / licence / size | Latest (as of Oct 2026) | What they do better than Officina v0.1 will | Obvious weaknesses (our opening) | Concrete bar we must beat |
+| Product | Stack / licence / size | Latest (as of Oct 2026) | What they do better than Kiln v0.1 will | Obvious weaknesses (our opening) | Concrete bar we must beat |
 |---|---|---|---|---|---|
 | **Microsoft 365** (Word/Excel/PowerPoint desktop, web, mobile) | proprietary; subscription | Copilot **Agent Mode** became the default across Word/Excel/PowerPoint on 2026-04-22; Excel "Plan mode", Python in Excel; Startup Boost preloading (2025) | The reference for everything: fidelity by definition, 500+ Excel functions, Power Query/Pivot, Designer, Morph, co-authoring at scale, accessibility tooling, mobile apps | Subscription + account; telemetry; no Linux; AI pushed on by default; heavy (Startup Boost exists because cold start is slow; needs 8 GB RAM) | Open the same `.docx/.xlsx/.pptx` with the §3.5 fidelity scores; cold start to Hub < 2.5 s and open-document < 3 s on this 7 GB laptop; every §1.7 shortcut identical; no account, no telemetry, AI off unless configured |
-| **Google Workspace** (Docs/Sheets/Slides) | proprietary web | Gemini in Docs/Sheets/Slides beta (2026-03-10: prompt-bar drafting, "Fill with Gemini", theme-matched slides) | Real-time collaboration and version history are effortless; zero install; comments/@mentions | Weak Office fidelity (import/export conversion), slow on large sheets (50k+ rows), 10M-cell cap, offline is partial, requires Google account | Collaboration with cursors + offline merge (WP-29) on a server you host; 1M-cell sheets scroll at 55+ fps; opens `.xlsx` natively without conversion |
-| **LibreOffice 26.2** (Feb 2026) | C++; MPL-2.0/LGPL; `LibreOffice/core` ★4.5k mirror | Markdown import/export, faster Calc with hidden columns, BIFF12 clipboard paste from Excel, RTL alignment options, change-tracking refinements | Mature everything: 30 years of format handling, ODF reference implementation, Base, macros (BASIC/Python), hyphenation/typography, print engine | Switchers' top complaints: `.docx` style/font shifts and text-wrap pain, "looks different in Word", dated UI (ribbon is an experimental "tabbed" mode), no real-time collaboration without Collabora, large-sheet performance | Beat LibreOffice's own docx round-trip on our corpus (WP-39 measures LibreOffice's `docx→odt→docx` visual score next to ours; ours must be ≥ theirs on ≥ 80 % of files); native ribbon; built-in collaboration |
+| **Google Workspace** (Docs/Sheets/Slides) | proprietary web | Gemini in Docs/Sheets/Slides beta (2026-03-10: prompt-bar drafting, "Fill with Gemini", theme-matched slides) | Real-time collaboration and version history are effortless; zero install; comments/@mentions | Weak Office fidelity (import/export conversion), slow on large sheets (50k+ rows), 10M-cell cap, offline is partial, requires Google account | Collaboration with cursors + offline merge (WP-82) on a server you host; 1M-cell sheets scroll at 55+ fps; opens `.xlsx` natively without conversion |
+| **LibreOffice 26.2** (Feb 2026) | C++; MPL-2.0/LGPL; `LibreOffice/core` ★4.5k mirror | Markdown import/export, faster Calc with hidden columns, BIFF12 clipboard paste from Excel, RTL alignment options, change-tracking refinements | Mature everything: 30 years of format handling, ODF reference implementation, Base, macros (BASIC/Python), hyphenation/typography, print engine | Switchers' top complaints: `.docx` style/font shifts and text-wrap pain, "looks different in Word", dated UI (ribbon is an experimental "tabbed" mode), no real-time collaboration without Collabora, large-sheet performance | Beat LibreOffice's own docx round-trip on our corpus (WP-93 measures LibreOffice's `docx→odt→docx` visual score next to ours; ours must be ≥ theirs on ≥ 80 % of files); native ribbon; built-in collaboration |
 | **Collabora Online 26.04** (Jul 2026) | C++/JS on LibreOffice core; MPL; commercial support | Optional AI assistant (off by default, BYO model), colour-coded document comparison, Markdown, Calc per-user views + calculated pivot fields, collaborative presenting, **BITV 2.0 accessibility certification** | Server-grade collaboration, accessibility certification, proven at Nextcloud scale | Server-only (needs a deployment to edit at all), tile-rendering latency, LibreOffice UI underneath, no offline desktop story | Accessibility: axe 0 serious/critical on every screen **and** a WCAG 2.2 AA self-audit (docs/qa/a11y.md) with 100 % keyboard operability of ribbon commands; AI off by default with BYO provider exactly like theirs |
-| **ONLYOFFICE Docs 9.4** (May 2026) | JS editors + C++ converters; AGPL-3.0; `ONLYOFFICE/DocumentServer` ★7.0k | Dark mode for spreadsheets, 25 new themes + 20 transitions, separate Chart Design tab, in-editor form recipients; 9.3: hyperlinks on images/shapes, multi-page view | Best-regarded OOXML fidelity among open suites (OOXML is its native model), tabbed ribbon-like UI, forms, DocSpace rooms, desktop + mobile editors | Licence-key friction, the Community edition is the server; desktop app is a thin client; sheet performance on big files; slow-ish startup; AI through their cloud | Fidelity ≥ ONLYOFFICE on the corpus is the long-term bar (parity loop measures ONLYOFFICE's conversion via its Docker image when available; v0.1 bar is the §3.5 thresholds); 25+ themes and 20+ transitions in Scena by round 2 |
-| **Euro-Office** (ONLYOFFICE fork; IONOS, Nextcloud, XWiki, OpenProject…; first stable 2026-06-09) | HTML/JS/C++; AGPL-3.0-only | Co-editing, comments, version history, track changes, comparison, chat, forms; Windows/macOS/Linux/iOS/Android clients | Public-sector backing in the EU; embedded in Nextcloud/XWiki/OpenProject | Server-centric like ONLYOFFICE; a fork still converging; licence dispute history | Same bars as ONLYOFFICE; plus: Officina works fully offline as a single install |
+| **ONLYOFFICE Docs 9.4** (May 2026) | JS editors + C++ converters; AGPL-3.0; `ONLYOFFICE/DocumentServer` ★7.0k | Dark mode for spreadsheets, 25 new themes + 20 transitions, separate Chart Design tab, in-editor form recipients; 9.3: hyperlinks on images/shapes, multi-page view | Best-regarded OOXML fidelity among open suites (OOXML is its native model), tabbed ribbon-like UI, forms, DocSpace rooms, desktop + mobile editors | Licence-key friction, the Community edition is the server; desktop app is a thin client; sheet performance on big files; slow-ish startup; AI through their cloud | Fidelity ≥ ONLYOFFICE on the corpus is the long-term bar (parity loop measures ONLYOFFICE's conversion via its Docker image when available; v0.1 bar is the §3.5 thresholds); 25+ themes and 20+ transitions in Kiln Deck by round 2 |
+| **Euro-Office** (ONLYOFFICE fork; IONOS, Nextcloud, XWiki, OpenProject…; first stable 2026-06-09) | HTML/JS/C++; AGPL-3.0-only | Co-editing, comments, version history, track changes, comparison, chat, forms; Windows/macOS/Linux/iOS/Android clients | Public-sector backing in the EU; embedded in Nextcloud/XWiki/OpenProject | Server-centric like ONLYOFFICE; a fork still converging; licence dispute history | Same bars as ONLYOFFICE; plus: Kiln works fully offline as a single install |
 | **WPS Office** (2026) | proprietary freemium | AI writing/proofing/contract review/resume assistant, PDF compare, presentation "beautification", 14 new languages | Very Office-like UI, strong PDF tools, mobile apps | Ads/upsell, telemetry concerns, closed source, ~400 MB RAM reported | Office-like UI with none of the upsell; PDF export quality; < 600 MB for a 300-page document |
-| **Apple iWork** (Sep 2026) | proprietary | Siri questions about documents, request-access sharing, Pages "Screen View", new Numbers functions | Beautiful templates, Keynote animation quality (Magic Move), free on Apple devices | Apple-only, weak Office fidelity, no Windows/Linux/Android | Template quality: 36 templates reviewed to "looks finished" (WP-32); Morph-lite transition in the loop (round 2) |
-| **Univer** (`dream-num/univer` ★22.6k, TypeScript, Apache-2.0; "the Office harness for AI agents") | plugin SDK: sheets (mature), docs, slides (early), canvas, formula engine, Facade API, Node runtime | Active (pushed daily); strong canvas sheet rendering, own formula engine, AI-agent focus (`dsh-univer-office`), Obsidian plugin | Excellent spreadsheet engine and renderer, agent/MCP story | It is an SDK, not an app: no ribbon/Backstage, docs and slides immature, OOXML import/export and collaboration are in paid "Pro/Server" tiers, no desktop/mobile apps | Beat on *product*: ribbon UX, file fidelity in the open core, offline desktop + Android. We benchmark our grid against Univer's demo (scroll fps, 1M cells) in WP-40 and must match it ±10 %. Its `@univerjs/engine-formula` (Apache-2.0) is our documented formula-engine fallback |
-| **GenOffice** (`genspark-ai/genoffice` ★9.8k, TypeScript, Apache-2.0, public since 2026-07-31) | Electron-style desktop: Docs/Sheets/Slides/PDF/Markdown/HTML + AI panel, CLI + agent skill + MCP | Desktop builds for macOS/Windows/Linux; "byte-preserving" saves (only edited parts rewritten); AI edits land as tracked changes with rollback; full-text local file search; BYO key for 15+ providers | Clear AI-first UX, byte-preserving round-trip, agent skill/CLI, 20 README languages | AI routed through Genspark by default (account), no Android, no collaboration, UI is not Office-familiar (no ribbon), young codebase | **Byte-preservation bar:** every part we did not edit is byte-identical after save (test in WP-13/WP-18/WP-26); AI edits as tracked changes when a provider is configured (loop round 1); `officina` CLI + MCP server (loop round 1) |
+| **Apple iWork** (Sep 2026) | proprietary | Siri questions about documents, request-access sharing, Pages "Screen View", new Numbers functions | Beautiful templates, Keynote animation quality (Magic Move), free on Apple devices | Apple-only, weak Office fidelity, no Windows/Linux/Android | Template quality: 36 templates reviewed to "looks finished" (WP-85); Morph-lite transition in the loop (round 2) |
+| **Univer** (`dream-num/univer` ★22.6k, TypeScript, Apache-2.0; "the Office harness for AI agents") | plugin SDK: sheets (mature), docs, slides (early), canvas, formula engine, Facade API, Node runtime | Active (pushed daily); strong canvas sheet rendering, own formula engine, AI-agent focus (`dsh-univer-office`), Obsidian plugin | Excellent spreadsheet engine and renderer, agent/MCP story | It is an SDK, not an app: no ribbon/Backstage, docs and slides immature, OOXML import/export and collaboration are in paid "Pro/Server" tiers, no desktop/mobile apps | Beat on *product*: ribbon UX, file fidelity in the open core, offline desktop + Android. We benchmark our grid against Univer's demo (scroll fps, 1M cells) in WP-71/WP-94 and must beat it by ≥ 10 % (frame time). Its `@univerjs/engine-formula` (Apache-2.0) is our documented formula-engine fallback |
+| **GenOffice** (`genspark-ai/genoffice` ★9.8k, TypeScript, Apache-2.0, public since 2026-07-31) | Electron-style desktop: Docs/Sheets/Slides/PDF/Markdown/HTML + AI panel, CLI + agent skill + MCP | Desktop builds for macOS/Windows/Linux; "byte-preserving" saves (only edited parts rewritten); AI edits land as tracked changes with rollback; full-text local file search; BYO key for 15+ providers | Clear AI-first UX, byte-preserving round-trip, agent skill/CLI, 20 README languages | AI routed through Genspark by default (account), no Android, no collaboration, UI is not Office-familiar (no ribbon), young codebase | **Byte-preservation bar:** every part we did not edit is byte-identical after save (tests in WP-65/WP-70/WP-79); AI edits as tracked changes when a provider is configured (loop round 1); `kiln` CLI + MCP server (loop round 1) |
 | **ArtCraft "Craft" apps** — WordCraft ★13.1k, GridCraft ★5.1k, DeckCraft ★3.4k (`storytold/*`, Rust, MIT/Apache-2.0, created 2026-10-07, AI-built) | pure Rust, native + WASM web, agent-drivable over MCP/CLI/JSON control channel | Press claims: 88 % of Word ribbon, 513/523 Excel functions, 17 chart types, pivots saved to XLSX, Spanish formula names, Page Break Preview, copy-on-write undo; dark mode; "if you know Excel you know GridCraft" | Alpha ("50–60 % practically usable" by their own rating), no Android, Rust GUI toolkit a11y is weak, fidelity unproven, viral-but-young | Function count ≥ 513 (loop target; v0.1 ships ≥ 350), ≥ 17 chart types (v0.1 ships 13 → loop), localised formula names (loop), **every command drivable over a JSON control channel/MCP** (loop round 1 — our command registry already makes this cheap), and a *measured* fidelity corpus they do not have |
 
 Also noted: CryptPad (own formats, E2EE), Workbench (GitLab, unclear status), Luckysheet (superseded by Univer), Collabora/ONLYOFFICE mobile apps.
 
-### 2A.2 What this means for Officina — differentiators
+### 2A.2 What this means for Kiln — differentiators
 
-1. **Fidelity you can measure.** No competitor publishes a reproducible round-trip score. `pnpm fidelity` and `docs/qa/fidelity.md` (per file, per metric, with LibreOffice's own score beside ours) become a public artefact and a landing-page section.
+1. **Fidelity you can measure.** No competitor publishes a reproducible round-trip score. `cargo xtask fidelity` and `docs/qa/fidelity.md` (per file, per metric, with LibreOffice's own score beside ours) become a public artefact and a landing-page section.
 2. **Office-familiar *and* modern.** Only ONLYOFFICE/WPS offer a ribbon among the alternatives; neither has a command palette with Office synonyms, Key Tips, or a Format Cells dialog that matches Excel's six tabs. We ship all of §1.
-3. **One install, everything offline, plus collaboration you host.** The web-first newcomers have no Android; the server suites cannot edit offline. Officina does both from one codebase.
+3. **One install, everything offline, plus collaboration you host.** The web-first newcomers have no Android; the server suites cannot edit offline. Kiln does both from one codebase.
 4. **Agent-native without AI lock-in.** Every command is already a registry entry; exposing it over a JSON control channel + MCP server + CLI (loop round 1) matches GridCraft/GenOffice/Univer. AI providers are BYO and off by default (Collabora's stance), and AI edits arrive as tracked changes (GenOffice's bar).
 5. **Byte-preserving saves** (GenOffice's strongest claim) are a design property of our OPC passthrough; we assert it in tests.
 6. **Privacy and licence posture of the user's other projects:** no telemetry, no account, AGPL, fonts and icons compiled in, nothing fetched from third parties.
@@ -373,314 +345,442 @@ Also noted: CryptPad (own formats, E2EE), Workbench (GitLab, unclear status), Lu
 
 | Bar | v0.1 (this plan) | Loop target ("beats competitors") | Verified by |
 |---|---|---|---|
-| DOCX round-trip (corpus) | structural ≥ 0.95, text 1.00, visual ≥ 0.90, untouched parts byte-identical | structural ≥ 0.98, visual ≥ 0.95, ≥ LibreOffice's own score on ≥ 80 % of files, ≥ ONLYOFFICE on ≥ 50 % | `pnpm fidelity --format docx` |
-| XLSX round-trip | structural ≥ 0.97, values 1.00, formulas 1.00, oracle opens 100 % | structural ≥ 0.99; pivots/sparklines/slicers preserved as models | `pnpm fidelity --format xlsx` |
-| PPTX round-trip | structural ≥ 0.95, text 1.00, visual ≥ 0.85 | visual ≥ 0.92; animations preserved 100 % | `pnpm fidelity --format pptx` |
-| Formula functions | ≥ 350, conformance 1,500 cases 0 failures | ≥ 520 (all Excel worksheet functions except CUBE/RTD/web), 3,000 cases | `listFunctions().length`, conformance suite |
+| DOCX round-trip (corpus) | structural ≥ 0.95, text 1.00, visual ≥ 0.90, untouched parts byte-identical | structural ≥ 0.98, visual ≥ 0.95, ≥ LibreOffice's own score on ≥ 80 % of files, ≥ ONLYOFFICE on ≥ 50 % | `cargo xtask fidelity --format docx` |
+| XLSX round-trip | structural ≥ 0.97, values 1.00, formulas 1.00, oracle opens 100 % | structural ≥ 0.99; pivots/sparklines/slicers preserved as models | `cargo xtask fidelity --format xlsx` |
+| PPTX round-trip | structural ≥ 0.95, text 1.00, visual ≥ 0.85 | visual ≥ 0.92; animations preserved 100 % | `cargo xtask fidelity --format pptx` |
+| Formula functions | ≥ 484 (ported), conformance ≥ 4,500 cases 0 failures | ≥ 520 (all Excel worksheet functions except CUBE/RTD/web), 3,000 cases | `kiln functions --count`, conformance suite |
 | Chart types | 13 | ≥ 18 (add box & whisker, map-free choropleth skipped, stock, surface-as-heatmap, Pareto, funnel 3-D-as-2-D) | charts stories screenshot count |
-| Performance | §3.9 table | open time ≤ 0.5× `soffice --convert-to` time for the same file; grid scroll ≥ Univer demo −10 % | `pnpm bench`, perf.spec.ts |
-| Startup | Electron cold start < 2.5 s to Hub | < 1.5 s | perf.spec.ts (Electron) |
-| UX polish | no overlapping/clipped UI at 1280×800, 1440×900, 412×915 (automated bounding-box overlap scan of ribbon/status bar/dialogs + visual review) | same at 1024×768 and 1920×1080 with 125 %/150 % zoom; 4 px grid lint | `e2e/specs/layout-scan.spec.ts` (WP-42) |
+| Performance | §3.9 budgets | open time ≤ 0.25× `soffice --convert-to` time for the same file; grid frame time ≤ 0.9× Univer demo | `cargo xtask budgets`, perf.spec.ts |
+| Startup | Tauri cold start < 0.7 s to Kiln Home (Linux, warm cache) | < 0.4 s | `kiln-desktop --startup-probe`, perf.spec.ts |
+| UX polish | no overlapping/clipped UI at 1280×800, 1440×900, 412×915 (automated bounding-box overlap scan of ribbon/status bar/dialogs + visual review) | same at 1024×768 and 1920×1080 with 125 %/150 % zoom; 4 px grid lint | `e2e/specs/layout-scan.spec.ts` (WP-97) |
 | Accessibility | axe 0 serious/critical on all screens; 100 % ribbon commands keyboard-reachable | WCAG 2.2 AA self-audit complete; screen-reader walkthrough script for each app (NVDA/Orca steps documented) | a11y.spec.ts, docs/qa/a11y.md |
 | Shortcuts | 100 % of §1.7 table works | + Excel's full "Alt" sequences for the Home/Insert/Data tabs | shortcuts.spec.ts |
 | Collaboration | 2 users, cursors, offline merge, version history | 10 concurrent editors in a test, comments with @mentions and notifications | collab.spec.ts |
 | Mobile | APK with full editing; touch e2e on Pixel 7 emulation | plus iOS build in CI (macOS runner) | mobile.spec.ts, verify-apk.sh |
-| Agent/automation | command registry introspectable | JSON control channel + MCP server + `officina` CLI (convert/edit/batch) | control.spec.ts (loop) |
+| Agent/automation | command registry introspectable | JSON control channel + MCP server + `kiln` CLI (convert/edit/batch) | control.spec.ts (loop) |
 
 
----
+
 
 ---
 
 ## 3. Architecture
 
-### 3.1 Monorepo layout (exact)
+### 3.1 Principles
+
+1. **Everything that computes lives in Rust.** Models, layout, formulas, file formats, collaboration, storage, search, spell check, PDF, charts. The TypeScript layer renders what Rust tells it to render and forwards input. A reviewer can check this mechanically: `packages/*` must not import a parser, a layout algorithm or a formula evaluator; `biome` has a rule banning `packages/*/src/**` from containing the words `parseXml`, `evaluate(`, `layout(` outside `packages/surface` and `packages/protocol` (WP-52 adds the lint).
+2. **One core, three hosts.** `kiln-session` is the only API. `kiln-desktop` (Tauri, desktop + Android) and `kiln-bridge-wasm` (web) are thin adapters over it; `kiln-cli` drives the same API from the shell, which is how agents test without a GUI.
+3. **One typed protocol.** Every message crossing Rust ↔ TypeScript is a type in `kiln-protocol` with `#[derive(Serialize, Deserialize, TS)]`; the TypeScript definitions are generated, never hand-written, and CI fails if they are stale.
+4. **Never destroy what you don't understand.** All readers keep every OPC part they did not fully consume as opaque bytes; writers re-emit known parts and copy the rest with relationships fixed up; untouched parts are byte-identical after save (tested).
+5. **Measured, not claimed.** Fidelity scores, performance budgets and parity rows are produced by commands any agent can run and are enforced in CI.
+
+### 3.2 Repository layout (exact)
 
 ```
-OfficeSuite/
-├─ PLAN.md
-├─ package.json                      # root scripts, packageManager pnpm@12.11.2
-├─ pnpm-workspace.yaml               # packages/*, apps/*, + dependency catalog (single version per lib)
-├─ turbo.json                        # build/test/lint/e2e pipelines
-├─ tsconfig.base.json                # strict, ESNext, bundler resolution, paths
-├─ biome.json                        # Biome 2.x: lint + format (replaces eslint+prettier)
-├─ .nvmrc  (24.22.0)   .npmrc (node-linker=hoisted for electron-builder compatibility, shamefully-hoist=false)
-├─ .github/workflows/ci.yml  desktop-release.yml  android.yml
-├─ tools/
-│  ├─ setup-node.sh  setup-android.sh  verify-env.sh  oracle-soffice.sh  make-fixtures.mjs
-│  └─ release/  (electron-builder shared config, icons, notarize placeholder)
-├─ docs/  adr/ (architecture decision records), ux/ (ribbon spec JSON exports), screenshots/ (reviewed e2e output)
-├─ e2e/                              # Playwright project (apps/web dev server + electron smoke)
-│  ├─ playwright.config.ts  fixtures/  specs/*.spec.ts  screenshots/ (gitignored except baseline/)
+OfficeSuite/                                  (git: ZahakJ/kiln)
+├─ PLAN.md  README.md  LICENSE  CHANGELOG.md  CONTRIBUTING.md  SECURITY.md  CODE_OF_CONDUCT.md  THIRD-PARTY-NOTICES.md  PARITY.md
+├─ Cargo.toml                 # [workspace] members = crates/*, apps/desktop/src-tauri, xtask; [workspace.dependencies] pins every crate once (§4.2)
+├─ Cargo.lock                 # committed
+├─ rust-toolchain.toml        # channel = "1.99.1", components = [rustfmt, clippy, rust-src], targets = [wasm32-unknown-unknown, aarch64-linux-android, armv7-linux-androideabi, x86_64-linux-android]
+├─ .cargo/config.toml         # [build] jobs = 3; rustc-wrapper = sccache (if present); profiles (§4.1); [target.wasm32-unknown-unknown] rustflags for getrandom; [alias] xtask = "run -p xtask --"
+├─ deny.toml                  # cargo-deny: licence allow-list, advisories, bans
+├─ package.json  pnpm-workspace.yaml  turbo.json  tsconfig.base.json  biome.json  .nvmrc  .npmrc
+├─ .github/workflows/ci.yml  release.yml  pages.yml  (§4.6)
+├─ crates/                                    # Rust core (no UI code anywhere here)
+│  ├─ kiln-common/        ids (DocId, NodeId), units (Emu, Twip, Pt, Px), Color, geometry (kurbo), error types, feature tiers
+│  ├─ kiln-protocol/      every Rust↔TS type: Command (enum, typed args), CommandMeta catalog, Event, Scene*, Viewport, Selection, A11yTree, DocSummary, HostRequest; ts-rs export
+│  ├─ kiln-text/          fonts (fontique/fontdb, bundled OFL fonts, substitution table), shaping (parley→harfrust), bidi, line breaking, hyphenation, glyph atlas rasterisation (swash), metrics cache
+│  ├─ kiln-scene/         retained display list: Scene, Layer, Tile, DrawOp (Rect, Path, GlyphRun, Image, Clip, Transform, Squiggle, Caret, SelectionRects…), SceneDelta, postcard encoding, hit-test helpers
+│  ├─ kiln-raster/        tiny-skia painter: Scene → RGBA bitmap (CLI `kiln render`, tests, thumbnails, Android/desktop fallback)
+│  ├─ kiln-ooxml/         OPC (zip), XML layer (quick-xml, order-preserving), namespaces, simple types, units, DrawingML (colour/fill/line/effects/text/theme/187 presets), passthrough, docProps, deterministic writer
+│  ├─ kiln-doc/           Write model (WordprocessingML-shaped): nodes, marks, StyleSheet, numbering, sections, fields, footnotes, comments, revisions; Transaction/op log; undo
+│  ├─ kiln-doc-layout/    paragraph→line→page layout, tables, floats & wrap, headers/footers, footnotes, keep/widow rules, TOC/field results, hit testing, caret geometry → Scene
+│  ├─ kiln-formula/       tokenizer, Pratt parser, AST, references (A1/R1C1/3-D/structured), dependency graph, incremental multi-threaded recalc, values, numfmt (Excel format codes), ≥484 functions, function docs JSON
+│  ├─ kiln-sheet/         Workbook/Sheet/sparse columnar store, StyleTable, merges, names, tables, CF, validation, hyperlinks, comments, CommandLog (undo), formula binding (CalcState)
+│  ├─ kiln-sheet-layout/  viewport layout (Fenwick-tree offsets), cell painting (number formats, overflow, wrap, rotation, borders precedence, CF visuals), frozen panes, selection/fill-handle geometry → Scene tiles
+│  ├─ kiln-deck/          Presentation model: masters/layouts/slides/sections, shapes, placeholders inheritance, themes, transitions, animation timeline, notes
+│  ├─ kiln-deck-layout/   slide → Scene (shapes, text bodies via kiln-text, pictures with crop, tables, charts), thumbnails, guides/snapping geometry, animation evaluation
+│  ├─ kiln-charts/        chart model (13 types v0.1), layout + rendering → Scene, c:chartSpace read/write, embedded workbook data
+│  ├─ kiln-io-docx/  kiln-io-xlsx/  kiln-io-pptx/  kiln-io-odf/  kiln-io-csv/   readers/writers ⇄ models (with passthrough)
+│  ├─ kiln-io-pdf/        Scene → PDF (krilla): fonts subset, outlines from headings, page labels, tagged PDF; print pipeline
+│  ├─ kiln-spell/         spellbook (Hunspell) + bundled en-US dictionary; suggestions; per-document ignore lists
+│  ├─ kiln-search/        in-memory inverted index + fuzzy matcher (command palette synonyms, Notes search, Find)
+│  ├─ kiln-collab/        Loro bindings for doc/deck/notes models, presence, version history (snapshots, names, diff), sync protocol (WebSocket frames)
+│  ├─ kiln-collab-server/ binary: axum + tokio WebSocket relay with redb persistence, shared-token auth, Dockerfile
+│  ├─ kiln-storage/       native bundle formats (.kwrite/.kgrid/.kdeck zip), autosave journal, recovery, recents, templates index; StorageHost trait (native fs / web OPFS via bridge)
+│  ├─ kiln-session/       the facade: Session { open/new/save/close, execute(Command), set_viewport, frame()→SceneDelta, events }, command dispatcher, selection/caret, clipboard model, document registry
+│  ├─ kiln-bridge-wasm/   cdylib: wasm-bindgen exports of kiln-session (runs in a Web Worker), HostRequest callbacks
+│  ├─ kiln-cli/           `kiln`: convert, render (PNG/PDF), inspect, fidelity, bench-fixtures, functions, control (JSON control channel over stdio)
+│  ├─ kiln-bench/         benchmark binaries + `--assert` budgets (§3.9), synthetic generators (1M-cell sheet, 300-page doc, 200-slide deck)
+│  └─ kiln-testing/       fixture loaders, LibreOffice oracle runner, fidelity scorer (structural/text/visual/oracle_opens/byte_identical), conformance CSV runner, image diff
+├─ xtask/                 cargo xtask: protocol (ts-rs export + check), fidelity, budgets, parity, fixtures, wasm (build+bindgen+opt), notices, verify
 ├─ apps/
-│  ├─ web/            @officina/web            Vite 8 + React 19 SPA/PWA: routes /hub /write /grid /deck /notes /present
-│  ├─ desktop/        @officina/desktop        Electron 44 via electron-vite: src/main, src/preload, builder config
-│  ├─ android/        @officina/android        Capacitor 8 project (android/ Gradle project is generated, committed)
-│  └─ collab-server/  @officina/collab-server  Hocuspocus (Node) with SQLite persistence; Dockerfile
-└─ packages/
-   ├─ tokens/         @officina/tokens         CSS vars, themes, Tailwind @theme, fonts (UI + document fonts)
-   ├─ ui-kit/         @officina/ui-kit         Ribbon, Backstage, StatusBar, CommandPalette, panes, dialogs, mini toolbar, TransformBox, pickers, mobile sheet
-   ├─ commands/       @officina/commands       Command registry, keymaps, Key Tips, AssistantProvider hooks
-   ├─ doc-model/      @officina/doc-model      Write schema (ProseMirror), styles, numbering, sections, fonts table
-   ├─ sheet-model/    @officina/sheet-model    Workbook model, sparse cell store, styles, undo log, numfmt bridge
-   ├─ deck-model/     @officina/deck-model     Presentation model: masters, layouts, slides, shapes, themes
-   ├─ formula/        @officina/formula        Tokenizer, parser, AST, evaluator, dependency graph, functions, docs
-   ├─ ooxml/          @officina/ooxml          OPC container, XML (de)serialisation, relationships, DrawingML, theme, passthrough
-   ├─ io-docx/        @officina/io-docx        docx ⇄ doc-model
-   ├─ io-xlsx/        @officina/io-xlsx        xlsx ⇄ sheet-model (+ csv/tsv/json)
-   ├─ io-pptx/        @officina/io-pptx        pptx ⇄ deck-model
-   ├─ io-odf/         @officina/io-odf         odt/ods/odp ⇄ models (P1)
-   ├─ charts/         @officina/charts         Chart model, ECharts renderer, chart ribbon groups, c:chart XML mapping
-   ├─ editor-write/   @officina/editor-write   TipTap editor, pagination, header/footer, track changes, comments, panes
-   ├─ editor-grid/    @officina/editor-grid    Canvas grid, selection, editing, formula bar, features (sort/filter/CF/validation…)
-   ├─ editor-deck/    @officina/editor-deck    Stage, rail, shapes, transforms, slide show, presenter view, animations
-   ├─ collab/         @officina/collab         Yjs providers (websocket, indexeddb), awareness, version history snapshots
-   ├─ storage/        @officina/storage        File abstraction (Web FS Access / Electron / Capacitor), recents, autosave journal, recovery
-   ├─ print-pdf/      @officina/print-pdf      Print layouts, print preview, PDF export pipeline (Chromium print + pdf-lib)
-   ├─ i18n/           @officina/i18n           i18next setup, locales (en, de, ar), number/date locale data
-   ├─ templates/      @officina/templates      Template documents (native JSON) + thumbnails
-   ├─ notes/          @officina/notes          Notes app model + UI (Tier 2)
-   └─ testing/        @officina/testing        Fixtures (.docx/.xlsx/.pptx corpus), oracles (soffice, exceljs, mammoth), helpers, fidelity scorer
+│  ├─ web/                @kiln/web      Vite 8 + React 19 PWA: routes, loads kiln-bridge-wasm in a Worker (WasmWorkerClient), service worker, file handlers
+│  ├─ desktop/            @kiln/desktop  Tauri 2 project: src-tauri/ (crate kiln-desktop: commands, events, menus, file associations, Android activity via `tauri android`), tauri.conf.json, capabilities/, icons/, gen/android (generated, committed)
+│  └─ collab-server/      Dockerfile + compose for crates/kiln-collab-server (no JS)
+├─ packages/                                  # TypeScript, presentation only
+│  ├─ protocol/           @kiln/protocol  generated/ (ts-rs output, do not edit) + KilnClient interface, TauriClient, WasmWorkerClient, postcard decoder for Scene
+│  ├─ tokens/             @kiln/tokens    generated from brand/tokens.json (CSS vars --kiln-*, Tailwind @theme, TS object, fonts @font-face)
+│  ├─ ui-kit/             @kiln/ui-kit    Ribbon, Backstage, StatusBar, CommandPalette, panes, dialogs, mini toolbar, context menus, Key Tips, primitives, icons
+│  ├─ commands/           @kiln/commands  UI-side command registry (labels, icons, keymaps, Key Tips letters, synonyms, tiers) over the generated catalog; dispatch = client.execute(Command)
+│  ├─ surface/            @kiln/surface   the painter: canvas2d Scene renderer, tile cache, glyph atlas textures, input proxy (IME), a11y shadow tree, selection overlay, scroll/zoom, touch handles
+│  ├─ editor-write/  editor-grid/  editor-deck/  notes/   app views: ribbon definitions, panes, dialogs, status bar items, surface wiring (no document logic)
+│  ├─ home/               @kiln/home      Kiln Home (recents, templates, pinned, search)
+│  ├─ i18n/               @kiln/i18n      i18next, locales en/de/ar, ICU; UI strings only (document strings come from Rust)
+│  └─ testing/            @kiln/testing   Playwright helpers, axe wrapper, screenshot conventions, layout-scan
+├─ brand/                 the imported brand kit (raw; WP-51)
+├─ assets/fonts/          bundled document fonts (OFL) + brand fonts; assets/dictionaries/ (Hunspell en-US); assets/templates/ (native bundles + thumbnails)
+├─ fixtures/              docx/ xlsx/ pptx/ odf/ features|manual|large|external(gitignored) — moved from packages/testing/fixtures in WP-50
+├─ conformance/           formula conformance CSVs (moved from packages/formula/test/conformance), functions.json sidecar
+├─ parity/                parity.json, schema.json, corpus.json
+├─ reference/ts-core/     the v1.0 TypeScript engine code kept read-only as the port oracle (not in the pnpm workspace, excluded from CI); deleted by WP-97 once every port WP is done
+├─ e2e/                   Playwright project (web build; Pixel 7 + iPad emulation; perf, a11y, shortcuts, layout-scan, visual)
+├─ docs/                  landing (index.html), manual/, adr/, design/ (mockup copies + kit-gaps.md), qa/ (env, fidelity, perf, a11y, visual reviews, handoffs), COMPETITORS.md, DESIGN.md, FORMATS.md, SHORTCUTS.md, RELEASING.md
+└─ tools/                 setup-rust.sh  setup-node.sh  setup-android.sh  verify-env.sh  oracle-soffice.sh  check-licenses.mjs  make-fixtures.py  fetch-corpus.sh  with-lock.sh
 ```
 
-Every package: `src/index.ts`, `package.json` (`"type":"module"`, `exports`, `catalog:` deps), `tsconfig.json` extending base, `vitest.config.ts`, `README.md` (one paragraph: purpose + public API). Packages are consumed from source via TS `paths` and Vite aliases (no per-package build step needed for dev; `pnpm build` runs `tsc -b` for type checking and `vite build` only in apps).
+Crate conventions: `crates/<name>/Cargo.toml` (edition 2024, `license = "AGPL-3.0-or-later"`, `publish = false`, deps as `{ workspace = true }`), `src/lib.rs` with `#![forbid(unsafe_code)]` (exceptions: `kiln-bridge-wasm`, `kiln-raster` with a justification comment), `#![warn(missing_docs)]` on public crates, `tests/` for integration tests, `benches/` only in `kiln-bench`, `README.md` (one paragraph: purpose + public API). TS packages: `src/index.ts`, `package.json` (`"type":"module"`, `exports`, `catalog:` deps), strict `tsconfig.json`, `vitest.config.ts`, `README.md`.
 
-### 3.2 Runtime architecture
+### 3.3 Runtime architecture
 
 ```
-                 ┌──────────────── apps/web (React 19, routes per app) ────────────────┐
-                 │  Hub │ Write │ Grid │ Deck │ Notes │ Present (slide show window)      │
-                 │  uses: ui-kit (Ribbon/Backstage/StatusBar) + commands + editors      │
-                 └───────────────┬─────────────────────────────┬────────────────────────┘
-         platform bridge (interface `PlatformHost` in packages/storage)                  
-   ┌─────────────┴──────────┐   ┌────────────┴──────────┐   ┌───────────┴────────────┐
-   │ Web/PWA host           │   │ Electron host         │   │ Capacitor host         │
-   │ File System Access API │   │ preload IPC: fs,      │   │ Filesystem, FilePicker │
-   │ + OPFS/IndexedDB       │   │ dialogs, menu, print  │   │ Share, StatusBar, Kbd  │
-   └────────────────────────┘   └───────────────────────┘   └────────────────────────┘
-
-   Document layer (per open document):
-     Write/Deck/Notes:  Y.Doc  ⇄ ProseMirror (y-prosemirror) / deck-model binding ; Y.UndoManager ; y-indexeddb persistence
-     Grid:              SheetModel (sparse columnar) + CommandLog (undo) + FormulaEngine worker (comlink) ; snapshots → IndexedDB
-   File layer:          io-* ⇄ ooxml (OPC) ⇄ fflate ; opaque parts preserved on the document as `passthrough: Map<partName, Uint8Array>`
+   ┌──────────────── TypeScript presentation (React 19) ─────────────────┐
+   │ Home │ Write │ Grid │ Deck │ Notes │ Present      ui-kit · commands │
+   │ surface: <canvas> painter · input proxy (IME) · a11y shadow tree    │
+   └──────────────┬────────────────────────────────────────┬─────────────┘
+         KilnClient (packages/protocol): execute(Command) · events · frames
+   ┌──────────────┴─────────────┐                 ┌────────┴──────────────────┐
+   │ TauriClient                │                 │ WasmWorkerClient          │
+   │ invoke() + ipc::Channel    │                 │ postMessage + transfer    │
+   │ binary ipc::Response       │                 │ (Worker owns the wasm)    │
+   └──────────────┬─────────────┘                 └────────┬──────────────────┘
+   ┌──────────────┴─────────────┐                 ┌────────┴──────────────────┐
+   │ kiln-desktop (Tauri 2)     │                 │ kiln-bridge-wasm          │
+   │ Linux/Win/mac + Android    │                 │ wasm32, single thread     │
+   └──────────────┬─────────────┘                 └────────┬──────────────────┘
+                  └──────────────── kiln-session ──────────┘
+     documents · command dispatch · selection · viewports · frame production · events
+     ┌─────────┬───────────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+     kiln-doc  kiln-sheet  kiln-deck   kiln-text  kiln-scene kiln-io-*  kiln-collab kiln-storage …
 ```
 
-**State management:** `zustand` stores per app for UI state (selection, panes, zoom, ribbon tab, dialogs); document state lives in the document models (Yjs or SheetModel), never duplicated in React state. React subscribes via thin hooks (`useDocSelector`) with `useSyncExternalStore`. Command execution goes through `@officina/commands` (`execute(id, args)`), which is the only mutation path from UI → model; this makes keyboard, ribbon, palette, native menus, and tests share one surface.
+**Document lifetime.** `Session::open(bytes | path, hint) → DocId` parses on a worker thread (native) or synchronously in the Worker (wasm), builds the model, keeps passthrough parts, creates the layout state and emits `Event::Opened{summary}`. The UI creates a surface, sends `set_viewport(doc, Viewport{size, scroll, zoom, dpr})`, and asks for frames. Edits go through `execute(doc, Command)`: the dispatcher validates against `CommandMeta` (availability per selection/tier), applies a `Transaction` to the model (undoable), marks layout dirty, recomputes affected layout (incrementally; pages after the edit are re-flowed lazily), and emits `Event::Changed{doc, dirty, selection, status}`. The surface then calls `frame(doc) → SceneDelta` (only tiles/pages that changed). Native: the webview never blocks on parsing or recalc; wasm: parsing of large files is chunked with `yield` points so the Worker can still answer `frame()`.
 
-**Workers:** formula recalculation (Grid) and file parsing/serialisation (all apps) run in Web Workers via `comlink`; models are transferred as structured-cloneable snapshots or `SharedArrayBuffer` (where available — not required).
+**Three kinds of state and where they live.**
 
-**Document identity & versioning:** every document has a `docId` (UUID), `versions/` (Yjs snapshots or SheetModel snapshots, gzip via fflate) in IndexedDB keyed by docId; native bundle `.scriba/.tabula/.scena` = zip with `document.json` (model), `yjs.bin` (update), `versions/*.bin`, `media/*`, `passthrough/*`.
+| State | Lives in | Never in |
+|---|---|---|
+| Document model, layout, calc, undo, passthrough, versions | Rust (`kiln-session`) | React |
+| Selection, caret, viewport, composition text | Rust (authoritative), mirrored to TS for overlays | — |
+| UI state: ribbon tab, open panes, dialog fields, theme, density, recent commands | TS (`zustand`), persisted via `HostRequest::StorePref` | Rust |
 
-### 3.3 Document models
+**Hosts.** Rust needs the outside world for files, dialogs, clipboard, printing, preferences and network. `kiln-session` defines `trait Host` (`read_file`, `write_file`, `pick_open`, `pick_save`, `recents`, `store_pref`, `clipboard_read/write`, `open_external`, `now`, `spawn_blocking`). `kiln-desktop` implements it with `std::fs`/`tauri-plugin-fs`/`tauri-plugin-dialog`/`tauri-plugin-clipboard-manager`; `kiln-bridge-wasm` implements it by sending `HostRequest`s to the main thread where TS uses the File System Access API/OPFS/IndexedDB and answers. Same core, same tests.
 
-- **doc-model (Write):** ProseMirror schema mirroring WordprocessingML semantics: `doc > section+ > (paragraph | table | …)`, paragraph attrs: `styleId, alignment, indent{left,right,firstLine,hanging}, spacing{before,after,line,lineRule}, numbering{numId,level}, pageBreakBefore, keepNext, tabs[], borders, shading, bidi`; marks: `bold, italic, underline{style,color}, strike, dstrike, color, highlight, fontFamily, fontSize, caps, smallCaps, vertAlign, link, comment{id}, insertion{author,date}, deletion{author,date}, formatChange, spellError`; nodes: `image(inline|anchor, wrap, position)`, `shape`, `table/tableRow/tableCell(gridSpan, vMerge, borders, shading, width)`, `footnoteRef/footnote`, `field(type, instr, result)`, `tab`, `softBreak`, `pageBreak`, `columnBreak`, `toc`, `header/footer(type)`, `equation(omml)`. Styles are a separate `StyleSheet` (paragraph/character/table/numbering styles with `basedOn` inheritance) resolved by `resolveParagraphStyle()`; theme fonts/colours resolved via ooxml theme. Default stylesheet reproduces Word's `Normal.dotm` (Normal: Aptos→Inter 12pt→11pt? **No**: we keep the file's values; our *new* documents use Calibri-metric Carlito 11 pt, 1.08 line, 8 pt after, Heading 1 = 16 pt Calibri Light→Carlito, colour `2F5496`... i.e. the Word 2016–2021 defaults, because they are what every `.docx` in the wild expects).
-- **sheet-model (Grid):** `Workbook{sheets[], names[], styles: StyleTable, theme, calcProps, passthrough}`; `Sheet{id, name, cells: SparseStore, rows: RowProps[], cols: ColProps[], merges[], cf[], validations[], tables[], charts[], drawings[], views{freeze, zoom, selection}, hidden, tabColor, autoFilter}`; `SparseStore` = `Map<rowIndex, RowChunk>` where `RowChunk` keeps parallel arrays (`cols: Int32Array, values: (number|string|boolean|ErrorValue|null)[], formulas: (string|null)[], styleIdx: Int32Array`) — compact, fast iteration, O(1) random access via a per-row `Map` index built lazily. Styles deduplicated in a `StyleTable` (like `cellXfs`). Edits go through `CommandLog` (inverse ops) for undo/redo. Volatile derived data (computed values, spill ranges) in `CalcState`.
-- **deck-model (Deck):** `Presentation{slideSize, theme, masters[], layouts[], slides[], sections[], notesMaster, passthrough}`; `Slide{id, layoutId, shapes[], background, transition, timing/animations[], notes, hidden}`; `Shape = TextBox | Picture | Geometry | Group | Table | Chart | Connector | Media | Placeholder`, all with `transform{x,y,w,h,rot,flipH,flipV}` in EMU (we store EMU to avoid rounding drift; UI converts to px at 96 dpi: 9525 EMU/px), `fill/line/effects`, `textBody{bodyPr, paragraphs[]}` using a *subset* of the doc-model schema (`deckText` schema) so TipTap is reused inside shapes.
+### 3.4 Document models (Rust)
 
-### 3.4 Formula engine (own, MIT)
+- **`kiln-doc` (Write):** a tree `Document > Section+ > Block*` with `Block = Paragraph | Table | Sdt | …`; `Paragraph{pPr, runs: Vec<Run>}`, `Run{rPr, content: Text | Tab | Break | Drawing | FootnoteRef | Field | Symbol | Equation(omml) | CommentRef | RevisionMark}`; paragraph properties mirror `w:pPr` (styleId, alignment, indents, spacing, numbering{numId, ilvl}, tabs, borders, shading, keepNext/keepLines/pageBreakBefore/widowControl, bidi); run properties mirror `w:rPr` (fonts incl. theme fonts, size, bold/italic/underline{style,colour}/strike/dstrike, colour, highlight, caps/smallCaps, vertAlign, spacing, kerning, lang, rtl). Separate `StyleSheet` (paragraph/character/table/numbering styles with `basedOn` inheritance and `docDefaults`), `Numbering` (abstractNum/num/lvlOverride, legal numbering), `Settings`, `Comments` (threads, resolved), `Footnotes/Endnotes`, `Headers/Footers` per section type. Text is stored in a rope per paragraph (`ropey`) with marks as attributed spans; node ids are stable `NodeId`s so layout, CRDT and comments reference them. **All edits are `Transaction`s** (a `Vec<Op>` with inverse ops) so undo, collaboration (ops map to Loro changes) and the control channel share one path. Default new-document stylesheet reproduces Word 2016–2021 defaults (Calibri→Carlito 11 pt, 1.08 line, 8 pt after, Heading 1 = Calibri Light→Carlito 16 pt `2F5496`); files keep their own values.
+- **`kiln-sheet` (Grid):** `Workbook{sheets, names, styles: StyleTable, theme, calc_props, passthrough}`; `Sheet{id, name, cells: SparseStore, rows, cols, merges, cf, validations, tables, charts, drawings, views{freeze, zoom, selection}, hidden, tab_color, autofilter}`; `SparseStore` = row chunks with parallel columnar arrays (`cols: Vec<u32>`, `values: Vec<Value>`, `formulas: Vec<Option<FormulaId>>`, `style: Vec<u32>`), per-row index built lazily, `Value = Blank | Number(f64) | Str(Arc<str>) | Bool | Error(ErrorKind) | RichText`. Styles deduplicated like `cellXfs`. `CommandLog` of inverse ops for undo; formulas interned in `kiln-formula`'s arena; `CalcState` holds computed values and spill ranges.
+- **`kiln-deck` (Deck):** `Presentation{slide_size, theme, masters, layouts, slides, sections, notes_master, passthrough}`; `Slide{id, layout, shapes, background, transition, timing, notes, hidden}`; `Shape = TextBox | Picture | Geometry | Group | Table | Chart | Connector | Media | Placeholder` with `Transform` in EMU, fill/line/effects, `TextBody` (a `kiln-doc` paragraph subset so Write's text engine is reused), placeholder inheritance master→layout→slide resolved on access.
+- **Notes:** a notebook is a folder (`notebook.json` + sections + `.kwrite` pages with a `notes` front-matter block: title, created, tags). No separate model crate; `kiln-storage` owns the folder format, `kiln-search` the index.
 
-- **Why own:** HyperFormula 3.5.0 is GPL-3.0-only (commercial licence required otherwise); `fast-formula-parser` (MIT) is unmaintained and lacks dynamic arrays. We write `@officina/formula` and reuse **`@formulajs/formulajs` 4.6.1 (MIT)** as the implementation base for ~350 scalar functions (wrapped/adapted to our value model), replacing those with Excel-incompatible behaviour as conformance tests reveal them.
-- **Pipeline:** tokenizer (Excel grammar incl. `A1`, `$A$1`, `Sheet1!A1`, `'My Sheet'!A1:B2`, `Sheet1:Sheet3!A1` 3-D, `Table1[[#Headers],[Col]]` structured refs, `A:A`, `1:1`, `#REF!`, `@` implicit intersection, `%`, `&`, comparison, range/union/intersection operators, array constants `{1,2;3,4}`) → parser (Pratt) → AST → **dependency graph** (range nodes with interval-tree lookups so `SUM(A:A)` doesn't register a million edges) → **incremental recalculation** (dirty-marking + topological order, cycle detection → `#CIRCULAR` unless iterative calc enabled) → evaluator with lazy arguments (for IF/IFS/CHOOSE/LET/LAMBDA), **dynamic arrays with spill** (`#SPILL!`), implicit intersection for legacy formulas, volatile functions (NOW, TODAY, RAND, RANDBETWEEN, OFFSET, INDIRECT) recalculated every cycle.
-- **Value model:** `number | string | boolean | ErrorValue(#DIV/0!, #N/A, #NAME?, #NULL!, #NUM!, #REF!, #VALUE!, #SPILL!, #CALC!) | Array2D | Lambda | Blank`. Dates = serial numbers (1900 system including the Lotus 1900-02-29 bug), Excel's 15-significant-digit rounding on display, and Excel's "almost equal" comparison (`=0.1+0.2=0.3` → TRUE) implemented as in Excel (round to 15 sig digits before compare).
-- **Functions (target ≥ 350 by WP-09):** Math/Trig (SUM, SUMIF(S), SUMPRODUCT, ROUND*, MOD, INT, TRUNC, ABS, SQRT, POWER, EXP, LN, LOG*, PI, RAND*, CEILING*, FLOOR*, MROUND, SIGN, FACT, COMBIN, GCD, LCM, SUBTOTAL, AGGREGATE, SEQUENCE, trig set…), Statistical (AVERAGE*, COUNT*, MIN/MAX*, MEDIAN, MODE*, STDEV*, VAR*, LARGE, SMALL, RANK*, PERCENTILE*, QUARTILE*, CORREL, FORECAST*, NORM.*, T.*, FREQUENCY…), Logical (IF, IFS, AND, OR, NOT, XOR, IFERROR, IFNA, SWITCH, TRUE, FALSE, LET, LAMBDA, MAP, REDUCE, SCAN, MAKEARRAY, BYROW, BYCOL), Text (CONCAT, CONCATENATE, &, TEXT, TEXTJOIN, LEFT/RIGHT/MID, LEN, FIND/SEARCH, SUBSTITUTE, REPLACE, TRIM, CLEAN, UPPER/LOWER/PROPER, VALUE, NUMBERVALUE, TEXTSPLIT, TEXTBEFORE, TEXTAFTER, REPT, CHAR/CODE/UNICHAR/UNICODE, EXACT, DOLLAR, FIXED), Date/Time (DATE, DATEVALUE, DAY/MONTH/YEAR, HOUR/MINUTE/SECOND, NOW, TODAY, WEEKDAY, WEEKNUM, ISOWEEKNUM, EOMONTH, EDATE, NETWORKDAYS(.INTL), WORKDAY(.INTL), DATEDIF, DAYS, DAYS360, YEARFRAC, TIME), Lookup (VLOOKUP, HLOOKUP, XLOOKUP, XMATCH, LOOKUP, INDEX, MATCH, OFFSET, INDIRECT, CHOOSE, ROW(S), COLUMN(S), ADDRESS, TRANSPOSE, FILTER, SORT, SORTBY, UNIQUE, TAKE, DROP, CHOOSEROWS/COLS, HSTACK/VSTACK, TOCOL/TOROW, WRAPROWS/COLS, EXPAND, HYPERLINK), Information (ISBLANK, ISNUMBER, ISTEXT, ISERROR, ISERR, ISNA, ISLOGICAL, ISFORMULA, ISEVEN/ODD, ISREF, N, NA, TYPE, CELL (subset), ERROR.TYPE, SHEET(S), INFO (subset)), Financial (PMT, IPMT, PPMT, PV, FV, NPV, XNPV, IRR, XIRR, RATE, NPER, SLN, DB, DDB, SYD, EFFECT, NOMINAL, CUMIPMT, CUMPRINC), Engineering (CONVERT, DEC2BIN… BIN2DEC…, BITAND…, COMPLEX basics, DELTA, GESTEP), Database (DSUM, DAVERAGE, DCOUNT(A), DGET, DMAX, DMIN, DPRODUCT, DSTDEV(P), DVAR(P)), Web (ENCODEURL only).
-- **Function docs** (`packages/formula/src/functions/docs/*.json`: signature, argument descriptions, examples) power autocompletion tooltips, the fx dialog and the Formula Lab pane — this is a ★ feature.
-- **Conformance:** `packages/formula/test/conformance/*.csv` (`formula,expected,type,notes`) with ≥ 1,500 cases: hand-curated from Excel documentation examples + LibreOffice-oracle generated (see §5.2). Differences from Excel are logged in `docs/formula-deviations.md`.
+### 3.5 The bridge: protocol, Tauri commands/events, wasm-bindgen
 
-### 3.5 File format strategy & fidelity
+**`kiln-protocol` is the contract.** Every type is `serde` + `ts_rs::TS` and lives in one crate so both bridges and the TS client share it. Core types:
 
-**Principle: "never destroy what you don't understand".** All three readers build our model *and* keep every OPC part they did not fully consume (or consumed partially) as opaque bytes; writers re-emit known parts from the model and copy opaque parts (custom XML, `vbaProject.bin`, embedded OLE, thumbnails, pivot caches, printer settings, unknown extLst) with relationships fixed up. The Compatibility Checker lists dropped features before saving to Office formats.
+```rust
+pub enum Command { /* ~450 variants, grouped by module, each with typed args */
+  InsertText { text: String }, DeleteBackward, ToggleBold, ApplyStyle { style_id: StyleId },
+  SetCellValue { addr: CellRef, input: String }, FillDown { range: RangeRef }, FreezePanes { rows: u32, cols: u32 },
+  InsertSlide { layout: LayoutId, after: SlideId }, StartShow { from: SlideIndex }, Undo, Redo, Save, SaveAs { format: FileFormat }, …
+}
+pub struct CommandMeta { id: &'static str, label_key: &'static str, keytip: Option<&'static str>, group: Group, tier: Tier, apps: AppMask, availability: Availability }
+pub enum Event { Opened{..}, Changed{doc, revision, dirty, selection: Selection, status: StatusBar}, Frame{doc, delta: SceneDelta}, Recovery{..}, Collab{..}, Error{..}, HostRequest(HostRequest) }
+pub struct Viewport { width_px: f32, height_px: f32, scroll: Point, zoom: f32, dpr: f32, mode: ViewMode }
+pub struct Selection { kind: SelKind /* Text{anchor, head} | Cells{ranges, active} | Shapes{ids} */, rects: Vec<Rect>, caret: Option<Caret>, handles: Vec<Handle> }
+pub struct SceneDelta { tiles: Vec<Tile>, removed: Vec<TileId>, atlas: Vec<AtlasPage>, overlays: Overlays }
+pub struct A11yTree { nodes: Vec<A11yNode> /* role, name, text, bounds, children, aria attrs */, active: NodeId, announce: Option<String> }
+```
 
-- **ooxml package:** `OpcPackage.open(bytes)` → parts map, `[Content_Types].xml`, `_rels` traversal, typed helpers for `a:` DrawingML (shape geometry presets → SVG paths, fills, lines, effects, text body properties), `a:theme` (colour scheme, font scheme, format scheme), shared strings, units (EMU/twips/half-points/eighths), `st_` enum tables, XML writer with deterministic attribute order and namespace prefixes matching Office (so `git diff`/oracles are stable). XML parsing uses `fast-xml-parser` with `preserveOrder: true` (order matters in OOXML).
-- **docx:** `word/document.xml` body: paragraphs, runs (incl. `w:rPr` inheritance from styles/defaults/theme), tables (gridSpan/vMerge/tblLook/tblStyle), sections (`w:sectPr` incl. headers/footers refs, columns, page size/margins, titlePg, evenAndOddHeaders), numbering (`w:numbering.xml` abstractNum/num/lvlOverride), styles, settings (defaultTabStop, evenAndOddHeaders, trackRevisions), footnotes/endnotes, comments (+ `commentsExtended` threads), fields (simple & complex `fldChar` → `field` node with cached result; TOC, PAGE, NUMPAGES, DATE, REF, HYPERLINK supported live, others preserved), drawings (`wp:inline`, `wp:anchor` with wrap, `pic:pic`, `wps:wsp` text boxes, `w:pict` VML fallback read-only), hyperlinks, bookmarks, revisions (`w:ins`, `w:del`, `w:rPrChange`, `w:pPrChange`), `w:sym`, `m:oMath` preserved as node (rendered via MathLive P1), document properties (`docProps/core.xml`, `app.xml`).
-- **xlsx:** `workbook.xml` (sheets, definedNames, calcPr, workbookPr date1904), `styles.xml` (numFmts, fonts, fills, borders, cellXfs, cellStyles, dxfs), `sharedStrings.xml` (incl. rich text runs), `worksheets/sheetN.xml` (dimension, sheetViews incl. pane/freeze/selection, sheetFormatPr, cols, sheetData with `t=s/n/b/e/str/inlineStr`, formulas incl. shared (`t="shared"`) and array (`t="array"`) and dynamic-array metadata (`cm` attribute + `metadata.xml`), mergeCells, conditionalFormatting (+ `x14` extensions for data bars/icon sets), dataValidations (+ x14), hyperlinks, printOptions/pageMargins/pageSetup/headerFooter, rowBreaks/colBreaks, autoFilter, tableParts), `tables/tableN.xml`, `drawings/drawingN.xml` (two-cell anchors, pictures, charts, shapes), `charts/chartN.xml` (see charts), `comments` (legacy notes) + `threadedComments` + `persons`, `pivotTables/*` + `pivotCache/*` **preserved opaque** (P1 reads definitions to show the pivot as a static table), `vbaProject.bin` opaque, `externalLinks` opaque, `customXml` opaque. Dates read with the workbook date system; number formats stored as code strings and formatted via `numfmt` (MIT).
-- **pptx:** `presentation.xml` (sldSz, sldIdLst, sldMasterIdLst, notesMasterIdLst, sections ext), `slideMasters/`, `slideLayouts/`, `slides/` (spTree: `p:sp` (geometry, text body with `a:p/a:r/a:fld`, lstStyle, placeholders `p:ph` type/idx inheritance master→layout→slide), `p:pic` (incl. crop `a:srcRect`), `p:graphicFrame` (tables `a:tbl`, charts, SmartArt → imported as a group of shapes via `dgm` `drawing` part if present, else placeholder), `p:grpSp`, `p:cxnSp` connectors, `p:bg`, `p:transition` (mapping table to our 12 + fallback Fade), `p:timing` (parse build list; map supported effects; **unsupported effects preserved** in passthrough and dropped only if the slide's shape set changed), `notesSlides/`, `comments`, `docProps`.
-- **Charts (shared):** `c:chartSpace` subset: barChart/bar3D(as 2D), lineChart, areaChart, pieChart/doughnut, scatterChart, bubbleChart, radarChart, combos (multiple plot types), axes (cat/val/date, titles, number formats, min/max), legend, data labels, series formatting (fill/line/marker), titles, `c:ext` treemap/sunburst (cx:chart) read where possible. Series data stored as *references + cache*; charts in Grid are live; charts in Write/Deck use the embedded workbook part (`embeddings/*.xlsx`) read through io-xlsx for editing data.
-- **CSV/TSV/JSON:** RFC 4180 with delimiter/quote/encoding sniffing (UTF-8 BOM, UTF-16, Windows-1252 fallback) via `papaparse`; JSON import flattens arrays of objects into a table.
-- **ODF (P1, WP-41):** `content.xml`, `styles.xml`, `meta.xml`, automatic styles; mapping tables from our models (which are OOXML-shaped). Round-trip through LibreOffice as oracle.
-- **PDF export:** a dedicated print layout for each app rendered by Chromium (Electron `webContents.printToPDF`, web `window.print()`, Android `WebView.createPrintDocumentAdapter` via a tiny Capacitor plugin in `apps/android` using `PrintManager`), post-processed with `pdf-lib` (metadata, outline/bookmarks from headings, page labels). Rationale: WYSIWYG pagination and print share one renderer, so what you see is what you export.
-- **Fidelity testing:** §5. Target scores before release: docx ≥ 0.95 structural, text 1.00, visual ≥ 0.90 on the corpus; xlsx values 1.00, styles ≥ 0.97, formulas 1.00 (string equality after normalisation); pptx structural ≥ 0.95, visual ≥ 0.85.
+`Command` is an enum of per-app sub-enums (`Command::Suite(SuiteCommand) | Write(WriteCommand) | Grid(GridCommand) | Deck(DeckCommand) | Notes(NotesCommand)`), each in its own file `crates/kiln-protocol/src/commands/<app>.rs` together with that app's `CommandMeta` table, so concurrent app WPs never edit the same file. Generation: `cargo xtask protocol` runs the ts-rs exporter (ts-rs 12.0.1, MIT) and writes `packages/protocol/src/generated/*.ts` plus `catalog.json` (every `CommandMeta`); `cargo xtask protocol --check` fails CI when the output differs from the committed files. Small messages use JSON (`serde_json`); `SceneDelta`, atlas pages and file bytes use `postcard` binary (`Vec<u8>` → `Uint8Array`, decoded by a generated-schema-driven decoder in `packages/protocol/src/postcard.ts` that is itself tested against Rust-produced vectors in `crates/kiln-protocol/tests/vectors/`). We chose ts-rs over `specta`/`tauri-specta` because specta 2 has been a release candidate since 2024 (2.0.0-rc.25, 2026-05-07) while ts-rs 12 is stable; typed command wrappers are trivial to write by hand once the `Command` enum is generated.
 
-### 3.6 Rendering & editors
+**Tauri (desktop + Android).** `kiln-desktop` registers a small, fixed set of `#[tauri::command]`s: `kiln_open(path|bytes, hint) -> DocSummary`, `kiln_execute(doc, cmd: Command) -> ExecResult`, `kiln_viewport(doc, vp)`, `kiln_frame(doc) -> tauri::ipc::Response /* postcard bytes */`, `kiln_a11y(doc) -> A11yTree`, `kiln_subscribe(doc, on_event: tauri::ipc::Channel<Event>)`, `kiln_host_reply(id, HostReply)`, plus `kiln_startup_probe`. Events stream over `ipc::Channel` (ordered, binary-capable). Tauri capabilities (`apps/desktop/src-tauri/capabilities/*.json`) grant only these commands plus the fs/dialog/clipboard/opener/window-state/process plugins to the main window; CSP forbids remote scripts. The webview's job on every platform is identical: run the React chrome and the canvas painter.
 
-- **Write:** TipTap 3 (`@tiptap/core`, `@tiptap/react`, `@tiptap/pm`, selected `@tiptap/extension-*`) + custom extensions for every doc-model node/mark. **Pagination layer** (`editor-write/src/pagination/`): the editor renders into a single tall contenteditable; a `PaginationPlugin` measures block boxes with `ResizeObserver` + `getClientRects` per block (and per line for splitting paragraphs across pages via `Range.getClientRects()`), computes page break positions respecting `keepNext`, `keepLines`, `pageBreakBefore`, widow/orphan (2 lines), table row `cantSplit`, and renders **page chrome as decorations/overlays** (page gaps, margins, headers/footers with live fields, footnote areas at page bottom — footnotes are rendered in a per-page footnote region and the body is shortened by their height using an iterative fit). Floating images/shapes are rendered in an overlay layer positioned relative to page/margin/paragraph anchors; text wrap is implemented with CSS `shape-outside` on float spacers injected as decorations (square/tight approximations) — this is the known hard part; acceptance is "±1 line vs Word for the fixture corpus", not pixel identity. Print layout for PDF reuses the same computed page model with `@page` CSS. Rulers (horizontal with indent/tab markers, vertical) drawn in canvas.
-- **Grid:** `editor-grid` draws the visible viewport onto a `<canvas>` (device-pixel-ratio aware): grid lines, cell backgrounds, borders (with Excel's border precedence), text with number formatting, overflow into empty neighbours, wrapped text, rotation, merged cells, conditional formats (data bars/icon sets/colour scales drawn in canvas), selection/ranges/fill handle overlays on a second canvas; frozen panes = 4 viewports sharing one renderer. DOM overlays only for: in-cell editor (contenteditable with formula syntax highlighting + range colouring like Excel), autocomplete popover, comments, dropdown buttons (filter/validation), charts/images (absolutely positioned DOM via ECharts). Text measurement cached per (font, text) with a canvas `measureText` LRU. Row/column virtualisation with O(log n) offset lookup via prefix sums in a Fenwick tree for row heights. Target: 60 fps scroll on a 1M-populated-cell synthetic sheet (benchmark in WP-40).
-- **Deck:** `editor-deck` renders each slide as an absolutely positioned 960×540 px stage (16:9 default; px = EMU/9525) scaled with `transform: scale()` to fit; shapes are DOM elements: geometry via inline SVG paths generated from DrawingML preset geometry definitions (`ooxml/src/drawingml/presets.ts` — the 187 preset definitions transcribed from `presetShapeDefinitions.xml`, with guides/adjust handles), text bodies via a lightweight TipTap instance mounted on focus (one live editor at a time; static HTML otherwise for performance), pictures as `<img>` with CSS crop, tables as DOM tables, charts via ECharts. Selection/transform via `ui-kit/TransformBox` (8 resize handles, rotation handle, snapping to guides/other shapes' edges/centres, smart spacing guides, Shift/Alt modifiers). Thumbnails rendered from the same component at small scale into offscreen canvases via `html-to-image`-free approach: render the DOM stage at `scale(0.2)` with `pointer-events:none` (cheap and always correct). Slide show: a dedicated `/present` route renders slides fullscreen with transitions implemented in CSS/WAAPI; presenter view talks to the show window via `BroadcastChannel`.
+**wasm (web/PWA).** `kiln-bridge-wasm` exports `class KilnSession { open(bytes, hint), execute(doc, cmdJson), setViewport(doc, vpJson), frame(doc): Uint8Array, a11y(doc): string, poll(): Uint8Array[] }` via `wasm-bindgen` 0.2.129; `apps/web/src/worker.ts` instantiates it inside a dedicated Worker and `WasmWorkerClient` speaks the same `KilnClient` interface as `TauriClient` over `postMessage` with transferable buffers. Threads: the wasm build is single-threaded by default (works everywhere, including GitHub Pages without COOP/COEP); `--features threads` (`wasm-bindgen-rayon` 1.3.0) is built as a second artefact and selected at runtime when `crossOriginIsolated` is true (WP-91 adds a service-worker shim that sets COOP/COEP on Pages). wasm size budget: §3.9.
 
-### 3.7 Collaboration, undo, offline (collab package)
+**Control channel (agents, CLI, MCP later).** `kiln control` on `kiln-cli` speaks newline-delimited JSON over stdio: `{"open": ...}`, `{"execute": {"doc": 1, "cmd": {...}}}`, `{"render": {"doc":1, "png": "out/page-%d.png"}}`, `{"save": ...}`; the same `Command` enum. This is how WP agents drive and inspect documents in tests without a GUI, how `kiln convert in.docx out.pdf` works, and what the MCP server of the parity loop wraps.
 
-- Write/Deck/Notes documents are `Y.Doc`s: ProseMirror ↔ `y-prosemirror` (`ySyncPlugin`, `yCursorPlugin`, `yUndoPlugin`); deck-model keeps slides/shapes in `Y.Array`/`Y.Map`, text bodies as `Y.XmlFragment`s. Undo via `Y.UndoManager` scoped to the local user (so collaborative undo only reverts your edits — better than Office).
-- Persistence: `y-indexeddb` (every document, keyed by docId) → crash recovery for free, offline edits merge on reconnect.
-- Transport: `@hocuspocus/provider` → `apps/collab-server` (Hocuspocus 4.7 + `@hocuspocus/extension-sqlite`); auth is a shared-secret token in v1 (documented as not production-grade; pluggable `onAuthenticate`). Sharing = "Copy link" with `?doc=<id>&server=<url>&token=`; presence avatars in the title bar; comments are Yjs maps.
-- Grid: v1 collaboration is **P2**; the SheetModel's CommandLog is designed so operations are serialisable for later OT/CRDT bridging (each command carries `{id, docVersion, inverse}`).
-- Version history: on every explicit save and every 10 minutes of edits, store a snapshot (`Y.snapshot` + state vector; for Grid a gzip'd model JSON) in IndexedDB `versions` store (max 200 per doc, thinning older ones); "Version History" pane lists them with author/time, supports naming, preview, restore (as new state, preserving history), and a text diff for Write (`diff-match-patch`-style word diff implemented in-house, ~150 lines).
+### 3.6 Rendering decision: Rust layout, Rust glyphs, canvas painting
 
-### 3.8 Storage, autosave, recovery (storage package)
+**Decision.** All three document surfaces (pages, grid, slides) are laid out in Rust and painted from a Rust display list onto HTML `<canvas>` (Canvas2D) by `packages/surface`. The browser never lays out document text. Rationale, in order of weight:
 
-`PlatformHost` interface: `openFile(filters) → FileHandle`, `saveFile(handle, bytes)`, `saveFileAs(suggestedName, filters)`, `readRecent()`, `watchFile`, `showInFolder`, `print(options)`, `share(file)`, `getAppDataDir`. Implementations: `WebHost` (File System Access API with IndexedDB-stored handles; download fallback for Firefox), `ElectronHost` (preload-exposed `window.officina.*` IPC → `fs`, `dialog`, `shell`), `CapacitorHost` (`@capacitor/filesystem` + `@capawesome/capacitor-file-picker` + `@capacitor/share`). **Autosave** = continuous journal to IndexedDB (Yjs updates / Grid command log) + **"AutoSave to file"** toggle in the title bar (as Office) that writes the real file after 2 s idle when the document has a handle. **Recovery:** on startup, documents in IndexedDB marked `dirty && !closedCleanly` appear in a "Document Recovery" pane (left side, as Word) with Open/Save/Delete. Desktop additionally mirrors journals to `<appData>/recovery/<docId>.journal`.
+1. **Fidelity and identity across hosts.** Pagination and line breaking are deterministic Rust code using bundled font metrics, so a 300-page `.docx` paginates identically on WebKitGTK (Linux), WebView2 (Windows), WKWebView (macOS), Android WebView and Chromium, and identically in the PDF export (`kiln-io-pdf` renders the same Scene). The v1.0 plan rejected Tauri because webviews differ; with this architecture the difference is confined to the chrome, where it does not matter.
+2. **Performance.** Rust owns the hot loop (layout, invalidation, culling, glyph caching) and runs multi-threaded natively; the painter only blits tiles and glyph quads. A 1M-cell sheet is tiles over a sparse store, never DOM nodes; a 300-page document only lays out and paints visible pages ± 2. This is the Google Docs (2021 canvas migration), Figma and Univer architecture, and the only one with a credible path to the §3.9 budgets.
+3. **One renderer for everything:** screen, print preview, PDF, slide thumbnails, Home previews, the CLI's `kiln render` PNGs (which agents can *look at* in reviews, §5), and visual regression tests that run without a browser (`kiln-raster`).
+4. **Premium look:** we control text rasterisation (gamma, sub-pixel positioning, consistent weight), selection shapes, squiggles, rulers and guides at every zoom and DPR.
 
-### 3.9 Performance targets (verified by WP-40 benchmarks, `pnpm bench`)
+**Rejected: DOM-based editing surfaces driven by the Rust model** (contenteditable/ProseMirror-style for Write, DOM/SVG for Deck, canvas only for Grid). Pros: native IME, native a11y, native spellcheck, browser extensions. Cons that decided it: pagination of a contenteditable needs the browser's line boxes (`getClientRects`) and therefore differs per webview and from the PDF; floats/text wrap and footnotes become CSS hacks; three different rendering technologies to maintain; the Rust layout engine would still be needed for PDF and thumbnails, so the DOM path *adds* an engine rather than replacing one. The one real loss — native text input and a11y — is addressed explicitly below.
 
-| Scenario | Target |
-|---|---|
-| Open 10 MB `.xlsx` with 500k populated cells | < 4 s to first paint, < 8 s full calc (worker) |
-| Scroll a sheet with 1M populated cells (synthetic) | ≥ 55 fps on this machine in headless Chromium timing (< 18 ms/frame avg) |
-| Single-cell edit recalculation in a 100k-formula workbook | < 50 ms p95 |
-| Open 300-page `.docx` (mixed text/tables/images) | < 3 s to first page, pagination complete < 6 s (progressive) |
-| Typing latency in 300-page document | < 50 ms keystroke→paint p95 |
-| Open 200-slide `.pptx` | < 3 s; thumbnails lazy |
-| Memory, 300-page doc | < 600 MB renderer process |
-| Cold start Electron | < 2.5 s to Hub |
-| APK size | < 40 MB (web assets ~ 12 MB gzip'd fonts included) |
+**Text pipeline (`kiln-text`).** Fonts: bundled OFL fonts loaded from `assets/fonts/` on every platform plus system fonts on desktop/Android via `fontique` (web: bundled + user-added fonts only; missing fonts go through the substitution table and the Compatibility Checker). Shaping: `parley` 0.12 (Linebender) with `harfrust` 0.14 (the Rust HarfBuzz port) for OpenType shaping, `skrifa` 0.48 for metrics/outlines, `unicode-bidi` for paragraph bidi, `unicode-linebreak`/`unicode-segmentation` for UAX #14/#29, `hyphenation` (en-US, de patterns, OFL-compatible) for optional hyphenation. Glyphs: `swash` 0.2.10 rasterises glyphs at (font, size × zoom × dpr, subpixel quarter) into **atlas pages** (A8 for text, RGBA8 for colour emoji) that the painter uploads once to offscreen canvases and blits with `drawImage`; glyphs above 96 px or with transforms are emitted as outline paths (`kurbo` → `Path2D`). Every layout decision uses the same metrics as the rasteriser, so there is no measurement mismatch, ever.
 
-Techniques: workers for parse/calc, `requestIdleCallback` pagination in chunks, canvas grid, lazy TipTap mount in Deck, font subsetting not required (OFL fonts ~ 1 MB each; load UI font eagerly and document fonts lazily via `FontFace`).
+**Scene (`kiln-scene`).** A retained structure: `Scene{layers}` → `Layer{tiles | pages | slide}` → `Tile{id, rect, ops: Vec<DrawOp>, hash}`; grid tiles are 256 × 256 CSS px, Write tiles are whole pages (split in 1024-px bands for tall pages), Deck has one tile per slide plus overlays. `frame()` returns only tiles whose hash changed, new atlas pages and the overlay layer (selection rects, caret, handles, guides, composition underline, spell squiggles, collaborator cursors). Scrolling is handled by the painter from cached tiles (translate + draw) while Rust prepares tiles ahead of the viewport (`prefetch_margin = 1 viewport`), so scroll never waits on IPC. Painter backends: `canvas2d` (v0.1, all platforms); a `vello`/`wgpu` native painter is a parity-loop candidate (Linebender's `vello` 0.11 is listed in §4.2 as evaluated, not used) — the Scene format is backend-neutral by construction.
 
-### 3.10 Accessibility, i18n, RTL
+**Text input and IME.** `packages/surface` keeps a 1 × 1 px transparent `contenteditable` "input proxy" positioned at the Rust-reported caret (so IME candidate windows and the Android keyboard appear in the right place), focused whenever a surface is active. It listens to `beforeinput`/`input`/`compositionstart|update|end`/`keydown`/`paste`/`cut`/`copy` and forwards `InputEvent`s (`InsertText`, `Composition{text, caret}`, `CommitComposition`, `DeleteContentBackward`, …) to Rust; Rust owns composition state and renders the composition string with an underline in the Scene; the proxy's DOM content is reset after every commit. Dead keys, Japanese/Chinese/Korean IMEs, Android soft keyboard autocorrect and emoji pickers all work through `beforeinput` (this is VS Code's and Google Docs' mechanism). Playwright tests type via the proxy and also exercise `page.keyboard.insertText` and composition events.
 
-- Ribbon uses the WAI-ARIA Tabs + Toolbar patterns (roving tabindex, arrow-key navigation, `aria-keyshortcuts`), dialogs trap focus (Radix primitives), live region announces mode changes ("Track Changes on", "Ready / Edit"), canvas grid exposes an ARIA grid shadow tree for the active cell + row/column headers (`aria-rowindex/colindex`, `aria-selected`) and announces cell content on move; Deck exposes shapes as a list with alt text; all icons have labels; colour contrast ≥ 4.5:1 for text in all themes; `prefers-reduced-motion` respected; axe-core runs in e2e for every main screen (0 serious/critical violations).
-- i18n via `i18next` + `react-i18next`, ICU message format (`i18next-icu`), locale files `packages/i18n/locales/{en,de,ar}/*.json`; number/date formatting via `Intl`; function names stay English in v1 (Excel-localised function names P2); RTL: `dir="rtl"` on root flips ribbon layout; documents support paragraph `bidi` and `rtl` run properties; Grid supports right-to-left sheets (`sheetViews/@rightToLeft`).
+**Accessibility (shadow a11y tree).** Rust exposes `A11yTree` for the visible region ± 1 page (Write: `role=document` → headings/paragraphs/tables/lists with text; Grid: `role=grid` with `aria-rowcount/colcount`, visible rows/cells with `aria-rowindex/colindex/selected`, the active cell's formatted value and formula; Deck: slide `role=group` with shapes as `img`/`textbox` with alt text and text). `packages/surface` mirrors it into an off-screen DOM subtree (`aria-hidden=false`, visually clipped, not `display:none`) next to the canvas; the input proxy carries `aria-activedescendant` to the active node; an `aria-live=polite` region announces Rust's `announce` strings ("Bold on", "B12, 1,284.00, formula =SUM(B2:B11)"). Ribbon/Backstage/dialogs are real DOM with the WAI-ARIA Tabs/Toolbar/Dialog patterns (Radix). A **"Accessible text view"** (View ▸ Accessibility) renders the document as plain semantic DOM for screen-reader users who prefer it (like Google Docs' screen-reader mode); it is a view over the same model and is editable through the same commands. `axe-core` runs on every screen in e2e; WCAG 2.2 AA self-audit in WP-84.
 
-### 3.11 Security
+**Selection, hit testing, touch.** Rust answers `hit_test(doc, point) → Position` and produces selection rects/handles; the painter draws them in the overlay layer and shows teardrop handles on touch (44 × 44 dp targets). Double-click/word, triple-click/paragraph, Shift/Ctrl modifiers, drag-select with autoscroll, cell range drag, fill handle, shape transform handles — all geometry computed in Rust, all gestures interpreted in TS and sent as `Command`s (`SelectTo{pos, extend}`, `DragFill{to}`, `Transform{..}`).
 
-Documents are untrusted input: XML parsing with entity expansion disabled, zip bomb limits (max 2 GB uncompressed, 64k parts), image decoding in `<img>` only, no `eval` in formulas (own evaluator), hyperlinks open via platform `openExternal` with scheme allow-list, Electron: `contextIsolation`, `sandbox: true`, no `nodeIntegration`, CSP, IPC surface validated with `zod`.
+**Spell check.** `kiln-spell` (`spellbook` 0.4.2, Hunspell-compatible, MPL-2.0; en-US dictionary bundled, de/ar P1) checks paragraphs incrementally after edits; misspellings are Scene squiggles; the context menu shows suggestions from Rust; per-document and user dictionaries live in `kiln-storage`. Browser spellcheck is disabled on the proxy.
+
+**RTL and bidi.** Paragraph direction (`bidi`), run `rtl`, and mixed-direction lines are resolved by `parley`'s bidi reordering; caret movement follows Word's logical-order rule with visual caret placement at bidi boundaries (both caret positions rendered as Word does); Grid supports right-to-left sheets (`rightToLeft` view) by mirroring column order in `kiln-sheet-layout`; UI chrome mirrors with `dir="rtl"` on the root (WP-84); Arabic shaping (joining, ligatures, marks) is exercised by fixtures and snapshot tests.
+
+**Grid specifics.** `kiln-sheet-layout` paints grid lines, fills, borders with Excel's precedence, formatted text with overflow into empty neighbours, wrap, rotation, merged cells, CF visuals (data bars/colour scales/icon sets), frozen panes as four viewports sharing one tile cache, row/column headers, and the in-cell editor's text (formula with range colouring computed in Rust). DOM is used only for the formula bar, autocomplete popover, filter/validation dropdowns and comments (all ui-kit).
+
+**Deck specifics.** Slides are 960 × 540 CSS px at zoom 1 (px = EMU/9525); `kiln-deck-layout` renders geometry presets as paths, pictures (decoded in Rust via `image`, cached as atlas bitmaps), text bodies through `kiln-text` with autofit, tables, charts via `kiln-charts`; thumbnails are the same Scene rasterised by `kiln-raster` at 0.2 scale (native) or painted small (web). Slide show and presenter view are routes that paint full-screen slides; transitions are Scene-level (two slides + progress) so they are identical everywhere; the presenter window talks to the show window through `kiln-session` events (desktop: two Tauri windows; web: `BroadcastChannel`).
+
+### 3.7 UI layer decision: TypeScript + React 19, thin by contract
+
+**Decision.** Keep TypeScript + React 19 for the chrome, with the existing `@kiln/ui-kit` (ribbon, Backstage, status bar, palette, Key Tips, mini toolbar, context menus, panes, primitives — ~11.6k lines from v1.0 WP-04/WP-06) re-skinned to the brand kit.
+
+| Option | Quality / a11y | Mobile | Agent productivity | Verdict |
+|---|---|---|---|---|
+| **TS + React 19 (chosen)** | Radix primitives give audited ARIA patterns; DevTools; Playwright maturity | Same DOM on Android WebView; responsive CSS from the kit's phone mockups | Highest: largest body of examples, existing ui-kit, fastest iteration (Vite HMR), no Rust rebuild for UI changes on a 4-CPU box | **Use**, under the thinness rule |
+| TS + Solid/Svelte | Equal a11y (Kobalte/Melt), smaller runtime (~7 KB vs ~45 KB gzip) | Same | Rewrite of 11.6k lines for a ~40 KB saving; fewer Radix-grade primitives | Reject for v0.1; runtime size is irrelevant next to the wasm core |
+| Rust web UI (Leptos/Dioxus web) | Same DOM a11y as TS, but ecosystem of accessible primitives is thin | Same | Every UI tweak is a Rust compile (minutes on this machine, and it contends with core builds); agents iterate slower | Reject |
+| Rust native UI (Slint, Dioxus native, egui/iced) | Accessibility immature or absent (AccessKit partial); no CSS; theming the kit's mockups is laborious | Android support uneven; no web | Would remove the webview but also remove Playwright, DevTools and the kit's CSS tokens | Reject |
+
+**Thinness contract (enforced).** `packages/*` may: render; hold UI state; validate form input shape; map DOM events to `Command`s; decode and paint `SceneDelta`. `packages/*` may not: parse or write any document format; compute layout, formulas, number formats, sort/filter results, search results or spelling; hold a copy of document content beyond what a view needs for the current frame. Enforcement: dependency allow-list per package in `biome.json` (no `fflate`, `fast-xml-parser`, `papaparse`, `decimal.js`, formula libraries in `packages/*`), the `kiln-protocol` catalog as the single list of commands, code review checklist in `CONTRIBUTING.md`, and WP-97's audit. Shared helpers that *look* like computation (e.g. formatting a shortcut label, building ribbon layouts) stay in TS because they are presentation.
+
+**State.** `zustand` stores per app for UI state; document-derived state (title, dirty, selection summary, status bar fields, pane data such as the styles list or comments) arrives in `Event::Changed` and pane-specific `Query` responses (`client.query(doc, Query::Styles)`), never recomputed in TS.
+
+### 3.8 Threading model
+
+**Native (Tauri).** One **session thread** owns `kiln-session` and all documents (single writer, no locks on models; commands are processed in order from an `flume` channel). A **rayon pool** (`num_cpus − 1`, min 2) does data-parallel work the session thread hands out: formula recalculation (independent strongly-connected components in topological levels), paragraph line-breaking for pages not yet visible, part-level OOXML parsing (`sharedStrings`, `styles`, each worksheet in parallel), image decoding, glyph rasterisation batches, fidelity scoring. A **tokio runtime** (`rt-multi-thread`, 2 workers) handles IO: autosave journal writes, file watching, collaboration WebSockets, update checks. The Tauri main thread only runs the webview and the IPC handlers, which forward to the session thread and await replies (`oneshot`). Long operations (`open` of a 50 MB file, full recalc) report progress events so the status bar shows real progress.
+
+**Web (wasm).** The whole core runs in one dedicated Web Worker (so a 20 MB `.xlsx` parse never blocks the chrome); `rayon` work becomes sequential unless the `threads` artefact is active (then `wasm-bindgen-rayon` spawns a pool of Workers sharing memory). Long operations are chunked (`Session::step()` with a time budget of 8 ms) so `frame()` requests interleave and the surface keeps painting.
+
+**Painter.** Always on the main thread of the webview: decode `SceneDelta` (postcard, ~1–3 ms for a full viewport), update tile canvases, composite in `requestAnimationFrame`. Target: ≤ 4 ms painter time per frame at 1440 × 900 @ 2× DPR.
+
+**Memory.** `kiln-session` evicts layout of pages far from the viewport (keeps page heights), drops glyph atlas pages unused for 30 s, caps the undo log at 1,000 transactions or 64 MB, and streams file writes. Budgets in §3.9.
+
+### 3.9 Performance budgets (enforced; CI fails on regression)
+
+Measured on this machine (4 CPUs, 7 GB) unless marked CI; CI runners (`ubuntu-latest`, 4 vCPU) apply a 1.5× tolerance after a calibration micro-benchmark (`kiln-bench calibrate`) scales the budgets. Results are written to `docs/qa/perf.md` by `cargo xtask budgets` (native) and `e2e/specs/perf.spec.ts` (browser), both run in `ci.yml`. The "competitor" column is what we must beat; sources in `docs/COMPETITORS.md` (WP-59) and v1.0 §2A research.
+
+| # | Scenario | Budget (p95 unless noted) | Competitor reference | Measured by |
+|---|---|---|---|---|
+| B1 | Cold start to Kiln Home (Tauri, Linux, warm disk cache) | **< 700 ms** | Word 2–4 s without Startup Boost; LibreOffice 2–3 s; ONLYOFFICE Desktop ~3 s; Electron v1.0 target 2.5 s | `kiln-desktop --startup-probe` writes time-to-first-paint (xvfb in CI) |
+| B2 | Memory at idle with Home open (RSS, all processes) | **< 150 MB** | Word ~250–400 MB; Electron shells ≥ 300 MB; WPS ~400 MB | `/proc` sampling in the probe |
+| B3 | Open 300-page `.docx` (mixed text/tables/images): first page painted / fully paginated | **< 400 ms / < 1.5 s** | Word ~2 s / background; LibreOffice 3–5 s | `kiln-bench doc-open`, perf.spec.ts |
+| B4 | Memory with the 300-page document open | **< 300 MB** | Word ~500 MB; v1.0 target 600 MB | probe |
+| B5 | Typing latency keystroke → paint in the 300-page document | **< 16 ms** | Word ~30–60 ms; Google Docs ~50 ms | perf.spec.ts (PerformanceObserver + rAF) |
+| B6 | Scroll 300-page document and 1M-populated-cell sheet | **≥ 60 fps (frame ≤ 16.7 ms p95)** | Excel 60 fps; Sheets degrades at 50k rows; Univer demo ~60 fps | perf.spec.ts |
+| B7 | Open 10 MB `.xlsx` with 500k populated cells: first paint / full calc | **< 1.2 s / < 2.5 s** | Excel ~3 s; LibreOffice ~8 s; v1.0 4 s/8 s | `kiln-bench xlsx-open` |
+| B8 | Full recalculation of 1M formula cells (mixed SUM/arith/IF/VLOOKUP chain, 4 threads) | **< 2.0 s** | Excel multi-threaded ~2–4 s | `kiln-bench recalc-full` |
+| B9 | Incremental recalc after a single edit in a 100k-formula workbook | **< 2 ms** | Excel ~10–50 ms; v1.0 target 50 ms | `kiln-bench recalc-incremental` |
+| B10 | Open 200-slide `.pptx` to first slide painted | **< 800 ms** | PowerPoint ~2–3 s | `kiln-bench pptx-open` |
+| B11 | PDF export of the 300-page document | **< 2 s** | Word ~5 s | `kiln-bench pdf-export` |
+| B12 | Wasm core size (gzip) / TS chrome (gzip) / web time-to-interactive on a 4G profile | **< 4.5 MB / < 450 KB / < 2.5 s** | Google Docs ~3 MB JS; Univer ~2 MB | `cargo xtask wasm --size`, Lighthouse in perf.spec.ts |
+| B13 | Installer sizes: Linux AppImage / deb / Windows NSIS / macOS dmg / Android APK (arm64) | **< 40 / 30 / 30 / 35 / 35 MB** (fonts ≈ 9 MB included) | Microsoft 365 ~3 GB; LibreOffice ~800 MB; ONLYOFFICE Desktop ~400 MB; v1.0 Electron ~110 MB | release.yml asserts sizes |
+| B14 | Collaboration: apply 1,000 remote operations | **< 50 ms** | — | `kiln-bench collab-apply` |
+| B15 | Clean build time of the whole workspace (dev profile, this machine, warm sccache) / CI full pipeline | **< 6 min / < 25 min** | — | `ci.yml` duration; `docs/qa/perf.md` |
+
+A WP that lands a feature which breaks a budget must fix it in the same WP or raise a documented exception in `docs/qa/perf.md` approved in the next gate.
+
+### 3.10 File format strategy and fidelity (unchanged in substance, now in Rust)
+
+**Principle: "never destroy what you don't understand".** Readers build the model *and* keep every OPC part they did not fully consume as opaque bytes (`Passthrough{part_name → bytes, content_type, rels}`); writers re-emit known parts from the model and copy opaque parts (custom XML, `vbaProject.bin`, OLE, thumbnails, pivot caches, printer settings, unknown `extLst`) with relationships fixed up. Untouched parts are **byte-identical** after save (test). The Compatibility Checker (Backstage ▸ Info) lists features that will not survive a save to Office formats.
+
+- **`kiln-ooxml`:** `OpcPackage::open(bytes)` (`zip` 9.0, limits: 2 GB uncompressed, 64k parts), `[Content_Types].xml`, `_rels` traversal, order-preserving XML DOM over `quick-xml` 0.42 (entity expansion disabled, no DTD), typed DrawingML (preset geometries → `kurbo` paths with guides/adjust handles, 187 presets ported from `reference/ts-core/ooxml/src/drawingml/presets/`), themes, shared strings, units, simple-type tables, and an XML writer with deterministic attribute order and Office's namespace prefixes so diffs and oracles are stable.
+- **docx / xlsx / pptx / charts / CSV / ODF / PDF:** the element coverage lists of v1.0 §3.5 stand verbatim (they are reproduced in `docs/FORMATS.md`, which WP-50 renames and WP-62/65/70/77/79/73/87/67 keep current); the implementation language changes, the fixtures and expected scores do not. Number formats: own implementation of Excel format codes in `kiln-formula::numfmt` (sections, conditions, colours, dates, fractions, elapsed time, locale codes) tested against the `numfmt` oracle cases ported from v1.0.
+- **PDF (`kiln-io-pdf`):** the Scene of each page is written with `krilla` 0.8.2 (fonts subset, images, clipping, tagged structure from the model's headings/paragraphs/tables for PDF/UA, outline bookmarks from headings, page labels, metadata). Print = export to PDF and hand to the OS (Tauri: `opener`/print dialog; web: PDF blob in a print frame; Android: `PrintManager` via a tiny Kotlin hook in the Tauri Android activity).
+- **Fidelity targets before release** (per file, `kiln-testing::fidelity`): docx structural ≥ 0.95, text 1.00, visual ≥ 0.90; xlsx values 1.00, styles ≥ 0.97, formulas 1.00 (normalised string equality); pptx structural ≥ 0.95, visual ≥ 0.85; untouched parts byte-identical 100 %; LibreOffice opens 100 % of outputs. `cargo xtask fidelity` prints the table and writes `docs/qa/fidelity.md`.
+
+### 3.11 Collaboration, undo, offline, version history (`kiln-collab`)
+
+**CRDT: Loro 1.16.2 (MIT), evaluated against yrs 0.28.0 (MIT).** Both compile to wasm and are maintained. Loro wins for this architecture: (1) native rich-text CRDT with Peritext-style mark semantics (yrs has `XmlText` attributes but weaker concurrent-formatting behaviour), (2) a movable tree (slide/section/notebook ordering, nested lists) and a movable list, (3) built-in version control: shallow snapshots, `checkout(frontiers)` time travel and `diff` between versions, which *is* our Version History feature, (4) an `UndoManager` scoped to the local peer, (5) stable 1.x API since 2024. yrs's advantage (wire compatibility with the JavaScript Yjs ecosystem) is worth nothing once both ends of the wire are our Rust core. The `kiln-collab::Crdt` trait is deliberately small (`apply(update)`, `export_from(version)`, `subscribe`, `undo/redo`, `snapshot/checkout`) so yrs could replace Loro if Loro stalls; this is written down in `docs/adr/0004-crdt.md`.
+
+- Write/Deck/Notes models map 1:1 onto Loro containers (paragraph text → `LoroText` with marks; blocks → `LoroMovableList`; properties → `LoroMap`; slides/sections → `LoroTree`); `Transaction`s are applied as Loro changes, and remote changes are translated back into model ops so layout invalidation is incremental. Grid: the `CommandLog` is serialisable for a later Loro bridge (parity-loop item).
+- Undo via Loro's `UndoManager` (local edits only — better than Office). Persistence: Loro update log in the autosave journal (`kiln-storage`) → crash recovery and offline edits merge on reconnect.
+- Transport: `kiln-collab-server` (`axum` 0.8 + `tokio` 1.53, WebSocket relay per room, `redb` persistence, shared-token auth documented as not production-grade, pluggable `authenticate`), Dockerfile in `apps/collab-server/`. Presence (cursors, selections, avatars) over the same socket; comments are model data and sync like everything else.
+- Version history: snapshot on every explicit save and every 10 minutes of edits (Loro shallow snapshot + name/author/time) stored by `kiln-storage` (max 200 per document, thinning); the Version History pane lists, previews (read-only checkout rendered through the same Scene), names, restores (as a new state, preserving history) and shows a word-level diff for Write computed in Rust.
+
+### 3.12 Storage, autosave, recovery (`kiln-storage`), security
+
+- `StorageHost` trait (native: `std::fs` + Tauri dialogs; Android: SAF content URIs through `tauri-plugin-fs`/`tauri-plugin-dialog`; web: OPFS/IndexedDB via `HostRequest`). Native bundle formats `.kwrite/.kgrid/.kdeck` = zip with `manifest.json`, `model.bin` (postcard), `crdt.bin` (Loro update), `versions/*.bin`, `media/*`, `passthrough/*`. **Autosave** = continuous journal (ops/updates) to `redb` (desktop/Android) or OPFS (web) plus an **"AutoSave to file"** toggle in the title bar that writes the real file after 2 s idle. **Recovery:** on startup, documents whose journal is dirty and not closed cleanly appear in a Document Recovery pane. Recents and pinned files, file associations and "Open with" on desktop (Tauri `fileAssociations`), intent filters on Android.
+- **Security:** documents are untrusted input: XML without entity expansion, zip limits, image decoding in Rust (`image` with limits) never in `<img src=file>`, no `eval` anywhere, hyperlinks opened through `tauri-plugin-opener` with a scheme allow-list, Tauri capabilities minimal, CSP without remote scripts, `cargo deny` advisories in CI, `cargo fuzz` targets for every reader (WP-95), `#![forbid(unsafe_code)]` in all core crates.
+
+### 3.13 What is kept, what is ported, what is dropped (from the v1.0 TypeScript work)
+
+| v1.0 artefact | Decision | How |
+|---|---|---|
+| WP-01 toolchain (Node 24, pnpm 12, Turbo, Playwright, Android SDK) | **Keep** | Node/pnpm remain for the JS workspace; Android SDK reused by Tauri; Capacitor/Electron packages removed from the catalog |
+| WP-02 repo hygiene, CI/release skeleton, Pages, issue templates | **Keep, update** | WP-50 rewrites workflows for Rust + Tauri, renames, replaces brand media with placeholders → WP-51 |
+| WP-04 tokens + ui-kit primitives (`packages/tokens`, `packages/ui-kit`, 11.6k lines) | **Keep, re-skin** | tokens regenerated from the brand kit (WP-51); ui-kit components kept, visuals changed to the mockups (WP-58) |
+| WP-06 command registry, keymaps, ribbon, Backstage, status bar, palette, Key Tips (`packages/commands`, ui-kit chrome) | **Keep, re-wire** | registry becomes a presentation layer over the generated `CommandMeta` catalog; `execute()` dispatches to `KilnClient` (WP-58) |
+| WP-05 OOXML core (`packages/ooxml`, 17k lines + tests + 187 presets) | **Port → `kiln-ooxml`** (WP-55) | TS tests become Rust tests; preset definitions transliterated to a Rust data table by script |
+| WP-07 formula core (`packages/formula/src/{parser,values,engine}`) | **Port → `kiln-formula`** (WP-56) | parser/engine tests ported; AST printer equality used as cross-check |
+| WP-09 484 functions + 5,300-row conformance CSVs + docs JSON | **Port → `kiln-formula::functions`** (WP-57); **CSVs kept verbatim** as `conformance/*.csv` | the CSVs are the oracle; the TS implementations are the reference for edge cases |
+| WP-10 Write doc model (`packages/doc-model`, 6.2k lines) | **Port → `kiln-doc`** (WP-61) | style resolution tests, numbering tests ported |
+| WP-11 DOCX reader (`packages/io-docx`, 4.1k lines) + archived WP-13 writer (branch `archive/ts-core-wip`) | **Port → `kiln-io-docx`** (WP-62/65) | the archived writer's element coverage and tests are the reference |
+| WP-16 sheet model (`packages/sheet-model`, 6.1k lines) + archived WP-18 xlsx reader WIP | **Port → `kiln-sheet`, `kiln-io-xlsx`** (WP-69/70) | |
+| `packages/testing` fixtures (93 files, 5.8 MB), `tools/make-fixtures.py`, `tools/oracle-soffice.sh`, `tools/fetch-corpus.sh` | **Keep** | moved to `fixtures/`; the Python generator and LibreOffice oracle stay (dev-time) |
+| `apps/web` (placeholder Hub), `e2e` (smoke) | **Keep, grow** | becomes the wasm host |
+| `apps/desktop` (Electron config), `apps/android` (Capacitor), `apps/collab-server` (Hocuspocus), `packages/{collab,storage,print-pdf,charts,editor-*,notes,templates,i18n,io-*}` stubs | **Drop** | removed in WP-50; the editor/notes/i18n packages are recreated as thin views when their WPs start |
+| TipTap/ProseMirror, Yjs/Hocuspocus, ECharts, fflate, fast-xml-parser, papaparse, numfmt, decimal.js, mathlive, nspell, pdf-lib, dexie, comlink, Electron, Capacitor | **Drop from the catalog** | replaced by Rust crates (§4.2); dev-only oracles (exceljs, mammoth, docx, pptxgenjs, docx-preview, pixelmatch, axe) stay |
+
+During the port the TS sources live read-only in `reference/ts-core/` (moved by WP-50, excluded from the pnpm workspace, Biome and CI) so porting agents can read the implementation and tests side by side; WP-97 deletes the directory (the archive branch `archive/ts-core` keeps it forever).
 
 
-## 4. Toolchain setup (exact commands, user-space only, no root)
+---
 
-All of this is scripted in `tools/setup-node.sh`, `tools/setup-android.sh` and checked by `tools/verify-env.sh` (WP-01 writes them from the commands below). Machine facts (verified 2026-10-15): Ubuntu 24.04.5, 4 CPUs, 7 GB RAM, 63 GB free, Node 18.19.1 (too old: Vite 8/Vitest 5/Capacitor 8 need ≥ 22), npm 9.2, OpenJDK 21.0.12 at `/usr/lib/jvm/java-21-openjdk-amd64`, Python 3.12.3 + pip 24, git, `gh` authenticated as `ZahakJ` (ssh), LibreOffice 24.2.7 at `/usr/bin/soffice`, `pdftoppm`, ImageMagick `convert`, `ffmpeg`, `unzip`/`zip`, `/dev/kvm` present (group `kvm`), `DISPLAY=:0` (a real desktop session exists; do not rely on it in automation), fonts Liberation/Carlito/Caladea installed system-wide. **Not** present: Rust, pnpm, Android SDK, adb, Flutter, wine, xvfb, Docker.
+## 4. Toolchain setup (exact commands, user space; one `pkexec` step)
 
-### 4.1 Node 24 LTS + pnpm (user-space)
+Scripted in `tools/setup-rust.sh`, `tools/setup-node.sh` (exists), `tools/setup-android.sh` (exists; WP-50 adds the NDK) and checked by `tools/verify-env.sh` (WP-50 extends it). Machine facts (verified 2026-10-15): Ubuntu 24.04.5, 4 CPUs, 7.5 GB RAM + 9 GB swap, 60 GB free, Node 24.22.0 in `~/.local/opt/node` (system Node 18 must be shadowed: `export PATH="$HOME/.local/opt/node/bin:$PATH"` at the start of every shell), pnpm 12.11.2, OpenJDK 21.0.12, Android cmdline-tools + `platforms;android-36` + `build-tools;36.0.0` in `~/Android` (no NDK yet), LibreOffice 24.2.7 at `/usr/bin/soffice`, Playwright Chromium in `~/.cache/ms-playwright`, gcc 13.3, cmake 3.28, `libssl-dev`, Python 3.12, `gh` authenticated as `ZahakJ`. **Not** present: Rust, sccache, the Tauri Linux build libraries (`libwebkit2gtk-4.1-dev` etc.), clang/lld/mold, Docker. IPv6 is routed but broken: use `curl -4` for downloads and set `CARGO_HTTP_MULTIPLEXING=false` if crates.io fetches stall.
+
+### 4.1 Rust toolchain, Cargo configuration, build hygiene for a 4-CPU / 7 GB machine
 
 ```sh
-mkdir -p ~/.local/opt ~/.local/bin && cd ~/.local/opt
-curl -fsSLO https://nodejs.org/dist/v24.22.0/node-v24.22.0-linux-x64.tar.xz        # HTTP 200 verified
-curl -fsSL https://nodejs.org/dist/v24.22.0/SHASUMS256.txt | grep linux-x64.tar.xz | sha256sum -c -
-tar -xJf node-v24.22.0-linux-x64.tar.xz && ln -sfn ~/.local/opt/node-v24.22.0-linux-x64 ~/.local/opt/node
-grep -q 'local/opt/node/bin' ~/.bashrc || printf '\nexport PATH="$HOME/.local/opt/node/bin:$PATH"\n' >> ~/.bashrc
-grep -q 'local/opt/node/bin' ~/.profile || printf '\nexport PATH="$HOME/.local/opt/node/bin:$PATH"\n' >> ~/.profile
-export PATH="$HOME/.local/opt/node/bin:$PATH"
-node -v            # v24.22.0
-npm install -g pnpm@12.11.2         # installs into ~/.local/opt/node/lib (writable, no root)
-pnpm -v            # 12.11.2
+# rustup + stable 1.99.1 (verified at static.rust-lang.org/dist/channel-rust-stable.toml on 2026-10-15)
+curl -4 --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --default-toolchain 1.99.1 --profile minimal \
+  --component rustfmt --component clippy --component rust-src \
+  --target wasm32-unknown-unknown --target aarch64-linux-android --target armv7-linux-androideabi --target x86_64-linux-android
+grep -q '.cargo/bin' ~/.bashrc || printf '\nexport PATH="$HOME/.cargo/bin:$PATH"\n' >> ~/.bashrc; grep -q '.cargo/bin' ~/.profile || printf '\nexport PATH="$HOME/.cargo/bin:$PATH"\n' >> ~/.profile
+export PATH="$HOME/.cargo/bin:$PATH"; rustc -V            # rustc 1.99.1
+# prebuilt binaries where they exist (no 10-minute cargo installs):
+curl -4 -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ~/.cargo/bin                      # cargo-nextest 0.9.148
+curl -4 -LsSf https://github.com/mozilla/sccache/releases/download/v0.18.0/sccache-v0.18.0-x86_64-unknown-linux-musl.tar.gz | tar xz --strip-components=1 -C ~/.cargo/bin --wildcards '*/sccache'
+curl -4 -LsSf https://github.com/WebAssembly/binaryen/releases/download/version_133/binaryen-version_133-x86_64-linux.tar.gz | tar xz --strip-components=2 -C ~/.cargo/bin --wildcards '*/bin/wasm-opt'
+cargo install wasm-bindgen-cli --version 0.2.129 --locked   # MUST equal the wasm-bindgen crate version in Cargo.lock (verify-env checks)
+cargo install cargo-deny --version 0.20.2 --locked; cargo install cargo-about --version 0.9.2 --locked
+# tauri-cli: use the npm package (prebuilt), pinned in the pnpm catalog: @tauri-apps/cli 2.12.3  →  `pnpm tauri …`
 ```
 
-Agents must `export PATH="$HOME/.local/opt/node/bin:$PATH"` at the start of every shell (shell state does not persist between tool calls). `tools/verify-env.sh` fails fast if `node -v` is not 24.x.
+**Tauri Linux build libraries (the only root action; use `pkexec`, which works on this machine):**
+`pkexec apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev libxdo-dev libssl-dev patchelf file`.
+If `pkexec` is refused, record it in `docs/qa/env.md`; `kiln-desktop` is excluded from `default-members` so every core build still works, and desktop bundles are produced by CI only (§9).
 
-Root `package.json` has `"packageManager": "pnpm@12.11.2"` and `"engines": {"node": ">=24 <25"}`; `.npmrc`: `node-linker=hoisted` (electron-builder and Capacitor's Gradle copy step need a flat `node_modules`), `auto-install-peers=true`, `strict-peer-dependencies=false`, `engine-strict=true`.
+**`rust-toolchain.toml`** pins `channel = "1.99.1"` with the components and targets above, so `cargo` auto-installs the right toolchain on CI.
 
-### 4.2 Pinned library catalogue (versions and licences verified against registry.npmjs.org on 2026-10-15)
+**`.cargo/config.toml`** (owned by WP-50):
 
-Declared once in `pnpm-workspace.yaml` under `catalog:` and referenced from packages as `"react": "catalog:"`. Agents never bump versions in individual packages.
+```toml
+[build]
+jobs = 3                                   # 4 CPUs: leave one for the webview/tests; CARGO_BUILD_JOBS overrides
+rustc-wrapper = "sccache"                  # tools/setup-rust.sh removes this line if sccache is absent
+[profile.dev]
+debug = "line-tables-only"; split-debuginfo = "unpacked"; incremental = true
+[profile.dev.package."*"]
+opt-level = 2                              # dependencies optimised once; our crates stay fast to compile
+[profile.test]
+inherits = "dev"
+[profile.release]
+opt-level = 3; lto = "thin"; codegen-units = 16; debug = false; strip = "symbols"; panic = "unwind"
+[profile.dist]                             # CI release bundles and budgets only
+inherits = "release"; lto = "fat"; codegen-units = 1
+[profile.wasm-release]
+inherits = "release"; opt-level = "s"; lto = "fat"; codegen-units = 1; panic = "abort"
+[target.wasm32-unknown-unknown]
+rustflags = ["--cfg", "getrandom_backend=\"wasm_js\""]
+[alias]
+xtask = "run -q -p xtask --"
+```
+
+Rules for agents: `sccache` dir `~/.cache/sccache` capped at 20 GB (`SCCACHE_CACHE_SIZE=20G`); the shared `target/` directory is locked by Cargo, so two agents' builds **serialise automatically** — never run `cargo build --release`, `pnpm tauri build`, `pnpm tauri android build` or `cargo xtask wasm --release` while another heavy WP is running (`heavy: true` in §11); use `cargo check` / `cargo nextest run -p <crate>` while iterating; never `cargo clean` the shared target (use `cargo clean -p <crate>`); `cargo build --timings` output goes to `docs/qa/perf.md` for B15.
+
+**Lockfile conflicts** (`Cargo.lock`, `pnpm-lock.yaml`) on rebase: `git checkout --theirs Cargo.lock && cargo check --workspace --offline || cargo check --workspace` (Cargo re-adds missing entries without bumping others); `git checkout --theirs pnpm-lock.yaml && pnpm install --lockfile-only`; then `git add` and continue.
+
+### 4.2 Pinned library catalogue (verified against crates.io and registry.npmjs.org on 2026-10-15)
+
+Rust versions are declared once in `[workspace.dependencies]` of the root `Cargo.toml` (exact `=x.y.z` pins; append-only), npm versions once in the `catalog:` of `pnpm-workspace.yaml`. Agents never pin versions in individual crates/packages.
+
+**Rust (shipped):**
+
+| Crate | Version | Licence | Role |
+|---|---|---|---|
+| tauri / tauri-build | 2.12.4 / 2.7.3 | Apache-2.0 OR MIT | desktop + Android shell |
+| tauri-plugin-fs 2.7.1, -dialog 2.8.3, -opener 2.7.2, -store 2.5.0, -window-state 2.5.0, -updater 2.14.0, -os 2.4.0, -process 2.4.0, -shell 2.5.0, -clipboard-manager (npm 2.5.0; crate same line) | | Apache-2.0 OR MIT | host services |
+| wasm-bindgen 0.2.129, wasm-bindgen-futures 0.4.79, js-sys / web-sys 0.3.106, console_error_panic_hook 0.1.7, wasm-bindgen-rayon 1.3.0 | | MIT OR Apache-2.0 (rayon shim Apache-2.0) | web bridge |
+| serde 1.0.229, serde_json 1.0.154, postcard 1.1.3 | | MIT OR Apache-2.0 | protocol encoding |
+| ts-rs | 12.0.1 | MIT | TypeScript generation (specta 2.0.0-rc.25 / tauri-specta 2.0.0-rc.25 evaluated and rejected: still RC) |
+| parley 0.12.0, fontique 0.12.0, harfrust 0.14.0, skrifa 0.48.0, swash 0.2.10, fontdb 0.24.0 | | Apache-2.0 OR MIT (harfrust MIT; fontdb MIT) | text layout, shaping, fonts, glyph rasterisation |
+| unicode-bidi 0.3.18, unicode-segmentation 1.13.3, unicode-linebreak 0.1.5, hyphenation 0.8.4, icu 2.3.1 (collation/locale for Grid sort, number/date locale data) | | MIT OR Apache-2.0 / Apache-2.0 / Unicode-3.0 | Unicode |
+| kurbo 0.13.1, peniko 0.6.1 | | Apache-2.0 OR MIT | geometry, paint types |
+| tiny-skia 0.12.0 | | BSD-3-Clause | CPU rasteriser (`kiln-raster`) |
+| image 0.25.10, png 0.18.1, resvg / usvg 0.48.1 | | MIT OR Apache-2.0 | image decoding, SVG icons/pictures |
+| quick-xml 0.42.0, zip 9.0.3, encoding_rs 0.8.42, csv 1.4.0 | | MIT / MIT / (Apache-2.0 OR MIT) AND BSD-3-Clause / Unlicense OR MIT | OOXML, ODF, CSV |
+| krilla 0.8.2 (pdf-writer 0.15.0 underneath) | | MIT OR Apache-2.0 | PDF export |
+| rayon 1.12.0, crossbeam 0.8.5, flume 0.12.0, parking_lot 0.12.5, dashmap 6.2.1 | | MIT OR Apache-2.0 (flume Apache-2.0/MIT) | threading |
+| tokio 1.53.3, axum 0.8.9 (server only) | | MIT | IO, collab server |
+| loro | 1.16.2 | MIT | CRDT, version history (yrs 0.28.0 MIT evaluated; §3.11) |
+| redb 4.4.0 | | MIT OR Apache-2.0 | journals, recents, versions (native) |
+| spellbook 0.4.2 | | MPL-2.0 (file-level; allowed) | Hunspell spell check |
+| rust_decimal 1.43.0, statrs 0.19.1, libm 0.2.16, num-traits 0.2.19, rand 0.10.3 | | MIT (statrs MIT, libm MIT) | numerics for the function library |
+| chrono 0.4.45, uuid 1.28.0, indexmap 2.14.2, smallvec 1.16.3, hashbrown 0.17.1, rustc-hash 2.1.3, petgraph 0.8.3, ropey 1.6.1, regex 1.13.1, memchr 2.8.3, ordered-float 5.5.0, bytemuck 1.25.2, thiserror 2.0.21, anyhow 1.0.104, tracing 0.1.44, getrandom 0.4.3 | | MIT OR Apache-2.0 (ropey MIT; ordered-float MIT; bytemuck Zlib OR Apache-2.0 OR MIT) | utilities |
+| **Rust (dev/tools):** cargo-nextest 0.9.148, insta 1.49.0 (Apache-2.0), proptest 1.12.0, criterion 0.8.2 (bench harness; budgets use `kiln-bench`'s own timer), cargo-deny 0.20.2, cargo-about 0.9.2, cargo-llvm-cov 0.9.1, wasm-bindgen-cli 0.2.129, wasm-opt (binaryen version_133), sccache 0.18.0 | | | |
+| **Evaluated, not used in v0.1:** vello 0.11.0 / wgpu 30.0.1 (GPU painter: parity-loop candidate), cosmic-text 0.19.0 (parley chosen: richer spans/bidi API), rustybuzz 0.20.1 (superseded by harfrust), lopdf/printpdf (lower-level than krilla), tantivy 0.26.2 (too heavy for wasm; own index), nucleo 0.5.0 (MPL; own fuzzy matcher is 200 lines), rkyv/bincode (postcard is enough), sled (unmaintained), yrs 0.28.0 | | | |
+
+**npm (presentation + tooling), additions and removals vs v1.0:**
 
 | Package | Version | Licence | Role |
 |---|---|---|---|
-| typescript | 5.9.3 (pinned; 7.x is the new Go-based compiler and is not yet supported by all tooling) | Apache-2.0 | language |
-| react, react-dom | 19.3.1 | MIT | UI |
-| vite | 8.3.4 | MIT | bundler (Rolldown) |
-| @vitejs/plugin-react | 6.1.2 | MIT | |
-| vitest | 5.0.5 | MIT | unit tests |
-| @playwright/test, playwright | 1.64.1 | Apache-2.0 | e2e, screenshots, media rendering |
-| turbo | 2.11.8 | MIT | task runner |
-| @biomejs/biome | 2.5.15 | MIT OR Apache-2.0 | lint + format |
-| tsx | 4.23.15 | MIT | scripts |
-| electron | 44.7.2 (Chromium 152, Node 24.21) | MIT | desktop |
-| electron-vite | 6.0.0 | MIT | |
-| electron-builder | 26.15.3 | MIT | packaging |
-| electron-updater | 6.8.9 | MIT | updates from GitHub Releases |
-| @capacitor/core, cli, android | 8.5.3 (cli needs Node ≥ 22) | MIT | Android |
-| @capacitor/filesystem 8.1.5, app 8.1.2, share 8.0.3, keyboard 8.0.6, status-bar 8.0.4, preferences 8.0.1, haptics 8.0.2 | | MIT | |
-| @capawesome/capacitor-file-picker | 8.1.0 | MIT | SAF picker |
-| @tiptap/core, react, pm, starter-kit, extension-{table, image, text-align, color, highlight, font-family, text-style, underline, task-list, character-count, mention, placeholder, link, subscript, superscript, typography, list, table-of-contents, collaboration} | 3.32.0 | MIT | Write/Deck text |
-| prosemirror-model 1.25.12, prosemirror-view 1.42.6, prosemirror-tables 1.8.5 | | MIT | via @tiptap/pm |
-| yjs 13.6.33, y-prosemirror 1.3.7, y-indexeddb 9.0.12, y-websocket 3.1.0 | | MIT | collab/undo/offline |
-| @hocuspocus/server, @hocuspocus/provider | 4.7.1 | MIT | collab server |
-| zustand | 5.0.15 | MIT | UI state |
-| immer | 11.1.21 | MIT | model updates (Grid) |
-| comlink | 4.4.2 | Apache-2.0 | workers |
-| fflate | 0.8.3 | MIT | zip (OPC) |
-| fast-xml-parser | 5.11.2 | MIT | XML |
-| @formulajs/formulajs | 4.6.1 | MIT | formula function base |
-| numfmt | 3.2.6 | MIT | Excel number format codes |
-| decimal.js | 10.6.0 | MIT | financial precision paths |
-| papaparse | 5.7.0 | MIT | CSV |
-| echarts | 6.1.0 | Apache-2.0 | charts |
-| pdf-lib 1.17.1, @pdf-lib/fontkit 1.1.1 | | MIT | PDF post-processing |
-| pdfjs-dist | 6.4.299 | Apache-2.0 | PDF preview/tests |
-| i18next 26.4.6, react-i18next 17.0.18 | | MIT | i18n |
-| zod | 4.6.7 | MIT | validation (IPC, files) |
-| dexie | 4.4.6 | Apache-2.0 | IndexedDB (recents, versions, journals) |
-| @radix-ui/react-dropdown-menu 2.2.1, react-popover 1.3.1 (+ dialog, tooltip, tabs, toolbar, select at their current versions) | | MIT | accessible primitives |
-| lucide-react | 1.57.0 | ISC | icons |
-| cmdk | 1.1.1 | MIT | command palette |
-| react-colorful | 5.8.1 | MIT | colour picker |
-| tailwindcss 4.3.3 + @tailwindcss/vite 4.3.3 | | MIT | utility CSS over tokens |
-| @fontsource-variable/inter 5.3.0, @fontsource/jetbrains-mono 5.3.0 | | OFL-1.1 | UI fonts |
-| mathlive | 0.111.1 | MIT | equations (P1) |
-| nspell 2.1.5, dictionary-en 4.0.0 | | MIT; (MIT AND BSD) | spell check |
-| dompurify | 3.4.17 | MPL-2.0 OR Apache-2.0 | HTML paste sanitising |
-| vite-plugin-pwa 2.0.0, workbox-window 7.4.1 | | MIT | PWA |
-| axe-core, @axe-core/playwright | 4.14.0 | MPL-2.0 | a11y tests (dev) |
-| pixelmatch | 8.0.0 | ISC | visual diff (dev) |
-| **Test oracles (dev only, never shipped):** exceljs 4.4.0 (MIT), mammoth 1.13.0 (BSD-2-Clause), docx 9.11.0 (MIT), pptxgenjs 4.0.1 (MIT), docx-preview 0.4.1 (Apache-2.0) | | | |
-| **Rejected:** hyperformula 3.5.0 (GPL-3.0-only — admissible under AGPL but we build our own, §1.1/§3.4); xlsx (SheetJS CE on npm is stale 0.18.5 with known CVEs; the maintained CE builds are off-registry) → ExcelJS as oracle only; jszip (dual MIT/GPL; fflate is smaller/faster); fast-formula-parser (unmaintained); konva/fabric (DOM/SVG stage chosen); lexical (TipTap/ProseMirror has Yjs + tables maturity) | | | |
+| @tauri-apps/cli | 2.12.3 | Apache-2.0 OR MIT | `pnpm tauri dev/build/android/icon` |
+| @tauri-apps/api 2.12.4; @tauri-apps/plugin-fs 2.7.1, -dialog 2.8.3, -opener 2.7.2, -store 2.5.0, -window-state 2.5.0, -updater 2.14.0, -os 2.4.0, -process 2.4.0, -clipboard-manager 2.5.0 | | MIT OR Apache-2.0 | TauriClient |
+| vite-plugin-wasm 3.6.0, vite-plugin-top-level-await 1.6.0 | | MIT | wasm loading in Vite |
+| **Kept from v1.0 (same pins):** typescript 5.9.3 (7.0.2 exists on npm as of today; stay on 5.9 until Vite/Biome/ts-rs output are verified against 7), react / react-dom 19.3.1, vite 8.3.4, @vitejs/plugin-react 6.1.2, vitest 5.0.5, @playwright/test 1.64.1, turbo 2.11.8, @biomejs/biome 2.5.15, tsx 4.23.15, zustand 5.0.15, @radix-ui/* (current pins), lucide-react 1.57.0, cmdk 1.1.1, react-colorful 5.8.1, tailwindcss 4.3.3, i18next 26.4.6, react-i18next 17.0.18, vite-plugin-pwa 2.0.0, workbox-window 7.4.1, axe-core / @axe-core/playwright 4.14.0, pixelmatch 8.0.0, jsdom, testing-library | | | |
+| **Dev-only oracles kept:** exceljs 4.4.0, mammoth 1.13.0, docx 9.11.0, pptxgenjs 4.0.1, docx-preview 0.4.1 | | | never shipped |
+| **Removed:** electron*, @capacitor/*, @capawesome/*, @tiptap/*, prosemirror-*, yjs, y-*, @hocuspocus/*, echarts, fflate, fast-xml-parser, papaparse, numfmt, decimal.js, mathlive, nspell, dictionary-en, dompurify (paste sanitising moves to Rust), pdf-lib, @pdf-lib/fontkit, pdfjs-dist, dexie, comlink, immer, @fontsource-* (fonts come from the brand kit) | | | WP-50 |
 
-`tools/check-licenses.mjs` runs `pnpm licenses list --json --prod` and fails CI on any licence outside the allow-list `MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD, MPL-2.0, OFL-1.1, CC0-1.0, Unlicense, Python-2.0, BlueOak-1.0.0, (MIT AND BSD), (MIT OR Apache-2.0), (MPL-2.0 OR Apache-2.0), (MIT OR GPL-3.0-or-later)`.
+Licence allow-list (both `deny.toml` and `tools/check-licenses.mjs`): `MIT, Apache-2.0, Apache-2.0 WITH LLVM-exception, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD, MPL-2.0, Zlib, Unicode-3.0, Unicode-DFS-2016, OFL-1.1, CC0-1.0, Unlicense, BlueOak-1.0.0, BSL-1.0`; denied: `GPL-*` (except our own AGPL), `SSPL`, `BUSL`, `CC-BY-NC-*`, unknown.
 
-### 4.3 Playwright (Chromium headless)
+### 4.3 Node, pnpm, Playwright
+
+Unchanged from v1.0 (`tools/setup-node.sh`): Node 24.22.0 in `~/.local/opt/node`, pnpm 12.11.2, `pnpm --filter @kiln/e2e exec playwright install chromium`. Playwright runs against the **web build** (`apps/web`, wasm core); the chrome and the painter are the same code the Tauri webview loads, so functional e2e lives there. The Tauri window itself is smoke-tested with the startup probe (`kiln --startup-probe`, under `xvfb-run` when there is no display) and, in WP-88, with `tauri-driver` 2.1.0 (WebDriver over WebKitWebDriver on Linux) for a three-step open/type/save scenario.
+
+### 4.4 Android: SDK (exists) + NDK + Rust targets + Tauri
 
 ```sh
-cd /home/muth/OfficeSuite && pnpm exec playwright install chromium     # ~170 MB into ~/.cache/ms-playwright; no root
-pnpm exec playwright install --dry-run chromium | head -5
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 ANDROID_HOME="$HOME/Android" ANDROID_SDK_ROOT="$HOME/Android"
+yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null
+"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;29.0.14206865" "platform-tools" "platforms;android-36" "build-tools;36.0.0"   # NDK r29 stable (listed by sdkmanager 2026-10-15)
+export NDK_HOME="$ANDROID_HOME/ndk/29.0.14206865"
+# persist JAVA_HOME, ANDROID_HOME, ANDROID_SDK_ROOT, NDK_HOME in ~/.bashrc and ~/.profile (idempotent grep -q guards)
+cd /home/muth/OfficeSuite && pnpm tauri android init          # generates apps/desktop/src-tauri/gen/android (committed)
+pnpm tauri android build --apk --target aarch64 --split-per-abi   # one ABI locally (memory); CI builds aarch64 + armv7 + x86_64
 ```
 
-Ubuntu 24.04 desktop already has Chromium's shared-library dependencies; if `playwright install-deps` would be needed it requires root — WP-01 verifies by running the smoke e2e; on failure it records the missing libraries in `docs/qa/env.md` and tries `pkexec apt-get install -y <libs>` **once**, as the only permitted root action.
-
-Electron e2e: Playwright's `_electron.launch()` needs a display. `e2e/electron.spec.ts` runs only when `DISPLAY` is set (`test.skip(!process.env.DISPLAY)`); packaging verification never needs a display.
-
-### 4.4 Android SDK, Gradle, JDK (user-space in `~/Android`)
-
-```sh
-export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-mkdir -p ~/Android/cmdline-tools && cd ~/Android
-curl -fsSLO https://dl.google.com/android/repository/commandlinetools-linux-16111833_latest.zip   # HTTP 200 verified
-mkdir -p /tmp/ct && unzip -q -o commandlinetools-linux-16111833_latest.zip -d /tmp/ct && rm -rf ~/Android/cmdline-tools/latest && mv /tmp/ct/cmdline-tools ~/Android/cmdline-tools/latest
-export ANDROID_HOME="$HOME/Android" ANDROID_SDK_ROOT="$HOME/Android"
-export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
-yes | sdkmanager --licenses >/dev/null
-sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"      # Capacitor 8: compileSdk/targetSdk 36, minSdk 24
-sdkmanager --list_installed
-```
-
-Persist `JAVA_HOME`, `ANDROID_HOME`, `ANDROID_SDK_ROOT`, PATH additions in `~/.bashrc` and `~/.profile` (idempotent `grep -q` guards, as in 4.1). Gradle: Capacitor's generated project ships the **Gradle wrapper 8.14.3** (AGP 8.13.0) — `./gradlew` downloads Gradle into `~/.gradle` on first run (~130 MB); no separate Gradle install. Memory: `apps/android/android/gradle.properties` sets `org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m`, `org.gradle.daemon=true`, `org.gradle.parallel=false`, `org.gradle.workers.max=2` (7 GB RAM, 4 CPUs). Build with `JAVA_HOME` exported. No emulator: the APK is verified statically (`aapt2 dump badging`, `apksigner verify`, `unzip -l`), and KVM-based emulator runs are an optional manual step documented in `docs/manual/building.md`.
-
-Release signing keystore (WP-35): `keytool -genkeypair -v -keystore ~/.officina-keys/release.jks -alias officina -keyalg RSA -keysize 4096 -validity 10000 -storepass "$PW" -keypass "$PW" -dname "CN=Officina, O=ZahakJ"` with a random `PW` saved in `~/.officina-keys/release.env` (chmod 600, **outside the repo**), then `gh secret set ANDROID_KEYSTORE_B64 --body "$(base64 -w0 ~/.officina-keys/release.jks)"`, `gh secret set ANDROID_KEYSTORE_PASSWORD --body "$PW"` so CI and local builds sign identically (upgrades install over each other).
+`gen/android/gradle.properties`: `org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m`, `org.gradle.parallel=false`, `org.gradle.workers.max=2`. No emulator: APKs are verified statically (`aapt2 dump badging` → package `io.github.zahakj.kiln`, intent filters for the Office MIME types; `apksigner verify --print-certs`; `unzip -l` contains `lib/arm64-v8a/libkiln_desktop.so` and the web assets). Release signing: `keytool -genkeypair -v -keystore ~/.kiln-keys/release.jks -alias kiln -keyalg RSA -keysize 4096 -validity 10000 …` with the password in `~/.kiln-keys/release.env` (chmod 600, outside the repo); `gh secret set ANDROID_KEYSTORE_B64` / `ANDROID_KEYSTORE_PASSWORD` so CI signs identically.
 
 ### 4.5 Test oracles
 
-- **LibreOffice headless** (`tools/oracle-soffice.sh <in> <fmt> <outdir>`): `soffice -env:UserInstallation=file:///tmp/officina-lo-profile --headless --convert-to <fmt> --outdir <outdir> <in>`; the profile dir is pre-seeded with `user/registrymodifications.xcu` that sets `/org.openoffice.Office.Calc/Formula/Load/OOXMLRecalcMode = 0` and `ODFRecalcMode = 0` (always recalculate on load) so converting an `.xlsx` to `.csv` yields LibreOffice-computed values (the formula conformance oracle), and `--convert-to pdf` of `.docx/.pptx` + `pdftoppm -r 60 -png` gives reference raster pages for visual scoring.
-- **Python venv** (fixture generation and independent readers): `python3 -m venv ~/.venvs/officina && ~/.venvs/officina/bin/pip install openpyxl==3.1.* python-docx==1.1.* python-pptx==1.0.*` (all MIT; venv avoids PEP 668 restrictions). Used by `tools/make-fixtures.py` to generate the synthetic corpus deterministically.
-- **npm oracles** listed in 4.2.
+- **LibreOffice headless** (`tools/oracle-soffice.sh`, exists): recalculates on load for `.xlsx → .csv` (formula oracle) and renders `.docx/.pptx → .pdf → pdftoppm -r 60 -png` for visual scoring.
+- **Python venv** `~/.venvs/kiln` (`openpyxl`, `python-docx`, `python-pptx`, all MIT) for `tools/make-fixtures.py` (exists; WP-50 renames the venv).
+- **npm oracles** (dev-only, §4.2) via `packages/testing` scripts; **the v1.0 TypeScript engines in `reference/ts-core/`** are an additional oracle during the port (e.g. `node reference/ts-core/run-formula.mjs '=XLOOKUP(…)'` compared with `kiln eval`), used by WP-55/56/57/61/62/69.
 
-### 4.6 GitHub repository, house style and hygiene (WP-02)
+### 4.6 Repository, house style, workflows
 
-Everything below is created by WP-02 and kept current by later WPs. Style references: the user's `concord`, `astrolabe` and `abax` repositories (README, landing page, banner).
+House style for README/landing/banner follows the user's `concord`, `astrolabe` and `abax` repositories (factual paragraphs, British spelling, no hype, no emoji) with the brand kit's banner and screenshots. Hygiene files from v1.0 stay (LICENSE, CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, THIRD-PARTY-NOTICES, CHANGELOG, issue templates, CODEOWNERS, dependabot — WP-50 adds `cargo` ecosystem and `gradle` for `apps/desktop/src-tauri/gen/android`).
 
-- **Create and configure:** `git config user.name ZahakJ`; `git config user.email "$(gh api user -q .id)+ZahakJ@users.noreply.github.com"` (the GitHub noreply address; never commit a personal e-mail); `gh repo create ZahakJ/officina --public --source=/home/muth/OfficeSuite --remote=origin --push --description "Open-source office suite for Linux, macOS, Windows and Android: documents, spreadsheets and slides that open and save Office files and feel like home." --homepage https://zahakj.github.io/officina/`; `gh repo edit ZahakJ/officina --add-topic office-suite --add-topic word-processor --add-topic spreadsheet --add-topic presentation --add-topic docx --add-topic xlsx --add-topic pptx --add-topic electron --add-topic capacitor --add-topic react --add-topic typescript --add-topic yjs --add-topic offline-first --add-topic android --enable-issues --enable-wiki=false --delete-branch-on-merge`; Pages: `gh api -X POST repos/ZahakJ/officina/pages -f "source[branch]=main" -f "source[path]=/docs"` (then `gh api repos/ZahakJ/officina/pages -q .html_url` = `https://zahakj.github.io/officina/`). Social preview image is uploaded manually by the user (API has no endpoint); the file is `docs/media/social-preview.png` (1280×640).
-- **README.md** (house style, see `concord`): centred `<picture>` banner (dark `docs/media/banner.png`, light `docs/media/banner-light.png`, width 820); centred badge row: CI (`actions/workflows/ci.yml/badge.svg`), latest release (`img.shields.io/github/v/release/ZahakJ/officina?color=3f6fe0&label=release`), licence (`img.shields.io/badge/licence-AGPL--3.0--or--later-3f6fe0`); two or three plain factual paragraphs (what it is, what it opens, where it runs) — no hype, no emoji, British spelling ("licence", "colour") as in the references; one-line install/run block (`curl -fsSL https://github.com/ZahakJ/officina/releases/latest/download/officina-linux-x86_64.AppImage -o officina && chmod +x officina && ./officina` plus "Windows, macOS and Android builds are on the releases page, with `SHA256SUMS.txt`"); demo GIF (`docs/media/demo.gif`); a 2×2 grid of screenshots at width 400 (Write light, Grid dark, Deck light, Android phone); **Features** with bold-lead bullets grouped by section (Write / Grid / Deck / Everywhere); **Compared with Microsoft Office** bullets in the `astrolabe` manner (one bold lead each: *Opens and saves your files*, *No subscription, no account*, *Version history built in*, *Collaboration you host*, *Find any command*, *Open source*); **Building** (Node 24, pnpm, the four commands); **Documentation** table linking the manual (`https://zahakj.github.io/officina/manual/`), DESIGN.md, FORMATS.md (fidelity notes), SHORTCUTS.md, SECURITY.md, CONTRIBUTING.md, RELEASING.md, THIRD-PARTY-NOTICES.md; **Licence** section: "GNU Affero General Public License, version 3 or later. See [LICENSE](LICENSE)."
-- **Files:** `LICENSE` (verbatim AGPL-3.0 text from gnu.org), `CONTRIBUTING.md` (development loop, `pnpm verify`, tests, Biome style, conventional commits, DCO sign-off), `SECURITY.md` (report via GitHub private vulnerability reporting; supported versions; known gaps: untrusted-document parsing surface, no sandboxing of the collab server), `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1), `THIRD-PARTY-NOTICES.md` (generated by `tools/check-licenses.mjs --notices`: every bundled dependency, fonts, icon sets, with licences), `.github/ISSUE_TEMPLATE/bug_report.yml` (fields: app, platform, version, file that reproduces it — with a note to strip private content, steps, expected, actual), `feature_request.yml`, `config.yml` (blank issues off; links to Discussions/manual), `.github/PULL_REQUEST_TEMPLATE.md`, `.github/CODEOWNERS` (`* @ZahakJ`), `.github/dependabot.yml` (npm weekly grouped minor/patch, github-actions weekly, gradle weekly in `/apps/android/android`), `docs/RELEASING.md` (runbook), `CHANGELOG.md` (Keep a Changelog; `Unreleased` section updated by every WP).
-- **Workflows:** `ci.yml` — on push to `main` and PRs; `concurrency` cancel-in-progress; ubuntu-latest; `pnpm/action-setup@v4` (version from `packageManager`), `actions/setup-node@v4` (24, pnpm cache); steps `pnpm install --frozen-lockfile`, `pnpm lint`, `pnpm typecheck`, `pnpm test -- --coverage`, `pnpm licenses:check`, `pnpm exec playwright install chromium`, `pnpm e2e`, upload `e2e/screenshots` and `playwright-report` as artifacts (always); 30-minute timeout. `release.yml` — on `push: tags: ['v*']` and `workflow_dispatch`; jobs: `linux` (ubuntu-latest: `pnpm release:desktop --linux` → AppImage + deb), `windows` (windows-latest: NSIS x64 + portable), `macos` (macos-latest: dmg arm64 + x64, unsigned, `CSC_IDENTITY_AUTO_DISCOVERY=false`), `android` (ubuntu-latest, `actions/setup-java@v4` temurin 21, `android-actions/setup-android@v3`, decode `ANDROID_KEYSTORE_B64` if present, `pnpm release:android` → signed release APK; if the secret is absent the job signs with a throwaway key and names the file `-unsigned-key.apk`), each uploads artifacts; final `publish` job (`needs` all four) downloads artifacts, writes `SHA256SUMS.txt` over every file, and uploads everything to the GitHub Release for the tag with `softprops/action-gh-release@v2` (creates the release if it doesn't exist, appends otherwise; `generate_release_notes: true`). Root `package.json` scripts `release:desktop` and `release:android` are defined in WP-01 as `turbo run release:desktop` / `release:android` so that workflows never need editing when the shells arrive (WP-35/WP-36 implement the tasks).
-- **Media:** `docs/media/icon.svg` (mark), `docs/media/banner.svg` and `banner-light.svg` (2000×600: dark rounded card `#111317` with 1 px `#262b32` border and 28 px radius; left: 300 px rounded-square app icon with a soft accent glow (`filter: blur(60px)` ellipse at 35 % opacity); right: bold Inter 800 wordmark "officina" at 170 px, a 180×6 px accent gradient underline (`#3F6FE0 → #7C5CFF`), two-line muted tagline in Inter 500 at 44 px, then the accent-coloured spec line in Inter 600 at 30 px with `·` and `•` separators; light variant swaps card `#fbfbfc`/border `#e2e5ea`/text `#121418`); `tools/render-media.mjs` (Playwright: open each SVG in Chromium, `page.screenshot` at device scale 1 → `banner.png`, `banner-light.png`, `social-preview.png` 1280×640 (banner centred on card), app icons 16–1024 px → `apps/desktop/build/icon.png` (512), `apps/web/public/icons/*.png`, Android via `@capacitor/assets`); fonts for rendering come from `@fontsource-variable/inter` so output is reproducible on CI.
-- **Landing site** (`docs/index.html`, WP-02 placeholder → WP-38 full): same CSS token scheme as `concord` (`--bg --bg2 --panel --panel2 --line --fg --muted --accent --accent2 --accent-fg`, light override under `prefers-color-scheme: light`), self-hosted `docs/assets/inter.woff2` (copied from `@fontsource-variable/inter`, OFL), `docs/.nojekyll`, OpenGraph/Twitter meta with `og:image` = `https://zahakj.github.io/officina/media/social-preview.png`, data-URI SVG favicon, sticky nav (Features, Apps, Compared, Docs, GitHub), hero (banner + screenshots with a phone overlay), per-app sections (Write, Grid, Deck, Notes) each with two screenshots, "Feels like home" section showing the ribbon crop + shortcut list, comparison table vs Microsoft 365 (price, formats, offline, collaboration, version history, macros, platforms, licence), download buttons for Windows installer / macOS dmg / Linux AppImage / Android APK pointing at `releases/download/v<ver>/<file>` with a `data-version` span updated by WP-43, footer links. `docs/manual/` is plain Markdown rendered by `docs/manual/index.html` (a 60-line client-side Markdown viewer using `marked` vendored as `docs/assets/marked.min.js`, MIT) — no site generator, so Pages serves it as-is.
+**Workflows (WP-50 rewrites; later WPs only append steps):**
 
-### 4.7 Commit and push cadence (every WP)
+- **`ci.yml`** (push to `main`, PRs; concurrency cancel-in-progress; 40-minute timeout):
+  - job `rust` (ubuntu-latest): `dtolnay/rust-toolchain@stable` reading `rust-toolchain.toml`, `Swatinem/rust-cache@v2` (shared key), `mozilla-actions/sccache-action@v0.0.11`, apt Tauri libraries, `cargo fmt --all --check`, `cargo clippy --workspace --all-targets -- -D warnings`, `cargo nextest run --workspace --exclude kiln-desktop` (desktop crate compiled by `cargo check -p kiln-desktop` only), `cargo deny check`, `cargo xtask protocol --check`, `cargo xtask wasm --release` (wasm32 build + `wasm-bindgen` + `wasm-opt -Os`, size assertion B12), `cargo xtask budgets --ci` (B3, B7–B11, B14; uploads `docs/qa/perf.md` artefact), `cargo xtask fidelity --ci` (corpus thresholds), `cargo xtask parity --check`.
+  - job `web` (needs `rust`, downloads the wasm artefact): `pnpm install --frozen-lockfile`, `pnpm lint`, `pnpm typecheck`, `pnpm test -- --coverage`, `pnpm licenses:check`, `pnpm build`, `playwright install --with-deps chromium`, `pnpm e2e` (functional, a11y, shortcuts, layout-scan, perf B5/B6/B12, visual), upload screenshots/report always.
+  - job `desktop-smoke` (needs `rust`): `cargo build -p kiln-desktop` (dev), `xvfb-run -a target/debug/kiln --startup-probe` asserting B1/B2.
+- **`release.yml`** (tags `v*`, `workflow_dispatch`): jobs `linux` (ubuntu-22.04, `tauri-apps/tauri-action@v0` → AppImage + deb, profile `dist`), `windows` (windows-latest → NSIS `.exe` + `.msi`), `macos` (macos-latest → `.dmg` arm64 + x64, unsigned until secrets exist), `android` (ubuntu-latest: `actions/setup-java@v4` temurin 21, `android-actions/setup-android@v3` + NDK r29, Rust Android targets, keystore from secrets or throwaway, `pnpm tauri android build --apk --split-per-abi` → `kiln-<ver>-arm64-v8a.apk`, `-armeabi-v7a.apk`, `-x86_64.apk`), `web` (wasm + `pnpm build` → `kiln-web-<ver>.tar.gz`), each uploading artefacts and asserting B13 sizes; final `publish` job writes `SHA256SUMS.txt` and attaches everything with `softprops/action-gh-release@v3` (`generate_release_notes: true`).
+- **`pages.yml`** (push to `main` touching `docs/**`, `apps/web/**`, `crates/**`; and on release): builds the landing page + manual + the web app (`apps/web` with `base: /kiln/app/`) and deploys with `actions/upload-pages-artifact` + `actions/deploy-pages` (WP-91 switches the Pages source from branch to Actions via `gh api -X PUT repos/ZahakJ/kiln/pages -f build_type=workflow`).
 
-1. Before starting: `cd /home/muth/OfficeSuite && git pull --rebase origin main && pnpm install --frozen-lockfile` (if the lockfile changed upstream).
-2. Work only inside the WP's **owned paths** (§6). Add dependencies only via `pnpm add --filter <pkg> <dep>@catalog:` (catalog entries added in `pnpm-workspace.yaml` are the one exception to the ownership rule — append-only, never reorder).
-3. Finish with `pnpm verify` (= `turbo run lint typecheck test`) and the WP's own acceptance commands, all green.
-4. Update `CHANGELOG.md` → `Unreleased` (one line per user-visible change) and the owned package READMEs.
-5. Commit with a Conventional Commit (`feat(grid): sort and filter (WP-19)`, `fix`, `chore`, `docs`, `test`, `build`, `ci`), body listing the acceptance criteria met, and end the message with the line required by the orchestrator: `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` (if the executing agent's harness mandates a different Co-Authored-By line, use the harness's line instead).
-6. `git pull --rebase origin main` (on a `pnpm-lock.yaml` conflict: `git checkout --theirs pnpm-lock.yaml && pnpm install --lockfile-only && git add pnpm-lock.yaml && git rebase --continue`), then `git push origin main`.
-7. Wait for CI: `gh run list --branch main --commit "$(git rev-parse HEAD)" --json databaseId -q '.[0].databaseId' | xargs gh run watch --exit-status`. If red, fix forward in the same WP (another commit) until green. A WP is not done while CI is red.
-8. WP-01 is the only WP that ends with a local commit without a push (the remote does not exist until WP-02).
+### 4.7 Commit, lock and push cadence (every WP)
+
+Two agents share one working tree. Every git write goes through `tools/with-lock.sh` (`flock -w 600 .agent.lock -- "$@"`), which WP-50 creates:
+
+1. Start: `tools/with-lock.sh git pull --rebase origin main`; `pnpm install --frozen-lockfile` if `pnpm-lock.yaml` changed; `cargo fetch` if `Cargo.lock` changed. Export `PATH="$HOME/.cargo/bin:$HOME/.local/opt/node/bin:$PATH"` in every shell.
+2. Work only inside the WP's **owned paths** (§11 `owns`). Append-only shared files (any WP may add to them, never reorder or rewrite others' entries): `Cargo.toml` `[workspace.dependencies]`/`members`, `pnpm-workspace.yaml` `catalog:`, `Cargo.lock`, `pnpm-lock.yaml`, `CHANGELOG.md` Unreleased, `parity/parity.json` (rows the WP flips) and `parity/corpus.json` (checks for fixtures the WP adds), `bench/budgets.toml` (budget rows the WP registers), `docs/FORMATS.md` (one section per format, owned by that format's WP), `crates/kiln-testing/src/formats/mod.rs` and `crates/kiln-session/src/apps/mod.rs` (one registration line per WP), `docs/qa/handoffs.md`, the WP's crate/package READMEs. Generated files (`packages/protocol/src/generated/**`, `PARITY.md`, `docs/parity-badge.json`, `docs/SHORTCUTS.md`) are never merged by hand: on conflict take either side and regenerate (`cargo xtask protocol`, `cargo xtask parity`). Anything else outside `owns` is a handoff note, not an edit.
+3. Finish with `cargo xtask verify` (= `cargo fmt --check`, `clippy -D warnings`, `nextest run` for the owned crates and their dependents, `protocol --check`) **and** `pnpm verify` (lint, typecheck, test) **and** the WP's acceptance commands, all green.
+4. Update `CHANGELOG.md` Unreleased, the owned READMEs, parity rows.
+5. `tools/with-lock.sh sh -c 'git add -A <owned paths> && git commit -m "<type>(<scope>): <subject> (WP-xx)" -m "<acceptance criteria met>" -m "Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>" && git pull --rebase origin main && git push origin main'` (if the executing harness mandates a different Co-Authored-By line, use the harness's line). Lockfile conflicts: §4.1.
+6. Watch CI: `gh run list --branch main --commit "$(git rev-parse HEAD)" --json databaseId -q '.[0].databaseId' | xargs gh run watch --exit-status`; fix forward in the same WP until green. A WP is not done while CI is red.
+7. Heavy WPs (`heavy: true`) announce themselves by creating `.agent.heavy` (gitignored) for their duration; an agent about to start a heavy build waits while the file exists (`while [ -e .agent.heavy ]; do sleep 30; done`).
 
 ---
 
@@ -688,587 +788,59 @@ Everything below is created by WP-02 and kept current by later WPs. Style refere
 
 | Layer | Tool | Where | Gate |
 |---|---|---|---|
-| Static | Biome lint/format, `tsc -b` strict | `pnpm lint`, `pnpm typecheck` | CI |
-| Unit | Vitest 5 (jsdom for React, node for models) | `packages/*/test/**/*.test.ts`, `pnpm test` | CI; coverage ≥ 70 % lines per package by WP-42 |
-| Formula conformance | Vitest table tests over `packages/formula/test/conformance/*.csv` | ≥ 1,500 cases; generated expectations from LibreOffice oracle + curated Excel examples | 100 % pass (known deviations listed in `docs/formula-deviations.md`, each with a reason) |
-| Round-trip fidelity | Vitest + oracles; `packages/testing/src/fidelity/*` | corpus in `packages/testing/fixtures/{docx,xlsx,pptx}` (synthetic generated files + 15 hand-made feature files per format + 10 real-world public-domain documents downloaded by `tools/fetch-corpus.sh` into the gitignored `fixtures/external/`) | scores per §3.5; `pnpm fidelity` prints a table and writes `docs/qa/fidelity.md` |
-| E2E | Playwright 1.64 (Chromium headless; Pixel 7 and iPad emulation for mobile specs) | `e2e/specs/*.spec.ts`; `pnpm e2e` | CI; screenshots to `e2e/screenshots/` uploaded as artifacts |
-| Visual review | Agents open PNGs with their image-reading tool and record findings in `docs/qa/visual-review-<WP>.md` (what was checked, defects found/fixed) | every integration gate WP | required for gates |
-| Visual regression | `pixelmatch` against `e2e/screenshots/baseline/` (threshold 0.1, ≤ 0.5 % differing pixels) | gates | from WP-42 on |
-| Accessibility | `@axe-core/playwright` on Hub, each app's main view, Backstage, dialogs | `e2e/specs/a11y.spec.ts` | 0 serious/critical |
-| Performance | `pnpm bench` (Vitest bench for engines; Playwright timing for scroll/typing) | `bench/` | §3.9 targets; results in `docs/qa/perf.md` |
-| Packaging | `pnpm release:desktop --linux` then `ls dist/*.AppImage dist/*.deb`; `dpkg-deb -I`; AppImage `--appimage-extract` and check `usr/lib/*/resources/app.asar`; Playwright Electron smoke when `DISPLAY` | WP-34, WP-42, WP-43 | artifacts exist, launch smoke passes |
-| APK | `./gradlew assembleDebug` / `assembleRelease`; `aapt2 dump badging` (package `io.github.zahakj.officina`, intent filters for docx/xlsx/pptx MIME types), `apksigner verify --print-certs`, `unzip -l` contains `assets/public/index.html` | WP-35, WP-43 | checks pass |
-| Licence | `tools/check-licenses.mjs` | CI | allow-list only |
+| Static (Rust) | `cargo fmt`, `cargo clippy -D warnings`, `#![forbid(unsafe_code)]`, `cargo deny` | `cargo xtask verify` | CI |
+| Static (TS) | Biome lint/format, `tsc` strict, thinness lint (§3.7) | `pnpm lint`, `pnpm typecheck` | CI |
+| Unit / integration (Rust) | `cargo nextest` (`--workspace`), `insta` snapshots (layout line breaks as text, Scene op lists, XML output), `proptest` (parser round-trips, reference rewriting, CRDT convergence) | `crates/*/tests`, `src/**/*_test.rs` | CI; `cargo llvm-cov` ≥ 75 % lines per core crate by WP-97 |
+| Protocol | ts-rs output check; postcard vectors decoded by the TS decoder | `cargo xtask protocol --check`, `packages/protocol` vitest | CI |
+| Formula conformance | `kiln-testing::conformance` over `conformance/*.csv` (5,300 rows inherited; grows to ≥ 6,000) | `cargo nextest run -p kiln-formula --test conformance` | 100 % pass; deviations listed in `docs/formula-deviations.md` with reasons |
+| Round-trip fidelity | `kiln-testing::fidelity` + LibreOffice oracle over `fixtures/**` (93 files + `external/` downloads) | `cargo xtask fidelity` → `docs/qa/fidelity.md` | thresholds §3.10 |
+| Rendering without a browser | `kiln-raster` renders pages/sheets/slides to PNG; golden images in `fixtures/golden/` compared with a perceptual threshold (≤ 0.3 % differing pixels) | `cargo nextest run -p kiln-doc-layout --test golden` etc.; `kiln render file --png out/` | CI; agents **look at** the PNGs with their image tool during reviews |
+| Canvas painter parity | Playwright screenshots of the canvas vs `kiln-raster` output of the same Scene (pixelmatch ≤ 1 %) | `e2e/specs/painter-parity.spec.ts` | gates |
+| Unit (TS) | Vitest 5 (jsdom) for ui-kit, commands, surface decoder | `pnpm test` | CI |
+| E2E | Playwright 1.64, web build, Chromium headless; Pixel 7 + iPad emulation | `e2e/specs/*.spec.ts`, `pnpm e2e` | CI; screenshots uploaded |
+| Visual review | Agents open PNGs (e2e screenshots, `kiln render` output, mockups side by side) and record findings in `docs/qa/visual-review-WP-xx.md` | every UI WP and every gate | required |
+| Visual regression | pixelmatch against `e2e/screenshots/baseline/` (≤ 0.5 % pixels) | gates from WP-97 | |
+| Accessibility | `@axe-core/playwright` on Home, each app, Backstage, dialogs; keyboard-only traversal spec; a11y-tree snapshot tests in Rust | `e2e/specs/a11y.spec.ts` | 0 serious/critical |
+| Performance | `cargo xtask budgets`, `perf.spec.ts`, startup probe | §3.9 | CI fails on regression |
+| Fuzzing | `cargo fuzz` targets for docx/xlsx/pptx/odf/csv readers and the formula parser (nightly toolchain in a weekly workflow, not in `ci.yml`) | `fuzz/` | WP-95 |
+| Packaging | `pnpm tauri build` (Linux) → `ls target/dist/bundle/{appimage,deb}`; `dpkg-deb -I`; AppImage `--appimage-extract`; `xvfb-run` startup probe; APK static checks §4.4 | WP-88, WP-89, WP-97, WP-98 | |
+| Licences | `cargo deny check licenses`, `tools/check-licenses.mjs` | CI | allow-list only |
 
-**Fixture corpus details (WP-05 creates the generator; WP-39 expands):** generated per format with the Python oracles and the npm writers so expectations are known: text styles matrix, numbering (5 list types, restarts), tables (merges, nested, styles), sections (3 types, headers/footers variants), images (inline/anchored, each wrap mode), footnotes/endnotes, fields (TOC, PAGE), comments, tracked changes, RTL paragraphs; sheets: every number format category, 40 style combinations, merges, freeze panes, 300 formulas (one per function family), shared/array/dynamic formulas, conditional formats (every rule type), validations, tables, charts (each type), comments/notes, defined names, hidden rows/cols, 1904 date system, 100k-row generated sheet; slides: every placeholder type, 60 preset shapes, groups, pictures with crop, tables, charts, transitions, animation builds, notes, sections, 16:9 and 4:3.
+**Fixture corpus** (`fixtures/`, inherited: 19 docx + 20 xlsx + 19 pptx feature files, manual files, one large xlsx, 30 external public-domain files fetched by `tools/fetch-corpus.sh`): WP-60 moves it, adds `fixtures/golden/` and the synthetic generators in `kiln-bench` (300-page docx, 1M-cell xlsx, 200-slide pptx, all deterministic); WP-93 expands it (RTL/Arabic, CJK, floating tables, legal numbering, pivot caches, sparklines, embedded charts in docx/pptx, 1904 dates, shared/array/dynamic formulas, every CF rule, every transition/animation of §1.4).
 
-**Fidelity score** (per file, `packages/testing/src/fidelity/score.ts`): `structural` (fraction of model nodes/attributes equal after read→write→read, ignoring ids), `text` (normalised text equality), `visual` (1 − differing-pixel-ratio between `soffice`-rendered PDFs of original vs rewritten file at 60 dpi, page by page), `oracle_opens` (LibreOffice converts the rewritten file without error). Printed as a table; thresholds in §3.5 are enforced by WP-39's test.
+**Fidelity score** (per file): `structural` (fraction of model nodes/attributes equal after read→write→read), `text` (normalised text equality), `visual` (1 − differing-pixel ratio between LibreOffice renders of original and rewritten file at 60 dpi, page by page), `oracle_opens`, `byte_identical_untouched` (every part not touched by the edit is byte-equal).
 
-**Screenshot conventions:** `e2e/screenshots/<spec>/<name>-<theme>-<viewport>.png` (`light|dark`, `desktop|phone`), full-window at 1440×900 for desktop, 412×915 for phone (Pixel 7), device scale 2 for docs-media captures (WP-43) and 1 for CI.
+**Screenshot conventions:** `e2e/screenshots/<spec>/<name>-<theme>-<viewport>.png` (`light|dark|hc`, `desktop|phone|tablet`), 1440 × 900 desktop, 412 × 915 phone (Pixel 7), 1024 × 1366 tablet; device scale 1 in CI, 2 for docs media.
 
 ---
 
-## 6. Execution plan: milestones and work packages
+## 6. Execution plan: milestones and scheduling
 
 **Scheduling rules for the orchestrator**
 
-- WP-01 runs alone first. WP-42 (integration gate) and WP-43 (release) run alone. Every other WP may run concurrently with any other WP whose `depends_on` are satisfied — ownership sets (`owns`) are pairwise disjoint for every pair that can be concurrent; where a later WP touches files created by an earlier WP, it lists the earlier WP in `depends_on`.
-- An agent may read anything but writes only inside `owns` (plus the append-only `pnpm-workspace.yaml` catalog, `pnpm-lock.yaml`, `CHANGELOG.md` Unreleased section, and its packages' `README.md`). If a change outside `owns` is unavoidable, the agent records a note in `docs/qa/handoffs.md` for the owning WP instead of editing.
-- Every WP ends with the cadence of §4.7. "Gate" WPs additionally produce `docs/qa/visual-review-WP-xx.md` and must leave `pnpm e2e` green.
-- Agents must not leave `TODO` stubs in exported APIs that acceptance criteria exercise; partial features are hidden behind tier flags (`packages/commands/src/tiers.ts`), not shipped broken.
+- **WP-50 runs alone first.** WP-97 (integration gate) and WP-98 (release) run alone. Every other WP may run concurrently with any WP whose `depends_on` are satisfied and whose `owns` are disjoint from it (ownership sets in §11 are pairwise disjoint for every pair that can be concurrent).
+- **Never pair two `heavy: true` WPs** (release-profile Rust builds, `tauri build`, Android/Gradle builds, wasm release builds, full-corpus fidelity runs). A heavy WP may pair with a non-heavy one. The `.agent.heavy` marker (§4.7) is the runtime guard.
+- **WP-51 (brand import) depends on `/home/muth/kiln-brand/final/` existing.** The orchestrator must check the path before scheduling it; UI WPs (WP-58 onward in the `chrome` chain) depend on WP-51, engine WPs do not. If the kit is late, run engine WPs (WP-52 … WP-57, WP-60 … WP-63, WP-69/70, WP-76/77) first.
+- An agent may read anything but writes only inside `owns` plus the append-only shared files (§4.7). Unavoidable changes outside `owns` go to `docs/qa/handoffs.md` for the owning WP.
+- Every WP ends with the §4.7 cadence. Gate WPs additionally produce `docs/qa/visual-review-WP-xx.md` and leave `pnpm e2e`, `cargo xtask fidelity` and `cargo xtask budgets` green.
+- Partial features are hidden behind tiers (`Tier` in `kiln-protocol::CommandMeta`, mirrored by `packages/commands/src/tiers.ts`), never shipped broken; no `TODO` stubs in APIs that acceptance criteria exercise.
 
 | Milestone | Goal | WPs | Rounds at 2-way concurrency (approx.) |
 |---|---|---|---|
-| **M0 Foundation** | toolchain, repo + CI, parity tracker, design system, ribbon/commands, OOXML core, formula engine, web shell | WP-01 … WP-09 | 5 |
-| **M1 Write (Scriba)** | document model, docx read/write, editor, pagination, review tools, print | WP-10 … WP-15 | 4 |
-| **M2 Grid (Tabula)** | sheet model, canvas grid, xlsx, features, charts, analysis | WP-16 … WP-22 | 4 |
-| **M3 Deck (Scena)** | deck model, pptx read/write, stage editor, show/presenter, motion | WP-23 … WP-28 | 4 |
-| **M4 Cross-cutting** | collaboration & history, storage/recovery, a11y/i18n/RTL, templates/Hub, Notula | WP-29 … WP-33 | 3 |
-| **M5 Shells & site** | Electron, Android, mobile UX, PWA, docs site | WP-34 … WP-38 | 3 |
-| **M6 Quality & release** | fidelity, performance, ODF, integration gate, v0.1.0 | WP-39 … WP-43 | 4 |
+| **R0 Foundation** | rename, Rust toolchain + workspace, protocol/bridges, text engine, Scene + painter, brand import, OOXML + formula ports, chrome re-wire, parity seed, CLI/testing/bench | WP-50 … WP-60 | 7 |
+| **R1 Write** | doc model, docx read, layout engine, editor, docx write, advanced features, PDF/print, gate | WP-61 … WP-68 | 5 |
+| **R2 Grid** | sheet model, xlsx, grid surface, features, charts, analysis, gate | WP-69 … WP-75 | 4 |
+| **R3 Deck** | deck model, pptx read, stage, pptx write, show/motion, gate | WP-76 … WP-81 | 4 |
+| **R4 Cross-cutting** | collaboration + history, storage/recovery, a11y/i18n/RTL, templates/Home/Options, Notes, ODF | WP-82 … WP-87 | 3 |
+| **R5 Shells & web** | Tauri desktop, Tauri Android, mobile UX, PWA + Pages deployment, landing + manual | WP-88 … WP-92 | 3 |
+| **R6 Quality & release** | fidelity expansion, performance pass, security/fuzzing, agent control channel, integration gate, v0.1.0 | WP-93 … WP-98 | 5 |
+
+Total: **49 work packages, 7 milestones, ~31 rounds**. The detailed, self-contained specification of every WP (task, acceptance, ownership) is the JSON block in §11; it is the authoritative spec and is what agents execute.
 
-Total: **43 work packages, 7 milestones, ~27 rounds** (effort estimate in §8). Detailed WP specifications follow; the JSON block at the end of this document is the machine-readable equivalent and is generated from the same source.
-
-
-### WP-01 — Toolchain and monorepo scaffold
-
-- **Milestone:** M0  ·  **Depends on:** none
-- **Owns:** `package.json`, `pnpm-workspace.yaml`, `turbo.json`, `tsconfig.base.json`, `biome.json`, `.nvmrc`, `.npmrc`, `.gitignore`, `.editorconfig`, `tools/setup-node.sh`, `tools/setup-android.sh`, `tools/verify-env.sh`, `tools/check-licenses.mjs`, `tools/oracle-soffice.sh`, `apps/web/**`, `apps/desktop/package.json`, `apps/android/package.json`, `apps/collab-server/package.json`, `packages/*/package.json`, `packages/*/tsconfig.json`, `packages/*/vitest.config.ts`, `packages/*/src/index.ts`, `packages/*/README.md`, `e2e/playwright.config.ts`, `e2e/package.json`, `e2e/specs/smoke.spec.ts`, `docs/qa/env.md`, `docs/adr/0001-stack.md`
-- **Task:** Run alone. Install the toolchain exactly as §4.1 and §4.3 (Node 24.22.0 into ~/.local/opt, pnpm 12.11.2, Playwright Chromium) and write the three setup scripts plus tools/verify-env.sh (checks node 24.x, pnpm, java 21, soffice, playwright chromium present; exits non-zero with a clear message otherwise). Run `tools/setup-android.sh` too (§4.4; ~1.5 GB download) so WP-35 finds the SDK ready; it must be idempotent. Create the monorepo described in §3.1: root package.json (packageManager pnpm@12.11.2, engines node >=24 <25, scripts: dev, build, lint, typecheck, test, e2e, bench, fidelity, verify (= turbo run lint typecheck test), licenses:check, licenses:notices, release:desktop (= turbo run release:desktop --), release:android (= turbo run release:android --), media:render, parity (= tsx parity/generate.ts), parity:verify (= tsx parity/verify.ts), competitors (prints docs/COMPETITORS.md date)), pnpm-workspace.yaml with `packages: [apps/*, packages/*, e2e]` and a `catalog:` containing every library in §4.2 at the pinned versions, turbo.json pipelines (build depends on ^build; test/lint/typecheck cached; e2e depends on build of apps/web; release tasks uncached), tsconfig.base.json (strict, ES2023 target, bundler resolution, jsx react-jsx, paths `@officina/*` -> packages/*/src), biome.json (recommended rules, 2-space, single quotes, 110 cols, organise imports), .npmrc (node-linker=hoisted, auto-install-peers=true, engine-strict=true), .nvmrc (24.22.0), .gitignore (node_modules, dist, out, .turbo, e2e/screenshots/** except baseline/, fixtures/external, android build dirs, *.local, .env). Create every package under packages/ listed in §3.1 (tokens, ui-kit, commands, doc-model, sheet-model, deck-model, formula, ooxml, io-docx, io-xlsx, io-pptx, io-odf, charts, editor-write, editor-grid, editor-deck, collab, storage, print-pdf, i18n, templates, notes, testing) each with package.json (name @officina/<pkg>, type module, exports ./src/index.ts, deps from catalog as listed for that package in §4.2 where obvious, scripts lint/typecheck/test), tsconfig.json extending base, vitest.config.ts (environment node, or jsdom for ui-kit/editor-*), src/index.ts exporting a `PACKAGE_NAME` const, one trivial test, and a README.md with the package purpose from §3.1. Create apps/web as a Vite 8 + React 19 + @vitejs/plugin-react 6 + @tailwindcss/vite app with index.html, src/main.tsx rendering a placeholder Hub page that shows the text "Officina" and the suite version, a vite.config.ts with the `@officina/*` aliases, and package.json scripts dev/build/preview/test. Create apps/desktop, apps/android, apps/collab-server with package.json only (name, private, placeholder `release:desktop`/`release:android` scripts that print "not implemented" and exit 1 — WP-35/WP-36 replace them). Create e2e/ as a Playwright project (playwright.config.ts starting `pnpm --filter @officina/web dev` on port 5173, Chromium only, screenshot on failure, outputDir e2e/screenshots) with smoke.spec.ts that loads / and screenshots `smoke/hub-light-desktop.png` asserting the text "Officina". tools/check-licenses.mjs implements the allow-list of §4.2 over `pnpm licenses list --json --prod` and a `--notices` mode that writes THIRD-PARTY-NOTICES.md content to stdout. tools/oracle-soffice.sh per §4.5 (creates the profile with the recalc settings on first run). Write docs/adr/0001-stack.md summarising the stack decisions of §0/§3 with the licence rationale, and docs/qa/env.md with the verified environment facts. `git init` with branch main and make the initial commit (no remote yet). 
-Ends with a local commit only (WP-02 creates the remote).
-- **Acceptance criteria:**
-  - export PATH="$HOME/.local/opt/node/bin:$PATH"; node -v prints v24.22.0 and pnpm -v prints 12.11.2
-  - bash tools/verify-env.sh exits 0
-  - ls ~/Android/cmdline-tools/latest/bin/sdkmanager ~/Android/platforms/android-36 ~/Android/build-tools/36.0.0 succeeds
-  - pnpm install --frozen-lockfile=false succeeds and pnpm-lock.yaml exists
-  - pnpm verify exits 0 (lint, typecheck, test across all packages; each package has >= 1 passing test)
-  - pnpm --filter @officina/web build produces apps/web/dist/index.html
-  - pnpm e2e exits 0 and e2e/screenshots/smoke/hub-light-desktop.png exists
-  - node tools/check-licenses.mjs exits 0
-  - git log --oneline | wc -l >= 1 on branch main
-
-### WP-02 — GitHub repository, hygiene files, CI/release workflows, brand media, Pages placeholder
-
-- **Milestone:** M0  ·  **Depends on:** WP-01
-- **Owns:** `.github/**`, `README.md`, `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, `THIRD-PARTY-NOTICES.md`, `CHANGELOG.md`, `docs/index.html`, `docs/.nojekyll`, `docs/assets/**`, `docs/media/icon.svg`, `docs/media/banner.svg`, `docs/media/banner-light.svg`, `docs/media/*.png`, `docs/manual/README.md`, `docs/manual/index.html`, `docs/RELEASING.md`, `docs/DESIGN.md`, `docs/FORMATS.md`, `docs/SHORTCUTS.md`, `tools/render-media.mjs`, `apps/desktop/build/icon.png`, `apps/web/public/icons/**`
-- **Task:** Create the public repository and the house-style hygiene exactly as §4.6: git identity (noreply address), `gh repo create ZahakJ/officina --public --source=. --remote=origin --push` with description and homepage, topics, issues on, wiki off, delete-branch-on-merge; enable GitHub Pages from /docs on main via `gh api -X POST repos/ZahakJ/officina/pages`. Write LICENSE (AGPL-3.0 verbatim), README.md in the concord/astrolabe style (banner picture, badges with colour 3f6fe0, factual paragraphs, install one-liner that will be valid once v0.1.0 exists, placeholder screenshot grid referencing the paths WP-43 will fill, Features by section, Compared with Microsoft Office bullets, Building, Documentation table, Licence) — mark nothing as "coming soon"; describe the suite as it will be at v0.1.0 and keep the text truthful by WP-43's final edit. CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md (Contributor Covenant 2.1), THIRD-PARTY-NOTICES.md (from `node tools/check-licenses.mjs --notices` plus fonts/icons sections), CHANGELOG.md (Keep a Changelog, Unreleased), docs/DESIGN.md (condensed §3), docs/FORMATS.md (condensed §3.5 fidelity notes), docs/SHORTCUTS.md (the §1.7 table), docs/RELEASING.md (tag -> release.yml -> assets -> Pages; local Linux/APK build and upload commands). Issue templates (bug_report.yml, feature_request.yml, config.yml), PULL_REQUEST_TEMPLATE.md, CODEOWNERS, dependabot.yml. Workflows ci.yml and release.yml exactly as §4.6 (release.yml calls the root `release:desktop`/`release:android` scripts; android job tolerates a missing keystore secret). Brand media: docs/media/icon.svg (the qalam "d" mark, §1.1), banner.svg and banner-light.svg at 2000x600 following the §4.6 spec (reference: the concord banner is 2000x600; match its composition), and tools/render-media.mjs (Playwright Chromium screenshots of the SVGs, Inter from @fontsource-variable/inter inlined as a data URI in the SVG <style> so rendering is deterministic) that writes docs/media/banner.png, banner-light.png, social-preview.png (1280x640), icon PNGs (16, 32, 48, 64, 128, 192, 256, 512, 1024) into apps/web/public/icons/ and apps/desktop/build/icon.png (512). Landing placeholder docs/index.html with the full CSS token scheme and structure of §4.6 (nav, hero with banner, sections with headings and placeholder copy, comparison table, download buttons disabled with "first release coming" text, footer), docs/assets/inter.woff2 copied from node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2, docs/manual/index.html (client-side Markdown viewer loading docs/manual/*.md via `marked`, vendored to docs/assets/marked.min.js with its MIT notice) and docs/manual/README.md (table of contents of the manual pages later WPs write). Push and watch CI until green.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - gh repo view ZahakJ/officina --json isPrivate,homepageUrl,repositoryTopics -q '.isPrivate' prints false and homepageUrl is https://zahakj.github.io/officina/
-  - gh api repos/ZahakJ/officina/pages -q .html_url prints https://zahakj.github.io/officina/
-  - git remote get-url origin contains ZahakJ/officina and git status shows the branch is up to date with origin/main
-  - gh run list --workflow ci.yml --limit 1 --json conclusion -q '.[0].conclusion' prints success
-  - test -f LICENSE && head -1 LICENSE matches 'GNU AFFERO GENERAL PUBLIC LICENSE'
-  - for f in README.md CONTRIBUTING.md SECURITY.md CODE_OF_CONDUCT.md THIRD-PARTY-NOTICES.md CHANGELOG.md .github/workflows/ci.yml .github/workflows/release.yml .github/ISSUE_TEMPLATE/bug_report.yml .github/ISSUE_TEMPLATE/feature_request.yml .github/ISSUE_TEMPLATE/config.yml .github/PULL_REQUEST_TEMPLATE.md .github/CODEOWNERS .github/dependabot.yml docs/index.html docs/.nojekyll docs/RELEASING.md; do test -f $f; done exits 0
-  - pnpm media:render exits 0 and `identify docs/media/banner.png` reports 2000x600, docs/media/banner-light.png 2000x600, docs/media/social-preview.png 1280x640, apps/desktop/build/icon.png 512x512
-  - curl -s -o /dev/null -w '%{http_code}' https://zahakj.github.io/officina/ prints 200 (allow up to 10 minutes after the push for Pages to build; retry)
-  - grep -c 'img.shields.io/badge/licence-AGPL--3.0--or--later-3f6fe0' README.md >= 1
-
-### WP-03 — Parity tracker seed (parity.json, PARITY.md generator, verify runner) and competitor dossier
-
-- **Milestone:** M0  ·  **Depends on:** WP-02
-- **Owns:** `parity/**`, `PARITY.md`, `docs/parity-badge.json`, `docs/COMPETITORS.md`, `docs/qa/would-miss-evidence.md`
-- **Task:** Create the parity tracker of §7.2 and seed it from this plan. parity/schema.ts (zod schema for rows, functions sidecar, corpus manifest; exported types), parity/parity.json with >= 530 rows covering: every ribbon command of §1.4 for Write (>= 160 rows), Grid (>= 180 rows; function *families* as rows with parity/functions.json listing every Excel worksheet function name (>= 520, from the official Excel function list by category: Compatibility, Cube (out), Database, Date and time, Engineering, Financial, Information, Logical, Lookup and reference, Math and trigonometry, Statistical, Text, Web, plus the dynamic-array/LAMBDA family) each marked planned|done|out with the WP that delivers it), Deck (>= 120 rows incl. every transition/animation/chart type/layout of §1.4), Notes (>= 30), Suite (>= 40) and explicit `out` rows for the niche scope decisions of §7.1 (VBA, Access, OLE, IRM, 3-D models, legacy binary formats, Power Pivot/DAX, macro recorder, WordArt effects, ink). Every row gets: stable dotted id, app, area, feature, the Office name/location, would-miss tier (assign from the evidence table you write in docs/qa/would-miss-evidence.md: cite §2A's switcher-complaint findings and add >= 10 further sources found with web search — LibreOffice/ONLYOFFICE/Google Sheets switching threads, "what I miss from Excel/Word" discussions, Office feature usage write-ups; each tier assignment must point at a reason), priority (P0/P1/P2/out consistent with §2 and the tier rules of §7.1), status `missing` (nothing is done yet — do not pre-mark), the WP from §6 that delivers it (null for loop candidates), and verify ids using the naming scheme of §7.2 that match the e2e/unit/conformance test names the §6 WPs are instructed to create (coordinate names with the WP texts: e.g. `e2e:write-features:format-painter`). parity/corpus.json listing every fixture file under packages/testing/fixtures with expected checks per §7.2 (the generator of WP-06 creates the files; list what it will create — names are fixed in §5). parity/generate.ts renders PARITY.md (per-app tables grouped by area, status glyphs, overall/per-app/per-tier scores with the §7.2 weights, the better-than-Office list, status flips since last tag via git) and docs/parity-badge.json (shields endpoint: label "parity", message "<n> %", color by band). parity/verify.ts: resolves verify ids to runners (`unit:` → vitest run with -t/path filter in the package, `e2e:` → playwright --grep on the spec, `conformance:` → checks the CSV row result file produced by the formula test run, `fidelity:` → reads docs/qa/fidelity.json produced by pnpm fidelity, `manual:` → checks the anchor exists and the row is niche) and fails on any done/better row whose verification is missing or failing; also fails if PARITY.md is stale (regenerate and diff) or ids are duplicated or a row's wp does not exist in PLAN.md's JSON block. Add a CI step in ci.yml? No — ci.yml is owned by WP-02: add the step by writing it into docs/qa/handoffs.md as a request AND, because WP-02 is complete, ask the orchestrator; instead make `pnpm verify` (root script, owned by WP-01 and already defined as turbo run lint typecheck test) unaffected and have parity validation run inside packages/testing's test suite (a test imports parity/schema.ts and validates parity.json + staleness), which CI already runs. docs/COMPETITORS.md: the §2A table rewritten as a dated document with the source URLs from the 2026-10-15 research (re-run the searches to capture URLs: GitHub API for star counts, release notes for ONLYOFFICE 9.4, LibreOffice 26.2, Collabora 26.04, Microsoft Agent Mode GA 2026-04-22, Google Gemini Workspace 2026-03-10, GenOffice, ArtCraft WordCraft/GridCraft/DeckCraft, Univer, Euro-Office), with a "bars" section mirroring §2A.3 and a re-scan checklist for the parity loop. README gets the parity badge only in WP-44 (do not edit README here).
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm parity exits 0 and regenerates PARITY.md; `node -e` count of rows in parity/parity.json >= 530 with >= 120 critical, >= 200 commonly-missed; parity/functions.json lists >= 520 function names
-  - pnpm parity:verify exits 0 (all rows are missing, so nothing to verify) and exits 1 when a test row is flipped to done without a verify id (demonstrated in a unit test in packages/testing or parity/)
-  - pnpm --filter @officina/testing test exits 0 including the parity schema/staleness test
-  - docs/COMPETITORS.md exists with >= 10 competitor entries each with a dated source URL; docs/qa/would-miss-evidence.md cites >= 15 sources
-  - Every `wp` referenced in parity.json is an id present in this PLAN.md JSON block (checked by parity/verify.ts)
-
-### WP-04 — Design tokens and UI primitives
-
-- **Milestone:** M0  ·  **Depends on:** WP-01
-- **Owns:** `packages/tokens/**`, `packages/ui-kit/src/primitives/**`, `packages/ui-kit/src/icons/**`, `packages/ui-kit/src/theme/**`, `packages/ui-kit/src/index.ts`, `packages/ui-kit/test/**`, `packages/ui-kit/stories/**`
-- **Task:** Implement §1.2. packages/tokens: `tokens.css` defining every --of-* custom property for light, dark and high-contrast (`[data-theme=light|dark|hc]` on <html>, default follows prefers-color-scheme), app accent switching via `[data-app=write|grid|deck|notes|hub]` setting --of-accent, spacing/radius/shadow/motion tokens, `@theme` block for Tailwind 4, a `tokens.ts` export with the same values typed, font-face registration for Inter Variable + JetBrains Mono (from fontsource, bundled) and the document fonts (Liberation Sans/Serif/Mono, Carlito, Caladea: download the OFL TTF/WOFF2 files from their upstream repositories with a `tools`-free script `packages/tokens/scripts/fetch-fonts.mjs` into packages/tokens/fonts/ and commit them; ~5 MB total; add their licences to THIRD-PARTY-NOTICES via the notices generator's extra-assets list in packages/tokens/fonts/NOTICES.json), plus `applyTheme()` / `useTheme()` helpers. packages/ui-kit/src/primitives: Button (variants: default, primary, ghost, toolbar, split), IconButton, ToggleButton, Menu/MenuItem/Submenu (Radix dropdown), Popover, Tooltip (with shortcut rendering), Dialog (modal, focus trap, Esc), Tabs, Select, Combobox (searchable, used for font family/size), NumberInput (with units pt/px/cm/in), ColorPicker (theme colours grid 10x6 like Office + standard colours + recent + custom via react-colorful), Slider (zoom), Toolbar (roving tabindex), SplitButton, Gallery (Office-style scrolling gallery with expand), Separator, Kbd, Toast, Spinner, VisuallyHidden, ScrollArea. All keyboard accessible with ARIA per §3.10. Icons: `Icon` component wrapping lucide-react plus the custom Officina Glyphs set (≥ 120 SVGs listed in §1.2, 20x20 viewBox, currentColor; create them as simple, clean strokes consistent with Lucide) exported by name from `packages/ui-kit/src/icons/glyphs/index.ts` with a generated `glyphs.test.ts` asserting every name referenced by §1.4 ribbon specs exists (write the list in `packages/ui-kit/src/icons/required-glyphs.ts`). Theme: `ThemeProvider` reading/persisting the user's choice to localStorage. Add a `stories/` folder with a single `Gallery.tsx` React page that renders every primitive in all three themes (used for screenshots, not Storybook) and export it; add a Vitest+jsdom test per primitive for render + keyboard behaviour.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/tokens --filter @officina/ui-kit test exits 0 with >= 25 tests passing
-  - test -f packages/tokens/fonts/Carlito-Regular.ttf (or .woff2) and Liberation*/Caladea* files exist with NOTICES.json
-  - grep -c -- '--of-accent-write' packages/tokens/tokens.css >= 2 (light and dark definitions)
-  - node -e "import('./packages/ui-kit/src/icons/glyphs/index.ts')" via `pnpm --filter @officina/ui-kit exec tsx -e` lists >= 120 glyph exports
-  - pnpm typecheck exits 0
-
-### WP-05 — OOXML core (OPC container, XML, DrawingML, themes, passthrough) and fixture corpus generator
-
-- **Milestone:** M0  ·  **Depends on:** WP-01
-- **Owns:** `packages/ooxml/**`, `packages/testing/**`, `tools/make-fixtures.py`, `tools/fetch-corpus.sh`
-- **Task:** Implement §3.5's shared layer in packages/ooxml: `OpcPackage` (open from Uint8Array via fflate with zip-bomb limits; parts map; [Content_Types].xml defaults/overrides; relationships per part with typed lookup by relationship type; `getPart`, `setPart`, `removePart`, `addPart(name, contentType, bytes)`, `nextPartName('/word/media/image{n}.png')`, `save()` producing a zip with Office-compatible ordering ([Content_Types].xml first, then _rels/.rels)), XML layer over fast-xml-parser with preserveOrder (`parseXml`, `buildXml` with a stable namespace prefix table for w, a, p, r, c, x14, mc, wp, pic, wps, m, xdr, dgm, vt, cp, dc, dcterms; `xmlns` declarations emitted only when used; `mc:Ignorable` preserved), a tiny typed query helper (`child(node,'w:pPr')`, `children`, `attr`, `text`) and node builders, units (EMU, twips, half-points, eighths-of-a-point, percentages, `ST_` enums as string unions), DrawingML: `a:theme` parser/serialiser (clrScheme incl. system colours, fontScheme with major/minor latin/ea/cs, fmtScheme), colour resolution (`a:srgbClr`, `a:schemeClr` with lumMod/lumOff/tint/shade/alpha transforms, `a:sysClr`, `a:prstClr`), fills (solid, gradient linear/path, pattern, picture/blip with stretch/tile, none), lines (width, dash, caps, joins, head/tail ends), effects (outer shadow, glow, reflection → stored; shadow rendered), `a:bodyPr` and `a:lstStyle`/`a:pPr`/`a:rPr` text properties, and **preset geometries**: transcribe all 187 presets from ECMA-376 presetShapeDefinitions (guides, adjust values, paths with formula evaluation) into `src/drawingml/presets/*.ts` with `presetToSvgPath(preset, w, h, adjustments)`; test ≥ 40 presets against hand-computed path strings and all 187 for "produces a non-empty closed path without NaN". Passthrough: `PassthroughSet` that records parts and relationships a reader did not consume, re-emitted by writers. Document properties: core/app/custom properties read/write. packages/testing: fixtures directory layout (fixtures/docx, xlsx, pptx, each with `features/` generated and `manual/` hand-authored), `tools/make-fixtures.py` (Python venv per §4.5) generating the synthetic corpus described in §5 deterministically (fixed seeds, fixed dates) and `tools/fetch-corpus.sh` downloading 10 public-domain real-world files per format (e.g. from the ECMA-376 samples, Apache POI test data, LibreOffice unit-test corpora — list exact URLs; skip files that fail to download) into fixtures/external (gitignored). Oracles in packages/testing/src/oracles: `soffice.ts` (wraps tools/oracle-soffice.sh; convert to pdf/csv/docx/xlsx/pptx; `renderPdfPages(pdf) -> PNG buffers` via pdftoppm), `exceljsReader.ts`, `mammothReader.ts`, `pythonReader.ts` (runs small Python scripts with openpyxl/python-docx/python-pptx to dump JSON). Fidelity scorer skeleton `src/fidelity/score.ts` per §5 with `structural`, `text`, `visual` (pixelmatch), `oracle_opens`. Helper `loadFixture(name)`.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/ooxml test exits 0 with >= 60 tests (OPC round-trip of a generated docx/xlsx/pptx yields byte-identical part contents for untouched parts; theme colour resolution cases; 187 preset geometry tests)
-  - python3 -I tools/make-fixtures.py --out packages/testing/fixtures exits 0 and creates >= 15 .docx, >= 15 .xlsx, >= 15 .pptx files under features/
-  - bash tools/oracle-soffice.sh packages/testing/fixtures/docx/features/styles.docx pdf /tmp/officina-oracle exits 0 and the PDF exists
-  - pnpm --filter @officina/testing test exits 0 (oracle wrappers smoke-tested against generated fixtures; scorer unit tests)
-  - LibreOffice opens every generated fixture: a test converts each features/* file to pdf without error
-
-### WP-06 — Command registry, keymaps, Ribbon, Backstage, status bar, command palette, panes
-
-- **Milestone:** M0  ·  **Depends on:** WP-04
-- **Owns:** `packages/commands/**`, `packages/ui-kit/src/ribbon/**`, `packages/ui-kit/src/backstage/**`, `packages/ui-kit/src/statusbar/**`, `packages/ui-kit/src/palette/**`, `packages/ui-kit/src/panes/**`, `packages/ui-kit/src/minitoolbar/**`, `packages/ui-kit/src/contextmenu/**`, `packages/ui-kit/src/keytips/**`, `packages/ui-kit/src/chrome/**`, `packages/ui-kit/src/index.ts`
-- **Task:** packages/commands: `CommandRegistry` (`register({id, title, officeName?, synonyms[], icon, shortcut?, when?, run(ctx,args), isEnabled(ctx), isChecked?(ctx)})`, `execute(id,args)`, `getState(id)`, change subscriptions), `Keymap` (platform-aware parsing of "Mod+Shift+L", Mac ⌘ mapping, chord-free; conflict detection; user overrides persisted), the full §1.7 shortcut table as `keymaps/{write,grid,deck,common}.ts` mapping to command ids (commands that editors implement later are declared here as ids with titles so the palette/keytips/menus are complete from day one; unimplemented ids resolve to a no-op flagged `pending` and are hidden in release builds by `tiers.ts`), `KeyTips` sequences (Alt → letters per §1.3), `AssistantProvider` interface (§2.1) with a `NullProvider` and `EchoProvider`, tier flags (`tiers.ts`: P0/P1/P2 with env/build-time gating), telemetry-free `recentCommands` store, and `createOfficeSynonyms()` seed. packages/ui-kit chrome: `AppFrame` (title bar with mark, title rename, AutoSave toggle, undo/redo, Search/Tell-me box = palette trigger, presence slot, share button, window controls slot), `Ribbon` (data-driven from a `RibbonSpec` {tabs:[{id,label,keyTip,groups:[{id,label,launcher?,items:[...]}]}]}, item kinds: button, toggle, split, dropdown, gallery, combobox, color, numberinput, spacer, custom; Classic 3-row and Simplified 1-row layouts chosen by width; collapse (Ctrl+F1); contextual tab sets appearing with a coloured header; overflow handling; keyboard Tabs+Toolbar ARIA; tooltip shows title, shortcut, Office name when different), `Backstage` (full-screen overlay; the §1.5 navigation; content panes are slots so apps plug in Info/Print/Export), `StatusBar` (left items/right items, zoom slider with ± and percentage popover with presets, view switcher), `CommandPalette` (cmdk; fuzzy over title+officeName+synonyms; sections Recent/All; shows shortcuts; Ctrl+Shift+P and Alt+Q), `TaskPane` host (right/left docking, resizable, multiple panes tabbed), `MiniToolbar` (appears above selection on mouse-up), `ContextMenu`, `KeyTips` overlay, `DialogLauncher`, `Options` dialog shell with the §1.5 sections (General, Display, Save, Language, Keyboard with live remapping). Provide `RibbonSpec` builders and a `validateRibbonSpec()` test helper that checks every item's command id exists in the registry and every icon exists. Add a demo page `packages/ui-kit/stories/Chrome.tsx` wiring a sample spec. Tests: registry/keymap/keytips unit tests; jsdom tests for ribbon keyboard navigation, palette filtering, backstage open/close.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/commands --filter @officina/ui-kit test exits 0 with >= 60 tests
-  - A test asserts that every shortcut row of docs/SHORTCUTS.md (parsed from the markdown table in the repo) maps to a declared command id in packages/commands/src/keymaps
-  - pnpm typecheck exits 0
-  - Visual check: a jsdom-free Playwright script `pnpm --filter @officina/ui-kit exec playwright test` is NOT required here; instead `pnpm -w e2e` still passes
-
-### WP-07 — Formula engine core: tokenizer, parser, references, dependency graph, incremental evaluator
-
-- **Milestone:** M0  ·  **Depends on:** WP-01
-- **Owns:** `packages/formula/src/engine/**`, `packages/formula/src/parser/**`, `packages/formula/src/values/**`, `packages/formula/src/index.ts`, `packages/formula/test/engine/**`, `packages/formula/test/parser/**`, `packages/formula/bench/**`
-- **Task:** Implement §3.4 except the bulk function library. Tokenizer and Pratt parser for the full Excel grammar (A1/R1C1 parse-only for R1C1 in this WP, absolute/mixed refs, sheet-qualified and quoted sheet names, 3-D ranges, whole rows/columns, structured references with [#All]/[#Headers]/[#Data]/[#Totals]/[@Col]/[@] and column ranges, defined names, array constants, operators with Excel precedence (including unary minus before %, and `^` left-assoc as Excel), string/number/boolean/error literals, whitespace-as-intersection, union with comma inside parentheses, implicit intersection `@`, function calls with empty args). AST with source spans (for syntax highlighting + the Formula Lab). Reference canonicalisation and shifting (`moveFormula`, insert/delete rows/cols adjusting refs, copy with relative adjustment, `#REF!` on deletion), A1<->R1C1 conversion, absolute toggling (F4 cycle). Value model with ErrorValue, Array2D, Blank, Lambda; coercion rules (text->number per Excel incl. percentages, dates in text in en-US, booleans), comparison rules (text case-insensitive, type ordering number<text<boolean), Excel-style 15-significant-digit normalisation, date serial helpers (1900 with the Lotus bug, 1904 option). Evaluator with lazy arguments (annotate function descriptors with `lazy: [indices]`), dynamic arrays (spill area computation, `#SPILL!` on collisions, `#` spill-range operator), implicit intersection for legacy contexts, array lifting for scalar functions over arrays, volatile marking, LET/LAMBDA/MAP/REDUCE/SCAN/BYROW/BYCOL/MAKEARRAY semantics (these core functions are implemented here; the rest come in WP-09). `DependencyGraph`: cell and range nodes, interval tree per sheet so a range precedent is one edge, dirty propagation, Kahn topological recalculation of dirty subgraph, cycle detection with `#CIRCULAR` (represented as Excel's 0 + circular-reference flag), iterative calculation option (max iterations, max change). `Engine` API: `setCell(sheet,row,col, {formula?|value?})`, `insertRows/Cols`, `deleteRows/Cols`, `renameSheet`, `defineName`, `recalc()` (incremental) and `recalcAll()`, `getValue`, `getSpillRange`, `explain(formula) -> step tree` (for Formula Lab), host interface for reading cell values/types so the engine does not own storage. A built-in minimal function set of ~40 (SUM, AVERAGE, COUNT, COUNTA, MIN, MAX, IF, IFS, AND, OR, NOT, IFERROR, ROUND, ABS, INT, MOD, LEN, LEFT, RIGHT, MID, CONCAT, TEXTJOIN, VLOOKUP, XLOOKUP, INDEX, MATCH, ROW, COLUMN, OFFSET, INDIRECT, TODAY, NOW, DATE, SEQUENCE, FILTER, SORT, UNIQUE, TRANSPOSE, LET, LAMBDA) implemented natively with a `FunctionDescriptor` {name, minArgs, maxArgs, lazy, volatile, impl, docs} registry that WP-09 fills. Property-style tests for parse->print round-trips, reference shifting, and recalculation order; a micro-benchmark (vitest bench) for 100k dependent cells.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/formula test exits 0 with >= 200 tests
-  - A test file test/engine/spill.test.ts covers dynamic-array spill, #SPILL!, and the # operator
-  - A test asserts parse(print(ast)) round-trips for >= 300 formulas (including structured refs, 3-D refs, array constants, quoted sheet names)
-  - pnpm --filter @officina/formula bench reports recalc of a 100k-cell dependent chain under 1.5 s
-  - pnpm typecheck exits 0
-
-### WP-08 — Web app shell: routing, Hub, document sessions, storage abstraction (web host), i18n bootstrap
-
-- **Milestone:** M0  ·  **Depends on:** WP-02, WP-03, WP-06
-- **Owns:** `apps/web/src/**`, `apps/web/index.html`, `apps/web/vite.config.ts`, `apps/web/public/manifest.webmanifest`, `packages/storage/src/**`, `packages/storage/test/**`, `packages/i18n/**`, `e2e/specs/hub.spec.ts`, `e2e/specs/shell.spec.ts`, `e2e/helpers/**`
-- **Task:** Build apps/web as the real shell: client router with routes /, /write/:docId, /grid/:docId, /deck/:docId, /notes/:docId, /present/:docId (no server), `AppFrame` + `Ribbon` + `StatusBar` + `Backstage` from ui-kit mounted per app with a placeholder editor area (`<div data-testid="editor-root">`), app accent set via data-app, theme provider, command registry wiring (palette, key tips, shortcuts active), `DocumentSession` abstraction ({docId, app, title, dirty, handle?, model slot}) with a session store (zustand) and multi-document tabs/windows strategy (web: one document per tab; `window.name`-based docId handoff), Hub (§1.6) with recents/pinned from storage, template cards (placeholders until WP-32), "Open" via storage host, drag-and-drop of files onto Hub, file-type routing by extension/magic bytes. packages/storage: `PlatformHost` interface (§3.8), `WebHost` (File System Access API with permission re-prompt, IndexedDB-persisted handles via dexie; download fallback; `.scriba/.tabula/.scena` bundle read/write helpers), `RecentsStore`, `AutosaveJournal` interface (append(update), snapshot(), restore()) with an IndexedDB implementation, `RecoveryRegistry` (dirty/closedCleanly flags, heartbeat), `detectHost()` returning Web/Electron/Capacitor by probing `window.officina` / `Capacitor.isNativePlatform()` (adapters themselves arrive in WP-31/WP-35/34 — define the interfaces and a `NotImplementedHost` guard). packages/i18n: i18next + react-i18next + ICU, `locales/en/{common,ribbon,backstage,errors,formula}.json`, `t()` wrappers, `useLocale`, number/date formatting helpers via Intl, RTL detection (`dir` attribute), and a `missing-keys` test that scans ribbon specs and ui-kit strings for untranslated literals (allow-list file). Backstage Info/Print/Export panes get real property display (title, counts come from the editor via an `AppCapabilities` interface the editor WPs implement). Options dialog persisted (localStorage) incl. AutoSave interval, theme, language, Classic Office look. e2e: hub.spec.ts (Hub renders, theme toggle screenshot light+dark, recents list after opening a dropped fixture), shell.spec.ts (each app route shows ribbon with the §1.4 tab names in order, Ctrl+Shift+P opens palette and filters "Freeze Panes", Alt shows key tips, Ctrl+F1 collapses ribbon, Backstage opens via File and closes with Esc; screenshots per app light/dark at 1440x900 saved as shell/<app>-<theme>-desktop.png).
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm e2e exits 0 and the screenshots e2e/screenshots/shell/{write,grid,deck}-{light,dark}-desktop.png and hub/hub-{light,dark}-desktop.png exist
-  - e2e asserts ribbon tab labels for Write are exactly: Home, Insert, Layout, References, Review, View; Grid: Home, Insert, Page Layout, Formulas, Data, Review, View; Deck: Home, Insert, Design, Transitions, Animations, Slide Show, Review, View (File is the backstage button)
-  - pnpm --filter @officina/storage --filter @officina/i18n test exits 0 with >= 30 tests (fake IndexedDB via fake-indexeddb catalog entry)
-  - Visual review recorded in docs/qa/visual-review-WP-08.md after opening the PNGs
-
-### WP-09 — Formula function library (>= 350 functions), docs, conformance suite
-
-- **Milestone:** M0  ·  **Depends on:** WP-07
-- **Owns:** `packages/formula/src/functions/**`, `packages/formula/test/conformance/**`, `packages/formula/test/functions/**`, `docs/formula-deviations.md`
-- **Task:** Fill the function registry to >= 350 Excel functions across the families of §3.4, using @formulajs/formulajs as the implementation base where its semantics match Excel (wrap with our value model: errors, blanks, arrays, lazy args) and native implementations where it does not (notably: TEXT/VALUE via numfmt, date functions with the 1900 system, SUMIF(S)/COUNTIF(S)/AVERAGEIF(S)/MAXIFS/MINIFS criteria parsing incl. wildcards and comparison strings, lookup functions with match modes and binary search, SUBTOTAL/AGGREGATE with hidden rows via host, financial functions on decimal.js where precision matters, the dynamic-array family, TEXTSPLIT/TEXTBEFORE/TEXTAFTER, LET/LAMBDA helpers already in WP-07). Each function gets a docs entry in `src/functions/docs/<FAMILY>.json` ({name, category, summary, syntax, args:[{name, description, optional, repeating}], examples:[{formula, result}], since}) used by autocomplete, the fx dialog and the Formula Lab; a test asserts every registered function has docs and every docs example evaluates to its stated result. Conformance: write `test/conformance/*.csv` with >= 1,500 rows (formula, expected, type, notes) in these sources: (a) curated from Microsoft's documented examples per function (type them in by family), (b) generated by `tools/gen-conformance.mjs` (owned here, under packages/formula/tools) which writes an .xlsx with formulas via exceljs, runs the LibreOffice oracle with recalc-on-load (tools/oracle-soffice.sh ... csv), and records values — flag rows where LibreOffice is known to differ from Excel in notes and exclude them from (b) by a deny-list. The conformance test runner compares with type-aware tolerance (numbers to 1e-9 relative, dates as serials, errors by name, text exact). Document genuine deviations in docs/formula-deviations.md with reasons. Implement `CELL` (subset: address, col, row, contents, type, filename blank), `INFO` subset, `ENCODEURL`, `HYPERLINK` returning a link value type.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/formula exec tsx -e "import('./src/index.ts').then(m=>console.log(m.listFunctions().length))" prints >= 350
-  - pnpm --filter @officina/formula test exits 0; conformance runner reports >= 1500 cases with 0 failures (skips are listed with reasons in docs/formula-deviations.md)
-  - A test asserts all function docs examples evaluate to their stated results
-  - Spot checks pass as tests: =TEXT(1234.5,"#,##0.00") -> "1,234.50"; =DATEDIF(DATE(2020,1,31),DATE(2020,3,1),"md") -> 1; =XLOOKUP(5,{1,3,5},{"a","b","c"}) -> "c"; =SUMIFS(A:A,B:B,">=2024-01-01") style criteria; =0.1+0.2=0.3 -> TRUE; =IRR({-100,30,40,50}) within 1e-7 of 0.0894
-
-### WP-10 — Write document model (ProseMirror schema, styles, numbering, sections, fonts)
-
-- **Milestone:** M1  ·  **Depends on:** WP-01
-- **Owns:** `packages/doc-model/**`
-- **Task:** Implement §3.3 doc-model: the ProseMirror schema (`createDocSchema()`) with every node/mark listed, attribute types in `src/types.ts` mirroring WordprocessingML semantics (units in twips/half-points as in the file, with helpers to px/pt), `StyleSheet` (paragraph/character/table/numbering/list styles, basedOn/next/link, docDefaults, latent styles ignored), `resolveParagraphProps(doc, paragraphNode)` and `resolveRunProps(...)` implementing Word's inheritance order (docDefaults → table style → paragraph style chain → numbering level pPr/rPr → direct formatting → run style), `Numbering` (abstractNum/num/overrides, level text templates like "%1.%2", formats decimal/lowerLetter/upperRoman/bullet/… with `formatNumber(level, counters)`, restart logic, legal numbering, `computeListLabels(doc)` producing labels per paragraph in document order), sections (page size/margins/orientation/columns/header-footer references/titlePg/evenOdd, section break types), fields (`FieldInstruction` parser for PAGE, NUMPAGES, DATE, TIME, TOC with switches, REF, HYPERLINK, SEQ, PAGEREF; unknown preserved), theme font/colour resolution via @officina/ooxml theme types, the **font substitution table** (§1.2; Office names → bundled fonts, with metric-compatible flag) and `fontStack(name)` for CSS, `DefaultTemplate` producing a new document with Word-2016+ defaults (Normal: Calibri→Carlito 11 pt, line 1.08 (259 lineRule auto), after 8 pt; Heading 1–3 as Word; Title, Subtitle, Quote, List Paragraph, Table Grid, TOC 1–3, Footnote Text, Header, Footer, Hyperlink, Strong, Emphasis, Caption), a plain-text and JSON (de)serialiser for tests/version diffs, document statistics (`countWords/characters/paragraphs/pages?(from layout callback)`), and a `DocCommands` set of pure transforms (apply style, toggle mark, set alignment, indent/outdent list level, insert table/row/col, merge/split cells, insert section break, set numbering) used by the editor. Tests: schema validity, inheritance resolution matrix (≥ 40 cases), numbering label computation (≥ 30 cases incl. restart/legal/multilevel), field parsing, default template snapshot.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/doc-model test exits 0 with >= 120 tests
-  - A test demonstrates resolveRunProps on a run in a styled paragraph in a styled table matches the documented Word precedence (table style < paragraph style < numbering < direct)
-  - pnpm typecheck exits 0
-
-### WP-11 — DOCX reader
-
-- **Milestone:** M1  ·  **Depends on:** WP-05, WP-10
-- **Owns:** `packages/io-docx/src/read/**`, `packages/io-docx/src/common/**`, `packages/io-docx/src/index.ts`, `packages/io-docx/test/read/**`
-- **Task:** Implement `readDocx(bytes) -> {doc: ProseMirrorNode, styles, numbering, sections, media, comments, footnotes, endnotes, settings, properties, passthrough, warnings[]}` per §3.5: every element listed there (body paragraphs/runs/breaks/tabs/symbols, rPr/pPr including `w:rPrChange/w:pPrChange`, tables with gridSpan/vMerge/tblLook/tblStyle/cell margins/widths in all unit types, section properties incl. headers/footers (map `w:headerReference` types to section header/footer nodes; `w:titlePg`, `evenAndOddHeaders`), numbering.xml, styles.xml, settings.xml (defaultTabStop, trackRevisions, decimalSymbol), footnotes/endnotes with references, comments + commentsExtended threads + people, simple and complex fields with cached results (nested fields), hyperlinks (relationship targets, anchors), bookmarks (start/end), inline and anchored drawings (wp:inline/wp:anchor with position/wrap/extent/docPr; pic:pic images; wps:wsp text boxes and shapes using ooxml DrawingML; `a:graphicData` charts referenced for WP-20 by relationship id; VML `w:pict` images read-only fallback), `w:ins/w:del/w:moveFrom/w:moveTo` revisions → insertion/deletion marks with author/date, `m:oMath` → equation node holding OMML XML, `w:sdt` content controls → unwrap content and keep properties in a `sdt` attribute (preserved on write by WP-13), RTL/bidi attributes, document properties. Media extracted to blobs with content types. Warnings for every unsupported construct with part/path info (used by the Compatibility Checker). Read must be streaming-friendly: run in a worker-compatible way (no DOM). Tests: each generated fixture in packages/testing/fixtures/docx/features/* yields a document whose text equals mammoth's extracted text (normalised), expected structure assertions per feature fixture (e.g. numbering labels "1.", "a.", "i."; table 3x3 with merged cells; section count), no unhandled exceptions on every fixture in fixtures/external (when present), warnings list is empty for the synthetic corpus.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/io-docx test exits 0 with >= 80 tests
-  - A test compares normalised text of every fixtures/docx/features/*.docx to mammoth's output and passes
-  - A test reads a track-changes fixture and asserts insertion/deletion marks with authors
-  - pnpm typecheck exits 0
-
-### WP-12 — Write editor core: TipTap integration, pagination, rulers, Home/Insert/Layout ribbon wiring
-
-- **Milestone:** M1  ·  **Depends on:** WP-06, WP-08, WP-10
-- **Owns:** `packages/editor-write/src/**`, `packages/editor-write/test/**`, `apps/web/src/apps/write/**`, `e2e/specs/write-core.spec.ts`
-- **Task:** Build the Write editor per §3.6: TipTap 3 editor with custom extensions for every doc-model node/mark (no StarterKit nodes that conflict with ours — use ours exclusively, with input rules), ProseMirror plugins: selection/cursor, history (later replaced by Yjs undo in WP-29 — keep a `HistoryStrategy` seam), paste handling (HTML sanitised with dompurify → doc-model via an HTML importer with style mapping; plain text; Markdown detection → styled; images as media), drag-and-drop images, tab key behaviour (list indent / tab char), smart typography (optional). Pagination layer (§3.6): PaginationPlugin measuring blocks via ResizeObserver + Range.getClientRects, page model {pages:[{top, height, breaks}]}, page chrome overlay (page edges, gap, margins guides, page numbers), per-page headers/footers rendered from section header/footer nodes with live PAGE/NUMPAGES fields, footnote areas, keepNext/keepLines/pageBreakBefore/widow-orphan rules, table rows cantSplit, column sections (CSS multicol per section block), progressive layout with requestIdleCallback for long documents, and `getPageCount()` / `pageOfPosition(pos)` used by the status bar and navigation. Views: Print Layout (paginated), Web Layout (continuous), Read Mode (paginated columns, no editing), Draft. Rulers (horizontal with margin/indent/tab stop drag; vertical with margins). Zoom (ctrl+wheel, slider, presets, page width/whole page). Status bar items: page x of y, word count (selection-aware), language, zoom. Ribbon wiring for Home/Insert/Layout/View per §1.4 (commands implemented here: all font/paragraph/style/clipboard/paste-special operations, insert table (grid picker), picture, link, page break, header/footer editing mode (double-click header area), page setup dialog (margins/orientation/size/columns), bullets/numbering galleries with Word's default definitions, line spacing, styles gallery with live preview and Styles task pane basics). Mini toolbar on selection; context menu. apps/web/src/apps/write: the Write page composing AppFrame/Ribbon/editor/panes/status bar, `WriteCapabilities` for Backstage Info, open/save through storage using WP-11 reader (writer arrives in WP-13 — until then Save writes the native .scriba bundle) with a worker for parsing. Tests: jsdom tests for extensions and commands; pagination tested with a fake measurer; e2e write-core.spec.ts: open fixtures/docx/features/{styles,numbering,tables,sections}.docx via the e2e file chooser, screenshot each (write-core/<name>-light-desktop.png), type text with Ctrl+B and verify bold mark, apply Heading 1 via ribbon and via Ctrl+Alt+1, insert a 3x3 table, check status bar page count > 1 for sections fixture, zoom slider changes scale.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/editor-write test exits 0 with >= 80 tests
-  - pnpm e2e --grep write-core exits 0 and screenshots write-core/{styles,numbering,tables,sections}-light-desktop.png exist
-  - e2e asserts the page count shown in the status bar for fixtures/docx/features/sections.docx equals the page count LibreOffice reports for the same file (via pdfinfo of the oracle PDF, exposed through a tiny e2e helper) within ±1
-  - docs/qa/visual-review-WP-12.md records the review of the screenshots
-
-### WP-13 — DOCX writer and round-trip fidelity tests
-
-- **Milestone:** M1  ·  **Depends on:** WP-11
-- **Owns:** `packages/io-docx/src/write/**`, `packages/io-docx/test/write/**`, `packages/io-docx/test/roundtrip/**`
-- **Task:** Implement `writeDocx(model, {passthrough}) -> Uint8Array` emitting every construct the reader understands (§3.5) with Office-compatible XML (ordering of child elements per the schema sequences — e.g. w:pPr children order, w:rPr order; `w:tblGrid`; `w:sectPr` placement in the last paragraph of each section except the final one in body), styles.xml/numbering.xml/settings.xml/footnotes/endnotes/comments(+Extended, +people)/headers/footers parts, media parts with relationships, content types, core/app properties (modified date updated, application "Officina"), fields as complex fields with cached results, revisions, bookmarks, hyperlinks, drawings (inline/anchor, pictures, text boxes, shapes via ooxml DrawingML writer), equations (OMML passthrough), sdt properties re-wrapping, and the passthrough parts (customXml, vbaProject.bin for .docm, glossary, unknown parts) with relationships repaired. Deterministic output (same model → identical bytes). Compatibility Checker data: `checkCompatibility(model) -> issues[]` listing features that will be lost (e.g. callout blocks → bordered paragraphs, code blocks → 'Code' style + shading). Round-trip tests: for every fixture read→write→read, structural score (packages/testing scorer) ≥ 0.95 and text 1.00; LibreOffice opens every written file (oracle_opens = 1) and the visual score between oracle renders of original and rewritten ≥ 0.90; writer output also opens with mammoth and python-docx without exceptions; a write-from-DefaultTemplate test produces a .docx whose styles.xml contains the Word default style ids. Write results to docs/qa/fidelity.md (docx section).
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/io-docx test exits 0 with >= 60 additional tests
-  - pnpm fidelity --format docx prints a table where every features/* fixture has structural >= 0.95, text == 1.00, oracle_opens == 1, visual >= 0.90
-  - A determinism test asserts identical bytes for two consecutive writes of the same model
-  - docs/qa/fidelity.md contains the docx table
-
-### WP-14 — Write advanced features: tables UI, floating objects, find/replace, styles & navigation panes, TOC, footnotes, comments, track changes, Format Painter, Markdown shortcuts, focus mode, spell check
-
-- **Milestone:** M1  ·  **Depends on:** WP-12
-- **Owns:** `packages/editor-write/src/features/**`, `packages/editor-write/test/features/**`, `apps/web/src/apps/write/**`, `e2e/specs/write-features.spec.ts`
-- **Task:** Add to editor-write (new `features/` modules, each registering its commands and ribbon contributions through a `WriteFeature` interface the core exposes): Tables (Table Design/Layout contextual tabs: styles gallery with banded/header options from doc-model table styles, borders/shading, insert/delete rows/cols, merge/split, cell size, distribute, alignment, repeat header rows, convert to text, autofit; cell selection with mouse/keyboard; column resize handles on the ruler and the table), Floating objects (Picture/Shape Format: wrap modes square/tight/top-bottom/behind/in-front implemented with float spacers and shape-outside; position dialog; anchor dragging; crop; alt text; bring forward/backward; Selection Pane), Find & Replace (navigation pane results, match case/whole word/regex/wildcards, replace all, Go To page/section/line), Styles pane (list, modify style dialog, new style, clear all, show preview), Navigation pane (headings tree with drag reorder, pages thumbnails (rendered lazily), results), References: TOC insertion/update from heading styles with page numbers from pagination, clickable; footnotes/endnotes insert/navigate/show; captions with SEQ; cross-references dialog; bookmarks. Review: comments task pane (threaded, resolve, reply, @mention stub) anchored to ranges; Track Changes (insert/delete/format revisions recorded as marks with author/time, display modes Simple/All/None/Original, Reviewing pane, accept/reject one/all, next/previous, balloons in margin in All Markup), Word Count dialog, Spelling via nspell + dictionary-en (squiggles as decorations, right-click suggestions, add to dictionary, ignore). Home: Format Painter (single and double-click persistent; Ctrl+Shift+C/V), Change Case, Clear Formatting, Sort paragraphs, Show ¶, Paste Special dialog. Markdown shortcuts (input rules: #..###### headings, -, *, 1., [ ] task, >, ```, ---, **bold**, *italic*, `code`, links), smart paste of Markdown text, Focus mode (hide chrome, centre page, typewriter scrolling, word-goal from Options), Callout and Code blocks (code block with syntax highlighting via a small tokenizer for 8 languages; both have Compatibility Checker mappings). Wire everything into the Write ribbon spec (apps/web/src/apps/write/ribbon.ts) per §1.4 including contextual tabs. e2e write-features.spec.ts: screenshots of track-changes view, comments pane, TOC inserted, floating image with square wrap, find/replace dialog, focus mode (light+dark); functional assertions: replace-all count, accept-all removes marks, TOC entries equal heading count, Format Painter copies bold+colour.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/editor-write test exits 0 with >= 120 additional tests
-  - pnpm e2e --grep write-features exits 0 with screenshots write-features/{track-changes,comments,toc,floating-image,find-replace,focus}-{light,dark}-desktop.png
-  - e2e: Ctrl+Shift+E toggles track changes and the status bar shows 'Track Changes: On'
-  - docs/qa/visual-review-WP-14.md written after viewing all screenshots
-
-### WP-15 — Write integration gate: open/edit/save Office files end to end, print & PDF export, Backstage panes  (GATE)
-
-- **Milestone:** M1  ·  **Depends on:** WP-13, WP-14
-- **Owns:** `apps/web/src/apps/write/**`, `packages/print-pdf/src/core/**`, `packages/print-pdf/src/write/**`, `packages/print-pdf/src/index.ts`, `packages/print-pdf/package.json`, `packages/print-pdf/test/core/**`, `packages/print-pdf/test/write/**`, `e2e/specs/write-e2e.spec.ts`, `e2e/specs/print.spec.ts`, `docs/qa/visual-review-WP-15.md`, `docs/manual/write.md`
-- **Task:** Integration gate for Write. Wire the DOCX writer into Save/Save As (format picker: .docx, .scriba, .pdf, .md, .html, .txt; Compatibility Checker dialog before saving to .docx when issues exist, with "Don't show again" per document), AutoSave-to-file, dirty tracking, title rename → file rename, recents, "Open Recent" and drag-drop at the Write route. packages/print-pdf (create the package core in src/core: page model, print route host, preview component, pdf-lib post-processing; Write-specific layout in src/write; Grid/Deck add src/grid and src/deck later): print layout route (`/print/:docId` renders the paginated document using the same page model with @page CSS, headers/footers/footnotes per page, no chrome), Print preview inside Backstage ▸ Print (iframe of the print route with page thumbnails, settings: printer (browser), pages range, copies, orientation, paper size, margins, scale), `exportPdf()` pipeline: `PlatformHost.print({toPdf:true})` for Electron (printToPDF) and `window.print()` for web with instructions; post-processing with pdf-lib (title/author metadata, outline from headings, page labels) when the host returns bytes; Markdown and HTML exporters (doc-model → Markdown with tables, images, footnotes; HTML with inline styles). Backstage Info shows properties and version list placeholder (WP-29 fills). Test the whole loop in e2e write-e2e.spec.ts: open fixtures/docx/features/styles.docx → edit (type, bold, heading, insert table) → Save As docx via the e2e download hook → the saved file is re-read by io-docx in the test and contains the edits → LibreOffice converts the saved file to PDF without error; print.spec.ts: the print route renders N pages where N equals the status bar page count, screenshot print/write-print-preview-light-desktop.png; `exportPdf` in Chromium headless via Playwright's page.pdf() of the print route produces a PDF with N pages (pdfjs-dist page count). Write the Write chapter of the manual (docs/manual/write.md): opening/saving, ribbon tour, track changes, TOC, keyboard shortcuts link.
-- **Acceptance criteria:**
-  - pnpm e2e --grep 'write-e2e|print' exits 0
-  - e2e: saved .docx re-read by io-docx contains the edited text and a Heading 1 paragraph; soffice converts it to PDF (exit 0)
-  - e2e: PDF produced from the print route has the same page count as the status bar shows for fixtures/docx/features/sections.docx
-  - pnpm verify exits 0 and CI is green
-  - docs/qa/visual-review-WP-15.md lists every Write screenshot reviewed and defects fixed; docs/manual/write.md exists with >= 600 words
-
-### WP-16 — Sheet model: workbook/sheets/sparse cell store, styles, merges, names, command log, formula binding
-
-- **Milestone:** M2  ·  **Depends on:** WP-07, WP-09
-- **Owns:** `packages/sheet-model/**`
-- **Task:** Implement §3.3 sheet-model: Workbook/Sheet/SparseStore/RowChunk exactly as specified with O(1) random access, iteration in row-major order, `getUsedRange`, `forEachInRange`, bulk `setRange(values2D)`, row/col property arrays with default sizes (15 pt rows, 8.43 char columns → px via font metrics), hidden/outline levels, merges (with validation and split), `StyleTable` (numFmt code, font, fill, border per side with styles, alignment, protection; dedupe by hashing; `cellXfs`-like indices), named ranges (workbook/sheet scope, hidden names), tables (ListObjects: name, range, header/totals rows, column names, style, autofilter), conditional formatting rule model (all §2.3 types with priority/stopIfTrue and dxf styles), data validation model, hyperlinks, comments/notes, sheet views (freeze, split, zoom, selection, gridlines, headings, rightToLeft), print settings, autofilter state, charts/drawings anchors (objects referenced by id; chart model from WP-20 later), workbook properties (date1904, calcMode). `CommandLog` with inverse operations for every mutation (setCell(s), setStyle, insert/delete rows/cols (shifting merges, names, CF, validations, tables, formulas via engine), move/copy range, sort, rename sheet, add/remove/reorder sheets, freeze…) with undo/redo stacks, grouping of commands into transactions, and serialisation of commands. Formula binding: implement the @officina/formula host interface over the store; `WorkbookCalc` runs the engine (in-process here; a worker wrapper comes in WP-17) with incremental recalc, spill ranges, calc mode auto/manual, `recalcSheet`, structured reference resolution through the tables model, defined names, `explain(cell)`. Number formatting bridge: `formatCell(value, numFmtCode, locale)` via numfmt including Excel's General format rules (11 significant digits display, scientific switch), date/time formats, percentages, fractions, accounting with alignment padding markers, colours in format codes (`[Red]`), conditional sections. Snapshot/restore (structured clone-safe JSON) for versions/journals, with gzip via fflate. Tests: store semantics, insert/delete shifting matrices (≥ 50 cases), undo/redo invariants (property tests), number formatting (≥ 150 cases against numfmt's own expectations plus Excel-documented examples), structured references, calc integration (dependent cells recalc, spill), snapshot round-trip. Benchmark: fill 1M cells in < 2 s and iterate them in < 300 ms.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/sheet-model test exits 0 with >= 250 tests
-  - pnpm --filter @officina/sheet-model bench shows 1M-cell fill < 2 s and full iteration < 300 ms
-  - A test demonstrates inserting a row above a formula's reference shifts the formula text and the dependency graph correctly (value unchanged after recalc)
-  - pnpm typecheck exits 0
-
-### WP-17 — Grid editor core: canvas renderer, selection, scrolling, freeze panes, in-cell editing, formula bar, autocomplete, fill handle, clipboard, Home ribbon
-
-- **Milestone:** M2  ·  **Depends on:** WP-06, WP-08, WP-16
-- **Owns:** `packages/editor-grid/src/**`, `packages/editor-grid/test/**`, `packages/editor-grid/bench/**`, `apps/web/src/apps/grid/**`, `e2e/specs/grid-core.spec.ts`
-- **Task:** Build editor-grid per §3.6: canvas renderer (DPR-aware; layers: cells, grid lines, borders with Excel precedence, text with numfmt output, overflow into empty neighbours, wrap/rotation/indent/vertical align, merged cells, conditional format visuals, selection/fill-handle overlay canvas), row/column headers with resize/autofit on double-click, hidden rows/cols markers, freeze panes (4 viewports), smooth scrolling with virtualisation (Fenwick-tree offsets), zoom (50–400 %), text measurement cache, sheet tab strip (+, rename, reorder by drag, colour, hide, context menu), Name Box (type A1/range/name to navigate; define name on Enter), Formula Bar (expand/collapse, fx button opening the Insert Function dialog built from function docs, with range highlighting while editing and syntax colouring), in-cell editor (F2/typing/double-click; Enter/Tab/Shift variants; Alt+Enter newline; Esc; arrow keys select ranges into the formula while editing like Excel's point mode; autocomplete of function names with signature tooltip and inline docs (★), autocomplete of column values, data validation dropdown host), selection model (ranges, multi with Ctrl, whole rows/cols, Ctrl+A regions, Ctrl+Arrow edge jumps, Shift extensions, keyboard per §1.7), fill handle (drag copy/series detection numbers/dates/weekdays/months/custom lists, Ctrl modifier, double-click autofill to adjacent extent, Fill menu Down/Right/Series dialog), clipboard (internal rich copy with styles/formulas, HTML table + TSV for external paste/copy, Paste Special dialog: all/values/formulas/formats/transpose/skip blanks/operations), cut/paste moving references, insert/delete cells/rows/cols with shift options, undo/redo via CommandLog, status bar: mode (Ready/Enter/Edit/Point), Average/Count/Sum of selection, zoom, view buttons. Worker: run `WorkbookCalc` in a Web Worker via comlink with a main-thread mirror of computed values (transfer dirty-cell batches); fall back to in-process when workers unavailable (tests). Home ribbon per §1.4 fully wired (font, borders menu, fill/font colour, alignment, wrap, merge variants, number format combo + buttons, cell styles gallery, insert/delete menus, format menu, AutoSum, Fill, Clear, Find & Select basics; Conditional Formatting and Format as Table menus route to WP-19's dialogs so leave the command ids registered but marked pending until WP-19). Format Cells dialog (Ctrl+1) with all six tabs. apps/web/src/apps/grid: page composition, open .xlsx through io-xlsx when WP-18 lands (until then .csv via papaparse and .tabula bundles — implement the CSV import/export here: delimiter/encoding sniffing, Text Import wizard-lite), `GridCapabilities`. Tests: renderer unit tests with a canvas mock (which cells drawn, border precedence), selection/navigation tests, fill-series detection tests, clipboard TSV/HTML parsing tests, editor state machine tests. e2e grid-core.spec.ts: open fixtures/xlsx via csv path and generated 50k-row CSV, type values and formulas (=SUM(A1:A3)) and verify computed display, F2 edit, fill handle drag via mouse, freeze top row then scroll (screenshot), zoom, Ctrl+1 dialog screenshot, status bar sum; screenshots grid-core/*-{light,dark}-desktop.png. Benchmark: Playwright scroll test measuring frame time on a synthetic 1M-populated-cell sheet (generate in-page).
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/editor-grid test exits 0 with >= 150 tests
-  - pnpm e2e --grep grid-core exits 0 with screenshots grid-core/{basic,freeze,format-cells,formula-autocomplete}-{light,dark}-desktop.png
-  - e2e: after typing 1,2,3 in A1:A3 and =SUM(A1:A3) in A4, cell A4 displays 6 and the status bar shows Sum: 6 when A1:A4 is selected
-  - bench: average frame time while scrolling the 1M-cell synthetic sheet < 18 ms (recorded in docs/qa/perf.md)
-  - docs/qa/visual-review-WP-17.md written
-
-### WP-18 — XLSX reader and writer (+ CSV/TSV/JSON) with round-trip fidelity tests
-
-- **Milestone:** M2  ·  **Depends on:** WP-05, WP-16
-- **Owns:** `packages/io-xlsx/**`
-- **Task:** Implement `readXlsx(bytes) -> Workbook` and `writeXlsx(workbook) -> Uint8Array` per §3.5 (everything listed: workbook/sheets/definedNames/calcPr/date1904, styles.xml fully (numFmts incl. built-in ids 0–49 table, fonts, fills incl. gradients, borders, cellXfs with alignment/protection, cellStyles/cellStyleXfs, dxfs), sharedStrings with rich text runs and phonetic ignored, inline strings, sheetData with all cell types and shared/array/dynamic-array formulas (`cm` + metadata.xml for spill), cached values kept so files open instantly before recalculation, cols/rows props, mergeCells, conditionalFormatting incl. x14 extLst (data bars, icon sets with custom sets, colour scales), dataValidations incl. x14 list references to other sheets, hyperlinks (internal/external), autoFilter with filter state, tableParts + tables, sheetViews (pane/freeze/split/selection/zoom/showGridLines/rightToLeft), sheetPr (tabColor, outlinePr), pageSetup/pageMargins/printOptions/headerFooter/rowBreaks/colBreaks, legacy comments + VML drawing for notes (write VML for notes so Excel shows them), threadedComments + persons, drawings with two-cell/one-cell/absolute anchors for pictures and shapes (DrawingML via ooxml), chart parts passed to the charts package via a `ChartPartHook` interface (WP-20 implements; until then chart parts are preserved as passthrough and re-anchored), pivot tables/caches, slicers, externalLinks, customXml, vbaProject.bin, printerSettings all passthrough with relationship repair; sheet order and hidden/veryHidden; workbook protection/sheet protection flags preserved). Writer emits deterministic, Excel-valid XML (element ordering per CT_Worksheet sequence; `r` attributes on rows/cells; styles deduped; shared strings table; `fullCalcOnLoad=1` set when any formula lacks a cached value). CSV/TSV read/write with papaparse (sniffing per §3.5; dates/numbers typed on import with locale option; export respects number formats option), JSON import (array of objects → table). Tests: every fixtures/xlsx/features/* file read → write → read with structural ≥ 0.97, values 1.00 (compare with exceljs reading both the original and our output), formulas string-equal after normalisation, styles compared through exceljs (font/fill/border/numFmt per cell), LibreOffice opens all outputs and `--convert-to csv` of the rewritten file equals that of the original for the first sheet, openpyxl reads outputs; 100k-row fixture read+write under 3 s each. Write docs/qa/fidelity.md xlsx section via `pnpm fidelity --format xlsx`.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/io-xlsx test exits 0 with >= 120 tests
-  - pnpm fidelity --format xlsx prints structural >= 0.97, values == 1.00, oracle_opens == 1 for every features/* fixture
-  - A test shows a dynamic-array formula (=SORT(A1:A5)) survives round-trip with its spill metadata and Excel-compatible cm attribute
-  - A test reads a .xlsm fixture, writes it, and vbaProject.bin bytes are identical in the output
-
-### WP-19 — Grid features: sort & filter, conditional formatting UI, data validation, Format as Table, find/replace, comments/notes, hyperlinks, Page Layout, Formulas and Data ribbons, formula auditing, Formula Lab
-
-- **Milestone:** M2  ·  **Depends on:** WP-17, WP-18
-- **Owns:** `packages/editor-grid/src/features/**`, `packages/editor-grid/test/features/**`, `apps/web/src/apps/grid/**`, `e2e/specs/grid-features.spec.ts`
-- **Task:** Add feature modules (via a `GridFeature` interface the core exposes): AutoFilter (header dropdown buttons drawn on canvas; filter pane with search, value checklist, text/number/date/colour filters, sort A→Z/Z→A/by colour; filter state model persisted via io-xlsx), Sort dialog (multi-level, header detection, case, orientation, custom lists), Conditional Formatting dialogs (every rule type of §2.3, Manage Rules with priority/stop-if-true, live preview, rule application in renderer already supported by WP-17 visuals), Data Validation dialog (settings/input message/error alert; dropdown in-cell; circle invalid data), Format as Table (style gallery with 60 Excel-like table styles generated from theme colours; header/total/banded toggles; resize; convert to range; structured references in autocomplete), Find & Replace dialog (within sheet/workbook, by rows/cols, in formulas/values/notes, match case/entire cell; Go To Special: blanks/formulas/constants/visible), Notes and threaded Comments (pane, indicators, hover popups), Hyperlinks (insert dialog, Ctrl+click, cell styling), Clear menu, Remove Duplicates, Text to Columns wizard (delimited/fixed width with preview), Name Manager dialog + Define Name + Create from Selection + Use in Formula menu, Formula Auditing (trace precedents/dependents arrows drawn on overlay canvas, remove arrows, Show Formulas (Ctrl+`), Error Checking pane listing error cells with explanations, Evaluate Formula dialog stepping through the engine's explain tree, Watch Window), ★Formula Lab task pane (AST tree with live values per node, argument docs), Calculation options (auto/manual, F9/Shift+F9), Page Layout ribbon (margins/orientation/size/print area/print titles/breaks/scale-to-fit/gridlines+headings print toggles, Page Break Preview and Page Layout views rendering page boundaries), Insert ribbon items that don't need charts (table, picture floating over cells, shapes basic (rectangle/ellipse/line/textbox) with DrawingML anchors, text box, header & footer dialog, symbol), Review ribbon (spelling pass over text cells, comments navigation, protect sheet with password-less lock + locked-cell enforcement in editor, protect workbook structure), View ribbon (gridlines/headings/formula bar toggles, new window (web: new tab), split, hide/unhide, custom zoom). Group/outline rows and cols with outline symbols (Data ▸ Outline). Wire the complete Grid ribbon spec per §1.4. e2e grid-features.spec.ts: filter a column and assert hidden rows; conditional formatting data bars screenshot; validation dropdown screenshot and error on invalid; Format as Table + structured ref formula; trace precedents screenshot; Formula Lab screenshot; Page Break Preview screenshot; light+dark.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/editor-grid test exits 0 with >= 120 additional tests
-  - pnpm e2e --grep grid-features exits 0 with screenshots grid-features/{filter,cf-databars,validation,table,trace,formula-lab,page-break-preview}-{light,dark}-desktop.png
-  - e2e: applying a filter 'contains "a"' on a 100-row column hides the expected rows and the status bar reads 'n of 100 records found'
-  - docs/qa/visual-review-WP-19.md written
-
-### WP-20 — Charts package: chart model, ECharts renderer, chart editing UI, OOXML chart read/write
-
-- **Milestone:** M2  ·  **Depends on:** WP-05, WP-16, WP-18
-- **Owns:** `packages/charts/**`, `packages/io-xlsx/src/charts/**`, `packages/io-xlsx/test/charts/**`
-- **Task:** packages/charts: `ChartModel` (types of §2.3/§3.5: column/bar clustered/stacked/100%, line (markers, smooth), area, pie/doughnut (explosion, labels), scatter (lines/markers), bubble, radar, combo with secondary axis, treemap, sunburst, histogram, waterfall, funnel; series {name ref/literal, categories ref, values ref, cache, formatting}, axes (category/value/date; title, min/max/major unit, number format, reversed, log, gridlines, label rotation), legend, titles, data labels (position, value/percent/name), plot area/chart styles (fill/line), colours from theme palette (`accent1..6` with variations) with dark-mode-aware rendering), `ChartRenderer` (React component mapping ChartModel → ECharts 6 option; resize observer; export to PNG/SVG), `ChartData` resolution via a host interface (`getRange(ref) -> values`) so Grid charts are live and Write/Deck charts use embedded workbook data (through io-xlsx on the embedded part), Chart Design/Format ribbon group specs and dialogs (Change Chart Type gallery, Select Data dialog with series editor and switch row/column, Add Chart Element menu (axis titles, data labels, gridlines, legend position, trendline linear/exp/moving-average computed in-house), Quick Layouts, Chart Styles (12 presets), colour palettes), ★Recommended Charts (heuristics from selection shape: 1 numeric column → column; dates + numbers → line; 2 numeric → scatter; part-to-whole small set → pie), chart floating-object host for Grid (two-cell anchor move/resize using editor-grid's drawing layer interface — expose a `ChartObject` component; WP-22 wires it), `chart-ooxml`: read/write `c:chartSpace` subsets (incl. `c:userShapes` passthrough, `c:extLst` passthrough, `cx:chart` chartEx read for treemap/sunburst/waterfall/funnel/histogram and write as chartEx), number formats, cached data (`c:numCache/c:strCache`) written so Excel renders without recalculation, `c:style`/`c:clrMapOvr` preserved, chart relationships (embedded workbook part for Write/Deck, external data refs for Grid). Hook into io-xlsx via the `ChartPartHook` (packages/io-xlsx/src/charts) so sheets round-trip charts as models: read drawing anchors → ChartModel; write back. Tests: model ↔ ECharts option snapshot tests per type; OOXML read/write round-trip of fixtures/xlsx/features/charts-*.xlsx (every chart type) with structural ≥ 0.95 and LibreOffice opening the rewritten file; renderer tests in jsdom with ECharts' SVG renderer producing non-empty SVG; a Playwright screenshot of each chart type from a `packages/charts/stories/Charts.tsx` page via the e2e project (charts/<type>-light-desktop.png) reviewed visually.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/charts --filter @officina/io-xlsx test exits 0 with >= 90 tests for charts
-  - pnpm fidelity --format xlsx --only charts prints structural >= 0.95 and oracle_opens == 1 for every charts-* fixture
-  - e2e --grep charts produces screenshots for >= 12 chart types and docs/qa/visual-review-WP-20.md reviews them
-  - A test asserts a chart written to xlsx includes c:numCache values for every series
-
-### WP-21 — Grid analysis: pivot tables, sparklines, Goal Seek, Subtotal, Flash Fill, protection, Themes
-
-- **Milestone:** M2  ·  **Depends on:** WP-19
-- **Owns:** `packages/editor-grid/src/analysis/**`, `packages/editor-grid/test/analysis/**`, `packages/sheet-model/src/pivot/**`, `packages/sheet-model/test/pivot/**`, `apps/web/src/apps/grid/**`, `e2e/specs/grid-analysis.spec.ts`
-- **Task:** Pivot tables (P1 but included): pivot model in sheet-model (source range/table, fields, row/column/filter/value areas, aggregations sum/count/average/min/max/product/countNums/stdDev/var, subtotals/grand totals, number format per value field, sorting, manual filter per field, compact/outline/tabular layouts, expand/collapse), pivot computation engine (group-by with stable ordering, dates grouped by year/quarter/month option), rendering as normal cells in a reserved range with pivot styling (PivotStyleLight16 default) and refresh on source change (manual Refresh + auto when source edited, debounced), PivotTable Fields task pane (drag between areas, value field settings dialog), PivotTable Analyze/Design contextual ribbon tabs, io-xlsx bridge: write `pivotTableDefinition` + `pivotCacheDefinition/Records` sufficient for Excel to open and refresh (keep original parts via passthrough when a pivot was read unchanged; regenerate when edited) — implement in packages/sheet-model/src/pivot/ooxml.ts and call it from io-xlsx through an exported hook (`PivotPartHook`, registered by the Grid app; io-xlsx already defines the hook interface in WP-18 — if not, add it to the interface file listed in io-xlsx's owned paths via a handoff note). Sparklines (line/column/win-loss; model + x14 sparkline groups read/write via io-xlsx hook; renderer in canvas; Sparkline Design ribbon with markers/colours). What-If ▸ Goal Seek dialog (secant method over the engine with iteration cap), Data ▸ Subtotal dialog (inserts SUBTOTAL formulas and outline groups), Flash Fill (pattern inference for prefix/suffix/split/case/concat of adjacent columns; Ctrl+E), Protection (Protect Sheet dialog with permission checkboxes and password hashed per Excel's legacy algorithm + SHA-512 modern `sheetProtection` attributes; Allow Edit Ranges basic), Page Layout ▸ Themes (apply Office-compatible theme colour/font sets to the workbook styles). e2e grid-analysis.spec.ts: create a pivot from a 200-row generated table (sum by category), screenshot; sparklines screenshot; Goal Seek sets a cell to hit a target; Subtotal creates outline groups; Flash Fill fills a split column.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/sheet-model --filter @officina/editor-grid test exits 0 with >= 80 additional tests
-  - pnpm e2e --grep grid-analysis exits 0 with screenshots grid-analysis/{pivot,sparklines,goal-seek,subtotal}-light-desktop.png
-  - A test writes a workbook with a pivot and LibreOffice opens it (oracle_opens == 1) and openpyxl lists one pivot table on the sheet
-  - docs/qa/visual-review-WP-21.md written
-
-### WP-22 — Grid integration gate: Office file loop, chart objects in sheets, print/PDF for sheets, Backstage, manual chapter  (GATE)
-
-- **Milestone:** M2  ·  **Depends on:** WP-15, WP-17, WP-18, WP-19, WP-20, WP-21
-- **Owns:** `apps/web/src/apps/grid/**`, `packages/print-pdf/src/grid/**`, `e2e/specs/grid-e2e.spec.ts`, `docs/qa/visual-review-WP-22.md`, `docs/manual/grid.md`
-- **Task:** Integration gate for Grid: wire io-xlsx open/save (xlsx, xlsm read, xltx, csv, tsv, tabula, pdf export) with the worker parser and Compatibility Checker; wire the charts package into the sheet drawing layer (Insert ▸ Charts gallery and Recommended Charts, chart objects movable/resizable with two-cell anchors, Chart Design/Format contextual tabs, double-click to edit data via Select Data), pictures and shapes in the drawing layer (from WP-19) share the selection/transform code (use ui-kit TransformBox); Page Layout/print: packages/print-pdf/src/grid: print layout route rendering sheets to pages honouring print area, print titles, scaling/fit-to, margins, headers/footers with &[Page] codes, gridlines/headings options, page order; Backstage ▸ Print preview; PDF export of workbook/active sheet/selection; Backstage Info (properties, calc mode, sheet count), Export (CSV per sheet, PDF, JSON), Share. End-to-end e2e grid-e2e.spec.ts: open fixtures/xlsx/features/{styles,formulas,charts-column,cf,validation,tables}.xlsx → screenshots light/dark → edit (values, a formula, apply number format, insert a chart from a range) → Save As .xlsx via the e2e hook → re-read with io-xlsx AND exceljs in the test asserting the edits, formulas, chart count → LibreOffice converts to PDF without error; print route page count equals the Page Break Preview count; PDF produced via page.pdf() has that many pages; CSV export of a sheet equals papaparse-generated expectation. Manual chapter docs/manual/grid.md (formulas, autocomplete, tables, charts, pivots, printing, shortcuts). Fix any cross-feature defects found; record the visual review.
-- **Acceptance criteria:**
-  - pnpm e2e --grep grid-e2e exits 0 with screenshots grid-e2e/*-{light,dark}-desktop.png
-  - e2e: the saved .xlsx re-read by exceljs contains the edited value, the formula text, the number format and one chart; soffice converts it to PDF (exit 0)
-  - e2e: PDF export page count equals Page Break Preview page count for fixtures/xlsx/features/print.xlsx
-  - pnpm verify exits 0 and CI is green; docs/qa/visual-review-WP-22.md and docs/manual/grid.md (>= 600 words) exist
-
-### WP-23 — Deck model: presentation, masters/layouts/slides, shapes, placeholders, themes, transitions, animations, notes
-
-- **Milestone:** M3  ·  **Depends on:** WP-05
-- **Owns:** `packages/deck-model/**`
-- **Task:** Implement §3.3 deck-model: Presentation/Slide/Shape types (EMU transforms, all shape kinds, placeholders with type/idx inheritance resolution master→layout→slide for position, size, text styles and fills via `resolveShapeProps(slide, shape)`), text bodies using a `deckText` ProseMirror schema (paragraphs with level/alignment/indent/spacing/bullets (char/autonumber/picture/none, bullet font/colour/size), runs with font/size/bold/italic/underline/strike/colour/highlight/baseline/spacing/caps/link, line breaks, fields (slidenum, datetime)), `bodyPr` (insets, anchor, wrap, autofit: normAutofit fontScale/lnSpcReduction, spAutoFit; vertical text), list styles (lvl1–9 pPr) from master text styles (title/body/other), theme handling (reuse ooxml theme; 12 bundled themes authored as JSON+assets in `src/themes/` with layouts: Title Slide, Title and Content, Section Header, Two Content, Comparison, Title Only, Blank, Content with Caption, Picture with Caption — generated from the default theme definition so new presentations are Office-compatible), slide size, backgrounds (fill types), transitions (model for the §1.4 list + duration + advance on click/after), animations (effect types entrance/emphasis/exit per §1.4, targets, start conditions, duration, delay, order, effect options direction; `buildTimeline(slide)` producing click-steps), notes, sections, comments, hidden slides, document properties. Operations as pure functions (`addSlide(layoutId)`, `duplicateSlide`, `moveSlide`, `applyLayout`, `resetSlide`, `addShape`, `transform`, `group/ungroup` (with coordinate re-basing), `reorderZ`, `align/distribute`, `setPlaceholderText`), plus the Yjs binding seam (`toY(doc)`, `fromY`) used in WP-29 (here implement JSON serialisation only with stable ids). `designIdeas(slide)` heuristic engine (★): given the slide's content types/counts, rank candidate layouts/variants (title-only → big centred title; title + 3–6 bullets → two-column or icon list; one image → picture-with-caption full bleed; numbers → stat callouts) returning concrete slide mutations. Tests: inheritance resolution (≥ 40 cases), autofit computation, animation timeline building, grouping coordinate maths, theme generation produces valid layouts, design ideas ranking.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/deck-model test exits 0 with >= 120 tests
-  - A test asserts a title placeholder on a slide inherits position from the layout and font from the master when unspecified
-  - pnpm typecheck exits 0
-
-### WP-24 — PPTX reader
-
-- **Milestone:** M3  ·  **Depends on:** WP-23
-- **Owns:** `packages/io-pptx/src/read/**`, `packages/io-pptx/src/common/**`, `packages/io-pptx/src/index.ts`, `packages/io-pptx/test/read/**`
-- **Task:** Implement `readPptx(bytes) -> Presentation` per §3.5: presentation.xml (sizes, id lists, sections from `p14:sectionLst`, notesMaster), masters/layouts/slides with full spTree parsing (p:sp with geometry presets/custom geometry (`a:custGeom` paths), fills/lines/effects via ooxml, text bodies into deckText docs with all run/paragraph properties and fields, placeholders, p:pic with crops and media relationships, p:graphicFrame tables (a:tbl with merges, cell fills/borders, table styles by id), charts (relationship passed to charts package via `ChartPartHook` as in xlsx), SmartArt (`dgm` relationships: if a `drawing` fallback part exists, import its shapes as a group; else import a placeholder rectangle with the diagram text and mark a warning), OLE/embedded objects as picture fallback + passthrough, p:grpSp recursive, p:cxnSp connectors with start/end links, media (video/audio) relationships, backgrounds, transitions (map every `p:transition` child to our list with fallback Fade + original preserved), timing trees (`p:timing` parsed into the animation model for supported effect presets `presetClass/presetID` mapping table; unsupported ones recorded in passthrough with a warning), notes slides (text), comments (`p:cmLst` and modern `p188:` comments) + authors, hidden slides, docProps, theme per master, color map overrides, handout/notes masters passthrough, vbaProject passthrough. Warnings for every unsupported item. Tests: every fixtures/pptx/features/* reads without error; expected structure assertions (slide count, placeholder texts, shape geometries, group nesting, table dimensions, transition types, animation counts); text equality with python-pptx extraction for all fixtures; fixtures/external if present read without exception.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/io-pptx test exits 0 with >= 70 tests
-  - A test compares extracted text of every features/*.pptx with python-pptx output and passes
-  - A test asserts animations of fixtures/pptx/features/animations.pptx yield the expected click-step timeline
-  - pnpm typecheck exits 0
-
-### WP-25 — Deck editor core: slide stage, thumbnail rail, shapes and transforms, text editing, alignment guides, Home/Insert/Design ribbons
-
-- **Milestone:** M3  ·  **Depends on:** WP-06, WP-08, WP-23
-- **Owns:** `packages/editor-deck/src/**`, `packages/editor-deck/test/**`, `packages/ui-kit/src/transformbox/**`, `apps/web/src/apps/deck/**`, `e2e/specs/deck-core.spec.ts`
-- **Task:** Build editor-deck per §3.6: `SlideStage` (scaled 960×540 stage; renders shapes from deck-model with SVG preset geometry paths from ooxml presets, fills/gradients/pictures/lines/shadows, text bodies as static HTML from deckText with autofit computations measured via an offscreen measurer, tables, pictures with crop, groups, connectors), one live TipTap editor mounted on the focused text body (deckText schema; bullets via list styles; paragraph/run commands), `ui-kit/TransformBox` (new primitive: 8 handles, rotation handle, aspect lock with Shift, centre-resize with Alt, multi-selection bounding box, keyboard nudge/resize, touch-friendly sizes via a prop) used for every shape, smart guides and snapping (slide edges/centre, other shapes' edges/centres, equal-spacing), marquee selection, z-order, grouping, align/distribute menu, duplicate (Ctrl+D), copy/paste shapes and slides (internal clipboard JSON + image/text fallbacks), undo/redo, rulers/gridlines/guides toggles, zoom/fit, thumbnail rail (virtualised scaled stages, drag reorder, multi-select, section headers collapsible, context menu: new/duplicate/delete/hide/layout/section), notes pane (plain deckText editor), slide sorter view, outline view (titles/bullets text tree editable), Home/Insert/Design ribbons per §1.4 wired (new slide with layout gallery, layout change, reset, section, font/paragraph tools incl. align text and columns, Shapes gallery (all presets categorised like Office), Arrange, Quick Styles, Shape Fill/Outline/Effects, Shape Format contextual tab with size/position, Picture Format with crop/corrections-lite/alt text, Insert: pictures, text box, table (grid picker), icons (lucide set as SVG shapes), link, slide number/date/footer dialog, symbol, Design: themes gallery (12 bundled), variants, slide size, format background pane; Design Ideas pane listing deck-model `designIdeas` with thumbnails and one-click apply ★). Status bar: slide x of y, theme name, notes/comments toggles, view buttons, zoom, fit. apps/web/src/apps/deck: page composition, open via io-pptx (worker), save .scena until WP-26; `DeckCapabilities`. Tests: stage rendering (jsdom with SVG assertions), transform maths, snapping, autofit, rail reorder, outline edits; e2e deck-core.spec.ts: open fixtures/pptx/features/{placeholders,shapes,tables,groups}.pptx with screenshots, add a slide with a layout, insert a rectangle and resize via handle drag, type a title, apply a theme, Design Ideas apply; screenshots light/dark.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/editor-deck --filter @officina/ui-kit test exits 0 with >= 120 tests for deck/transformbox
-  - pnpm e2e --grep deck-core exits 0 with screenshots deck-core/{placeholders,shapes,tables,groups,theme,design-ideas}-{light,dark}-desktop.png
-  - e2e: dragging a shape's corner handle changes its width by the dragged distance (±2 px at 100 % zoom)
-  - docs/qa/visual-review-WP-25.md written
-
-### WP-26 — PPTX writer and round-trip fidelity tests
-
-- **Milestone:** M3  ·  **Depends on:** WP-24
-- **Owns:** `packages/io-pptx/src/write/**`, `packages/io-pptx/test/write/**`, `packages/io-pptx/test/roundtrip/**`
-- **Task:** Implement `writePptx(presentation, {passthrough}) -> Uint8Array`: presentation.xml with id lists and section list, masters/layouts/slides with correct relationship graphs (slide→layout→master→theme, notesSlide↔slide, media, charts via charts package writer, embedded workbook parts for charts), spTree serialisation for every shape kind (preset and custom geometry, fills/lines/effects, text bodies with paragraph/run properties, fields, bullets, autofit values), placeholders with `p:ph` type/idx, tables, pictures with crops, groups (with chOff/chExt), connectors, backgrounds, transitions (our model → `p:transition` with `p14:` extensions where needed inside `mc:AlternateContent` like PowerPoint), timing trees for our animation model (generate PowerPoint-compatible `p:timing` with `p:par/p:seq/p:cTn` structure, presetClass/presetID/presetSubtype, `p:bldLst`), notes slides, comments (modern format) + authors, hidden slides, docProps, the 12 bundled themes serialised as theme parts, passthrough re-emission (SmartArt data/layout/colors/quickStyle parts and their relationships when the slide's shapes were not edited; vbaProject; handout masters; unknown parts). Deterministic output. Compatibility Checker issues (code blocks → text box with monospace, callouts → shapes). Round-trip tests over fixtures/pptx/features/* (structural ≥ 0.95, text 1.00, LibreOffice opens → PDF, visual ≥ 0.85 vs original render), python-pptx opens outputs and counts slides/shapes equal, new-presentation-from-theme test writes a .pptx that LibreOffice opens and whose slides have the expected layouts; `pnpm fidelity --format pptx` section in docs/qa/fidelity.md.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/io-pptx test exits 0 with >= 60 additional tests
-  - pnpm fidelity --format pptx prints structural >= 0.95, text == 1.00, oracle_opens == 1, visual >= 0.85 for every features/* fixture
-  - A test asserts a presentation with 3 animated shapes writes a p:timing tree that python-pptx can read back (slide.element contains p:timing with 3 p:cTn effect nodes)
-  - docs/qa/fidelity.md contains the pptx table
-
-### WP-27 — Deck features: slide show, presenter view, transitions, animations, Animation Pane, Slide Show & Transitions/Animations ribbons, media, equations
-
-- **Milestone:** M3  ·  **Depends on:** WP-25, WP-20
-- **Owns:** `packages/editor-deck/src/features/**`, `packages/editor-deck/test/features/**`, `apps/web/src/apps/present/**`, `apps/web/src/apps/deck/**`, `e2e/specs/deck-show.spec.ts`
-- **Task:** Slide show engine (`/present/:docId` route, fullscreen): renders slides via SlideStage at viewport scale, click/keys/swipe navigation per §1.7 show keys, transitions implemented with the Web Animations API per §1.4 list (Fade, Push, Wipe, Split, Reveal, Cut, Shape, Uncover, Cover, Flash, Random Bars; Morph-lite P2 excluded), animations engine playing deck-model timelines (entrance/emphasis/exit effects per §1.4 as WAAPI keyframes with effect options; click steps; with/after previous; delays; auto-advance timers), laser pointer/pen/highlighter overlays (canvas; ink discarded on exit unless "keep annotations" → stored as freeform shapes), black/white screens, go-to-slide via number+Enter, end-of-show screen, hidden slides skipped. Presenter view: a second window (web: `window.open` + BroadcastChannel; Electron: host opens a second BrowserWindow on the secondary display via `PlatformHost.openPresenterWindow`, implemented in WP-34 — define the interface here with a web fallback) showing current/next slide, notes with font size controls, timer/clock, slide grid, pointer controls, with the audience window following. Transitions ribbon (gallery with live preview on the stage, effect options, duration, apply to all, advance options), Animations ribbon (gallery, effect options, Add Animation, Animation Pane with reorder/timing/triggers-lite, Animation Painter, preview button plays on stage), Slide Show ribbon (from beginning/current, present in browser tab, set up show dialog (loop, show without narration, pen colour), hide slide, rehearse timings (records per-slide durations into transitions), presenter view toggle), Insert ▸ Media (video/audio from file: HTML5 playback on stage and in show; written as pptx media parts), Insert ▸ Equation (MathLive editor producing MathML/LaTeX rendered to an SVG picture + OMML preserved when imported), Insert ▸ Chart (charts package with embedded workbook data editing via a mini grid dialog), Insert ▸ Code block (★), Reuse Slides pane (open another .pptx and drag slides in), Outline import (paste a Markdown/indented outline → slides ★), PNG/SVG export of current slide. e2e deck-show.spec.ts: open fixtures/pptx/features/{transitions,animations}.pptx → start show (F5) → screenshot first slide → advance (Space) through click steps asserting shape visibility changes → presenter view opened and screenshot (two pages via context) → Esc ends; Transitions gallery screenshot; Animation Pane screenshot.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/editor-deck test exits 0 with >= 90 additional tests
-  - pnpm e2e --grep deck-show exits 0 with screenshots deck-show/{show-first,show-after-click,presenter,transitions-gallery,animation-pane}-light-desktop.png
-  - e2e: in fixtures/pptx/features/animations.pptx slide 1, the second shape is hidden before the first click and visible after it
-  - docs/qa/visual-review-WP-27.md written
-
-### WP-28 — Deck integration gate: Office file loop, print/PDF handouts, Backstage, manual chapter  (GATE)
-
-- **Milestone:** M3  ·  **Depends on:** WP-15, WP-26, WP-27
-- **Owns:** `apps/web/src/apps/deck/**`, `packages/print-pdf/src/deck/**`, `e2e/specs/deck-e2e.spec.ts`, `docs/qa/visual-review-WP-28.md`, `docs/manual/deck.md`
-- **Task:** Integration gate for Deck: wire io-pptx open/save (pptx, potx, pptm read, scena, pdf, png/svg per slide, outline .md export) with worker parsing and Compatibility Checker; Backstage Info/Export/Print; packages/print-pdf/src/deck: print layouts (full-page slides, handouts 2/3/4/6/9 per page with optional lines, notes pages, outline), preview in Backstage, PDF export via the print pipeline, PNG export of all slides as a zip (fflate). e2e deck-e2e.spec.ts: open fixtures/pptx/features/{placeholders,charts,shapes}.pptx → screenshots light/dark → edit (title text, add slide, insert chart, add animation) → Save As .pptx via the hook → re-read with io-pptx and python-pptx asserting slide count/title/animation → LibreOffice converts to PDF without error; print route (handouts 6 per page) page count equals ceil(slides/6); page.pdf() of the print route yields that page count; PNG export zip contains one PNG per slide. Manual chapter docs/manual/deck.md. Fix cross-feature defects; visual review.
-- **Acceptance criteria:**
-  - pnpm e2e --grep deck-e2e exits 0 with screenshots deck-e2e/*-{light,dark}-desktop.png
-  - e2e: saved .pptx re-read by python-pptx reports the added slide and edited title; soffice converts it to PDF (exit 0)
-  - e2e: handout PDF page count == ceil(slideCount/6)
-  - pnpm verify exits 0 and CI is green; docs/qa/visual-review-WP-28.md and docs/manual/deck.md (>= 500 words) exist
-
-### WP-29 — Collaboration and version history: Yjs documents, collab server, presence, comments sync, version history UI
-
-- **Milestone:** M4  ·  **Depends on:** WP-15, WP-28
-- **Owns:** `packages/collab/**`, `apps/collab-server/**`, `packages/editor-write/src/collab/**`, `packages/editor-deck/src/collab/**`, `packages/ui-kit/src/versions/**`, `packages/ui-kit/src/presence/**`, `apps/web/src/collab/**`, `e2e/specs/collab.spec.ts`, `docs/manual/collaboration.md`
-- **Task:** Implement §3.7. packages/collab: `CollabDoc` wrapper over Y.Doc (docId, awareness, undo manager scoped per user, `y-indexeddb` persistence, `@hocuspocus/provider` websocket provider with reconnect/offline queue, connection status), `VersionStore` (dexie: snapshots on explicit save and every 10 min of edits, thinning to max 200, named versions, `diffVersions(a,b)` for Write producing word-level insert/delete runs), bundle (de)serialisation of Yjs updates into `.scriba/.scena` native files and a `yjs.bin` sidecar inside DOCX-saved sessions (stored in IndexedDB keyed by file hash so reopening a .docx restores history). Write: replace ProseMirror history with y-prosemirror (sync, cursors with user colours/names, yUndoPlugin) via the HistoryStrategy seam; comments stored in a Y.Map and anchored by Yjs relative positions; track-changes marks carry author ids from awareness. Deck: deck-model `toY/fromY` binding (slides Y.Array of Y.Maps; text bodies Y.XmlFragment bound to the mounted TipTap editor), awareness showing collaborators' selected slide/shape. Sharing: title-bar Share button → dialog with "Start live session" (creates docId session on the configured server from Options ▸ Collaboration: server URL + token), copy link; opening a `/write/:docId?collab=<server>` link joins. Presence avatars in the title bar (ui-kit/presence). Version History pane (ui-kit/versions; Review ▸ Version History and Backstage ▸ Info): list grouped by day, name a version, preview read-only, restore (as a new version), diff view for Write (side panel with insert/delete highlighting), export a version to file. apps/collab-server: Hocuspocus 4.7 server (`@hocuspocus/server` + `@hocuspocus/extension-sqlite` via better-sqlite3 or sql.js fallback) with `onAuthenticate` shared-token check, per-document size limits, a `/health` endpoint, Dockerfile, README (deployment, token, reverse proxy), `pnpm --filter @officina/collab-server dev`. Grid: not collaborative in v1; make sure the Share dialog says so and offers "send a copy". e2e collab.spec.ts: start the collab server in the test (child process on a free port), open the same Write document in two browser contexts, type in one, assert text appears in the other within 2 s, screenshot showing two cursors; version history: save twice, open pane, assert two versions, restore the first and assert text; offline test: disconnect context A (route abort websocket), type, reconnect, assert convergence.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/collab --filter @officina/collab-server test exits 0 with >= 50 tests
-  - pnpm e2e --grep collab exits 0 with screenshots collab/{two-cursors,version-history,diff}-light-desktop.png
-  - e2e: offline edits in one context converge after reconnect (both contexts show identical text)
-  - docs/manual/collaboration.md explains self-hosting the server; docs/qa/visual-review-WP-29.md written
-
-### WP-30 — Storage hosts, AutoSave to file, document recovery, recents, file associations
-
-- **Milestone:** M4  ·  **Depends on:** WP-15, WP-22, WP-28
-- **Owns:** `packages/storage/src/hosts/**`, `packages/storage/src/autosave/**`, `packages/storage/src/recovery/**`, `packages/storage/test/**`, `packages/ui-kit/src/recovery/**`, `apps/web/src/recovery/**`, `apps/web/src/hosts/**`, `e2e/specs/recovery.spec.ts`
-- **Task:** Complete §3.8 for all three hosts at the interface level (Electron and Capacitor adapters are implemented here against the IPC/plugin contracts that WP-35/WP-36 provide on their side: define `window.officina` preload API types in packages/storage/src/hosts/electron/api.d.ts and the Capacitor plugin usage in hosts/capacitor; both must degrade gracefully when the bridge is absent so web tests keep passing). AutoSave: title-bar toggle (persisted per document), debounce 2 s after last edit, atomic writes (write temp + rename on Electron; createWritable on web), conflict detection via file mtime/hash (prompt: overwrite/save copy), background save in a worker for Office formats, save progress in the status bar, error toasts with retry. Journals: Grid CommandLog journal and Yjs updates appended to IndexedDB (dexie) with periodic compaction into snapshots; `closedCleanly` flag on beforeunload/visibilitychange; heartbeat timestamps. Recovery pane (ui-kit/recovery; shown at startup in Hub and in the app when relevant): lists recoverable documents with last-saved vs recovered times, Open, Save As, Delete, "Show original"; recovered documents open with a yellow bar "Recovered document — Save to keep". Recents: unified store with per-host handle persistence (web FS handles, Electron paths, Capacitor content URIs), pin/unpin, remove, open-location, "Recent" list in Backstage ▸ Open with search; file watching on Electron (external modification → reload prompt). File association plumbing: `openFromOS(payloadBytesOrPath)` entry used by Electron's `open-file`/argv and Capacitor's intent handling, routing to the right app by extension/magic. Tests: fake hosts; autosave timing with fake timers; journal compaction; recovery registry edge cases (crash during save). e2e recovery.spec.ts: edit without saving, reload the page without clean close (page.evaluate to skip the beforeunload handler), assert the Recovery pane lists the document and opening it restores the text; screenshot recovery pane light.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/storage test exits 0 with >= 60 additional tests
-  - pnpm e2e --grep recovery exits 0 with screenshot recovery/recovery-pane-light-desktop.png
-  - e2e: after simulated crash the recovered Write document contains the unsaved paragraph
-  - pnpm typecheck exits 0 (Electron/Capacitor adapters compile against the declared bridge types)
-
-### WP-31 — Accessibility, i18n (de, ar), RTL, high-contrast theme, Key Tips completeness
-
-- **Milestone:** M4  ·  **Depends on:** WP-15, WP-22, WP-28
-- **Owns:** `packages/i18n/locales/**`, `packages/ui-kit/src/a11y/**`, `packages/editor-write/src/a11y/**`, `packages/editor-grid/src/a11y/**`, `packages/editor-deck/src/a11y/**`, `e2e/specs/a11y.spec.ts`, `e2e/specs/rtl.spec.ts`, `docs/qa/a11y.md`
-- **Task:** Deliver §3.10. Audit and fix ARIA across ui-kit/editors (this WP may edit ARIA/label/focus-related code anywhere inside packages/ui-kit, packages/editor-write, packages/editor-grid, packages/editor-deck, packages/i18n; keep changes confined to accessibility/i18n concerns and record other defects as handoffs): ribbon tabs/toolbar roving focus, menus, dialogs, galleries, palette; Grid ARIA grid shadow tree for active cell/row/col headers with announcements; Write editor region labelling, headings navigation via screen reader (ProseMirror DOM is semantic already; add aria-describedby for comments/revisions), Deck shapes list for keyboard selection (Tab cycles shapes; Enter edits text; arrow nudges), live region announcer service (`announce(message, politeness)`) used by status changes (mode, track changes, save, recalc); focus visible rings in all themes; high-contrast theme verified (contrast checks via a unit test over token pairs ≥ 4.5:1 for text, ≥ 3:1 for UI); `prefers-reduced-motion`. Key Tips: every ribbon command reachable via Alt sequences with Office letters where applicable (write the mapping table in packages/commands keytips files? No — those are owned by WP-06: put the completeness test here and a handoff for missing letters; the ribbon spec files in apps/web/src/apps/*/ribbon.ts carry `keyTip` fields and belong to the app integration WPs, so edit only the `keyTip` strings there, noting it in the commit). i18n: German and Arabic locale files for every namespace (machine-quality translations acceptable, reviewed for UI length), language switch in Options with restart-free reload, Arabic RTL: html dir flips ribbon/tab order/status bar, Write bidi paragraphs (`dir` attribute per paragraph, RTL default for Arabic locale new documents), Grid rightToLeft sheets (columns from right, headers mirrored), Deck RTL text. e2e a11y.spec.ts: axe on Hub, Write, Grid, Deck, Backstage, Options, Format Cells dialog, Palette — 0 serious/critical; keyboard-only flow: from Hub to Write, Alt,H,B bold via Key Tips, open palette with keyboard and run "Freeze Panes" in Grid. rtl.spec.ts: switch to Arabic, screenshots of the three apps (rtl/<app>-ar-light-desktop.png) and an Arabic paragraph typed in Write renders right-aligned. docs/qa/a11y.md documents the patterns and known gaps.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm e2e --grep 'a11y|rtl' exits 0; axe reports 0 serious/critical violations on all listed screens
-  - screenshots rtl/{write,grid,deck}-ar-light-desktop.png exist and are reviewed in docs/qa/visual-review-WP-31.md
-  - pnpm --filter @officina/i18n test exits 0 including a test that de and ar have every key en has
-  - A unit test asserts token contrast ratios for all three themes
-
-### WP-32 — Templates, Hub polish, onboarding tour, Office-synonym command palette, Options completeness
-
-- **Milestone:** M4  ·  **Depends on:** WP-15, WP-22, WP-28
-- **Owns:** `packages/templates/**`, `apps/web/src/apps/hub/**`, `apps/web/src/onboarding/**`, `packages/commands/src/synonyms.ts`, `packages/commands/test/synonyms.test.ts`, `e2e/specs/hub-templates.spec.ts`, `docs/manual/getting-started.md`
-- **Task:** packages/templates: 12 templates per app authored as native model JSON + thumbnail PNGs rendered by a script (`packages/templates/scripts/render-thumbnails.mjs` using the e2e Playwright setup to open each template and screenshot the first page/sheet/slide at 400×300): Write (Blank, Letter, Resume, Report with TOC, Meeting Minutes, Invoice, Memo, Newsletter, Academic Paper (APA-like), Project Proposal, Cover Letter, Brochure-lite), Grid (Blank, Budget, Invoice, Loan Calculator, Project Tracker with CF, Timesheet, Expense Report, Inventory, Gantt-lite with CF bars, Gradebook, Sales Dashboard with charts, To-do), Deck (Blank 16:9, Blank 4:3, Pitch, Quarterly Review, Lesson, Status Report, Portfolio, Minimal Typographic, Photo Story, Workshop, Agenda, Thank You), each exercising real features (styles, formulas, charts, layouts) so they double as demo documents. Hub: template gallery with categories/search/preview dialog, "Blank" hero cards, recents with pin/remove/open-location, drag-drop, keyboard navigation, empty states, "What's new" card linking to CHANGELOG; first-run onboarding tour (3 cards per §1.9, dismissible, re-openable from Help ▸ Tour, stored in Options); "Coming from Office" cheat-sheet dialog (Ctrl+/ shortcut list grouped by app, printable). Command palette synonyms: curated `synonyms.ts` with ≥ 150 Office terms/phrases mapped to command ids (e.g. "Merge & Center", "Freeze Panes", "Track Changes", "Format Painter", "Slide Master", "Paste Special", "Text to Columns", "Page Setup") plus common misspellings; test ensures every synonym target exists. Options dialog completeness per §1.5 (General, Display, Proofing, Save, Language, Advanced, Keyboard, Privacy pages with real settings bound to stores). e2e hub-templates.spec.ts: Hub screenshots light/dark; open each template (36) and assert no console errors and screenshot the first view (templates/<app>-<name>-light-desktop.png); palette search "merge and center" in Grid resolves to the Merge & Center command. docs/manual/getting-started.md.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm e2e --grep hub-templates exits 0 and 36 template screenshots exist under e2e/screenshots/templates/
-  - pnpm --filter @officina/commands test exits 0 including synonyms.test.ts with >= 150 synonyms
-  - docs/qa/visual-review-WP-32.md reviews all template screenshots (each template must look finished: no overlapping text, no placeholder lorem beyond intended samples)
-  - docs/manual/getting-started.md exists (>= 500 words)
-
-### WP-33 — Notula (OneNote-lite)
-
-- **Milestone:** M4  ·  **Depends on:** WP-14, WP-30
-- **Owns:** `packages/notes/**`, `apps/web/src/apps/notes/**`, `e2e/specs/notes.spec.ts`, `docs/manual/notes.md`
-- **Task:** Tier 2 app per §2.5 built on editor-write: notebook model (notebook → sections → pages; a notebook is a folder on disk via the storage host (desktop/Android) or an IndexedDB-backed virtual folder on web, with each page a `.scriba` plus `notebook.json` index), left navigation (notebook switcher, section tabs with colours, page list with drag reorder and sub-pages), page canvas = Write editor in web-layout mode with a title field and created/modified timestamps, tags (To Do with checkbox, Important, Question, Remember, custom with icons; Ctrl+1/2/3 shortcuts; Tags summary pane across the notebook grouped by tag with jump links), quick search across all pages (text index built incrementally, stored in IndexedDB), page templates (To-do list, Meeting notes, Lecture notes, Project overview), insert: table, picture, file attachment (stored next to the page), link to page (`[[` autocomplete ★), code block, date/time, equation; export page to .docx/.pdf/.md and notebook to a zip of Markdown; ribbon per §1.4 Notes; command palette and shortcuts; mobile layout handled in WP-36. e2e notes.spec.ts: create notebook/section/pages, tag a line To Do, tags summary shows it, search finds a page, screenshot light/dark, export a page to .docx and re-read with io-docx.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/notes test exits 0 with >= 40 tests
-  - pnpm e2e --grep notes exits 0 with screenshots notes/{overview,tags}-{light,dark}-desktop.png
-  - e2e: exported page .docx re-read by io-docx contains the page title as a Title-styled paragraph
-  - docs/manual/notes.md exists
-
-### WP-34 — Electron desktop shell and Linux packaging (AppImage, deb) + Windows/macOS builder config
-
-- **Milestone:** M5  ·  **Depends on:** WP-30
-- **Owns:** `apps/desktop/**`, `packages/storage/src/hosts/electron/**`, `tools/release/**`, `e2e/specs/electron.spec.ts`, `docs/manual/building.md`, `docs/manual/install-desktop.md`
-- **Task:** apps/desktop with electron-vite 6: `src/main` (single instance lock; BrowserWindow per document with `contextIsolation`, `sandbox: true`, CSP, no nodeIntegration; loads apps/web build (file://) or dev server; native application menu built from the command registry/keymaps (File/Edit/View/Insert/Format/Tools/Window/Help with accelerators from §1.7; menu items dispatch to the renderer via IPC), `open-file`/argv handling → `openFromOS`, recent documents (`app.addRecentDocument`), file dialogs with filters, atomic fs writes, file watching (chokidar), `printToPDF` and native print, `shell.openExternal` with allow-list, presenter second window on the secondary display, auto-updater (electron-updater against GitHub Releases, check-on-start opt-in in Options), crash recovery mirror dir in `app.getPath('userData')/recovery`, protocol/file associations), `src/preload` exposing `window.officina` matching packages/storage's declared types with zod-validated IPC, `ElectronHost` implementation in packages/storage/src/hosts/electron. electron-builder config in apps/desktop/electron-builder.yml (appId io.github.zahakj.officina, productName Officina, artifact names `officina-<version>-linux-x86_64.AppImage`, `officina_<version>_amd64.deb`, `Officina-Setup-<version>.exe`, `Officina-<version>-portable.exe`, `Officina-<version>-arm64.dmg`, `Officina-<version>-x64.dmg`; linux: AppImage + deb with desktop entry, MIME types for docx/xlsx/pptx/odt/ods/odp/csv/scriba/tabula/scena, icon from build/icon.png; win: nsis + portable, `signAndEditExecutable: false` so Linux cross-builds don't need wine; mac: dmg + zip, `hardenedRuntime: false`, no notarisation; `publish: github`), `release:desktop` task script (`electron-builder --<platform> --publish never`) and `release:desktop` root script passthrough. Try a Windows cross-build locally (`--win`) — if it succeeds, record it; if it fails for lack of wine, record the exact error in docs/manual/building.md and leave Windows to CI (not a failure of this WP). docs/manual/install-desktop.md (AppImage/deb/exe/dmg, unsigned warnings as in abax's README, Gatekeeper `xattr -cr`), docs/manual/building.md (desktop + Android + web). e2e electron.spec.ts with Playwright `_electron`: skipped unless DISPLAY is set; when run: launches the built app, opens a fixture via IPC, screenshots electron/write-light-desktop.png.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm release:desktop -- --linux exits 0 and produces apps/desktop/dist/officina-*-linux-x86_64.AppImage and apps/desktop/dist/officina_*_amd64.deb
-  - dpkg-deb -I apps/desktop/dist/officina_*_amd64.deb shows Package: officina and the MIME types in the desktop file (dpkg-deb -c lists usr/share/applications/officina.desktop)
-  - ./apps/desktop/dist/officina-*.AppImage --appimage-extract into a temp dir contains usr/resources/app.asar (or resources/app.asar) and `npx asar list` shows index.html
-  - if DISPLAY is set: pnpm e2e --grep electron exits 0 and the screenshot exists; otherwise the spec reports skipped and docs/manual/building.md states how to run it
-  - pnpm verify exits 0; CI green
-
-### WP-35 — Android shell (Capacitor): project, plugins, intents, signing, debug and release APK
-
-- **Milestone:** M5  ·  **Depends on:** WP-30
-- **Owns:** `apps/android/**`, `packages/storage/src/hosts/capacitor/**`, `tools/setup-android.sh`, `docs/manual/install-android.md`
-- **Task:** apps/android: `capacitor.config.ts` (appId io.github.zahakj.officina, appName Officina, webDir ../web/dist, android scheme https, `server.androidScheme`), `npx cap add android` committing the generated android/ project (Gradle wrapper 8.14.3, AGP 8.13, compileSdk/targetSdk 36, minSdk 24), gradle.properties memory limits per §4.4, plugins installed and configured: @capacitor/filesystem, @capawesome/capacitor-file-picker, @capacitor/share, @capacitor/app (back button, intents), @capacitor/keyboard (resize mode `native`, accessory bar off), @capacitor/status-bar (theme-coloured, overlays off), @capacitor/preferences, @capacitor/haptics; AndroidManifest intent filters: ACTION_VIEW/ACTION_SEND for the Office/ODF/CSV/native MIME types and file extensions, `android:launchMode="singleTask"`, FileProvider for sharing exports; a small custom Capacitor plugin `OfficinaPrint` (Java) exposing `print()` using `PrintManager` + `WebView.createPrintDocumentAdapter` and `printToPdf` via `PdfDocument` fallback, consumed by packages/print-pdf through `PlatformHost.print`; `CapacitorHost` in packages/storage/src/hosts/capacitor (open via file picker with content URIs, read/write with Filesystem, SAF-persisted permissions, recents by URI with display names, share sheet, app data dir for notebooks/recovery); icons/splash via `@capacitor/assets` from docs/media/icon.svg renders (committed outputs); `pnpm --filter @officina/android build:web` (builds apps/web with `VITE_PLATFORM=capacitor`), `cap sync`, `release:android` task script that runs `./gradlew assembleRelease` and signs with `~/.officina-keys/release.jks` (generate per §4.4 if missing, store secrets with `gh secret set`), outputs `apps/android/dist/officina-<version>-android.apk`; also `assembleDebug`. Update tools/setup-android.sh if anything was missing. Static verification script `apps/android/scripts/verify-apk.sh` (aapt2 badging → package/version/minSdk/intent filters, apksigner verify, unzip -l for assets/public/index.html). docs/manual/install-android.md (sideloading, file access, known limits).
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm release:android exits 0 and apps/android/dist/officina-*-android.apk exists and is < 40 MB
-  - bash apps/android/scripts/verify-apk.sh apps/android/dist/officina-*-android.apk exits 0 (package io.github.zahakj.officina, minSdk 24, targetSdk 36, intent filters include application/vnd.openxmlformats-officedocument.wordprocessingml.document, spreadsheetml.sheet and presentationml.presentation, apksigner verified, assets/public/index.html present)
-  - gh secret list shows ANDROID_KEYSTORE_B64 and ANDROID_KEYSTORE_PASSWORD
-  - cd apps/android/android && ./gradlew assembleDebug exits 0
-  - pnpm verify exits 0; CI green
-
-### WP-36 — Mobile UX adaptation (phone and tablet layouts, bottom ribbon sheet, touch handles) with Playwright mobile emulation
-
-- **Milestone:** M5  ·  **Depends on:** WP-31, WP-32, WP-33
-- **Owns:** `packages/ui-kit/src/mobile/**`, `apps/web/src/mobile/**`, `packages/editor-write/src/touch/**`, `packages/editor-grid/src/touch/**`, `packages/editor-deck/src/touch/**`, `e2e/specs/mobile.spec.ts`, `docs/manual/mobile.md`
-- **Task:** Implement §1.8 for all apps using the same command registry and ribbon specs: responsive `AppFrame` variants (top app bar with back/title/undo/redo/search/overflow), `BottomToolbar` (context-aware quick commands derived from the ribbon spec's Home group priorities via a `mobilePriority` field added to RibbonSpec items in ui-kit types — set defaults so untouched specs still work) and `RibbonSheet` (bottom sheet with tab chips and stacked groups), keyboard-inset handling (`env(keyboard-inset-height)` + Capacitor Keyboard events via a host hook), safe-area insets, touch selection handles for Write (custom handles over ProseMirror selection; long-press selection; floating context toolbar), Grid touch (range handles at corners, tap/drag headers, pinch zoom via pointer events with inertia, formula bar docked above the keyboard with ✓/✕ and the quick keys row, bottom sheet filters/validation lists, sheet chip strip), Deck touch (vertical slide list portrait, full-width edit, enlarged TransformBox handles, pinch zoom, Present fullscreen landscape with swipe + tap zones + notes toggle), Notes mobile (drawer navigation), Hub mobile (cards list), Android back-button routing (`@capacitor/app` listener closes sheets/dialogs first), dialogs become full-screen sheets under 640 px, min hit targets 44 px (lint rule test over ui-kit primitives' CSS), hover-only affordances get tap equivalents. e2e mobile.spec.ts with Playwright devices 'Pixel 7' (412×915, touch) and 'iPad (gen 7)' landscape: each app opened on a fixture; screenshots mobile/<app>-{light,dark}-phone.png and mobile/<app>-light-tablet.png; interactions: open ribbon sheet, tap Bold, verify; Grid: tap cell, type via keyboard, ✓ commits; Deck: present and swipe to next slide; Hub recents.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm e2e --grep mobile exits 0 with screenshots mobile/{hub,write,grid,deck,notes}-{light,dark}-phone.png and mobile/{write,grid,deck}-light-tablet.png
-  - e2e: on Pixel 7 the ribbon is not rendered as the desktop tab strip; the bottom toolbar and the ribbon sheet are present and functional (Bold applied)
-  - docs/qa/visual-review-WP-36.md reviews every mobile screenshot for overlap/clipping; docs/manual/mobile.md exists
-  - pnpm verify exits 0; CI green
-
-### WP-37 — PWA: service worker, offline, install, file handlers, share target
-
-- **Milestone:** M5  ·  **Depends on:** WP-30
-- **Owns:** `apps/web/vite.config.ts`, `apps/web/public/**`, `apps/web/src/pwa/**`, `e2e/specs/pwa.spec.ts`, `docs/manual/install-web.md`
-- **Task:** vite-plugin-pwa 2.0 with Workbox: precache the app shell and fonts (document fonts lazily cached on first use), runtime caching none for third parties (there are none), `manifest.webmanifest` (name Officina, icons from public/icons, theme/background colours per theme, display standalone, `file_handlers` for docx/xlsx/pptx/odt/ods/odp/csv/scriba/tabula/scena launching the right route via `launchQueue`, `share_target` (POST multipart → `/share-target` route that reads the file and opens it), shortcuts (New document/workbook/presentation)), update flow (new SW → toast "Update available — Reload"), offline page behaviour (Hub works offline; recents open from IndexedDB handles), install prompt button in Hub (beforeinstallprompt) and Backstage ▸ Account, `navigator.storage.persist()` request, OPFS used for large journals when available. Deployment: `apps/web` build is also published to GitHub Pages under `docs/app/` by the release workflow? No — keep Pages for the site/manual only; document self-hosting (`pnpm --filter @officina/web build` → static folder; any static server; HTTPS required for FS Access). e2e pwa.spec.ts: production preview server; SW registers; manifest has file_handlers; go offline (context.setOffline) and reload Hub → renders; update toast appears when the SW is swapped (simulate by rebuilding with a changed constant in test). docs/manual/install-web.md.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/web build produces dist/sw.js and dist/manifest.webmanifest containing file_handlers for 10 extensions
-  - pnpm e2e --grep pwa exits 0 (offline Hub render passes)
-  - Lighthouse-equivalent checks in test: manifest has >= 2 icons (192, 512), display standalone, start_url
-  - pnpm verify exits 0; CI green
-
-### WP-38 — Landing site and manual (GitHub Pages)
-
-- **Milestone:** M5  ·  **Depends on:** WP-15, WP-22, WP-28
-- **Owns:** `docs/index.html`, `docs/assets/**`, `docs/manual/index.html`, `docs/manual/README.md`, `docs/manual/index.md`, `docs/manual/faq.md`, `docs/manual/troubleshooting.md`, `docs/manual/formats.md`, `docs/manual/shortcuts.md`, `docs/manual/dev/**`, `docs/media/ribbon-*.png`, `docs/comparison.md`, `docs/FAQ.md`
-- **Task:** Replace the placeholder landing page with the full site per §4.6, in the concord style (same token names, nav, hero with the banner, screenshot gallery placeholders referencing the exact paths WP-43 will produce (docs/media/screenshots/<app>-{light,dark}.png and phone-*.png), per-app sections (Write/Grid/Deck/Notes) with two figures each, a "Feels like home" section (ribbon crop images docs/media/ribbon-write.png etc. captured now with Playwright from the current build — WP-43 refreshes them — plus a shortcut table excerpt), a comparison table vs Microsoft 365 (rows: price, works offline, opens/saves DOCX/XLSX/PPTX, collaboration, version history, macros/VBA, platforms, licence, telemetry) with honest cells (e.g. macros: "preserved, not run"), download buttons for Windows/macOS/Linux/Android built from a `data-version` constant (v0.1.0 to be set by WP-43) linking to GitHub release assets with the exact artifact names of WP-35/WP-36, an install one-liner box with copy button, footer with links). Manual (docs/manual/*.md, rendered by the existing viewer): this WP writes index.md, faq.md, troubleshooting.md, formats.md (fidelity notes and the Compatibility Checker), shortcuts.md (link to SHORTCUTS.md), dev/architecture.md (condensed DESIGN.md), dev/testing.md and the README.md table of contents; it only LINKS to the chapters other WPs own (write.md, grid.md, deck.md from the gates; getting-started.md WP-32; notes.md WP-33; collaboration.md WP-29; building.md and install-desktop.md WP-34; install-android.md WP-35; mobile.md WP-36; install-web.md WP-37) and must not create or edit them even if they do not exist yet (WP-42 verifies all links). docs/comparison.md and docs/FAQ.md. Verify the deployed site after push: fetch https://zahakj.github.io/officina/ and the manual index. Keep every statement truthful for the current build; features not yet merged are not mentioned.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - curl -s https://zahakj.github.io/officina/ | grep -c 'Feels like home' >= 1 (after Pages rebuild; retry up to 10 minutes)
-  - curl -s -o /dev/null -w '%{http_code}' https://zahakj.github.io/officina/manual/ prints 200
-  - ls docs/manual/*.md | wc -l >= 14
-  - A Playwright script in e2e (pwa or shell project) screenshots the landing page at 1280 width light and dark into e2e/screenshots/site/ and docs/qa/visual-review-WP-38.md reviews them
-
-### WP-39 — Fidelity corpus expansion and differential testing against LibreOffice; reader/writer hardening
-
-- **Milestone:** M6  ·  **Depends on:** WP-15, WP-22, WP-28
-- **Owns:** `packages/testing/**`, `packages/io-docx/src/**`, `packages/io-xlsx/src/**`, `packages/io-pptx/src/**`, `packages/io-docx/test/**`, `packages/io-xlsx/test/**`, `packages/io-pptx/test/**`, `docs/qa/fidelity.md`, `docs/FORMATS.md`
-- **Task:** Expand the corpus: 15 hand-authored `manual/` feature files per format created with LibreOffice headless macros or the Python oracles covering tricky constructs (nested tables, floating tables, multi-section headers, numbered headings with TOC, footnotes spanning pages, RTL mixed runs, equations; xlsx: shared formulas across thousands of cells, array formulas legacy, CF with formulas referencing other cells, 1904 dates, merged header blocks, very long text, rich-text cells, external link cached values, hidden sheets; pptx: SmartArt fallback, custom geometry, connectors with arrows, grouped placeholders, picture crops with transparency, tables with merged cells and styles, charts of every type, slide-level theme overrides), the `fixtures/external` fetch script run and results included in the score run (gitignored inputs; scores committed). Build the differential harness: for each fixture, (1) our read→write→LibreOffice PDF vs original→LibreOffice PDF visual score per page, (2) LibreOffice converting the original to our format family round trip (e.g. docx→odt→docx) as a baseline so we can show "LibreOffice's own round-trip score" next to ours, (3) exceljs/openpyxl/python-docx/python-pptx differential reads. Produce `docs/qa/fidelity.md` with tables per format and a ranked list of the worst files with root causes. Fix reader/writer defects until thresholds in §3.5 hold across the expanded corpus (prioritise by frequency of the construct in real documents); raise warnings coverage; make readers resilient to malformed files (fuzz 200 mutated zips/XMLs per format — must never throw outside a `FormatError` with a message). Update docs/FORMATS.md with supported/preserved/unsupported matrices per format.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm fidelity prints tables for docx/xlsx/pptx where every fixture (features/ and manual/) meets the §3.5 thresholds, and docs/qa/fidelity.md is regenerated
-  - A fuzz test (600 mutated inputs) passes: readers throw only FormatError
-  - docs/FORMATS.md contains a supported/preserved/unsupported matrix for each format
-  - pnpm verify exits 0; CI green
-
-### WP-40 — Performance pass: benchmarks, workers, progressive loading, memory
-
-- **Milestone:** M6  ·  **Depends on:** WP-15, WP-22, WP-28
-- **Owns:** `bench/**`, `packages/formula/src/engine/perf/**`, `packages/sheet-model/src/perf/**`, `packages/editor-grid/src/perf/**`, `packages/editor-write/src/pagination/perf/**`, `packages/editor-deck/src/perf/**`, `docs/qa/perf.md`, `e2e/specs/perf.spec.ts`
-- **Task:** Create `bench/` (Vitest bench + Playwright timing specs) implementing every row of §3.9 as a reproducible measurement with fixture generators (500k-cell xlsx, 100k-formula workbook, 300-page docx, 200-slide pptx produced by tools/make-fixtures.py --large into fixtures/large, gitignored). Measure, then optimise within the perf-named directories (which may contain replacement implementations the owning packages import through a single seam file each: e.g. `packages/editor-grid/src/perf/index.ts` exports tuned renderer helpers; owning-package files outside perf/ may be edited only to switch to the seam — note it in the commit): formula engine (typed-array dependency storage, batch dirty marking, worker transfer batching), sheet-model (chunk pooling), grid renderer (dirty-rect redraw, glyph atlas for digits, offscreen canvas for headers), Write pagination (incremental re-layout of only affected pages, measurement batching, idle-time pagination of far pages, virtualised page DOM for Print Layout beyond ±5 pages), Deck (thumbnail generation throttling, static HTML caching for text bodies), parsing (streaming sheetData parse in the worker, transferable buffers), startup (code splitting per app route, font loading strategy, preloading of the Hub). Add memory measurements via `performance.measureUserAgentSpecificMemory` where available / Chromium `--enable-precise-memory-info`. Record before/after in docs/qa/perf.md; perf.spec.ts asserts the §3.9 targets with 20 % tolerance for CI noise.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm bench exits 0 and docs/qa/perf.md lists every §3.9 scenario with measured values meeting the targets (±20 %)
-  - pnpm e2e --grep perf exits 0
-  - Opening fixtures/large/300-pages.docx in e2e shows the first page in < 3 s (measured from navigation to first page paint)
-  - pnpm verify exits 0; CI green
-
-### WP-41 — ODF import/export (odt, ods, odp)
-
-- **Milestone:** M6  ·  **Depends on:** WP-13, WP-15, WP-18, WP-22, WP-26, WP-28
-- **Owns:** `packages/io-odf/**`, `apps/web/src/formats/odf.ts`, `e2e/specs/odf.spec.ts`
-- **Task:** packages/io-odf: ODF 1.3 package handling (manifest.xml, mimetype first/uncompressed, content.xml, styles.xml, meta.xml, settings.xml passthrough), automatic vs common styles, `text:` elements → doc-model (paragraphs, spans, lists with `text:list-style`, tables, sections, headers/footers via master pages, footnotes, images (`draw:frame`), fields, tracked changes (`text:tracked-changes`), bookmarks, links), doc-model → ODT with the same coverage; `table:` → sheet-model (cells with office:value-type, formulas in `of:` syntax converted to Excel syntax and back (function names/separators), styles via `style:` number formats mapped to Excel codes, merges, column/row styles, conditional formats basic, validations, named expressions, charts via a ODF chart subset ↔ charts package) and back; `draw:page` → deck-model (frames, custom shapes with `draw:enhanced-geometry` mapped to presets where names match, text, pictures, tables, notes, transitions subset) and back. Register the formats in the apps' open/save pickers via apps/web/src/formats/odf.ts (a small registration module imported by each app's integration; the apps' own files are not edited — expose `registerOdf()` and call it from apps/web/src/main.tsx through a handoff note if an import line is needed). Tests: LibreOffice oracle round-trips — convert each docx/xlsx/pptx features fixture to ODF with soffice, read with io-odf, compare text/values with our OOXML reads; write ODF from our models and have LibreOffice convert back to OOXML, then read with our OOXML readers and compare (text 1.00, structural ≥ 0.85). e2e odf.spec.ts: open an .odt/.ods/.odp, screenshots, Save As .odt and re-read.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm --filter @officina/io-odf test exits 0 with >= 90 tests
-  - pnpm fidelity --format odf prints text == 1.00 and structural >= 0.85 for the converted corpus
-  - pnpm e2e --grep odf exits 0 with screenshots odf/{odt,ods,odp}-light-desktop.png
-  - pnpm verify exits 0; CI green
-
-### WP-42 — Integration gate: full suite verification, visual regression baselines, defect sweep, DoD checklist  (GATE)
-
-- **Milestone:** M6  ·  **Depends on:** WP-29, WP-30, WP-31, WP-32, WP-33, WP-34, WP-35, WP-36, WP-37, WP-38, WP-39, WP-40, WP-41
-- **Owns:** `e2e/**`, `docs/qa/**`, `**/* (defect fixes anywhere, as the only running WP)`
-- **Task:** Runs alone. Execute the complete verification: `pnpm verify`, `pnpm e2e` (all specs, both themes), `pnpm fidelity`, `pnpm bench`, `pnpm release:desktop -- --linux`, `pnpm release:android`, APK verification script, PWA build, collab server start/health, licence check, `pnpm audit --prod` (document unfixable advisories). Open and visually review every screenshot produced (hundreds): record findings in docs/qa/visual-review-WP-42.md and fix all defects of severity "visible to a user in normal use" anywhere in the repo (you are the only running WP). Create visual regression baselines `e2e/screenshots/baseline/` for the gate screenshots (one per app/view/theme, ~40 files) and enable the pixelmatch comparison in CI (threshold per §5). Run the §10 Definition of Done checklist item by item and write docs/qa/dod.md with evidence (command + result) for each item; anything failing is fixed or, if impossible, listed in docs/qa/known-issues.md with a GitHub issue created via `gh issue create` (labels: bug/enhancement, milestone v0.2.0). Ensure the unlisted-feature rule holds: no "coming soon" stubs visible in release builds (grep for the `pending` tier marker in built output). Update parity/parity.json: flip every row whose delivering WP is complete and whose verify ids pass to done (or better where the notes justify it), run `pnpm parity:verify` and `pnpm parity`, and commit PARITY.md with the v0.1.0 score; rows whose WP shipped but whose verification fails stay partial/missing and get a known-issue entry. Update CHANGELOG.md Unreleased into a complete v0.1.0 section draft including the parity score line.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - pnpm verify && pnpm e2e && pnpm fidelity && pnpm bench all exit 0 in one session (log attached as docs/qa/gate-WP-42.log)
-  - e2e/screenshots/baseline/ contains >= 40 PNGs and CI runs the visual comparison successfully
-  - docs/qa/dod.md lists every §10 item with PASS and evidence; docs/qa/known-issues.md lists any deferred items with issue URLs
-  - pnpm parity:verify exits 0 and PARITY.md shows >= 85 % of critical rows done or better
-  - gh run list --workflow ci.yml --limit 1 --json conclusion -q '.[0].conclusion' prints success
-
-### WP-43 — Release v0.1.0: real screenshots and demo GIF, README and landing finalised, tagged release with Linux and Android assets  (GATE)
-
-- **Milestone:** M6  ·  **Depends on:** WP-42
-- **Owns:** `docs/media/screenshots/**`, `docs/media/demo.gif`, `docs/media/ribbon-*.png`, `docs/media/banner*.png`, `README.md`, `docs/index.html`, `CHANGELOG.md`, `e2e/specs/media-capture.spec.ts`, `tools/make-demo-gif.sh`, `package.json (version field only)`, `apps/*/package.json (version field only)`, `packages/*/package.json (version field only)`
-- **Task:** Runs alone, last. Media: e2e/specs/media-capture.spec.ts at device scale 2 captures with real template documents (from WP-32) — Write (light/dark), Grid with a chart (light/dark), Deck with Design Ideas pane (light/dark), Notes (light), Hub (light/dark), phone captures (Pixel 7) of Write/Grid/Deck, ribbon crops for each app — into docs/media/screenshots/ with the exact names referenced by README/landing; tools/make-demo-gif.sh records a 20–30 s Playwright video (open Hub → open template → edit with ribbon → palette → save) and converts it to docs/media/demo.gif with ffmpeg (palette-optimised, 960 px wide, 12 fps, < 8 MB). Finalise README.md (house style per §4.6; replace placeholders; add the parity badge from docs/parity-badge.json via shields endpoint URL; the install one-liner must point at the real asset names) and docs/index.html (`data-version` = v0.1.0, download links valid, screenshots in place), re-render banners if the icon changed (`pnpm media:render`). Versions: set 0.1.0 in every package.json (`pnpm -r exec npm version 0.1.0 --no-git-tag-version` or a script), CHANGELOG.md v0.1.0 section dated with the parity score and fidelity table. Build local assets: `pnpm release:desktop -- --linux` (AppImage, deb), `pnpm release:android` (signed APK); compute SHA256SUMS-local.txt. Commit, push, wait for CI green, then tag: `git tag -a v0.1.0 -m "Officina 0.1.0"` and `git push origin v0.1.0`; create the release first (so CI appends): `gh release create v0.1.0 --title "Officina 0.1.0" --notes-file <generated from CHANGELOG> apps/desktop/dist/officina-0.1.0-linux-x86_64.AppImage apps/desktop/dist/officina_0.1.0_amd64.deb apps/android/dist/officina-0.1.0-android.apk`; watch release.yml (`gh run watch`), confirm macOS/Windows assets and the final SHA256SUMS.txt were attached by the workflow (if a CI platform job fails for environmental reasons, fix the workflow and re-run with `gh run rerun`; the release must end with all six platform assets or a documented exception in the release notes). Verify Pages serves the finalised landing page and that every download button URL returns HTTP 302/200. Pin nothing. Post-release: bump versions to 0.2.0-dev in a final commit.
-Finish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).
-- **Acceptance criteria:**
-  - gh release view v0.1.0 --json assets -q '.assets[].name' lists officina-0.1.0-linux-x86_64.AppImage, officina_0.1.0_amd64.deb, officina-0.1.0-android.apk, Officina-Setup-0.1.0.exe, Officina-0.1.0-arm64.dmg (or documented exception), SHA256SUMS.txt
-  - for each asset URL from the release: curl -sIL returns 200
-  - ls docs/media/screenshots/*.png | wc -l >= 14 and identify docs/media/demo.gif reports width 960 and size < 8 MB
-  - curl -s https://zahakj.github.io/officina/ | grep -c 'v0.1.0' >= 1 and README.md no longer contains the word 'placeholder'
-  - gh run list --workflow release.yml --limit 1 --json conclusion -q '.[0].conclusion' prints success
-
-
-
----
 
 ## 7. Parity matrix and the continuous parity loop (post-v0.1)
 
-The initial milestones (§6) take Officina to v0.1.0. After that the build keeps running autonomously in **parity rounds** until the stopping goal in §7.4 is met. Both phases are driven by one machine-readable tracker.
+The initial milestones (§6) take Kiln to v0.1.0. After that the build keeps running autonomously in **parity rounds** until the stopping goal in §7.4 is met. Both phases are driven by one machine-readable tracker.
 
 ### 7.1 Scope rule: "what a switcher would miss", not a 1:1 clone
 
@@ -1284,7 +856,7 @@ Priority (`P0/P1/P2/out`) is the *delivery* ordering; the tier is the *importanc
 
 ### 7.2 The tracker: `parity/parity.json` → `PARITY.md`
 
-Committed in the repo and seeded by WP-03 (§6), updated by every WP that changes a row's status, regenerated and validated in CI.
+Committed in the repo and seeded by WP-59 (§6), updated by every WP that changes a row's status, regenerated and validated in CI.
 
 ```jsonc
 // parity/parity.json (excerpt)
@@ -1296,11 +868,11 @@ Committed in the repo and seeded by WP-03 (§6), updated by every WP that change
   "rows": [
     { "id": "write.home.clipboard.format-painter", "app": "write", "area": "Home ▸ Clipboard",
       "feature": "Format Painter (single and double-click persistent)", "office": "Word ▸ Home ▸ Clipboard ▸ Format Painter",
-      "tier": "critical", "priority": "P0", "status": "missing", "wp": "WP-14",
+      "tier": "critical", "priority": "P0", "status": "missing", "wp": "WP-66",
       "verify": ["e2e:write-features:format-painter", "unit:editor-write/features/format-painter"], "notes": "" },
     { "id": "grid.formulas.functions.lookup.XLOOKUP", "app": "grid", "area": "Formulas ▸ Lookup & Reference",
       "feature": "XLOOKUP with match/search modes", "office": "Excel 2021+ XLOOKUP",
-      "tier": "critical", "priority": "P0", "status": "missing", "wp": "WP-09",
+      "tier": "critical", "priority": "P0", "status": "missing", "wp": "WP-57",
       "verify": ["conformance:lookup.csv#XLOOKUP"], "notes": "" },
     { "id": "grid.data.get-transform.power-query", "app": "grid", "area": "Data ▸ Get & Transform",
       "feature": "Query editor: import CSV/JSON/sheets with steps (filter, split, merge, unpivot) and refresh", "office": "Excel ▸ Data ▸ Get Data (Power Query)",
@@ -1314,13 +886,13 @@ Committed in the repo and seeded by WP-03 (§6), updated by every WP that change
 }
 ```
 
-**Row schema** (validated with zod in `parity/schema.ts`): `id` (dotted, unique, stable), `app` (`write|grid|deck|notes|suite`), `area` (ribbon path or subsystem), `feature`, `office` (the Office name/location so switchers can search for it), `tier`, `priority`, `status` (`missing|partial|done|better`), `wp` (the WP that delivers it, or null), `verify` (list of verification ids: `e2e:<spec>:<test-title-slug>`, `unit:<package>/<path>`, `conformance:<csv>#<FUNCTION>`, `fidelity:<format>:<metric>>=<value>`, `manual:<docs/qa/...md#anchor>` — manual only for niche rows), `notes`. A `status` of `done`/`better` **requires at least one non-manual verify id that exists and passes**: `pnpm parity:verify` resolves ids to Vitest `-t` filters, Playwright `--grep` filters, conformance rows and fidelity thresholds, runs them, and fails CI if any `done` row's verification is missing or failing. `better` additionally requires a `notes` sentence stating what is better than Office.
+**Row schema** (validated by `cargo xtask parity` against `parity/schema.json`, a JSON Schema): `id` (dotted, unique, stable), `app` (`write|grid|deck|notes|suite`), `area` (ribbon path or subsystem), `feature`, `office` (the Office name/location so switchers can search for it), `tier`, `priority`, `status` (`missing|partial|done|better`), `wp` (the WP that delivers it, or null), `verify` (list of verification ids: `e2e:<spec>:<test-title-slug>`, `unit:<crate-or-package>/<path>`, `conformance:<csv>#<FUNCTION>`, `fidelity:<format>:<metric>>=<value>`, `manual:<docs/qa/...md#anchor>` — manual only for niche rows), `notes`. A `status` of `done`/`better` **requires at least one non-manual verify id that exists and passes**: `cargo xtask parity --verify` resolves ids to `cargo nextest` filters, Vitest `-t` filters, Playwright `--grep` filters, conformance rows and fidelity thresholds, runs them, and fails CI if any `done` row's verification is missing or failing. `better` additionally requires a `notes` sentence stating what is better than Office.
 
-**Required coverage of the seed** (WP-03 acceptance, ≥ 530 rows): every ribbon command of §1.4 for Write (≥ 160 rows), Grid (≥ 180 rows: ribbon commands + one row per function *family* with a `functions.json` sidecar listing every Excel worksheet function (≥ 520 names, each `planned|done|out`) that the family row aggregates), Deck (≥ 120 rows incl. every transition and animation of §1.4, every chart type, every layout type), Notes (≥ 30), Suite (≥ 40: file formats, print, autosave/recovery, collaboration, version history, templates, palette, themes, a11y, i18n/RTL, mobile, PWA, automation/MCP, AI hooks, security), plus explicitly-out rows (VBA, Access, OLE, IRM, 3-D models…) so the scope decision is visible. Rows that exist to be *better than Office* (palette, version history, Formula Lab, Design Ideas, Markdown, focus mode, code blocks, byte-preserving saves, MCP) are tagged `tier: "commonly-missed"` with `office: "—"` and can only be `better`.
+**Required coverage of the seed** (WP-59 acceptance, ≥ 530 rows): every ribbon command of §1.4 for Write (≥ 160 rows), Grid (≥ 180 rows: ribbon commands + one row per function *family* with a `functions.json` sidecar listing every Excel worksheet function (≥ 520 names, each `planned|done|out`) that the family row aggregates), Deck (≥ 120 rows incl. every transition and animation of §1.4, every chart type, every layout type), Notes (≥ 30), Suite (≥ 40: file formats, print, autosave/recovery, collaboration, version history, templates, palette, themes, a11y, i18n/RTL, mobile, PWA, automation/MCP, AI hooks, security), plus explicitly-out rows (VBA, Access, OLE, IRM, 3-D models…) so the scope decision is visible. Rows that exist to be *better than Office* (palette, version history, Formula Lab, Design Ideas, Markdown, focus mode, code blocks, byte-preserving saves, MCP) are tagged `tier: "commonly-missed"` with `office: "—"` and can only be `better`.
 
-**Score.** `score = Σ tierWeight·statusWeight / Σ tierWeight` over rows with `priority != out`; reported overall and per app, per tier (`critical`, `commonly-missed`, `niche`), with counts. `pnpm parity` regenerates `PARITY.md` (tables per app grouped by area with status glyphs, the scores, the "better than Office" list, and a changelog of status flips since the last tag) and `docs/parity-badge.json` (shields.io endpoint schema; README badge "parity: 71 %"). CI fails if `PARITY.md` is stale or the JSON invalid.
+**Score.** `score = Σ tierWeight·statusWeight / Σ tierWeight` over rows with `priority != out`; reported overall and per app, per tier (`critical`, `commonly-missed`, `niche`), with counts. `cargo xtask parity` regenerates `PARITY.md` (tables per app grouped by area with status glyphs, the scores, the "better than Office" list, and a changelog of status flips since the last tag) and `docs/parity-badge.json` (shields.io endpoint schema; README badge "parity: 71 %"). CI fails if `PARITY.md` is stale or the JSON invalid.
 
-**Fidelity corpus as part of parity.** `parity/corpus.json` lists every fixture of `packages/testing/fixtures/**` with its expected checks (`{ "file": "docx/features/tables.docx", "checks": { "structural": 0.95, "text": 1.0, "visual": 0.9, "oracle_opens": true, "byte_identical_untouched": true } }`); `pnpm fidelity` reads it, and parity rows of kind `fidelity:*` reference it. New real-world files that break are added to the corpus *before* being fixed (regression-first).
+**Fidelity corpus as part of parity.** `parity/corpus.json` lists every fixture of `fixtures/**` with its expected checks (`{ "file": "docx/features/tables.docx", "checks": { "structural": 0.95, "text": 1.0, "visual": 0.9, "oracle_opens": true, "byte_identical_untouched": true } }`); `cargo xtask fidelity` reads it, and parity rows of kind `fidelity:*` reference it. New real-world files that break are added to the corpus *before* being fixed (regression-first).
 
 ### 7.3 The parity round (repeat until §7.4 holds)
 
@@ -1328,11 +900,11 @@ Each round is a self-contained orchestration unit; its WPs use the same JSON sha
 
 1. **Gap analysis (one agent, alone; produces `rounds/round-NN.md` + `.json`).** Inputs: `parity/parity.json` (all `missing|partial` rows ranked by tier then priority), `docs/qa/fidelity.md` failures and the worst-10 files, `docs/qa/perf.md` misses, open GitHub issues labelled `bug`/`fidelity`/`parity` (user-reported files are gold: add them to the corpus), and a fresh **competitor re-scan** (WebSearch for each product in §2A.1 plus "new open-source office suite" queries; update `docs/COMPETITORS.md` with stars/versions/new claims and adjust the bars in §2A.3 if a competitor moved them). Output: a ranked gap list with evidence and the round's theme (e.g. "Round 1: automation + mail merge + function completeness").
 2. **Select 8–15 WPs** sized like §6's (one agent session each, disjoint `owns`, explicit `depends_on`, acceptance criteria that name the parity rows they flip and the verify ids that will prove it). Always include: one fidelity WP (corpus growth + fixes), one competitor-bar WP (perf/a11y/polish), one "better than Office" WP, and the round's gate WP (runs alone: full e2e, fidelity, parity verify, visual review, baseline refresh). Rows a WP flips must be listed in its `task`.
-3. **Implement / review / fix** with the §4.7 cadence; each WP updates its rows in `parity/parity.json` (status + verify ids) and `CHANGELOG.md`. The gate WP runs `pnpm parity:verify` and rejects any `done` row without a passing test.
-4. **Release:** gate green → bump minor version (`v0.N.0`), regenerate `PARITY.md` and badge, update README/landing numbers (functions count, parity %, fidelity table), `git tag` + `gh release create` (release.yml attaches all platform assets as in WP-43), release notes = CHANGELOG section + "Parity: 63 % → 71 % (critical 88 %, commonly-missed 60 %)" + fidelity table.
+3. **Implement / review / fix** with the §4.7 cadence; each WP updates its rows in `parity/parity.json` (status + verify ids) and `CHANGELOG.md`. The gate WP runs `cargo xtask parity --verify` and rejects any `done` row without a passing test.
+4. **Release:** gate green → bump minor version (`v0.N.0`), regenerate `PARITY.md` and badge, update README/landing numbers (functions count, parity %, fidelity table), `git tag` + `gh release create` (release.yml attaches all platform assets as in WP-98), release notes = CHANGELOG section + "Parity: 63 % → 71 % (critical 88 %, commonly-missed 60 %)" + fidelity table.
 5. **Repeat.** Round N+1's gap analysis starts from the new tracker.
 
-**Seeded backlog for round 1** (from the §2A gaps; the round's gap analysis confirms or reorders): JSON control channel + MCP server + `officina` CLI (convert/edit/batch, agent skill file); AI provider integration (BYO key, off by default) with edits as tracked changes; function library to ≥ 520 with localised function names + decimal-comma locales; mail merge (data source = Tabula/CSV, fields, preview, output to one or many documents); Power-Query-lite query editor; equations P1 completion (OMML ↔ MathLive both ways in Scriba/Scena/Tabula); SmartArt import as editable groups; document compare (Scriba) with colour-coded authors; Morph-lite transition and motion paths; chart types to ≥ 18; Excel Solver-lite (linear/GRG via a small in-house optimiser); Grid collaboration (CommandLog ↔ Yjs bridge); iOS build in CI (Capacitor iOS on the macOS runner; unsigned IPA artefact); 10 more locales.
+**Seeded backlog for round 1** (from the §2A gaps; the round's gap analysis confirms or reorders): MCP server over the control channel (the `kiln` CLI and JSON control channel ship in v0.1, WP-96) + agent skill file; AI provider integration (BYO key, off by default) with edits as tracked changes; function library to ≥ 520 with localised function names + decimal-comma locales; mail merge (data source = Kiln Grid/CSV, fields, preview, output to one or many documents); Power-Query-lite query editor; equations P1 completion (OMML editor in Kiln Write/Kiln Deck/Kiln Grid); SmartArt import as editable groups; document compare (Kiln Write) with colour-coded authors; Morph-lite transition and motion paths; chart types to ≥ 18; Excel Solver-lite (linear/GRG via a small in-house optimiser); Grid collaboration (sheet op log ↔ Loro bridge); iOS build in CI (`tauri ios build` on the macOS runner; unsigned IPA artefact); a `vello`/wgpu painter for desktop (§3.6); 10 more locales.
 
 ### 7.4 Stopping goal (the loop ends when all hold at a tagged release)
 
@@ -1344,1203 +916,1582 @@ Each round is a self-contained orchestration unit; its WPs use the same JSON sha
 When the goal holds, the release is tagged `v1.0.0`; the loop then continues at a slower cadence (monthly rounds of maintenance, dependency updates via Dependabot, competitor re-scan, issue-driven fidelity fixes).
 
 
+
 ---
 
 ## 8. Effort estimate and schedule (≈ 2 concurrent agents)
 
-One WP ≈ one strong agent session of focused work (4–8 h including tests, CI wait and fixes). Estimates below assume 2 agents, dependency stalls included (M0 is only partly parallel; gates run alone).
+One WP ≈ one strong agent session (5–10 h including tests, CI wait and fixes; Rust ports and layout engines sit at the top of that range). Estimates assume 2 agents, dependency stalls included (R0 is only partly parallel until WP-52/53/54 land; gates run alone; heavy WPs never pair).
 
 | Milestone | WPs | Agent-hours (est.) | Wall-clock at 2 agents | Notes |
 |---|---|---|---|---|
-| M0 Foundation | 9 (WP-01 … WP-09) | 60 | ~36 h | WP-01 alone (toolchain downloads ~2 GB); parity seed and OOXML core are long |
-| M1 Write | 6 (WP-10 … WP-15) | 48 | ~28 h | pagination and docx writer are the heavy ones |
-| M2 Grid | 7 (WP-16 … WP-22) | 56 | ~32 h | canvas grid, xlsx, charts in parallel pairs |
-| M3 Deck | 6 (WP-23 … WP-28) | 44 | ~26 h | |
-| M4 Cross-cutting | 5 (WP-29 … WP-33) | 36 | ~20 h | |
-| M5 Shells & site | 5 (WP-34 … WP-38) | 34 | ~20 h | Android SDK/Gradle first build ~20 min; Electron builds ~10 min each |
-| M6 Quality & release | 5 (WP-39 … WP-43) | 42 | ~30 h | two of them run alone |
-| **Total v0.1.0** | **43** | **≈ 320 agent-hours** | **≈ 190 h wall-clock (~8 days continuous)** | add ~15 % for CI re-runs and lockfile rebases |
+| R0 Foundation | 11 (WP-50 … WP-60) | 100 | ~60 h | WP-50 alone (rustup + targets + NDK ≈ 4 GB of downloads, first full build); text engine and Scene/painter are long; brand import waits on the kit |
+| R1 Write | 8 (WP-61 … WP-68) | 84 | ~48 h | layout engine (WP-63) and docx writer (WP-65) are the heavy ones |
+| R2 Grid | 7 (WP-69 … WP-75) | 70 | ~40 h | xlsx, grid surface and charts in parallel pairs |
+| R3 Deck | 6 (WP-76 … WP-81) | 54 | ~32 h | |
+| R4 Cross-cutting | 6 (WP-82 … WP-87) | 54 | ~30 h | |
+| R5 Shells & web | 5 (WP-88 … WP-92) | 44 | ~28 h | first `tauri build` ≈ 15 min, first Android build ≈ 25 min on this machine |
+| R6 Quality & release | 6 (WP-93 … WP-98) | 60 | ~42 h | three of them run alone |
+| **Total v0.1.0** | **49** | **≈ 465 agent-hours** | **≈ 280 h wall-clock (~12 days continuous)** | add ~15 % for CI re-runs, lockfile rebases and Rust compile waits |
 | Parity round (each) | 8–15 | 60–110 | 40–70 h | §7.3; expect 6–10 rounds to reach §7.4 |
 
-Machine budget: ~60 GB free disk is enough (node_modules ≈ 2.5 GB, Playwright ≈ 0.5 GB, Android SDK + Gradle caches ≈ 4 GB, Electron caches ≈ 1.5 GB, fixtures ≈ 1 GB, builds ≈ 2 GB). RAM (7 GB) is the tighter constraint: never run an Electron packaging, a Gradle build and Playwright e2e at the same time — the orchestrator should treat WP-34/WP-35/WP-43 as "heavy" and not pair them with each other.
+Compared with v1.0 (320 agent-hours), the Rust core costs ≈ 45 % more up front; it removes the v1.0 risks of pagination drift, JS performance ceilings and three shell technologies, and every later parity round is cheaper because one engine serves all hosts.
+
+Machine budget: disk ≈ 60 GB free is enough but not generous — Rust toolchain + targets ≈ 2.5 GB, NDK ≈ 2.5 GB, `target/` ≈ 15–25 GB (dev + release + wasm + android; `cargo clean -p` individual crates when low), sccache ≤ 20 GB, node_modules ≈ 1.5 GB, Playwright ≈ 0.5 GB, Gradle ≈ 3 GB, fixtures ≈ 1.5 GB. `tools/verify-env.sh` warns below 15 GB free. RAM (7.5 GB + swap): `jobs = 3`, never two heavy builds, Playwright `workers: 2`, Gradle `-Xmx2048m`.
 
 ---
 
 ## 9. Risks and an honest statement of what this autonomous build can and cannot achieve
 
-| # | Risk / limit | Likelihood · impact | Mitigation in this plan | Needs follow-up by a human? |
+| # | Risk / limit | Likelihood · impact | Mitigation in this plan | Needs a human? |
 |---|---|---|---|---|
-| 1 | **Perfect DOCX fidelity is unattainable**; complex layouts (floating tables, multi-column + footnotes, nested fields, legacy VML, exotic numbering) will differ from Word | certain · medium | Measured corpus with thresholds (§3.5, §7.2), passthrough so nothing is lost on save, Compatibility Checker, regression-first corpus growth from user files, font metric-compatibility table; the parity loop keeps raising the bar | Yes: real-world documents from users; donate failing files via the bug template |
-| 2 | **Pagination ±1 line vs Word** depends on font metrics and justification/hyphenation rules we approximate in CSS | likely · medium | Metric-compatible fonts bundled; e2e compares page counts with LibreOffice; known-difference list in docs/FORMATS.md | Later: own line-breaking engine if the loop finds it necessary |
-| 3 | **Own formula engine** (350 → 520 functions) may lag Excel semantics in edge cases | likely · medium | Conformance suite with LibreOffice-oracle generation + curated Excel examples; deviations documented; AGPL-admissible fallbacks (HyperFormula GPLv3, Univer engine Apache-2.0) if WP-07/WP-09 slip | No, unless the fallback is taken (then a licence note) |
-| 4 | **Macros/VBA are never executed** | certain · low for most, high for niche users | `vbaProject.bin` preserved so files are not damaged; ribbon shows a clear explanation; parity rows marked `out` | Out of scope by decision |
-| 5 | **Code signing / notarisation** cannot be done here (no certificates); Windows SmartScreen and macOS Gatekeeper warnings | certain · medium | Unsigned builds + documented workarounds (as `abax` does); `release.yml` has `CSC_*`/notarize hooks ready for secrets | Yes: buy certificates, add secrets, flip the hooks |
-| 6 | **macOS and Windows binaries are built only in CI** and never launched by an agent | certain · medium | Electron + Chromium behave identically; Playwright Electron smoke runs on Linux; CI matrix builds on real runners; first macOS/Windows user reports go to the bug template | Yes: a human smoke test on each OS before announcing |
-| 7 | **No Android emulator run** (static APK verification only; KVM exists but RAM is tight) | likely · medium | Capacitor is a WebView; mobile UX is e2e-tested in Chromium device emulation; APK verified with aapt2/apksigner; an optional emulator step is documented | Yes: install the APK on a real phone once per release |
-| 8 | **iOS** is not in v0.1 (needs macOS + Xcode) | certain · low | Capacitor supports iOS; the loop's round 1 adds an unsigned IPA build on the macOS runner | Yes: Apple developer account for TestFlight/App Store |
-| 9 | **Performance targets on a 7 GB machine** (1M cells, 300 pages) | possible · medium | Workers, canvas grid, virtualised pagination, benchmarks with tolerance; perf WP dedicated | No |
-| 10 | **Agent concurrency = 2 and shared working tree**: lockfile races, accidental cross-WP edits | likely · low | Disjoint `owns`, catalog-pinned deps installed in WP-01, rebase rules (§4.7), handoff notes file | No |
-| 11 | **Collab server auth is a shared token** in v1 | certain · medium for public deployments | Documented as not production-grade; pluggable `onAuthenticate`; loop adds OIDC | Yes for public hosting |
-| 12 | **Spell-check languages, hyphenation, thesaurus** limited to en-US (+de/ar UI) | certain · low | Hunspell dictionaries are drop-in; loop adds locales | No |
-| 13 | **Accessibility of a canvas grid** is inherently harder than DOM | likely · medium | ARIA shadow grid + announcements; axe + keyboard e2e; WCAG self-audit in the loop | Yes: testing with real screen-reader users |
-| 14 | **Competitors move fast** (ArtCraft shipped three apps in a week; GenOffice/Univer are AI-agent-native) | certain · medium | Competitor re-scan each round; automation (MCP/CLI) seeded for round 1; our measurable fidelity is the moat | No |
-| 15 | **Trademark/IP**: "Office", "Word", "Excel", "PowerPoint", "OneNote" are Microsoft marks | certain · low | Used only nominatively ("opens Word documents"); product names are Latin common nouns; no Microsoft icons/fonts/artwork; ribbon layout is functional, not copied artwork | Optional legal review before 1.0 |
-| 16 | **Scope creep** from parity rounds | likely · medium | Would-miss tiers; niche rows cannot block releases; 8–15 WPs per round; stopping goal defined | No |
+| 1 | **Perfect DOCX fidelity is unattainable**; floating tables, multi-column + footnotes, nested fields, legacy VML, exotic numbering will differ from Word | certain · medium | Measured corpus with thresholds (§3.10, §7.2), passthrough so nothing is lost, Compatibility Checker, regression-first corpus growth from user files, metric-compatible fonts, our own line breaker (no browser variance) | Yes: real-world documents from users via the bug template |
+| 2 | **Own layout engine** (`kiln-doc-layout`) is the largest single risk: justification, hyphenation, tables with merged cells across pages, floats with wrap, footnote balancing | likely · high | parley/harfrust do shaping and bidi; snapshot tests per feature; LibreOffice page-count comparison; the engine is built incrementally (WP-63 core, WP-66 advanced) and gated (WP-68); a `vello` painter later does not change layout | Later: typography review by a human for justified Arabic/CJK |
+| 3 | **Rust compile times on a 4-CPU / 7 GB machine** slow agents; two agents contend for the target directory | certain · medium | `jobs = 3`, sccache, optimised deps once, `cargo check`/`nextest -p` while iterating, `heavy` scheduling, `default-members` excluding Tauri; B15 budget tracks it | No |
+| 4 | **Tauri Linux build libraries need root** (`pkexec apt-get`) | possible · low | one documented `pkexec` step; if refused, desktop bundles are CI-only and local verification uses the web build + `kiln` CLI | Possibly: run the apt command once |
+| 5 | **Canvas-rendered text input/a11y** is harder than DOM (IME edge cases, screen readers) | likely · medium | input proxy with `beforeinput`/composition (VS Code/Google Docs mechanism), shadow a11y tree, Accessible text view, axe + keyboard e2e, WCAG self-audit; composition tests in Playwright | Yes: testing with real screen-reader and IME users |
+| 6 | **Loro API churn or stall** | possible · medium | small `Crdt` trait, yrs as the documented alternative, ADR 0004 | No |
+| 7 | **Own formula engine** semantics lag Excel in edge cases | likely · medium | 5,300-row conformance inherited + LibreOffice oracle + TS reference; deviations documented | No |
+| 8 | **Macros/VBA never executed** | certain · low/high for niche | `vbaProject.bin` preserved; clear UI explanation; parity rows `out` | Decision |
+| 9 | **Code signing / notarisation** impossible here | certain · medium | unsigned builds + documented workarounds; `release.yml` has the secret hooks | Yes: certificates |
+| 10 | **Windows/macOS binaries built only in CI** and never launched by an agent | certain · medium | Tauri's webview differences are confined to the chrome (documents render from our Scene); CI matrix builds on real runners; the Windows job runs the startup probe | Yes: a human smoke test per OS before announcing |
+| 11 | **No Android emulator run** (static APK checks only) | likely · medium | Android WebView is Chromium; the chrome and painter are e2e-tested in Chromium device emulation; APK verified with aapt2/apksigner; optional emulator step documented | Yes: install on a real phone once per release |
+| 12 | **iOS** not in v0.1 (needs macOS + Xcode) | certain · low | Tauri 2 supports iOS; loop round 1 adds an unsigned IPA build on the macOS runner | Yes: Apple developer account |
+| 13 | **wasm multithreading needs COOP/COEP** headers, which GitHub Pages cannot set | certain · low | single-threaded wasm is the default and meets B6/B9 for typical files; service-worker shim enables threads where it works; native builds are always multi-threaded | No |
+| 14 | **Brand kit arrives late or incomplete** | possible · medium | engine WPs do not depend on it; placeholders are neutral (no old brand); `docs/design/kit-gaps.md` collects gaps for the design team; WP-51 is re-runnable (idempotent import) | Yes: the design team |
+| 15 | **Collab server auth is a shared token** | certain · medium for public hosting | documented; pluggable `authenticate`; loop adds OIDC | Yes for public hosting |
+| 16 | **Competitors move fast** (ArtCraft shipped three Rust apps in a week; GenOffice/Univer are agent-native) | certain · medium | competitor re-scan each round; `kiln` CLI + control channel in v0.1 (WP-96); measurable fidelity and budgets are the moat | No |
+| 17 | **Trademark/IP**: "Office", "Word", "Excel", "PowerPoint", "OneNote" are Microsoft marks | certain · low | nominative use only; no Microsoft icons/fonts/artwork; ribbon layout is functional | Optional legal review before 1.0 |
+| 18 | **Scope creep** | likely · medium | would-miss tiers (§7.1); niche rows cannot block; 8–15 WPs per round; stopping goal | No |
 
-**What is realistic from this autonomous build:** a genuinely usable, good-looking suite on Linux (tested here), with CI-built Windows/macOS installers and a sideloadable Android APK; Office files round-trip with measured scores; the familiar ribbon/shortcut surface; collaboration and version history; a public repo, site and releases in the user's house style. **What needs people:** signing, store listings, real-device testing on macOS/Windows/Android/iOS, screen-reader user testing, and a stream of real-world documents to push fidelity past what synthetic corpora can reveal.
+**What is realistic from this autonomous build:** a genuinely fast, good-looking suite on Linux (tested here through the web build, the CLI's renders and the Tauri startup probe), CI-built Windows/macOS installers and sideloadable Android APKs, Office files round-tripping with measured scores, the familiar ribbon/shortcut surface in Kiln's own visual language, collaboration and version history, a public repo, site and releases in the user's house style. **What needs people:** signing, store listings, real-device testing on macOS/Windows/Android/iOS, screen-reader and IME user testing, typography review for complex scripts, and a stream of real-world documents to push fidelity past what synthetic corpora reveal.
 
 ---
 
 ## 10. Definition of Done (v0.1.0)
 
-All items are verified in WP-42 (`docs/qa/dod.md`) and must hold at the `v0.1.0` tag:
+All items are verified in WP-97 (`docs/qa/dod.md`) and must hold at the `v0.1.0` tag:
 
-1. **Repo & release:** `ZahakJ/officina` public; CI green on `main`; `v0.1.0` release with AppImage, deb, APK (built locally), NSIS + portable exe and dmg (CI), `SHA256SUMS.txt`; README and landing page in house style with real screenshots and demo GIF; Pages live; licence files and notices complete; `pnpm licenses:check` clean.
-2. **Open/save:** every fixture in `packages/testing/fixtures/{docx,xlsx,pptx}/features` opens and round-trips within §3.5 thresholds; untouched parts byte-identical; LibreOffice opens 100 % of our outputs; CSV/TSV/JSON import/export; ODF import/export passes WP-41 thresholds; PDF export of each app produces page counts equal to the on-screen layout.
-3. **Scriba:** all P0 rows of §2.2 done; pagination page count within ±1 of LibreOffice on the corpus; track changes, comments, TOC, footnotes, tables, floating images, find/replace, styles, navigation pane, spell check, Markdown shortcuts, focus mode working in e2e.
-4. **Tabula:** all P0 rows of §2.3 done; ≥ 350 functions with 0 conformance failures; 1M-cell scroll ≥ 55 fps and other §3.9 targets within tolerance; charts (13 types) round-trip; pivot tables, sparklines, Goal Seek, Subtotal, Flash Fill present (P1 delivered by WP-21).
-5. **Scena:** all P0 rows of §2.4 done; 12 transitions and the listed animations play and round-trip; presenter view works in web and Electron; Design Ideas offers suggestions for every bundled layout.
-6. **Notula:** notebooks/sections/pages/tags/search/export working per WP-33.
-7. **Suite:** ribbon/Backstage/status bar/palette/Key Tips/mini toolbar on all apps; 100 % of the §1.7 shortcut table passes; three themes; en/de/ar with RTL; axe 0 serious/critical; autosave + recovery proven by e2e; collaboration (2 users, offline merge) and version history proven by e2e; 36 templates reviewed; onboarding tour; Options dialog complete.
-8. **Shells:** Electron app launches on Linux (smoke when DISPLAY available), opens files from the OS, native menus with accelerators, print to PDF; Android APK passes static verification, intent filters registered, mobile layouts pass mobile e2e; PWA installs and works offline.
-9. **Quality:** `pnpm verify`, `pnpm e2e`, `pnpm fidelity`, `pnpm bench`, `pnpm parity:verify` all green in one session; visual regression baselines committed; every gate's visual review recorded; `PARITY.md` regenerated with the v0.1.0 score (expected ≈ 60–70 % overall, ≥ 85 % of critical rows done) and no `done` row without a passing verification.
-10. **Docs:** manual with ≥ 14 pages; DESIGN/FORMATS/SHORTCUTS/RELEASING/CONTRIBUTING/SECURITY current; CHANGELOG v0.1.0 section; known issues filed as GitHub issues; `docs/COMPETITORS.md` dated.
-11. **Honesty:** nothing in README, landing page or UI claims a feature that is not verified by a test; unsupported features are visible in the Compatibility Checker and in `PARITY.md`.
+1. **Repo & release:** `ZahakJ/kiln` public; CI green on `main`; `v0.1.0` release with AppImage, deb, NSIS exe, msi, dmg, three Android APKs, `kiln-web` tarball and `SHA256SUMS.txt`; README and landing page in house style with the brand kit's banner, real screenshots and demo GIF; Pages live with landing, manual and the web app; licence files and notices complete; `cargo deny check` and `pnpm licenses:check` clean; no old brand names anywhere (§1.1 grep).
+2. **Open/save:** every fixture in `fixtures/{docx,xlsx,pptx}/features` opens and round-trips within §3.10 thresholds; untouched parts byte-identical; LibreOffice opens 100 % of outputs; CSV/TSV/JSON import/export; ODF import/export passes WP-87 thresholds; PDF export page counts equal the on-screen layout.
+3. **Kiln Write:** all P0 rows of §2.2 done; pagination page count within ±1 of LibreOffice on the corpus; track changes, comments, TOC, footnotes, tables, floating images, find/replace, styles, navigation pane, spell check, Markdown shortcuts, focus mode working in e2e; IME composition test passes.
+4. **Kiln Grid:** all P0 rows of §2.3 done; ≥ 484 functions with 0 conformance failures; budgets B6–B9 met; charts (13 types) round-trip; pivot tables, sparklines, Goal Seek, Subtotal, Flash Fill present.
+5. **Kiln Deck:** all P0 rows of §2.4 done; 12 transitions and the listed animations play and round-trip; presenter view works on web and desktop; Design Ideas offers suggestions for every bundled layout.
+6. **Kiln Notes:** notebooks/sections/pages/tags/search/export working per WP-86.
+7. **Suite:** ribbon/Backstage/status bar/palette/Key Tips/mini toolbar on all apps, implemented to the brand kit's mockups (visual review recorded); 100 % of the §1.7 shortcut table passes; three themes; en/de/ar with RTL; axe 0 serious/critical; autosave + recovery proven by e2e; collaboration (2 users, offline merge) and version history proven by e2e; 36 templates reviewed; onboarding tour; Options dialog complete; `kiln` CLI converts and renders every fixture.
+8. **Shells:** Tauri app launches on Linux (startup probe B1/B2 in CI), opens files from the OS, native menus with accelerators, print to PDF; Android APKs pass static verification with intent filters; mobile layouts pass mobile e2e; PWA installs and works offline.
+9. **Performance:** every budget in §3.9 met (or a documented, gate-approved exception) with results in `docs/qa/perf.md`.
+10. **Quality:** `cargo xtask verify`, `pnpm verify`, `pnpm e2e`, `cargo xtask fidelity`, `cargo xtask budgets`, `cargo xtask parity --verify` all green in one session; visual regression baselines committed; every gate's visual review recorded; `PARITY.md` regenerated (expected ≈ 60–70 % overall, ≥ 85 % of critical rows done) with no `done` row lacking a passing verification; `reference/ts-core/` deleted.
+11. **Docs:** manual with ≥ 14 pages; DESIGN/FORMATS/SHORTCUTS/RELEASING/CONTRIBUTING/SECURITY current; ADRs 0002–0006 (Rust core, rendering, CRDT, bridge, shells); CHANGELOG v0.1.0 section; known issues filed; `docs/COMPETITORS.md` dated.
+12. **Honesty:** nothing in README, landing page or UI claims a feature that is not verified by a test; unsupported features are visible in the Compatibility Checker and `PARITY.md`.
 
 ---
 
 ## 11. Machine-readable work packages (v0.1.0 milestones only)
 
-The array below is generated from the same source as §6; ids, dependencies and ownership are identical. Parity rounds (§7.3) produce their own `rounds/round-NN.json` files with the same shape and are not appended here.
+Fields: `id`, `title`, `milestone`, `depends_on` (WP ids; WP-51 additionally lists the brand-kit path), `owns` (glob paths the WP may write; shared append-only files of §4.7 are implicit), `task` (self-contained instructions), `acceptance` (shell-verifiable criteria), `gate` (runs alone, produces a visual review), `heavy` (big Rust/Gradle/wasm release builds; never pair two heavy WPs). Parity rounds (§7.3) produce `rounds/round-NN.json` with the same shape and are not appended here.
 
 ```json
 [
  {
-  "id": "WP-01",
-  "title": "Toolchain and monorepo scaffold",
-  "milestone": "M0",
+  "id": "WP-50",
+  "title": "Rename to Kiln, Rust toolchain, Cargo workspace scaffold, CI update",
+  "milestone": "R0",
   "depends_on": [],
   "owns": [
+   "Cargo.toml",
+   "Cargo.lock",
+   "rust-toolchain.toml",
+   ".cargo/**",
+   "deny.toml",
    "package.json",
    "pnpm-workspace.yaml",
+   "pnpm-lock.yaml",
    "turbo.json",
    "tsconfig.base.json",
    "biome.json",
-   ".nvmrc",
-   ".npmrc",
    ".gitignore",
-   ".editorconfig",
-   "tools/setup-node.sh",
-   "tools/setup-android.sh",
-   "tools/verify-env.sh",
-   "tools/check-licenses.mjs",
-   "tools/oracle-soffice.sh",
-   "apps/web/**",
-   "apps/desktop/package.json",
-   "apps/android/package.json",
-   "apps/collab-server/package.json",
-   "packages/*/package.json",
-   "packages/*/tsconfig.json",
-   "packages/*/vitest.config.ts",
-   "packages/*/src/index.ts",
-   "packages/*/README.md",
-   "e2e/playwright.config.ts",
-   "e2e/package.json",
-   "e2e/specs/smoke.spec.ts",
-   "docs/qa/env.md",
-   "docs/adr/0001-stack.md"
-  ],
-  "task": "Run alone. Install the toolchain exactly as §4.1 and §4.3 (Node 24.22.0 into ~/.local/opt, pnpm 12.11.2, Playwright Chromium) and write the three setup scripts plus tools/verify-env.sh (checks node 24.x, pnpm, java 21, soffice, playwright chromium present; exits non-zero with a clear message otherwise). Run `tools/setup-android.sh` too (§4.4; ~1.5 GB download) so WP-35 finds the SDK ready; it must be idempotent. Create the monorepo described in §3.1: root package.json (packageManager pnpm@12.11.2, engines node >=24 <25, scripts: dev, build, lint, typecheck, test, e2e, bench, fidelity, verify (= turbo run lint typecheck test), licenses:check, licenses:notices, release:desktop (= turbo run release:desktop --), release:android (= turbo run release:android --), media:render, parity (= tsx parity/generate.ts), parity:verify (= tsx parity/verify.ts), competitors (prints docs/COMPETITORS.md date)), pnpm-workspace.yaml with `packages: [apps/*, packages/*, e2e]` and a `catalog:` containing every library in §4.2 at the pinned versions, turbo.json pipelines (build depends on ^build; test/lint/typecheck cached; e2e depends on build of apps/web; release tasks uncached), tsconfig.base.json (strict, ES2023 target, bundler resolution, jsx react-jsx, paths `@officina/*` -> packages/*/src), biome.json (recommended rules, 2-space, single quotes, 110 cols, organise imports), .npmrc (node-linker=hoisted, auto-install-peers=true, engine-strict=true), .nvmrc (24.22.0), .gitignore (node_modules, dist, out, .turbo, e2e/screenshots/** except baseline/, fixtures/external, android build dirs, *.local, .env). Create every package under packages/ listed in §3.1 (tokens, ui-kit, commands, doc-model, sheet-model, deck-model, formula, ooxml, io-docx, io-xlsx, io-pptx, io-odf, charts, editor-write, editor-grid, editor-deck, collab, storage, print-pdf, i18n, templates, notes, testing) each with package.json (name @officina/<pkg>, type module, exports ./src/index.ts, deps from catalog as listed for that package in §4.2 where obvious, scripts lint/typecheck/test), tsconfig.json extending base, vitest.config.ts (environment node, or jsdom for ui-kit/editor-*), src/index.ts exporting a `PACKAGE_NAME` const, one trivial test, and a README.md with the package purpose from §3.1. Create apps/web as a Vite 8 + React 19 + @vitejs/plugin-react 6 + @tailwindcss/vite app with index.html, src/main.tsx rendering a placeholder Hub page that shows the text \"Officina\" and the suite version, a vite.config.ts with the `@officina/*` aliases, and package.json scripts dev/build/preview/test. Create apps/desktop, apps/android, apps/collab-server with package.json only (name, private, placeholder `release:desktop`/`release:android` scripts that print \"not implemented\" and exit 1 — WP-35/WP-36 replace them). Create e2e/ as a Playwright project (playwright.config.ts starting `pnpm --filter @officina/web dev` on port 5173, Chromium only, screenshot on failure, outputDir e2e/screenshots) with smoke.spec.ts that loads / and screenshots `smoke/hub-light-desktop.png` asserting the text \"Officina\". tools/check-licenses.mjs implements the allow-list of §4.2 over `pnpm licenses list --json --prod` and a `--notices` mode that writes THIRD-PARTY-NOTICES.md content to stdout. tools/oracle-soffice.sh per §4.5 (creates the profile with the recalc settings on first run). Write docs/adr/0001-stack.md summarising the stack decisions of §0/§3 with the licence rationale, and docs/qa/env.md with the verified environment facts. `git init` with branch main and make the initial commit (no remote yet).\n\n\nEnds with a local commit only (WP-02 creates the remote).",
-  "acceptance": [
-   "export PATH=\"$HOME/.local/opt/node/bin:$PATH\"; node -v prints v24.22.0 and pnpm -v prints 12.11.2",
-   "bash tools/verify-env.sh exits 0",
-   "ls ~/Android/cmdline-tools/latest/bin/sdkmanager ~/Android/platforms/android-36 ~/Android/build-tools/36.0.0 succeeds",
-   "pnpm install --frozen-lockfile=false succeeds and pnpm-lock.yaml exists",
-   "pnpm verify exits 0 (lint, typecheck, test across all packages; each package has >= 1 passing test)",
-   "pnpm --filter @officina/web build produces apps/web/dist/index.html",
-   "pnpm e2e exits 0 and e2e/screenshots/smoke/hub-light-desktop.png exists",
-   "node tools/check-licenses.mjs exits 0",
-   "git log --oneline | wc -l >= 1 on branch main"
-  ],
-  "gate": false
- },
- {
-  "id": "WP-02",
-  "title": "GitHub repository, hygiene files, CI/release workflows, brand media, Pages placeholder",
-  "milestone": "M0",
-  "depends_on": [
-   "WP-01"
-  ],
-  "owns": [
    ".github/**",
    "README.md",
-   "LICENSE",
+   "CHANGELOG.md",
    "CONTRIBUTING.md",
    "SECURITY.md",
-   "CODE_OF_CONDUCT.md",
    "THIRD-PARTY-NOTICES.md",
-   "CHANGELOG.md",
-   "docs/index.html",
-   "docs/.nojekyll",
-   "docs/assets/**",
-   "docs/media/icon.svg",
-   "docs/media/banner.svg",
-   "docs/media/banner-light.svg",
-   "docs/media/*.png",
-   "docs/manual/README.md",
-   "docs/manual/index.html",
-   "docs/RELEASING.md",
-   "docs/DESIGN.md",
-   "docs/FORMATS.md",
-   "docs/SHORTCUTS.md",
-   "tools/render-media.mjs",
-   "apps/desktop/build/icon.png",
-   "apps/web/public/icons/**"
+   "docs/**",
+   "tools/**",
+   "crates/**",
+   "xtask/**",
+   "apps/**",
+   "packages/**",
+   "reference/**",
+   "fixtures/**",
+   "conformance/**",
+   "assets/**",
+   "e2e/**"
   ],
-  "task": "Create the public repository and the house-style hygiene exactly as §4.6: git identity (noreply address), `gh repo create ZahakJ/officina --public --source=. --remote=origin --push` with description and homepage, topics, issues on, wiki off, delete-branch-on-merge; enable GitHub Pages from /docs on main via `gh api -X POST repos/ZahakJ/officina/pages`. Write LICENSE (AGPL-3.0 verbatim), README.md in the concord/astrolabe style (banner picture, badges with colour 3f6fe0, factual paragraphs, install one-liner that will be valid once v0.1.0 exists, placeholder screenshot grid referencing the paths WP-43 will fill, Features by section, Compared with Microsoft Office bullets, Building, Documentation table, Licence) — mark nothing as \"coming soon\"; describe the suite as it will be at v0.1.0 and keep the text truthful by WP-43's final edit. CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md (Contributor Covenant 2.1), THIRD-PARTY-NOTICES.md (from `node tools/check-licenses.mjs --notices` plus fonts/icons sections), CHANGELOG.md (Keep a Changelog, Unreleased), docs/DESIGN.md (condensed §3), docs/FORMATS.md (condensed §3.5 fidelity notes), docs/SHORTCUTS.md (the §1.7 table), docs/RELEASING.md (tag -> release.yml -> assets -> Pages; local Linux/APK build and upload commands). Issue templates (bug_report.yml, feature_request.yml, config.yml), PULL_REQUEST_TEMPLATE.md, CODEOWNERS, dependabot.yml. Workflows ci.yml and release.yml exactly as §4.6 (release.yml calls the root `release:desktop`/`release:android` scripts; android job tolerates a missing keystore secret). Brand media: docs/media/icon.svg (the qalam \"d\" mark, §1.1), banner.svg and banner-light.svg at 2000x600 following the §4.6 spec (reference: the concord banner is 2000x600; match its composition), and tools/render-media.mjs (Playwright Chromium screenshots of the SVGs, Inter from @fontsource-variable/inter inlined as a data URI in the SVG <style> so rendering is deterministic) that writes docs/media/banner.png, banner-light.png, social-preview.png (1280x640), icon PNGs (16, 32, 48, 64, 128, 192, 256, 512, 1024) into apps/web/public/icons/ and apps/desktop/build/icon.png (512). Landing placeholder docs/index.html with the full CSS token scheme and structure of §4.6 (nav, hero with banner, sections with headings and placeholder copy, comparison table, download buttons disabled with \"first release coming\" text, footer), docs/assets/inter.woff2 copied from node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2, docs/manual/index.html (client-side Markdown viewer loading docs/manual/*.md via `marked`, vendored to docs/assets/marked.min.js with its MIT notice) and docs/manual/README.md (table of contents of the manual pages later WPs write). Push and watch CI until green.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Run ALONE (no other WP may be active). Step 1, toolchain (§4.1, §4.4): write tools/setup-rust.sh implementing the exact commands of §4.1 (rustup 1.99.1 minimal + rustfmt/clippy/rust-src, targets wasm32-unknown-unknown + aarch64/armv7/x86_64 Android, cargo-nextest and sccache and wasm-opt as prebuilt binaries, cargo install wasm-bindgen-cli 0.2.129 / cargo-deny 0.20.2 / cargo-about 0.9.2, PATH lines in ~/.bashrc and ~/.profile, curl -4 everywhere) and run it; run the single root step pkexec apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev libxdo-dev libssl-dev patchelf file (if pkexec is refused, record it in docs/qa/env.md and continue); extend tools/setup-android.sh to install ndk;29.0.14206865 and persist NDK_HOME, and run it; extend tools/verify-env.sh to check rustc 1.99.1, cargo-nextest, sccache (warn only), wasm-bindgen version == the wasm-bindgen entry in Cargo.lock, wasm-opt, pkg-config webkit2gtk-4.1 (warn only), NDK_HOME, free disk ≥ 15 GB (warn). Step 2, rename (§1.1): replace every occurrence of the old suite and product names (Officina/officina, Scriba, Tabula, Scena, Notula, Atrium) across the whole tree including packages, apps, e2e, docs, tools, workflows, README, .github templates, CSS custom property prefix --of- → --kiln-, data attributes, package names @officina/* → @kiln/*, identifiers io.github.zahakj.officina → io.github.zahakj.kiln, URLs zahakj.github.io/officina → zahakj.github.io/kiln, ~/.officina-keys → ~/.kiln-keys, the Python venv name; product names map Scriba→Kiln Write, Tabula→Kiln Grid, Scena→Kiln Deck, Notula→Kiln Notes, Atrium→Kiln Home; apply the same replacement inside the reference tree created in step 3 (@kiln-ref/* package names there); keep historical mentions only in CHANGELOG.md and write docs/adr/0002-kiln-rust-core.md recording the rename and the stack change (summarise §0 and §3.1–3.8, 3.11, 3.13). Replace docs/media/* and apps/web/public icons with neutral placeholders (plain SVG wordmark text 'Kiln', no old mark; WP-51 replaces them) and rewrite README.md truthfully for Kiln and the Rust core (house style §4.6; no claims beyond what exists). Set repo topics with gh repo edit ZahakJ/kiln --add-topic for the list in §1.2 and remove electron/capacitor/yjs topics. Step 3, restructure (§3.2, §3.13): git mv packages/ooxml, packages/formula, packages/doc-model, packages/io-docx, packages/sheet-model into reference/ts-core/<name>/ and additionally git checkout archive/ts-core-wip -- packages/io-docx/src/write packages/io-docx/test packages/io-xlsx/src and move those into reference/ts-core/io-docx/ and reference/ts-core/io-xlsx/; add a reference/ts-core/README.md ('read-only oracle for the Rust port; not built; deleted by WP-97'); exclude reference/ from pnpm-workspace.yaml, biome.json, tsconfig and CI. git mv packages/testing/fixtures → fixtures/ and packages/formula/test/conformance → conformance/ (before moving formula). Delete packages/{charts,collab,storage,print-pdf,io-odf,io-pptx,io-xlsx,deck-model,editor-write,editor-grid,editor-deck,notes,templates,i18n}, apps/desktop (Electron), apps/android (Capacitor), apps/collab-server JS. Keep packages/{tokens,ui-kit,commands,testing}, apps/web, e2e; fix their imports/tests. Rewrite the pnpm catalog: remove every package in the 'Removed' row of §4.2, add @tauri-apps/cli 2.12.3, @tauri-apps/api 2.12.4, the @tauri-apps/plugin-* versions of §4.2, vite-plugin-wasm 3.6.0, vite-plugin-top-level-await 1.6.0; keep the rest. Step 4, Cargo workspace: root Cargo.toml with [workspace] members = ['crates/*', 'xtask', 'apps/desktop/src-tauri'], default-members excluding apps/desktop/src-tauri, resolver 3, [workspace.package] version 0.1.0 / edition 2024 / license AGPL-3.0-or-later / publish false, and [workspace.dependencies] pinning every crate of §4.2 with exact '=x.y.z' versions; create every crate listed in §3.2 under crates/ as a skeleton (Cargo.toml using workspace deps, src/lib.rs with crate docs, #![forbid(unsafe_code)] except kiln-bridge-wasm and kiln-raster, one passing unit test, README.md paragraph from §3.2) — no engine logic; kiln-cli prints 'kiln 0.1.0'; kiln-bridge-wasm is a cdylib exporting a version() function; xtask with subcommands verify (implemented: fmt --check, clippy -D warnings, nextest for --workspace or -p list, protocol --check if the exporter exists), protocol, wasm, fidelity, budgets, parity, notices — the unimplemented ones must exit 0 printing 'skipped: not implemented yet (WP-xx)' when run with --ci or --check and exit 1 otherwise. Create apps/desktop/src-tauri (crate kiln-desktop) with Cargo.toml, build.rs (tauri-build), tauri.conf.json (productName Kiln, identifier io.github.zahakj.kiln, version 0.1.0, frontendDist ../../web/dist, devUrl http://localhost:5173, bundle targets appimage/deb/nsis/msi/dmg, placeholder icons generated by pnpm tauri icon from the neutral SVG), capabilities/default.json, src/main.rs with the Tauri builder and a --startup-probe flag that prints 'startup-ms=<n>' and exits; apps/desktop/package.json with scripts tauri, dev, build. Write .cargo/config.toml exactly as §4.1, rust-toolchain.toml, deny.toml (allow-list of §4.2, deny GPL-* except AGPL-3.0-or-later for our own crates, advisories deny unmaintained=warn), tools/with-lock.sh (flock -w 600 .agent.lock -- \"$@\"), add .agent.lock and .agent.heavy and target/ and apps/web/src/wasm/ to .gitignore. Step 5, JS workspace: tsconfig paths @kiln/* → packages/*/src; biome rules for packages/* banning document-format and formula libraries (dependency allow-list per package via a biome 'noRestrictedImports' config); apps/web keeps the placeholder Home showing the text 'Kiln' and the suite version; e2e smoke expects 'Kiln'. Step 6, CI (§4.6): rewrite ci.yml (jobs rust, web, desktop-smoke as specified; steps whose tools are not implemented call the xtask --ci variants), release.yml (linux/windows/macos via tauri-apps/tauri-action@v0 with profile dist, android via setup-java temurin 21 + android-actions/setup-android@v3 + NDK + rustup targets + pnpm tauri android build --apk --split-per-abi with keystore-from-secret-or-throwaway, web tarball, publish with SHA256SUMS.txt via softprops/action-gh-release@v3, size assertions of §3.9 B13 as a shell step), pages.yml (build landing + manual + web app, actions/upload-pages-artifact + actions/deploy-pages; the deploy step is guarded by 'if: vars.PAGES_WORKFLOW == '1'' until WP-91 switches the Pages source); update dependabot.yml with the cargo ecosystem and gradle for apps/desktop/src-tauri/gen/android; validate every workflow with python3 -c 'import yaml' loading. Write docs/adr/0003-rendering.md, 0004-crdt.md, 0005-bridge.md, 0006-shells.md condensed from §3.6, §3.11, §3.5, §3.8 plus docs/qa/env.md refreshed, docs/DESIGN.md (condensed §3) and docs/FORMATS.md (the v1.0 §3.5 element coverage lists, now stated for the kiln-io-* crates). Run the first full build and record its time in docs/qa/perf.md (B15). Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "gh repo view ZahakJ/officina --json isPrivate,homepageUrl,repositoryTopics -q '.isPrivate' prints false and homepageUrl is https://zahakj.github.io/officina/",
-   "gh api repos/ZahakJ/officina/pages -q .html_url prints https://zahakj.github.io/officina/",
-   "git remote get-url origin contains ZahakJ/officina and git status shows the branch is up to date with origin/main",
-   "gh run list --workflow ci.yml --limit 1 --json conclusion -q '.[0].conclusion' prints success",
-   "test -f LICENSE && head -1 LICENSE matches 'GNU AFFERO GENERAL PUBLIC LICENSE'",
-   "for f in README.md CONTRIBUTING.md SECURITY.md CODE_OF_CONDUCT.md THIRD-PARTY-NOTICES.md CHANGELOG.md .github/workflows/ci.yml .github/workflows/release.yml .github/ISSUE_TEMPLATE/bug_report.yml .github/ISSUE_TEMPLATE/feature_request.yml .github/ISSUE_TEMPLATE/config.yml .github/PULL_REQUEST_TEMPLATE.md .github/CODEOWNERS .github/dependabot.yml docs/index.html docs/.nojekyll docs/RELEASING.md; do test -f $f; done exits 0",
-   "pnpm media:render exits 0 and `identify docs/media/banner.png` reports 2000x600, docs/media/banner-light.png 2000x600, docs/media/social-preview.png 1280x640, apps/desktop/build/icon.png 512x512",
-   "curl -s -o /dev/null -w '%{http_code}' https://zahakj.github.io/officina/ prints 200 (allow up to 10 minutes after the push for Pages to build; retry)",
-   "grep -c 'img.shields.io/badge/licence-AGPL--3.0--or--later-3f6fe0' README.md >= 1"
+   "grep -rIil 'officina\\|scriba\\|tabula\\|scena\\|notula\\|atrium' --exclude-dir=node_modules --exclude-dir=target --exclude-dir=.git --exclude=PLAN.md . | sort prints exactly ./CHANGELOG.md and ./docs/adr/0002-kiln-rust-core.md",
+   "export PATH=\"$HOME/.cargo/bin:$HOME/.local/opt/node/bin:$PATH\"; rustc -V prints 1.99.1 and bash tools/verify-env.sh exits 0",
+   "ls ~/Android/ndk/29.0.14206865/source.properties succeeds and rustup target list --installed contains wasm32-unknown-unknown aarch64-linux-android armv7-linux-androideabi x86_64-linux-android",
+   "cargo fmt --all --check && cargo clippy --workspace --exclude kiln-desktop --all-targets -- -D warnings && cargo nextest run --workspace --exclude kiln-desktop exit 0 with at least one test per crate in crates/",
+   "cargo deny check licenses exits 0; cargo build --target wasm32-unknown-unknown -p kiln-bridge-wasm exits 0",
+   "cargo check -p kiln-desktop exits 0, or docs/qa/env.md records that the Tauri Linux libraries could not be installed",
+   "cargo xtask verify exits 0; cargo xtask fidelity --ci, cargo xtask budgets --ci, cargo xtask parity --check, cargo xtask protocol --check each exit 0 (skipped message allowed)",
+   "pnpm install --frozen-lockfile=false succeeds; pnpm verify exits 0; pnpm e2e exits 0 and e2e/screenshots/smoke/home-light-desktop.png exists",
+   "test ! -d packages/ooxml && test -d reference/ts-core/ooxml && test -d reference/ts-core/io-docx/src/write && test -d fixtures/docx && test -f conformance/curated-math.csv",
+   "python3 -c 'import yaml,glob; [yaml.safe_load(open(f)) for f in glob.glob(\".github/workflows/*.yml\")]' exits 0",
+   "gh repo view ZahakJ/kiln --json repositoryTopics -q '.repositoryTopics[].name' contains rust, tauri and webassembly and not electron",
+   "git log -1 --format=%s on origin/main mentions WP-50 and gh run watch for that commit exits 0"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": true
  },
  {
-  "id": "WP-03",
-  "title": "Parity tracker seed (parity.json, PARITY.md generator, verify runner) and competitor dossier",
-  "milestone": "M0",
+  "id": "WP-51",
+  "title": "Brand kit import: tokens, fonts, icons, banners, mockups",
+  "milestone": "R0",
   "depends_on": [
-   "WP-02"
+   "WP-50",
+   "path:/home/muth/kiln-brand/final"
   ],
   "owns": [
-   "parity/**",
-   "PARITY.md",
-   "docs/parity-badge.json",
-   "docs/COMPETITORS.md",
-   "docs/qa/would-miss-evidence.md"
-  ],
-  "task": "Create the parity tracker of §7.2 and seed it from this plan. parity/schema.ts (zod schema for rows, functions sidecar, corpus manifest; exported types), parity/parity.json with >= 530 rows covering: every ribbon command of §1.4 for Write (>= 160 rows), Grid (>= 180 rows; function *families* as rows with parity/functions.json listing every Excel worksheet function name (>= 520, from the official Excel function list by category: Compatibility, Cube (out), Database, Date and time, Engineering, Financial, Information, Logical, Lookup and reference, Math and trigonometry, Statistical, Text, Web, plus the dynamic-array/LAMBDA family) each marked planned|done|out with the WP that delivers it), Deck (>= 120 rows incl. every transition/animation/chart type/layout of §1.4), Notes (>= 30), Suite (>= 40) and explicit `out` rows for the niche scope decisions of §7.1 (VBA, Access, OLE, IRM, 3-D models, legacy binary formats, Power Pivot/DAX, macro recorder, WordArt effects, ink). Every row gets: stable dotted id, app, area, feature, the Office name/location, would-miss tier (assign from the evidence table you write in docs/qa/would-miss-evidence.md: cite §2A's switcher-complaint findings and add >= 10 further sources found with web search — LibreOffice/ONLYOFFICE/Google Sheets switching threads, \"what I miss from Excel/Word\" discussions, Office feature usage write-ups; each tier assignment must point at a reason), priority (P0/P1/P2/out consistent with §2 and the tier rules of §7.1), status `missing` (nothing is done yet — do not pre-mark), the WP from §6 that delivers it (null for loop candidates), and verify ids using the naming scheme of §7.2 that match the e2e/unit/conformance test names the §6 WPs are instructed to create (coordinate names with the WP texts: e.g. `e2e:write-features:format-painter`). parity/corpus.json listing every fixture file under packages/testing/fixtures with expected checks per §7.2 (the generator of WP-06 creates the files; list what it will create — names are fixed in §5). parity/generate.ts renders PARITY.md (per-app tables grouped by area, status glyphs, overall/per-app/per-tier scores with the §7.2 weights, the better-than-Office list, status flips since last tag via git) and docs/parity-badge.json (shields endpoint: label \"parity\", message \"<n> %\", color by band). parity/verify.ts: resolves verify ids to runners (`unit:` → vitest run with -t/path filter in the package, `e2e:` → playwright --grep on the spec, `conformance:` → checks the CSV row result file produced by the formula test run, `fidelity:` → reads docs/qa/fidelity.json produced by pnpm fidelity, `manual:` → checks the anchor exists and the row is niche) and fails on any done/better row whose verification is missing or failing; also fails if PARITY.md is stale (regenerate and diff) or ids are duplicated or a row's wp does not exist in PLAN.md's JSON block. Add a CI step in ci.yml? No — ci.yml is owned by WP-02: add the step by writing it into docs/qa/handoffs.md as a request AND, because WP-02 is complete, ask the orchestrator; instead make `pnpm verify` (root script, owned by WP-01 and already defined as turbo run lint typecheck test) unaffected and have parity validation run inside packages/testing's test suite (a test imports parity/schema.ts and validates parity.json + staleness), which CI already runs. docs/COMPETITORS.md: the §2A table rewritten as a dated document with the source URLs from the 2026-10-15 research (re-run the searches to capture URLs: GitHub API for star counts, release notes for ONLYOFFICE 9.4, LibreOffice 26.2, Collabora 26.04, Microsoft Agent Mode GA 2026-04-22, Google Gemini Workspace 2026-03-10, GenOffice, ArtCraft WordCraft/GridCraft/DeckCraft, Univer, Euro-Office), with a \"bars\" section mirroring §2A.3 and a re-scan checklist for the parity loop. README gets the parity badge only in WP-44 (do not edit README here).\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
-  "acceptance": [
-   "pnpm parity exits 0 and regenerates PARITY.md; `node -e` count of rows in parity/parity.json >= 530 with >= 120 critical, >= 200 commonly-missed; parity/functions.json lists >= 520 function names",
-   "pnpm parity:verify exits 0 (all rows are missing, so nothing to verify) and exits 1 when a test row is flipped to done without a verify id (demonstrated in a unit test in packages/testing or parity/)",
-   "pnpm --filter @officina/testing test exits 0 including the parity schema/staleness test",
-   "docs/COMPETITORS.md exists with >= 10 competitor entries each with a dated source URL; docs/qa/would-miss-evidence.md cites >= 15 sources",
-   "Every `wp` referenced in parity.json is an id present in this PLAN.md JSON block (checked by parity/verify.ts)"
-  ],
-  "gate": false
- },
- {
-  "id": "WP-04",
-  "title": "Design tokens and UI primitives",
-  "milestone": "M0",
-  "depends_on": [
-   "WP-01"
-  ],
-  "owns": [
+   "brand/**",
    "packages/tokens/**",
-   "packages/ui-kit/src/primitives/**",
+   "assets/fonts/brand/**",
    "packages/ui-kit/src/icons/**",
    "packages/ui-kit/src/theme/**",
-   "packages/ui-kit/src/index.ts",
-   "packages/ui-kit/test/**",
-   "packages/ui-kit/stories/**"
+   "packages/ui-kit/src/primitives/**",
+   "packages/ui-kit/stories/**",
+   "apps/desktop/src-tauri/icons/**",
+   "apps/web/public/**",
+   "docs/media/**",
+   "docs/design/**",
+   "docs/index.html",
+   "README.md",
+   "tools/import-brand.sh",
+   "tools/render-media.mjs"
   ],
-  "task": "Implement §1.2. packages/tokens: `tokens.css` defining every --of-* custom property for light, dark and high-contrast (`[data-theme=light|dark|hc]` on <html>, default follows prefers-color-scheme), app accent switching via `[data-app=write|grid|deck|notes|hub]` setting --of-accent, spacing/radius/shadow/motion tokens, `@theme` block for Tailwind 4, a `tokens.ts` export with the same values typed, font-face registration for Inter Variable + JetBrains Mono (from fontsource, bundled) and the document fonts (Liberation Sans/Serif/Mono, Carlito, Caladea: download the OFL TTF/WOFF2 files from their upstream repositories with a `tools`-free script `packages/tokens/scripts/fetch-fonts.mjs` into packages/tokens/fonts/ and commit them; ~5 MB total; add their licences to THIRD-PARTY-NOTICES via the notices generator's extra-assets list in packages/tokens/fonts/NOTICES.json), plus `applyTheme()` / `useTheme()` helpers. packages/ui-kit/src/primitives: Button (variants: default, primary, ghost, toolbar, split), IconButton, ToggleButton, Menu/MenuItem/Submenu (Radix dropdown), Popover, Tooltip (with shortcut rendering), Dialog (modal, focus trap, Esc), Tabs, Select, Combobox (searchable, used for font family/size), NumberInput (with units pt/px/cm/in), ColorPicker (theme colours grid 10x6 like Office + standard colours + recent + custom via react-colorful), Slider (zoom), Toolbar (roving tabindex), SplitButton, Gallery (Office-style scrolling gallery with expand), Separator, Kbd, Toast, Spinner, VisuallyHidden, ScrollArea. All keyboard accessible with ARIA per §3.10. Icons: `Icon` component wrapping lucide-react plus the custom Officina Glyphs set (≥ 120 SVGs listed in §1.2, 20x20 viewBox, currentColor; create them as simple, clean strokes consistent with Lucide) exported by name from `packages/ui-kit/src/icons/glyphs/index.ts` with a generated `glyphs.test.ts` asserting every name referenced by §1.4 ribbon specs exists (write the list in `packages/ui-kit/src/icons/required-glyphs.ts`). Theme: `ThemeProvider` reading/persisting the user's choice to localStorage. Add a `stories/` folder with a single `Gallery.tsx` React page that renders every primitive in all three themes (used for screenshots, not Storybook) and export it; add a Vitest+jsdom test per primitive for render + keyboard behaviour.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Precondition: the directory /home/muth/kiln-brand/final exists and contains tokens.json (or tokens.css), logo, icons, fonts, banners and mockups (read its README first; if a listed artefact is missing, record it in docs/design/kit-gaps.md and continue with what exists). Write tools/import-brand.sh (idempotent): copies the kit verbatim into brand/ (including every licence file), then (a) generates packages/tokens from brand/tokens.json — CSS custom properties --kiln-* for light/dark/high-contrast with data-theme and prefers-color-scheme handling, the per-app accent activation via data-app (write=cobalt, grid=jade, deck=ember, notes=saffron, home=neutral), a Tailwind 4 @theme block, a typed TS object, @font-face rules for the kit fonts served from assets/fonts/brand/ (copied with their OFL files) — and a unit test that regenerates and diffs so drift fails; (b) generates app icons: pnpm tauri icon brand/icons/<app-mark>.svg into apps/desktop/src-tauri/icons/ (icon.png, 32x32, 128x128, 128x128@2x, icon.icns, icon.ico, Android mipmaps under icons/android/), plus per-document-type icons write.png/grid.png/deck.png for file associations, PWA icons (192, 512, maskable) and favicon.svg in apps/web/public/; (c) copies banners (light/dark, social preview 1280x640) into docs/media/ and wires them into README.md's banner picture element and docs/index.html's hero and og:image; (d) copies the mockups into docs/design/mockups/ with docs/design/README.md mapping each mockup to the WP that implements it (Home/app frames → WP-58, Write → WP-64/66, Grid → WP-71/72, Deck → WP-78/80, Notes → WP-86, phone → WP-90, dialogs/Backstage → WP-58/85). Re-skin packages/ui-kit: replace the Horizon theme CSS with token-driven styles; update primitives (Button, IconButton, ToggleButton, SplitButton, Menu, Popover, Dialog, Tabs, Toolbar, Select, Combobox, NumberInput, Slider, Tooltip, Toast, ScrollArea, Kbd, Gallery, ColorPicker) to the kit's component styles as shown in the mockups (shape, type, spacing, states, focus rings, motion), add the kit's glyph set as the icon source (Lucide remains for icons the kit does not provide), and refresh the stories gallery so pnpm --filter @kiln/ui-kit shots renders every primitive in light and dark for review. Update tools/render-media.mjs to produce PNG variants from the kit SVGs only where the kit ships SVG without PNG. Write docs/design/kit-gaps.md listing anything the kit lacks that later WPs need (e.g. high-contrast values, phone variants of a dialog). Record a visual review of the primitives against the mockups in docs/qa/visual-review-WP-51.md. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/tokens --filter @officina/ui-kit test exits 0 with >= 25 tests passing",
-   "test -f packages/tokens/fonts/Carlito-Regular.ttf (or .woff2) and Liberation*/Caladea* files exist with NOTICES.json",
-   "grep -c -- '--of-accent-write' packages/tokens/tokens.css >= 2 (light and dark definitions)",
-   "node -e \"import('./packages/ui-kit/src/icons/glyphs/index.ts')\" via `pnpm --filter @officina/ui-kit exec tsx -e` lists >= 120 glyph exports",
-   "pnpm typecheck exits 0"
+   "test -d brand && test -f brand/tokens.json -o -f brand/tokens.css; bash tools/import-brand.sh twice leaves git status clean after the first run (idempotent)",
+   "pnpm --filter @kiln/tokens generate && git diff --exit-code packages/tokens exits 0; pnpm --filter @kiln/tokens test passes",
+   "grep -rl 'fontsource\\|Inter Variable' packages apps --include=*.ts --include=*.tsx --include=*.css | wc -l prints 0 unless brand/README names Inter as the UI face",
+   "ls apps/desktop/src-tauri/icons/icon.png apps/desktop/src-tauri/icons/icon.icns apps/desktop/src-tauri/icons/icon.ico apps/desktop/src-tauri/icons/128x128.png apps/web/public/favicon.svg succeeds; identify docs/media/social-preview.png prints 1280x640",
+   "every fonts directory under assets/fonts/brand/ contains an OFL*.txt or LICENSE file (find assets/fonts/brand -mindepth 1 -maxdepth 1 -type d -exec test -e {}/OFL.txt -o -e {}/LICENSE.txt \\; -print count equals directory count)",
+   "pnpm --filter @kiln/ui-kit shots writes packages/ui-kit/stories/out/primitives-light.png and primitives-dark.png; docs/qa/visual-review-WP-51.md exists and names each mockup checked",
+   "pnpm verify and pnpm e2e exit 0; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-05",
-  "title": "OOXML core (OPC container, XML, DrawingML, themes, passthrough) and fixture corpus generator",
-  "milestone": "M0",
+  "id": "WP-52",
+  "title": "Protocol crate, session facade, wasm and Tauri bridges, typed TS client",
+  "milestone": "R0",
   "depends_on": [
-   "WP-01"
+   "WP-50"
   ],
   "owns": [
-   "packages/ooxml/**",
-   "packages/testing/**",
-   "tools/make-fixtures.py",
-   "tools/fetch-corpus.sh"
+   "crates/kiln-protocol/**",
+   "crates/kiln-session/**",
+   "crates/kiln-bridge-wasm/**",
+   "crates/kiln-common/**",
+   "xtask/src/protocol.rs",
+   "xtask/src/wasm.rs",
+   "packages/protocol/**",
+   "apps/web/src/worker.ts",
+   "apps/web/src/client/**",
+   "apps/web/vite.config.ts",
+   "apps/web/src/routes/frame/**",
+   "apps/desktop/src-tauri/src/**",
+   "apps/desktop/src-tauri/capabilities/**",
+   "e2e/specs/bridge.spec.ts",
+   "docs/adr/0005-bridge.md"
   ],
-  "task": "Implement §3.5's shared layer in packages/ooxml: `OpcPackage` (open from Uint8Array via fflate with zip-bomb limits; parts map; [Content_Types].xml defaults/overrides; relationships per part with typed lookup by relationship type; `getPart`, `setPart`, `removePart`, `addPart(name, contentType, bytes)`, `nextPartName('/word/media/image{n}.png')`, `save()` producing a zip with Office-compatible ordering ([Content_Types].xml first, then _rels/.rels)), XML layer over fast-xml-parser with preserveOrder (`parseXml`, `buildXml` with a stable namespace prefix table for w, a, p, r, c, x14, mc, wp, pic, wps, m, xdr, dgm, vt, cp, dc, dcterms; `xmlns` declarations emitted only when used; `mc:Ignorable` preserved), a tiny typed query helper (`child(node,'w:pPr')`, `children`, `attr`, `text`) and node builders, units (EMU, twips, half-points, eighths-of-a-point, percentages, `ST_` enums as string unions), DrawingML: `a:theme` parser/serialiser (clrScheme incl. system colours, fontScheme with major/minor latin/ea/cs, fmtScheme), colour resolution (`a:srgbClr`, `a:schemeClr` with lumMod/lumOff/tint/shade/alpha transforms, `a:sysClr`, `a:prstClr`), fills (solid, gradient linear/path, pattern, picture/blip with stretch/tile, none), lines (width, dash, caps, joins, head/tail ends), effects (outer shadow, glow, reflection → stored; shadow rendered), `a:bodyPr` and `a:lstStyle`/`a:pPr`/`a:rPr` text properties, and **preset geometries**: transcribe all 187 presets from ECMA-376 presetShapeDefinitions (guides, adjust values, paths with formula evaluation) into `src/drawingml/presets/*.ts` with `presetToSvgPath(preset, w, h, adjustments)`; test ≥ 40 presets against hand-computed path strings and all 187 for \"produces a non-empty closed path without NaN\". Passthrough: `PassthroughSet` that records parts and relationships a reader did not consume, re-emitted by writers. Document properties: core/app/custom properties read/write. packages/testing: fixtures directory layout (fixtures/docx, xlsx, pptx, each with `features/` generated and `manual/` hand-authored), `tools/make-fixtures.py` (Python venv per §4.5) generating the synthetic corpus described in §5 deterministically (fixed seeds, fixed dates) and `tools/fetch-corpus.sh` downloading 10 public-domain real-world files per format (e.g. from the ECMA-376 samples, Apache POI test data, LibreOffice unit-test corpora — list exact URLs; skip files that fail to download) into fixtures/external (gitignored). Oracles in packages/testing/src/oracles: `soffice.ts` (wraps tools/oracle-soffice.sh; convert to pdf/csv/docx/xlsx/pptx; `renderPdfPages(pdf) -> PNG buffers` via pdftoppm), `exceljsReader.ts`, `mammothReader.ts`, `pythonReader.ts` (runs small Python scripts with openpyxl/python-docx/python-pptx to dump JSON). Fidelity scorer skeleton `src/fidelity/score.ts` per §5 with `structural`, `text`, `visual` (pixelmatch), `oracle_opens`. Helper `loadFixture(name)`.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Implement §3.3, §3.5 and the skeleton of §3.8. kiln-common: DocId, NodeId, units (Emu, Twip, Pt, Px with conversions), Color, Rect/Point (kurbo re-exports), KilnError. kiln-protocol: all types with #[derive(Serialize, Deserialize, ts_rs::TS)] — Command as an enum of per-app sub-enums Command::Suite(SuiteCommand) | Write(WriteCommand) | Grid(GridCommand) | Deck(DeckCommand) | Notes(NotesCommand), each sub-enum in its own file crates/kiln-protocol/src/commands/<app>.rs so later app WPs own their file without merge conflicts (SuiteCommand gets Open/New/Save/SaveAs/Close/Undo/Redo/SetZoom/SetViewMode/Ping/Echo now; Write gets InsertText/DeleteBackward/MoveCaret/SelectTo for the scratch document; others empty with a doc comment); a CommandMeta table per app file (id string such as 'suite.file.save', label_key, keytip, group, Tier, AppMask, Availability) built by a small declarative macro and exported as catalog.json; Event, Viewport, Selection, Caret, Handle, DocSummary, StatusBar, Query/QueryResult, HostRequest/HostReply, ExecResult, plus a scene module re-exporting kiln-scene types once WP-54 provides them (leave a stub module). xtask protocol: runs the ts-rs exporter writing packages/protocol/src/generated/*.ts and catalog.json with a banner 'generated, do not edit'; --check diffs against the committed files and exits 1 on drift; postcard test vectors for every protocol type written to crates/kiln-protocol/tests/vectors/*.bin+json, and packages/protocol/src/postcard.ts decodes them in Vitest. kiln-session: Session with a document registry, Host trait (§3.3), execute() dispatch validating against CommandMeta availability, an undo stack per document, an event queue with poll(), set_viewport/frame stubs returning an empty SceneDelta, a 'scratch' document kind (plain paragraphs of text, no layout yet) used to prove the loop; the session runs on its own thread natively (flume channel + oneshot replies) behind a SessionHandle that the bridges use. kiln-bridge-wasm: wasm-bindgen cdylib exporting KilnSession (open/new/execute/setViewport/frame/a11y/poll/hostReply) with JSON for small payloads and Uint8Array postcard for frames; console_error_panic_hook; a 'threads' cargo feature wired to wasm-bindgen-rayon but off by default. xtask wasm: cargo build --target wasm32-unknown-unknown --profile wasm-release -p kiln-bridge-wasm, wasm-bindgen --target web, wasm-opt -Os, copy into apps/web/src/wasm/ (gitignored), print gzip size and fail --release if > 4.5 MB (B12). packages/protocol: KilnClient interface (execute, query, setViewport, frame, subscribe, hostReply, open, new), WasmWorkerClient (apps/web/src/worker.ts hosts the wasm; postMessage with transferables; HostRequests answered on the main thread with File System Access API/OPFS stubs), TauriClient (invoke kiln_* commands + ipc Channel events). kiln-desktop: register the #[tauri::command]s of §3.5 forwarding to SessionHandle, Channel-based events, binary ipc::Response for frames, capabilities granting only those commands plus fs/dialog/opener/window-state/process plugins. apps/web: choose the client at startup (window.__TAURI__ present → TauriClient), boot the worker, show the core version from a Ping in the frame; a 'scratch' route that lists the document's paragraphs as plain DOM (temporary; the canvas surface comes in WP-54) so e2e can type into it via commands. Biome: finalise the thinness rule (restricted imports) for packages/*. Write docs/adr/0005-bridge.md. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/ooxml test exits 0 with >= 60 tests (OPC round-trip of a generated docx/xlsx/pptx yields byte-identical part contents for untouched parts; theme colour resolution cases; 187 preset geometry tests)",
-   "python3 -I tools/make-fixtures.py --out packages/testing/fixtures exits 0 and creates >= 15 .docx, >= 15 .xlsx, >= 15 .pptx files under features/",
-   "bash tools/oracle-soffice.sh packages/testing/fixtures/docx/features/styles.docx pdf /tmp/officina-oracle exits 0 and the PDF exists",
-   "pnpm --filter @officina/testing test exits 0 (oracle wrappers smoke-tested against generated fixtures; scorer unit tests)",
-   "LibreOffice opens every generated fixture: a test converts each features/* file to pdf without error"
+   "cargo xtask protocol && git diff --exit-code packages/protocol/src/generated exits 0; cargo xtask protocol --check exits 0",
+   "cargo nextest run -p kiln-protocol -p kiln-session -p kiln-common passes, including tests: open scratch, InsertText/DeleteBackward/Undo/Redo change DocSummary as expected, availability rejects a Write command on a non-Write doc",
+   "pnpm --filter @kiln/protocol test passes and decodes every file in crates/kiln-protocol/tests/vectors",
+   "cargo xtask wasm --release exits 0 and prints 'wasm gzip: <n> KB' with n < 4500",
+   "pnpm e2e --grep bridge passes: the page shows the core version string and typing through the scratch route round-trips text via the Worker",
+   "cargo check -p kiln-desktop exits 0 (if Tauri libs are installed) and cargo clippy -p kiln-desktop -- -D warnings is clean",
+   "CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-06",
-  "title": "Command registry, keymaps, Ribbon, Backstage, status bar, command palette, panes",
-  "milestone": "M0",
+  "id": "WP-53",
+  "title": "Text engine kiln-text: fonts, shaping, bidi, line breaking, glyph atlas",
+  "milestone": "R0",
   "depends_on": [
-   "WP-04"
+   "WP-50"
+  ],
+  "owns": [
+   "crates/kiln-text/**",
+   "assets/fonts/liberation/**",
+   "assets/fonts/carlito/**",
+   "assets/fonts/caladea/**",
+   "fixtures/golden/text/**",
+   "fixtures/docx/text/**"
+  ],
+  "task": "Implement §3.6 'Text pipeline'. Fonts: download the OFL Liberation 2.1.x, Carlito and Caladea families (from the Debian/Fedora sources or GitHub releases; record URLs and SHA-256 in assets/fonts/SOURCES.md) with their OFL licence files; a FontStore that loads bundled fonts (feature bundled-fonts via include_bytes, default on; or from a directory at runtime) and, on native targets, discovers system fonts with fontique; a substitution table mapping Office names to bundled families (Calibri→Carlito, Cambria→Caladea, Arial/Helvetica→Liberation Sans, Times New Roman→Liberation Serif, Courier New→Liberation Mono, Calibri Light→Carlito, Aptos→FontStore::ui_sans() which WP-51's tokens can set, Symbol/Wingdings→fallback with a report) and script-based fallback chains (Latin, Arabic, Hebrew, CJK via Noto fallbacks if present on the system; on web only bundled fonts). Shaping and layout with parley 0.12 (harfrust shaping, skrifa metrics): a ParagraphSpec of styled spans (font family/size/weight/italic, colour, underline/strike kinds, letter spacing, baseline shift, lang, bidi level), paragraph properties (alignment incl. justify and distribute, indents incl. first-line/hanging, tab stops with alignment and leaders, line spacing single/multiple/exactly/at-least using Word's metric rule — winAscent/winDescent unless USE_TYPO_METRICS — spacing before/after, direction), width and optional hyphenation (hyphenation crate, en-US and de patterns) → ParagraphLayout with lines (y, ascent, descent, glyph runs with font id, glyph ids, advances, cluster map), caret positions and hit testing (logical ↔ visual with bidi), grapheme/word/sentence boundaries (unicode-segmentation). Glyph atlas: swash scaler rasterising glyphs at (font, px size, quarter-pixel subpixel offset) into A8 atlas pages (1024×1024, shelf packing) and RGBA8 for colour glyphs, with page ids and rect handles the Scene can reference; outline path export (kurbo) for glyphs ≥ 96 px. Metrics cache keyed by (font, size). Tests: insta snapshots of line breaks and glyph counts for ≥ 30 paragraphs (English justified/left/centre, German with hyphenation, Arabic RTL, mixed LTR/RTL with numbers, CJK, tabs with leaders, hanging indents); 10 single-paragraph docx fixtures (create them under fixtures/docx/text/ with python-docx) rendered by LibreOffice (tools/oracle-soffice.sh → pdf → pdftotext -layout) must produce the same line count as kiln-text; proptest that hit_test(caret_rect(i)) == i; a benchmark example (cargo run --release --example layout_bench) laying out 1,000 mixed paragraphs at 600 px in < 60 ms total. Document the public API in README.md. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
+  "acceptance": [
+   "cargo nextest run -p kiln-text passes (≥ 30 insta snapshots committed, LibreOffice line-count test passes for all 10 text fixtures)",
+   "cargo run --release -p kiln-text --example layout_bench prints total_ms < 60",
+   "assets/fonts/{liberation,carlito,caladea}/ each contain the TTFs and an OFL.txt; assets/fonts/SOURCES.md lists URLs and SHA-256 that sha256sum -c verifies",
+   "cargo build --target wasm32-unknown-unknown -p kiln-text --no-default-features --features bundled-fonts exits 0",
+   "CI green"
+  ],
+  "gate": false,
+  "heavy": false
+ },
+ {
+  "id": "WP-54",
+  "title": "Scene display list, raster painter, canvas painter, input proxy (IME), a11y shadow tree",
+  "milestone": "R0",
+  "depends_on": [
+   "WP-52",
+   "WP-53"
+  ],
+  "owns": [
+   "crates/kiln-scene/**",
+   "crates/kiln-raster/**",
+   "crates/kiln-protocol/src/scene.rs",
+   "crates/kiln-session/src/apps/scratch/**",
+   "crates/kiln-session/src/frame/**",
+   "packages/surface/**",
+   "apps/web/src/routes/playground/**",
+   "e2e/specs/surface.spec.ts",
+   "e2e/specs/painter-parity.spec.ts",
+   "fixtures/golden/scene/**",
+   "docs/adr/0003-rendering.md"
+  ],
+  "task": "Implement §3.6 'Scene', 'Text input and IME', 'Accessibility', 'Selection' and §3.8 'Painter'. kiln-scene: Scene/Layer/Tile/DrawOp (FillRect, StrokeRect, Path{kurbo, fill/stroke, even-odd}, GlyphRun{atlas page, glyph rects, positions, colour}, OutlineGlyphs, Image{id, src rect, dst rect, opacity}, Clip push/pop, Transform push/pop, Gradient (linear/radial), Shadow, Squiggle, Caret, SelectionRects, Guide), tile hashing (rustc-hash over ops), SceneDelta {tiles, removed, atlas pages, images, overlays}, postcard encoding, culling helpers, and a hit-test index per tile; all types derive TS and are re-exported from kiln-protocol::scene. kiln-raster: tiny-skia painter for a Scene (atlas glyph blitting, paths with anti-aliasing, images, clips, gradients) → RGBA buffer and PNG, DPR-aware; a golden-image test helper (perceptual diff threshold 0.3 % differing pixels, writes diff PNGs on failure). kiln-session frame production: Frame{viewport} → SceneDelta with prefetch margin of one viewport; the scratch document gets a real layout via kiln-text (paragraphs stacked on a page-like canvas) with caret/selection geometry, hit testing, word/paragraph selection, Shift/Ctrl moves, composition state (SetComposition/CommitComposition commands) rendered with an underline, and an A11yTree query exposing paragraphs and the caret. packages/surface (TypeScript): <Surface client doc> component owning a <canvas> stack (content canvas + overlay canvas), DPR-aware sizing with ResizeObserver, postcard SceneDelta decoding (from @kiln/protocol), tile cache keyed by TileId with atlas pages uploaded to offscreen canvases, drawImage blitting of glyph rects, Path2D for paths, rAF-scheduled compositing, scroll/zoom handling that translates cached tiles immediately and requests new frames (wheel, trackpad, touch pan/pinch, keyboard), the input proxy (1×1 px transparent contenteditable positioned at the caret, beforeinput/input/composition*/keydown/paste/cut/copy handlers → InputEvents/commands, spellcheck=off, autocapitalize=off), the a11y shadow tree mirror (off-screen but not display:none, aria-activedescendant on the proxy, aria-live region), selection overlay with teardrop handles on touch, and a pointer→hit-test→SelectTo loop with autoscroll. apps/web playground route: opens a scratch document and mounts Surface for manual and e2e use. Tests: Rust unit tests for scene hashing/delta/culling; golden PNGs of the scratch document (fixtures/golden/scene/*.png); Vitest for the decoder and tile cache; e2e surface.spec: type text (keyboard), compose text via CDP Input.imeSetComposition + Input.insertText and assert the committed text, select with mouse drag and Shift+Arrow, scroll a 500-paragraph document at 60 fps (frame time p95 ≤ 16.7 ms measured with PerformanceObserver), a11y mirror contains the paragraphs and axe reports 0 serious/critical; painter-parity.spec: screenshot of the canvas vs the kiln-raster PNG of the same Scene (kiln render --scratch), pixelmatch ≤ 1 %. Write docs/adr/0003-rendering.md. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
+  "acceptance": [
+   "cargo nextest run -p kiln-scene -p kiln-raster -p kiln-session passes; fixtures/golden/scene/ has ≥ 3 golden PNGs",
+   "cargo xtask protocol --check exits 0 after the scene types were added",
+   "pnpm --filter @kiln/surface test passes; pnpm e2e --grep 'surface|painter-parity' passes (IME composition, selection, 60 fps scroll, a11y mirror, pixelmatch ≤ 1 %)",
+   "cargo run -p kiln-cli -- render --scratch fixtures/golden/scene/lorem.txt --png /tmp/out.png writes a PNG (kiln-cli gains only this subcommand here; WP-60 owns the rest)",
+   "CI green"
+  ],
+  "gate": false,
+  "heavy": false
+ },
+ {
+  "id": "WP-55",
+  "title": "OOXML core port: OPC, XML layer, DrawingML, presets, passthrough, deterministic writer",
+  "milestone": "R0",
+  "depends_on": [
+   "WP-50"
+  ],
+  "owns": [
+   "crates/kiln-ooxml/**",
+   "tools/port-presets.py",
+   "fixtures/ooxml/**"
+  ],
+  "task": "Port reference/ts-core/ooxml (17k lines, tests in reference/ts-core/ooxml/test) to crates/kiln-ooxml following §3.10. Modules: opc (OpcPackage::open(bytes) over zip 9.0 with limits 2 GB uncompressed / 64k parts / nesting guard, [Content_Types].xml, part names normalisation, relationships traversal, write with stable part order and deflate level 6), xml (an order-preserving element tree over quick-xml 0.42 with entity expansion disabled, namespace-aware queries, a writer with deterministic attribute order and Office's prefixes mc/w/a/p/x/r/wp/pic/c), st (simple types, enum tables, booleans ST_OnOff), units (EMU/twips/half-points/eighths/percent), drawingml (color incl. scheme/system/preset/transforms, fill solid/gradient/pattern/blip, line, effects, text body properties, theme colour/font/format schemes, geometry with the 187 preset definitions — write tools/port-presets.py that reads the TS preset data in reference/ts-core/ooxml/src/drawingml/presets/ and emits crates/kiln-ooxml/src/drawingml/presets/data.rs; guides, adjust handles, formulas evaluated to kurbo paths), passthrough (parts kept as bytes with content type and rels, relationship fix-ups on write, the 'untouched parts byte-identical' guarantee), props (docProps core/app/custom). Port every TS test as a Rust test; add a repack test over every fixture in fixtures/{docx,xlsx,pptx}/features: open → write (no edits) → every part's bytes identical and the zip entry order stable; proptest for part-name normalisation and XML escape round-trips; fixtures/ooxml/ gets small hand-made packages for edge cases (missing content types, absolute rels, unusual encodings). Benchmark example: open + repack the 10 MB large xlsx fixture in < 300 ms. Keep the module layout documented in README.md so the io crates can follow it. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
+  "acceptance": [
+   "cargo nextest run -p kiln-ooxml passes; the repack test covers all 58 feature fixtures with byte-identical parts",
+   "python3 -I tools/port-presets.py --check exits 0 (regenerated data.rs equals the committed file) and the preset count test asserts 187",
+   "cargo run --release -p kiln-ooxml --example repack_bench prints ms < 300 for fixtures/xlsx/large/*.xlsx",
+   "cargo build --target wasm32-unknown-unknown -p kiln-ooxml exits 0",
+   "CI green"
+  ],
+  "gate": false,
+  "heavy": false
+ },
+ {
+  "id": "WP-56",
+  "title": "Formula engine core port: parser, references, dependency graph, incremental parallel recalculation, number formats",
+  "milestone": "R0",
+  "depends_on": [
+   "WP-50"
+  ],
+  "owns": [
+   "crates/kiln-formula/src/parser/**",
+   "crates/kiln-formula/src/refs/**",
+   "crates/kiln-formula/src/values/**",
+   "crates/kiln-formula/src/engine/**",
+   "crates/kiln-formula/src/numfmt/**",
+   "crates/kiln-formula/src/lib.rs",
+   "crates/kiln-formula/src/registry.rs",
+   "crates/kiln-formula/Cargo.toml",
+   "crates/kiln-formula/tests/parser*",
+   "crates/kiln-formula/tests/engine*",
+   "crates/kiln-formula/tests/numfmt*",
+   "crates/kiln-formula/examples/**",
+   "conformance/core/**",
+   "conformance/numfmt/**",
+   "tools/gen-numfmt-cases.mjs"
+  ],
+  "task": "Port reference/ts-core/formula/src/{parser,values,engine} (and their tests under reference/ts-core/formula/test) to crates/kiln-formula per §3.4 of v1.0 (restated: tokenizer covering A1/$A$1/Sheet1!A1/'My Sheet'!A1:B2/3-D Sheet1:Sheet3!A1/structured refs Table1[[#Headers],[Col]]/A:A/1:1/#REF!/@ implicit intersection/%/&/comparisons/range-union-intersection operators/array constants; Pratt parser → AST with spans; printer that reproduces canonical text; reference rewriting for insert/delete rows and columns, copy, move, rename, A1↔R1C1, F4 toggle; value model Number/Str/Bool/Error(#DIV/0! #N/A #NAME? #NULL! #NUM! #REF! #VALUE! #SPILL! #CALC!)/Array2D/Lambda/Blank with Excel's 15-significant-digit rounding, 'almost equal' comparison, date serials in the 1900 system with the Lotus 1900-02-29 bug and the 1904 option; dependency graph with interval-tree range nodes so SUM(A:A) does not create a million edges; dirty marking, topological levels, cycle detection → #CIRCULAR unless iterative calc is enabled; lazy arguments for IF/IFS/CHOOSE/LET/LAMBDA; dynamic arrays with spill and #SPILL!; implicit intersection for legacy formulas; volatile functions). Add rayon-parallel evaluation of independent cells within a topological level (deterministic results; the engine takes a `parallel: bool` so wasm single-thread builds compile without rayon). Define a FunctionRegistry trait (name, arity/variadics, volatility, lazy-arg mask, implementation fn, docs handle) so WP-57 plugs the library in; include only arithmetic/comparison operators and SUM, IF, AND, OR, NOT, TRUE, FALSE here for tests. numfmt: implement Excel number format codes (sections positive/negative/zero/text, conditions, colours, literal/escaped text, fills, thousands and scaling, percent, scientific, fractions, date/time incl. elapsed [h], AM/PM, locale codes [$-409], General with 11-character width rules) — write tools/gen-numfmt-cases.mjs that uses the numfmt npm package (dev dependency only, add to the catalog as dev) to generate ≥ 600 (format, value, expected) rows into conformance/numfmt/*.csv, and test against them. conformance/core/*.csv: the subset of the inherited conformance rows that need only the core functions, run by crates/kiln-formula/tests/engine_conformance.rs. Examples (for budgets): examples/recalc_bench.rs building a 1M-cell workbook mix (SUM/IF/arith/VLOOKUP replaced by INDEX-like core ops) measuring full recalc with 4 threads and a single-edit incremental recalc in a 100k-formula workbook. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
+  "acceptance": [
+   "cargo nextest run -p kiln-formula passes (ported parser/engine tests, numfmt ≥ 600 rows, conformance/core rows 0 failures)",
+   "a test asserts parse→print→parse identity for every formula appearing in conformance/*.csv (≥ 4,500 formulas)",
+   "cargo run --release -p kiln-formula --example recalc_bench prints full_recalc_ms < 2000 and incremental_ms_p95 < 2 (B8/B9) on this machine",
+   "cargo build --target wasm32-unknown-unknown -p kiln-formula --no-default-features exits 0",
+   "CI green"
+  ],
+  "gate": false,
+  "heavy": false
+ },
+ {
+  "id": "WP-57",
+  "title": "Formula function library port (≥ 484 functions), docs JSON, full conformance suite",
+  "milestone": "R0",
+  "depends_on": [
+   "WP-56"
+  ],
+  "owns": [
+   "crates/kiln-formula/src/functions/**",
+   "crates/kiln-formula/docs/**",
+   "crates/kiln-formula/tests/conformance*",
+   "crates/kiln-formula/tests/docs*",
+   "crates/kiln-formula/examples/functions.rs",
+   "conformance/*.csv",
+   "conformance/functions-implemented.json",
+   "docs/formula-deviations.md"
+  ],
+  "task": "Port every function family from reference/ts-core/formula/src/functions (Math/Trig, Statistical incl. distributions via statrs with precision checks against the oracle rows, Logical incl. LET/LAMBDA/MAP/REDUCE/SCAN/MAKEARRAY/BYROW/BYCOL, Text incl. TEXTSPLIT/TEXTBEFORE/TEXTAFTER/TEXT (via numfmt), Date/Time incl. NETWORKDAYS.INTL/WORKDAY.INTL/DATEDIF/YEARFRAC, Lookup incl. XLOOKUP/XMATCH/FILTER/SORT/SORTBY/UNIQUE/TAKE/DROP/HSTACK/VSTACK/TOCOL/TOROW/WRAPROWS/WRAPCOLS/EXPAND, Information, Financial (rust_decimal where the TS used decimal.js), Engineering incl. CONVERT and complex numbers, Database, Web ENCODEURL) into crates/kiln-formula/src/functions/<family>.rs registering through the FunctionRegistry; keep function names, arities, volatility and lazy-argument masks identical to the TS implementation (which is the reference for edge cases; the CSVs are the oracle). Move the function docs JSON (signature, argument descriptions, examples) to crates/kiln-formula/docs/*.json included with include_str and exposed through a docs() API used later by autocompletion and the Formula Lab; a test asserts every registered function has a docs entry and every docs entry a function. Conformance runner crates/kiln-formula/tests/conformance.rs reading all conformance/*.csv (format: formula,expected,type,notes; fixture.json defines the workbook cells; oracle-exclusions.csv lists rows excluded with reasons) — 0 failures; extend the CSVs with ≥ 200 new curated rows for dynamic-array and LAMBDA cases; write conformance/functions-implemented.json (name → implemented|planned) consumed by cargo xtask parity; examples/functions.rs prints --count and --list and --doc <NAME>. Document every intentional deviation from Excel in docs/formula-deviations.md with a reason. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
+  "acceptance": [
+   "cargo nextest run -p kiln-formula --test conformance passes with 0 failures over ≥ 4,700 rows (print the row count in the test output)",
+   "cargo run -p kiln-formula --example functions -- --count prints a number ≥ 484; --doc XLOOKUP prints a signature and ≥ 1 example",
+   "cargo nextest run -p kiln-formula --test docs passes (every function documented, every doc has a function)",
+   "cargo build --target wasm32-unknown-unknown -p kiln-formula --no-default-features exits 0 and the wasm-release size increase of kiln-bridge-wasm attributable to the library is reported in CHANGELOG (< 1.2 MB gzip)",
+   "CI green"
+  ],
+  "gate": false,
+  "heavy": false
+ },
+ {
+  "id": "WP-58",
+  "title": "Chrome re-wire: commands over the generated catalog, ribbon/Backstage/status bar/palette to the brand mockups, Kiln Home, app frame",
+  "milestone": "R0",
+  "depends_on": [
+   "WP-51",
+   "WP-52"
   ],
   "owns": [
    "packages/commands/**",
    "packages/ui-kit/src/ribbon/**",
    "packages/ui-kit/src/backstage/**",
+   "packages/ui-kit/src/chrome/**",
    "packages/ui-kit/src/statusbar/**",
    "packages/ui-kit/src/palette/**",
-   "packages/ui-kit/src/panes/**",
+   "packages/ui-kit/src/keytips/**",
    "packages/ui-kit/src/minitoolbar/**",
    "packages/ui-kit/src/contextmenu/**",
-   "packages/ui-kit/src/keytips/**",
-   "packages/ui-kit/src/chrome/**",
-   "packages/ui-kit/src/index.ts"
+   "packages/ui-kit/src/panes/**",
+   "packages/ui-kit/src/index.ts",
+   "packages/home/**",
+   "apps/web/src/App.tsx",
+   "apps/web/src/main.tsx",
+   "apps/web/src/index.css",
+   "apps/web/src/routes/home/**",
+   "apps/web/src/routes/app-frame/**",
+   "e2e/specs/chrome.spec.ts",
+   "e2e/specs/shortcuts.spec.ts",
+   "e2e/specs/home.spec.ts",
+   "e2e/specs/backstage.spec.ts",
+   "docs/SHORTCUTS.md",
+   "docs/qa/visual-review-WP-58.md"
   ],
-  "task": "packages/commands: `CommandRegistry` (`register({id, title, officeName?, synonyms[], icon, shortcut?, when?, run(ctx,args), isEnabled(ctx), isChecked?(ctx)})`, `execute(id,args)`, `getState(id)`, change subscriptions), `Keymap` (platform-aware parsing of \"Mod+Shift+L\", Mac ⌘ mapping, chord-free; conflict detection; user overrides persisted), the full §1.7 shortcut table as `keymaps/{write,grid,deck,common}.ts` mapping to command ids (commands that editors implement later are declared here as ids with titles so the palette/keytips/menus are complete from day one; unimplemented ids resolve to a no-op flagged `pending` and are hidden in release builds by `tiers.ts`), `KeyTips` sequences (Alt → letters per §1.3), `AssistantProvider` interface (§2.1) with a `NullProvider` and `EchoProvider`, tier flags (`tiers.ts`: P0/P1/P2 with env/build-time gating), telemetry-free `recentCommands` store, and `createOfficeSynonyms()` seed. packages/ui-kit chrome: `AppFrame` (title bar with mark, title rename, AutoSave toggle, undo/redo, Search/Tell-me box = palette trigger, presence slot, share button, window controls slot), `Ribbon` (data-driven from a `RibbonSpec` {tabs:[{id,label,keyTip,groups:[{id,label,launcher?,items:[...]}]}]}, item kinds: button, toggle, split, dropdown, gallery, combobox, color, numberinput, spacer, custom; Classic 3-row and Simplified 1-row layouts chosen by width; collapse (Ctrl+F1); contextual tab sets appearing with a coloured header; overflow handling; keyboard Tabs+Toolbar ARIA; tooltip shows title, shortcut, Office name when different), `Backstage` (full-screen overlay; the §1.5 navigation; content panes are slots so apps plug in Info/Print/Export), `StatusBar` (left items/right items, zoom slider with ± and percentage popover with presets, view switcher), `CommandPalette` (cmdk; fuzzy over title+officeName+synonyms; sections Recent/All; shows shortcuts; Ctrl+Shift+P and Alt+Q), `TaskPane` host (right/left docking, resizable, multiple panes tabbed), `MiniToolbar` (appears above selection on mouse-up), `ContextMenu`, `KeyTips` overlay, `DialogLauncher`, `Options` dialog shell with the §1.5 sections (General, Display, Save, Language, Keyboard with live remapping). Provide `RibbonSpec` builders and a `validateRibbonSpec()` test helper that checks every item's command id exists in the registry and every icon exists. Add a demo page `packages/ui-kit/stories/Chrome.tsx` wiring a sample spec. Tests: registry/keymap/keytips unit tests; jsdom tests for ribbon keyboard navigation, palette filtering, backstage open/close.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Make the existing TypeScript chrome a thin layer over the Rust protocol and bring it to the brand kit's mockups (docs/design/mockups: Home, Write/Grid/Deck/Notes frames, Backstage, dialogs; light and dark; Classic and Simplified ribbon). packages/commands: the registry loads packages/protocol/src/generated/catalog.json; every ribbon item, keymap binding, Key Tip and synonym references a catalog id, and a unit test fails on any unknown id; execute(id, args) builds the typed Command and calls KilnClient.execute; availability/enabled state comes from Event::Changed (no TS computation); tiers hide items whose Tier is above the build tier; keymaps per app (packages/commands/src/keymaps/<app>.ts) encode the whole §1.7 table; Office synonyms list; recent commands; the AssistantProvider hook stays as an interface with the 'no provider' state. packages/ui-kit: Ribbon (tabs, groups, group labels, dialog launchers, galleries, split buttons, contextual tabs, Classic/Simplified densities, collapse with Ctrl+F1, overflow behaviour at narrow widths), Backstage (§1.5 structure; panes render data from client.query), StatusBar (slots per app), CommandPalette (fuzzy, synonyms, shortcuts shown), Key Tips layer, mini toolbar, context menus, task pane host (left/right, resizable, remembered), title bar (undo/redo/save, title rename, AutoSave toggle, Search/Tell me, Share), theme switcher (system/light/dark/hc), Options dialog shell — all styled from tokens and matching the mockups; WAI-ARIA Tabs/Toolbar/Menu/Dialog patterns via Radix with roving tabindex and aria-keyshortcuts. packages/home: Kiln Home per mockup (left rail Home/New/Open, app filter chips, hero cards Blank document/workbook/presentation/notebook, featured templates strip, Recent/Pinned/Shared lists from client.query(Recents), search) — data from Rust, zero local persistence beyond UI prefs. apps/web: routes /home, /write, /grid, /deck, /notes with the frame (title bar, ribbon per app from packages/commands data, surface placeholder slot, status bar); theme and density prefs via HostRequest::StorePref. Ribbon definitions for all apps per §1.4 as data in packages/commands/src/catalog/<app>.ts (items whose commands do not exist yet are tier-hidden, never greyed). E2E: chrome.spec (ribbon keyboard navigation, collapse, density switch, Key Tips Alt→H→B path reaches the catalog id, palette finds 'Merge & Center' by synonym, Backstage opens/closes with Esc, theme switch), shortcuts.spec iterating the full §1.7 table asserting the resolved catalog id for each row per app (dispatch is asserted through the session's command log on a scratch document for commands that exist, otherwise through the registry), home.spec, backstage.spec; screenshots of Home and every app frame in light/dark at desktop and phone widths; axe 0 serious/critical on each. Visual review against each mockup recorded in docs/qa/visual-review-WP-58.md (one row per mockup: matches / deviations / fixed). Update docs/SHORTCUTS.md from the keymaps (generated by a script in packages/commands). Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/commands --filter @officina/ui-kit test exits 0 with >= 60 tests",
-   "A test asserts that every shortcut row of docs/SHORTCUTS.md (parsed from the markdown table in the repo) maps to a declared command id in packages/commands/src/keymaps",
-   "pnpm typecheck exits 0",
-   "Visual check: a jsdom-free Playwright script `pnpm --filter @officina/ui-kit exec playwright test` is NOT required here; instead `pnpm -w e2e` still passes"
+   "pnpm --filter @kiln/commands test passes including the 'every id exists in catalog.json' test and the '§1.7 table fully bound' test (row count asserted)",
+   "pnpm e2e --grep 'chrome|shortcuts|home|backstage' passes; e2e/screenshots/chrome/ contains home-{light,dark}-{desktop,phone}.png and <app>-frame-{light,dark}-desktop.png for write, grid, deck, notes",
+   "axe: 0 serious/critical violations on Home, each app frame, Backstage and the Options dialog (asserted in chrome.spec)",
+   "grep -rn 'parseXml\\|evaluateFormula\\|layoutParagraph' packages/commands packages/ui-kit packages/home | wc -l prints 0 and pnpm lint passes the thinness rule",
+   "docs/qa/visual-review-WP-58.md lists every mockup in docs/design/mockups relevant to the chrome with a verdict; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-07",
-  "title": "Formula engine core: tokenizer, parser, references, dependency graph, incremental evaluator",
-  "milestone": "M0",
+  "id": "WP-59",
+  "title": "Parity tracker seed, competitor dossier, xtask parity",
+  "milestone": "R0",
   "depends_on": [
-   "WP-01"
+   "WP-50"
   ],
   "owns": [
-   "packages/formula/src/engine/**",
-   "packages/formula/src/parser/**",
-   "packages/formula/src/values/**",
-   "packages/formula/src/index.ts",
-   "packages/formula/test/engine/**",
-   "packages/formula/test/parser/**",
-   "packages/formula/bench/**"
+   "parity/**",
+   "PARITY.md",
+   "xtask/src/parity.rs",
+   "docs/COMPETITORS.md",
+   "docs/parity-badge.json"
   ],
-  "task": "Implement §3.4 except the bulk function library. Tokenizer and Pratt parser for the full Excel grammar (A1/R1C1 parse-only for R1C1 in this WP, absolute/mixed refs, sheet-qualified and quoted sheet names, 3-D ranges, whole rows/columns, structured references with [#All]/[#Headers]/[#Data]/[#Totals]/[@Col]/[@] and column ranges, defined names, array constants, operators with Excel precedence (including unary minus before %, and `^` left-assoc as Excel), string/number/boolean/error literals, whitespace-as-intersection, union with comma inside parentheses, implicit intersection `@`, function calls with empty args). AST with source spans (for syntax highlighting + the Formula Lab). Reference canonicalisation and shifting (`moveFormula`, insert/delete rows/cols adjusting refs, copy with relative adjustment, `#REF!` on deletion), A1<->R1C1 conversion, absolute toggling (F4 cycle). Value model with ErrorValue, Array2D, Blank, Lambda; coercion rules (text->number per Excel incl. percentages, dates in text in en-US, booleans), comparison rules (text case-insensitive, type ordering number<text<boolean), Excel-style 15-significant-digit normalisation, date serial helpers (1900 with the Lotus bug, 1904 option). Evaluator with lazy arguments (annotate function descriptors with `lazy: [indices]`), dynamic arrays (spill area computation, `#SPILL!` on collisions, `#` spill-range operator), implicit intersection for legacy contexts, array lifting for scalar functions over arrays, volatile marking, LET/LAMBDA/MAP/REDUCE/SCAN/BYROW/BYCOL/MAKEARRAY semantics (these core functions are implemented here; the rest come in WP-09). `DependencyGraph`: cell and range nodes, interval tree per sheet so a range precedent is one edge, dirty propagation, Kahn topological recalculation of dirty subgraph, cycle detection with `#CIRCULAR` (represented as Excel's 0 + circular-reference flag), iterative calculation option (max iterations, max change). `Engine` API: `setCell(sheet,row,col, {formula?|value?})`, `insertRows/Cols`, `deleteRows/Cols`, `renameSheet`, `defineName`, `recalc()` (incremental) and `recalcAll()`, `getValue`, `getSpillRange`, `explain(formula) -> step tree` (for Formula Lab), host interface for reading cell values/types so the engine does not own storage. A built-in minimal function set of ~40 (SUM, AVERAGE, COUNT, COUNTA, MIN, MAX, IF, IFS, AND, OR, NOT, IFERROR, ROUND, ABS, INT, MOD, LEN, LEFT, RIGHT, MID, CONCAT, TEXTJOIN, VLOOKUP, XLOOKUP, INDEX, MATCH, ROW, COLUMN, OFFSET, INDIRECT, TODAY, NOW, DATE, SEQUENCE, FILTER, SORT, UNIQUE, TRANSPOSE, LET, LAMBDA) implemented natively with a `FunctionDescriptor` {name, minArgs, maxArgs, lazy, volatile, impl, docs} registry that WP-09 fills. Property-style tests for parse->print round-trips, reference shifting, and recalculation order; a micro-benchmark (vitest bench) for 100k dependent cells.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Implement §7.2: parity/schema.json (JSON Schema for the row shape), parity/parity.json seeded with ≥ 530 rows covering every ribbon command of §1.4 for Write (≥ 160), Grid (≥ 180, plus one row per function family), Deck (≥ 120 incl. every transition, animation, chart type and layout), Notes (≥ 30), Suite (≥ 40) and explicit 'out' rows; parity/functions.json listing every Excel worksheet function name (≥ 520, from the public Excel function list) with status planned|done|out, where done is computed by cargo xtask parity from conformance/functions-implemented.json when it exists; parity/corpus.json listing every fixture under fixtures/{docx,xlsx,pptx}/features with expected checks. xtask parity: validates against the schema, computes the weighted score overall/per app/per tier, regenerates PARITY.md (tables per app grouped by area with status glyphs, scores, the 'better than Office' list, status flips since the last tag) and docs/parity-badge.json (shields endpoint), --check fails if PARITY.md or the badge is stale or the JSON invalid, --verify resolves verify ids (e2e:<spec>:<slug> → playwright --grep, unit:<crate>/<path> → cargo nextest -E filter, unit:<package>/<path> → vitest -t, conformance:<csv>#<FUNCTION>, fidelity:<format>:<metric>>=<value> → docs/qa/fidelity.md) and runs them, failing on any done/better row whose verification is missing or failing (rows whose verify targets do not exist yet must be status missing). docs/COMPETITORS.md: the §2A dossier with sources, dated, re-scanned now with WebSearch for each product (versions, stars via gh api, new claims); adjust §2A.3 bars in the doc only if a competitor moved them and note it. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/formula test exits 0 with >= 200 tests",
-   "A test file test/engine/spill.test.ts covers dynamic-array spill, #SPILL!, and the # operator",
-   "A test asserts parse(print(ast)) round-trips for >= 300 formulas (including structured refs, 3-D refs, array constants, quoted sheet names)",
-   "pnpm --filter @officina/formula bench reports recalc of a 100k-cell dependent chain under 1.5 s",
-   "pnpm typecheck exits 0"
+   "python3 -c \"import json;d=json.load(open('parity/parity.json'));assert len(d['rows'])>=530\" exits 0; cargo xtask parity --check exits 0",
+   "python3 -c \"import json;assert len(json.load(open('parity/functions.json')))>=520\" exits 0",
+   "cargo xtask parity --verify exits 0 (no done rows yet, or all verified)",
+   "docs/COMPETITORS.md contains a 'Last reviewed: 2026-' line and one section per product in §2A.1; PARITY.md and docs/parity-badge.json are committed and current",
+   "CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-08",
-  "title": "Web app shell: routing, Hub, document sessions, storage abstraction (web host), i18n bootstrap",
-  "milestone": "M0",
+  "id": "WP-60",
+  "title": "kiln CLI, kiln-testing (oracles, fidelity scorer), fixture corpus move, kiln-bench harness and CI budgets",
+  "milestone": "R0",
   "depends_on": [
-   "WP-02",
-   "WP-03",
-   "WP-06"
+   "WP-54",
+   "WP-55"
   ],
   "owns": [
-   "apps/web/src/**",
-   "apps/web/index.html",
-   "apps/web/vite.config.ts",
-   "apps/web/public/manifest.webmanifest",
-   "packages/storage/src/**",
-   "packages/storage/test/**",
-   "packages/i18n/**",
-   "e2e/specs/hub.spec.ts",
-   "e2e/specs/shell.spec.ts",
-   "e2e/helpers/**"
+   "crates/kiln-cli/**",
+   "crates/kiln-testing/Cargo.toml",
+   "crates/kiln-testing/README.md",
+   "crates/kiln-testing/src/lib.rs",
+   "crates/kiln-testing/src/fixtures/**",
+   "crates/kiln-testing/src/oracle/**",
+   "crates/kiln-testing/src/fidelity/**",
+   "crates/kiln-testing/src/conformance/**",
+   "crates/kiln-testing/src/image/**",
+   "crates/kiln-testing/src/formats/mod.rs",
+   "crates/kiln-testing/tests/**",
+   "crates/kiln-bench/**",
+   "bench/**",
+   "xtask/src/fidelity.rs",
+   "xtask/src/budgets.rs",
+   "fixtures/large/**",
+   "fixtures/README.md",
+   "tools/make-fixtures.py",
+   "tools/fetch-corpus.sh",
+   "tools/oracle-soffice.sh",
+   "packages/testing/**",
+   "docs/qa/perf.md",
+   "docs/qa/fidelity.md",
+   "docs/manual/cli.md"
   ],
-  "task": "Build apps/web as the real shell: client router with routes /, /write/:docId, /grid/:docId, /deck/:docId, /notes/:docId, /present/:docId (no server), `AppFrame` + `Ribbon` + `StatusBar` + `Backstage` from ui-kit mounted per app with a placeholder editor area (`<div data-testid=\"editor-root\">`), app accent set via data-app, theme provider, command registry wiring (palette, key tips, shortcuts active), `DocumentSession` abstraction ({docId, app, title, dirty, handle?, model slot}) with a session store (zustand) and multi-document tabs/windows strategy (web: one document per tab; `window.name`-based docId handoff), Hub (§1.6) with recents/pinned from storage, template cards (placeholders until WP-32), \"Open\" via storage host, drag-and-drop of files onto Hub, file-type routing by extension/magic bytes. packages/storage: `PlatformHost` interface (§3.8), `WebHost` (File System Access API with permission re-prompt, IndexedDB-persisted handles via dexie; download fallback; `.scriba/.tabula/.scena` bundle read/write helpers), `RecentsStore`, `AutosaveJournal` interface (append(update), snapshot(), restore()) with an IndexedDB implementation, `RecoveryRegistry` (dirty/closedCleanly flags, heartbeat), `detectHost()` returning Web/Electron/Capacitor by probing `window.officina` / `Capacitor.isNativePlatform()` (adapters themselves arrive in WP-31/WP-35/34 — define the interfaces and a `NotImplementedHost` guard). packages/i18n: i18next + react-i18next + ICU, `locales/en/{common,ribbon,backstage,errors,formula}.json`, `t()` wrappers, `useLocale`, number/date formatting helpers via Intl, RTL detection (`dir` attribute), and a `missing-keys` test that scans ribbon specs and ui-kit strings for untranslated literals (allow-list file). Backstage Info/Print/Export panes get real property display (title, counts come from the editor via an `AppCapabilities` interface the editor WPs implement). Options dialog persisted (localStorage) incl. AutoSave interval, theme, language, Classic Office look. e2e: hub.spec.ts (Hub renders, theme toggle screenshot light+dark, recents list after opening a dropped fixture), shell.spec.ts (each app route shows ribbon with the §1.4 tab names in order, Ctrl+Shift+P opens palette and filters \"Freeze Panes\", Alt shows key tips, Ctrl+F1 collapses ribbon, Backstage opens via File and closes with Esc; screenshots per app light/dark at 1440x900 saved as shell/<app>-<theme>-desktop.png).\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "kiln-cli: subcommands inspect <file> (OPC parts, sizes, content types, rels; --xml <part> pretty-prints), repack <in> <out> (passthrough round trip, reports byte-identical parts), render (scratch documents now; file kinds register as their WPs land through a kiln-session DocKind registry: `kiln render <file> --png out/page-%03d.png [--page N] [--dpi 96] [--dark]`), control (newline-delimited JSON over stdio: open/new/execute/query/viewport/frame/render/save/subscribe/close with the protocol types; documented in docs/control-protocol.md later by WP-96), eval '=formula' (uses kiln-formula; prints value), version; exit codes 0/1/2 (usage). kiln-testing: fixture discovery over fixtures/**, the LibreOffice oracle wrapper (tools/oracle-soffice.sh with the recalculating profile; --convert-to pdf/csv; pdftoppm to PNG), the fidelity scorer (structural/text/visual/oracle_opens/byte_identical_untouched) over a Roundtrip trait that io crates implement and register (none yet → fidelity reports 'no formats registered' and exits 0 in --ci), image diff utilities, the conformance CSV runner as a library, a corpus manifest reader for parity/corpus.json. Fixtures: keep the inherited layout (fixtures/{docx,xlsx,pptx}/{features,manual,large}, fixtures/external gitignored, fetched by tools/fetch-corpus.sh), add tools/make-fixtures.py --synthetic-large generating deterministic fixtures/large/doc-300p.docx (mixed text/tables/images), sheet-1m.xlsx (1,000,000 populated cells, 200k formulas), deck-200.pptx (gitignored, regenerated on demand) with python-docx/openpyxl/python-pptx in ~/.venvs/kiln. kiln-bench: a timing harness (warmup, N iterations, p50/p95, RSS sampling from /proc on Linux), `calibrate` (fixed CPU-bound loop → machine factor), `--assert` reading bench/budgets.toml (the §3.9 table with ids B3, B7–B11, B14, B15 and a 1.5× CI tolerance), initial benchmarks text-layout-1000, scratch-frame-production, ooxml-repack-large; cargo xtask budgets [--ci] runs them, writes docs/qa/perf.md (table with budget/measured/pass) and exits 1 on a failed budget; cargo xtask fidelity [--ci] [--format f] runs the scorer and writes docs/qa/fidelity.md. Wire both into ci.yml (they already exist as steps). packages/testing: Playwright helpers (openScratch, typeViaProxy, composeIme, screenshot naming, axe wrapper, layoutScan skeleton). docs/manual/cli.md first version. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm e2e exits 0 and the screenshots e2e/screenshots/shell/{write,grid,deck}-{light,dark}-desktop.png and hub/hub-{light,dark}-desktop.png exist",
-   "e2e asserts ribbon tab labels for Write are exactly: Home, Insert, Layout, References, Review, View; Grid: Home, Insert, Page Layout, Formulas, Data, Review, View; Deck: Home, Insert, Design, Transitions, Animations, Slide Show, Review, View (File is the backstage button)",
-   "pnpm --filter @officina/storage --filter @officina/i18n test exits 0 with >= 30 tests (fake IndexedDB via fake-indexeddb catalog entry)",
-   "Visual review recorded in docs/qa/visual-review-WP-08.md after opening the PNGs"
+   "cargo run -p kiln-cli -- inspect fixtures/docx/features/tables.docx lists parts; cargo run -p kiln-cli -- repack fixtures/xlsx/features/styles.xlsx /tmp/r.xlsx prints 'identical parts: N/N'",
+   "printf '{\"new\":{\"kind\":\"scratch\"}}\\n{\"execute\":{\"doc\":1,\"cmd\":{\"Write\":{\"InsertText\":{\"text\":\"hi\"}}}}}\\n{\"query\":{\"doc\":1,\"q\":\"Text\"}}\\n' | cargo run -p kiln-cli -- control prints a JSON line containing \"hi\"",
+   "cargo xtask budgets --ci exits 0 and docs/qa/perf.md lists every budget id with status; cargo xtask fidelity --ci exits 0",
+   "~/.venvs/kiln/bin/python tools/make-fixtures.py --synthetic-large writes fixtures/large/doc-300p.docx sheet-1m.xlsx deck-200.pptx and is deterministic (sha256 equal across two runs)",
+   "cargo nextest run -p kiln-testing -p kiln-bench -p kiln-cli passes; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-09",
-  "title": "Formula function library (>= 350 functions), docs, conformance suite",
-  "milestone": "M0",
+  "id": "WP-61",
+  "title": "kiln-doc: Write document model port (styles, numbering, sections, fields, revisions, transactions, undo)",
+  "milestone": "R1",
   "depends_on": [
-   "WP-07"
+   "WP-50"
   ],
   "owns": [
-   "packages/formula/src/functions/**",
-   "packages/formula/test/conformance/**",
-   "packages/formula/test/functions/**",
-   "docs/formula-deviations.md"
+   "crates/kiln-doc/**"
   ],
-  "task": "Fill the function registry to >= 350 Excel functions across the families of §3.4, using @formulajs/formulajs as the implementation base where its semantics match Excel (wrap with our value model: errors, blanks, arrays, lazy args) and native implementations where it does not (notably: TEXT/VALUE via numfmt, date functions with the 1900 system, SUMIF(S)/COUNTIF(S)/AVERAGEIF(S)/MAXIFS/MINIFS criteria parsing incl. wildcards and comparison strings, lookup functions with match modes and binary search, SUBTOTAL/AGGREGATE with hidden rows via host, financial functions on decimal.js where precision matters, the dynamic-array family, TEXTSPLIT/TEXTBEFORE/TEXTAFTER, LET/LAMBDA helpers already in WP-07). Each function gets a docs entry in `src/functions/docs/<FAMILY>.json` ({name, category, summary, syntax, args:[{name, description, optional, repeating}], examples:[{formula, result}], since}) used by autocomplete, the fx dialog and the Formula Lab; a test asserts every registered function has docs and every docs example evaluates to its stated result. Conformance: write `test/conformance/*.csv` with >= 1,500 rows (formula, expected, type, notes) in these sources: (a) curated from Microsoft's documented examples per function (type them in by family), (b) generated by `tools/gen-conformance.mjs` (owned here, under packages/formula/tools) which writes an .xlsx with formulas via exceljs, runs the LibreOffice oracle with recalc-on-load (tools/oracle-soffice.sh ... csv), and records values — flag rows where LibreOffice is known to differ from Excel in notes and exclude them from (b) by a deny-list. The conformance test runner compares with type-aware tolerance (numbers to 1e-9 relative, dates as serials, errors by name, text exact). Document genuine deviations in docs/formula-deviations.md with reasons. Implement `CELL` (subset: address, col, row, contents, type, filename blank), `INFO` subset, `ENCODEURL`, `HYPERLINK` returning a link value type.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Port reference/ts-core/doc-model (6.2k lines; tests in reference/ts-core/doc-model/test) to crates/kiln-doc following §3.4: Document/Section/Block/Paragraph/Run tree with stable NodeIds, paragraph and run properties mirroring w:pPr/w:rPr (every attribute listed in §3.4), tables (gridSpan, vMerge, borders, shading, widths, tblLook, table styles), drawings (inline/anchor with wrap and position), footnotes/endnotes, comments with threads, fields (simple and complex, instruction parsing for TOC/PAGE/NUMPAGES/DATE/REF/HYPERLINK/SEQ), bookmarks, hyperlinks, symbols, equations (OMML kept as a typed opaque node), revisions (ins/del/rPrChange/pPrChange), headers/footers per section type, StyleSheet with docDefaults and basedOn resolution (resolve_paragraph/resolve_run with theme fonts), Numbering (abstractNum/num/lvlOverride/startOverride, legal numbering, restart rules, list text generation), Settings, document properties, default stylesheet reproducing Word 2016–2021 defaults; text per paragraph in ropey ropes with marks as attributed spans; Pos/Range model; Transaction = Vec<Op> with inverse ops for every mutation (insert/delete text, split/merge paragraph, set paragraph/run props, apply/remove marks, insert/remove blocks, table ops, section ops, comment/revision ops) and an undo/redo stack with grouping (typing coalesced per word); queries: outline (headings), word/char/page-independent counts, comments list, revisions list; postcard serialisation. Port all TS tests (style resolution, numbering, fields) plus proptest: random op sequences followed by their inverses restore the document; serialisation round-trips. No layout code here. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/formula exec tsx -e \"import('./src/index.ts').then(m=>console.log(m.listFunctions().length))\" prints >= 350",
-   "pnpm --filter @officina/formula test exits 0; conformance runner reports >= 1500 cases with 0 failures (skips are listed with reasons in docs/formula-deviations.md)",
-   "A test asserts all function docs examples evaluate to their stated results",
-   "Spot checks pass as tests: =TEXT(1234.5,\"#,##0.00\") -> \"1,234.50\"; =DATEDIF(DATE(2020,1,31),DATE(2020,3,1),\"md\") -> 1; =XLOOKUP(5,{1,3,5},{\"a\",\"b\",\"c\"}) -> \"c\"; =SUMIFS(A:A,B:B,\">=2024-01-01\") style criteria; =0.1+0.2=0.3 -> TRUE; =IRR({-100,30,40,50}) within 1e-7 of 0.0894"
+   "cargo nextest run -p kiln-doc passes; cargo llvm-cov -p kiln-doc --summary-only reports ≥ 75 % line coverage",
+   "the proptest 'apply ops then inverses == identity' runs ≥ 256 cases and passes",
+   "cargo doc -p kiln-doc --no-deps 2>&1 | grep -c warning prints 0",
+   "CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-10",
-  "title": "Write document model (ProseMirror schema, styles, numbering, sections, fonts)",
-  "milestone": "M1",
+  "id": "WP-62",
+  "title": "DOCX reader (kiln-io-docx read)",
+  "milestone": "R1",
   "depends_on": [
-   "WP-01"
+   "WP-55",
+   "WP-61"
   ],
   "owns": [
-   "packages/doc-model/**"
+   "crates/kiln-io-docx/Cargo.toml",
+   "crates/kiln-io-docx/src/lib.rs",
+   "crates/kiln-io-docx/src/read/**",
+   "crates/kiln-io-docx/src/common/**",
+   "crates/kiln-io-docx/tests/read*",
+   "crates/kiln-io-docx/README.md",
+   "fixtures/docx/read/**"
   ],
-  "task": "Implement §3.3 doc-model: the ProseMirror schema (`createDocSchema()`) with every node/mark listed, attribute types in `src/types.ts` mirroring WordprocessingML semantics (units in twips/half-points as in the file, with helpers to px/pt), `StyleSheet` (paragraph/character/table/numbering/list styles, basedOn/next/link, docDefaults, latent styles ignored), `resolveParagraphProps(doc, paragraphNode)` and `resolveRunProps(...)` implementing Word's inheritance order (docDefaults → table style → paragraph style chain → numbering level pPr/rPr → direct formatting → run style), `Numbering` (abstractNum/num/overrides, level text templates like \"%1.%2\", formats decimal/lowerLetter/upperRoman/bullet/… with `formatNumber(level, counters)`, restart logic, legal numbering, `computeListLabels(doc)` producing labels per paragraph in document order), sections (page size/margins/orientation/columns/header-footer references/titlePg/evenOdd, section break types), fields (`FieldInstruction` parser for PAGE, NUMPAGES, DATE, TIME, TOC with switches, REF, HYPERLINK, SEQ, PAGEREF; unknown preserved), theme font/colour resolution via @officina/ooxml theme types, the **font substitution table** (§1.2; Office names → bundled fonts, with metric-compatible flag) and `fontStack(name)` for CSS, `DefaultTemplate` producing a new document with Word-2016+ defaults (Normal: Calibri→Carlito 11 pt, line 1.08 (259 lineRule auto), after 8 pt; Heading 1–3 as Word; Title, Subtitle, Quote, List Paragraph, Table Grid, TOC 1–3, Footnote Text, Header, Footer, Hyperlink, Strong, Emphasis, Caption), a plain-text and JSON (de)serialiser for tests/version diffs, document statistics (`countWords/characters/paragraphs/pages?(from layout callback)`), and a `DocCommands` set of pure transforms (apply style, toggle mark, set alignment, indent/outdent list level, insert table/row/col, merge/split cells, insert section break, set numbering) used by the editor. Tests: schema validity, inheritance resolution matrix (≥ 40 cases), numbering label computation (≥ 30 cases incl. restart/legal/multilevel), field parsing, default template snapshot.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Port reference/ts-core/io-docx/src/read (4.1k lines) to Rust: word/document.xml body (paragraphs, runs with rPr inheritance from styles/defaults/theme, tables incl. nested, sections from w:sectPr incl. headers/footers refs, columns, page size/margins, titlePg, evenAndOddHeaders), numbering.xml, styles.xml, settings.xml, footnotes/endnotes, comments + commentsExtended threads, fields (simple and fldChar complex with cached results), drawings (wp:inline, wp:anchor with wrap, pic:pic, wps:wsp text boxes, w:pict VML read-only), hyperlinks, bookmarks, revisions, w:sym with symbol-font mapping (port the dingbat table), m:oMath preserved, docProps; everything not consumed goes to passthrough. Register the DocKind 'write' reader with kiln-session (open .docx/.dotx/.docm → kiln-doc Document) and the Roundtrip trait's read half with kiln-testing. Tests: port every TS reader test; parse all fixtures under fixtures/docx (features, manual, external when present) without error; text equality against the mammoth oracle (packages/testing script producing fixtures/docx/read/<name>.mammoth.txt committed for the feature files) ≥ 0.99 normalised; structural assertions per feature fixture (styles, numbering levels, table merges, section count, footnotes, comments, revisions). Keep docs/FORMATS.md's docx section current (what is read, what is passthrough). `kiln inspect --docx file` prints the outline and counts. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/doc-model test exits 0 with >= 120 tests",
-   "A test demonstrates resolveRunProps on a run in a styled paragraph in a styled table matches the documented Word precedence (table style < paragraph style < numbering < direct)",
-   "pnpm typecheck exits 0"
+   "cargo nextest run -p kiln-io-docx passes; every file matching fixtures/docx/**/*.docx (excluding external) parses",
+   "the mammoth text-equality test reports ≥ 0.99 for all feature fixtures",
+   "cargo run -p kiln-cli -- inspect --docx fixtures/docx/features/numbering.docx prints heading outline and paragraph/table counts",
+   "cargo build --target wasm32-unknown-unknown -p kiln-io-docx exits 0; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-11",
-  "title": "DOCX reader",
-  "milestone": "M1",
+  "id": "WP-63",
+  "title": "Write layout engine kiln-doc-layout: pagination, tables, floats, headers/footers, footnotes, hit testing, Scene",
+  "milestone": "R1",
   "depends_on": [
-   "WP-05",
-   "WP-10"
+   "WP-53",
+   "WP-54",
+   "WP-61",
+   "WP-60"
   ],
   "owns": [
-   "packages/io-docx/src/read/**",
-   "packages/io-docx/src/common/**",
-   "packages/io-docx/src/index.ts",
-   "packages/io-docx/test/read/**"
+   "crates/kiln-doc-layout/**",
+   "crates/kiln-session/src/apps/write/**",
+   "fixtures/golden/write/**",
+   "crates/kiln-bench/src/benches/write*"
   ],
-  "task": "Implement `readDocx(bytes) -> {doc: ProseMirrorNode, styles, numbering, sections, media, comments, footnotes, endnotes, settings, properties, passthrough, warnings[]}` per §3.5: every element listed there (body paragraphs/runs/breaks/tabs/symbols, rPr/pPr including `w:rPrChange/w:pPrChange`, tables with gridSpan/vMerge/tblLook/tblStyle/cell margins/widths in all unit types, section properties incl. headers/footers (map `w:headerReference` types to section header/footer nodes; `w:titlePg`, `evenAndOddHeaders`), numbering.xml, styles.xml, settings.xml (defaultTabStop, trackRevisions, decimalSymbol), footnotes/endnotes with references, comments + commentsExtended threads + people, simple and complex fields with cached results (nested fields), hyperlinks (relationship targets, anchors), bookmarks (start/end), inline and anchored drawings (wp:inline/wp:anchor with position/wrap/extent/docPr; pic:pic images; wps:wsp text boxes and shapes using ooxml DrawingML; `a:graphicData` charts referenced for WP-20 by relationship id; VML `w:pict` images read-only fallback), `w:ins/w:del/w:moveFrom/w:moveTo` revisions → insertion/deletion marks with author/date, `m:oMath` → equation node holding OMML XML, `w:sdt` content controls → unwrap content and keep properties in a `sdt` attribute (preserved on write by WP-13), RTL/bidi attributes, document properties. Media extracted to blobs with content types. Warnings for every unsupported construct with part/path info (used by the Compatibility Checker). Read must be streaming-friendly: run in a worker-compatible way (no DOM). Tests: each generated fixture in packages/testing/fixtures/docx/features/* yields a document whose text equals mammoth's extracted text (normalised), expected structure assertions per feature fixture (e.g. numbering labels \"1.\", \"a.\", \"i.\"; table 3x3 with merged cells; section count), no unhandled exceptions on every fixture in fixtures/external (when present), warnings list is empty for the synthetic corpus.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Build the Write layout engine per §3.6 and §3.4: sections → pages (size, margins, orientation, columns with balancing off by default, vertical alignment), paragraphs via kiln-text with resolved styles (kiln-doc), tabs/leaders, line and page breaking honouring keepNext, keepLines, widow/orphan control (2 lines), pageBreakBefore, table row cantSplit and repeat header rows, tables (fixed/auto layout algorithm as Word: preferred widths, autofit to contents/window, merged cells, nested tables, cell margins, borders conflict resolution, row splitting across pages), inline images and shapes (DrawingML presets via kiln-ooxml geometry), floating objects anchored to page/margin/paragraph/line/character with wrap square/tight (polygon from the shape or image alpha, 8-px approximation)/through/top-bottom/behind/in-front, headers/footers per first/odd/even with link-to-previous and live fields (PAGE, NUMPAGES, SECTIONPAGES, DATE, TIME, FILENAME, author), footnotes/endnotes areas with separator and iterative body shortening, TOC/REF field result rendering (fields update on command), page numbering formats, comments balloons in the margin (geometry only; UI later), view modes print layout / web layout (reflow, no pages) / read mode (columns, larger type) / draft; zoom and DPR; incremental re-layout: dirty from the first changed paragraph, later pages re-flowed lazily as the viewport approaches, first page produced within B3 for the 300-page fixture; hit testing (point → Pos), caret and selection geometry across pages/columns/tables, bidi caret rules (§3.6 RTL); Scene production (pages as tiles with gaps and shadows per tokens, rulers data via Query::Rulers) and A11yTree for visible pages ± 1. Session integration: DocKind 'write' gets viewport/frame/hit_test/a11y and the scratch-document editing commands generalised (InsertText etc. operate on kiln-doc Transactions). Tests: insta snapshots for every docx fixture recording page count and first/last words per page; LibreOffice oracle comparison (tools/oracle-soffice.sh → pdfinfo page count) equal on ≥ 80 % of feature fixtures and within ±1 on 100 %; golden PNGs (kiln-raster) of ≥ 10 fixtures at 96 dpi committed under fixtures/golden/write/ and compared with threshold 0.3 %; unit tests for each keep/widow rule and float wrap mode; benches write-open-300p (first page, full) and write-frame for budgets B3; register them in bench/budgets.toml. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/io-docx test exits 0 with >= 80 tests",
-   "A test compares normalised text of every fixtures/docx/features/*.docx to mammoth's output and passes",
-   "A test reads a track-changes fixture and asserts insertion/deletion marks with authors",
-   "pnpm typecheck exits 0"
+   "cargo nextest run -p kiln-doc-layout passes (snapshots, golden PNGs, oracle page-count test: ≥ 80 % equal, 100 % within ±1)",
+   "cargo run -p kiln-cli -- render fixtures/docx/features/tables.docx --png /tmp/w/page-%03d.png writes one PNG per page",
+   "cargo xtask budgets --only B3 exits 0 (first page < 400 ms, full pagination < 1.5 s for fixtures/large/doc-300p.docx on this machine)",
+   "cargo nextest run -p kiln-session passes with the Write app tests (typing updates layout incrementally; caret moves across a page break)",
+   "CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-12",
-  "title": "Write editor core: TipTap integration, pagination, rulers, Home/Insert/Layout ribbon wiring",
-  "milestone": "M1",
+  "id": "WP-64",
+  "title": "Write editor: editing commands in Rust, ribbon wiring, panes, dialogs, rulers, e2e",
+  "milestone": "R1",
   "depends_on": [
-   "WP-06",
-   "WP-08",
-   "WP-10"
+   "WP-58",
+   "WP-63"
   ],
   "owns": [
-   "packages/editor-write/src/**",
-   "packages/editor-write/test/**",
-   "apps/web/src/apps/write/**",
-   "e2e/specs/write-core.spec.ts"
+   "crates/kiln-session/src/apps/write/commands/**",
+   "crates/kiln-protocol/src/commands/write.rs",
+   "packages/editor-write/**",
+   "packages/commands/src/catalog/write.ts",
+   "packages/commands/src/keymaps/write.ts",
+   "apps/web/src/routes/write/**",
+   "e2e/specs/write.spec.ts",
+   "e2e/specs/write-shortcuts.spec.ts",
+   "docs/manual/write.md",
+   "docs/qa/visual-review-WP-64.md"
   ],
-  "task": "Build the Write editor per §3.6: TipTap 3 editor with custom extensions for every doc-model node/mark (no StarterKit nodes that conflict with ours — use ours exclusively, with input rules), ProseMirror plugins: selection/cursor, history (later replaced by Yjs undo in WP-29 — keep a `HistoryStrategy` seam), paste handling (HTML sanitised with dompurify → doc-model via an HTML importer with style mapping; plain text; Markdown detection → styled; images as media), drag-and-drop images, tab key behaviour (list indent / tab char), smart typography (optional). Pagination layer (§3.6): PaginationPlugin measuring blocks via ResizeObserver + Range.getClientRects, page model {pages:[{top, height, breaks}]}, page chrome overlay (page edges, gap, margins guides, page numbers), per-page headers/footers rendered from section header/footer nodes with live PAGE/NUMPAGES fields, footnote areas, keepNext/keepLines/pageBreakBefore/widow-orphan rules, table rows cantSplit, column sections (CSS multicol per section block), progressive layout with requestIdleCallback for long documents, and `getPageCount()` / `pageOfPosition(pos)` used by the status bar and navigation. Views: Print Layout (paginated), Web Layout (continuous), Read Mode (paginated columns, no editing), Draft. Rulers (horizontal with margin/indent/tab stop drag; vertical with margins). Zoom (ctrl+wheel, slider, presets, page width/whole page). Status bar items: page x of y, word count (selection-aware), language, zoom. Ribbon wiring for Home/Insert/Layout/View per §1.4 (commands implemented here: all font/paragraph/style/clipboard/paste-special operations, insert table (grid picker), picture, link, page break, header/footer editing mode (double-click header area), page setup dialog (margins/orientation/size/columns), bullets/numbering galleries with Word's default definitions, line spacing, styles gallery with live preview and Styles task pane basics). Mini toolbar on selection; context menu. apps/web/src/apps/write: the Write page composing AppFrame/Ribbon/editor/panes/status bar, `WriteCapabilities` for Backstage Info, open/save through storage using WP-11 reader (writer arrives in WP-13 — until then Save writes the native .scriba bundle) with a worker for parsing. Tests: jsdom tests for extensions and commands; pagination tested with a fake measurer; e2e write-core.spec.ts: open fixtures/docx/features/{styles,numbering,tables,sections}.docx via the e2e file chooser, screenshot each (write-core/<name>-light-desktop.png), type text with Ctrl+B and verify bold mark, apply Heading 1 via ribbon and via Ctrl+Alt+1, insert a 3x3 table, check status bar page count > 1 for sections fixture, zoom slider changes scale.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Rust (WriteCommand variants + handlers): typing and deletion (grapheme-aware, word delete), caret/selection movement for every §1.7 Write row (char/word/paragraph/line/page, Home/End, Ctrl+Home/End, Shift extensions, select all, click/double/triple), clipboard model (copy/cut produce HTML + plain text + an internal rich format; paste options Keep Source / Merge / Text only / Paste Special; HTML paste sanitised and mapped to the model in Rust), character formatting (bold/italic/underline kinds/strike/sub/super/caps/font/size grow-shrink/colour/highlight/clear), paragraph formatting (alignment, indents, spacing, line spacing presets, borders/shading, tabs), styles (apply, Normal, Headings Ctrl+Alt+1-3, update style from selection), lists (bullets/numbering/multilevel galleries, Tab/Shift+Tab level change, restart/continue, Markdown-style auto lists off by default here), tables (insert grid, rows/cols insert/delete, merge/split, Tab navigation, alignment, autofit, borders, table styles), page/section/column breaks, page setup (margins/orientation/size/columns), header/footer edit mode with different first/odd/even and link to previous, insert image (HostRequest pick → bytes → inline/anchored), links, bookmarks, symbols, date/time, page numbers, find/replace (match case, whole word, regex off/on, wildcards as Word) and Go To, undo/redo grouping, zoom and view modes, show ¶ marks, word count query, document properties query. TypeScript (packages/editor-write): mount Surface in the Write route; ribbon Home/Insert/Layout/References/Review/View wired (P0 items active, others tier-hidden), rulers (horizontal with indent/tab markers, vertical) drawn in a small canvas from Query::Rulers with drag → commands, Navigation pane (headings/pages/results), Styles pane (gallery + manage), Font/Paragraph/Page Setup/Tabs dialogs, Insert Table grid picker, status bar (Page x of y, words, language, track-changes state placeholder, view buttons, zoom slider), mini toolbar on selection, context menu — all per the Write mockups. E2E (write.spec, write-shortcuts.spec): open fixtures via the web file picker stub, type with IME composition, apply formatting and styles, lists, tables, find/replace, header editing, zoom, undo/redo, every §1.7 Write row reaches its handler (asserted via Query::CommandLog), screenshots light/dark desktop; typing latency B5 measured on fixtures/large/doc-300p.docx (p95 < 16 ms). Visual review vs Write mockups in docs/qa/visual-review-WP-64.md; manual chapter docs/manual/write.md. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/editor-write test exits 0 with >= 80 tests",
-   "pnpm e2e --grep write-core exits 0 and screenshots write-core/{styles,numbering,tables,sections}-light-desktop.png exist",
-   "e2e asserts the page count shown in the status bar for fixtures/docx/features/sections.docx equals the page count LibreOffice reports for the same file (via pdfinfo of the oracle PDF, exposed through a tiny e2e helper) within ±1",
-   "docs/qa/visual-review-WP-12.md records the review of the screenshots"
+   "cargo nextest run -p kiln-session passes with ≥ 60 Write command tests; cargo xtask protocol --check exits 0",
+   "pnpm e2e --grep 'write' passes incl. IME composition, table editing, find/replace and the Write rows of the shortcut table",
+   "perf B5 assertion in e2e/specs/write.spec.ts passes (keystroke→paint p95 < 16 ms on doc-300p)",
+   "e2e/screenshots/write/ has editor-{light,dark}-desktop.png and docs/qa/visual-review-WP-64.md records the mockup comparison; axe 0 serious/critical",
+   "CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-13",
-  "title": "DOCX writer and round-trip fidelity tests",
-  "milestone": "M1",
+  "id": "WP-65",
+  "title": "DOCX writer and round-trip fidelity",
+  "milestone": "R1",
   "depends_on": [
-   "WP-11"
+   "WP-62"
   ],
   "owns": [
-   "packages/io-docx/src/write/**",
-   "packages/io-docx/test/write/**",
-   "packages/io-docx/test/roundtrip/**"
+   "crates/kiln-io-docx/src/write/**",
+   "crates/kiln-io-docx/tests/roundtrip*",
+   "crates/kiln-io-docx/tests/write*",
+   "fixtures/docx/roundtrip/**",
+   "crates/kiln-testing/src/formats/docx.rs"
   ],
-  "task": "Implement `writeDocx(model, {passthrough}) -> Uint8Array` emitting every construct the reader understands (§3.5) with Office-compatible XML (ordering of child elements per the schema sequences — e.g. w:pPr children order, w:rPr order; `w:tblGrid`; `w:sectPr` placement in the last paragraph of each section except the final one in body), styles.xml/numbering.xml/settings.xml/footnotes/endnotes/comments(+Extended, +people)/headers/footers parts, media parts with relationships, content types, core/app properties (modified date updated, application \"Officina\"), fields as complex fields with cached results, revisions, bookmarks, hyperlinks, drawings (inline/anchor, pictures, text boxes, shapes via ooxml DrawingML writer), equations (OMML passthrough), sdt properties re-wrapping, and the passthrough parts (customXml, vbaProject.bin for .docm, glossary, unknown parts) with relationships repaired. Deterministic output (same model → identical bytes). Compatibility Checker data: `checkCompatibility(model) -> issues[]` listing features that will be lost (e.g. callout blocks → bordered paragraphs, code blocks → 'Code' style + shading). Round-trip tests: for every fixture read→write→read, structural score (packages/testing scorer) ≥ 0.95 and text 1.00; LibreOffice opens every written file (oracle_opens = 1) and the visual score between oracle renders of original and rewritten ≥ 0.90; writer output also opens with mammoth and python-docx without exceptions; a write-from-DefaultTemplate test produces a .docx whose styles.xml contains the Word default style ids. Write results to docs/qa/fidelity.md (docx section).\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Port the archived writer (reference/ts-core/io-docx/src/write: compat, context, drawing, parts, props, story, xml — and its tests under reference/ts-core/io-docx/test/write and test/roundtrip) to Rust: emit document.xml, styles, numbering, settings, fontTable, footnotes/endnotes, comments(+Extended/Ids/People), headers/footers, drawings (inline/anchor, pictures, text boxes), fields, hyperlinks/bookmarks, revisions, sections, docProps; passthrough parts copied with relationship fix-ups; parts not touched by the edit byte-identical (track a 'touched parts' set from Transactions); content types and rels regenerated deterministically; Compatibility report (Query::CompatReport) listing features that will be dropped or approximated. Register the write half of Roundtrip with kiln-testing and SaveAs/Save for .docx in kiln-session. Fidelity run over fixtures/docx: structural ≥ 0.95, text 1.00, visual ≥ 0.90 (LibreOffice renders), oracle_opens 100 %, byte_identical_untouched 100 %; `kiln convert in.docx out.docx` and docx → pdf later. Update parity/corpus.json docx checks. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/io-docx test exits 0 with >= 60 additional tests",
-   "pnpm fidelity --format docx prints a table where every features/* fixture has structural >= 0.95, text == 1.00, oracle_opens == 1, visual >= 0.90",
-   "A determinism test asserts identical bytes for two consecutive writes of the same model",
-   "docs/qa/fidelity.md contains the docx table"
+   "cargo xtask fidelity --format docx exits 0 and docs/qa/fidelity.md shows docx structural ≥ 0.95, text 1.00, visual ≥ 0.90, oracle_opens 100 %, byte_identical_untouched 100 %",
+   "cargo nextest run -p kiln-io-docx passes (ported writer tests, round-trip tests for every feature fixture)",
+   "cargo run -p kiln-cli -- convert fixtures/docx/features/tracked-changes.docx /tmp/t.docx && soffice --headless --convert-to pdf --outdir /tmp /tmp/t.docx succeeds",
+   "CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-14",
-  "title": "Write advanced features: tables UI, floating objects, find/replace, styles & navigation panes, TOC, footnotes, comments, track changes, Format Painter, Markdown shortcuts, focus mode, spell check",
-  "milestone": "M1",
+  "id": "WP-66",
+  "title": "Write advanced features: comments, track changes, TOC, footnotes UI, floating objects UI, Format Painter, Markdown shortcuts, focus mode, spell check",
+  "milestone": "R1",
   "depends_on": [
-   "WP-12"
+   "WP-64",
+   "WP-65"
   ],
   "owns": [
+   "crates/kiln-session/src/apps/write/features/**",
+   "crates/kiln-doc-layout/src/annotations/**",
+   "crates/kiln-spell/**",
+   "assets/dictionaries/**",
    "packages/editor-write/src/features/**",
-   "packages/editor-write/test/features/**",
-   "apps/web/src/apps/write/**",
-   "e2e/specs/write-features.spec.ts"
+   "packages/editor-write/src/panes/**",
+   "e2e/specs/write-features.spec.ts",
+   "docs/manual/write-review.md",
+   "docs/manual/write-layout.md"
   ],
-  "task": "Add to editor-write (new `features/` modules, each registering its commands and ribbon contributions through a `WriteFeature` interface the core exposes): Tables (Table Design/Layout contextual tabs: styles gallery with banded/header options from doc-model table styles, borders/shading, insert/delete rows/cols, merge/split, cell size, distribute, alignment, repeat header rows, convert to text, autofit; cell selection with mouse/keyboard; column resize handles on the ruler and the table), Floating objects (Picture/Shape Format: wrap modes square/tight/top-bottom/behind/in-front implemented with float spacers and shape-outside; position dialog; anchor dragging; crop; alt text; bring forward/backward; Selection Pane), Find & Replace (navigation pane results, match case/whole word/regex/wildcards, replace all, Go To page/section/line), Styles pane (list, modify style dialog, new style, clear all, show preview), Navigation pane (headings tree with drag reorder, pages thumbnails (rendered lazily), results), References: TOC insertion/update from heading styles with page numbers from pagination, clickable; footnotes/endnotes insert/navigate/show; captions with SEQ; cross-references dialog; bookmarks. Review: comments task pane (threaded, resolve, reply, @mention stub) anchored to ranges; Track Changes (insert/delete/format revisions recorded as marks with author/time, display modes Simple/All/None/Original, Reviewing pane, accept/reject one/all, next/previous, balloons in margin in All Markup), Word Count dialog, Spelling via nspell + dictionary-en (squiggles as decorations, right-click suggestions, add to dictionary, ignore). Home: Format Painter (single and double-click persistent; Ctrl+Shift+C/V), Change Case, Clear Formatting, Sort paragraphs, Show ¶, Paste Special dialog. Markdown shortcuts (input rules: #..###### headings, -, *, 1., [ ] task, >, ```, ---, **bold**, *italic*, `code`, links), smart paste of Markdown text, Focus mode (hide chrome, centre page, typewriter scrolling, word-goal from Options), Callout and Code blocks (code block with syntax highlighting via a small tokenizer for 8 languages; both have Compatibility Checker mappings). Wire everything into the Write ribbon spec (apps/web/src/apps/write/ribbon.ts) per §1.4 including contextual tabs. e2e write-features.spec.ts: screenshots of track-changes view, comments pane, TOC inserted, floating image with square wrap, find/replace dialog, focus mode (light+dark); functional assertions: replace-all count, accept-all removes marks, TOC entries equal heading count, Format Painter copies bold+colour.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Rust: comments (new/reply/resolve/delete/navigate; balloons in the margin via kiln-doc-layout annotations; Comments pane data), track changes (toggle, insert/delete/format revisions recorded on edit, markup modes Simple/All/None/Original affecting layout, accept/reject one/all, previous/next, Reviewing pane data, author/colour assignment), TOC (insert from styles with levels, update, clickable entries), footnotes/endnotes (insert, navigate, convert), captions and cross-references (SEQ fields, REF), floating objects (position presets, wrap mode, drag/resize via Transform commands, Position dialog, bring forward/send backward, selection pane), Format Painter (single and persistent double-click), Markdown shortcuts (`# `, `- `, `1. `, `**bold**`, `` ` ``, `---`, `> `) as an AutoCorrect-style option on by default, smart typography (quotes, dashes, ellipsis, fractions) toggleable, focus mode and read mode, word-count goals, drop cap, text boxes, shapes with text, code and callout blocks (custom styles + shading), cover page gallery (6), hyphenation toggle, document properties editing; kiln-spell: spellbook 0.4.2 with the en-US Hunspell dictionary from the LibreOffice dictionaries repository (record source and licence in assets/dictionaries/SOURCES.md), incremental checking after edits, squiggles in the Scene, suggestions, Ignore/Ignore All/Add to dictionary (user dictionary in kiln-storage pref), language per run respected (unknown languages unchecked), F7 dialog data. TypeScript: Review tab fully wired, Comments and Reviewing panes, balloons interaction, Position/Wrap dialogs, Insert TOC dialog, Caption/Cross-reference dialogs, Markdown and typography options in Options ▸ Proofing, focus-mode chrome (fades ribbon/status bar), spelling context menu and dialog. E2E covers each feature; parity rows for Write Review/References/Insert flipped with verify ids; manual chapters. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/editor-write test exits 0 with >= 120 additional tests",
-   "pnpm e2e --grep write-features exits 0 with screenshots write-features/{track-changes,comments,toc,floating-image,find-replace,focus}-{light,dark}-desktop.png",
-   "e2e: Ctrl+Shift+E toggles track changes and the status bar shows 'Track Changes: On'",
-   "docs/qa/visual-review-WP-14.md written after viewing all screenshots"
+   "cargo nextest run -p kiln-session -p kiln-spell -p kiln-doc-layout passes with tests for every feature above (track-changes markup modes change page count as expected on a fixture; spell check flags 'teh' and not 'the')",
+   "pnpm e2e --grep write-features passes (comments thread, accept/reject, TOC insert+update, footnote, float wrap drag, Format Painter, Markdown shortcuts, focus mode, spelling suggestion)",
+   "cargo xtask parity --verify exits 0 with ≥ 60 Write rows flipped to done in this WP (list them in the commit body)",
+   "cargo xtask fidelity --format docx still passes thresholds after saving documents edited with comments and revisions; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-15",
-  "title": "Write integration gate: open/edit/save Office files end to end, print & PDF export, Backstage panes",
-  "milestone": "M1",
+  "id": "WP-67",
+  "title": "PDF export and print (kiln-io-pdf via krilla), print preview",
+  "milestone": "R1",
   "depends_on": [
-   "WP-13",
-   "WP-14"
+   "WP-63",
+   "WP-60",
+   "WP-58"
   ],
   "owns": [
-   "apps/web/src/apps/write/**",
-   "packages/print-pdf/src/core/**",
-   "packages/print-pdf/src/write/**",
-   "packages/print-pdf/src/index.ts",
-   "packages/print-pdf/package.json",
-   "packages/print-pdf/test/core/**",
-   "packages/print-pdf/test/write/**",
-   "e2e/specs/write-e2e.spec.ts",
+   "crates/kiln-io-pdf/**",
+   "crates/kiln-session/src/print/**",
+   "packages/ui-kit/src/print/**",
+   "packages/ui-kit/src/backstage/print/**",
    "e2e/specs/print.spec.ts",
-   "docs/qa/visual-review-WP-15.md",
-   "docs/manual/write.md"
+   "crates/kiln-bench/src/benches/pdf*"
   ],
-  "task": "Integration gate for Write. Wire the DOCX writer into Save/Save As (format picker: .docx, .scriba, .pdf, .md, .html, .txt; Compatibility Checker dialog before saving to .docx when issues exist, with \"Don't show again\" per document), AutoSave-to-file, dirty tracking, title rename → file rename, recents, \"Open Recent\" and drag-drop at the Write route. packages/print-pdf (create the package core in src/core: page model, print route host, preview component, pdf-lib post-processing; Write-specific layout in src/write; Grid/Deck add src/grid and src/deck later): print layout route (`/print/:docId` renders the paginated document using the same page model with @page CSS, headers/footers/footnotes per page, no chrome), Print preview inside Backstage ▸ Print (iframe of the print route with page thumbnails, settings: printer (browser), pages range, copies, orientation, paper size, margins, scale), `exportPdf()` pipeline: `PlatformHost.print({toPdf:true})` for Electron (printToPDF) and `window.print()` for web with instructions; post-processing with pdf-lib (title/author metadata, outline from headings, page labels) when the host returns bytes; Markdown and HTML exporters (doc-model → Markdown with tables, images, footnotes; HTML with inline styles). Backstage Info shows properties and version list placeholder (WP-29 fills). Test the whole loop in e2e write-e2e.spec.ts: open fixtures/docx/features/styles.docx → edit (type, bold, heading, insert table) → Save As docx via the e2e download hook → the saved file is re-read by io-docx in the test and contains the edits → LibreOffice converts the saved file to PDF without error; print.spec.ts: the print route renders N pages where N equals the status bar page count, screenshot print/write-print-preview-light-desktop.png; `exportPdf` in Chromium headless via Playwright's page.pdf() of the print route produces a PDF with N pages (pdfjs-dist page count). Write the Write chapter of the manual (docs/manual/write.md): opening/saving, ribbon tour, track changes, TOC, keyboard shortcuts link.",
+  "task": "kiln-io-pdf: render Scene pages with krilla 0.8.2 — glyph runs as real text with subset embedded fonts (so text is selectable/searchable), paths, images (JPEG passthrough, PNG re-encode), clips, gradients, shadows approximated; tagged structure from the model (document title, H1–H6 from heading styles, P, Table/TR/TD, Figure with alt text, Link annotations for hyperlinks and TOC entries) aiming at PDF/UA-1 basics; outline bookmarks from headings; page labels from section numbering formats; XMP metadata (title, author, producer 'Kiln'); options: page range, scale, fit to page size, grayscale, print markup on/off, print hidden text; a generic PrintablePages trait so Grid (page setup → sheet pages) and Deck (slides, handouts 1/2/3/6 per page, notes pages) register in their WPs. kiln-session print: Export PDF (SaveAs PDF), Print (desktop: write temp PDF and open the system dialog via tauri-plugin-opener; web: PDF blob in a hidden iframe → window.print; Android: handoff documented, implemented in WP-89) and Query::PrintPreview returning a Scene for the preview surface. UI: Backstage ▸ Print pane per mockup (preview on the right painted by Surface, settings on the left: printer/pages/copies/orientation/scaling/margins, Print to PDF), Export pane (PDF options). Tests: page count of the PDF (lopdf is not a dependency; use pdfinfo from poppler-utils in tests) equals layout pages for every docx fixture; pdftotext output equals model text ≥ 0.99; pdftoppm renders without error; fonts embedded and subset (pdffonts shows 'yes' for emb/sub); tagged structure present (pdfinfo 'Tagged: yes'); bench pdf-export-300p for budget B11 registered. `kiln convert in.docx out.pdf`. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm e2e --grep 'write-e2e|print' exits 0",
-   "e2e: saved .docx re-read by io-docx contains the edited text and a Heading 1 paragraph; soffice converts it to PDF (exit 0)",
-   "e2e: PDF produced from the print route has the same page count as the status bar shows for fixtures/docx/features/sections.docx",
-   "pnpm verify exits 0 and CI is green",
-   "docs/qa/visual-review-WP-15.md lists every Write screenshot reviewed and defects fixed; docs/manual/write.md exists with >= 600 words"
+   "cargo nextest run -p kiln-io-pdf passes; for every fixtures/docx/features/*.docx, pdfinfo page count equals kiln's page count and pdffonts shows embedded subset fonts",
+   "cargo run -p kiln-cli -- convert fixtures/large/doc-300p.docx /tmp/d.pdf completes and cargo xtask budgets --only B11 exits 0 (< 2 s)",
+   "pnpm e2e --grep print passes (Backstage Print preview renders, page-range change updates the preview, Export PDF downloads a file whose byte prefix is %PDF)",
+   "pdfinfo /tmp/d.pdf | grep -q 'Tagged:.*yes'; CI green"
   ],
-  "gate": true
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-16",
-  "title": "Sheet model: workbook/sheets/sparse cell store, styles, merges, names, command log, formula binding",
-  "milestone": "M2",
+  "id": "WP-68",
+  "title": "Write integration gate: Office file loop, visual review, budgets, parity",
+  "milestone": "R1",
   "depends_on": [
-   "WP-07",
-   "WP-09"
+   "WP-64",
+   "WP-65",
+   "WP-66",
+   "WP-67"
   ],
   "owns": [
-   "packages/sheet-model/**"
+   "docs/qa/visual-review-WP-68.md",
+   "e2e/specs/write-gate.spec.ts",
+   "e2e/screenshots/baseline/write/**",
+   "docs/qa/fidelity.md",
+   "docs/qa/perf.md",
+   "docs/manual/write*.md"
   ],
-  "task": "Implement §3.3 sheet-model: Workbook/Sheet/SparseStore/RowChunk exactly as specified with O(1) random access, iteration in row-major order, `getUsedRange`, `forEachInRange`, bulk `setRange(values2D)`, row/col property arrays with default sizes (15 pt rows, 8.43 char columns → px via font metrics), hidden/outline levels, merges (with validation and split), `StyleTable` (numFmt code, font, fill, border per side with styles, alignment, protection; dedupe by hashing; `cellXfs`-like indices), named ranges (workbook/sheet scope, hidden names), tables (ListObjects: name, range, header/totals rows, column names, style, autofilter), conditional formatting rule model (all §2.3 types with priority/stopIfTrue and dxf styles), data validation model, hyperlinks, comments/notes, sheet views (freeze, split, zoom, selection, gridlines, headings, rightToLeft), print settings, autofilter state, charts/drawings anchors (objects referenced by id; chart model from WP-20 later), workbook properties (date1904, calcMode). `CommandLog` with inverse operations for every mutation (setCell(s), setStyle, insert/delete rows/cols (shifting merges, names, CF, validations, tables, formulas via engine), move/copy range, sort, rename sheet, add/remove/reorder sheets, freeze…) with undo/redo stacks, grouping of commands into transactions, and serialisation of commands. Formula binding: implement the @officina/formula host interface over the store; `WorkbookCalc` runs the engine (in-process here; a worker wrapper comes in WP-17) with incremental recalc, spill ranges, calc mode auto/manual, `recalcSheet`, structured reference resolution through the tables model, defined names, `explain(cell)`. Number formatting bridge: `formatCell(value, numFmtCode, locale)` via numfmt including Excel's General format rules (11 significant digits display, scientific switch), date/time formats, percentages, fractions, accounting with alignment padding markers, colours in format codes (`[Red]`), conditional sections. Snapshot/restore (structured clone-safe JSON) for versions/journals, with gzip via fflate. Tests: store semantics, insert/delete shifting matrices (≥ 50 cases), undo/redo invariants (property tests), number formatting (≥ 150 cases against numfmt's own expectations plus Excel-documented examples), structured references, calc integration (dependent cells recalc, spill), snapshot round-trip. Benchmark: fill 1M cells in < 2 s and iterate them in < 300 ms.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Run alone. End-to-end: open each docx feature fixture in the web build, perform a scripted edit (type a paragraph, apply a style, insert a table row, add a comment), save, reopen, assert content; run cargo xtask fidelity --format docx and cargo xtask budgets (B3, B4, B5, B6-doc, B11) and pnpm e2e; visual review of the Write chrome and of 10 rendered fixtures (kiln render PNGs and e2e screenshots) against the mockups and against LibreOffice renders, recorded in docs/qa/visual-review-WP-68.md with defects fixed in this WP (you may edit any Write-owned path since you run alone) or handed off; commit visual baselines e2e/screenshots/baseline/write/**; verify every Write P0 row of §2.2 is done with passing verify ids (cargo xtask parity --verify); update manual chapters; CHANGELOG. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/sheet-model test exits 0 with >= 250 tests",
-   "pnpm --filter @officina/sheet-model bench shows 1M-cell fill < 2 s and full iteration < 300 ms",
-   "A test demonstrates inserting a row above a formula's reference shifts the formula text and the dependency graph correctly (value unchanged after recalc)",
-   "pnpm typecheck exits 0"
+   "pnpm e2e exits 0; cargo xtask fidelity --format docx exits 0; cargo xtask budgets exits 0; cargo xtask parity --verify exits 0",
+   "python3 -c \"import json;d=json.load(open('parity/parity.json'));r=[x for x in d['rows'] if x['app']=='write' and x['priority']=='P0'];assert all(x['status'] in ('done','better') for x in r),[x['id'] for x in r if x['status'] not in ('done','better')]\" exits 0",
+   "docs/qa/visual-review-WP-68.md exists with ≥ 20 checked items; e2e/screenshots/baseline/write/ contains ≥ 6 PNGs",
+   "CI green"
   ],
-  "gate": false
+  "gate": true,
+  "heavy": false
  },
  {
-  "id": "WP-17",
-  "title": "Grid editor core: canvas renderer, selection, scrolling, freeze panes, in-cell editing, formula bar, autocomplete, fill handle, clipboard, Home ribbon",
-  "milestone": "M2",
+  "id": "WP-69",
+  "title": "kiln-sheet: workbook model port, sparse store, styles, command log, formula binding, parallel recalculation",
+  "milestone": "R2",
   "depends_on": [
-   "WP-06",
-   "WP-08",
-   "WP-16"
+   "WP-56"
   ],
   "owns": [
-   "packages/editor-grid/src/**",
-   "packages/editor-grid/test/**",
-   "packages/editor-grid/bench/**",
-   "apps/web/src/apps/grid/**",
-   "e2e/specs/grid-core.spec.ts"
+   "crates/kiln-sheet/**"
   ],
-  "task": "Build editor-grid per §3.6: canvas renderer (DPR-aware; layers: cells, grid lines, borders with Excel precedence, text with numfmt output, overflow into empty neighbours, wrap/rotation/indent/vertical align, merged cells, conditional format visuals, selection/fill-handle overlay canvas), row/column headers with resize/autofit on double-click, hidden rows/cols markers, freeze panes (4 viewports), smooth scrolling with virtualisation (Fenwick-tree offsets), zoom (50–400 %), text measurement cache, sheet tab strip (+, rename, reorder by drag, colour, hide, context menu), Name Box (type A1/range/name to navigate; define name on Enter), Formula Bar (expand/collapse, fx button opening the Insert Function dialog built from function docs, with range highlighting while editing and syntax colouring), in-cell editor (F2/typing/double-click; Enter/Tab/Shift variants; Alt+Enter newline; Esc; arrow keys select ranges into the formula while editing like Excel's point mode; autocomplete of function names with signature tooltip and inline docs (★), autocomplete of column values, data validation dropdown host), selection model (ranges, multi with Ctrl, whole rows/cols, Ctrl+A regions, Ctrl+Arrow edge jumps, Shift extensions, keyboard per §1.7), fill handle (drag copy/series detection numbers/dates/weekdays/months/custom lists, Ctrl modifier, double-click autofill to adjacent extent, Fill menu Down/Right/Series dialog), clipboard (internal rich copy with styles/formulas, HTML table + TSV for external paste/copy, Paste Special dialog: all/values/formulas/formats/transpose/skip blanks/operations), cut/paste moving references, insert/delete cells/rows/cols with shift options, undo/redo via CommandLog, status bar: mode (Ready/Enter/Edit/Point), Average/Count/Sum of selection, zoom, view buttons. Worker: run `WorkbookCalc` in a Web Worker via comlink with a main-thread mirror of computed values (transfer dirty-cell batches); fall back to in-process when workers unavailable (tests). Home ribbon per §1.4 fully wired (font, borders menu, fill/font colour, alignment, wrap, merge variants, number format combo + buttons, cell styles gallery, insert/delete menus, format menu, AutoSum, Fill, Clear, Find & Select basics; Conditional Formatting and Format as Table menus route to WP-19's dialogs so leave the command ids registered but marked pending until WP-19). Format Cells dialog (Ctrl+1) with all six tabs. apps/web/src/apps/grid: page composition, open .xlsx through io-xlsx when WP-18 lands (until then .csv via papaparse and .tabula bundles — implement the CSV import/export here: delimiter/encoding sniffing, Text Import wizard-lite), `GridCapabilities`. Tests: renderer unit tests with a canvas mock (which cells drawn, border precedence), selection/navigation tests, fill-series detection tests, clipboard TSV/HTML parsing tests, editor state machine tests. e2e grid-core.spec.ts: open fixtures/xlsx via csv path and generated 50k-row CSV, type values and formulas (=SUM(A1:A3)) and verify computed display, F2 edit, fill handle drag via mouse, freeze top row then scroll (screenshot), zoom, Ctrl+1 dialog screenshot, status bar sum; screenshots grid-core/*-{light,dark}-desktop.png. Benchmark: Playwright scroll test measuring frame time on a synthetic 1M-populated-cell sheet (generate in-page).\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Port reference/ts-core/sheet-model (6.1k lines + tests) per §3.4: Workbook/Sheet/SparseStore (row chunks with columnar arrays, lazy per-row index, O(1) random access, iteration by used range), StyleTable (fonts/fills/borders/numFmts/alignment/protection deduplicated like cellXfs; dxfs for CF), merges, defined names (workbook/sheet scope), tables (structured refs, totals row, banded styles, auto-expand), conditional formatting rules (every Excel rule type incl. data bars/colour scales/icon sets with x14 options) and their evaluation to per-cell visuals, data validation (list/number/date/text length/custom, input and error messages) and evaluation, hyperlinks, comments/notes/threaded comments, row/col properties (height/width/hidden/outline level), views (freeze/split/zoom/selection/rightToLeft), sheet protection flags, 1,048,576 × 16,384 addressing; CommandLog with inverse ops and grouping for undo; clipboard model (formats/values/formulas/transpose, HTML/TSV import mapping); autofill series logic (linear, growth, dates, weekdays, custom lists, copy); sort (multi-key, custom lists, icu collation, case option) and filter evaluation (values, text/number/date/colour criteria, top 10, dynamic dates); remove duplicates; text to columns; formula binding: formulas interned in kiln-formula, CalcState with computed values and spill ranges, recalc on edit (automatic/manual modes, F9 semantics), named ranges and structured references resolved through the engine's resolver, iterative calc option; serialisation to postcard. Tests: port all TS tests; proptest op/inverse identity; a workbook-level test that edits one cell in the 100k-formula generated workbook and asserts only the dependent cells recompute (counter) with the B9 time budget as an example bench; CF/validation evaluation tests for each rule type. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/editor-grid test exits 0 with >= 150 tests",
-   "pnpm e2e --grep grid-core exits 0 with screenshots grid-core/{basic,freeze,format-cells,formula-autocomplete}-{light,dark}-desktop.png",
-   "e2e: after typing 1,2,3 in A1:A3 and =SUM(A1:A3) in A4, cell A4 displays 6 and the status bar shows Sum: 6 when A1:A4 is selected",
-   "bench: average frame time while scrolling the 1M-cell synthetic sheet < 18 ms (recorded in docs/qa/perf.md)",
-   "docs/qa/visual-review-WP-17.md written"
+   "cargo nextest run -p kiln-sheet passes; cargo llvm-cov -p kiln-sheet --summary-only ≥ 75 %",
+   "cargo run --release -p kiln-sheet --example edit_bench prints incremental_ms_p95 < 2 for the 100k-formula workbook and full_recalc_ms < 2000 for 1M formula cells",
+   "cargo build --target wasm32-unknown-unknown -p kiln-sheet --no-default-features exits 0; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-18",
-  "title": "XLSX reader and writer (+ CSV/TSV/JSON) with round-trip fidelity tests",
-  "milestone": "M2",
+  "id": "WP-70",
+  "title": "XLSX reader and writer, CSV/TSV/JSON import/export, round-trip fidelity",
+  "milestone": "R2",
   "depends_on": [
-   "WP-05",
-   "WP-16"
+   "WP-55",
+   "WP-69"
   ],
   "owns": [
-   "packages/io-xlsx/**"
+   "crates/kiln-io-xlsx/**",
+   "crates/kiln-io-csv/**",
+   "fixtures/xlsx/read/**",
+   "fixtures/xlsx/roundtrip/**",
+   "fixtures/csv/**",
+   "crates/kiln-testing/src/formats/xlsx.rs"
   ],
-  "task": "Implement `readXlsx(bytes) -> Workbook` and `writeXlsx(workbook) -> Uint8Array` per §3.5 (everything listed: workbook/sheets/definedNames/calcPr/date1904, styles.xml fully (numFmts incl. built-in ids 0–49 table, fonts, fills incl. gradients, borders, cellXfs with alignment/protection, cellStyles/cellStyleXfs, dxfs), sharedStrings with rich text runs and phonetic ignored, inline strings, sheetData with all cell types and shared/array/dynamic-array formulas (`cm` + metadata.xml for spill), cached values kept so files open instantly before recalculation, cols/rows props, mergeCells, conditionalFormatting incl. x14 extLst (data bars, icon sets with custom sets, colour scales), dataValidations incl. x14 list references to other sheets, hyperlinks (internal/external), autoFilter with filter state, tableParts + tables, sheetViews (pane/freeze/split/selection/zoom/showGridLines/rightToLeft), sheetPr (tabColor, outlinePr), pageSetup/pageMargins/printOptions/headerFooter/rowBreaks/colBreaks, legacy comments + VML drawing for notes (write VML for notes so Excel shows them), threadedComments + persons, drawings with two-cell/one-cell/absolute anchors for pictures and shapes (DrawingML via ooxml), chart parts passed to the charts package via a `ChartPartHook` interface (WP-20 implements; until then chart parts are preserved as passthrough and re-anchored), pivot tables/caches, slicers, externalLinks, customXml, vbaProject.bin, printerSettings all passthrough with relationship repair; sheet order and hidden/veryHidden; workbook protection/sheet protection flags preserved). Writer emits deterministic, Excel-valid XML (element ordering per CT_Worksheet sequence; `r` attributes on rows/cells; styles deduped; shared strings table; `fullCalcOnLoad=1` set when any formula lacks a cached value). CSV/TSV read/write with papaparse (sniffing per §3.5; dates/numbers typed on import with locale option; export respects number formats option), JSON import (array of objects → table). Tests: every fixtures/xlsx/features/* file read → write → read with structural ≥ 0.97, values 1.00 (compare with exceljs reading both the original and our output), formulas string-equal after normalisation, styles compared through exceljs (font/fill/border/numFmt per cell), LibreOffice opens all outputs and `--convert-to csv` of the rewritten file equals that of the original for the first sheet, openpyxl reads outputs; 100k-row fixture read+write under 3 s each. Write docs/qa/fidelity.md xlsx section via `pnpm fidelity --format xlsx`.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Using reference/ts-core/io-xlsx (archived WIP: formula-text, shared strings, styles, refs, scan, text) as a starting reference, implement kiln-io-xlsx read and write per docs/FORMATS.md xlsx section (workbook.xml sheets/definedNames/calcPr/date1904, styles.xml numFmts/fonts/fills/borders/cellXfs/cellStyles/dxfs, sharedStrings incl. rich text, worksheets with dimension/sheetViews incl. pane-freeze-selection/sheetFormatPr/cols/sheetData t=s,n,b,e,str,inlineStr/shared formulas/array formulas/dynamic-array metadata (cm + metadata.xml)/mergeCells/conditionalFormatting + x14/dataValidations + x14/hyperlinks/print setup/rowBreaks/autoFilter/tableParts, tables, drawings (two-cell anchors: pictures, charts as opaque until WP-73 registers, shapes), comments + threadedComments + persons, pivotTables/pivotCache/vbaProject/externalLinks/customXml as passthrough), the writer with byte-identical untouched parts and deterministic output; kiln-io-csv: RFC 4180 with delimiter/quote/encoding sniffing (UTF-8 BOM, UTF-16, Windows-1252 via encoding_rs), TSV, JSON (array of objects → table), export CSV/TSV with Excel-compatible quoting. Register DocKind 'grid' reader/writer, SaveAs formats, and Roundtrip with kiln-testing. Oracles: exceljs (packages/testing script → fixtures/xlsx/read/<name>.exceljs.json committed: cell values, formulas, styles summary) compared for values 1.00/styles ≥ 0.97; LibreOffice --convert-to csv (recalculating profile) compared with our computed values for every formula cell of the feature fixtures (1.00 within 1e-9 or string equality). Fidelity thresholds: structural ≥ 0.97, values 1.00, formulas 1.00, oracle_opens 100 %, byte_identical_untouched 100 %. Open time of fixtures/xlsx/large and fixtures/large/sheet-1m.xlsx measured as an example for B7. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/io-xlsx test exits 0 with >= 120 tests",
-   "pnpm fidelity --format xlsx prints structural >= 0.97, values == 1.00, oracle_opens == 1 for every features/* fixture",
-   "A test shows a dynamic-array formula (=SORT(A1:A5)) survives round-trip with its spill metadata and Excel-compatible cm attribute",
-   "A test reads a .xlsm fixture, writes it, and vbaProject.bin bytes are identical in the output"
+   "cargo xtask fidelity --format xlsx exits 0 with the thresholds above shown in docs/qa/fidelity.md",
+   "cargo nextest run -p kiln-io-xlsx -p kiln-io-csv passes incl. the LibreOffice recalculated-values test for every feature fixture",
+   "cargo run --release -p kiln-io-xlsx --example open_bench fixtures/large/sheet-1m.xlsx prints parse_ms < 1200 and calc_ms < 2500 (B7)",
+   "cargo run -p kiln-cli -- convert fixtures/xlsx/features/formulas.xlsx /tmp/f.csv produces a CSV whose values match the LibreOffice csv; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-19",
-  "title": "Grid features: sort & filter, conditional formatting UI, data validation, Format as Table, find/replace, comments/notes, hyperlinks, Page Layout, Formulas and Data ribbons, formula auditing, Formula Lab",
-  "milestone": "M2",
+  "id": "WP-71",
+  "title": "Grid surface and editor core: canvas tiles, selection, frozen panes, in-cell editing, formula bar, autocomplete, fill handle, clipboard, Home ribbon",
+  "milestone": "R2",
   "depends_on": [
-   "WP-17",
-   "WP-18"
+   "WP-58",
+   "WP-54",
+   "WP-69",
+   "WP-60"
   ],
   "owns": [
+   "crates/kiln-sheet-layout/**",
+   "crates/kiln-session/src/apps/grid/**",
+   "crates/kiln-protocol/src/commands/grid.rs",
+   "packages/editor-grid/**",
+   "packages/commands/src/catalog/grid.ts",
+   "packages/commands/src/keymaps/grid.ts",
+   "apps/web/src/routes/grid/**",
+   "fixtures/golden/grid/**",
+   "e2e/specs/grid.spec.ts",
+   "e2e/specs/grid-shortcuts.spec.ts",
+   "crates/kiln-bench/src/benches/grid*",
+   "docs/manual/grid.md",
+   "docs/qa/visual-review-WP-71.md"
+  ],
+  "task": "kiln-sheet-layout per §3.6 'Grid specifics': row/column offset lookup with Fenwick trees over heights/widths (hidden rows/cols, zoom), tile production for the viewport plus prefetch, cell painting (fills, borders with Excel's precedence and styles, formatted text via kiln-formula::numfmt and kiln-text, horizontal/vertical alignment, indent, wrap, shrink-to-fit, rotation, overflow into empty neighbours, merged cells, CF visuals, error/formula indicators, hyperlink styling, comment markers), row/column headers with selection highlight, gridlines toggle, frozen panes as four viewports sharing one tile cache, selection/active cell/fill handle/range-colouring geometry, hit testing, A11yTree for the visible grid (aria-rowcount/colcount, visible rows and cells, active cell value/formula, headers), Scene for the in-cell editor text with formula range colouring. kiln-session Grid app (GridCommand variants + handlers): navigation for every §1.7 Grid row (arrows, Ctrl+arrows edge jumps, Ctrl+Home/End, Page Up/Down, Tab/Enter movement with Enter direction option, Ctrl+Page Up/Down sheets, Shift/Ctrl+Space row/col, Ctrl+A region/sheet), selection modes (range, multi with Ctrl, row/col, whole sheet), editing (F2 in place, Enter/Tab/Esc, Alt+Enter newline, autocomplete of column values and function names with inline docs from kiln-formula docs, argument tooltips via Query::FormulaHint, F4 absolute toggle, Ctrl+Enter fill selection, Ctrl+D/R fill, Ctrl+; and Ctrl+Shift+; date/time, Alt+= AutoSum, Delete clear contents), fill handle (series/copy/linear/dates with the autofill logic), row/col insert/delete/resize/autofit/hide/unhide, sheet tabs (add/rename/reorder/colour/hide/delete), freeze panes/top row/first column, split, zoom, clipboard (formats/values/formulas/transpose; paste special), number format commands (combo presets, $ % , increase/decrease decimal), font/fill/border/alignment/wrap/merge commands, Format Cells dialog data (six tabs), undo/redo, status bar stats (Average/Count/Sum of selection, mode Ready/Enter/Edit), find basic. TypeScript (packages/editor-grid): Surface for the grid plus DOM overlays (formula bar with name box/fx/expand, in-cell editor is the input proxy with Rust-rendered text, autocomplete popover, Format Cells dialog, sheet tab strip with context menu, status bar) per the Grid mockups; Home ribbon fully wired. Golden renders of fixtures/xlsx/features styled sheets; e2e: navigation and editing rows of §1.7, formula entry with autocomplete, fill handle drag, frozen panes scroll, Format Cells, 1M-cell sheet scroll at ≥ 60 fps (B6) and open (B7) measured in grid.spec; benches grid-frame and grid-open registered in bench/budgets.toml. Visual review vs Grid mockups; manual chapter. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
+  "acceptance": [
+   "cargo nextest run -p kiln-sheet-layout -p kiln-session passes (golden PNGs for ≥ 5 xlsx fixtures; ≥ 80 Grid command tests)",
+   "pnpm e2e --grep 'grid' passes incl. B6 (frame p95 ≤ 16.7 ms scrolling fixtures/large/sheet-1m.xlsx) and B7 assertions and every Grid row of the shortcut table",
+   "cargo run -p kiln-cli -- render fixtures/xlsx/features/styles.xlsx --png /tmp/g/sheet-%02d.png writes PNGs of the used range",
+   "docs/qa/visual-review-WP-71.md records the Grid mockup comparison; axe 0 serious/critical on the Grid view; CI green"
+  ],
+  "gate": false,
+  "heavy": false
+ },
+ {
+  "id": "WP-72",
+  "title": "Grid features: sort & filter, conditional formatting UI, validation, Format as Table, find/replace, comments, Page Layout/Formulas/Data ribbons, auditing, Formula Lab, sheet printing",
+  "milestone": "R2",
+  "depends_on": [
+   "WP-71",
+   "WP-70",
+   "WP-67"
+  ],
+  "owns": [
+   "crates/kiln-session/src/apps/grid/features/**",
+   "crates/kiln-sheet-layout/src/print/**",
    "packages/editor-grid/src/features/**",
-   "packages/editor-grid/test/features/**",
-   "apps/web/src/apps/grid/**",
-   "e2e/specs/grid-features.spec.ts"
+   "packages/editor-grid/src/panes/**",
+   "e2e/specs/grid-features.spec.ts",
+   "docs/manual/grid-data.md",
+   "docs/manual/grid-formulas.md"
   ],
-  "task": "Add feature modules (via a `GridFeature` interface the core exposes): AutoFilter (header dropdown buttons drawn on canvas; filter pane with search, value checklist, text/number/date/colour filters, sort A→Z/Z→A/by colour; filter state model persisted via io-xlsx), Sort dialog (multi-level, header detection, case, orientation, custom lists), Conditional Formatting dialogs (every rule type of §2.3, Manage Rules with priority/stop-if-true, live preview, rule application in renderer already supported by WP-17 visuals), Data Validation dialog (settings/input message/error alert; dropdown in-cell; circle invalid data), Format as Table (style gallery with 60 Excel-like table styles generated from theme colours; header/total/banded toggles; resize; convert to range; structured references in autocomplete), Find & Replace dialog (within sheet/workbook, by rows/cols, in formulas/values/notes, match case/entire cell; Go To Special: blanks/formulas/constants/visible), Notes and threaded Comments (pane, indicators, hover popups), Hyperlinks (insert dialog, Ctrl+click, cell styling), Clear menu, Remove Duplicates, Text to Columns wizard (delimited/fixed width with preview), Name Manager dialog + Define Name + Create from Selection + Use in Formula menu, Formula Auditing (trace precedents/dependents arrows drawn on overlay canvas, remove arrows, Show Formulas (Ctrl+`), Error Checking pane listing error cells with explanations, Evaluate Formula dialog stepping through the engine's explain tree, Watch Window), ★Formula Lab task pane (AST tree with live values per node, argument docs), Calculation options (auto/manual, F9/Shift+F9), Page Layout ribbon (margins/orientation/size/print area/print titles/breaks/scale-to-fit/gridlines+headings print toggles, Page Break Preview and Page Layout views rendering page boundaries), Insert ribbon items that don't need charts (table, picture floating over cells, shapes basic (rectangle/ellipse/line/textbox) with DrawingML anchors, text box, header & footer dialog, symbol), Review ribbon (spelling pass over text cells, comments navigation, protect sheet with password-less lock + locked-cell enforcement in editor, protect workbook structure), View ribbon (gridlines/headings/formula bar toggles, new window (web: new tab), split, hide/unhide, custom zoom). Group/outline rows and cols with outline symbols (Data ▸ Outline). Wire the complete Grid ribbon spec per §1.4. e2e grid-features.spec.ts: filter a column and assert hidden rows; conditional formatting data bars screenshot; validation dropdown screenshot and error on invalid; Format as Table + structured ref formula; trace precedents screenshot; Formula Lab screenshot; Page Break Preview screenshot; light+dark.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Rust: AutoFilter (toggle, dropdown data: value list with search, text/number/date/colour criteria, top 10, sort from dropdown, clear/reapply), Sort dialog (multi-key, header row, case, custom lists), conditional formatting commands (highlight cells, top/bottom, data bars, colour scales, icon sets, formula rules, New Rule/Manage Rules/Clear data), data validation commands and dropdown data, Format as Table (styles gallery, header/total/banded options, convert to range, resize, structured-ref autocompletion), find/replace (values/formulas, match case/entire cell, within sheet/workbook, Go To Special subset), comments/notes/threaded comments (insert/edit/delete/navigate/show all), hyperlinks (insert/edit/follow via opener), Page Layout (margins/orientation/size/print area/print titles/breaks/scale to fit/gridlines/headings; Page Break Preview view mode), Formulas (Insert Function dialog data with search and docs, Name Manager, Define Name, Create from Selection, Use in Formula, Trace Precedents/Dependents arrows as Scene overlays, Remove Arrows, Show Formulas, Error Checking, Evaluate Formula stepping, Calculation Options auto/manual, Calculate Now/Sheet, Watch Window data), Data (From Text/CSV and From JSON import wizards via kiln-io-csv, Refresh, Text to Columns wizard, Remove Duplicates, Data Validation, Group/Ungroup/outline symbols with Show/Hide detail), Review (spelling via kiln-spell over text cells), View (Normal/Page Break Preview/Page Layout; gridlines/formula bar/headings toggles), Formula Lab (Query::FormulaTrace returning the AST with per-node values for the active cell), sheet printing: PrintablePages for sheets from page setup (print area, titles, scaling, fit to width/height, headers/footers with codes &P &N &D &F &A) registered with kiln-io-pdf. TypeScript: the dropdowns, dialogs (Sort, CF rule editors and manager, Validation, Create Table, Name Manager, Insert Function, Text to Columns, Import), panes (Formula Lab, Watch Window), ribbons Page Layout/Formulas/Data/Review/View wired, Table Design contextual tab. E2E for each feature; parity rows flipped; manual chapters. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/editor-grid test exits 0 with >= 120 additional tests",
-   "pnpm e2e --grep grid-features exits 0 with screenshots grid-features/{filter,cf-databars,validation,table,trace,formula-lab,page-break-preview}-{light,dark}-desktop.png",
-   "e2e: applying a filter 'contains \"a\"' on a 100-row column hides the expected rows and the status bar reads 'n of 100 records found'",
-   "docs/qa/visual-review-WP-19.md written"
+   "cargo nextest run -p kiln-session -p kiln-sheet-layout passes with tests for every feature above",
+   "pnpm e2e --grep grid-features passes (filter by value, multi-key sort, CF data bar appears, validation dropdown, Format as Table with totals, find/replace, trace precedents arrows, Formula Lab shows steps for =IF(SUM(A1:A3)>5,\"x\",\"y\"), print preview of a sheet with print titles)",
+   "cargo run -p kiln-cli -- convert fixtures/xlsx/features/print-setup.xlsx /tmp/p.pdf produces page count equal to Page Break Preview's count",
+   "cargo xtask parity --verify exits 0 with ≥ 70 Grid rows flipped in this WP (listed in the commit body); CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-20",
-  "title": "Charts package: chart model, ECharts renderer, chart editing UI, OOXML chart read/write",
-  "milestone": "M2",
+  "id": "WP-73",
+  "title": "kiln-charts: chart model, layout and rendering, chart editing UI, OOXML chart read/write",
+  "milestone": "R2",
   "depends_on": [
-   "WP-05",
-   "WP-16",
-   "WP-18"
+   "WP-54",
+   "WP-55",
+   "WP-69"
   ],
   "owns": [
-   "packages/charts/**",
-   "packages/io-xlsx/src/charts/**",
-   "packages/io-xlsx/test/charts/**"
+   "crates/kiln-charts/**",
+   "packages/ui-kit/src/charts/**",
+   "fixtures/golden/charts/**",
+   "fixtures/xlsx/charts/**",
+   "e2e/specs/charts.spec.ts",
+   "docs/manual/charts.md"
   ],
-  "task": "packages/charts: `ChartModel` (types of §2.3/§3.5: column/bar clustered/stacked/100%, line (markers, smooth), area, pie/doughnut (explosion, labels), scatter (lines/markers), bubble, radar, combo with secondary axis, treemap, sunburst, histogram, waterfall, funnel; series {name ref/literal, categories ref, values ref, cache, formatting}, axes (category/value/date; title, min/max/major unit, number format, reversed, log, gridlines, label rotation), legend, titles, data labels (position, value/percent/name), plot area/chart styles (fill/line), colours from theme palette (`accent1..6` with variations) with dark-mode-aware rendering), `ChartRenderer` (React component mapping ChartModel → ECharts 6 option; resize observer; export to PNG/SVG), `ChartData` resolution via a host interface (`getRange(ref) -> values`) so Grid charts are live and Write/Deck charts use embedded workbook data (through io-xlsx on the embedded part), Chart Design/Format ribbon group specs and dialogs (Change Chart Type gallery, Select Data dialog with series editor and switch row/column, Add Chart Element menu (axis titles, data labels, gridlines, legend position, trendline linear/exp/moving-average computed in-house), Quick Layouts, Chart Styles (12 presets), colour palettes), ★Recommended Charts (heuristics from selection shape: 1 numeric column → column; dates + numbers → line; 2 numeric → scatter; part-to-whole small set → pie), chart floating-object host for Grid (two-cell anchor move/resize using editor-grid's drawing layer interface — expose a `ChartObject` component; WP-22 wires it), `chart-ooxml`: read/write `c:chartSpace` subsets (incl. `c:userShapes` passthrough, `c:extLst` passthrough, `cx:chart` chartEx read for treemap/sunburst/waterfall/funnel/histogram and write as chartEx), number formats, cached data (`c:numCache/c:strCache`) written so Excel renders without recalculation, `c:style`/`c:clrMapOvr` preserved, chart relationships (embedded workbook part for Write/Deck, external data refs for Grid). Hook into io-xlsx via the `ChartPartHook` (packages/io-xlsx/src/charts) so sheets round-trip charts as models: read drawing anchors → ChartModel; write back. Tests: model ↔ ECharts option snapshot tests per type; OOXML read/write round-trip of fixtures/xlsx/features/charts-*.xlsx (every chart type) with structural ≥ 0.95 and LibreOffice opening the rewritten file; renderer tests in jsdom with ECharts' SVG renderer producing non-empty SVG; a Playwright screenshot of each chart type from a `packages/charts/stories/Charts.tsx` page via the e2e project (charts/<type>-light-desktop.png) reviewed visually.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Chart model (13 types for v0.1: clustered/stacked/100 % column and bar, line (+markers, smooth), area (+stacked), pie, doughnut, scatter (markers/lines), bubble, radar, combo with secondary axis, treemap, sunburst) with series (references + cached values; literal data for Write/Deck), axes (category/value/date, min/max/major unit, number formats, titles, reversed, log), legend positions, data labels (value/category/percent/series, positions), titles, gridlines, series formatting (fill/line/marker/colour by point), chart styles and the theme palette (document theme colours; a dark-mode-aware UI palette variant for on-screen rendering when the document theme is default), trendlines (linear/exponential/moving average) P1 allowed; layout engine (plot area, axis tick placement with 'nice' numbers, label collision avoidance, legend wrapping) and Scene rendering via kiln-text for labels; OOXML c:chartSpace read/write for all 13 types plus cx:chart (treemap/sunburst) with passthrough of unknown elements, embedded workbook (embeddings/*.xlsx) for charts in docx/pptx read through kiln-io-xlsx for data editing; chart objects in sheets through drawing anchors (kiln-io-xlsx registers the chart part handler provided here), move/resize/select; chart commands (insert from selection with Recommended Charts heuristics from the selection shape, change type, switch row/column, select data, add/remove elements, quick layouts, styles, move chart to sheet) exposed through SuiteCommand::Chart variants in crates/kiln-protocol/src/commands/suite.rs (append-only here); UI: Chart Design and Chart Format contextual ribbons, Select Data dialog, Format pane sections, insert galleries — reusable by Write and Deck. Golden renders for each type (fixtures/golden/charts/*.png); round-trip of every chart in fixtures/xlsx/features and new fixtures/xlsx/charts (one file per type created with openpyxl) with structural ≥ 0.97; e2e: insert chart from a range in Grid, change type, switch row/column, dark theme screenshot. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/charts --filter @officina/io-xlsx test exits 0 with >= 90 tests for charts",
-   "pnpm fidelity --format xlsx --only charts prints structural >= 0.95 and oracle_opens == 1 for every charts-* fixture",
-   "e2e --grep charts produces screenshots for >= 12 chart types and docs/qa/visual-review-WP-20.md reviews them",
-   "A test asserts a chart written to xlsx includes c:numCache values for every series"
+   "cargo nextest run -p kiln-charts passes with ≥ 13 golden renders and round-trip tests for every chart fixture",
+   "cargo xtask fidelity --format xlsx still exits 0 with charts now scored structurally",
+   "pnpm e2e --grep charts passes; e2e/screenshots/charts/ contains one PNG per chart type in light and dark",
+   "cargo xtask protocol --check exits 0; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-21",
-  "title": "Grid analysis: pivot tables, sparklines, Goal Seek, Subtotal, Flash Fill, protection, Themes",
-  "milestone": "M2",
+  "id": "WP-74",
+  "title": "Grid analysis: pivot tables, sparklines, Goal Seek, Subtotal, Flash Fill, protection, themes",
+  "milestone": "R2",
   "depends_on": [
-   "WP-19"
+   "WP-72",
+   "WP-73"
   ],
   "owns": [
+   "crates/kiln-sheet/src/pivot/**",
+   "crates/kiln-sheet/src/sparkline.rs",
+   "crates/kiln-session/src/apps/grid/analysis/**",
    "packages/editor-grid/src/analysis/**",
-   "packages/editor-grid/test/analysis/**",
-   "packages/sheet-model/src/pivot/**",
-   "packages/sheet-model/test/pivot/**",
-   "apps/web/src/apps/grid/**",
-   "e2e/specs/grid-analysis.spec.ts"
+   "e2e/specs/grid-analysis.spec.ts",
+   "docs/manual/grid-analysis.md"
   ],
-  "task": "Pivot tables (P1 but included): pivot model in sheet-model (source range/table, fields, row/column/filter/value areas, aggregations sum/count/average/min/max/product/countNums/stdDev/var, subtotals/grand totals, number format per value field, sorting, manual filter per field, compact/outline/tabular layouts, expand/collapse), pivot computation engine (group-by with stable ordering, dates grouped by year/quarter/month option), rendering as normal cells in a reserved range with pivot styling (PivotStyleLight16 default) and refresh on source change (manual Refresh + auto when source edited, debounced), PivotTable Fields task pane (drag between areas, value field settings dialog), PivotTable Analyze/Design contextual ribbon tabs, io-xlsx bridge: write `pivotTableDefinition` + `pivotCacheDefinition/Records` sufficient for Excel to open and refresh (keep original parts via passthrough when a pivot was read unchanged; regenerate when edited) — implement in packages/sheet-model/src/pivot/ooxml.ts and call it from io-xlsx through an exported hook (`PivotPartHook`, registered by the Grid app; io-xlsx already defines the hook interface in WP-18 — if not, add it to the interface file listed in io-xlsx's owned paths via a handoff note). Sparklines (line/column/win-loss; model + x14 sparkline groups read/write via io-xlsx hook; renderer in canvas; Sparkline Design ribbon with markers/colours). What-If ▸ Goal Seek dialog (secant method over the engine with iteration cap), Data ▸ Subtotal dialog (inserts SUBTOTAL formulas and outline groups), Flash Fill (pattern inference for prefix/suffix/split/case/concat of adjacent columns; Ctrl+E), Protection (Protect Sheet dialog with permission checkboxes and password hashed per Excel's legacy algorithm + SHA-512 modern `sheetProtection` attributes; Allow Edit Ranges basic), Page Layout ▸ Themes (apply Office-compatible theme colour/font sets to the workbook styles). e2e grid-analysis.spec.ts: create a pivot from a 200-row generated table (sum by category), screenshot; sparklines screenshot; Goal Seek sets a cell to hit a target; Subtotal creates outline groups; Flash Fill fills a split column.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Pivot tables: model (source range/table, row/column/filter/value fields, aggregations sum/count/average/min/max/product/countNums/stdDev/var, show values as % of total, sorting, subtotals/grand totals, compact/outline/tabular layout, refresh, drill-through to source rows), rendering as cells with pivot styles, reading pivotTableDefinition + pivotCacheDefinition/Records from xlsx to rebuild the model (fallback: static table if unsupported features) and writing them back (regenerate cache; preserve unknown parts opaque), PivotTable Fields pane and PivotTable Analyze/Design contextual tabs; sparklines (line/column/win-loss, x14 read/write, markers, axis, colour options) rendered in cells; Goal Seek (secant/bisection with iteration limits; dialog), Subtotal (Data ▸ Subtotal with outline groups), Flash Fill (pattern inference for common split/concat/case/number patterns from 1–2 examples; Ctrl+E; suggestions preview), sheet and workbook protection (password hashing per spec, locked cells respected by commands, unlock dialog; Allow Edit Ranges P2 hidden), Themes (Page Layout ▸ Themes gallery applying theme colours/fonts to the StyleTable, with the 12 themes shared with Deck in kiln-ooxml theme data). E2E for each; parity rows flipped. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/sheet-model --filter @officina/editor-grid test exits 0 with >= 80 additional tests",
-   "pnpm e2e --grep grid-analysis exits 0 with screenshots grid-analysis/{pivot,sparklines,goal-seek,subtotal}-light-desktop.png",
-   "A test writes a workbook with a pivot and LibreOffice opens it (oracle_opens == 1) and openpyxl lists one pivot table on the sheet",
-   "docs/qa/visual-review-WP-21.md written"
+   "cargo nextest run -p kiln-sheet -p kiln-session passes with pivot aggregation tests (compared against openpyxl-generated expected tables), sparkline and Goal Seek tests",
+   "cargo xtask fidelity --format xlsx exits 0 including fixtures with pivot tables (structural score counts the pivot model, cache parts preserved)",
+   "pnpm e2e --grep grid-analysis passes (create pivot from a table, add fields, refresh; insert sparklines; Goal Seek; Subtotal; Flash Fill; protect sheet blocks edit)",
+   "CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-22",
-  "title": "Grid integration gate: Office file loop, chart objects in sheets, print/PDF for sheets, Backstage, manual chapter",
-  "milestone": "M2",
+  "id": "WP-75",
+  "title": "Grid integration gate",
+  "milestone": "R2",
   "depends_on": [
-   "WP-15",
-   "WP-17",
-   "WP-18",
-   "WP-19",
-   "WP-20",
-   "WP-21"
+   "WP-71",
+   "WP-72",
+   "WP-73",
+   "WP-74"
   ],
   "owns": [
-   "apps/web/src/apps/grid/**",
-   "packages/print-pdf/src/grid/**",
-   "e2e/specs/grid-e2e.spec.ts",
-   "docs/qa/visual-review-WP-22.md",
-   "docs/manual/grid.md"
+   "docs/qa/visual-review-WP-75.md",
+   "e2e/specs/grid-gate.spec.ts",
+   "e2e/screenshots/baseline/grid/**",
+   "docs/qa/fidelity.md",
+   "docs/qa/perf.md",
+   "docs/manual/grid*.md"
   ],
-  "task": "Integration gate for Grid: wire io-xlsx open/save (xlsx, xlsm read, xltx, csv, tsv, tabula, pdf export) with the worker parser and Compatibility Checker; wire the charts package into the sheet drawing layer (Insert ▸ Charts gallery and Recommended Charts, chart objects movable/resizable with two-cell anchors, Chart Design/Format contextual tabs, double-click to edit data via Select Data), pictures and shapes in the drawing layer (from WP-19) share the selection/transform code (use ui-kit TransformBox); Page Layout/print: packages/print-pdf/src/grid: print layout route rendering sheets to pages honouring print area, print titles, scaling/fit-to, margins, headers/footers with &[Page] codes, gridlines/headings options, page order; Backstage ▸ Print preview; PDF export of workbook/active sheet/selection; Backstage Info (properties, calc mode, sheet count), Export (CSV per sheet, PDF, JSON), Share. End-to-end e2e grid-e2e.spec.ts: open fixtures/xlsx/features/{styles,formulas,charts-column,cf,validation,tables}.xlsx → screenshots light/dark → edit (values, a formula, apply number format, insert a chart from a range) → Save As .xlsx via the e2e hook → re-read with io-xlsx AND exceljs in the test asserting the edits, formulas, chart count → LibreOffice converts to PDF without error; print route page count equals the Page Break Preview count; PDF produced via page.pdf() has that many pages; CSV export of a sheet equals papaparse-generated expectation. Manual chapter docs/manual/grid.md (formulas, autocomplete, tables, charts, pivots, printing, shortcuts). Fix any cross-feature defects found; record the visual review.",
+  "task": "Run alone. End-to-end Office file loop for xlsx fixtures (open, edit cells/formulas/formats, add a chart and a pivot, save, reopen, LibreOffice opens and recalculates to the same values); cargo xtask fidelity --format xlsx; budgets B6, B7, B8, B9; pnpm e2e; visual review of the Grid chrome and rendered sheets/charts vs mockups and LibreOffice renders in docs/qa/visual-review-WP-75.md with defects fixed (any Grid-owned path) or handed off; baselines committed; every Grid P0 row of §2.3 done with passing verify ids; manual updated. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm e2e --grep grid-e2e exits 0 with screenshots grid-e2e/*-{light,dark}-desktop.png",
-   "e2e: the saved .xlsx re-read by exceljs contains the edited value, the formula text, the number format and one chart; soffice converts it to PDF (exit 0)",
-   "e2e: PDF export page count equals Page Break Preview page count for fixtures/xlsx/features/print.xlsx",
-   "pnpm verify exits 0 and CI is green; docs/qa/visual-review-WP-22.md and docs/manual/grid.md (>= 600 words) exist"
+   "pnpm e2e exits 0; cargo xtask fidelity --format xlsx exits 0; cargo xtask budgets exits 0; cargo xtask parity --verify exits 0",
+   "python3 -c \"import json;d=json.load(open('parity/parity.json'));r=[x for x in d['rows'] if x['app']=='grid' and x['priority']=='P0'];assert all(x['status'] in ('done','better') for x in r),[x['id'] for x in r if x['status'] not in ('done','better')]\" exits 0",
+   "docs/qa/visual-review-WP-75.md exists with ≥ 20 checked items; e2e/screenshots/baseline/grid/ contains ≥ 6 PNGs; CI green"
   ],
-  "gate": true
+  "gate": true,
+  "heavy": false
  },
  {
-  "id": "WP-23",
-  "title": "Deck model: presentation, masters/layouts/slides, shapes, placeholders, themes, transitions, animations, notes",
-  "milestone": "M3",
+  "id": "WP-76",
+  "title": "kiln-deck: presentation model, placeholder inheritance, themes, transitions, animation timeline",
+  "milestone": "R3",
   "depends_on": [
-   "WP-05"
+   "WP-61",
+   "WP-55"
   ],
   "owns": [
-   "packages/deck-model/**"
+   "crates/kiln-deck/**",
+   "assets/themes/**"
   ],
-  "task": "Implement §3.3 deck-model: Presentation/Slide/Shape types (EMU transforms, all shape kinds, placeholders with type/idx inheritance resolution master→layout→slide for position, size, text styles and fills via `resolveShapeProps(slide, shape)`), text bodies using a `deckText` ProseMirror schema (paragraphs with level/alignment/indent/spacing/bullets (char/autonumber/picture/none, bullet font/colour/size), runs with font/size/bold/italic/underline/strike/colour/highlight/baseline/spacing/caps/link, line breaks, fields (slidenum, datetime)), `bodyPr` (insets, anchor, wrap, autofit: normAutofit fontScale/lnSpcReduction, spAutoFit; vertical text), list styles (lvl1–9 pPr) from master text styles (title/body/other), theme handling (reuse ooxml theme; 12 bundled themes authored as JSON+assets in `src/themes/` with layouts: Title Slide, Title and Content, Section Header, Two Content, Comparison, Title Only, Blank, Content with Caption, Picture with Caption — generated from the default theme definition so new presentations are Office-compatible), slide size, backgrounds (fill types), transitions (model for the §1.4 list + duration + advance on click/after), animations (effect types entrance/emphasis/exit per §1.4, targets, start conditions, duration, delay, order, effect options direction; `buildTimeline(slide)` producing click-steps), notes, sections, comments, hidden slides, document properties. Operations as pure functions (`addSlide(layoutId)`, `duplicateSlide`, `moveSlide`, `applyLayout`, `resetSlide`, `addShape`, `transform`, `group/ungroup` (with coordinate re-basing), `reorderZ`, `align/distribute`, `setPlaceholderText`), plus the Yjs binding seam (`toY(doc)`, `fromY`) used in WP-29 (here implement JSON serialisation only with stable ids). `designIdeas(slide)` heuristic engine (★): given the slide's content types/counts, rank candidate layouts/variants (title-only → big centred title; title + 3–6 bullets → two-column or icon list; one image → picture-with-caption full bleed; numbers → stat callouts) returning concrete slide mutations. Tests: inheritance resolution (≥ 40 cases), autofit computation, animation timeline building, grouping coordinate maths, theme generation produces valid layouts, design ideas ranking.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Implement §3.4 kiln-deck: Presentation/Master/Layout/Slide/Section/NotesMaster, shapes (TextBox, Picture with crop, Geometry with preset or custom path, Group, Table, Chart handle, Connector, Media, Placeholder) with EMU transforms, fill/line/effects, TextBody using kiln-doc paragraphs/runs with body properties (insets, anchor, autofit normal/shrink/spAutoFit, columns, wrap), placeholder inheritance master→layout→slide resolved on access (type/idx matching as PowerPoint), theme (colour/font/format schemes), slide size, backgrounds, transitions (12 types + fallback, duration, advance on click/after), animation timeline (effects entrance/emphasis/exit with presets listed in §1.4, start on click/with/after previous, duration/delay, order, triggers P2 placeholder), notes, hidden slides, sections, comments; the 11 standard layouts and 12 bundled themes (assets/themes/*.kdeck-theme as OOXML-compatible theme + master/layout definitions; design them to a high standard with the brand kit as inspiration, not as UI tokens); Transaction/Op with inverses and undo grouping for every mutation (slide insert/delete/reorder/duplicate/hide, layout change, reset, shape insert/delete/transform/z-order/group/ungroup/align/distribute, text edits delegate to kiln-doc ops, property sets, transition/animation edits, section ops); serialisation. Tests: inheritance resolution matrix, every transaction's inverse, proptest, theme application. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/deck-model test exits 0 with >= 120 tests",
-   "A test asserts a title placeholder on a slide inherits position from the layout and font from the master when unspecified",
-   "pnpm typecheck exits 0"
+   "cargo nextest run -p kiln-deck passes; cargo llvm-cov -p kiln-deck --summary-only ≥ 75 %",
+   "assets/themes/ contains 12 themes, each loadable by a test that applies it to a 5-slide sample presentation",
+   "cargo build --target wasm32-unknown-unknown -p kiln-deck exits 0; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-24",
+  "id": "WP-77",
   "title": "PPTX reader",
-  "milestone": "M3",
+  "milestone": "R3",
   "depends_on": [
-   "WP-23"
+   "WP-76"
   ],
   "owns": [
-   "packages/io-pptx/src/read/**",
-   "packages/io-pptx/src/common/**",
-   "packages/io-pptx/src/index.ts",
-   "packages/io-pptx/test/read/**"
+   "crates/kiln-io-pptx/Cargo.toml",
+   "crates/kiln-io-pptx/src/lib.rs",
+   "crates/kiln-io-pptx/src/read/**",
+   "crates/kiln-io-pptx/src/common/**",
+   "crates/kiln-io-pptx/tests/read*",
+   "crates/kiln-io-pptx/README.md",
+   "fixtures/pptx/read/**",
+   "crates/kiln-testing/src/formats/pptx.rs"
   ],
-  "task": "Implement `readPptx(bytes) -> Presentation` per §3.5: presentation.xml (sizes, id lists, sections from `p14:sectionLst`, notesMaster), masters/layouts/slides with full spTree parsing (p:sp with geometry presets/custom geometry (`a:custGeom` paths), fills/lines/effects via ooxml, text bodies into deckText docs with all run/paragraph properties and fields, placeholders, p:pic with crops and media relationships, p:graphicFrame tables (a:tbl with merges, cell fills/borders, table styles by id), charts (relationship passed to charts package via `ChartPartHook` as in xlsx), SmartArt (`dgm` relationships: if a `drawing` fallback part exists, import its shapes as a group; else import a placeholder rectangle with the diagram text and mark a warning), OLE/embedded objects as picture fallback + passthrough, p:grpSp recursive, p:cxnSp connectors with start/end links, media (video/audio) relationships, backgrounds, transitions (map every `p:transition` child to our list with fallback Fade + original preserved), timing trees (`p:timing` parsed into the animation model for supported effect presets `presetClass/presetID` mapping table; unsupported ones recorded in passthrough with a warning), notes slides (text), comments (`p:cmLst` and modern `p188:` comments) + authors, hidden slides, docProps, theme per master, color map overrides, handout/notes masters passthrough, vbaProject passthrough. Warnings for every unsupported item. Tests: every fixtures/pptx/features/* reads without error; expected structure assertions (slide count, placeholder texts, shape geometries, group nesting, table dimensions, transition types, animation counts); text equality with python-pptx extraction for all fixtures; fixtures/external if present read without exception.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Implement the pptx read half per docs/FORMATS.md: presentation.xml (sldSz, sldIdLst, sldMasterIdLst, notesMasterIdLst, sections ext), slideMasters/, slideLayouts/, slides/ (spTree: p:sp with geometry/text body/lstStyle/placeholders, p:pic incl. a:srcRect crop, p:graphicFrame with a:tbl tables, charts (kiln-charts), SmartArt imported as a group of shapes from the dgm drawing part when present else a placeholder picture, p:grpSp, p:cxnSp connectors, p:bg, p:transition mapped to our 12 types with fallback Fade and the original kept in passthrough, p:timing parsed into the timeline (unsupported effects preserved opaque), notesSlides/, comments, docProps); passthrough for everything else. Register DocKind 'deck' reader and the read half of Roundtrip. Oracle: python-pptx script (tools/make-fixtures.py --dump-pptx) writing fixtures/pptx/read/<name>.pptx.json (slide count, shape counts/types, text per shape) compared in tests; parse every fixture under fixtures/pptx. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/io-pptx test exits 0 with >= 70 tests",
-   "A test compares extracted text of every features/*.pptx with python-pptx output and passes",
-   "A test asserts animations of fixtures/pptx/features/animations.pptx yield the expected click-step timeline",
-   "pnpm typecheck exits 0"
+   "cargo nextest run -p kiln-io-pptx passes; every fixtures/pptx/**/*.pptx (excluding external) parses and matches the python-pptx dump on slide/shape/text",
+   "cargo run -p kiln-cli -- inspect --pptx fixtures/pptx/features/placeholders.pptx prints slides with layout names and shape counts",
+   "cargo build --target wasm32-unknown-unknown -p kiln-io-pptx exits 0; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-25",
-  "title": "Deck editor core: slide stage, thumbnail rail, shapes and transforms, text editing, alignment guides, Home/Insert/Design ribbons",
-  "milestone": "M3",
+  "id": "WP-78",
+  "title": "Deck stage and editor core: slide rendering, thumbnail rail, shapes and transforms, text in shapes, guides, Home/Insert/Design ribbons",
+  "milestone": "R3",
   "depends_on": [
-   "WP-06",
-   "WP-08",
-   "WP-23"
+   "WP-58",
+   "WP-54",
+   "WP-76",
+   "WP-73",
+   "WP-60"
   ],
   "owns": [
-   "packages/editor-deck/src/**",
-   "packages/editor-deck/test/**",
-   "packages/ui-kit/src/transformbox/**",
-   "apps/web/src/apps/deck/**",
-   "e2e/specs/deck-core.spec.ts"
+   "crates/kiln-deck-layout/**",
+   "crates/kiln-session/src/apps/deck/**",
+   "crates/kiln-protocol/src/commands/deck.rs",
+   "packages/editor-deck/**",
+   "packages/commands/src/catalog/deck.ts",
+   "packages/commands/src/keymaps/deck.ts",
+   "apps/web/src/routes/deck/**",
+   "fixtures/golden/deck/**",
+   "e2e/specs/deck.spec.ts",
+   "e2e/specs/deck-shortcuts.spec.ts",
+   "crates/kiln-bench/src/benches/deck*",
+   "docs/manual/deck.md",
+   "docs/qa/visual-review-WP-78.md"
   ],
-  "task": "Build editor-deck per §3.6: `SlideStage` (scaled 960×540 stage; renders shapes from deck-model with SVG preset geometry paths from ooxml presets, fills/gradients/pictures/lines/shadows, text bodies as static HTML from deckText with autofit computations measured via an offscreen measurer, tables, pictures with crop, groups, connectors), one live TipTap editor mounted on the focused text body (deckText schema; bullets via list styles; paragraph/run commands), `ui-kit/TransformBox` (new primitive: 8 handles, rotation handle, aspect lock with Shift, centre-resize with Alt, multi-selection bounding box, keyboard nudge/resize, touch-friendly sizes via a prop) used for every shape, smart guides and snapping (slide edges/centre, other shapes' edges/centres, equal-spacing), marquee selection, z-order, grouping, align/distribute menu, duplicate (Ctrl+D), copy/paste shapes and slides (internal clipboard JSON + image/text fallbacks), undo/redo, rulers/gridlines/guides toggles, zoom/fit, thumbnail rail (virtualised scaled stages, drag reorder, multi-select, section headers collapsible, context menu: new/duplicate/delete/hide/layout/section), notes pane (plain deckText editor), slide sorter view, outline view (titles/bullets text tree editable), Home/Insert/Design ribbons per §1.4 wired (new slide with layout gallery, layout change, reset, section, font/paragraph tools incl. align text and columns, Shapes gallery (all presets categorised like Office), Arrange, Quick Styles, Shape Fill/Outline/Effects, Shape Format contextual tab with size/position, Picture Format with crop/corrections-lite/alt text, Insert: pictures, text box, table (grid picker), icons (lucide set as SVG shapes), link, slide number/date/footer dialog, symbol, Design: themes gallery (12 bundled), variants, slide size, format background pane; Design Ideas pane listing deck-model `designIdeas` with thumbnails and one-click apply ★). Status bar: slide x of y, theme name, notes/comments toggles, view buttons, zoom, fit. apps/web/src/apps/deck: page composition, open via io-pptx (worker), save .scena until WP-26; `DeckCapabilities`. Tests: stage rendering (jsdom with SVG assertions), transform maths, snapping, autofit, rail reorder, outline edits; e2e deck-core.spec.ts: open fixtures/pptx/features/{placeholders,shapes,tables,groups}.pptx with screenshots, add a slide with a layout, insert a rectangle and resize via handle drag, type a title, apply a theme, Design Ideas apply; screenshots light/dark.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "kiln-deck-layout per §3.6 'Deck specifics': slide → Scene (background, shapes in z-order, preset geometry paths with fills/lines/effects, pictures decoded with image and cached, text bodies through kiln-text with autofit and bullets from lstStyle/master, tables, charts via kiln-charts, connectors), placeholder prompt text for empty placeholders in edit mode, thumbnails via kiln-raster (native) or small-scale painting (web), selection/transform geometry (8 handles + rotation, group bounds), smart guides and snapping candidates (slide centre/edges, other shapes' edges/centres, equal spacing), hit testing, A11yTree (slide group, shapes with alt text/text), slide sorter and outline view data; kiln-session Deck app (DeckCommand): slide ops (new with layout gallery, duplicate, delete, reorder by drag, hide, sections, layout change, reset), shape ops (insert geometry/text box/picture/table/chart, select/multi-select/marquee, move/resize/rotate with Shift/Alt/Ctrl modifiers and nudge, align/distribute, group/ungroup, z-order, duplicate Ctrl+D, delete, format fill/line/effects/shape styles, edit text with the same input proxy, autofit), background and slide size, theme/variant application, notes editing, zoom/fit, every §1.7 Deck row; status bar (Slide x of y, theme, notes/comments toggles, view buttons, fit button). TypeScript (packages/editor-deck): thumbnail rail (drag reorder, sections, context menu), stage Surface with transform overlay, notes pane, Home/Insert/Design ribbons and Shape Format/Picture Format/Table contextual tabs wired, Slide Size/Format Background dialogs, layout and theme galleries per the Deck mockups. Golden renders of fixtures/pptx/features slides; e2e for the editing loop and shortcut rows; benches deck-open-200 and deck-frame registered (B10). Visual review; manual chapter. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/editor-deck --filter @officina/ui-kit test exits 0 with >= 120 tests for deck/transformbox",
-   "pnpm e2e --grep deck-core exits 0 with screenshots deck-core/{placeholders,shapes,tables,groups,theme,design-ideas}-{light,dark}-desktop.png",
-   "e2e: dragging a shape's corner handle changes its width by the dragged distance (±2 px at 100 % zoom)",
-   "docs/qa/visual-review-WP-25.md written"
+   "cargo nextest run -p kiln-deck-layout -p kiln-session passes (golden PNGs for ≥ 8 slides; ≥ 60 Deck command tests)",
+   "pnpm e2e --grep 'deck' passes incl. drag-reorder in the rail, shape transform with snapping, text editing in a placeholder and every Deck row of the shortcut table",
+   "cargo xtask budgets --only B10 exits 0 (fixtures/large/deck-200.pptx first slide < 800 ms)",
+   "cargo run -p kiln-cli -- render fixtures/pptx/features/shapes.pptx --png /tmp/s/slide-%02d.png writes one PNG per slide; docs/qa/visual-review-WP-78.md records the mockup comparison; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-26",
-  "title": "PPTX writer and round-trip fidelity tests",
-  "milestone": "M3",
+  "id": "WP-79",
+  "title": "PPTX writer and round-trip fidelity",
+  "milestone": "R3",
   "depends_on": [
-   "WP-24"
+   "WP-77"
   ],
   "owns": [
-   "packages/io-pptx/src/write/**",
-   "packages/io-pptx/test/write/**",
-   "packages/io-pptx/test/roundtrip/**"
+   "crates/kiln-io-pptx/src/write/**",
+   "crates/kiln-io-pptx/tests/roundtrip*",
+   "crates/kiln-io-pptx/tests/write*",
+   "fixtures/pptx/roundtrip/**"
   ],
-  "task": "Implement `writePptx(presentation, {passthrough}) -> Uint8Array`: presentation.xml with id lists and section list, masters/layouts/slides with correct relationship graphs (slide→layout→master→theme, notesSlide↔slide, media, charts via charts package writer, embedded workbook parts for charts), spTree serialisation for every shape kind (preset and custom geometry, fills/lines/effects, text bodies with paragraph/run properties, fields, bullets, autofit values), placeholders with `p:ph` type/idx, tables, pictures with crops, groups (with chOff/chExt), connectors, backgrounds, transitions (our model → `p:transition` with `p14:` extensions where needed inside `mc:AlternateContent` like PowerPoint), timing trees for our animation model (generate PowerPoint-compatible `p:timing` with `p:par/p:seq/p:cTn` structure, presetClass/presetID/presetSubtype, `p:bldLst`), notes slides, comments (modern format) + authors, hidden slides, docProps, the 12 bundled themes serialised as theme parts, passthrough re-emission (SmartArt data/layout/colors/quickStyle parts and their relationships when the slide's shapes were not edited; vbaProject; handout masters; unknown parts). Deterministic output. Compatibility Checker issues (code blocks → text box with monospace, callouts → shapes). Round-trip tests over fixtures/pptx/features/* (structural ≥ 0.95, text 1.00, LibreOffice opens → PDF, visual ≥ 0.85 vs original render), python-pptx opens outputs and counts slides/shapes equal, new-presentation-from-theme test writes a .pptx that LibreOffice opens and whose slides have the expected layouts; `pnpm fidelity --format pptx` section in docs/qa/fidelity.md.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Write half of kiln-io-pptx: presentation.xml, masters/layouts/slides (shapes, text bodies, pictures with media parts, tables, charts via kiln-charts writer, groups, connectors, backgrounds, transitions, timing from the timeline — if the slide's shape set is unchanged and the original timing had unsupported effects, re-emit the preserved original), notes, sections, comments, docProps, content types and rels regenerated deterministically; passthrough copy; untouched parts byte-identical; Compatibility report entries. Register SaveAs/Save for .pptx and the Roundtrip write half. Fidelity: structural ≥ 0.95, text 1.00, visual ≥ 0.85 (LibreOffice renders), oracle_opens 100 %, byte_identical_untouched 100 %, animations preserved for unchanged slides (test). Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/io-pptx test exits 0 with >= 60 additional tests",
-   "pnpm fidelity --format pptx prints structural >= 0.95, text == 1.00, oracle_opens == 1, visual >= 0.85 for every features/* fixture",
-   "A test asserts a presentation with 3 animated shapes writes a p:timing tree that python-pptx can read back (slide.element contains p:timing with 3 p:cTn effect nodes)",
-   "docs/qa/fidelity.md contains the pptx table"
+   "cargo xtask fidelity --format pptx exits 0 with the thresholds shown in docs/qa/fidelity.md",
+   "cargo nextest run -p kiln-io-pptx passes incl. 'unchanged slide keeps original p:timing bytes'",
+   "cargo run -p kiln-cli -- convert fixtures/pptx/features/animations.pptx /tmp/a.pptx && soffice --headless --convert-to pdf --outdir /tmp /tmp/a.pptx succeeds; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-27",
-  "title": "Deck features: slide show, presenter view, transitions, animations, Animation Pane, Slide Show & Transitions/Animations ribbons, media, equations",
-  "milestone": "M3",
+  "id": "WP-80",
+  "title": "Deck features: slide show, presenter view, transitions, animations, Animation Pane, media, equations, Design Ideas, exports",
+  "milestone": "R3",
   "depends_on": [
-   "WP-25",
-   "WP-20"
+   "WP-78",
+   "WP-79",
+   "WP-67"
   ],
   "owns": [
+   "crates/kiln-session/src/apps/deck/show/**",
+   "crates/kiln-session/src/apps/deck/features/**",
+   "crates/kiln-deck-layout/src/motion/**",
+   "crates/kiln-deck-layout/src/print/**",
+   "packages/editor-deck/src/show/**",
+   "packages/editor-deck/src/presenter/**",
    "packages/editor-deck/src/features/**",
-   "packages/editor-deck/test/features/**",
-   "apps/web/src/apps/present/**",
-   "apps/web/src/apps/deck/**",
-   "e2e/specs/deck-show.spec.ts"
+   "apps/web/src/routes/present/**",
+   "e2e/specs/deck-show.spec.ts",
+   "e2e/specs/deck-features.spec.ts",
+   "docs/manual/deck-present.md"
   ],
-  "task": "Slide show engine (`/present/:docId` route, fullscreen): renders slides via SlideStage at viewport scale, click/keys/swipe navigation per §1.7 show keys, transitions implemented with the Web Animations API per §1.4 list (Fade, Push, Wipe, Split, Reveal, Cut, Shape, Uncover, Cover, Flash, Random Bars; Morph-lite P2 excluded), animations engine playing deck-model timelines (entrance/emphasis/exit effects per §1.4 as WAAPI keyframes with effect options; click steps; with/after previous; delays; auto-advance timers), laser pointer/pen/highlighter overlays (canvas; ink discarded on exit unless \"keep annotations\" → stored as freeform shapes), black/white screens, go-to-slide via number+Enter, end-of-show screen, hidden slides skipped. Presenter view: a second window (web: `window.open` + BroadcastChannel; Electron: host opens a second BrowserWindow on the secondary display via `PlatformHost.openPresenterWindow`, implemented in WP-34 — define the interface here with a web fallback) showing current/next slide, notes with font size controls, timer/clock, slide grid, pointer controls, with the audience window following. Transitions ribbon (gallery with live preview on the stage, effect options, duration, apply to all, advance options), Animations ribbon (gallery, effect options, Add Animation, Animation Pane with reorder/timing/triggers-lite, Animation Painter, preview button plays on stage), Slide Show ribbon (from beginning/current, present in browser tab, set up show dialog (loop, show without narration, pen colour), hide slide, rehearse timings (records per-slide durations into transitions), presenter view toggle), Insert ▸ Media (video/audio from file: HTML5 playback on stage and in show; written as pptx media parts), Insert ▸ Equation (MathLive editor producing MathML/LaTeX rendered to an SVG picture + OMML preserved when imported), Insert ▸ Chart (charts package with embedded workbook data editing via a mini grid dialog), Insert ▸ Code block (★), Reuse Slides pane (open another .pptx and drag slides in), Outline import (paste a Markdown/indented outline → slides ★), PNG/SVG export of current slide. e2e deck-show.spec.ts: open fixtures/pptx/features/{transitions,animations}.pptx → start show (F5) → screenshot first slide → advance (Space) through click steps asserting shape visibility changes → presenter view opened and screenshot (two pages via context) → Esc ends; Transitions gallery screenshot; Animation Pane screenshot.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Slide show: /present route painting slides full-screen from a ShowSession in Rust (current slide, build step, timeline evaluation at 60 fps producing Scene frames with transition progress and animation states for both outgoing and incoming slides), keyboard rows of §1.7 (N/P/arrows/space/Enter, number+Enter, B/W blackout, Home/End, Esc, Ctrl+L laser, Ctrl+P pen, Ctrl+I highlighter, E erase), pointer tools as overlay strokes, click-to-advance zones on touch, 'Present in browser tab'; presenter view (desktop: second Tauri window via SuiteCommand::OpenWindow handled by kiln-desktop; web: second tab) showing current/next slide, notes, timer, slide grid, synchronised through kiln-session events (desktop) or BroadcastChannel relaying commands (web); transitions (None, Fade, Push, Wipe, Split, Reveal, Cut, Random Bars, Shape, Uncover, Cover, Flash; Morph P2 hidden) implemented as Scene-level animations in kiln-deck-layout::motion with Transitions ribbon (gallery, duration, apply to all, advance on click/after); animations (Entrance Appear/Fade/Fly In/Float In/Split/Wipe/Zoom; Emphasis Pulse/Colour Pulse/Teeter/Spin/Grow-Shrink; Exit Disappear/Fade/Fly Out/Zoom) with Effect Options, Add Animation, Animation Pane (reorder, start/duration/delay editing, preview), Animation Painter, numbered badges on the stage; Slide Show ribbon (from beginning/current, set up show, hide slide, rehearse timings P1, presenter view toggle); media: video/audio shapes rendered as poster frames in the Scene with HTML <video>/<audio> overlays positioned by the Scene during the show (P1, Tauri asset protocol for local files); equations: OMML read into a math layout in Rust (linear fallback rendering) P1; Design Ideas pane: rule-based layout and theme-variant suggestions for the current slide's content (title/bullets/picture/table counts → 4–6 suggestions rendered as thumbnails via kiln-raster) applied as transactions; exports: PNG per slide (kiln-raster), PDF slides and handouts 1/2/3/6 per page and notes pages via PrintablePages; Reuse Slides P1; outline view editing. E2E: run a show with transitions (screenshots mid-transition at 50 % progress through a deterministic clock), animation pane reorder, presenter view in a second page context, Design Ideas apply, export PNG/PDF. Parity rows flipped. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/editor-deck test exits 0 with >= 90 additional tests",
-   "pnpm e2e --grep deck-show exits 0 with screenshots deck-show/{show-first,show-after-click,presenter,transitions-gallery,animation-pane}-light-desktop.png",
-   "e2e: in fixtures/pptx/features/animations.pptx slide 1, the second shape is hidden before the first click and visible after it",
-   "docs/qa/visual-review-WP-27.md written"
+   "cargo nextest run -p kiln-session -p kiln-deck-layout passes incl. timeline evaluation tests for every transition and animation preset",
+   "pnpm e2e --grep 'deck-show|deck-features' passes; e2e/screenshots/deck-show/ contains a mid-transition frame per transition type",
+   "cargo run -p kiln-cli -- convert fixtures/pptx/features/placeholders.pptx /tmp/h.pdf --handouts 3 produces ceil(slides/3) pages (pdfinfo)",
+   "cargo xtask parity --verify exits 0 with ≥ 50 Deck rows flipped (listed in the commit body); CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-28",
-  "title": "Deck integration gate: Office file loop, print/PDF handouts, Backstage, manual chapter",
-  "milestone": "M3",
+  "id": "WP-81",
+  "title": "Deck integration gate",
+  "milestone": "R3",
   "depends_on": [
-   "WP-15",
-   "WP-26",
-   "WP-27"
+   "WP-78",
+   "WP-79",
+   "WP-80"
   ],
   "owns": [
-   "apps/web/src/apps/deck/**",
-   "packages/print-pdf/src/deck/**",
-   "e2e/specs/deck-e2e.spec.ts",
-   "docs/qa/visual-review-WP-28.md",
-   "docs/manual/deck.md"
+   "docs/qa/visual-review-WP-81.md",
+   "e2e/specs/deck-gate.spec.ts",
+   "e2e/screenshots/baseline/deck/**",
+   "docs/qa/fidelity.md",
+   "docs/qa/perf.md",
+   "docs/manual/deck*.md"
   ],
-  "task": "Integration gate for Deck: wire io-pptx open/save (pptx, potx, pptm read, scena, pdf, png/svg per slide, outline .md export) with worker parsing and Compatibility Checker; Backstage Info/Export/Print; packages/print-pdf/src/deck: print layouts (full-page slides, handouts 2/3/4/6/9 per page with optional lines, notes pages, outline), preview in Backstage, PDF export via the print pipeline, PNG export of all slides as a zip (fflate). e2e deck-e2e.spec.ts: open fixtures/pptx/features/{placeholders,charts,shapes}.pptx → screenshots light/dark → edit (title text, add slide, insert chart, add animation) → Save As .pptx via the hook → re-read with io-pptx and python-pptx asserting slide count/title/animation → LibreOffice converts to PDF without error; print route (handouts 6 per page) page count equals ceil(slides/6); page.pdf() of the print route yields that page count; PNG export zip contains one PNG per slide. Manual chapter docs/manual/deck.md. Fix cross-feature defects; visual review.",
+  "task": "Run alone. Office file loop for pptx fixtures (open, edit text/shapes/add slide with layout/add transition, save, reopen, LibreOffice opens); cargo xtask fidelity --format pptx; budgets B10 and B6 (deck scroll in sorter); pnpm e2e; visual review of the Deck chrome, rendered slides vs LibreOffice renders and the bundled themes ('looks finished' check per theme) in docs/qa/visual-review-WP-81.md with fixes or handoffs; baselines; every Deck P0 row of §2.4 done; manual. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm e2e --grep deck-e2e exits 0 with screenshots deck-e2e/*-{light,dark}-desktop.png",
-   "e2e: saved .pptx re-read by python-pptx reports the added slide and edited title; soffice converts it to PDF (exit 0)",
-   "e2e: handout PDF page count == ceil(slideCount/6)",
-   "pnpm verify exits 0 and CI is green; docs/qa/visual-review-WP-28.md and docs/manual/deck.md (>= 500 words) exist"
+   "pnpm e2e exits 0; cargo xtask fidelity --format pptx exits 0; cargo xtask budgets exits 0; cargo xtask parity --verify exits 0",
+   "python3 -c \"import json;d=json.load(open('parity/parity.json'));r=[x for x in d['rows'] if x['app']=='deck' and x['priority']=='P0'];assert all(x['status'] in ('done','better') for x in r),[x['id'] for x in r if x['status'] not in ('done','better')]\" exits 0",
+   "docs/qa/visual-review-WP-81.md exists with ≥ 20 checked items incl. all 12 themes; e2e/screenshots/baseline/deck/ contains ≥ 6 PNGs; CI green"
   ],
-  "gate": true
+  "gate": true,
+  "heavy": false
  },
  {
-  "id": "WP-29",
-  "title": "Collaboration and version history: Yjs documents, collab server, presence, comments sync, version history UI",
-  "milestone": "M4",
+  "id": "WP-82",
+  "title": "Collaboration and version history: Loro bindings, presence, kiln-collab-server, Version History pane",
+  "milestone": "R4",
   "depends_on": [
-   "WP-15",
-   "WP-28"
+   "WP-66",
+   "WP-80"
   ],
   "owns": [
-   "packages/collab/**",
+   "crates/kiln-collab/**",
+   "crates/kiln-collab-server/**",
    "apps/collab-server/**",
-   "packages/editor-write/src/collab/**",
-   "packages/editor-deck/src/collab/**",
-   "packages/ui-kit/src/versions/**",
-   "packages/ui-kit/src/presence/**",
-   "apps/web/src/collab/**",
+   "crates/kiln-session/src/collab/**",
+   "packages/ui-kit/src/collab/**",
    "e2e/specs/collab.spec.ts",
-   "docs/manual/collaboration.md"
+   "crates/kiln-bench/src/benches/collab*",
+   "docs/manual/collaboration.md",
+   "docs/adr/0004-crdt.md"
   ],
-  "task": "Implement §3.7. packages/collab: `CollabDoc` wrapper over Y.Doc (docId, awareness, undo manager scoped per user, `y-indexeddb` persistence, `@hocuspocus/provider` websocket provider with reconnect/offline queue, connection status), `VersionStore` (dexie: snapshots on explicit save and every 10 min of edits, thinning to max 200, named versions, `diffVersions(a,b)` for Write producing word-level insert/delete runs), bundle (de)serialisation of Yjs updates into `.scriba/.scena` native files and a `yjs.bin` sidecar inside DOCX-saved sessions (stored in IndexedDB keyed by file hash so reopening a .docx restores history). Write: replace ProseMirror history with y-prosemirror (sync, cursors with user colours/names, yUndoPlugin) via the HistoryStrategy seam; comments stored in a Y.Map and anchored by Yjs relative positions; track-changes marks carry author ids from awareness. Deck: deck-model `toY/fromY` binding (slides Y.Array of Y.Maps; text bodies Y.XmlFragment bound to the mounted TipTap editor), awareness showing collaborators' selected slide/shape. Sharing: title-bar Share button → dialog with \"Start live session\" (creates docId session on the configured server from Options ▸ Collaboration: server URL + token), copy link; opening a `/write/:docId?collab=<server>` link joins. Presence avatars in the title bar (ui-kit/presence). Version History pane (ui-kit/versions; Review ▸ Version History and Backstage ▸ Info): list grouped by day, name a version, preview read-only, restore (as a new version), diff view for Write (side panel with insert/delete highlighting), export a version to file. apps/collab-server: Hocuspocus 4.7 server (`@hocuspocus/server` + `@hocuspocus/extension-sqlite` via better-sqlite3 or sql.js fallback) with `onAuthenticate` shared-token check, per-document size limits, a `/health` endpoint, Dockerfile, README (deployment, token, reverse proxy), `pnpm --filter @officina/collab-server dev`. Grid: not collaborative in v1; make sure the Share dialog says so and offers \"send a copy\". e2e collab.spec.ts: start the collab server in the test (child process on a free port), open the same Write document in two browser contexts, type in one, assert text appears in the other within 2 s, screenshot showing two cursors; version history: save twice, open pane, assert two versions, restore the first and assert text; offline test: disconnect context A (route abort websocket), type, reconnect, assert convergence.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Implement §3.11. kiln-collab: the small Crdt trait and its Loro 1.16.2 implementation; mapping of kiln-doc (paragraph text → LoroText with marks, blocks → LoroMovableList, properties → LoroMap, comments/revisions as maps) and kiln-deck (slides/sections → LoroTree, shapes → movable lists/maps, text bodies as kiln-doc) so every Transaction becomes a Loro change and every remote Loro event becomes model ops with incremental layout invalidation; local-peer UndoManager replacing the plain undo stack when a document is collaborative; presence (cursor/selection/avatar colour) over an awareness channel; version history: shallow snapshots on explicit save and every 10 min of edits (max 200, thinning), names/authors/times, read-only checkout rendered through the normal Scene, restore as a new version, word-level diff for Write computed in Rust; sync protocol frames (hello/auth, update, awareness, snapshot request) over WebSocket; offline queue and merge on reconnect; Notes pages inherit the Write mapping. kiln-collab-server: axum 0.8 + tokio WebSocket relay per room id with redb persistence of updates and snapshots, shared-token auth (documented as not production-grade; pluggable authenticate hook), health endpoint, Dockerfile and compose in apps/collab-server/, CLI flags for bind/data dir/token. kiln-session: Share (create room, copy link with ?doc=&server=&token=), join, presence events, Version History queries/commands; HostRequest for WebSocket on web (browser WebSocket via TS) vs tokio-tungstenite natively. UI: presence avatars and remote cursors (overlay layer), Share dialog, Version History pane (list, preview, name, restore, diff view) per mockups. Tests: proptest convergence (random concurrent edits on two replicas converge), mapping round-trips, server integration test; e2e collab.spec with the server started by the test (cargo run -p kiln-collab-server) and two browser contexts: concurrent typing converges, cursors visible, offline (context.setOffline) edits merge on reconnect, version restore; bench collab-apply-1000 (B14). Grid stays P2: a test asserts the CommandLog serialises. Update docs/adr/0004-crdt.md with the final evaluation. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/collab --filter @officina/collab-server test exits 0 with >= 50 tests",
-   "pnpm e2e --grep collab exits 0 with screenshots collab/{two-cursors,version-history,diff}-light-desktop.png",
-   "e2e: offline edits in one context converge after reconnect (both contexts show identical text)",
-   "docs/manual/collaboration.md explains self-hosting the server; docs/qa/visual-review-WP-29.md written"
+   "cargo nextest run -p kiln-collab -p kiln-collab-server -p kiln-session passes incl. the convergence proptest (≥ 128 cases)",
+   "pnpm e2e --grep collab passes (two contexts converge, offline merge, version history restore and diff)",
+   "cargo xtask budgets --only B14 exits 0 (< 50 ms for 1,000 remote operations)",
+   "docker build apps/collab-server (if docker is available) or cargo run -p kiln-collab-server -- --help prints the flags; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-30",
-  "title": "Storage hosts, AutoSave to file, document recovery, recents, file associations",
-  "milestone": "M4",
+  "id": "WP-83",
+  "title": "Storage: native bundles, autosave journal, recovery, recents, AutoSave to file, templates index",
+  "milestone": "R4",
   "depends_on": [
-   "WP-15",
-   "WP-22",
-   "WP-28"
+   "WP-64",
+   "WP-71",
+   "WP-78"
   ],
   "owns": [
-   "packages/storage/src/hosts/**",
-   "packages/storage/src/autosave/**",
-   "packages/storage/src/recovery/**",
-   "packages/storage/test/**",
+   "crates/kiln-storage/**",
+   "crates/kiln-session/src/storage/**",
    "packages/ui-kit/src/recovery/**",
-   "apps/web/src/recovery/**",
-   "apps/web/src/hosts/**",
-   "e2e/specs/recovery.spec.ts"
+   "packages/home/src/recents/**",
+   "apps/web/src/host/**",
+   "e2e/specs/storage.spec.ts",
+   "docs/manual/files.md"
   ],
-  "task": "Complete §3.8 for all three hosts at the interface level (Electron and Capacitor adapters are implemented here against the IPC/plugin contracts that WP-35/WP-36 provide on their side: define `window.officina` preload API types in packages/storage/src/hosts/electron/api.d.ts and the Capacitor plugin usage in hosts/capacitor; both must degrade gracefully when the bridge is absent so web tests keep passing). AutoSave: title-bar toggle (persisted per document), debounce 2 s after last edit, atomic writes (write temp + rename on Electron; createWritable on web), conflict detection via file mtime/hash (prompt: overwrite/save copy), background save in a worker for Office formats, save progress in the status bar, error toasts with retry. Journals: Grid CommandLog journal and Yjs updates appended to IndexedDB (dexie) with periodic compaction into snapshots; `closedCleanly` flag on beforeunload/visibilitychange; heartbeat timestamps. Recovery pane (ui-kit/recovery; shown at startup in Hub and in the app when relevant): lists recoverable documents with last-saved vs recovered times, Open, Save As, Delete, \"Show original\"; recovered documents open with a yellow bar \"Recovered document — Save to keep\". Recents: unified store with per-host handle persistence (web FS handles, Electron paths, Capacitor content URIs), pin/unpin, remove, open-location, \"Recent\" list in Backstage ▸ Open with search; file watching on Electron (external modification → reload prompt). File association plumbing: `openFromOS(payloadBytesOrPath)` entry used by Electron's `open-file`/argv and Capacitor's intent handling, routing to the right app by extension/magic. Tests: fake hosts; autosave timing with fake timers; journal compaction; recovery registry edge cases (crash during save). e2e recovery.spec.ts: edit without saving, reload the page without clean close (page.evaluate to skip the beforeunload handler), assert the Recovery pane lists the document and opening it restores the text; screenshot recovery pane light.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Implement §3.12: StorageHost trait with native (std::fs through the Tauri Host) and web (OPFS/IndexedDB via HostRequest, implemented in apps/web/src/host/) backends; native bundle formats .kwrite/.kgrid/.kdeck (zip: manifest.json, model.bin postcard, crdt.bin when collaborative, versions/*.bin, media/*, passthrough/*) with readers/writers registered as DocKinds and SaveAs formats; autosave journal (append-only ops/updates per document in redb natively, OPFS files on web; checkpoint every 200 ops; fsync policy), dirty/clean-close markers, recovery scan on startup → Event::Recovery and the Document Recovery pane (Open/Save/Delete) per mockup; 'AutoSave to file' toggle writing the real file 2 s after the last edit when the document has a handle (native handle or FileSystemFileHandle persisted in IndexedDB); recents and pinned (name, path/handle, app, last opened, thumbnail via kiln-raster) with Query::Recents consumed by Home; templates index over assets/templates (filled by WP-85); user dictionary and user preferences store; file watching for external modification prompt (native). Tests: journal replay restores the document after a simulated crash (drop without clean close) for all three kinds; bundle round-trips; e2e storage.spec: edit, reload the page mid-edit (no save) → recovery pane shows the document with the edit; AutoSave toggle writes to OPFS; recents update on open. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/storage test exits 0 with >= 60 additional tests",
-   "pnpm e2e --grep recovery exits 0 with screenshot recovery/recovery-pane-light-desktop.png",
-   "e2e: after simulated crash the recovered Write document contains the unsaved paragraph",
-   "pnpm typecheck exits 0 (Electron/Capacitor adapters compile against the declared bridge types)"
+   "cargo nextest run -p kiln-storage -p kiln-session passes incl. crash-recovery replay tests for write/grid/deck",
+   "pnpm e2e --grep storage passes (recovery pane after reload, AutoSave to file, recents)",
+   "cargo run -p kiln-cli -- convert fixtures/docx/features/tables.docx /tmp/t.kwrite && cargo run -p kiln-cli -- convert /tmp/t.kwrite /tmp/t2.docx succeeds and text equality is 1.00 (kiln-testing text score)",
+   "CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-31",
-  "title": "Accessibility, i18n (de, ar), RTL, high-contrast theme, Key Tips completeness",
-  "milestone": "M4",
+  "id": "WP-84",
+  "title": "Accessibility, i18n (en, de, ar), RTL, high-contrast theme, Key Tips completeness, Accessible text view, WCAG self-audit",
+  "milestone": "R4",
   "depends_on": [
-   "WP-15",
-   "WP-22",
-   "WP-28"
+   "WP-68",
+   "WP-75",
+   "WP-81"
   ],
   "owns": [
-   "packages/i18n/locales/**",
+   "packages/i18n/**",
    "packages/ui-kit/src/a11y/**",
-   "packages/editor-write/src/a11y/**",
-   "packages/editor-grid/src/a11y/**",
-   "packages/editor-deck/src/a11y/**",
+   "crates/kiln-session/src/a11y/**",
+   "fixtures/docx/rtl/**",
+   "fixtures/xlsx/rtl/**",
+   "fixtures/golden/rtl/**",
    "e2e/specs/a11y.spec.ts",
+   "e2e/specs/i18n.spec.ts",
    "e2e/specs/rtl.spec.ts",
-   "docs/qa/a11y.md"
+   "docs/qa/a11y.md",
+   "docs/manual/accessibility.md",
+   "docs/design/kit-gaps.md"
   ],
-  "task": "Deliver §3.10. Audit and fix ARIA across ui-kit/editors (this WP may edit ARIA/label/focus-related code anywhere inside packages/ui-kit, packages/editor-write, packages/editor-grid, packages/editor-deck, packages/i18n; keep changes confined to accessibility/i18n concerns and record other defects as handoffs): ribbon tabs/toolbar roving focus, menus, dialogs, galleries, palette; Grid ARIA grid shadow tree for active cell/row/col headers with announcements; Write editor region labelling, headings navigation via screen reader (ProseMirror DOM is semantic already; add aria-describedby for comments/revisions), Deck shapes list for keyboard selection (Tab cycles shapes; Enter edits text; arrow nudges), live region announcer service (`announce(message, politeness)`) used by status changes (mode, track changes, save, recalc); focus visible rings in all themes; high-contrast theme verified (contrast checks via a unit test over token pairs ≥ 4.5:1 for text, ≥ 3:1 for UI); `prefers-reduced-motion`. Key Tips: every ribbon command reachable via Alt sequences with Office letters where applicable (write the mapping table in packages/commands keytips files? No — those are owned by WP-06: put the completeness test here and a handoff for missing letters; the ribbon spec files in apps/web/src/apps/*/ribbon.ts carry `keyTip` fields and belong to the app integration WPs, so edit only the `keyTip` strings there, noting it in the commit). i18n: German and Arabic locale files for every namespace (machine-quality translations acceptable, reviewed for UI length), language switch in Options with restart-free reload, Arabic RTL: html dir flips ribbon/tab order/status bar, Write bidi paragraphs (`dir` attribute per paragraph, RTL default for Arabic locale new documents), Grid rightToLeft sheets (columns from right, headers mirrored), Deck RTL text. e2e a11y.spec.ts: axe on Hub, Write, Grid, Deck, Backstage, Options, Format Cells dialog, Palette — 0 serious/critical; keyboard-only flow: from Hub to Write, Alt,H,B bold via Key Tips, open palette with keyboard and run \"Freeze Panes\" in Grid. rtl.spec.ts: switch to Arabic, screenshots of the three apps (rtl/<app>-ar-light-desktop.png) and an Arabic paragraph typed in Write renders right-aligned. docs/qa/a11y.md documents the patterns and known gaps.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Accessibility: axe 0 serious/critical on Home, each app, Backstage, every dialog and pane; a generated e2e test that reaches every catalog command by keyboard only (Alt → Key Tips path or Tab/arrow traversal) and asserts focus visibility; a11y tree completeness tests in Rust (every visible paragraph/cell/shape has a node with a name); the Accessible text view (View ▸ Accessibility ▸ Text view) rendering the document as semantic DOM (headings, paragraphs, lists, tables, cells with row/col headers, slides as sections) editable through commands; live announcements for mode changes and cell moves; reduced-motion handling; focus order audit; high-contrast theme from the kit (if the kit has no hc tokens, derive WCAG-compliant values and log them in docs/design/kit-gaps.md). i18n: every UI string through packages/i18n (ICU), de and ar locales translated (machine-drafted, marked 'needs review' in the files' headers), locale-aware numbers/dates in the Grid UI (document values keep their own formats; function names stay English), language switch in Options ▸ Language; RTL: dir=rtl on the root mirrors ribbon/panes/status bar and icons that must mirror, Arabic document fixtures (fixtures/docx/rtl: paragraphs with mixed digits, justified Arabic, tables; fixtures/xlsx/rtl: rightToLeft sheet) with golden renders and caret-movement tests per §3.6, right-to-left sheets in kiln-sheet-layout. Key Tips: every ribbon command gets its Office letter where Office has one (audit list in docs/SHORTCUTS.md) and a unique generated letter otherwise. docs/qa/a11y.md: WCAG 2.2 AA self-audit checklist with status per criterion and screen-reader walkthrough scripts (Orca/NVDA steps) for each app. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm e2e --grep 'a11y|rtl' exits 0; axe reports 0 serious/critical violations on all listed screens",
-   "screenshots rtl/{write,grid,deck}-ar-light-desktop.png exist and are reviewed in docs/qa/visual-review-WP-31.md",
-   "pnpm --filter @officina/i18n test exits 0 including a test that de and ar have every key en has",
-   "A unit test asserts token contrast ratios for all three themes"
+   "pnpm e2e --grep 'a11y|i18n|rtl' passes (axe 0 serious/critical on all listed screens; keyboard-reach test covers 100 % of catalog commands; ar locale screenshots mirrored)",
+   "cargo nextest run -p kiln-session -p kiln-doc-layout -p kiln-sheet-layout passes incl. a11y completeness and RTL caret/golden tests",
+   "pnpm --filter @kiln/i18n test asserts de and ar have 100 % of en keys",
+   "docs/qa/a11y.md lists every WCAG 2.2 AA criterion with a status; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-32",
-  "title": "Templates, Hub polish, onboarding tour, Office-synonym command palette, Options completeness",
-  "milestone": "M4",
+  "id": "WP-85",
+  "title": "Templates, Home polish, onboarding tour, Options completeness, palette synonyms, Compatibility Checker, document properties",
+  "milestone": "R4",
   "depends_on": [
-   "WP-15",
-   "WP-22",
-   "WP-28"
+   "WP-68",
+   "WP-75",
+   "WP-81",
+   "WP-83"
   ],
   "owns": [
-   "packages/templates/**",
-   "apps/web/src/apps/hub/**",
-   "apps/web/src/onboarding/**",
+   "assets/templates/**",
+   "tools/templates/**",
+   "crates/kiln-storage/src/templates*",
+   "packages/home/**",
+   "packages/ui-kit/src/tour/**",
+   "packages/ui-kit/src/options/**",
+   "packages/ui-kit/src/compat/**",
+   "packages/ui-kit/src/chrome/OptionsDialog.tsx",
+   "packages/ui-kit/src/chrome/options.ts",
    "packages/commands/src/synonyms.ts",
-   "packages/commands/test/synonyms.test.ts",
-   "e2e/specs/hub-templates.spec.ts",
-   "docs/manual/getting-started.md"
+   "e2e/specs/home.spec.ts",
+   "e2e/specs/templates.spec.ts",
+   "e2e/specs/options.spec.ts",
+   "docs/manual/home.md",
+   "docs/qa/visual-review-WP-85.md"
   ],
-  "task": "packages/templates: 12 templates per app authored as native model JSON + thumbnail PNGs rendered by a script (`packages/templates/scripts/render-thumbnails.mjs` using the e2e Playwright setup to open each template and screenshot the first page/sheet/slide at 400×300): Write (Blank, Letter, Resume, Report with TOC, Meeting Minutes, Invoice, Memo, Newsletter, Academic Paper (APA-like), Project Proposal, Cover Letter, Brochure-lite), Grid (Blank, Budget, Invoice, Loan Calculator, Project Tracker with CF, Timesheet, Expense Report, Inventory, Gantt-lite with CF bars, Gradebook, Sales Dashboard with charts, To-do), Deck (Blank 16:9, Blank 4:3, Pitch, Quarterly Review, Lesson, Status Report, Portfolio, Minimal Typographic, Photo Story, Workshop, Agenda, Thank You), each exercising real features (styles, formulas, charts, layouts) so they double as demo documents. Hub: template gallery with categories/search/preview dialog, \"Blank\" hero cards, recents with pin/remove/open-location, drag-drop, keyboard navigation, empty states, \"What's new\" card linking to CHANGELOG; first-run onboarding tour (3 cards per §1.9, dismissible, re-openable from Help ▸ Tour, stored in Options); \"Coming from Office\" cheat-sheet dialog (Ctrl+/ shortcut list grouped by app, printable). Command palette synonyms: curated `synonyms.ts` with ≥ 150 Office terms/phrases mapped to command ids (e.g. \"Merge & Center\", \"Freeze Panes\", \"Track Changes\", \"Format Painter\", \"Slide Master\", \"Paste Special\", \"Text to Columns\", \"Page Setup\") plus common misspellings; test ensures every synonym target exists. Options dialog completeness per §1.5 (General, Display, Proofing, Save, Language, Advanced, Keyboard, Privacy pages with real settings bound to stores). e2e hub-templates.spec.ts: Hub screenshots light/dark; open each template (36) and assert no console errors and screenshot the first view (templates/<app>-<name>-light-desktop.png); palette search \"merge and center\" in Grid resolves to the Merge & Center command. docs/manual/getting-started.md.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Templates: 36 (12 per app: Write letters/reports/resume/invoice/newsletter/meeting notes…; Grid budgets/invoice/schedule/tracker/loan/gradebook…; Deck pitch/report/lesson/portfolio/timeline/quarterly…) authored as JSON scripts in tools/templates/*.jsonl executed through `kiln control` to produce native bundles in assets/templates/<app>/<name>.k*, with thumbnails from `kiln render`; each reviewed to 'looks finished' (visual review doc) using the bundled document fonts and the Deck themes; Backstage ▸ New gallery with search and per-app filters; Home featured strip. Home polish per mockup (empty states, pinned, search across recents/templates, 'Shared with me' from collab rooms, keyboard navigation). Onboarding tour (3 cards, skippable, once). Options dialog completeness per §1.5: General (classic Office look: colourful icons + solid accent title bar), Display, Proofing (Markdown/typography/spelling), Save (AutoSave interval, recovery, default format), Language, Advanced, Keyboard (view/remap every shortcut with conflict detection, export/import), Privacy (no telemetry statement, AI provider off by default). Palette synonyms ≥ 200 Office terms. Compatibility Checker in Backstage ▸ Info (Query::CompatReport per target format) and 'Inspect document' (properties, counts, Version History button). Document properties dialog. E2E for templates/new, tour, options pages and keyboard remap; parity rows flipped. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm e2e --grep hub-templates exits 0 and 36 template screenshots exist under e2e/screenshots/templates/",
-   "pnpm --filter @officina/commands test exits 0 including synonyms.test.ts with >= 150 synonyms",
-   "docs/qa/visual-review-WP-32.md reviews all template screenshots (each template must look finished: no overlapping text, no placeholder lorem beyond intended samples)",
-   "docs/manual/getting-started.md exists (>= 500 words)"
+   "ls assets/templates/write/*.kwrite assets/templates/grid/*.kgrid assets/templates/deck/*.kdeck | wc -l prints 36 and each has a .png thumbnail",
+   "pnpm e2e --grep 'home|templates|options' passes (new from template opens the right app with content; tour shows once; remap Ctrl+B works and conflicts are flagged; Compatibility Checker lists a dropped feature for a fixture)",
+   "docs/qa/visual-review-WP-85.md reviews all 36 templates and the Home/Backstage/Options mockups",
+   "CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-33",
-  "title": "Notula (OneNote-lite)",
-  "milestone": "M4",
+  "id": "WP-86",
+  "title": "Kiln Notes: notebooks, sections, pages, tags, search, export",
+  "milestone": "R4",
   "depends_on": [
-   "WP-14",
-   "WP-30"
+   "WP-66",
+   "WP-83"
   ],
   "owns": [
    "packages/notes/**",
-   "apps/web/src/apps/notes/**",
+   "apps/web/src/routes/notes/**",
+   "crates/kiln-session/src/apps/notes/**",
+   "crates/kiln-protocol/src/commands/notes.rs",
+   "crates/kiln-storage/src/notebook/**",
+   "crates/kiln-search/**",
+   "packages/commands/src/catalog/notes.ts",
+   "packages/commands/src/keymaps/notes.ts",
    "e2e/specs/notes.spec.ts",
-   "docs/manual/notes.md"
+   "docs/manual/notes.md",
+   "docs/qa/visual-review-WP-86.md"
   ],
-  "task": "Tier 2 app per §2.5 built on editor-write: notebook model (notebook → sections → pages; a notebook is a folder on disk via the storage host (desktop/Android) or an IndexedDB-backed virtual folder on web, with each page a `.scriba` plus `notebook.json` index), left navigation (notebook switcher, section tabs with colours, page list with drag reorder and sub-pages), page canvas = Write editor in web-layout mode with a title field and created/modified timestamps, tags (To Do with checkbox, Important, Question, Remember, custom with icons; Ctrl+1/2/3 shortcuts; Tags summary pane across the notebook grouped by tag with jump links), quick search across all pages (text index built incrementally, stored in IndexedDB), page templates (To-do list, Meeting notes, Lecture notes, Project overview), insert: table, picture, file attachment (stored next to the page), link to page (`[[` autocomplete ★), code block, date/time, equation; export page to .docx/.pdf/.md and notebook to a zip of Markdown; ribbon per §1.4 Notes; command palette and shortcuts; mobile layout handled in WP-36. e2e notes.spec.ts: create notebook/section/pages, tag a line To Do, tags summary shows it, search finds a page, screenshot light/dark, export a page to .docx and re-read with io-docx.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Notebook folder format (kiln-storage::notebook: notebook.json with sections order/colours, section folders, pages as .kwrite with a notes front-matter block: title, created, modified, tags) stored in an app-managed folder (native) or OPFS (web); kiln-search: in-memory inverted index with incremental updates, prefix and fuzzy matching, highlighting; also serves the command palette's fuzzy matching (replace the TS matcher via Query::PaletteSearch) and Write/Grid Find suggestions. Notes app (NotesCommand): notebooks/sections/pages CRUD and reorder, page = Write document with free title + timestamp, tags (To Do Ctrl+1 with checkbox, Important Ctrl+2, Question Ctrl+3, custom) as paragraph marks rendered by kiln-doc-layout annotations, Tags summary pane (grouped, click to jump), quick search across notebooks with results pane, export page to .docx/.md/.pdf, Notes ribbon per §1.4 (Home/Insert/View; Draw P2 hidden), left navigation (notebooks ▸ sections tabs ▸ pages list), page colour and rule lines, Simplified ribbon default; mockup fidelity (Notes light/dark). E2E: create notebook/section/pages, tag, search, export; parity Notes rows flipped. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/notes test exits 0 with >= 40 tests",
-   "pnpm e2e --grep notes exits 0 with screenshots notes/{overview,tags}-{light,dark}-desktop.png",
-   "e2e: exported page .docx re-read by io-docx contains the page title as a Title-styled paragraph",
-   "docs/manual/notes.md exists"
+   "cargo nextest run -p kiln-search -p kiln-storage -p kiln-session passes incl. index update/search tests and notebook round-trip",
+   "pnpm e2e --grep notes passes (create, tag To Do, Tags pane jump, search finds a word across notebooks, export to .md)",
+   "docs/qa/visual-review-WP-86.md records the Notes mockup comparison; axe 0 serious/critical on Notes; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-34",
-  "title": "Electron desktop shell and Linux packaging (AppImage, deb) + Windows/macOS builder config",
-  "milestone": "M5",
+  "id": "WP-87",
+  "title": "ODF import/export (odt, ods, odp)",
+  "milestone": "R4",
   "depends_on": [
-   "WP-30"
+   "WP-65",
+   "WP-70",
+   "WP-79"
   ],
   "owns": [
-   "apps/desktop/**",
-   "packages/storage/src/hosts/electron/**",
-   "tools/release/**",
-   "e2e/specs/electron.spec.ts",
+   "crates/kiln-io-odf/**",
+   "fixtures/odf/**",
+   "crates/kiln-testing/src/formats/odf.rs"
+  ],
+  "task": "kiln-io-odf: ODF 1.3 packages (content.xml, styles.xml, meta.xml, settings.xml, automatic styles, manifest) ⇄ kiln-doc/kiln-sheet/kiln-deck via mapping tables from our OOXML-shaped models (paragraph/text properties, lists, tables, sections/page layouts, headers/footers, footnotes, images and frames, fields; cells, number formats via ODF data styles, merges, formulas in the of: namespace with function name mapping, conditional formats basic, validations basic, charts via kiln-charts where the type exists; slides, masters/layouts as styles, shapes, text, pictures, tables, transitions basic, notes); register readers/writers and Roundtrip; fixtures/odf created by converting feature fixtures with LibreOffice (tools/oracle-soffice.sh) plus hand-made ones; thresholds: text 1.00, structural ≥ 0.90, oracle_opens 100 %; LibreOffice converts our odt/ods/odp back to OOXML without error. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
+  "acceptance": [
+   "cargo xtask fidelity --format odf exits 0 with text 1.00, structural ≥ 0.90, oracle_opens 100 %",
+   "cargo nextest run -p kiln-io-odf passes; cargo run -p kiln-cli -- convert fixtures/docx/features/tables.docx /tmp/t.odt && soffice --headless --convert-to docx --outdir /tmp /tmp/t.odt succeeds",
+   "CI green"
+  ],
+  "gate": false,
+  "heavy": false
+ },
+ {
+  "id": "WP-88",
+  "title": "Tauri desktop shell: host, native menus, file associations, windows, updater config, Linux bundles, release workflow dispatch",
+  "milestone": "R5",
+  "depends_on": [
+   "WP-83",
+   "WP-67",
+   "WP-68",
+   "WP-75",
+   "WP-81"
+  ],
+  "owns": [
+   "apps/desktop/src-tauri/src/**",
+   "apps/desktop/src-tauri/Cargo.toml",
+   "apps/desktop/src-tauri/tauri.conf.json",
+   "apps/desktop/src-tauri/tauri.linux.conf.json",
+   "apps/desktop/src-tauri/tauri.windows.conf.json",
+   "apps/desktop/src-tauri/tauri.macos.conf.json",
+   "apps/desktop/src-tauri/capabilities/**",
+   "apps/desktop/package.json",
+   "apps/desktop/README.md",
+   "e2e/tauri/**",
+   "tools/verify-bundles.sh",
+   ".github/workflows/release.yml",
+   "docs/RELEASING.md",
    "docs/manual/building.md",
-   "docs/manual/install-desktop.md"
+   "docs/adr/0006-shells.md"
   ],
-  "task": "apps/desktop with electron-vite 6: `src/main` (single instance lock; BrowserWindow per document with `contextIsolation`, `sandbox: true`, CSP, no nodeIntegration; loads apps/web build (file://) or dev server; native application menu built from the command registry/keymaps (File/Edit/View/Insert/Format/Tools/Window/Help with accelerators from §1.7; menu items dispatch to the renderer via IPC), `open-file`/argv handling → `openFromOS`, recent documents (`app.addRecentDocument`), file dialogs with filters, atomic fs writes, file watching (chokidar), `printToPDF` and native print, `shell.openExternal` with allow-list, presenter second window on the secondary display, auto-updater (electron-updater against GitHub Releases, check-on-start opt-in in Options), crash recovery mirror dir in `app.getPath('userData')/recovery`, protocol/file associations), `src/preload` exposing `window.officina` matching packages/storage's declared types with zod-validated IPC, `ElectronHost` implementation in packages/storage/src/hosts/electron. electron-builder config in apps/desktop/electron-builder.yml (appId io.github.zahakj.officina, productName Officina, artifact names `officina-<version>-linux-x86_64.AppImage`, `officina_<version>_amd64.deb`, `Officina-Setup-<version>.exe`, `Officina-<version>-portable.exe`, `Officina-<version>-arm64.dmg`, `Officina-<version>-x64.dmg`; linux: AppImage + deb with desktop entry, MIME types for docx/xlsx/pptx/odt/ods/odp/csv/scriba/tabula/scena, icon from build/icon.png; win: nsis + portable, `signAndEditExecutable: false` so Linux cross-builds don't need wine; mac: dmg + zip, `hardenedRuntime: false`, no notarisation; `publish: github`), `release:desktop` task script (`electron-builder --<platform> --publish never`) and `release:desktop` root script passthrough. Try a Windows cross-build locally (`--win`) — if it succeeds, record it; if it fails for lack of wine, record the exact error in docs/manual/building.md and leave Windows to CI (not a failure of this WP). docs/manual/install-desktop.md (AppImage/deb/exe/dmg, unsigned warnings as in abax's README, Gatekeeper `xattr -cr`), docs/manual/building.md (desktop + Android + web). e2e electron.spec.ts with Playwright `_electron`: skipped unless DISPLAY is set; when run: launches the built app, opens a fixture via IPC, screenshots electron/write-light-desktop.png.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Complete kiln-desktop per §3.3/§3.5/§3.12: full Host implementation (fs, dialogs with filters per app, recents in the app data dir, clipboard with HTML/text, opener with scheme allow-list, prefs store, printing via temp PDF + system handler), native application menu built at startup from catalog.json + the keymaps (exported to apps/desktop/src-tauri/menu.json by a packages/commands script at build time) with accelerators, window state restore, multiple windows (new window, presenter view), file associations for .docx/.dotx/.docm/.xlsx/.xltx/.xlsm/.csv/.pptx/.potx/.pptm/.odt/.ods/.odp/.kwrite/.kgrid/.kdeck with per-type icons, open-with and CLI arguments (kiln <file>), drag-and-drop onto the window, deep 'Open in Kiln' from Home, updater plugin configured against GitHub Releases (pubkey placeholder, disabled until a key exists), --startup-probe measuring time to first Home paint and RSS, single-instance behaviour, tray none. Build locally: pnpm tauri build (profile dist) producing AppImage + deb in target/dist/bundle; tools/verify-bundles.sh (dpkg-deb -I, AppImage --appimage-extract and check the binary, sizes against B13); e2e/tauri: tauri-driver 2.1.0 smoke (open a docx fixture, type, save, assert file changed) under xvfb-run; startup probe under xvfb asserting B1 < 700 ms and B2 < 150 MB. release.yml: finalise the desktop jobs with tauri-apps/tauri-action@v0 (linux ubuntu-22.04, windows-latest nsis+msi, macos-latest dmg arm64+x64 unsigned with the signing hooks ready for secrets) and trigger a workflow_dispatch run; verify the three artefacts download and pass size checks. docs/RELEASING.md and docs/manual/building.md updated; docs/adr/0006-shells.md finalised. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm release:desktop -- --linux exits 0 and produces apps/desktop/dist/officina-*-linux-x86_64.AppImage and apps/desktop/dist/officina_*_amd64.deb",
-   "dpkg-deb -I apps/desktop/dist/officina_*_amd64.deb shows Package: officina and the MIME types in the desktop file (dpkg-deb -c lists usr/share/applications/officina.desktop)",
-   "./apps/desktop/dist/officina-*.AppImage --appimage-extract into a temp dir contains usr/resources/app.asar (or resources/app.asar) and `npx asar list` shows index.html",
-   "if DISPLAY is set: pnpm e2e --grep electron exits 0 and the screenshot exists; otherwise the spec reports skipped and docs/manual/building.md states how to run it",
-   "pnpm verify exits 0; CI green"
+   "pnpm tauri build exits 0; bash tools/verify-bundles.sh passes (AppImage < 40 MB, deb < 30 MB, binary present, desktop file and MIME types registered)",
+   "xvfb-run -a target/dist/kiln --startup-probe prints startup-ms < 700 and rss-mb < 150",
+   "xvfb-run -a pnpm --filter @kiln/e2e tauri-smoke passes (tauri-driver scenario)",
+   "gh workflow run release.yml && gh run watch --exit-status on that run succeeds with artefacts linux, windows, macos present (gh run download) and within B13 sizes",
+   "CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": true
  },
  {
-  "id": "WP-35",
-  "title": "Android shell (Capacitor): project, plugins, intents, signing, debug and release APK",
-  "milestone": "M5",
+  "id": "WP-89",
+  "title": "Tauri Android: NDK, project generation, intents, SAF, print hook, signing, APK build and verification",
+  "milestone": "R5",
   "depends_on": [
-   "WP-30"
+   "WP-88"
   ],
   "owns": [
-   "apps/android/**",
-   "packages/storage/src/hosts/capacitor/**",
+   "apps/desktop/src-tauri/gen/android/**",
+   "apps/desktop/src-tauri/tauri.android.conf.json",
+   "apps/desktop/src-tauri/src/android/**",
+   "apps/desktop/src-tauri/capabilities/mobile.json",
    "tools/setup-android.sh",
-   "docs/manual/install-android.md"
+   "tools/verify-apk.sh",
+   ".github/workflows/release.yml",
+   "docs/manual/android.md"
   ],
-  "task": "apps/android: `capacitor.config.ts` (appId io.github.zahakj.officina, appName Officina, webDir ../web/dist, android scheme https, `server.androidScheme`), `npx cap add android` committing the generated android/ project (Gradle wrapper 8.14.3, AGP 8.13, compileSdk/targetSdk 36, minSdk 24), gradle.properties memory limits per §4.4, plugins installed and configured: @capacitor/filesystem, @capawesome/capacitor-file-picker, @capacitor/share, @capacitor/app (back button, intents), @capacitor/keyboard (resize mode `native`, accessory bar off), @capacitor/status-bar (theme-coloured, overlays off), @capacitor/preferences, @capacitor/haptics; AndroidManifest intent filters: ACTION_VIEW/ACTION_SEND for the Office/ODF/CSV/native MIME types and file extensions, `android:launchMode=\"singleTask\"`, FileProvider for sharing exports; a small custom Capacitor plugin `OfficinaPrint` (Java) exposing `print()` using `PrintManager` + `WebView.createPrintDocumentAdapter` and `printToPdf` via `PdfDocument` fallback, consumed by packages/print-pdf through `PlatformHost.print`; `CapacitorHost` in packages/storage/src/hosts/capacitor (open via file picker with content URIs, read/write with Filesystem, SAF-persisted permissions, recents by URI with display names, share sheet, app data dir for notebooks/recovery); icons/splash via `@capacitor/assets` from docs/media/icon.svg renders (committed outputs); `pnpm --filter @officina/android build:web` (builds apps/web with `VITE_PLATFORM=capacitor`), `cap sync`, `release:android` task script that runs `./gradlew assembleRelease` and signs with `~/.officina-keys/release.jks` (generate per §4.4 if missing, store secrets with `gh secret set`), outputs `apps/android/dist/officina-<version>-android.apk`; also `assembleDebug`. Update tools/setup-android.sh if anything was missing. Static verification script `apps/android/scripts/verify-apk.sh` (aapt2 badging → package/version/minSdk/intent filters, apksigner verify, unzip -l for assets/public/index.html). docs/manual/install-android.md (sideloading, file access, known limits).\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Per §4.4: ensure the NDK and Rust Android targets, `pnpm tauri android init` (commit gen/android; set applicationId io.github.zahakj.kiln, minSdk 26, targetSdk 36, versionCode from the suite version), AndroidManifest intent filters for the Office/ODF/Kiln MIME types and file extensions (VIEW/EDIT/SEND), SAF open/save through tauri-plugin-fs/dialog content URIs wired into the Host, status bar colour from tokens and edge-to-edge insets, windowSoftInputMode adjustResize, back button → SuiteCommand::Back (closes sheets/dialogs before leaving the document), a small Kotlin hook for printing (PrintManager with the exported PDF) and for sharing (ACTION_SEND), hardware keyboard shortcuts pass-through, Gradle memory settings of §4.4, signing config reading KILN_KEYSTORE/KILN_KEYSTORE_PASSWORD env (throwaway debug key when absent; create the release keystore under ~/.kiln-keys and set the gh secrets); build the arm64 APK locally with --split-per-abi; tools/verify-apk.sh (aapt2 dump badging: package, intent filters; apksigner verify --print-certs; unzip -l contains lib/arm64-v8a/libkiln_desktop.so and assets index.html; size < 35 MB); release.yml android job finalised and dispatched to produce the three ABI APKs. docs/manual/android.md (install, file access, known limits). Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm release:android exits 0 and apps/android/dist/officina-*-android.apk exists and is < 40 MB",
-   "bash apps/android/scripts/verify-apk.sh apps/android/dist/officina-*-android.apk exits 0 (package io.github.zahakj.officina, minSdk 24, targetSdk 36, intent filters include application/vnd.openxmlformats-officedocument.wordprocessingml.document, spreadsheetml.sheet and presentationml.presentation, apksigner verified, assets/public/index.html present)",
-   "gh secret list shows ANDROID_KEYSTORE_B64 and ANDROID_KEYSTORE_PASSWORD",
-   "cd apps/android/android && ./gradlew assembleDebug exits 0",
-   "pnpm verify exits 0; CI green"
+   "pnpm tauri android build --apk --target aarch64 --split-per-abi exits 0 and bash tools/verify-apk.sh <apk> passes (package io.github.zahakj.kiln, MIME intent filters, signed, < 35 MB)",
+   "gh workflow run release.yml && gh run watch --exit-status succeeds with android artefacts for arm64-v8a, armeabi-v7a and x86_64",
+   "git status clean after a second `pnpm tauri android init` (generated project committed and stable); CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": true
  },
  {
-  "id": "WP-36",
-  "title": "Mobile UX adaptation (phone and tablet layouts, bottom ribbon sheet, touch handles) with Playwright mobile emulation",
-  "milestone": "M5",
+  "id": "WP-90",
+  "title": "Mobile UX adaptation: phone and tablet layouts to the kit's phone mockups, touch handles, keyboard docking",
+  "milestone": "R5",
   "depends_on": [
-   "WP-31",
-   "WP-32",
-   "WP-33"
+   "WP-85",
+   "WP-86"
   ],
   "owns": [
    "packages/ui-kit/src/mobile/**",
-   "apps/web/src/mobile/**",
-   "packages/editor-write/src/touch/**",
-   "packages/editor-grid/src/touch/**",
-   "packages/editor-deck/src/touch/**",
+   "packages/surface/src/touch/**",
+   "packages/editor-write/src/mobile/**",
+   "packages/editor-grid/src/mobile/**",
+   "packages/editor-deck/src/mobile/**",
+   "packages/notes/src/mobile/**",
+   "packages/home/src/mobile/**",
    "e2e/specs/mobile.spec.ts",
-   "docs/manual/mobile.md"
+   "e2e/specs/mobile-grid.spec.ts",
+   "docs/qa/visual-review-WP-90.md"
   ],
-  "task": "Implement §1.8 for all apps using the same command registry and ribbon specs: responsive `AppFrame` variants (top app bar with back/title/undo/redo/search/overflow), `BottomToolbar` (context-aware quick commands derived from the ribbon spec's Home group priorities via a `mobilePriority` field added to RibbonSpec items in ui-kit types — set defaults so untouched specs still work) and `RibbonSheet` (bottom sheet with tab chips and stacked groups), keyboard-inset handling (`env(keyboard-inset-height)` + Capacitor Keyboard events via a host hook), safe-area insets, touch selection handles for Write (custom handles over ProseMirror selection; long-press selection; floating context toolbar), Grid touch (range handles at corners, tap/drag headers, pinch zoom via pointer events with inertia, formula bar docked above the keyboard with ✓/✕ and the quick keys row, bottom sheet filters/validation lists, sheet chip strip), Deck touch (vertical slide list portrait, full-width edit, enlarged TransformBox handles, pinch zoom, Present fullscreen landscape with swipe + tap zones + notes toggle), Notes mobile (drawer navigation), Hub mobile (cards list), Android back-button routing (`@capacitor/app` listener closes sheets/dialogs first), dialogs become full-screen sheets under 640 px, min hit targets 44 px (lint rule test over ui-kit primitives' CSS), hover-only affordances get tap equivalents. e2e mobile.spec.ts with Playwright devices 'Pixel 7' (412×915, touch) and 'iPad (gen 7)' landscape: each app opened on a fixture; screenshots mobile/<app>-{light,dark}-phone.png and mobile/<app>-light-tablet.png; interactions: open ribbon sheet, tap Bold, verify; Grid: tap cell, type via keyboard, ✓ commits; Deck: present and swipe to next slide; Hub recents.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Implement §1.8 against the kit's phone mockups: breakpoints (< 640 phone, 640–1023 tablet, ≥ 1024 desktop), top app bar (back, title rename, undo/redo, search, overflow), bottom toolbar with the contextual quick commands and the 'Home ▾' ribbon sheet listing tabs as chips and groups as tiles (same registry, no mobile-specific commands), keyboard docking via visualViewport with env(keyboard-inset-height) fallback, Grid formula bar pinned above the keyboard with ✓/✕ and the 123/fx/A→Z quick row, touch selection handles (teardrop text handles, range corner handles, 28-dp shape handles with rotation), floating context toolbar, long-press context menu, pinch-to-zoom and double-tap-to-width on all surfaces, Write reflow (web layout) view default on phones with a Print layout toggle, Grid sheet tabs as a bottom chip strip and bottom-sheet filter/validation dropdowns, Deck vertical slide list with FAB and full-width edit, Present in landscape with swipe/tap zones and a notes toggle, Notes phone navigation, Home phone layout, Android back behaviour (SuiteCommand::Back) in the web build too, 44 × 44 dp hit targets audit. E2E in Pixel 7 and iPad emulation with touch (hasTouch): typing, handle drag selection, ribbon sheet, keyboard docking (emulate viewport resize), pinch zoom; screenshots light/dark for every app at phone and tablet; visual review vs phone mockups. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm e2e --grep mobile exits 0 with screenshots mobile/{hub,write,grid,deck,notes}-{light,dark}-phone.png and mobile/{write,grid,deck}-light-tablet.png",
-   "e2e: on Pixel 7 the ribbon is not rendered as the desktop tab strip; the bottom toolbar and the ribbon sheet are present and functional (Bold applied)",
-   "docs/qa/visual-review-WP-36.md reviews every mobile screenshot for overlap/clipping; docs/manual/mobile.md exists",
-   "pnpm verify exits 0; CI green"
+   "pnpm e2e --grep mobile passes on Pixel 7 and iPad projects; e2e/screenshots/mobile/ contains <app>-{light,dark}-phone.png for home, write, grid, deck, notes and <app>-light-tablet.png",
+   "the hit-target audit test (every interactive element in phone layout ≥ 44 × 44 CSS px) passes",
+   "docs/qa/visual-review-WP-90.md records the phone-mockup comparison; axe 0 serious/critical on phone layouts; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-37",
-  "title": "PWA: service worker, offline, install, file handlers, share target",
-  "milestone": "M5",
+  "id": "WP-91",
+  "title": "PWA, offline, threads shim, web deployment to GitHub Pages via Actions",
+  "milestone": "R5",
   "depends_on": [
-   "WP-30"
+   "WP-85",
+   "WP-60"
   ],
   "owns": [
-   "apps/web/vite.config.ts",
-   "apps/web/public/**",
    "apps/web/src/pwa/**",
+   "apps/web/public/manifest.webmanifest",
+   "apps/web/src/sw.ts",
+   "apps/web/public/coi-serviceworker.js",
+   "apps/web/vite.config.ts",
+   ".github/workflows/pages.yml",
+   "tools/pages-build.sh",
    "e2e/specs/pwa.spec.ts",
-   "docs/manual/install-web.md"
+   "docs/manual/web.md"
   ],
-  "task": "vite-plugin-pwa 2.0 with Workbox: precache the app shell and fonts (document fonts lazily cached on first use), runtime caching none for third parties (there are none), `manifest.webmanifest` (name Officina, icons from public/icons, theme/background colours per theme, display standalone, `file_handlers` for docx/xlsx/pptx/odt/ods/odp/csv/scriba/tabula/scena launching the right route via `launchQueue`, `share_target` (POST multipart → `/share-target` route that reads the file and opens it), shortcuts (New document/workbook/presentation)), update flow (new SW → toast \"Update available — Reload\"), offline page behaviour (Hub works offline; recents open from IndexedDB handles), install prompt button in Hub (beforeinstallprompt) and Backstage ▸ Account, `navigator.storage.persist()` request, OPFS used for large journals when available. Deployment: `apps/web` build is also published to GitHub Pages under `docs/app/` by the release workflow? No — keep Pages for the site/manual only; document self-hosting (`pnpm --filter @officina/web build` → static folder; any static server; HTTPS required for FS Access). e2e pwa.spec.ts: production preview server; SW registers; manifest has file_handlers; go offline (context.setOffline) and reload Hub → renders; update toast appears when the SW is swapped (simulate by rebuilding with a changed constant in test). docs/manual/install-web.md.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "vite-plugin-pwa with a custom service worker precaching the chrome, wasm artefacts (content-hashed; both single-thread and threads builds) and fonts, runtime caching for templates; offline open/edit/save through OPFS (already the web StorageHost) and recovery; install prompt and manifest (icons from WP-51, file_handlers for the Office/Kiln types via launchQueue, share_target, display standalone, theme_color from tokens); COOP/COEP service-worker shim (coi-serviceworker pattern) so crossOriginIsolated becomes true on Pages and the threads wasm artefact is selected at runtime (feature-detected, falls back silently); base path /kiln/app/; tools/pages-build.sh assembling docs/ (landing + manual) + the web app into one Pages artefact; pages.yml deploying with actions/upload-pages-artifact + actions/deploy-pages on pushes to main and on releases; switch the Pages source to Actions (gh api -X PUT repos/ZahakJ/kiln/pages -f build_type=workflow) and remove the PAGES_WORKFLOW guard; Lighthouse (via playwright-lighthouse or the Lighthouse CLI in e2e) PWA installability and performance checks for B12 (TTI < 2.5 s on the 4G profile, wasm gzip < 4.5 MB, chrome JS gzip < 450 KB); offline e2e (context.setOffline after first load: open a template, edit, save to OPFS, reload offline). Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "pnpm --filter @officina/web build produces dist/sw.js and dist/manifest.webmanifest containing file_handlers for 10 extensions",
-   "pnpm e2e --grep pwa exits 0 (offline Hub render passes)",
-   "Lighthouse-equivalent checks in test: manifest has >= 2 icons (192, 512), display standalone, start_url",
-   "pnpm verify exits 0; CI green"
+   "pnpm e2e --grep pwa passes (installable manifest, offline open/edit/save, threads artefact selected when crossOriginIsolated)",
+   "curl -4 -sI https://zahakj.github.io/kiln/app/ returns 200 and the page boots the wasm core (checked by an e2e run against the deployed URL with KILN_E2E_BASE)",
+   "cargo xtask wasm --release --size reports gzip < 4.5 MB; the Vite build report shows chrome JS gzip < 450 KB (asserted in tools/pages-build.sh)",
+   "gh api repos/ZahakJ/kiln/pages -q .build_type prints workflow; CI green"
   ],
-  "gate": false
+  "gate": false,
+  "heavy": false
  },
  {
-  "id": "WP-38",
-  "title": "Landing site and manual (GitHub Pages)",
-  "milestone": "M5",
+  "id": "WP-92",
+  "title": "Landing site and manual",
+  "milestone": "R5",
   "depends_on": [
-   "WP-15",
-   "WP-22",
-   "WP-28"
+   "WP-51",
+   "WP-91",
+   "WP-90"
   ],
   "owns": [
    "docs/index.html",
    "docs/assets/**",
-   "docs/manual/index.html",
    "docs/manual/README.md",
-   "docs/manual/index.md",
-   "docs/manual/faq.md",
-   "docs/manual/troubleshooting.md",
-   "docs/manual/formats.md",
+   "docs/manual/index.html",
+   "docs/manual/getting-started.md",
    "docs/manual/shortcuts.md",
-   "docs/manual/dev/**",
-   "docs/media/ribbon-*.png",
-   "docs/comparison.md",
-   "docs/FAQ.md"
-  ],
-  "task": "Replace the placeholder landing page with the full site per §4.6, in the concord style (same token names, nav, hero with the banner, screenshot gallery placeholders referencing the exact paths WP-43 will produce (docs/media/screenshots/<app>-{light,dark}.png and phone-*.png), per-app sections (Write/Grid/Deck/Notes) with two figures each, a \"Feels like home\" section (ribbon crop images docs/media/ribbon-write.png etc. captured now with Playwright from the current build — WP-43 refreshes them — plus a shortcut table excerpt), a comparison table vs Microsoft 365 (rows: price, works offline, opens/saves DOCX/XLSX/PPTX, collaboration, version history, macros/VBA, platforms, licence, telemetry) with honest cells (e.g. macros: \"preserved, not run\"), download buttons for Windows/macOS/Linux/Android built from a `data-version` constant (v0.1.0 to be set by WP-43) linking to GitHub release assets with the exact artifact names of WP-35/WP-36, an install one-liner box with copy button, footer with links). Manual (docs/manual/*.md, rendered by the existing viewer): this WP writes index.md, faq.md, troubleshooting.md, formats.md (fidelity notes and the Compatibility Checker), shortcuts.md (link to SHORTCUTS.md), dev/architecture.md (condensed DESIGN.md), dev/testing.md and the README.md table of contents; it only LINKS to the chapters other WPs own (write.md, grid.md, deck.md from the gates; getting-started.md WP-32; notes.md WP-33; collaboration.md WP-29; building.md and install-desktop.md WP-34; install-android.md WP-35; mobile.md WP-36; install-web.md WP-37) and must not create or edit them even if they do not exist yet (WP-42 verifies all links). docs/comparison.md and docs/FAQ.md. Verify the deployed site after push: fetch https://zahakj.github.io/officina/ and the manual index. Keep every statement truthful for the current build; features not yet merged are not mentioned.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
-  "acceptance": [
-   "curl -s https://zahakj.github.io/officina/ | grep -c 'Feels like home' >= 1 (after Pages rebuild; retry up to 10 minutes)",
-   "curl -s -o /dev/null -w '%{http_code}' https://zahakj.github.io/officina/manual/ prints 200",
-   "ls docs/manual/*.md | wc -l >= 14",
-   "A Playwright script in e2e (pwa or shell project) screenshots the landing page at 1280 width light and dark into e2e/screenshots/site/ and docs/qa/visual-review-WP-38.md reviews them"
-  ],
-  "gate": false
- },
- {
-  "id": "WP-39",
-  "title": "Fidelity corpus expansion and differential testing against LibreOffice; reader/writer hardening",
-  "milestone": "M6",
-  "depends_on": [
-   "WP-15",
-   "WP-22",
-   "WP-28"
-  ],
-  "owns": [
-   "packages/testing/**",
-   "packages/io-docx/src/**",
-   "packages/io-xlsx/src/**",
-   "packages/io-pptx/src/**",
-   "packages/io-docx/test/**",
-   "packages/io-xlsx/test/**",
-   "packages/io-pptx/test/**",
-   "docs/qa/fidelity.md",
-   "docs/FORMATS.md"
-  ],
-  "task": "Expand the corpus: 15 hand-authored `manual/` feature files per format created with LibreOffice headless macros or the Python oracles covering tricky constructs (nested tables, floating tables, multi-section headers, numbered headings with TOC, footnotes spanning pages, RTL mixed runs, equations; xlsx: shared formulas across thousands of cells, array formulas legacy, CF with formulas referencing other cells, 1904 dates, merged header blocks, very long text, rich-text cells, external link cached values, hidden sheets; pptx: SmartArt fallback, custom geometry, connectors with arrows, grouped placeholders, picture crops with transparency, tables with merged cells and styles, charts of every type, slide-level theme overrides), the `fixtures/external` fetch script run and results included in the score run (gitignored inputs; scores committed). Build the differential harness: for each fixture, (1) our read→write→LibreOffice PDF vs original→LibreOffice PDF visual score per page, (2) LibreOffice converting the original to our format family round trip (e.g. docx→odt→docx) as a baseline so we can show \"LibreOffice's own round-trip score\" next to ours, (3) exceljs/openpyxl/python-docx/python-pptx differential reads. Produce `docs/qa/fidelity.md` with tables per format and a ranked list of the worst files with root causes. Fix reader/writer defects until thresholds in §3.5 hold across the expanded corpus (prioritise by frequency of the construct in real documents); raise warnings coverage; make readers resilient to malformed files (fuzz 200 mutated zips/XMLs per format — must never throw outside a `FormatError` with a message). Update docs/FORMATS.md with supported/preserved/unsupported matrices per format.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
-  "acceptance": [
-   "pnpm fidelity prints tables for docx/xlsx/pptx where every fixture (features/ and manual/) meets the §3.5 thresholds, and docs/qa/fidelity.md is regenerated",
-   "A fuzz test (600 mutated inputs) passes: readers throw only FormatError",
-   "docs/FORMATS.md contains a supported/preserved/unsupported matrix for each format",
-   "pnpm verify exits 0; CI green"
-  ],
-  "gate": false
- },
- {
-  "id": "WP-40",
-  "title": "Performance pass: benchmarks, workers, progressive loading, memory",
-  "milestone": "M6",
-  "depends_on": [
-   "WP-15",
-   "WP-22",
-   "WP-28"
-  ],
-  "owns": [
-   "bench/**",
-   "packages/formula/src/engine/perf/**",
-   "packages/sheet-model/src/perf/**",
-   "packages/editor-grid/src/perf/**",
-   "packages/editor-write/src/pagination/perf/**",
-   "packages/editor-deck/src/perf/**",
-   "docs/qa/perf.md",
-   "e2e/specs/perf.spec.ts"
-  ],
-  "task": "Create `bench/` (Vitest bench + Playwright timing specs) implementing every row of §3.9 as a reproducible measurement with fixture generators (500k-cell xlsx, 100k-formula workbook, 300-page docx, 200-slide pptx produced by tools/make-fixtures.py --large into fixtures/large, gitignored). Measure, then optimise within the perf-named directories (which may contain replacement implementations the owning packages import through a single seam file each: e.g. `packages/editor-grid/src/perf/index.ts` exports tuned renderer helpers; owning-package files outside perf/ may be edited only to switch to the seam — note it in the commit): formula engine (typed-array dependency storage, batch dirty marking, worker transfer batching), sheet-model (chunk pooling), grid renderer (dirty-rect redraw, glyph atlas for digits, offscreen canvas for headers), Write pagination (incremental re-layout of only affected pages, measurement batching, idle-time pagination of far pages, virtualised page DOM for Print Layout beyond ±5 pages), Deck (thumbnail generation throttling, static HTML caching for text bodies), parsing (streaming sheetData parse in the worker, transferable buffers), startup (code splitting per app route, font loading strategy, preloading of the Hub). Add memory measurements via `performance.measureUserAgentSpecificMemory` where available / Chromium `--enable-precise-memory-info`. Record before/after in docs/qa/perf.md; perf.spec.ts asserts the §3.9 targets with 20 % tolerance for CI noise.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
-  "acceptance": [
-   "pnpm bench exits 0 and docs/qa/perf.md lists every §3.9 scenario with measured values meeting the targets (±20 %)",
-   "pnpm e2e --grep perf exits 0",
-   "Opening fixtures/large/300-pages.docx in e2e shows the first page in < 3 s (measured from navigation to first page paint)",
-   "pnpm verify exits 0; CI green"
-  ],
-  "gate": false
- },
- {
-  "id": "WP-41",
-  "title": "ODF import/export (odt, ods, odp)",
-  "milestone": "M6",
-  "depends_on": [
-   "WP-13",
-   "WP-15",
-   "WP-18",
-   "WP-22",
-   "WP-26",
-   "WP-28"
-  ],
-  "owns": [
-   "packages/io-odf/**",
-   "apps/web/src/formats/odf.ts",
-   "e2e/specs/odf.spec.ts"
-  ],
-  "task": "packages/io-odf: ODF 1.3 package handling (manifest.xml, mimetype first/uncompressed, content.xml, styles.xml, meta.xml, settings.xml passthrough), automatic vs common styles, `text:` elements → doc-model (paragraphs, spans, lists with `text:list-style`, tables, sections, headers/footers via master pages, footnotes, images (`draw:frame`), fields, tracked changes (`text:tracked-changes`), bookmarks, links), doc-model → ODT with the same coverage; `table:` → sheet-model (cells with office:value-type, formulas in `of:` syntax converted to Excel syntax and back (function names/separators), styles via `style:` number formats mapped to Excel codes, merges, column/row styles, conditional formats basic, validations, named expressions, charts via a ODF chart subset ↔ charts package) and back; `draw:page` → deck-model (frames, custom shapes with `draw:enhanced-geometry` mapped to presets where names match, text, pictures, tables, notes, transitions subset) and back. Register the formats in the apps' open/save pickers via apps/web/src/formats/odf.ts (a small registration module imported by each app's integration; the apps' own files are not edited — expose `registerOdf()` and call it from apps/web/src/main.tsx through a handoff note if an import line is needed). Tests: LibreOffice oracle round-trips — convert each docx/xlsx/pptx features fixture to ODF with soffice, read with io-odf, compare text/values with our OOXML reads; write ODF from our models and have LibreOffice convert back to OOXML, then read with our OOXML readers and compare (text 1.00, structural ≥ 0.85). e2e odf.spec.ts: open an .odt/.ods/.odp, screenshots, Save As .odt and re-read.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
-  "acceptance": [
-   "pnpm --filter @officina/io-odf test exits 0 with >= 90 tests",
-   "pnpm fidelity --format odf prints text == 1.00 and structural >= 0.85 for the converted corpus",
-   "pnpm e2e --grep odf exits 0 with screenshots odf/{odt,ods,odp}-light-desktop.png",
-   "pnpm verify exits 0; CI green"
-  ],
-  "gate": false
- },
- {
-  "id": "WP-42",
-  "title": "Integration gate: full suite verification, visual regression baselines, defect sweep, DoD checklist",
-  "milestone": "M6",
-  "depends_on": [
-   "WP-29",
-   "WP-30",
-   "WP-31",
-   "WP-32",
-   "WP-33",
-   "WP-34",
-   "WP-35",
-   "WP-36",
-   "WP-37",
-   "WP-38",
-   "WP-39",
-   "WP-40",
-   "WP-41"
-  ],
-  "owns": [
-   "e2e/**",
-   "docs/qa/**",
-   "**/* (defect fixes anywhere, as the only running WP)"
-  ],
-  "task": "Runs alone. Execute the complete verification: `pnpm verify`, `pnpm e2e` (all specs, both themes), `pnpm fidelity`, `pnpm bench`, `pnpm release:desktop -- --linux`, `pnpm release:android`, APK verification script, PWA build, collab server start/health, licence check, `pnpm audit --prod` (document unfixable advisories). Open and visually review every screenshot produced (hundreds): record findings in docs/qa/visual-review-WP-42.md and fix all defects of severity \"visible to a user in normal use\" anywhere in the repo (you are the only running WP). Create visual regression baselines `e2e/screenshots/baseline/` for the gate screenshots (one per app/view/theme, ~40 files) and enable the pixelmatch comparison in CI (threshold per §5). Run the §10 Definition of Done checklist item by item and write docs/qa/dod.md with evidence (command + result) for each item; anything failing is fixed or, if impossible, listed in docs/qa/known-issues.md with a GitHub issue created via `gh issue create` (labels: bug/enhancement, milestone v0.2.0). Ensure the unlisted-feature rule holds: no \"coming soon\" stubs visible in release builds (grep for the `pending` tier marker in built output). Update parity/parity.json: flip every row whose delivering WP is complete and whose verify ids pass to done (or better where the notes justify it), run `pnpm parity:verify` and `pnpm parity`, and commit PARITY.md with the v0.1.0 score; rows whose WP shipped but whose verification fails stay partial/missing and get a known-issue entry. Update CHANGELOG.md Unreleased into a complete v0.1.0 section draft including the parity score line.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
-  "acceptance": [
-   "pnpm verify && pnpm e2e && pnpm fidelity && pnpm bench all exit 0 in one session (log attached as docs/qa/gate-WP-42.log)",
-   "e2e/screenshots/baseline/ contains >= 40 PNGs and CI runs the visual comparison successfully",
-   "docs/qa/dod.md lists every §10 item with PASS and evidence; docs/qa/known-issues.md lists any deferred items with issue URLs",
-   "pnpm parity:verify exits 0 and PARITY.md shows >= 85 % of critical rows done or better",
-   "gh run list --workflow ci.yml --limit 1 --json conclusion -q '.[0].conclusion' prints success"
-  ],
-  "gate": true
- },
- {
-  "id": "WP-43",
-  "title": "Release v0.1.0: real screenshots and demo GIF, README and landing finalised, tagged release with Linux and Android assets",
-  "milestone": "M6",
-  "depends_on": [
-   "WP-42"
-  ],
-  "owns": [
+   "docs/manual/functions.md",
+   "docs/manual/formats.md",
    "docs/media/screenshots/**",
    "docs/media/demo.gif",
-   "docs/media/ribbon-*.png",
-   "docs/media/banner*.png",
+   "tools/render-media.mjs",
+   "e2e/specs/docs-media.spec.ts"
+  ],
+  "task": "Landing page in the house style (§4.6) with the brand kit's banner and tokens: sticky nav (Features, Apps, Compared, Docs, Open in browser, GitHub), hero (banner + a desktop screenshot with a phone overlay), per-app sections (Write, Grid, Deck, Notes) each with two real screenshots produced by e2e/specs/docs-media.spec.ts from the web build with sample documents (device scale 2), 'Feels like home' section (ribbon crop + shortcut list), 'Measured, not claimed' section embedding docs/qa/fidelity.md and docs/qa/perf.md numbers via small JSON files emitted by xtask, comparison table vs Microsoft 365 (price, formats, offline, collaboration, version history, macros, platforms, licence, install size), download buttons for Windows/macOS/Linux/Android pointing at releases/download/v<ver>/<file> with data-version spans (WP-98 fills), 'Open in browser' → /kiln/app/, footer. Manual (docs/manual/*.md rendered by the existing client-side viewer): ≥ 14 pages (getting started, Home, Write, Write review, Write layout, Grid, Grid data, Grid formulas incl. function list generated from the docs JSON by xtask, Grid analysis, charts, Deck, presenting, Notes, files and formats/compatibility, collaboration, CLI, keyboard shortcuts generated from the keymaps, accessibility, building, Android, web). demo.gif (≤ 8 MB) recorded with Playwright video → ffmpeg palette-optimised GIF. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
+  "acceptance": [
+   "pnpm e2e --grep docs-media writes docs/media/screenshots/*.png (≥ 10) and docs/media/demo.gif (< 8 MB)",
+   "ls docs/manual/*.md | wc -l ≥ 14 and docs/manual/README.md links every page; python3 -c 'import html.parser' based link check script (tools/check-links.py) reports 0 broken internal links in docs/",
+   "after pages.yml runs, curl -4 -s https://zahakj.github.io/kiln/ contains 'Kiln Write' and the banner image URL returns 200; CI green"
+  ],
+  "gate": false,
+  "heavy": false
+ },
+ {
+  "id": "WP-93",
+  "title": "Fidelity corpus expansion, differential testing against LibreOffice, reader/writer hardening",
+  "milestone": "R6",
+  "depends_on": [
+   "WP-87",
+   "WP-68",
+   "WP-75",
+   "WP-81"
+  ],
+  "owns": [
+   "fixtures/docx/features/**",
+   "fixtures/docx/manual/**",
+   "fixtures/xlsx/features/**",
+   "fixtures/xlsx/manual/**",
+   "fixtures/pptx/features/**",
+   "fixtures/pptx/manual/**",
+   "fixtures/odf/**",
+   "fixtures/external/**",
+   "fixtures/corpus-manifest.json",
+   "tools/fetch-corpus.sh",
+   "tools/make-fixtures.py",
+   "crates/kiln-testing/src/differential/**",
+   "crates/kiln-io-docx/**",
+   "crates/kiln-io-xlsx/**",
+   "crates/kiln-io-pptx/**",
+   "crates/kiln-io-odf/**",
+   "crates/kiln-ooxml/**",
+   "crates/kiln-doc-layout/src/**",
+   "docs/qa/fidelity.md"
+  ],
+  "task": "Grow fixtures/ by ≥ 40 generated feature files (RTL/Arabic and CJK documents, floating tables, multi-column + footnotes, legal numbering, nested fields, VML fallbacks, pivot caches with multiple fields, sparklines, slicers (passthrough), embedded charts in docx/pptx, 1904 dates, shared/array/dynamic formulas matrix, every CF rule type, every transition and animation preset of §1.4, 4:3 decks, large tables) and ≥ 30 more real-world public-domain files per format via tools/fetch-corpus.sh (gitignored external/, with a manifest of URLs and SHA-256); differential testing (crates/kiln-testing/src/differential): run LibreOffice's own docx→odt→docx round trip and score it with the same scorer, publish both scores side by side in docs/qa/fidelity.md and assert ours ≥ LibreOffice's on ≥ 80 % of docx files; compare our page counts with LibreOffice's on the whole corpus; ONLYOFFICE comparison is skipped (no Docker) and documented. Fix the worst-10 files per format in the readers/writers/layout (regression-first: add the failing fixture, then fix); raise thresholds in parity/corpus.json where the loop targets of §2A.3 are already met. Full-corpus runs are heavy (soffice renders): run them with the heavy marker. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
+  "acceptance": [
+   "find fixtures -name '*.docx' -o -name '*.xlsx' -o -name '*.pptx' | grep -v external | wc -l ≥ 100; tools/fetch-corpus.sh --verify checks every external file's SHA-256",
+   "cargo xtask fidelity exits 0 and docs/qa/fidelity.md shows the LibreOffice comparison column with ours ≥ theirs on ≥ 80 % of docx files",
+   "cargo xtask fidelity --format docx --format xlsx --format pptx --format odf all meet thresholds; no file in the corpus fails to open; CI green"
+  ],
+  "gate": false,
+  "heavy": true
+ },
+ {
+  "id": "WP-94",
+  "title": "Performance pass: all budgets enforced, profiling-driven optimisation, memory, wasm size, CI calibration",
+  "milestone": "R6",
+  "depends_on": [
+   "WP-88",
+   "WP-91",
+   "WP-82",
+   "WP-84",
+   "WP-86",
+   "WP-90",
+   "WP-93"
+  ],
+  "owns": [
+   "crates/kiln-bench/**",
+   "bench/**",
+   "xtask/src/budgets.rs",
+   "docs/qa/perf.md",
+   "crates/kiln-text/src/**",
+   "crates/kiln-scene/src/**",
+   "crates/kiln-session/src/**",
+   "crates/kiln-doc-layout/src/**",
+   "crates/kiln-sheet-layout/src/**",
+   "crates/kiln-formula/src/engine/**",
+   "crates/kiln-bridge-wasm/src/**",
+   "packages/surface/src/**",
+   "e2e/specs/perf.spec.ts"
+  ],
+  "task": "Measure every budget B1–B15 on this machine and in CI (desktop-smoke job for B1/B2 with xvfb; perf.spec.ts for B5/B6/B12; kiln-bench for the rest) and make `cargo xtask budgets --ci` fail on regressions with the calibrated 1.5× tolerance; profile with tracing spans + tracing-chrome traces (no root needed) and `cargo build --timings`; optimise the hot paths found (typical: glyph atlas churn on zoom, tile re-hashing, Fenwick rebuilds, dependency-graph allocation, postcard sizes, painter drawImage batching, worker message copies); memory: page/layout eviction, atlas eviction, undo caps, image downscaling for thumbnails (B2/B4); wasm: feature trimming, panic=abort, wasm-opt -Os, lazy function docs loading, measured per crate contribution (B12); write a short spike note on a vello/wgpu native painter (docs/qa/perf.md appendix: expected gain, cost; no implementation); record competitor measurements that are reproducible here (soffice --convert-to timings for the same files) next to ours. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
+  "acceptance": [
+   "cargo xtask budgets exits 0 with every budget id B3, B7–B11, B14, B15 passing and docs/qa/perf.md updated with measured values and the soffice comparison",
+   "pnpm e2e --grep perf passes (B5, B6 for doc-300p and sheet-1m, B12 Lighthouse) and xvfb-run -a target/dist/kiln --startup-probe meets B1/B2 after a fresh `pnpm tauri build`",
+   "cargo xtask wasm --release --size reports gzip < 4.5 MB; CI green with the budgets step no longer in skip mode"
+  ],
+  "gate": false,
+  "heavy": true
+ },
+ {
+  "id": "WP-95",
+  "title": "Security hardening, fuzzing, supply chain",
+  "milestone": "R6",
+  "depends_on": [
+   "WP-93",
+   "WP-88",
+   "WP-89"
+  ],
+  "owns": [
+   "fuzz/**",
+   ".github/workflows/fuzz.yml",
+   "deny.toml",
+   "SECURITY.md",
+   "docs/qa/security.md",
+   "apps/desktop/src-tauri/capabilities/**",
+   "crates/kiln-ooxml/src/**",
+   "crates/kiln-io-docx/src/**",
+   "crates/kiln-io-xlsx/src/**",
+   "crates/kiln-io-pptx/src/**",
+   "crates/kiln-io-odf/src/**",
+   "crates/kiln-io-csv/src/**",
+   "crates/kiln-formula/src/parser/**",
+   "crates/kiln-formula/src/numfmt/**"
+  ],
+  "task": "cargo-fuzz targets (rustup toolchain install nightly --profile minimal; fuzz/ workspace excluded from the main workspace) for docx/xlsx/pptx/odf/csv readers, the OPC layer, the formula parser and numfmt; run each ≥ 10 minutes locally (one at a time; heavy marker not needed but do not pair with release builds), fix every crash/timeout/OOM found and add the inputs as regression fixtures; .github/workflows/fuzz.yml weekly 20-minute runs per target uploading artefacts; limits tests (zip bombs, deep XML nesting, huge dimensions, gigantic images); Tauri capabilities audit (minimal permissions, per-window), CSP review, opener scheme allow-list test, asset protocol scope; cargo deny check advisories/bans clean (document any exception); threat model and hardening notes in docs/qa/security.md; SECURITY.md updated (supported versions, reporting, known gaps: collab token auth, unsigned builds). Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
+  "acceptance": [
+   "for each target in fuzz/fuzz_targets, `cargo +nightly fuzz run <target> -- -max_total_time=600` completed without crashes (log summary committed to docs/qa/security.md)",
+   "cargo deny check exits 0 (licenses, advisories, bans); python3 -c 'import yaml;yaml.safe_load(open(\".github/workflows/fuzz.yml\"))' exits 0",
+   "cargo nextest run --workspace --exclude kiln-desktop passes incl. the new limits tests; CI green"
+  ],
+  "gate": false,
+  "heavy": false
+ },
+ {
+  "id": "WP-96",
+  "title": "Agent control channel and kiln CLI completeness: convert/render/inspect/eval/control/batch, protocol docs, skill file",
+  "milestone": "R6",
+  "depends_on": [
+   "WP-68",
+   "WP-75",
+   "WP-81",
+   "WP-83",
+   "WP-87"
+  ],
+  "owns": [
+   "crates/kiln-cli/**",
+   "docs/manual/cli.md",
+   "docs/control-protocol.md",
+   "skills/kiln/**"
+  ],
+  "task": "Finish kiln-cli as the agent-facing surface: `kiln convert <in> <out>` for every pair among docx/kwrite/odt/md/html/txt/pdf/png, xlsx/kgrid/ods/csv/tsv/json/pdf, pptx/kdeck/odp/pdf/png (per-slide) with options (--pages, --sheet, --dpi, --handouts); `kiln render` for all kinds (page/sheet/slide selection, dark theme, DPI); `kiln inspect` (structure, properties, compat report, passthrough parts, --json); `kiln eval` with a workbook context (--workbook file --sheet); `kiln control` fully documented in docs/control-protocol.md generated from the catalog (every Command with its JSON shape, every Query, every Event), with subscribe streaming events and render-to-PNG inline; `kiln batch script.jsonl` (same messages, non-interactive, exit code on first error), `--json` output everywhere, man-style help; integration tests over fixtures for every subcommand; skills/kiln/SKILL.md describing how an agent drives Kiln (install, convert, inspect, control session examples) so AI agents can use it like GenOffice/GridCraft offer; parity rows suite.automation.cli and suite.automation.control flipped to better (MCP server remains loop round 1). Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
+  "acceptance": [
+   "cargo nextest run -p kiln-cli passes with ≥ 1 test per subcommand; `kiln convert` succeeds for every fixture in fixtures/*/features to pdf and to the native format",
+   "docs/control-protocol.md is regenerated by `cargo xtask protocol --docs` and git diff --exit-code is clean",
+   "printf '{\"open\":{\"path\":\"fixtures/xlsx/features/formulas.xlsx\"}}\\n{\"execute\":{\"doc\":1,\"cmd\":{\"Grid\":{\"SetCellValue\":{\"addr\":\"A1\",\"input\":\"=1+1\"}}}}}\\n{\"query\":{\"doc\":1,\"q\":{\"CellValue\":\"A1\"}}}\\n' | kiln control prints a line containing 2",
+   "cargo xtask parity --verify exits 0 with the automation rows at better; CI green"
+  ],
+  "gate": false,
+  "heavy": false
+ },
+ {
+  "id": "WP-97",
+  "title": "Integration gate: full suite verification, layout scan, visual baselines, thinness audit, DoD checklist, reference deletion",
+  "milestone": "R6",
+  "depends_on": [
+   "WP-82",
+   "WP-83",
+   "WP-84",
+   "WP-85",
+   "WP-86",
+   "WP-87",
+   "WP-88",
+   "WP-89",
+   "WP-90",
+   "WP-91",
+   "WP-92",
+   "WP-93",
+   "WP-94",
+   "WP-95",
+   "WP-96"
+  ],
+  "owns": [
+   "docs/qa/dod.md",
+   "docs/qa/visual-review-WP-97.md",
+   "e2e/specs/layout-scan.spec.ts",
+   "e2e/specs/visual.spec.ts",
+   "e2e/specs/suite-gate.spec.ts",
+   "e2e/screenshots/baseline/**",
+   "reference/**",
+   "PARITY.md",
+   "docs/qa/*.md",
+   "CHANGELOG.md",
+   "crates/**",
+   "packages/**",
+   "apps/**"
+  ],
+  "task": "Run alone (you may fix defects anywhere). Run the complete verification set: cargo xtask verify, pnpm verify, pnpm e2e, cargo xtask fidelity, cargo xtask budgets, cargo xtask parity --verify, pnpm tauri build + tools/verify-bundles.sh, the Android build + tools/verify-apk.sh, cargo deny check; layout-scan.spec: bounding-box overlap/clipping scan of ribbon, status bar, panes, dialogs, Backstage at 1280×800, 1440×900, 412×915 in light/dark/hc for every app (0 overlaps, 0 clipped text); visual.spec with committed baselines for Home, each app, Backstage, dialogs, show mode (pixelmatch ≤ 0.5 %); thinness audit (`pnpm lint` restricted imports, grep audit for computation in packages/*, a written note in docs/qa/dod.md); suite-gate.spec: cross-app flows (chart from Grid into Write, Write text pasted into Deck, Notes page exported to docx and reopened in Write); go through every §10 item and record status in docs/qa/dod.md; defect sweep; delete reference/ts-core (git rm; the archive branch keeps it) and remove its mentions; regenerate PARITY.md; prepare the CHANGELOG v0.1.0 section (unreleased → 0.1.0 heading left as 'Unreleased' until WP-98 tags). Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
+  "acceptance": [
+   "cargo xtask verify && pnpm verify && pnpm e2e && cargo xtask fidelity && cargo xtask budgets && cargo xtask parity --verify && cargo deny check all exit 0 in one session (log attached to docs/qa/dod.md)",
+   "pnpm e2e --grep 'layout-scan|visual|suite-gate' passes with baselines committed under e2e/screenshots/baseline/",
+   "test ! -d reference; grep -rIil 'officina\\|scriba\\|tabula\\|scena\\|notula\\|atrium' --exclude-dir=node_modules --exclude-dir=target --exclude-dir=.git --exclude=PLAN.md . | sort prints exactly ./CHANGELOG.md and ./docs/adr/0002-kiln-rust-core.md",
+   "docs/qa/dod.md has every §10 item marked done with evidence; python3 parity score check: overall ≥ 0.60 and critical ≥ 0.85 from docs/parity-badge.json / PARITY.md; CI green"
+  ],
+  "gate": true,
+  "heavy": true
+ },
+ {
+  "id": "WP-98",
+  "title": "Release v0.1.0: screenshots and demo, README and landing finalised, version bump, tag, release assets, Pages",
+  "milestone": "R6",
+  "depends_on": [
+   "WP-97"
+  ],
+  "owns": [
    "README.md",
    "docs/index.html",
+   "docs/media/**",
    "CHANGELOG.md",
-   "e2e/specs/media-capture.spec.ts",
-   "tools/make-demo-gif.sh",
-   "package.json (version field only)",
-   "apps/*/package.json (version field only)",
-   "packages/*/package.json (version field only)"
+   "package.json",
+   "Cargo.toml",
+   "apps/desktop/src-tauri/tauri.conf.json",
+   "apps/desktop/src-tauri/gen/android/app/build.gradle.kts",
+   "docs/RELEASING.md",
+   "docs/parity-badge.json",
+   "PARITY.md"
   ],
-  "task": "Runs alone, last. Media: e2e/specs/media-capture.spec.ts at device scale 2 captures with real template documents (from WP-32) — Write (light/dark), Grid with a chart (light/dark), Deck with Design Ideas pane (light/dark), Notes (light), Hub (light/dark), phone captures (Pixel 7) of Write/Grid/Deck, ribbon crops for each app — into docs/media/screenshots/ with the exact names referenced by README/landing; tools/make-demo-gif.sh records a 20–30 s Playwright video (open Hub → open template → edit with ribbon → palette → save) and converts it to docs/media/demo.gif with ffmpeg (palette-optimised, 960 px wide, 12 fps, < 8 MB). Finalise README.md (house style per §4.6; replace placeholders; add the parity badge from docs/parity-badge.json via shields endpoint URL; the install one-liner must point at the real asset names) and docs/index.html (`data-version` = v0.1.0, download links valid, screenshots in place), re-render banners if the icon changed (`pnpm media:render`). Versions: set 0.1.0 in every package.json (`pnpm -r exec npm version 0.1.0 --no-git-tag-version` or a script), CHANGELOG.md v0.1.0 section dated with the parity score and fidelity table. Build local assets: `pnpm release:desktop -- --linux` (AppImage, deb), `pnpm release:android` (signed APK); compute SHA256SUMS-local.txt. Commit, push, wait for CI green, then tag: `git tag -a v0.1.0 -m \"Officina 0.1.0\"` and `git push origin v0.1.0`; create the release first (so CI appends): `gh release create v0.1.0 --title \"Officina 0.1.0\" --notes-file <generated from CHANGELOG> apps/desktop/dist/officina-0.1.0-linux-x86_64.AppImage apps/desktop/dist/officina_0.1.0_amd64.deb apps/android/dist/officina-0.1.0-android.apk`; watch release.yml (`gh run watch`), confirm macOS/Windows assets and the final SHA256SUMS.txt were attached by the workflow (if a CI platform job fails for environmental reasons, fix the workflow and re-run with `gh run rerun`; the release must end with all six platform assets or a documented exception in the release notes). Verify Pages serves the finalised landing page and that every download button URL returns HTTP 302/200. Pin nothing. Post-release: bump versions to 0.2.0-dev in a final commit.\nFinish with the §4.7 cadence: pnpm verify green, CHANGELOG Unreleased updated, conventional commit, rebase, push to main, CI green (gh run watch --exit-status).",
+  "task": "Run alone. Refresh screenshots and demo.gif from the final build (e2e docs-media spec), finalise README.md (brand banner, badges incl. parity %, factual paragraphs, install one-liners for AppImage/deb/exe/dmg/APK and 'Open in browser', 2×2 screenshot grid, Features by app, Compared with Microsoft Office, Building with Rust + Node, Documentation table, Licence) stating only what WP-97's DoD verified; update the landing page download links and data-version to 0.1.0 and the measured numbers; bump versions to 0.1.0 (workspace.package.version, package.json, tauri.conf.json, Android versionName/versionCode); CHANGELOG 0.1.0 dated; `git tag -a v0.1.0` and push the tag; watch release.yml (desktop ×3, android, web, publish) to completion; download every asset, verify SHA256SUMS.txt, sizes (B13) and that the AppImage starts under xvfb with --startup-probe and the APK passes tools/verify-apk.sh; confirm Pages deployed the release build (/kiln/app/ shows version 0.1.0); regenerate PARITY.md and the badge with the release score; `gh release view v0.1.0` shows notes = CHANGELOG section + parity and fidelity tables; post-release: open GitHub issues for every known gap listed in docs/qa/dod.md. Finish with the §4.7 cadence: cargo xtask verify and pnpm verify green, CHANGELOG Unreleased updated, parity rows flipped where applicable, conventional commit through tools/with-lock.sh, rebase, push to main, CI green (gh run watch --exit-status).",
   "acceptance": [
-   "gh release view v0.1.0 --json assets -q '.assets[].name' lists officina-0.1.0-linux-x86_64.AppImage, officina_0.1.0_amd64.deb, officina-0.1.0-android.apk, Officina-Setup-0.1.0.exe, Officina-0.1.0-arm64.dmg (or documented exception), SHA256SUMS.txt",
-   "for each asset URL from the release: curl -sIL returns 200",
-   "ls docs/media/screenshots/*.png | wc -l >= 14 and identify docs/media/demo.gif reports width 960 and size < 8 MB",
-   "curl -s https://zahakj.github.io/officina/ | grep -c 'v0.1.0' >= 1 and README.md no longer contains the word 'placeholder'",
-   "gh run list --workflow release.yml --limit 1 --json conclusion -q '.[0].conclusion' prints success"
+   "gh release view v0.1.0 --json assets -q '.assets[].name' lists an AppImage, a deb, an NSIS exe, an msi, a dmg, three APKs, kiln-web-0.1.0.tar.gz and SHA256SUMS.txt; downloaded assets verify with sha256sum -c and meet B13 sizes",
+   "curl -4 -s https://zahakj.github.io/kiln/ contains 'v0.1.0' download links and https://zahakj.github.io/kiln/app/ serves the 0.1.0 build",
+   "README.md references only screenshots that exist in docs/media/screenshots and PARITY.md's score matches docs/parity-badge.json",
+   "gh issue list --label known-gap --json number | python3 -c 'import json,sys;assert len(json.load(sys.stdin))>0'; CI green on the tag"
   ],
-  "gate": true
+  "gate": true,
+  "heavy": true
  }
 ]
 ```
