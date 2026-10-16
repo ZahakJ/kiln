@@ -11,6 +11,7 @@ kiln-cli inspect report.docx --xml word/document.xml
 kiln-cli inspect report.docx --docx               # heading outline, counts, import diagnostics
 kiln-cli repack book.xlsx /tmp/book.xlsx          # open and save without edits
 kiln-cli convert report.docx copy.docx            # read and save as Kiln Write saves
+kiln-cli convert book.xlsx book.csv               # workbooks, CSV, TSV and JSON too
 kiln-cli render notes.txt --png out/page-%03d.png --dpi 150
 kiln-cli eval '=SUM(1,2,3)/4'                     # 1.5
 kiln-cli control < requests.jsonl                 # JSON requests in, JSON responses out
@@ -24,7 +25,7 @@ command is one); `kiln-cli help` prints the summary and exits 0. Output piped in
 early (`kiln-cli inspect a.docx --xml /word/document.xml | head`) ends quietly.
 
 What works today: `inspect`, `repack` and `fidelity` handle any `.docx`, `.xlsx` or `.pptx` package;
-`convert` reads and writes Word documents (WP-65);
+`convert` reads and writes Word documents (WP-65) and workbooks, CSV, TSV and JSON (WP-70);
 `render` and `control` open the document kinds whose app is in the build: the plain-text scratch document
 (`.txt`, `.md`) and, since the Word reader (WP-62), `.docx`, `.dotx` and `.docm` — which `control` opens and
 queries today and `render` paints once the Write layout lands (WP-63). Excel and PowerPoint files join as their
@@ -71,6 +72,7 @@ out byte for byte.
 
 ```text
 kiln-cli convert <in.docx> <out.docx|.docm|.dotx|.dotm>
+kiln-cli convert <in.xlsx|.xlsm|.xltx|.xltm|.csv|.tsv|.json> <out.xlsx|.xlsm|.xltx|.xltm|.csv|.tsv|.json>
 ```
 
 Reads a document and saves it in the format the output's extension names, exactly as Kiln saves it (File ▸
@@ -79,12 +81,19 @@ embedded objects, chart parts, an unchanged theme — is carried over byte for b
 revision count are stamped with the current time. It prints the sizes, how many parts were written from the
 model and how many were carried over, then the Compatibility Checker's list for the save (for example
 `macros.removed (loss, 1×)` when a `.docm` is converted to `.docx`) and what was already lost or kept read-only
-when the file was opened. Word documents (`.docx`, `.docm`, `.dotx`, `.dotm`) convert today; PDF export
-arrives with the PDF writer.
+when the file was opened. PDF export arrives with the PDF writer.
+
+Workbooks (WP-70): an Excel workbook saved as `.xlsx`, `.xlsm`, `.xltx` or `.xltm` keeps every part Kiln does
+not model (pivot tables, macros — only into `.xlsm`/`.xltm` —, external links, charts, pictures); saved as
+`.csv` or `.tsv` it writes the active sheet as Excel does (cells as displayed, Excel's quoting, CRLF, UTF-8)
+and says so when the workbook has more sheets; saved as `.json` it writes the sheet's first table (or its
+used range) as an array of objects. CSV and TSV input is read with its encoding and delimiter detected and
+each field recognised as Excel's cell entry does; JSON input is an array of objects (or of arrays).
 
 ```sh
 kiln-cli convert fixtures/docx/features/tracked-changes.docx /tmp/t.docx
 soffice --headless --convert-to pdf --outdir /tmp /tmp/t.docx    # LibreOffice opens the result
+kiln-cli convert fixtures/xlsx/features/formulas.xlsx /tmp/f.csv  # the values LibreOffice's csv has
 ```
 ## render
 

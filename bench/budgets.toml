@@ -38,7 +38,7 @@ part = "first paint"
 scenario = "Open a 10 MB .xlsx with 500k populated cells to the first paint"
 limit = 1200.0
 unit = "ms"
-pending = "WP-70, WP-71: xlsx-open"
+bench = "xlsx-open"
 
 [[budget]]
 id = "B7"
@@ -46,7 +46,8 @@ part = "full calc"
 scenario = "Open a 10 MB .xlsx with 500k populated cells, fully calculated"
 limit = 2500.0
 unit = "ms"
-pending = "WP-70: xlsx-open"
+bench = "xlsx-open"
+metric = "full_ms"
 
 [[budget]]
 id = "B8"

@@ -1,6 +1,6 @@
 [package]
 name = "kiln-io-xlsx"
-description = "Reads and writes "
+description = "Reads and writes .xlsx, .xltx and .xlsm files to and from the Kiln Grid model"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -9,8 +9,30 @@ authors.workspace = true
 repository.workspace = true
 publish.workspace = true
 
+[features]
+default = ["parallel"]
+# Recalculate on the rayon pool after loading (kiln-sheet's `parallel`). Off for the wasm core.
+parallel = ["kiln-sheet/parallel"]
+
 [dependencies]
 kiln-common.workspace = true
+kiln-formula = { workspace = true, default-features = false }
+kiln-ooxml.workspace = true
+kiln-sheet = { workspace = true, default-features = false }
+# The streaming worksheet reader (sheetData is never built into a tree).
+quick-xml.workspace = true
+memchr.workspace = true
+rustc-hash.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+kiln-testing.workspace = true
+kiln-io-csv.workspace = true
+proptest.workspace = true
+serde_json.workspace = true
+
+[[example]]
+name = "open_bench"
 
 [lints]
 workspace = true

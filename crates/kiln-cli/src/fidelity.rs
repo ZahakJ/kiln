@@ -158,12 +158,24 @@ mod tests {
 
     #[test]
     fn ci_mode_accepts_the_empty_registry_and_writes_the_report() {
+        // A format whose adapter has not landed yet (none once every format is registered).
+        let registered: Vec<FixtureFormat> = kiln_testing::formats::registered()
+            .iter()
+            .map(|a| a.format())
+            .collect();
+        let Some(format) = FixtureFormat::ALL
+            .into_iter()
+            .find(|f| !registered.contains(f))
+        else {
+            return;
+        };
+        let name = format.to_string();
         let path = std::env::temp_dir().join(format!("kiln-fidelity-{}.md", std::process::id()));
         let out = run(&[
             "--ci".into(),
             "--no-oracle".into(),
             "--format".into(),
-            "xlsx".into(),
+            name.clone(),
             "--report".into(),
             path.to_string_lossy().into_owned(),
         ])
@@ -172,10 +184,10 @@ mod tests {
         assert!(out.contains("passthrough baseline"));
         let md = std::fs::read_to_string(&path).unwrap();
         assert!(md.contains("No formats registered"));
-        assert!(md.contains("| `xlsx/features` |"), "{md}");
+        assert!(md.contains(&format!("| `{name}/features` |")), "{md}");
         let _ = std::fs::remove_file(&path);
         // Interactively, an empty registry is not a result.
-        let err = run(&["--no-oracle".into(), "--format".into(), "pptx".into()]).unwrap_err();
+        let err = run(&["--no-oracle".into(), "--format".into(), name]).unwrap_err();
         assert!(err.to_string().contains("pass --ci"));
     }
 }

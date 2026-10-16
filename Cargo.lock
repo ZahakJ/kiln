@@ -2432,6 +2432,7 @@ dependencies = [
  "kiln-doc-layout",
  "kiln-formula",
  "kiln-io-docx",
+ "kiln-io-xlsx",
  "kiln-ooxml",
  "kiln-protocol",
  "kiln-session",
@@ -2471,12 +2472,15 @@ version = "0.1.0"
 dependencies = [
  "kiln-common",
  "kiln-formula",
+ "kiln-io-csv",
  "kiln-io-docx",
+ "kiln-io-xlsx",
  "kiln-ooxml",
  "kiln-protocol",
  "kiln-raster",
  "kiln-scene",
  "kiln-session",
+ "kiln-sheet",
  "kiln-testing",
  "serde",
  "serde_json",
@@ -2596,7 +2600,14 @@ dependencies = [
 name = "kiln-io-csv"
 version = "0.1.0"
 dependencies = [
+ "encoding_rs",
  "kiln-common",
+ "kiln-formula",
+ "kiln-sheet",
+ "proptest",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
 ]
 
 [[package]]
@@ -2637,6 +2648,17 @@ name = "kiln-io-xlsx"
 version = "0.1.0"
 dependencies = [
  "kiln-common",
+ "kiln-formula",
+ "kiln-io-csv",
+ "kiln-ooxml",
+ "kiln-sheet",
+ "kiln-testing",
+ "memchr",
+ "proptest",
+ "quick-xml",
+ "rustc-hash",
+ "serde_json",
+ "thiserror 2.0.21",
 ]
 
 [[package]]
@@ -2707,11 +2729,14 @@ dependencies = [
  "kiln-common",
  "kiln-doc",
  "kiln-doc-layout",
+ "kiln-io-csv",
  "kiln-io-docx",
+ "kiln-io-xlsx",
  "kiln-ooxml",
  "kiln-protocol",
  "kiln-raster",
  "kiln-scene",
+ "kiln-sheet",
  "kiln-text",
  "proptest",
  "rustc-hash",
@@ -2764,6 +2789,7 @@ dependencies = [
  "kiln-common",
  "kiln-doc",
  "kiln-io-docx",
+ "kiln-io-xlsx",
  "kiln-ooxml",
  "kiln-raster",
  "serde",

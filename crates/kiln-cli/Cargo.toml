@@ -23,6 +23,10 @@ kiln-raster.workspace = true
 # `inspect`, `repack`.
 kiln-ooxml.workspace = true
 kiln-io-docx.workspace = true
+# `convert` of workbooks, CSV/TSV and JSON (WP-70).
+kiln-io-xlsx.workspace = true
+kiln-io-csv.workspace = true
+kiln-sheet.workspace = true
 # `eval`.
 kiln-formula.workspace = true
 # `repack` comparison and `fidelity` (the scorer and its adapter registry).

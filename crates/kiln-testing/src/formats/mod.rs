@@ -18,6 +18,7 @@
 use crate::fidelity::Roundtrip;
 
 pub mod docx; // WP-62/WP-65: kiln-io-docx
+pub mod xlsx; // WP-70: kiln-io-xlsx
 
 /// Every registered adapter, in registration order. Empty until the first format lands, in which
 /// case `cargo xtask fidelity` reports "no formats registered" and measures only the OPC
@@ -26,6 +27,7 @@ pub mod docx; // WP-62/WP-65: kiln-io-docx
 pub fn registered() -> Vec<Box<dyn Roundtrip>> {
     vec![
         Box::new(docx::Docx), // WP-62/WP-65
+        Box::new(xlsx::Xlsx), // WP-70
     ]
 }
 

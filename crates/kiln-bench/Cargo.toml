@@ -23,6 +23,8 @@ kiln-ooxml.workspace = true
 kiln-formula.workspace = true
 kiln-io-docx.workspace = true
 kiln-doc-layout.workspace = true
+# B7: the .xlsx reader (WP-70).
+kiln-io-xlsx.workspace = true
 # B8/B9 run on a fixed 4-thread pool, as the budget specifies.
 rayon.workspace = true
 serde.workspace = true

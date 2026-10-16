@@ -77,10 +77,11 @@ fn opens_a_scratch_document() {
         QueryResult::Documents(d) => assert_eq!(d.len(), 3),
         other => panic!("{other:?}"),
     }
+    // No app opens presentations yet (Kiln Deck arrives with WP-77/WP-78).
     let err = s.open(
         b"PK",
         OpenHint {
-            name: Some("a.xlsx".into()),
+            name: Some("a.pptx".into()),
             ..OpenHint::default()
         },
     );
@@ -276,14 +277,14 @@ fn availability_rejects_a_write_command_on_a_non_write_document() {
         s.execute(
             None,
             SuiteCommand::New {
-                kind: DocKind::Grid
+                kind: DocKind::Deck
             }
             .into()
         )
         .unwrap_err()
         .kind(),
         ErrorKind::Unsupported,
-        "no Grid app is built in yet"
+        "no Deck app is built in yet"
     );
     s.register_app(Box::new(FakeGridApp));
     let grid = s.new_document(DocKind::Grid).unwrap();

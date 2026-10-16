@@ -18,6 +18,8 @@ kiln-raster.workspace = true
 # The `.docx` fidelity adapter (formats/docx.rs, WP-65).
 kiln-doc.workspace = true
 kiln-io-docx.workspace = true
+# The `.xlsx` fidelity adapter (formats/xlsx.rs, WP-70).
+kiln-io-xlsx.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 

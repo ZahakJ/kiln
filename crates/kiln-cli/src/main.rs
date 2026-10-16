@@ -21,6 +21,7 @@
 
 mod control;
 mod convert;
+mod convert_grid;
 mod eval;
 mod fidelity;
 mod inspect;

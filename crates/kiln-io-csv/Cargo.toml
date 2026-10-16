@@ -1,6 +1,6 @@
 [package]
 name = "kiln-io-csv"
-description = "Reads and writes CSV and TSV with encoding detection, delimiter sniffing and Excel-compatible quoting"
+description = "Reads and writes CSV and TSV with encoding detection, delimiter sniffing and Excel-compatible quoting, and JSON arrays of objects as tables"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -11,6 +11,16 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+kiln-sheet = { workspace = true, default-features = false }
+kiln-formula = { workspace = true, default-features = false }
+# Windows-1252 and UTF-16 decoding and encoding.
+encoding_rs.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
 
 [lints]
 workspace = true

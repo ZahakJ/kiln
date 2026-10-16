@@ -1,0 +1,5 @@
+[
+  {"name": "Ann", "age": 41, "member": true, "joined": "2024-05-01"},
+  {"name": "Bo", "age": 7, "tags": ["kid", "chess"]},
+  {"name": "Cy", "age": null, "member": false}
+]

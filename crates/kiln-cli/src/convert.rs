@@ -1,12 +1,16 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //! `kiln-cli convert <in> <out>`: reads a document and saves it in the format the output's
-//! extension names, the way Kiln saves it (File ▸ Save As). Word documents today: `.docx`,
-//! `.docm`, `.dotx` and `.dotm` in and out (a macro-enabled document saved as `.docx` loses its
-//! macros); PDF export arrives with the PDF writer (WP-67).
+//! extension names, the way Kiln saves it (File ▸ Save As).
 //!
-//! Every part is written from the model (nothing is copied because it was not edited); parts the
-//! model does not cover, media and an unchanged theme are carried over byte for byte. The
-//! Compatibility Checker's findings for the save are printed after the summary.
+//! - Word documents: `.docx`, `.docm`, `.dotx` and `.dotm` in and out (a macro-enabled document
+//!   saved as `.docx` loses its macros); PDF export arrives with the PDF writer (WP-67). Every
+//!   part is written from the model (nothing is copied because it was not edited); parts the
+//!   model does not cover, media and an unchanged theme are carried over byte for byte. The
+//!   Compatibility Checker's findings for the save are printed after the summary.
+//! - Workbooks (WP-70): `.xlsx`, `.xlsm`, `.xltx`, `.xltm`, `.csv`, `.tsv` and `.json` (an array
+//!   of objects) in; the same out. A workbook saved as `.xlsx` keeps every part the model does not
+//!   cover; saved as `.csv`, `.tsv` or `.json` it writes its active sheet as Excel does (cells as
+//!   displayed, Excel's quoting, UTF-8).
 
 use std::fmt::Write as _;
 use std::path::{Path, PathBuf};
@@ -21,7 +25,15 @@ use kiln_ooxml::opc::OpcPackage;
 use crate::CliError;
 
 /// Usage text.
-pub const USAGE: &str = "kiln-cli convert <in.docx> <out.docx|.docm|.dotx|.dotm>";
+pub const USAGE: &str = "kiln-cli convert <in.docx|.xlsx|.csv|.tsv|.json> <out.docx|.docm|.dotx|.dotm|.xlsx|.xlsm|.xltx|.xltm|.csv|.tsv|.json>";
+
+/// Workbook formats `convert` reads and writes.
+fn grid_format(ext: &str) -> bool {
+    matches!(
+        ext,
+        "xlsx" | "xlsm" | "xltx" | "xltm" | "csv" | "tsv" | "json"
+    )
+}
 
 fn extension(p: &Path) -> String {
     p.extension()
@@ -41,7 +53,7 @@ fn word_kind(ext: &str) -> Option<DocxKind> {
 }
 
 /// The current time as W3CDTF (`2026-10-16T09:30:00Z`).
-fn now_w3cdtf() -> String {
+pub(crate) fn now_w3cdtf() -> String {
     let secs = SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .map_or(0, |d| i64::try_from(d.as_secs()).unwrap_or(i64::MAX));
@@ -66,10 +78,21 @@ pub fn run(args: &[String]) -> Result<String, CliError> {
         }
     };
     let (in_ext, out_ext) = (extension(&input), extension(&output));
+    if grid_format(&in_ext) {
+        if !grid_format(&out_ext) {
+            return Err(CliError::usage(
+                format!(
+                    "cannot write a workbook as .{out_ext} (.xlsx, .xlsm, .xltx, .xltm, .csv, .tsv, .json)"
+                ),
+                USAGE,
+            ));
+        }
+        return crate::convert_grid::run(&input, &output, &in_ext, &out_ext);
+    }
     if word_kind(&in_ext).is_none() {
         return Err(CliError::usage(
             format!(
-                "cannot convert .{in_ext} files yet (Word documents: .docx, .docm, .dotx, .dotm)"
+                "cannot convert .{in_ext} files yet (Word documents: .docx, .docm, .dotx, .dotm; workbooks: .xlsx, .xlsm, .xltx, .xltm, .csv, .tsv, .json)"
             ),
             USAGE,
         ));

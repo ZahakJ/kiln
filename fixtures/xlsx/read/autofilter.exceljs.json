@@ -1,0 +1,384 @@
+{
+ "date1904": false,
+ "sheets": [
+  {
+   "name": "Filter",
+   "state": "visible",
+   "merges": [],
+   "cells": {
+    "A1": {
+     "type": "string",
+     "value": "Name"
+    },
+    "A10": {
+     "type": "string",
+     "value": "Player 09"
+    },
+    "A11": {
+     "type": "string",
+     "value": "Player 10"
+    },
+    "A12": {
+     "type": "string",
+     "value": "Player 11"
+    },
+    "A13": {
+     "type": "string",
+     "value": "Player 12"
+    },
+    "A14": {
+     "type": "string",
+     "value": "Player 13"
+    },
+    "A15": {
+     "type": "string",
+     "value": "Player 14"
+    },
+    "A16": {
+     "type": "string",
+     "value": "Player 15"
+    },
+    "A17": {
+     "type": "string",
+     "value": "Player 16"
+    },
+    "A18": {
+     "type": "string",
+     "value": "Player 17"
+    },
+    "A19": {
+     "type": "string",
+     "value": "Player 18"
+    },
+    "A2": {
+     "type": "string",
+     "value": "Player 01"
+    },
+    "A20": {
+     "type": "string",
+     "value": "Player 19"
+    },
+    "A21": {
+     "type": "string",
+     "value": "Player 20"
+    },
+    "A22": {
+     "type": "string",
+     "value": "Player 21"
+    },
+    "A23": {
+     "type": "string",
+     "value": "Player 22"
+    },
+    "A24": {
+     "type": "string",
+     "value": "Player 23"
+    },
+    "A25": {
+     "type": "string",
+     "value": "Player 24"
+    },
+    "A26": {
+     "type": "string",
+     "value": "Player 25"
+    },
+    "A27": {
+     "type": "string",
+     "value": "Player 26"
+    },
+    "A28": {
+     "type": "string",
+     "value": "Player 27"
+    },
+    "A29": {
+     "type": "string",
+     "value": "Player 28"
+    },
+    "A3": {
+     "type": "string",
+     "value": "Player 02"
+    },
+    "A30": {
+     "type": "string",
+     "value": "Player 29"
+    },
+    "A31": {
+     "type": "string",
+     "value": "Player 30"
+    },
+    "A4": {
+     "type": "string",
+     "value": "Player 03"
+    },
+    "A5": {
+     "type": "string",
+     "value": "Player 04"
+    },
+    "A6": {
+     "type": "string",
+     "value": "Player 05"
+    },
+    "A7": {
+     "type": "string",
+     "value": "Player 06"
+    },
+    "A8": {
+     "type": "string",
+     "value": "Player 07"
+    },
+    "A9": {
+     "type": "string",
+     "value": "Player 08"
+    },
+    "B1": {
+     "type": "string",
+     "value": "Team"
+    },
+    "B10": {
+     "type": "string",
+     "value": "Red"
+    },
+    "B11": {
+     "type": "string",
+     "value": "Blue"
+    },
+    "B12": {
+     "type": "string",
+     "value": "Green"
+    },
+    "B13": {
+     "type": "string",
+     "value": "Green"
+    },
+    "B14": {
+     "type": "string",
+     "value": "Green"
+    },
+    "B15": {
+     "type": "string",
+     "value": "Red"
+    },
+    "B16": {
+     "type": "string",
+     "value": "Green"
+    },
+    "B17": {
+     "type": "string",
+     "value": "Green"
+    },
+    "B18": {
+     "type": "string",
+     "value": "Green"
+    },
+    "B19": {
+     "type": "string",
+     "value": "Green"
+    },
+    "B2": {
+     "type": "string",
+     "value": "Green"
+    },
+    "B20": {
+     "type": "string",
+     "value": "Blue"
+    },
+    "B21": {
+     "type": "string",
+     "value": "Red"
+    },
+    "B22": {
+     "type": "string",
+     "value": "Blue"
+    },
+    "B23": {
+     "type": "string",
+     "value": "Blue"
+    },
+    "B24": {
+     "type": "string",
+     "value": "Red"
+    },
+    "B25": {
+     "type": "string",
+     "value": "Red"
+    },
+    "B26": {
+     "type": "string",
+     "value": "Green"
+    },
+    "B27": {
+     "type": "string",
+     "value": "Red"
+    },
+    "B28": {
+     "type": "string",
+     "value": "Green"
+    },
+    "B29": {
+     "type": "string",
+     "value": "Green"
+    },
+    "B3": {
+     "type": "string",
+     "value": "Blue"
+    },
+    "B30": {
+     "type": "string",
+     "value": "Blue"
+    },
+    "B31": {
+     "type": "string",
+     "value": "Green"
+    },
+    "B4": {
+     "type": "string",
+     "value": "Blue"
+    },
+    "B5": {
+     "type": "string",
+     "value": "Red"
+    },
+    "B6": {
+     "type": "string",
+     "value": "Green"
+    },
+    "B7": {
+     "type": "string",
+     "value": "Blue"
+    },
+    "B8": {
+     "type": "string",
+     "value": "Green"
+    },
+    "B9": {
+     "type": "string",
+     "value": "Blue"
+    },
+    "C1": {
+     "type": "string",
+     "value": "Score"
+    },
+    "C10": {
+     "type": "number",
+     "value": 34
+    },
+    "C11": {
+     "type": "number",
+     "value": 25
+    },
+    "C12": {
+     "type": "number",
+     "value": 52
+    },
+    "C13": {
+     "type": "number",
+     "value": 69
+    },
+    "C14": {
+     "type": "number",
+     "value": 12
+    },
+    "C15": {
+     "type": "number",
+     "value": 72
+    },
+    "C16": {
+     "type": "number",
+     "value": 89
+    },
+    "C17": {
+     "type": "number",
+     "value": 33
+    },
+    "C18": {
+     "type": "number",
+     "value": 78
+    },
+    "C19": {
+     "type": "number",
+     "value": 11
+    },
+    "C2": {
+     "type": "number",
+     "value": 10
+    },
+    "C20": {
+     "type": "number",
+     "value": 42
+    },
+    "C21": {
+     "type": "number",
+     "value": 46
+    },
+    "C22": {
+     "type": "number",
+     "value": 32
+    },
+    "C23": {
+     "type": "number",
+     "value": 89
+    },
+    "C24": {
+     "type": "number",
+     "value": 96
+    },
+    "C25": {
+     "type": "number",
+     "value": 89
+    },
+    "C26": {
+     "type": "number",
+     "value": 37
+    },
+    "C27": {
+     "type": "number",
+     "value": 5
+    },
+    "C28": {
+     "type": "number",
+     "value": 25
+    },
+    "C29": {
+     "type": "number",
+     "value": 46
+    },
+    "C3": {
+     "type": "number",
+     "value": 97
+    },
+    "C30": {
+     "type": "number",
+     "value": 24
+    },
+    "C31": {
+     "type": "number",
+     "value": 73
+    },
+    "C4": {
+     "type": "number",
+     "value": 4
+    },
+    "C5": {
+     "type": "number",
+     "value": 18
+    },
+    "C6": {
+     "type": "number",
+     "value": 75
+    },
+    "C7": {
+     "type": "number",
+     "value": 97
+    },
+    "C8": {
+     "type": "number",
+     "value": 47
+    },
+    "C9": {
+     "type": "number",
+     "value": 98
+    }
+   }
+  }
+ ]
+}

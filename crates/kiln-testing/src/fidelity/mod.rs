@@ -275,7 +275,8 @@ pub fn normalize_formula(f: &str) -> String {
     out
 }
 
-/// `values` and `formulas` over two cell maps (`None` when neither side has cells / formulas).
+/// `values` and `formulas` over two cell maps (both `None` when neither side has cells; when
+/// there are cells but neither side has a formula, formulas are trivially kept: 1).
 #[must_use]
 pub fn cell_scores(
     a: &BTreeMap<String, CellFact>,
@@ -306,7 +307,11 @@ pub fn cell_scores(
     let ratio = |n: usize, d: usize| n as f64 / d as f64;
     (
         Some(ratio(same_values, keys.len())),
-        (formula_cells > 0).then(|| ratio(same_formulas, formula_cells)),
+        Some(if formula_cells > 0 {
+            ratio(same_formulas, formula_cells)
+        } else {
+            1.0
+        }),
     )
 }
 
@@ -630,6 +635,10 @@ mod tests {
             cell_scores(&BTreeMap::new(), &BTreeMap::new()),
             (None, None)
         );
+        // Cells without formulas keep their (no) formulas.
+        let mut plain = BTreeMap::new();
+        plain.insert("S!A1".to_owned(), cell("1", None));
+        assert_eq!(cell_scores(&plain, &plain), (Some(1.0), Some(1.0)));
     }
 
     #[test]

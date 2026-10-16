@@ -18,6 +18,11 @@ kiln-io-docx.workspace = true
 kiln-ooxml.workspace = true
 kiln-protocol.workspace = true
 kiln-scene.workspace = true
+# Grid workbooks (WP-70): the model and its file formats; no rayon or ICU data on the web
+# (native builds turn the parallel recalculation on below).
+kiln-sheet = { workspace = true, default-features = false }
+kiln-io-xlsx = { workspace = true, default-features = false }
+kiln-io-csv.workspace = true
 # Layout of the scratch document. The web core gets no default features (no system fonts, no
 # hyphenation dictionaries) and embeds Carlito itself (apps/scratch/fonts.rs).
 kiln-text = { path = "../kiln-text", default-features = false }
@@ -28,6 +33,7 @@ unicode-segmentation.workspace = true
 # session directly inside a Web Worker.
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 flume.workspace = true
+kiln-io-xlsx = { workspace = true, features = ["parallel"] }
 kiln-text = { path = "../kiln-text", default-features = false, features = ["bundled-fonts"] }
 
 [dev-dependencies]

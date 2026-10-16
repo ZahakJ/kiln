@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **7.0 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **7.4 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,23 +12,23 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 7.0 % | 782 | 0 | 27 | 44 | 711 | 20 |
+| **Overall** | 7.4 % | 782 | 0 | 27 | 50 | 705 | 20 |
 | Kiln Write | 6.9 % | 231 | 0 | 2 | 25 | 204 | 1 |
-| Kiln Grid | 14.2 % | 261 | 0 | 25 | 15 | 221 | 6 |
+| Kiln Grid | 15.5 % | 261 | 0 | 25 | 21 | 215 | 6 |
 | Kiln Deck | 0.0 % | 184 | 0 | 0 | 0 | 184 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
 | Suite | 3.3 % | 62 | 0 | 0 | 4 | 58 | 9 |
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 8.1 % | 462 | 0 | 21 | 33 | 408 | 0 |
-| commonly-missed | 3.8 % | 224 | 0 | 4 | 9 | 211 | 0 |
+| critical | 8.5 % | 462 | 0 | 21 | 37 | 404 | 0 |
+| commonly-missed | 4.2 % | 224 | 0 | 4 | 11 | 209 | 0 |
 | niche | 3.1 % | 96 | 0 | 2 | 2 | 92 | 20 |
 
 | App | Critical | Commonly-missed | Niche |
 |---|---:|---:|---:|
 | Kiln Write | 7.5 % (146) | 5.2 % (58) | 1.9 % (27) |
-| Kiln Grid | 17.8 % (143) | 5.4 % (83) | 7.1 % (35) |
+| Kiln Grid | 19.2 % (143) | 6.6 % (83) | 7.1 % (35) |
 | Kiln Deck | 0.0 % (119) | 0.0 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
 | Suite | 3.2 % (31) | 3.4 % (29) | 0.0 % (2) |
@@ -54,9 +54,9 @@ Rows that exist to be better than Office (no Office equivalent, `office: "—"`)
 | ○ | Command palette in the ribbon (Ctrl+Shift+P / Alt+Q) with Office synonyms | Kiln Grid | P0 | fuzzy search over every command with Excel's names as synonyms and shortcuts shown |
 | ○ | Recommended Charts from the selection's shape | Kiln Grid | P0 | suggestions computed locally from the data shape, previewed live |
 | ○ | Formula Lab: formula explainer pane with AST tree and step values | Kiln Grid | P0 | the whole evaluation tree with intermediate values, not one step at a time |
-| ○ | From JSON (array of objects to a table) | Kiln Grid | P0 | JSON import without Power Query |
+| ◐ | From JSON (array of objects to a table) | Kiln Grid | P0 | Partial: kiln-io-csv (WP-70) reads an array of objects into a table (keys in first-seen order, typed values) through kiln-cli convert and the session; the Data ▸ From JSON command is WP-72 |
 | ○ | Version history with cell-level diff | Kiln Grid | P1 | cell-level diff of local files with no cloud account |
-| ○ | Export a range or table as JSON | Kiln Grid | P0 | JSON in and out for developers and agents |
+| ◐ | Export a range or table as JSON | Kiln Grid | P0 | Partial: kiln-io-csv (WP-70) writes a sheet's first table (or its used range) as an array of objects (kiln-cli convert book.xlsx book.json); exporting a selected range from the UI is WP-72 |
 | ○ | Convert a bulleted list to a list diagram (grouped, editable shapes) | Kiln Deck | P1 | unlike Convert to SmartArt, the result is plain grouped shapes that stay editable in every app |
 | ○ | Design Ideas pane: layout and theme-variant suggestions for the current slide's content | Kiln Deck | P0 | suggestions computed locally, no cloud service or account |
 | ○ | Code block with syntax highlighting | Kiln Deck | P0 | highlighted code that survives the .pptx round trip as formatted text |
@@ -149,6 +149,12 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `grid.formulas.functions.text.TEXT` | TEXT with Excel format codes | missing | done |
 | `grid.formulas.functions.text.TEXTSPLIT` | TEXTSPLIT, TEXTBEFORE, TEXTAFTER | missing | done |
 | `grid.formulas.functions.date-time.NETWORKDAYS-INTL` | NETWORKDAYS.INTL and WORKDAY.INTL with weekend masks and holidays | missing | done |
+| `grid.data.get-transform.from-text-csv` | From Text/CSV with delimiter, encoding and type detection preview | missing | partial |
+| `grid.data.get-transform.from-json` | From JSON (array of objects to a table) | missing | partial |
+| `grid.files.xlsx-open` | Open .xlsx/.xlsm with values, formulas, styles, merges, names, tables, validation, CF and charts | missing | partial |
+| `grid.files.xlsx-save` | Save .xlsx that Excel opens without repair; formulas preserved exactly | missing | partial |
+| `grid.files.csv-tsv` | Open and save CSV and TSV with encoding, delimiter and locale options | missing | partial |
+| `grid.files.json-export` | Export a range or table as JSON | missing | partial |
 | `suite.files.byte-preserving` | Byte-preserving saves: every part not edited is byte-identical after save | missing | partial |
 | `suite.files.macros-preserve` | Macro-enabled files (.docm/.xlsm/.pptm): vbaProject.bin preserved, never run | missing | partial |
 | `suite.files.compatibility-checker` | Compatibility checker: features that will not survive .docx/.xlsx/.pptx | missing | partial |
@@ -681,7 +687,7 @@ Score 6.9 % over 231 rows in scope; 0 better, 2 done, 25 partial, 204 missing, 1
 
 ## Kiln Grid
 
-Score 14.2 % over 261 rows in scope; 0 better, 25 done, 15 partial, 221 missing, 6 out of scope.
+Score 15.5 % over 261 rows in scope; 0 better, 25 done, 21 partial, 215 missing, 6 out of scope.
 
 ### Home ▸ Clipboard
 
@@ -975,8 +981,8 @@ Score 14.2 % over 261 rows in scope; 0 better, 25 done, 15 partial, 221 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | From Text/CSV with delimiter, encoding and type detection preview | Excel ▸ Data ▸ From Text/CSV | critical | P0 | WP-70 | `grid.data.get-transform.from-text-csv` |
-| ○ | From JSON (array of objects to a table) | — | commonly-missed | P0 | WP-70 | `grid.data.get-transform.from-json` |
+| ◐ | From Text/CSV with delimiter, encoding and type detection preview | Excel ▸ Data ▸ From Text/CSV | critical | P0 | WP-70 | `grid.data.get-transform.from-text-csv` |
+| ◐ | From JSON (array of objects to a table) | — | commonly-missed | P0 | WP-70 | `grid.data.get-transform.from-json` |
 | ○ | From Web (tables from a URL) | Excel ▸ Data ▸ From Web | niche | P2 | WP-71 | `grid.data.get-transform.from-web` |
 | ○ | Refresh All for imported data and pivots | Excel ▸ Data ▸ Refresh All | commonly-missed | P1 | WP-74 | `grid.data.get-transform.refresh` |
 | ○ | Query editor: import CSV/JSON/sheets with steps (filter, split, merge, unpivot) and refresh | Excel ▸ Data ▸ Get Data (Power Query) | commonly-missed | P1 | — | `grid.data.get-transform.power-query` |
@@ -1154,10 +1160,10 @@ Score 14.2 % over 261 rows in scope; 0 better, 25 done, 15 partial, 221 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Open .xlsx/.xlsm with values, formulas, styles, merges, names, tables, validation, CF and charts | Excel ▸ Open .xlsx | critical | P0 | WP-70 | `grid.files.xlsx-open` |
-| ○ | Save .xlsx that Excel opens without repair; formulas preserved exactly | Excel ▸ Save .xlsx | critical | P0 | WP-70 | `grid.files.xlsx-save` |
-| ○ | Open and save CSV and TSV with encoding, delimiter and locale options | Excel ▸ CSV | critical | P0 | WP-70 | `grid.files.csv-tsv` |
-| ○ | Export a range or table as JSON | — | commonly-missed | P0 | WP-70 | `grid.files.json-export` |
+| ◐ | Open .xlsx/.xlsm with values, formulas, styles, merges, names, tables, validation, CF and charts | Excel ▸ Open .xlsx | critical | P0 | WP-70 | `grid.files.xlsx-open` |
+| ◐ | Save .xlsx that Excel opens without repair; formulas preserved exactly | Excel ▸ Save .xlsx | critical | P0 | WP-70 | `grid.files.xlsx-save` |
+| ◐ | Open and save CSV and TSV with encoding, delimiter and locale options | Excel ▸ CSV | critical | P0 | WP-70 | `grid.files.csv-tsv` |
+| ◐ | Export a range or table as JSON | — | commonly-missed | P0 | WP-70 | `grid.files.json-export` |
 | ○ | Open legacy .xls files (import through conversion) | Excel ▸ Excel 97–2003 Workbook | niche | P2 | — | `grid.files.xls-legacy` |
 | ○ | Open .xlsb binary workbooks | Excel ▸ Excel Binary Workbook | niche | P2 | WP-71 | `grid.files.xlsb` |
 | ○ | External workbook links (show cached values, update on request) | Excel ▸ Data ▸ Edit Links | niche | P2 | WP-71 | `grid.files.external-links` |

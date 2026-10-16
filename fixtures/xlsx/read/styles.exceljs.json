@@ -1,0 +1,933 @@
+{
+ "date1904": false,
+ "sheets": [
+  {
+   "name": "Styles",
+   "state": "visible",
+   "merges": [],
+   "cells": {
+    "A1": {
+     "type": "string",
+     "value": "#"
+    },
+    "A10": {
+     "type": "number",
+     "value": 9
+    },
+    "A11": {
+     "type": "number",
+     "value": 10
+    },
+    "A12": {
+     "type": "number",
+     "value": 11
+    },
+    "A13": {
+     "type": "number",
+     "value": 12
+    },
+    "A14": {
+     "type": "number",
+     "value": 13
+    },
+    "A15": {
+     "type": "number",
+     "value": 14
+    },
+    "A16": {
+     "type": "number",
+     "value": 15
+    },
+    "A17": {
+     "type": "number",
+     "value": 16
+    },
+    "A18": {
+     "type": "number",
+     "value": 17
+    },
+    "A19": {
+     "type": "number",
+     "value": 18
+    },
+    "A2": {
+     "type": "number",
+     "value": 1
+    },
+    "A20": {
+     "type": "number",
+     "value": 19
+    },
+    "A21": {
+     "type": "number",
+     "value": 20
+    },
+    "A22": {
+     "type": "number",
+     "value": 21
+    },
+    "A23": {
+     "type": "number",
+     "value": 22
+    },
+    "A24": {
+     "type": "number",
+     "value": 23
+    },
+    "A25": {
+     "type": "number",
+     "value": 24
+    },
+    "A26": {
+     "type": "number",
+     "value": 25
+    },
+    "A27": {
+     "type": "number",
+     "value": 26
+    },
+    "A28": {
+     "type": "number",
+     "value": 27
+    },
+    "A29": {
+     "type": "number",
+     "value": 28
+    },
+    "A3": {
+     "type": "number",
+     "value": 2
+    },
+    "A30": {
+     "type": "number",
+     "value": 29
+    },
+    "A31": {
+     "type": "number",
+     "value": 30
+    },
+    "A32": {
+     "type": "number",
+     "value": 31
+    },
+    "A33": {
+     "type": "number",
+     "value": 32
+    },
+    "A34": {
+     "type": "number",
+     "value": 33
+    },
+    "A35": {
+     "type": "number",
+     "value": 34
+    },
+    "A36": {
+     "type": "number",
+     "value": 35
+    },
+    "A37": {
+     "type": "number",
+     "value": 36
+    },
+    "A38": {
+     "type": "number",
+     "value": 37
+    },
+    "A39": {
+     "type": "number",
+     "value": 38
+    },
+    "A4": {
+     "type": "number",
+     "value": 3
+    },
+    "A40": {
+     "type": "number",
+     "value": 39
+    },
+    "A41": {
+     "type": "number",
+     "value": 40
+    },
+    "A42": {
+     "type": "number",
+     "value": 41
+    },
+    "A43": {
+     "type": "number",
+     "value": 42
+    },
+    "A44": {
+     "type": "number",
+     "value": 43
+    },
+    "A5": {
+     "type": "number",
+     "value": 4
+    },
+    "A6": {
+     "type": "number",
+     "value": 5
+    },
+    "A7": {
+     "type": "number",
+     "value": 6
+    },
+    "A8": {
+     "type": "number",
+     "value": 7
+    },
+    "A9": {
+     "type": "number",
+     "value": 8
+    },
+    "B1": {
+     "type": "string",
+     "value": "Kind"
+    },
+    "B10": {
+     "type": "string",
+     "value": "font"
+    },
+    "B11": {
+     "type": "string",
+     "value": "font"
+    },
+    "B12": {
+     "type": "string",
+     "value": "font"
+    },
+    "B13": {
+     "type": "string",
+     "value": "font"
+    },
+    "B14": {
+     "type": "string",
+     "value": "fill"
+    },
+    "B15": {
+     "type": "string",
+     "value": "fill"
+    },
+    "B16": {
+     "type": "string",
+     "value": "fill"
+    },
+    "B17": {
+     "type": "string",
+     "value": "fill"
+    },
+    "B18": {
+     "type": "string",
+     "value": "fill"
+    },
+    "B19": {
+     "type": "string",
+     "value": "fill"
+    },
+    "B2": {
+     "type": "string",
+     "value": "font"
+    },
+    "B20": {
+     "type": "string",
+     "value": "fill"
+    },
+    "B21": {
+     "type": "string",
+     "value": "border"
+    },
+    "B22": {
+     "type": "string",
+     "value": "border"
+    },
+    "B23": {
+     "type": "string",
+     "value": "border"
+    },
+    "B24": {
+     "type": "string",
+     "value": "border"
+    },
+    "B25": {
+     "type": "string",
+     "value": "border"
+    },
+    "B26": {
+     "type": "string",
+     "value": "border"
+    },
+    "B27": {
+     "type": "string",
+     "value": "border"
+    },
+    "B28": {
+     "type": "string",
+     "value": "border"
+    },
+    "B29": {
+     "type": "string",
+     "value": "border"
+    },
+    "B3": {
+     "type": "string",
+     "value": "font"
+    },
+    "B30": {
+     "type": "string",
+     "value": "border"
+    },
+    "B31": {
+     "type": "string",
+     "value": "align"
+    },
+    "B32": {
+     "type": "string",
+     "value": "align"
+    },
+    "B33": {
+     "type": "string",
+     "value": "align"
+    },
+    "B34": {
+     "type": "string",
+     "value": "align"
+    },
+    "B35": {
+     "type": "string",
+     "value": "align"
+    },
+    "B36": {
+     "type": "string",
+     "value": "align"
+    },
+    "B37": {
+     "type": "string",
+     "value": "align"
+    },
+    "B38": {
+     "type": "string",
+     "value": "align"
+    },
+    "B39": {
+     "type": "string",
+     "value": "align"
+    },
+    "B4": {
+     "type": "string",
+     "value": "font"
+    },
+    "B40": {
+     "type": "string",
+     "value": "align"
+    },
+    "B41": {
+     "type": "string",
+     "value": "align"
+    },
+    "B42": {
+     "type": "string",
+     "value": "align"
+    },
+    "B43": {
+     "type": "string",
+     "value": "align"
+    },
+    "B44": {
+     "type": "string",
+     "value": "align"
+    },
+    "B5": {
+     "type": "string",
+     "value": "font"
+    },
+    "B6": {
+     "type": "string",
+     "value": "font"
+    },
+    "B7": {
+     "type": "string",
+     "value": "font"
+    },
+    "B8": {
+     "type": "string",
+     "value": "font"
+    },
+    "B9": {
+     "type": "string",
+     "value": "font"
+    },
+    "C1": {
+     "type": "string",
+     "value": "Sample"
+    },
+    "C10": {
+     "style": {
+      "font": {
+       "name": "Cambria"
+      }
+     },
+     "type": "string",
+     "value": "Style 9: the quick brown fox"
+    },
+    "C11": {
+     "style": {
+      "font": {
+       "bold": true,
+       "italic": true,
+       "name": "Courier New"
+      }
+     },
+     "type": "string",
+     "value": "Style 10: the quick brown fox"
+    },
+    "C12": {
+     "type": "string",
+     "value": "Style 11: the quick brown fox"
+    },
+    "C13": {
+     "type": "string",
+     "value": "Style 12: the quick brown fox"
+    },
+    "C14": {
+     "style": {
+      "fill": {
+       "fg": "argb:FFFFFF00",
+       "pattern": "solid"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 13: the quick brown fox"
+    },
+    "C15": {
+     "style": {
+      "fill": {
+       "fg": "argb:FFDDEBF7",
+       "pattern": "solid"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 14: the quick brown fox"
+    },
+    "C16": {
+     "style": {
+      "fill": {
+       "fg": "argb:FF4472C4",
+       "pattern": "darkGrid"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 15: the quick brown fox"
+    },
+    "C17": {
+     "style": {
+      "fill": {
+       "fg": "argb:FFED7D31",
+       "pattern": "lightTrellis"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 16: the quick brown fox"
+    },
+    "C18": {
+     "style": {
+      "fill": {
+       "pattern": "gray125"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 17: the quick brown fox"
+    },
+    "C19": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 18: the quick brown fox"
+    },
+    "C2": {
+     "style": {
+      "font": {
+       "bold": true
+      }
+     },
+     "type": "string",
+     "value": "Style 1: the quick brown fox"
+    },
+    "C20": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 19: the quick brown fox"
+    },
+    "C21": {
+     "style": {
+      "border": {
+       "bottom": "thin",
+       "left": "thin",
+       "right": "thin",
+       "top": "thin"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 20: the quick brown fox"
+    },
+    "C22": {
+     "style": {
+      "border": {
+       "bottom": "medium",
+       "left": "medium",
+       "right": "medium",
+       "top": "medium"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 21: the quick brown fox"
+    },
+    "C23": {
+     "style": {
+      "border": {
+       "bottom": "thick",
+       "left": "thick",
+       "right": "thick",
+       "top": "thick"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 22: the quick brown fox"
+    },
+    "C24": {
+     "style": {
+      "border": {
+       "bottom": "dashed",
+       "left": "dashed",
+       "right": "dashed",
+       "top": "dashed"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 23: the quick brown fox"
+    },
+    "C25": {
+     "style": {
+      "border": {
+       "bottom": "dotted",
+       "left": "dotted",
+       "right": "dotted",
+       "top": "dotted"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 24: the quick brown fox"
+    },
+    "C26": {
+     "style": {
+      "border": {
+       "bottom": "double",
+       "left": "double",
+       "right": "double",
+       "top": "double"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 25: the quick brown fox"
+    },
+    "C27": {
+     "style": {
+      "border": {
+       "bottom": "hair",
+       "left": "hair",
+       "right": "hair",
+       "top": "hair"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 26: the quick brown fox"
+    },
+    "C28": {
+     "style": {
+      "border": {
+       "bottom": "mediumDashDot",
+       "left": "mediumDashDot",
+       "right": "mediumDashDot",
+       "top": "mediumDashDot"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 27: the quick brown fox"
+    },
+    "C29": {
+     "style": {
+      "border": {
+       "bottom": "slantDashDot",
+       "left": "slantDashDot",
+       "right": "slantDashDot",
+       "top": "slantDashDot"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 28: the quick brown fox"
+    },
+    "C3": {
+     "style": {
+      "font": {
+       "italic": true
+      }
+     },
+     "type": "string",
+     "value": "Style 2: the quick brown fox"
+    },
+    "C30": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 29: the quick brown fox"
+    },
+    "C31": {
+     "style": {
+      "alignment": {
+       "horizontal": "left"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 30: the quick brown fox"
+    },
+    "C32": {
+     "style": {
+      "alignment": {
+       "horizontal": "center"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 31: the quick brown fox"
+    },
+    "C33": {
+     "style": {
+      "alignment": {
+       "horizontal": "right"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 32: the quick brown fox"
+    },
+    "C34": {
+     "style": {
+      "alignment": {
+       "horizontal": "justify",
+       "wrapText": true
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 33: the quick brown fox"
+    },
+    "C35": {
+     "style": {
+      "alignment": {
+       "vertical": "top"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 34: the quick brown fox"
+    },
+    "C36": {
+     "style": {
+      "alignment": {
+       "vertical": "middle"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 35: the quick brown fox"
+    },
+    "C37": {
+     "style": {
+      "alignment": {
+       "vertical": "bottom"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 36: the quick brown fox"
+    },
+    "C38": {
+     "style": {
+      "alignment": {
+       "wrapText": true
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 37: the quick brown fox"
+    },
+    "C39": {
+     "style": {
+      "alignment": {
+       "textRotation": 45
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 38: the quick brown fox"
+    },
+    "C4": {
+     "style": {
+      "font": {
+       "underline": "single"
+      }
+     },
+     "type": "string",
+     "value": "Style 3: the quick brown fox"
+    },
+    "C40": {
+     "style": {
+      "alignment": {
+       "textRotation": 90
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 39: the quick brown fox"
+    },
+    "C41": {
+     "style": {
+      "alignment": {
+       "indent": 2
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 40: the quick brown fox"
+    },
+    "C42": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 41: the quick brown fox"
+    },
+    "C43": {
+     "style": {
+      "alignment": {
+       "horizontal": "centerContinuous"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 42: the quick brown fox"
+    },
+    "C44": {
+     "style": {
+      "alignment": {
+       "horizontal": "distributed"
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Style 43: the quick brown fox"
+    },
+    "C46": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Unlocked and hidden-formula cell"
+    },
+    "C5": {
+     "style": {
+      "font": {
+       "underline": "double"
+      }
+     },
+     "type": "string",
+     "value": "Style 4: the quick brown fox"
+    },
+    "C6": {
+     "style": {
+      "font": {
+       "strike": true
+      }
+     },
+     "type": "string",
+     "value": "Style 5: the quick brown fox"
+    },
+    "C7": {
+     "style": {
+      "font": {
+       "size": 16
+      }
+     },
+     "type": "string",
+     "value": "Style 6: the quick brown fox"
+    },
+    "C8": {
+     "style": {
+      "font": {
+       "size": 8
+      }
+     },
+     "type": "string",
+     "value": "Style 7: the quick brown fox"
+    },
+    "C9": {
+     "style": {
+      "font": {
+       "color": "argb:FFC00000"
+      }
+     },
+     "type": "string",
+     "value": "Style 8: the quick brown fox"
+    }
+   }
+  }
+ ]
+}

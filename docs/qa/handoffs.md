@@ -545,3 +545,60 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   `word/document.xml` (declaration and prefix normalisation) rather than copying it; copying model parts verbatim on
   a save without edits is possible with `WriteOptions::preserve` and an empty `TouchedParts`, which `convert` does
   not pass on purpose (it is meant to exercise the writer).
+
+## WP-70 → WP-71 (Grid surface), WP-72 (Grid features), WP-73 (charts), WP-69/WP-56 (model, engine), WP-60/WP-96 (CLI, testing, bench), WP-52 (protocol, session), the bridge's owner
+
+- Edits outside WP-70's paths, for the owners to acknowledge (all additive):
+  - `crates/kiln-session` (WP-52/WP-71): `apps/grid/` (new; WP-71 owns the directory from now on) with `GridApp`/`GridDoc`
+    opening `.xlsx/.xlsm/.xltx/.csv` and saving them (and `.csv`) through `kiln-io-xlsx`/`kiln-io-csv`, status
+    (selection statistics), selection (the sheet view's), an a11y tree of the sheets, the Compatibility Checker for CSV
+    and macro-free saves; `execute` returns `Unsupported` naming WP-71. One registration line in `apps/mod.rs`;
+    `Cargo.toml` (`kiln-sheet` and `kiln-io-xlsx` without default features, `parallel` on native targets, `kiln-io-csv`).
+    `tests/session.rs`: two assertions that used `.xlsx`/`DocKind::Grid` as "no app yet" now use `.pptx`/`DocKind::Deck`.
+  - `crates/kiln-testing` (WP-60): `formats/xlsx.rs` (adapter, WP-70's) and its registration line; `Cargo.toml`;
+    `fidelity/mod.rs` `cell_scores`: a workbook with cells but no formulas now scores formulas 1 (it kept all zero of
+    them) instead of "not measured", which failed every formula-free fixture against `parity/corpus.json`'s
+    `formulas: 1.0`; test added.
+  - `crates/kiln-cli` (WP-60/WP-96): `convert_grid.rs` (new) and the dispatch in `convert.rs` (`.xlsx/.xlsm/.xltx/.xltm/
+    .csv/.tsv/.json` in and out; `now_w3cdtf` is `pub(crate)`), `mod` line in `main.rs`, `Cargo.toml`;
+    `fidelity.rs`'s empty-registry test now picks a format without an adapter instead of hard-coding `xlsx` (it
+    returns early once every format is registered); `docs/manual/cli.md` convert section.
+  - `crates/kiln-bench` (WP-60): `benches/xlsx.rs` (`xlsx-open`: first paint = read with deferred calculation; extras
+    `calc_ms`, `full_ms`), its registration in `scenarios/mod.rs`, `Cargo.toml`; `bench/budgets.toml` B7 rows point at
+    `xlsx-open` (first paint: p95; full calc: `full_ms`). It generates `fixtures/large/sheet-1m.xlsx` with
+    `tools/make-fixtures.py --synthetic-large --only xlsx` when missing, as `write-open-300p` does.
+  - `packages/testing/scripts/exceljs-xlsx.mjs` (WP-60's package): writes `fixtures/xlsx/read/*.exceljs.json`
+    (`--check` for staleness). exceljs 4.4 cannot read `charts.xlsx`, `comments.xlsx` and `tables.xlsx` (absolute
+    relationship targets); their JSON records that.
+  - `docs/FORMATS.md` (xlsx section, CSV/JSON lines), `CHANGELOG.md`, six `parity/parity.json` rows (WP-70's, all
+    `partial` with notes) with `PARITY.md` and the badge regenerated, `Cargo.lock`, `docs/qa/fidelity.md`.
+- For WP-71 (Grid surface): open with `read_xlsx_with(&bytes, &ReadOptions { defer_calculation: true, .. })` to paint
+  the stored results at once, then `XlsxRead::calculate()` (binds the formulas and recalculates; 0.7 s + 0.8 s for the
+  1M-cell file). Keep the `XlsxSource` and pass it to `write_xlsx` on every save: it holds the original package and
+  the XML of everything read, and the writer reuses that XML wherever the model still holds the value read, so edits
+  only rewrite what changed (no touched-parts bookkeeping is needed). `write_xlsx(..).issues` lists what could not be
+  written (new drawing objects). TSV and JSON have no `FileFormat` in `kiln-protocol` yet; the CLI has them.
+- For WP-72 (Data ▸ From Text/CSV, From JSON, Save As CSV): `kiln_io_csv::ImportOptions` (delimiter, encoding,
+  `formulas`, `as_text`, `date1904`, sheet name) and `ExportOptions` (dialect, encoding, `as_displayed`, line ending)
+  are what the dialogs set; `read_csv` reports the detected `Encoding` and `Dialect` for the preview. Locale-aware
+  decimal commas are not implemented (`parse_input` is en-US).
+- For WP-73 (charts): chart and picture anchors are `SheetMeta::drawings` with `reference` = the chart or image part
+  name; the drawing part and the chart parts are kept verbatim and anchors moved by edits are patched into the
+  drawing XML on save (`parts::patch_drawing`). Anchors added to the model are not written yet (reported in
+  `XlsxWritten::issues`): when the chart model writes charts, extend `write::write_sheet_relations` to create the
+  drawing part and its relationships.
+- For WP-69 (kiln-sheet): conventions the file layer relies on — `NamedCellStyle::xf` holds the file's `cellStyleXfs`
+  index and `Xf::style_id` the named style's position; a differential solid fill keeps its colour in `fg` (the reader
+  maps Excel's `bgColor` there); a conditional-format rule without a format has `dxf == kiln_io_xlsx::NO_DXF`
+  (`u32::MAX`), which `StyleTable::dxf` answers with `None`. `BUILTIN_NUMFMTS` id 37 is `#,##0_);(#,##0)` where
+  ECMA-376 and exceljs say `#,##0 ;(#,##0)` (the one format difference the exceljs oracle finds). Binding formulas is
+  most of the open time: `XlsxRead::calculate` calls `load_formula` per cell (200,000 formulas ≈ 0.55 s); a bulk
+  binding entry point (or `from_snapshot` that skips the second parse) would halve B7's full calculation.
+- For WP-56/WP-57 (engine): LibreOffice 24.2 disagrees with the engine, by design, on `PERCENTRANK.INC` (Excel
+  truncates to 3 digits), `TYPE` of a multi-cell range (64) and `CONVERT` lbm→kg (0.45359237); listed in
+  `crates/kiln-io-xlsx/tests/libreoffice_values.rs`. Formulas stored without their `_xlfn.` prefix
+  (`AGGREGATE`, `PDURATION`, `RRI` in `formulas.xlsx`) evaluate in Kiln (Excel and LibreOffice show `#NAME?`).
+- For WP-60 (fixtures): `fixtures/README.md` could list `fixtures/csv/` (hand-written CSV/TSV/JSON inputs, README
+  inside) and `fixtures/xlsx/read/` (the exceljs oracle).
+- For the bridge's owner: the Grid app links `kiln-sheet` (no rayon, no ICU), the formula library and both readers into
+  the web core: 3.29 MB gzip after `wasm-opt` (B12: 4.5 MB).

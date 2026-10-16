@@ -155,18 +155,35 @@ corpus.
 
 ## Excel workbooks (`.xlsx`, `.xltx`, `.xlsm`) — `kiln-io-xlsx`
 
+**Shipped (WP-70).** Reading and writing, with the round trip measured on every fixture
+(`docs/qa/fidelity.md`: structural, values and formulas 1.000, untouched parts byte-identical,
+LibreOffice opens every output), the values and formats checked against exceljs and the
+calculated results against LibreOffice. The grid that shows the workbook is WP-71, charts are
+drawn by WP-73.
+
 **Read and written:** sheets, cell values of every type, shared and rich-text
 strings, formulas (including shared formulas, legacy array formulas and dynamic
 arrays), defined names, number formats, fonts, fills, borders, cell styles,
 merged cells, frozen panes and selection, column widths and row heights,
 conditional formatting (including the Excel 2010 data bars and icon sets),
 data validation, hyperlinks, page setup, headers and footers, print areas and
-breaks, AutoFilter, tables, pictures and shapes in drawings, charts, notes and
-threaded comments, the 1900 and 1904 date systems.
+breaks, AutoFilter, tables, notes and threaded comments, the 1900 and 1904 date
+systems, workbook and sheet protection.
+
+**Read, kept and moved:** pictures, shapes and charts in drawings — their anchors are in the
+model and follow edits; the objects themselves are kept as written (Kiln's own charts are
+written by WP-73).
 
 **Kept, not edited:** pivot tables and pivot caches are preserved and shown as
 their last values (Kiln's own pivot tables are written in Excel's format and
-refresh in Excel), the VBA project of an `.xlsm`, external links, custom XML.
+refresh in Excel), the VBA project of an `.xlsm`, external links, custom XML,
+slicers, data tables (What-If Analysis), form controls, printer settings and
+any part or extension Kiln does not know.
+
+**Changed on save:** shared formulas are written cell by cell; `calcChain.xml` is left out
+(Excel rebuilds it); a Strict (ISO/IEC 29500) file is saved as transitional; phonetic
+(furigana) runs of strings are not kept; macros are not kept when an `.xlsm` is saved as
+`.xlsx`. Every part no edit touched is copied byte for byte.
 
 **Charts** (`kiln-charts`): column, bar, line, area, pie, doughnut, scatter, bubble, radar and
 combinations, with axes, legends, data labels and series formatting. 3-D bar
@@ -196,9 +213,13 @@ features with no OOXML counterpart are reported by the Compatibility Checker.
 
 ## Other formats
 
-- **CSV and TSV** (`kiln-io-csv`): RFC 4180, with the delimiter, quoting and encoding detected
-  (UTF-8 with or without BOM, UTF-16, Windows-1252).
-- **JSON:** an array of objects becomes a table.
+- **CSV and TSV** (`kiln-io-csv`, shipped with WP-70): RFC 4180, with the delimiter, quoting
+  and encoding detected (UTF-8 with or without BOM, UTF-16, Windows-1252) and every field
+  recognised as Excel's cell entry does (numbers, percentages, currency, dates, times, logicals,
+  errors). Saving writes the active sheet as Excel does: cells as displayed, Excel's quoting,
+  CRLF, UTF-8.
+- **JSON** (`kiln-io-csv`, WP-70): an array of objects becomes a table (keys in the order they
+  first appear, typed values); a table saves as an array of objects.
 - **Markdown, plain text and HTML:** open in Kiln Write and export from it.
 - **PDF** (`kiln-io-pdf`, on `krilla`): export only, from the same Scene you
   see on screen, with subset fonts, the document outline as bookmarks, page

@@ -12,6 +12,8 @@ mod scratch_frame;
 mod text_layout;
 #[path = "../benches/write.rs"]
 mod write; // WP-63: Kiln Write open and frame
+#[path = "../benches/xlsx.rs"]
+mod xlsx; // WP-70: Kiln Grid file open
 
 use std::time::Duration;
 
@@ -93,6 +95,11 @@ pub fn all() -> Vec<Bench> {
             name: "write-frame",
             description: "One frame after jumping within the open 300-page .docx (kiln-doc-layout → SceneDelta)",
             run: write::frame,
+        },
+        Bench {
+            name: "xlsx-open",
+            description: "Read a 1,000,000-cell .xlsx ready to paint; calc_ms: bind and calculate; full_ms: both (B7)",
+            run: xlsx::open,
         },
     ]
 }
