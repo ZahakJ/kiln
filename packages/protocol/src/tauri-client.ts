@@ -85,7 +85,7 @@ export class TauriClient implements KilnClient {
     const client = new TauriClient(host);
     const channel = new Channel<Event>();
     channel.onmessage = (event) => client.dispatch(event);
-    await call<void>('kiln_subscribe', { onEvent: channel });
+    await call<void>('kiln_subscribe', { doc: null, onEvent: channel });
     client.channel = channel;
     return client;
   }

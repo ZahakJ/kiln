@@ -11,8 +11,8 @@ use kiln_protocol::{
 };
 use kiln_session::SessionHandle;
 use serde::Serialize;
-use tauri::State;
 use tauri::ipc::{Channel, InvokeBody, Request, Response};
+use tauri::{State, Webview};
 
 /// State shared by the commands.
 #[derive(Debug)]
@@ -136,10 +136,20 @@ pub async fn kiln_a11y(state: State<'_, Kiln>, doc: DocId) -> Reply<A11yTree> {
     Ok(state.session.a11y(doc).await?)
 }
 
-/// Streams every session event to the webview over an ordered channel until the webview goes away.
+/// Streams the events of one document (`doc`), or of every document (`doc: null`), plus the
+/// session-wide events, to the webview over an ordered channel. A webview has one stream per
+/// `doc`: subscribing again (after a reload) replaces its previous stream, so streams never pile
+/// up. Events nobody has received yet, such as a host request raised while the webview was
+/// loading, are delivered to the new stream.
 #[tauri::command]
-pub async fn kiln_subscribe(state: State<'_, Kiln>, on_event: Channel<Event>) -> Reply<()> {
-    let events = state.session.subscribe()?;
+pub async fn kiln_subscribe(
+    state: State<'_, Kiln>,
+    webview: Webview,
+    doc: Option<DocId>,
+    on_event: Channel<Event>,
+) -> Reply<()> {
+    let key = format!("webview:{}", webview.label());
+    let events = state.session.subscribe_as(key, doc)?;
     tauri::async_runtime::spawn(async move {
         while let Ok(event) = events.recv_async().await {
             if on_event.send(event).is_err() {

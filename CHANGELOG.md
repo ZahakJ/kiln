@@ -16,6 +16,8 @@ All notable changes to Kiln (called Officina until WP-50) are recorded here. The
 
 ### Changed
 
+- The `pnpm e2e` script passes its arguments to Playwright, so `pnpm e2e --grep <name>` runs one group of end-to-end tests.
+- When an internal error interrupts an edit in the desktop app, that document becomes read-only and asks for a new name when saved, instead of carrying on with a possibly half-applied change; other documents are unaffected. A request for a file or dialog raised before the window finished loading is no longer lost, and reloading the window no longer duplicates its event stream.
 - The suite is now called **Kiln**: Kiln Write (formerly Scriba), Kiln Grid (Tabula), Kiln Deck (Scena), Kiln Notes (Notula) and Kiln Home (Atrium). Package scope `@kiln/*`, application identifier `io.github.zahakj.kiln`, repository `ZahakJ/kiln`, website `zahakj.github.io/kiln`. The reasons and the new architecture are recorded in `docs/adr/0002-kiln-rust-core.md`.
 - Kiln is being rebuilt on a native Rust core: a Cargo workspace with all 30 core crates (document, sheet and presentation models, layout, formulas, file formats, PDF, spell check, search, collaboration, storage, the session facade, the WebAssembly bridge, the command line, benchmarks and test support) and `cargo xtask` for repository tasks. The crates are scaffolds that build and are tested in CI; their engines follow.
 - The desktop and Android shell is now Tauri 2 (`apps/desktop/src-tauri`), replacing Electron and Capacitor; it opens the web app in a window and can measure its own start-up time and memory (`kiln --startup-probe`).

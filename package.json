@@ -21,7 +21,7 @@
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
-    "e2e": "turbo run e2e --filter=@kiln/e2e",
+    "e2e": "turbo run e2e --filter=@kiln/e2e --",
     "verify": "turbo run lint typecheck test",
     "format": "biome format --write .",
     "tauri": "pnpm --filter @kiln/desktop exec tauri",

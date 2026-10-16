@@ -3,6 +3,7 @@
 //! a `flume` channel and await one-shot replies (PLAN.md §3.8). The Tauri IPC handlers use the
 //! async methods, tests and the CLI the blocking ones.
 
+use std::collections::VecDeque;
 use std::panic::{AssertUnwindSafe, catch_unwind};
 use std::thread::JoinHandle;
 
@@ -15,7 +16,84 @@ use kiln_protocol::{
 use crate::host::Host;
 use crate::session::Session;
 
-type Job = Box<dyn FnOnce(&mut Session, &mut Vec<flume::Sender<Event>>) + Send>;
+type Job = Box<dyn FnOnce(&mut Session, &mut Hub) + Send>;
+
+/// How many undelivered events (other than host requests) the session keeps for a late
+/// subscriber; older ones are dropped first.
+const BACKLOG: usize = 256;
+
+/// One event subscriber: everything, or one document plus the session-wide events.
+#[derive(Debug)]
+struct Subscriber {
+    tx: flume::Sender<Event>,
+    doc: Option<DocId>,
+    /// Who subscribed, for subscribers that replace their previous subscription.
+    owner: Option<String>,
+}
+
+impl Subscriber {
+    fn wants(&self, event: &Event) -> bool {
+        match (self.doc, event.doc()) {
+            (Some(want), Some(about)) => want == about,
+            _ => true,
+        }
+    }
+}
+
+/// Fans session events out to the subscribers. An event no subscriber wanted (typically one
+/// emitted before the UI subscribed, such as a host request raised while the webview loads) is
+/// kept and handed to the next matching subscriber, so a host request is never lost.
+#[derive(Debug, Default)]
+struct Hub {
+    subscribers: Vec<Subscriber>,
+    backlog: VecDeque<Event>,
+}
+
+impl Hub {
+    fn add(&mut self, subscriber: Subscriber) {
+        self.subscribers.retain(|s| {
+            !s.tx.is_disconnected()
+                && (subscriber.owner.is_none()
+                    || s.owner != subscriber.owner
+                    || s.doc != subscriber.doc)
+        });
+        self.subscribers.push(subscriber);
+        // Nobody wanted these when they were emitted; the earlier subscribers still do not.
+        for event in std::mem::take(&mut self.backlog) {
+            self.publish(event);
+        }
+    }
+
+    fn publish(&mut self, event: Event) {
+        let mut delivered = false;
+        self.subscribers.retain(|s| {
+            if !s.wants(&event) {
+                return true;
+            }
+            let alive = s.tx.send(event.clone()).is_ok();
+            delivered |= alive;
+            alive
+        });
+        if !delivered {
+            self.keep(event);
+        }
+    }
+
+    fn keep(&mut self, event: Event) {
+        self.backlog.push_back(event);
+        if self.backlog.len() > BACKLOG {
+            // Host requests stay until delivered (their number is bounded by the pending
+            // requests); anything else may be dropped, oldest first.
+            if let Some(i) = self
+                .backlog
+                .iter()
+                .position(|e| !matches!(e, Event::HostRequest(_)))
+            {
+                self.backlog.remove(i);
+            }
+        }
+    }
+}
 
 /// A cloneable handle to a session running on its own thread. The thread ends when the last
 /// handle is dropped (or [`SessionHandle::shutdown`] is called).
@@ -75,19 +153,21 @@ impl SessionHandle {
             .name("kiln-session".into())
             .spawn(move || {
                 let mut session = make();
-                let mut subscribers: Vec<flume::Sender<Event>> = Vec::new();
+                let mut hub = Hub::default();
                 while let Ok(job) = rx.recv() {
-                    // A job that panics fails alone; its reply channel is dropped, so the caller
-                    // sees an error, and the session keeps serving.
+                    // A job that panics fails alone: its reply channel is dropped, so the caller
+                    // sees an error; a document it was changing is marked damaged (read-only, see
+                    // `Session::recover_from_panic`); the session keeps serving the rest.
+                    // `AssertUnwindSafe` is sound because of that recovery step.
                     if let Err(payload) =
-                        catch_unwind(AssertUnwindSafe(|| job(&mut session, &mut subscribers)))
+                        catch_unwind(AssertUnwindSafe(|| job(&mut session, &mut hub)))
                     {
-                        let message = panic_message(payload.as_ref());
-                        session_error_event(&mut subscribers, &message);
+                        session.recover_from_panic(&panic_message(payload.as_ref()));
                     }
                     if session.has_events() {
-                        let events = session.poll();
-                        subscribers.retain(|s| events.iter().all(|e| s.send(e.clone()).is_ok()));
+                        for event in session.poll() {
+                            hub.publish(event);
+                        }
                     }
                 }
             })
@@ -133,21 +213,42 @@ impl SessionHandle {
         self.submit(f)?.recv_async().await.map_err(|_| lost())
     }
 
-    /// Subscribes to every event the session emits from now on. Events are delivered in order;
-    /// a subscriber whose receiver is dropped is removed.
+    /// Subscribes to the events of one document (`Some`) or of every document (`None`);
+    /// session-wide events (host requests, recovery, errors without a document) reach every
+    /// subscriber. The subscription covers every event of the jobs submitted after this call,
+    /// plus any earlier event no subscriber has received yet. Events arrive in order; a
+    /// subscriber whose receiver is dropped is removed. Never blocks.
     ///
     /// # Errors
     ///
     /// `Closed` when the session thread has ended.
-    pub fn subscribe(&self) -> Result<flume::Receiver<Event>> {
+    pub fn subscribe(&self, doc: Option<DocId>) -> Result<flume::Receiver<Event>> {
+        self.add_subscriber(None, doc)
+    }
+
+    /// As [`SessionHandle::subscribe`], but replaces the subscription `owner` made earlier for the
+    /// same `doc` (a webview that reloads subscribes again): the previous receiver is
+    /// disconnected after the events already sent to it, and receives nothing more.
+    ///
+    /// # Errors
+    ///
+    /// `Closed` when the session thread has ended.
+    pub fn subscribe_as(
+        &self,
+        owner: impl Into<String>,
+        doc: Option<DocId>,
+    ) -> Result<flume::Receiver<Event>> {
+        self.add_subscriber(Some(owner.into()), doc)
+    }
+
+    fn add_subscriber(
+        &self,
+        owner: Option<String>,
+        doc: Option<DocId>,
+    ) -> Result<flume::Receiver<Event>> {
         let (tx, rx) = flume::unbounded();
-        let (done_tx, done_rx) = flume::bounded::<()>(1);
-        let job: Job = Box::new(move |_, subscribers| {
-            subscribers.push(tx);
-            let _ = done_tx.send(());
-        });
+        let job: Job = Box::new(move |_, hub| hub.add(Subscriber { tx, doc, owner }));
         self.jobs.send(job).map_err(|_| KilnError::Closed)?;
-        done_rx.recv().map_err(|_| lost())?;
         Ok(rx)
     }
 
@@ -234,12 +335,4 @@ impl SessionHandle {
 
 fn lost() -> KilnError {
     KilnError::Internal("the session dropped the request (a bug in the core; see the log)".into())
-}
-
-fn session_error_event(subscribers: &mut Vec<flume::Sender<Event>>, message: &str) {
-    let event = Event::Error {
-        doc: None,
-        error: KilnError::Internal(message.to_owned()).into(),
-    };
-    subscribers.retain(|s| s.send(event.clone()).is_ok());
 }

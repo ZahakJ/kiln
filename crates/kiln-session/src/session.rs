@@ -22,6 +22,10 @@ struct Document {
     path: Option<String>,
     format: Option<FileFormat>,
     read_only: bool,
+    /// An internal error (a panic in the core) interrupted a change to this document, so its model
+    /// may be half-edited: it only accepts commands that cannot change it, and Save asks for a new
+    /// location instead of overwriting the original file.
+    damaged: bool,
     revision: u64,
     saved_state: StateId,
     viewport: Viewport,
@@ -66,6 +70,9 @@ pub struct Session {
     events: VecDeque<Event>,
     pending: BTreeMap<RequestId, Pending>,
     next_request: u32,
+    /// The document a command or host reply is working on, while it runs (see
+    /// [`Session::recover_from_panic`]).
+    in_flight: Option<DocId>,
 }
 
 impl std::fmt::Debug for Session {
@@ -101,6 +108,7 @@ impl Session {
             events: VecDeque::new(),
             pending: BTreeMap::new(),
             next_request: 1,
+            in_flight: None,
         }
     }
 
@@ -164,6 +172,7 @@ impl Session {
             path: None,
             format: None,
             read_only: false,
+            damaged: false,
             revision: 0,
             saved_state: 0,
             viewport: Viewport::default(),
@@ -201,6 +210,7 @@ impl Session {
             path: hint.path,
             format: Some(format),
             read_only: hint.read_only,
+            damaged: false,
             revision: 0,
             saved_state: 0,
             viewport: Viewport::default(),
@@ -278,6 +288,17 @@ impl Session {
             doc.ok_or_else(|| KilnError::InvalidInput(format!("{} needs a document", meta.id)))?;
         let d = self.doc(id)?;
         let app = d.kind.app();
+        if d.damaged
+            && !matches!(
+                meta.availability,
+                Availability::Always | Availability::Document
+            )
+        {
+            return Err(KilnError::unavailable(
+                meta.id,
+                "an internal error interrupted an edit, so the document is read-only; save a copy to keep your work",
+            ));
+        }
         if !meta.apps.contains(app) {
             return Err(KilnError::unavailable(
                 meta.id,
@@ -312,6 +333,13 @@ impl Session {
     /// `NotFound` (unknown document), `InvalidInput` (bad arguments, missing document),
     /// `Unavailable` (wrong app, read-only, nothing to undo), `Unsupported`.
     pub fn execute(&mut self, doc: Option<DocId>, cmd: Command) -> Result<ExecResult> {
+        self.in_flight = doc;
+        let result = self.execute_checked(doc, cmd);
+        self.in_flight = None;
+        result
+    }
+
+    fn execute_checked(&mut self, doc: Option<DocId>, cmd: Command) -> Result<ExecResult> {
         self.check(doc, &cmd)?;
         match cmd {
             Command::Suite(s) => self.execute_suite(doc, s),
@@ -390,7 +418,10 @@ impl Session {
                 let id = require(doc)?;
                 let d = self.doc(id)?;
                 match (d.path.clone(), d.format) {
-                    (Some(path), Some(format)) if d.model.save_formats().contains(&format) => {
+                    // A damaged document never overwrites its original file.
+                    (Some(path), Some(format))
+                        if !d.damaged && d.model.save_formats().contains(&format) =>
+                    {
                         self.write(id, path, format)
                     }
                     _ => self.save_as(id, None, None),
@@ -580,8 +611,41 @@ impl Session {
             .pending
             .remove(&id)
             .ok_or_else(|| KilnError::not_found(format!("host request {}", id.0)))?;
+        self.in_flight = match &pending {
+            Pending::SavePick { doc, .. } | Pending::SaveWrite { doc, .. } => Some(*doc),
+            _ => None,
+        };
         self.continue_with(pending, reply);
+        self.in_flight = None;
         Ok(())
+    }
+
+    /// Called by the session thread after a job panicked (natively panics unwind and are caught
+    /// per job). If the panic interrupted a command or host reply on a document, that document's
+    /// model may be half-edited: it is marked damaged and read-only (it still answers queries,
+    /// renders and can be saved under a new name, but accepts no further edits). An `Error` event
+    /// reports the failure either way.
+    pub fn recover_from_panic(&mut self, message: &str) {
+        let doc = self
+            .in_flight
+            .take()
+            .filter(|id| self.docs.contains_key(id));
+        let error = match doc {
+            Some(id) => {
+                if let Some(d) = self.docs.get_mut(&id) {
+                    d.damaged = true;
+                    d.read_only = true;
+                }
+                KilnError::Internal(format!(
+                    "{message} (the document is now read-only; save a copy to keep your work)"
+                ))
+            }
+            None => KilnError::Internal(message.to_owned()),
+        };
+        self.fail(doc, &error);
+        if let Some(id) = doc {
+            self.emit_changed(id);
+        }
     }
 
     fn fail(&mut self, doc: Option<DocId>, error: &KilnError) {

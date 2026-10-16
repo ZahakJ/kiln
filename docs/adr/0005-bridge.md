@@ -70,17 +70,33 @@ request id, so the same core code runs over a synchronous native host and an asy
 ### Transports
 
 - **Tauri (desktop and Android).** `SessionHandle` runs the session on its own thread (flume
-  channel, one-shot replies; a panicking job fails alone and is reported as an `Error` event).
+  channel, one-shot replies). A panicking job fails alone and is reported as an `Error` event; if
+  it was changing a document, that document may be half-edited, so it is marked *damaged*:
+  read-only, no further edits or undo, and Save asks for a new location rather than overwriting
+  the original (Save As, queries and rendering still work, so the user can keep a copy).
+  Subscriptions (`subscribe(doc)`, `subscribe_as(owner, doc)`) never block the caller; each
+  follows one document or all, plus the session-wide events. An event no subscriber received
+  (for example a host request raised before the webview subscribed) is kept, host requests
+  always and up to 256 others, and handed to the next matching subscriber, so no host request is
+  left pending forever.
   `kiln-desktop` registers a fixed set of commands — `kiln_open` (file bytes as the raw request
   body, the `OpenHint` as a percent-encoded `kiln-hint` header), `kiln_new`, `kiln_execute`,
   `kiln_query`, `kiln_viewport`, `kiln_frame` (raw postcard bytes as `ipc::Response`), `kiln_a11y`,
-  `kiln_subscribe` (all events over an ordered `ipc::Channel`), `kiln_host_reply` and
+  `kiln_subscribe(doc, on_event)` (the events of `doc`, or of all documents for `null`, over an
+  ordered `ipc::Channel`; keyed by webview label and `doc`, so a reloaded webview replaces its old
+  stream instead of adding one), `kiln_host_reply` and
   `kiln_startup_probe`. The app manifest in `build.rs` generates one permission per command and
   `capabilities/*.json` grant exactly those plus the fs, dialog, opener, process and (desktop)
   window-state plugins. The CSP forbids remote scripts.
 - **WebAssembly (web/PWA).** `kiln-bridge-wasm` exports `KilnSession` (`open`, `newDocument`,
   `execute`, `query`, `setViewport`, `frame`, `a11y`, `poll`, `hostReply`; JSON strings in and out,
   frames as `Uint8Array`, errors thrown as `Error`s whose message is `ErrorInfo` JSON).
+  Deviation from the work package text: `poll()` returns one JSON string holding the event array,
+  not `Uint8Array[]`. Events are small messages, the rule above sends small messages as JSON, and
+  one string crosses the wasm boundary in one copy where an array of buffers would need one per
+  event plus a postcard decode on the TypeScript side. Frames never travel in polled events: the
+  session does not emit `Event::Frame`, and the Worker calls `frame()`, which returns postcard
+  bytes. If a later work package streams frames as events, `poll` must switch to binary.
   `apps/web/src/worker.ts` owns it in a dedicated Worker; `WasmWorkerClient` speaks to the Worker
   with `postMessage`, transferring file and frame buffers. The default build is single-threaded;
   the `threads` feature (`wasm-bindgen-rayon`, needs nightly `+atomics`) is wired but off.

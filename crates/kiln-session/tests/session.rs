@@ -678,7 +678,7 @@ fn native_host_saves_and_opens_real_files() {
 #[test]
 fn session_thread_serves_calls_and_streams_events() {
     let (handle, thread) = SessionHandle::spawn(deferred()).unwrap();
-    let events = handle.subscribe().unwrap();
+    let events = handle.subscribe(None).unwrap();
     let summary = handle
         .call(|s| s.new_document(DocKind::Scratch))
         .unwrap()
@@ -774,4 +774,248 @@ fn block_on<F: std::future::Future>(f: F) -> F::Output {
         }
         std::thread::park();
     }
+}
+
+fn recv(events: &flume::Receiver<Event>) -> Event {
+    events
+        .recv_timeout(std::time::Duration::from_secs(5))
+        .expect("an event within 5 s")
+}
+
+#[test]
+fn a_late_subscriber_receives_the_host_requests_nobody_has_seen() {
+    let (handle, _thread) = SessionHandle::spawn(deferred()).unwrap();
+    // The UI has not subscribed yet (a webview still loading) when the core asks the host.
+    handle
+        .call(|s| s.execute(None, SuiteCommand::Open { path: None }.into()))
+        .unwrap()
+        .unwrap();
+    let events = handle.subscribe(None).unwrap();
+    assert!(matches!(
+        recv(&events),
+        Event::HostRequest(r) if matches!(r.op, HostOp::PickOpen { .. })
+    ));
+    // Delivered once: a second subscriber does not see it again.
+    let second = handle.subscribe(None).unwrap();
+    handle.call(|_| ()).unwrap();
+    assert!(second.try_recv().is_err());
+}
+
+#[test]
+fn a_document_subscriber_sees_only_its_document_and_session_events() {
+    let (handle, _thread) = SessionHandle::spawn(deferred()).unwrap();
+    let a = handle
+        .call(|s| s.new_document(DocKind::Scratch))
+        .unwrap()
+        .unwrap()
+        .doc;
+    let b = handle
+        .call(|s| s.new_document(DocKind::Scratch))
+        .unwrap()
+        .unwrap()
+        .doc;
+    let all = handle.subscribe(None).unwrap();
+    let only_a = handle.subscribe(Some(a)).unwrap();
+    for doc in [b, a] {
+        handle
+            .call(move |s| s.execute(Some(doc), insert("x")))
+            .unwrap()
+            .unwrap();
+    }
+    handle
+        .call(|s| s.execute(None, SuiteCommand::Open { path: None }.into()))
+        .unwrap()
+        .unwrap();
+    // Events are published after a job's reply; the next job starts after they are out.
+    handle.call(|_| ()).unwrap();
+    let mine: Vec<Event> = only_a.try_iter().collect();
+    assert_eq!(mine.len(), 2, "{mine:?}");
+    assert!(matches!(&mine[0], Event::Changed { summary, .. } if summary.doc == a));
+    assert!(matches!(&mine[1], Event::HostRequest(_)));
+    // `all` also got the two `Opened` events emitted before anyone subscribed.
+    let everything: Vec<Event> = all.try_iter().collect();
+    assert_eq!(everything.len(), 5, "{everything:?}");
+    assert!(matches!(&everything[0], Event::Opened { summary } if summary.doc == a));
+    assert!(matches!(&everything[1], Event::Opened { summary } if summary.doc == b));
+
+    // A dropped subscriber is removed; the others keep receiving.
+    drop(only_a);
+    handle
+        .call(move |s| s.execute(Some(a), insert("y")))
+        .unwrap()
+        .unwrap();
+    assert!(matches!(recv(&all), Event::Changed { summary, .. } if summary.doc == a));
+}
+
+#[test]
+fn subscribing_again_as_the_same_owner_replaces_the_previous_stream() {
+    let (handle, _thread) = SessionHandle::spawn(deferred()).unwrap();
+    let first = handle.subscribe_as("webview:main", None).unwrap();
+    let doc = handle
+        .call(|s| s.new_document(DocKind::Scratch))
+        .unwrap()
+        .unwrap()
+        .doc;
+    // The webview reloads and subscribes again; its old stream ends after what it already got.
+    let second = handle.subscribe_as("webview:main", None).unwrap();
+    let other_doc_stream = handle.subscribe_as("webview:main", Some(doc)).unwrap();
+    handle
+        .call(move |s| s.execute(Some(doc), insert("x")))
+        .unwrap()
+        .unwrap();
+    assert!(matches!(recv(&first), Event::Opened { .. }));
+    assert!(matches!(
+        first.recv_timeout(std::time::Duration::from_secs(5)),
+        Err(flume::RecvTimeoutError::Disconnected)
+    ));
+    assert!(matches!(recv(&second), Event::Changed { .. }));
+    assert!(matches!(recv(&other_doc_stream), Event::Changed { .. }));
+    assert!(second.try_recv().is_err());
+}
+
+/// A scratch app whose model panics after applying `InsertText { "boom" }`, half-way through a
+/// change, as a bug in an app model would.
+#[derive(Debug)]
+struct PanickyApp;
+#[derive(Debug)]
+struct Panicky(Box<dyn DocModel>);
+
+impl DocModel for Panicky {
+    fn kind(&self) -> DocKind {
+        self.0.kind()
+    }
+    fn execute(&mut self, command: &Command) -> Result<Change> {
+        let change = self.0.execute(command)?;
+        if *command == insert("boom") {
+            panic!("model bug");
+        }
+        Ok(change)
+    }
+    fn undo(&mut self) -> bool {
+        self.0.undo()
+    }
+    fn redo(&mut self) -> bool {
+        self.0.redo()
+    }
+    fn can_undo(&self) -> bool {
+        self.0.can_undo()
+    }
+    fn can_redo(&self) -> bool {
+        self.0.can_redo()
+    }
+    fn undo_label(&self) -> Option<&'static str> {
+        self.0.undo_label()
+    }
+    fn redo_label(&self) -> Option<&'static str> {
+        self.0.redo_label()
+    }
+    fn state(&self) -> StateId {
+        self.0.state()
+    }
+    fn seal_history(&mut self) {
+        self.0.seal_history();
+    }
+    fn selection(&self) -> Selection {
+        self.0.selection()
+    }
+    fn status(&self) -> StatusBar {
+        self.0.status()
+    }
+    fn paragraphs(&self) -> Option<Vec<ParagraphText>> {
+        self.0.paragraphs()
+    }
+    fn a11y(&self, title: &str) -> A11yTree {
+        self.0.a11y(title)
+    }
+    fn save_formats(&self) -> &'static [FileFormat] {
+        self.0.save_formats()
+    }
+    fn save(&self, format: FileFormat) -> Result<Vec<u8>> {
+        self.0.save(format)
+    }
+}
+
+impl AppFactory for PanickyApp {
+    fn kind(&self) -> DocKind {
+        DocKind::Scratch
+    }
+    fn opens(&self, f: FileFormat) -> bool {
+        kiln_session::apps::scratch::ScratchApp.opens(f)
+    }
+    fn create(&self) -> Box<dyn DocModel> {
+        Box::new(Panicky(kiln_session::apps::scratch::ScratchApp.create()))
+    }
+    fn open(&self, bytes: &[u8], f: FileFormat, hint: &OpenHint) -> Result<Box<dyn DocModel>> {
+        Ok(Box::new(Panicky(
+            kiln_session::apps::scratch::ScratchApp.open(bytes, f, hint)?,
+        )))
+    }
+}
+
+#[test]
+fn a_panic_during_an_edit_leaves_the_document_damaged_and_read_only() {
+    let (handle, _thread) = SessionHandle::spawn_with(|| {
+        let mut s = Session::new(deferred());
+        s.register_app(Box::new(PanickyApp));
+        s
+    })
+    .unwrap();
+    let events = handle.subscribe(None).unwrap();
+    let doc = handle
+        .call(|s| {
+            s.open(
+                b"Original",
+                OpenHint {
+                    name: Some("a.txt".into()),
+                    path: Some("/nowhere/a.txt".into()),
+                    format: Some(FileFormat::Txt),
+                    read_only: false,
+                },
+            )
+        })
+        .unwrap()
+        .unwrap()
+        .doc;
+    assert!(matches!(recv(&events), Event::Opened { .. }));
+
+    let crashed = handle.call(move |s| s.execute(Some(doc), insert("boom")));
+    assert_eq!(crashed.unwrap_err().kind(), ErrorKind::Internal);
+    assert!(matches!(
+        recv(&events),
+        Event::Error { doc: Some(d), error } if d == doc && error.message.contains("model bug")
+    ));
+    assert!(matches!(
+        recv(&events),
+        Event::Changed { summary, .. } if summary.read_only
+    ));
+
+    // No further edits (nor undo), but it still answers queries and can be saved elsewhere.
+    for cmd in [insert("more"), SuiteCommand::Undo.into()] {
+        let err = handle
+            .call(move |s| s.execute(Some(doc), cmd))
+            .unwrap()
+            .unwrap_err();
+        assert_eq!(err.kind(), ErrorKind::Unavailable, "{err}");
+        assert!(err.to_string().contains("save a copy"), "{err}");
+    }
+    let summary = handle.call(move |s| s.summary(doc)).unwrap().unwrap();
+    assert!(summary.read_only);
+    handle
+        .call(move |s| s.execute(Some(doc), SuiteCommand::Save.into()))
+        .unwrap()
+        .unwrap();
+    assert!(
+        matches!(recv(&events), Event::HostRequest(r) if matches!(r.op, HostOp::PickSave { .. })),
+        "Save asks for a new location instead of overwriting the original"
+    );
+    // Other documents are unaffected.
+    let other = handle
+        .call(|s| s.new_document(DocKind::Scratch))
+        .unwrap()
+        .unwrap()
+        .doc;
+    handle
+        .call(move |s| s.execute(Some(other), insert("fine")))
+        .unwrap()
+        .unwrap();
 }
