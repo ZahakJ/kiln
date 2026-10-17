@@ -12,6 +12,14 @@
     "Selection",
     "Caret",
     "Composition",
-    "Squiggle"
+    "Squiggle",
+    "Guide",
+    "Panel",
+    "Muted",
+    "Line",
+    "Gridline",
+    "AppFill",
+    "AppTint",
+    "AppText"
   ]
 }

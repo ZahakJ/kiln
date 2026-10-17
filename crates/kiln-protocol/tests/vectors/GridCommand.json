@@ -1,0 +1,847 @@
+{
+  "type": "GridCommand",
+  "format": {
+    "TYPENAME": "GridCommand"
+  },
+  "values": [
+    {
+      "Move": {
+        "dir": "Down",
+        "extend": true
+      }
+    },
+    {
+      "Jump": {
+        "dir": "Right",
+        "extend": false
+      }
+    },
+    {
+      "Page": {
+        "dir": "Up",
+        "extend": false
+      }
+    },
+    {
+      "RowStart": {
+        "extend": true
+      }
+    },
+    {
+      "FirstCell": {
+        "extend": false
+      }
+    },
+    {
+      "LastCell": {
+        "extend": true
+      }
+    },
+    {
+      "Advance": {
+        "backward": true,
+        "across": true
+      }
+    },
+    {
+      "SelectCell": {
+        "row": 1048575,
+        "col": 16383,
+        "extend": false,
+        "add": true
+      }
+    },
+    {
+      "SelectRange": {
+        "range": {
+          "r0": 2,
+          "c0": 1,
+          "r1": 9,
+          "c1": 4
+        },
+        "add": false
+      }
+    },
+    {
+      "SelectRows": {
+        "from": 3,
+        "to": 7,
+        "extend": false,
+        "add": false
+      }
+    },
+    {
+      "SelectColumns": {
+        "from": 0,
+        "to": 2,
+        "extend": true,
+        "add": false
+      }
+    },
+    "SelectAll",
+    "SelectRow",
+    "SelectColumn",
+    {
+      "GoTo": {
+        "reference": "'Q1 «Ü»'!B2:C9",
+        "define": false
+      }
+    },
+    {
+      "ActivateSheet": {
+        "index": 2
+      }
+    },
+    "PreviousSheet",
+    "NextSheet",
+    "InsertSheet",
+    {
+      "RenameSheet": {
+        "index": 0,
+        "name": "Budget 2026"
+      }
+    },
+    {
+      "DeleteSheet": {
+        "index": 3
+      }
+    },
+    {
+      "MoveSheet": {
+        "from": 0,
+        "to": 2
+      }
+    },
+    {
+      "DuplicateSheet": {
+        "index": 1
+      }
+    },
+    {
+      "SheetTabColor": {
+        "index": 1,
+        "color": "E05A27"
+      }
+    },
+    {
+      "HideSheet": {
+        "index": 1
+      }
+    },
+    {
+      "UnhideSheet": {
+        "index": 1
+      }
+    },
+    "EditCell",
+    {
+      "BeginEdit": {
+        "text": "="
+      }
+    },
+    {
+      "SetEditText": {
+        "text": "=SUM(A1:A9)+😀",
+        "start": 5,
+        "end": 9,
+        "formula_bar": true
+      }
+    },
+    {
+      "CommitEdit": {
+        "advance": "Down"
+      }
+    },
+    "FillSelection",
+    "ArrayFormula",
+    "CancelEdit",
+    "NewLineInCell",
+    "ToggleAbsolute",
+    {
+      "AcceptCompletion": {
+        "index": 1
+      }
+    },
+    {
+      "MoveCompletion": {
+        "down": true
+      }
+    },
+    {
+      "PointRef": {
+        "row": 4,
+        "col": 6,
+        "extend": true
+      }
+    },
+    {
+      "PointMove": {
+        "dir": "Left",
+        "extend": false
+      }
+    },
+    "OpenDropdown",
+    "ClearContents",
+    {
+      "Clear": {
+        "what": "Formats"
+      }
+    },
+    "FillDown",
+    "FillRight",
+    "FillUp",
+    "FillLeft",
+    {
+      "DragFill": {
+        "row": 30,
+        "col": 2
+      }
+    },
+    {
+      "AutoFill": {
+        "row": 30,
+        "col": 2,
+        "mode": "Months"
+      }
+    },
+    {
+      "AutoSum": {
+        "function": "AVERAGE"
+      }
+    },
+    {
+      "InsertDateTime": {
+        "time": true,
+        "utc_offset_minutes": -240
+      }
+    },
+    {
+      "FindNext": {
+        "text": "kiln",
+        "match_case": false,
+        "whole_cell": true,
+        "backward": false,
+        "in_formulas": true
+      }
+    },
+    "CalculateNow",
+    "CalculateSheet",
+    "ShowFormulas",
+    {
+      "InsertCells": {
+        "shift": "Auto"
+      }
+    },
+    {
+      "DeleteCells": {
+        "shift": "Horizontal"
+      }
+    },
+    "InsertRows",
+    "InsertColumns",
+    "DeleteRows",
+    "DeleteColumns",
+    {
+      "RowHeight": {
+        "points": 22.5
+      }
+    },
+    {
+      "ColumnWidth": {
+        "chars": 12.71
+      }
+    },
+    {
+      "ResizeRows": {
+        "from": 0,
+        "to": 4,
+        "px": 31.5
+      }
+    },
+    {
+      "ResizeColumns": {
+        "from": 2,
+        "to": 2,
+        "px": 140.0
+      }
+    },
+    {
+      "AutoFitRows": {
+        "from": null,
+        "to": null
+      }
+    },
+    {
+      "AutoFitColumns": {
+        "from": 1,
+        "to": 3
+      }
+    },
+    "HideRows",
+    "HideColumns",
+    "UnhideRows",
+    "UnhideColumns",
+    {
+      "Borders": {
+        "preset": "ThickBox",
+        "style": "Double",
+        "color": "000000"
+      }
+    },
+    "BorderOutline",
+    "BorderNone",
+    {
+      "FillColor": {
+        "color": "FFE066"
+      }
+    },
+    "AlignTop",
+    "AlignMiddle",
+    "AlignBottom",
+    {
+      "AlignHorizontal": {
+        "align": "CenterAcross"
+      }
+    },
+    {
+      "Orientation": {
+        "angle": -45
+      }
+    },
+    "WrapText",
+    "MergeCenter",
+    "MergeAcross",
+    "MergeCells",
+    "UnmergeCells",
+    {
+      "NumberFormat": {
+        "format": "Short Date"
+      }
+    },
+    "NumberStyle",
+    "CurrencyStyle",
+    "PercentStyle",
+    {
+      "AccountingStyle": {
+        "currency": "GBP"
+      }
+    },
+    "CommaStyle",
+    "IncreaseDecimal",
+    "DecreaseDecimal",
+    {
+      "ApplyFormat": {
+        "format": {
+          "number_format": "0.0%",
+          "font_family": null,
+          "font_size": 14.5,
+          "bold": true,
+          "italic": null,
+          "underline": null,
+          "strike": null,
+          "superscript": null,
+          "subscript": null,
+          "font_color": null,
+          "fill_color": null,
+          "pattern": null,
+          "pattern_color": null,
+          "h_align": "Distributed",
+          "v_align": "Center",
+          "wrap": null,
+          "shrink": null,
+          "indent": null,
+          "rotation": 255,
+          "merge": null,
+          "border_left": {
+            "style": "MediumDashDot",
+            "color": "1D8A60"
+          },
+          "border_right": null,
+          "border_top": null,
+          "border_bottom": null,
+          "border_inside_h": null,
+          "border_inside_v": null,
+          "border_diagonal_up": null,
+          "border_diagonal_down": null,
+          "locked": null,
+          "hidden": null
+        }
+      }
+    },
+    "FreezePanes",
+    "FreezeTopRow",
+    "FreezeFirstColumn",
+    "Split",
+    "Gridlines",
+    "Headings",
+    {
+      "PasteSpecial": {
+        "what": "ValuesAndNumberFormats",
+        "op": "Multiply",
+        "skip_blanks": true,
+        "transpose": true,
+        "data": {
+          "text": "1\t2\n3\t4",
+          "html": "<table><tr><td>1</td></tr></table>",
+          "kiln": null
+        }
+      }
+    },
+    {
+      "PasteValues": {
+        "data": {
+          "text": "1\t2\n3\t4",
+          "html": "<table><tr><td>1</td></tr></table>",
+          "kiln": null
+        }
+      }
+    },
+    {
+      "PasteFormulas": {
+        "data": null
+      }
+    },
+    {
+      "PasteFormatting": {
+        "data": null
+      }
+    },
+    {
+      "PasteTranspose": {
+        "data": {
+          "text": "1\t2\n3\t4",
+          "html": "<table><tr><td>1</td></tr></table>",
+          "kiln": null
+        }
+      }
+    },
+    {
+      "Move": {
+        "dir": "Up",
+        "extend": false
+      }
+    },
+    {
+      "Jump": {
+        "dir": "Up",
+        "extend": false
+      }
+    },
+    {
+      "Page": {
+        "dir": "Up",
+        "extend": false
+      }
+    },
+    {
+      "RowStart": {
+        "extend": false
+      }
+    },
+    {
+      "FirstCell": {
+        "extend": false
+      }
+    },
+    {
+      "LastCell": {
+        "extend": false
+      }
+    },
+    {
+      "Advance": {
+        "backward": false,
+        "across": false
+      }
+    },
+    {
+      "SelectCell": {
+        "row": 0,
+        "col": 0,
+        "extend": false,
+        "add": false
+      }
+    },
+    {
+      "SelectRange": {
+        "range": {
+          "r0": 0,
+          "c0": 0,
+          "r1": 0,
+          "c1": 0
+        },
+        "add": false
+      }
+    },
+    {
+      "SelectRows": {
+        "from": 0,
+        "to": 0,
+        "extend": false,
+        "add": false
+      }
+    },
+    {
+      "SelectColumns": {
+        "from": 0,
+        "to": 0,
+        "extend": false,
+        "add": false
+      }
+    },
+    "SelectAll",
+    "SelectRow",
+    "SelectColumn",
+    {
+      "GoTo": {
+        "reference": "",
+        "define": false
+      }
+    },
+    {
+      "ActivateSheet": {
+        "index": 0
+      }
+    },
+    "PreviousSheet",
+    "NextSheet",
+    "InsertSheet",
+    {
+      "RenameSheet": {
+        "index": 0,
+        "name": ""
+      }
+    },
+    {
+      "DeleteSheet": {
+        "index": 0
+      }
+    },
+    {
+      "MoveSheet": {
+        "from": 0,
+        "to": 0
+      }
+    },
+    {
+      "DuplicateSheet": {
+        "index": 0
+      }
+    },
+    {
+      "SheetTabColor": {
+        "index": 0,
+        "color": ""
+      }
+    },
+    {
+      "HideSheet": {
+        "index": 0
+      }
+    },
+    {
+      "UnhideSheet": {
+        "index": 0
+      }
+    },
+    "EditCell",
+    {
+      "BeginEdit": {
+        "text": ""
+      }
+    },
+    {
+      "SetEditText": {
+        "text": "",
+        "start": 0,
+        "end": 0,
+        "formula_bar": false
+      }
+    },
+    {
+      "CommitEdit": {
+        "advance": "Up"
+      }
+    },
+    "FillSelection",
+    "ArrayFormula",
+    "CancelEdit",
+    "NewLineInCell",
+    "ToggleAbsolute",
+    {
+      "AcceptCompletion": {
+        "index": 0
+      }
+    },
+    {
+      "MoveCompletion": {
+        "down": false
+      }
+    },
+    {
+      "PointRef": {
+        "row": 0,
+        "col": 0,
+        "extend": false
+      }
+    },
+    {
+      "PointMove": {
+        "dir": "Up",
+        "extend": false
+      }
+    },
+    "OpenDropdown",
+    "ClearContents",
+    {
+      "Clear": {
+        "what": "All"
+      }
+    },
+    "FillDown",
+    "FillRight",
+    "FillUp",
+    "FillLeft",
+    {
+      "DragFill": {
+        "row": 0,
+        "col": 0
+      }
+    },
+    {
+      "AutoFill": {
+        "row": 0,
+        "col": 0,
+        "mode": "Auto"
+      }
+    },
+    {
+      "AutoSum": {
+        "function": ""
+      }
+    },
+    {
+      "InsertDateTime": {
+        "time": false,
+        "utc_offset_minutes": 0
+      }
+    },
+    {
+      "FindNext": {
+        "text": "",
+        "match_case": false,
+        "whole_cell": false,
+        "backward": false,
+        "in_formulas": false
+      }
+    },
+    "CalculateNow",
+    "CalculateSheet",
+    "ShowFormulas",
+    {
+      "InsertCells": {
+        "shift": "Vertical"
+      }
+    },
+    {
+      "DeleteCells": {
+        "shift": "Vertical"
+      }
+    },
+    "InsertRows",
+    "InsertColumns",
+    "DeleteRows",
+    "DeleteColumns",
+    {
+      "RowHeight": {
+        "points": 0.0
+      }
+    },
+    {
+      "ColumnWidth": {
+        "chars": 0.0
+      }
+    },
+    {
+      "ResizeRows": {
+        "from": 0,
+        "to": 0,
+        "px": 0.0
+      }
+    },
+    {
+      "ResizeColumns": {
+        "from": 0,
+        "to": 0,
+        "px": 0.0
+      }
+    },
+    {
+      "AutoFitRows": {
+        "from": 0,
+        "to": 0
+      }
+    },
+    {
+      "AutoFitColumns": {
+        "from": 0,
+        "to": 0
+      }
+    },
+    "HideRows",
+    "HideColumns",
+    "UnhideRows",
+    "UnhideColumns",
+    {
+      "Borders": {
+        "preset": "All",
+        "style": "None",
+        "color": ""
+      }
+    },
+    "BorderOutline",
+    "BorderNone",
+    {
+      "FillColor": {
+        "color": ""
+      }
+    },
+    "AlignTop",
+    "AlignMiddle",
+    "AlignBottom",
+    {
+      "AlignHorizontal": {
+        "align": "General"
+      }
+    },
+    {
+      "Orientation": {
+        "angle": 0
+      }
+    },
+    "WrapText",
+    "MergeCenter",
+    "MergeAcross",
+    "MergeCells",
+    "UnmergeCells",
+    {
+      "NumberFormat": {
+        "format": ""
+      }
+    },
+    "NumberStyle",
+    "CurrencyStyle",
+    "PercentStyle",
+    {
+      "AccountingStyle": {
+        "currency": ""
+      }
+    },
+    "CommaStyle",
+    "IncreaseDecimal",
+    "DecreaseDecimal",
+    {
+      "ApplyFormat": {
+        "format": {
+          "number_format": null,
+          "font_family": "",
+          "font_size": null,
+          "bold": null,
+          "italic": false,
+          "underline": "",
+          "strike": false,
+          "superscript": false,
+          "subscript": false,
+          "font_color": "",
+          "fill_color": "",
+          "pattern": "",
+          "pattern_color": "",
+          "h_align": null,
+          "v_align": null,
+          "wrap": false,
+          "shrink": false,
+          "indent": 0,
+          "rotation": null,
+          "merge": false,
+          "border_left": null,
+          "border_right": {
+            "style": "None",
+            "color": null
+          },
+          "border_top": {
+            "style": "None",
+            "color": null
+          },
+          "border_bottom": {
+            "style": "None",
+            "color": null
+          },
+          "border_inside_h": {
+            "style": "None",
+            "color": null
+          },
+          "border_inside_v": {
+            "style": "None",
+            "color": null
+          },
+          "border_diagonal_up": {
+            "style": "None",
+            "color": null
+          },
+          "border_diagonal_down": {
+            "style": "None",
+            "color": null
+          },
+          "locked": false,
+          "hidden": false
+        }
+      }
+    },
+    "FreezePanes",
+    "FreezeTopRow",
+    "FreezeFirstColumn",
+    "Split",
+    "Gridlines",
+    "Headings",
+    {
+      "PasteSpecial": {
+        "what": "All",
+        "op": "None",
+        "skip_blanks": false,
+        "transpose": false,
+        "data": {
+          "text": "",
+          "html": null,
+          "kiln": null
+        }
+      }
+    },
+    {
+      "PasteValues": {
+        "data": {
+          "text": "",
+          "html": null,
+          "kiln": null
+        }
+      }
+    },
+    {
+      "PasteFormulas": {
+        "data": {
+          "text": "",
+          "html": null,
+          "kiln": null
+        }
+      }
+    },
+    {
+      "PasteFormatting": {
+        "data": {
+          "text": "",
+          "html": null,
+          "kiln": null
+        }
+      }
+    }
+  ]
+}

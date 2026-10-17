@@ -31,14 +31,9 @@ fn opens_workbooks_and_saves_them_faithfully() {
     assert_eq!(doc.kind(), DocKind::Grid);
     assert!(doc.paragraphs().is_none());
     let tree = doc.a11y("formulas");
-    assert_eq!(tree.nodes[0].role, A11yRole::Document);
-    let grids: Vec<_> = tree
-        .nodes
-        .iter()
-        .filter(|n| n.role == A11yRole::Grid)
-        .filter_map(|n| n.name.clone())
-        .collect();
-    assert_eq!(grids, ["Formulas", "Data"]);
+    assert_eq!(tree.nodes[0].role, kiln_protocol::A11yRole::Grid);
+    assert_eq!(tree.nodes[0].name.as_deref(), Some("formulas – Formulas"));
+    assert!(tree.active.is_some() && tree.announce.is_some());
     assert!(matches!(doc.selection().kind, SelKind::Cells { .. }));
     assert!(doc.status().cells.is_some());
 
@@ -74,7 +69,10 @@ fn csv_files_open_and_new_workbooks_save() {
             },
         )
         .expect("csv");
-    assert_eq!(doc.a11y("orders").nodes[1].name.as_deref(), Some("orders"));
+    assert_eq!(
+        doc.a11y("orders").nodes[0].name.as_deref(),
+        Some("orders – orders")
+    );
     assert!(doc.execute(&Command::Suite(SuiteCommand::Undo)).is_err());
     assert!(!doc.undo() && !doc.can_undo());
     let blank = app.create();

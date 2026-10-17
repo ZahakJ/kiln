@@ -826,6 +826,56 @@ pub(crate) fn write_theme(
     kiln_ooxml::xml::document_to_bytes(&doc).unwrap_or_default()
 }
 
+// ── charts ────────────────────────────────────────────────────────────────
+
+/// The chart part handler: the `c:chartSpace` and `cx:chartSpace` parts the drawings reference,
+/// read into [`kiln_charts::model::ChartSpace`] (`kiln_charts::package::read_part`) and written
+/// back when a chart was edited (`write_part`). Unedited charts stay byte for byte.
+impl crate::XlsxSource {
+    /// Every chart part of the workbook with its chart (or why it could not be read).
+    #[must_use]
+    pub fn charts(&self) -> Vec<(String, Result<kiln_charts::model::ChartSpace, String>)> {
+        kiln_charts::package::chart_parts(&self.package)
+            .into_iter()
+            .map(|name| {
+                let chart = kiln_charts::package::read_part(&self.package, &name)
+                    .map_err(|e| e.to_string());
+                (name, chart)
+            })
+            .collect()
+    }
+
+    /// Replaces the chart part `name` with an edited chart; the next save writes it. A chart
+    /// that changed vocabulary (`c:` ↔ `cx:`) would need its drawing relationship retyped, which
+    /// the writer does not do yet: it is refused.
+    ///
+    /// # Errors
+    ///
+    /// `NotWorkbook` when `name` is not a chart part of this package or the chart changed vocabulary.
+    pub fn set_chart(
+        &mut self,
+        name: &str,
+        chart: &kiln_charts::model::ChartSpace,
+    ) -> Result<(), crate::XlsxError> {
+        let ct = self.package.content_type(name).map(str::to_owned);
+        if !ct
+            .as_deref()
+            .is_some_and(kiln_charts::package::is_chart_content_type)
+        {
+            return Err(crate::XlsxError::NotWorkbook(format!(
+                "{name} is not a chart part"
+            )));
+        }
+        if ct.as_deref() != Some(chart.format.content_type()) {
+            return Err(crate::XlsxError::NotWorkbook(format!(
+                "{name}: changing between a chart and a chartex part is not supported yet"
+            )));
+        }
+        kiln_charts::package::write_part(&mut self.package, name, chart)
+            .map_err(|e| crate::XlsxError::NotWorkbook(e.to_string()))
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

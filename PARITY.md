@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **28.1 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **37.4 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,23 +12,23 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 28.1 % | 782 | 1 | 141 | 89 | 551 | 20 |
+| **Overall** | 37.4 % | 782 | 1 | 198 | 94 | 489 | 20 |
 | Kiln Write | 56.3 % | 231 | 0 | 99 | 18 | 114 | 1 |
-| Kiln Grid | 19.1 % | 261 | 0 | 25 | 41 | 195 | 6 |
+| Kiln Grid | 47.9 % | 261 | 0 | 82 | 46 | 133 | 6 |
 | Kiln Deck | 14.1 % | 184 | 0 | 13 | 20 | 151 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
 | Suite | 18.4 % | 62 | 1 | 4 | 10 | 47 | 9 |
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 34.6 % | 462 | 0 | 135 | 50 | 277 | 0 |
-| commonly-missed | 10.5 % | 224 | 1 | 4 | 37 | 182 | 0 |
+| critical | 47.0 % | 462 | 0 | 190 | 54 | 218 | 0 |
+| commonly-missed | 11.6 % | 224 | 1 | 6 | 38 | 179 | 0 |
 | niche | 3.1 % | 96 | 0 | 2 | 2 | 92 | 20 |
 
 | App | Critical | Commonly-missed | Niche |
 |---|---:|---:|---:|
 | Kiln Write | 71.2 % (146) | 6.0 % (58) | 1.9 % (27) |
-| Kiln Grid | 21.0 % (143) | 15.7 % (83) | 7.1 % (35) |
+| Kiln Grid | 60.8 % (143) | 18.7 % (83) | 7.1 % (35) |
 | Kiln Deck | 15.1 % (119) | 11.9 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
 | Suite | 25.8 % (31) | 6.9 % (29) | 0.0 % (2) |
@@ -199,8 +199,43 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `write.files.docx-open` | Open .docx with styles, numbering, sections, tables, images, fields, comments and revisions | missing | done |
 | `write.files.docx-save` | Save .docx that opens in Word without repair; untouched parts byte-identical | missing | done |
 | `write.files.docm-preserve` | Open and save .docm/.dotx/.dotm keeping macros and templates intact | missing | partial |
-| `grid.home.number.format-combo` | Number format combo: General, Number, Currency, Accounting, Short/Long Date, Time, Percentage, Fraction, Scientific, Text | missing | partial |
+| `grid.home.clipboard.cut-copy-paste` | Cut, copy and paste cells with marching ants, formulas adjusted | missing | done |
+| `grid.home.clipboard.paste-values` | Paste values (Ctrl+Shift+V) | missing | done |
+| `grid.home.clipboard.paste-formulas` | Paste formulas only | missing | done |
+| `grid.home.clipboard.paste-formats` | Paste formats only | missing | done |
+| `grid.home.clipboard.paste-transpose` | Paste transposed | missing | done |
+| `grid.home.clipboard.paste-special` | Paste Special dialog: all, values, formats, comments, validation, column widths, operations (add, subtract, multiply, divide), skip blanks, paste link | missing | partial |
+| `grid.home.clipboard.external-paste` | Paste tables from browsers, Word and Excel (HTML and TSV), keeping numbers and dates | missing | done |
+| `grid.home.font.family-size` | Font family and size | missing | done |
+| `grid.home.font.grow-shrink` | Increase and decrease font size | missing | done |
+| `grid.home.font.bold-italic-underline` | Bold, italic, underline (single, double, accounting) and strikethrough (Ctrl+5) | missing | done |
+| `grid.home.font.borders` | Borders gallery: all, outside, thick box, bottom, top, left, right, no border, draw borders, More Borders | missing | partial |
+| `grid.home.font.fill-colour` | Fill colour (theme, standard, more colours, no fill) | missing | done |
+| `grid.home.font.font-colour` | Font colour | missing | done |
+| `grid.home.font.rich-text` | Rich text runs inside one cell (mixed bold/colour) | missing | partial |
+| `grid.home.alignment.vertical` | Top, middle and bottom alignment | missing | done |
+| `grid.home.alignment.horizontal` | Left, centre, right, fill, justify, centre across selection, distributed | missing | done |
+| `grid.home.alignment.orientation` | Orientation: angle counterclockwise/clockwise, vertical text, rotate up/down | missing | done |
+| `grid.home.alignment.wrap-text` | Wrap text with automatic row height | missing | done |
+| `grid.home.alignment.indent` | Decrease and increase indent | missing | done |
+| `grid.home.alignment.shrink-to-fit` | Shrink to fit | missing | done |
+| `grid.home.number.format-combo` | Number format combo: General, Number, Currency, Accounting, Short/Long Date, Time, Percentage, Fraction, Scientific, Text | missing | done |
+| `grid.home.number.accounting` | Accounting number format with currency choices | missing | done |
+| `grid.home.number.percent-comma` | Percent style (Ctrl+Shift+%) and comma style | missing | done |
+| `grid.home.number.decimals` | Increase and decrease decimal | missing | done |
 | `grid.home.number.custom-formats` | Custom number format codes (sections, colours, conditions, elapsed time, fractions, text placeholders) | missing | partial |
+| `grid.home.number.format-cells-dialog` | Format Cells dialog (Ctrl+1) with its six tabs: Number, Alignment, Font, Border, Fill, Protection | missing | done |
+| `grid.home.cells.insert` | Insert cells (shift right/down), rows, columns, sheet (Ctrl+Shift+=, Shift+F11) | missing | done |
+| `grid.home.cells.delete` | Delete cells, rows, columns, sheet (Ctrl+-) | missing | done |
+| `grid.home.cells.row-height` | Row height, AutoFit row height | missing | done |
+| `grid.home.cells.column-width` | Column width, AutoFit column width (double-click border), default width | missing | done |
+| `grid.home.cells.hide-unhide` | Hide and unhide rows, columns, sheets (Ctrl+9 / Ctrl+0) | missing | done |
+| `grid.home.cells.rename-sheet` | Rename sheet, move or copy sheet, tab colour | missing | done |
+| `grid.home.editing.autosum` | AutoSum (Alt+=) with Sum, Average, Count Numbers, Max, Min and range guessing | missing | done |
+| `grid.home.editing.fill-down-right` | Fill down (Ctrl+D), right (Ctrl+R), up, left | missing | done |
+| `grid.home.editing.fill-handle` | Fill handle: copy, series, linear trend, dates, weekdays, months, custom lists; Auto Fill options | missing | partial |
+| `grid.home.editing.clear` | Clear all, formats, contents, comments and notes, hyperlinks | missing | done |
+| `grid.home.editing.go-to` | Go To (F5 / Ctrl+G) and Name Box navigation | missing | done |
 | `grid.insert.charts.column` | Clustered, stacked and 100 % column charts | missing | partial |
 | `grid.insert.charts.bar` | Clustered, stacked and 100 % bar charts | missing | partial |
 | `grid.insert.charts.line` | Line charts with markers, stacked line | missing | partial |
@@ -215,6 +250,7 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `grid.insert.charts.radar` | Radar charts | missing | partial |
 | `grid.insert.charts.recommended` | Recommended Charts from the selection's shape | missing | partial |
 | `grid.formulas.library.function-count` | At least 484 Excel functions in v0.1 and all 520+ worksheet functions except cube, RTD and web services in the loop | missing | partial |
+| `grid.formulas.auditing.show-formulas` | Show formulas (Ctrl+`) | missing | done |
 | `grid.formulas.calculation.options` | Calculation options: automatic, automatic except tables, manual | missing | partial |
 | `grid.formulas.calculation.calculate-now` | Calculate now (F9) and calculate sheet (Shift+F9) | missing | partial |
 | `grid.formulas.calculation.iterative` | Iterative calculation (max iterations, max change) and circular reference warnings | missing | partial |
@@ -254,6 +290,15 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `grid.formulas.functions.date-time.NETWORKDAYS-INTL` | NETWORKDAYS.INTL and WORKDAY.INTL with weekend masks and holidays | missing | done |
 | `grid.data.get-transform.from-text-csv` | From Text/CSV with delimiter, encoding and type detection preview | missing | partial |
 | `grid.data.get-transform.from-json` | From JSON (array of objects to a table) | missing | partial |
+| `grid.view.views.normal` | Normal view | missing | done |
+| `grid.view.show.gridlines` | Show gridlines | missing | done |
+| `grid.view.show.formula-bar` | Show formula bar | missing | done |
+| `grid.view.show.headings` | Show row and column headings | missing | done |
+| `grid.view.zoom.zoom` | Zoom dialog, slider and Ctrl+wheel (10 %–400 %) | missing | done |
+| `grid.view.zoom.hundred` | Zoom to 100 % | missing | done |
+| `grid.view.zoom.selection` | Zoom to selection | missing | done |
+| `grid.view.window.freeze-panes` | Freeze Panes, Freeze Top Row, Freeze First Column, Unfreeze | missing | done |
+| `grid.view.window.split` | Split into four panes | missing | done |
 | `grid.chart-design.add-element` | Add chart element: axes, titles, data labels, legend, gridlines, trendline, error bars | missing | partial |
 | `grid.chart-design.quick-layout` | Quick layouts | missing | partial |
 | `grid.chart-design.colours-styles` | Change colours and chart styles (dark-mode aware) | missing | partial |
@@ -261,6 +306,23 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `grid.chart-design.select-data` | Select Data dialog (series, categories, hidden and empty cells) | missing | partial |
 | `grid.chart-design.change-type` | Change chart type | missing | partial |
 | `grid.chart-format.format-pane` | Format pane for chart elements: fill, line, effects, axis options, number formats | missing | partial |
+| `grid.surface.size` | 1,048,576 rows × 16,384 columns addressable | missing | done |
+| `grid.surface.scroll-1m` | Smooth scrolling of a 1,000,000-cell sheet at 55+ fps | missing | done |
+| `grid.surface.in-cell-edit` | In-cell editing (F2, typing replaces, Esc cancels, Enter/Tab/Shift moves) | missing | done |
+| `grid.surface.formula-bar` | Formula bar (expandable) with fx, cancel and enter buttons | missing | done |
+| `grid.surface.name-box` | Name Box: shows the address, defines names, jumps to ranges | missing | done |
+| `grid.surface.keyboard-navigation` | Excel keyboard habits: Ctrl+Arrows, Ctrl+Shift+Arrows, Ctrl+Home/End, Shift+Space, Ctrl+Space, Page Up/Down, Alt+Page Up/Down | missing | done |
+| `grid.surface.f4-absolute` | F4 toggles $ absolute/relative references while editing | missing | done |
+| `grid.surface.multi-select` | Multiple selections with Ctrl+click and Shift+F8 | missing | partial |
+| `grid.surface.ctrl-enter-fill` | Ctrl+Enter fills the selection; Alt+Enter new line in cell | missing | done |
+| `grid.surface.autocomplete` | AutoComplete of values in a column and Alt+Down pick list | missing | done |
+| `grid.surface.formula-autocomplete` | Formula autocompletion with argument tooltips and inline documentation | missing | done |
+| `grid.surface.range-colouring` | Range colouring of references while editing formulas, with point mode | missing | done |
+| `grid.surface.status-bar-stats` | Status bar Average/Count/Sum (and Min, Max, Numerical Count, configurable) | missing | done |
+| `grid.surface.sheet-tabs` | Sheet tabs: add, rename, reorder, colour, hide, context menu; Ctrl+Page Up/Down | missing | done |
+| `grid.surface.overflow-text` | Text overflow into empty neighbours, ### for narrow numbers | missing | done |
+| `grid.surface.error-indicators` | Error values (#DIV/0!, #N/A, #REF!, #VALUE!, #NAME?, #SPILL!, #CALC!) with indicators and help | missing | partial |
+| `grid.surface.undo-redo` | Undo and redo with history for every edit, format and structure change | missing | done |
 | `grid.files.xlsx-open` | Open .xlsx/.xlsm with values, formulas, styles, merges, names, tables, validation, CF and charts | missing | partial |
 | `grid.files.xlsx-save` | Save .xlsx that Excel opens without repair; formulas preserved exactly | missing | partial |
 | `grid.files.csv-tsv` | Open and save CSV and TSV with encoding, delimiter and locale options | missing | partial |
@@ -841,55 +903,55 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 
 ## Kiln Grid
 
-Score 19.1 % over 261 rows in scope; 0 better, 25 done, 41 partial, 195 missing, 6 out of scope.
+Score 47.9 % over 261 rows in scope; 0 better, 82 done, 46 partial, 133 missing, 6 out of scope.
 
 ### Home ▸ Clipboard
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Cut, copy and paste cells with marching ants, formulas adjusted | Excel ▸ Home ▸ Clipboard ▸ Cut / Copy / Paste | critical | P0 | WP-71 | `grid.home.clipboard.cut-copy-paste` |
-| ○ | Paste values (Ctrl+Shift+V) | Excel ▸ Paste ▸ Values | critical | P0 | WP-71 | `grid.home.clipboard.paste-values` |
-| ○ | Paste formulas only | Excel ▸ Paste ▸ Formulas | critical | P0 | WP-71 | `grid.home.clipboard.paste-formulas` |
-| ○ | Paste formats only | Excel ▸ Paste ▸ Formatting | critical | P0 | WP-71 | `grid.home.clipboard.paste-formats` |
-| ○ | Paste transposed | Excel ▸ Paste ▸ Transpose | critical | P0 | WP-71 | `grid.home.clipboard.paste-transpose` |
-| ○ | Paste Special dialog: all, values, formats, comments, validation, column widths, operations (add, subtract, multiply, divide), skip blanks, paste link | Excel ▸ Paste ▸ Paste Special (Ctrl+Alt+V) | critical | P0 | WP-71 | `grid.home.clipboard.paste-special` |
+| ● | Cut, copy and paste cells with marching ants, formulas adjusted | Excel ▸ Home ▸ Clipboard ▸ Cut / Copy / Paste | critical | P0 | WP-71 | `grid.home.clipboard.cut-copy-paste` |
+| ● | Paste values (Ctrl+Shift+V) | Excel ▸ Paste ▸ Values | critical | P0 | WP-71 | `grid.home.clipboard.paste-values` |
+| ● | Paste formulas only | Excel ▸ Paste ▸ Formulas | critical | P0 | WP-71 | `grid.home.clipboard.paste-formulas` |
+| ● | Paste formats only | Excel ▸ Paste ▸ Formatting | critical | P0 | WP-71 | `grid.home.clipboard.paste-formats` |
+| ● | Paste transposed | Excel ▸ Paste ▸ Transpose | critical | P0 | WP-71 | `grid.home.clipboard.paste-transpose` |
+| ◐ | Paste Special dialog: all, values, formats, comments, validation, column widths, operations (add, subtract, multiply, divide), skip blanks, paste link | Excel ▸ Paste ▸ Paste Special (Ctrl+Alt+V) | critical | P0 | WP-71 | `grid.home.clipboard.paste-special` |
 | ○ | Format Painter for cells (single and persistent) | Excel ▸ Home ▸ Clipboard ▸ Format Painter | critical | P0 | WP-72 | `grid.home.clipboard.format-painter` |
-| ○ | Paste tables from browsers, Word and Excel (HTML and TSV), keeping numbers and dates | Excel ▸ paste from other apps | critical | P0 | WP-71 | `grid.home.clipboard.external-paste` |
+| ● | Paste tables from browsers, Word and Excel (HTML and TSV), keeping numbers and dates | Excel ▸ paste from other apps | critical | P0 | WP-71 | `grid.home.clipboard.external-paste` |
 
 ### Home ▸ Font
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Font family and size | Excel ▸ Home ▸ Font ▸ Font / Font Size | critical | P0 | WP-71 | `grid.home.font.family-size` |
-| ○ | Increase and decrease font size | Excel ▸ Home ▸ Font ▸ Increase / Decrease Font Size | critical | P0 | WP-71 | `grid.home.font.grow-shrink` |
-| ○ | Bold, italic, underline (single, double, accounting) and strikethrough (Ctrl+5) | Excel ▸ Home ▸ Font ▸ B / I / U | critical | P0 | WP-71 | `grid.home.font.bold-italic-underline` |
-| ○ | Borders gallery: all, outside, thick box, bottom, top, left, right, no border, draw borders, More Borders | Excel ▸ Home ▸ Font ▸ Borders | critical | P0 | WP-71 | `grid.home.font.borders` |
-| ○ | Fill colour (theme, standard, more colours, no fill) | Excel ▸ Home ▸ Font ▸ Fill Color | critical | P0 | WP-71 | `grid.home.font.fill-colour` |
-| ○ | Font colour | Excel ▸ Home ▸ Font ▸ Font Color | critical | P0 | WP-71 | `grid.home.font.font-colour` |
-| ○ | Rich text runs inside one cell (mixed bold/colour) | Excel ▸ partial cell formatting | commonly-missed | P0 | WP-71 | `grid.home.font.rich-text` |
+| ● | Font family and size | Excel ▸ Home ▸ Font ▸ Font / Font Size | critical | P0 | WP-71 | `grid.home.font.family-size` |
+| ● | Increase and decrease font size | Excel ▸ Home ▸ Font ▸ Increase / Decrease Font Size | critical | P0 | WP-71 | `grid.home.font.grow-shrink` |
+| ● | Bold, italic, underline (single, double, accounting) and strikethrough (Ctrl+5) | Excel ▸ Home ▸ Font ▸ B / I / U | critical | P0 | WP-71 | `grid.home.font.bold-italic-underline` |
+| ◐ | Borders gallery: all, outside, thick box, bottom, top, left, right, no border, draw borders, More Borders | Excel ▸ Home ▸ Font ▸ Borders | critical | P0 | WP-71 | `grid.home.font.borders` |
+| ● | Fill colour (theme, standard, more colours, no fill) | Excel ▸ Home ▸ Font ▸ Fill Color | critical | P0 | WP-71 | `grid.home.font.fill-colour` |
+| ● | Font colour | Excel ▸ Home ▸ Font ▸ Font Color | critical | P0 | WP-71 | `grid.home.font.font-colour` |
+| ◐ | Rich text runs inside one cell (mixed bold/colour) | Excel ▸ partial cell formatting | commonly-missed | P0 | WP-71 | `grid.home.font.rich-text` |
 
 ### Home ▸ Alignment
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Top, middle and bottom alignment | Excel ▸ Home ▸ Alignment ▸ Top / Middle / Bottom Align | critical | P0 | WP-71 | `grid.home.alignment.vertical` |
-| ○ | Left, centre, right, fill, justify, centre across selection, distributed | Excel ▸ Home ▸ Alignment ▸ Align Left / Center / Right | critical | P0 | WP-71 | `grid.home.alignment.horizontal` |
-| ○ | Orientation: angle counterclockwise/clockwise, vertical text, rotate up/down | Excel ▸ Home ▸ Alignment ▸ Orientation | critical | P0 | WP-71 | `grid.home.alignment.orientation` |
-| ○ | Wrap text with automatic row height | Excel ▸ Home ▸ Alignment ▸ Wrap Text | critical | P0 | WP-71 | `grid.home.alignment.wrap-text` |
-| ○ | Decrease and increase indent | Excel ▸ Home ▸ Alignment ▸ Indent | critical | P0 | WP-71 | `grid.home.alignment.indent` |
+| ● | Top, middle and bottom alignment | Excel ▸ Home ▸ Alignment ▸ Top / Middle / Bottom Align | critical | P0 | WP-71 | `grid.home.alignment.vertical` |
+| ● | Left, centre, right, fill, justify, centre across selection, distributed | Excel ▸ Home ▸ Alignment ▸ Align Left / Center / Right | critical | P0 | WP-71 | `grid.home.alignment.horizontal` |
+| ● | Orientation: angle counterclockwise/clockwise, vertical text, rotate up/down | Excel ▸ Home ▸ Alignment ▸ Orientation | critical | P0 | WP-71 | `grid.home.alignment.orientation` |
+| ● | Wrap text with automatic row height | Excel ▸ Home ▸ Alignment ▸ Wrap Text | critical | P0 | WP-71 | `grid.home.alignment.wrap-text` |
+| ● | Decrease and increase indent | Excel ▸ Home ▸ Alignment ▸ Indent | critical | P0 | WP-71 | `grid.home.alignment.indent` |
 | ○ | Merge & Center, Merge Across, Merge Cells, Unmerge | Excel ▸ Home ▸ Alignment ▸ Merge & Center | critical | P0 | WP-72 | `grid.home.alignment.merge-center` |
-| ○ | Shrink to fit | Excel ▸ Format Cells ▸ Alignment ▸ Shrink to fit | critical | P0 | WP-71 | `grid.home.alignment.shrink-to-fit` |
+| ● | Shrink to fit | Excel ▸ Format Cells ▸ Alignment ▸ Shrink to fit | critical | P0 | WP-71 | `grid.home.alignment.shrink-to-fit` |
 
 ### Home ▸ Number
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ◐ | Number format combo: General, Number, Currency, Accounting, Short/Long Date, Time, Percentage, Fraction, Scientific, Text | Excel ▸ Home ▸ Number ▸ Number Format | critical | P0 | WP-71 | `grid.home.number.format-combo` |
-| ○ | Accounting number format with currency choices | Excel ▸ Home ▸ Number ▸ Accounting Number Format | critical | P0 | WP-71 | `grid.home.number.accounting` |
-| ○ | Percent style (Ctrl+Shift+%) and comma style | Excel ▸ Home ▸ Number ▸ Percent Style / Comma Style | critical | P0 | WP-71 | `grid.home.number.percent-comma` |
-| ○ | Increase and decrease decimal | Excel ▸ Home ▸ Number ▸ Increase / Decrease Decimal | critical | P0 | WP-71 | `grid.home.number.decimals` |
+| ● | Number format combo: General, Number, Currency, Accounting, Short/Long Date, Time, Percentage, Fraction, Scientific, Text | Excel ▸ Home ▸ Number ▸ Number Format | critical | P0 | WP-71 | `grid.home.number.format-combo` |
+| ● | Accounting number format with currency choices | Excel ▸ Home ▸ Number ▸ Accounting Number Format | critical | P0 | WP-71 | `grid.home.number.accounting` |
+| ● | Percent style (Ctrl+Shift+%) and comma style | Excel ▸ Home ▸ Number ▸ Percent Style / Comma Style | critical | P0 | WP-71 | `grid.home.number.percent-comma` |
+| ● | Increase and decrease decimal | Excel ▸ Home ▸ Number ▸ Increase / Decrease Decimal | critical | P0 | WP-71 | `grid.home.number.decimals` |
 | ◐ | Custom number format codes (sections, colours, conditions, elapsed time, fractions, text placeholders) | Excel ▸ Format Cells ▸ Number ▸ Custom | critical | P0 | WP-71 | `grid.home.number.custom-formats` |
-| ○ | Format Cells dialog (Ctrl+1) with its six tabs: Number, Alignment, Font, Border, Fill, Protection | Excel ▸ Format Cells | critical | P0 | WP-71 | `grid.home.number.format-cells-dialog` |
+| ● | Format Cells dialog (Ctrl+1) with its six tabs: Number, Alignment, Font, Border, Fill, Protection | Excel ▸ Format Cells | critical | P0 | WP-71 | `grid.home.number.format-cells-dialog` |
 
 ### Home ▸ Styles
 
@@ -909,27 +971,27 @@ Score 19.1 % over 261 rows in scope; 0 better, 25 done, 41 partial, 195 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Insert cells (shift right/down), rows, columns, sheet (Ctrl+Shift+=, Shift+F11) | Excel ▸ Home ▸ Cells ▸ Insert | critical | P0 | WP-71 | `grid.home.cells.insert` |
-| ○ | Delete cells, rows, columns, sheet (Ctrl+-) | Excel ▸ Home ▸ Cells ▸ Delete | critical | P0 | WP-71 | `grid.home.cells.delete` |
-| ○ | Row height, AutoFit row height | Excel ▸ Home ▸ Cells ▸ Format ▸ Row Height | critical | P0 | WP-71 | `grid.home.cells.row-height` |
-| ○ | Column width, AutoFit column width (double-click border), default width | Excel ▸ Home ▸ Cells ▸ Format ▸ Column Width | critical | P0 | WP-71 | `grid.home.cells.column-width` |
-| ○ | Hide and unhide rows, columns, sheets (Ctrl+9 / Ctrl+0) | Excel ▸ Home ▸ Cells ▸ Format ▸ Hide & Unhide | critical | P0 | WP-71 | `grid.home.cells.hide-unhide` |
-| ○ | Rename sheet, move or copy sheet, tab colour | Excel ▸ Home ▸ Cells ▸ Format ▸ Organize Sheets | critical | P0 | WP-71 | `grid.home.cells.rename-sheet` |
+| ● | Insert cells (shift right/down), rows, columns, sheet (Ctrl+Shift+=, Shift+F11) | Excel ▸ Home ▸ Cells ▸ Insert | critical | P0 | WP-71 | `grid.home.cells.insert` |
+| ● | Delete cells, rows, columns, sheet (Ctrl+-) | Excel ▸ Home ▸ Cells ▸ Delete | critical | P0 | WP-71 | `grid.home.cells.delete` |
+| ● | Row height, AutoFit row height | Excel ▸ Home ▸ Cells ▸ Format ▸ Row Height | critical | P0 | WP-71 | `grid.home.cells.row-height` |
+| ● | Column width, AutoFit column width (double-click border), default width | Excel ▸ Home ▸ Cells ▸ Format ▸ Column Width | critical | P0 | WP-71 | `grid.home.cells.column-width` |
+| ● | Hide and unhide rows, columns, sheets (Ctrl+9 / Ctrl+0) | Excel ▸ Home ▸ Cells ▸ Format ▸ Hide & Unhide | critical | P0 | WP-71 | `grid.home.cells.hide-unhide` |
+| ● | Rename sheet, move or copy sheet, tab colour | Excel ▸ Home ▸ Cells ▸ Format ▸ Organize Sheets | critical | P0 | WP-71 | `grid.home.cells.rename-sheet` |
 | ○ | Lock cell and Protect Sheet entry point | Excel ▸ Home ▸ Cells ▸ Format ▸ Lock Cell | commonly-missed | P1 | WP-74 | `grid.home.cells.lock-cell` |
 
 ### Home ▸ Editing
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | AutoSum (Alt+=) with Sum, Average, Count Numbers, Max, Min and range guessing | Excel ▸ Home ▸ Editing ▸ AutoSum | critical | P0 | WP-71 | `grid.home.editing.autosum` |
-| ○ | Fill down (Ctrl+D), right (Ctrl+R), up, left | Excel ▸ Home ▸ Editing ▸ Fill | critical | P0 | WP-71 | `grid.home.editing.fill-down-right` |
+| ● | AutoSum (Alt+=) with Sum, Average, Count Numbers, Max, Min and range guessing | Excel ▸ Home ▸ Editing ▸ AutoSum | critical | P0 | WP-71 | `grid.home.editing.autosum` |
+| ● | Fill down (Ctrl+D), right (Ctrl+R), up, left | Excel ▸ Home ▸ Editing ▸ Fill | critical | P0 | WP-71 | `grid.home.editing.fill-down-right` |
 | ○ | Fill Series dialog (linear, growth, date units, step and stop values) | Excel ▸ Home ▸ Editing ▸ Fill ▸ Series | critical | P0 | WP-71 | `grid.home.editing.fill-series` |
-| ○ | Fill handle: copy, series, linear trend, dates, weekdays, months, custom lists; Auto Fill options | Excel ▸ fill handle | critical | P0 | WP-71 | `grid.home.editing.fill-handle` |
+| ◐ | Fill handle: copy, series, linear trend, dates, weekdays, months, custom lists; Auto Fill options | Excel ▸ fill handle | critical | P0 | WP-71 | `grid.home.editing.fill-handle` |
 | ○ | Flash Fill (Ctrl+E) from one or two examples | Excel ▸ Home ▸ Editing ▸ Fill ▸ Flash Fill | commonly-missed | P1 | WP-74 | `grid.home.editing.flash-fill` |
-| ○ | Clear all, formats, contents, comments and notes, hyperlinks | Excel ▸ Home ▸ Editing ▸ Clear | critical | P0 | WP-71 | `grid.home.editing.clear` |
+| ● | Clear all, formats, contents, comments and notes, hyperlinks | Excel ▸ Home ▸ Editing ▸ Clear | critical | P0 | WP-71 | `grid.home.editing.clear` |
 | ○ | Sort & Filter menu: A→Z, Z→A, Custom Sort, Filter, Clear, Reapply | Excel ▸ Home ▸ Editing ▸ Sort & Filter | critical | P0 | WP-72 | `grid.home.editing.sort-filter` |
 | ○ | Find and Replace (Ctrl+F / Ctrl+H): values, formulas, match case, entire cell, within sheet or workbook, Find All list | Excel ▸ Home ▸ Editing ▸ Find & Select | critical | P0 | WP-72 | `grid.home.editing.find-replace` |
-| ○ | Go To (F5 / Ctrl+G) and Name Box navigation | Excel ▸ Find & Select ▸ Go To | critical | P0 | WP-71 | `grid.home.editing.go-to` |
+| ● | Go To (F5 / Ctrl+G) and Name Box navigation | Excel ▸ Find & Select ▸ Go To | critical | P0 | WP-71 | `grid.home.editing.go-to` |
 | ○ | Go To Special: blanks, constants, formulas, visible cells only, current region, last cell | Excel ▸ Find & Select ▸ Go To Special | commonly-missed | P0 | WP-72 | `grid.home.editing.go-to-special` |
 | ○ | Command palette in the ribbon (Ctrl+Shift+P / Alt+Q) with Office synonyms | — | commonly-missed | P0 | WP-58 | `grid.home.editing.palette` |
 
@@ -1059,7 +1121,7 @@ Score 19.1 % over 261 rows in scope; 0 better, 25 done, 41 partial, 195 missing,
 | ○ | Trace precedents with arrows | Excel ▸ Formulas ▸ Formula Auditing ▸ Trace Precedents | commonly-missed | P0 | WP-72 | `grid.formulas.auditing.trace-precedents` |
 | ○ | Trace dependents with arrows | Excel ▸ Formulas ▸ Formula Auditing ▸ Trace Dependents | commonly-missed | P0 | WP-72 | `grid.formulas.auditing.trace-dependents` |
 | ○ | Remove arrows | Excel ▸ Formulas ▸ Formula Auditing ▸ Remove Arrows | commonly-missed | P0 | WP-72 | `grid.formulas.auditing.remove-arrows` |
-| ○ | Show formulas (Ctrl+`) | Excel ▸ Formulas ▸ Formula Auditing ▸ Show Formulas | critical | P0 | WP-71 | `grid.formulas.auditing.show-formulas` |
+| ● | Show formulas (Ctrl+`) | Excel ▸ Formulas ▸ Formula Auditing ▸ Show Formulas | critical | P0 | WP-71 | `grid.formulas.auditing.show-formulas` |
 | ○ | Error checking with green triangles and the error options menu | Excel ▸ Formulas ▸ Formula Auditing ▸ Error Checking | commonly-missed | P0 | WP-72 | `grid.formulas.auditing.error-checking` |
 | ○ | Evaluate Formula step by step | Excel ▸ Formulas ▸ Formula Auditing ▸ Evaluate Formula | commonly-missed | P0 | WP-72 | `grid.formulas.auditing.evaluate-formula` |
 | ○ | Watch Window | Excel ▸ Formulas ▸ Formula Auditing ▸ Watch Window | commonly-missed | P1 | WP-72 | `grid.formulas.auditing.watch-window` |
@@ -1199,7 +1261,7 @@ Score 19.1 % over 261 rows in scope; 0 better, 25 done, 41 partial, 195 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Normal view | Excel ▸ View ▸ Normal | critical | P0 | WP-71 | `grid.view.views.normal` |
+| ● | Normal view | Excel ▸ View ▸ Normal | critical | P0 | WP-71 | `grid.view.views.normal` |
 | ○ | Page Break Preview with draggable breaks | Excel ▸ View ▸ Page Break Preview | commonly-missed | P0 | WP-72 | `grid.view.views.page-break-preview` |
 | ○ | Page Layout view with rulers, headers and footers | Excel ▸ View ▸ Page Layout | commonly-missed | P0 | WP-72 | `grid.view.views.page-layout` |
 | ○ | Custom Views | Excel ▸ View ▸ Custom Views | niche | P2 | WP-71 | `grid.view.views.custom-views` |
@@ -1209,25 +1271,25 @@ Score 19.1 % over 261 rows in scope; 0 better, 25 done, 41 partial, 195 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Show gridlines | Excel ▸ View ▸ Show ▸ Gridlines | critical | P0 | WP-71 | `grid.view.show.gridlines` |
-| ○ | Show formula bar | Excel ▸ View ▸ Show ▸ Formula Bar | critical | P0 | WP-71 | `grid.view.show.formula-bar` |
-| ○ | Show row and column headings | Excel ▸ View ▸ Show ▸ Headings | critical | P0 | WP-71 | `grid.view.show.headings` |
+| ● | Show gridlines | Excel ▸ View ▸ Show ▸ Gridlines | critical | P0 | WP-71 | `grid.view.show.gridlines` |
+| ● | Show formula bar | Excel ▸ View ▸ Show ▸ Formula Bar | critical | P0 | WP-71 | `grid.view.show.formula-bar` |
+| ● | Show row and column headings | Excel ▸ View ▸ Show ▸ Headings | critical | P0 | WP-71 | `grid.view.show.headings` |
 | ○ | Ruler in Page Layout view | Excel ▸ View ▸ Show ▸ Ruler | niche | P2 | WP-71 | `grid.view.show.ruler` |
 
 ### View ▸ Zoom
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Zoom dialog, slider and Ctrl+wheel (10 %–400 %) | Excel ▸ View ▸ Zoom | critical | P0 | WP-71 | `grid.view.zoom.zoom` |
-| ○ | Zoom to 100 % | Excel ▸ View ▸ Zoom ▸ 100% | critical | P0 | WP-71 | `grid.view.zoom.hundred` |
-| ○ | Zoom to selection | Excel ▸ View ▸ Zoom to Selection | commonly-missed | P0 | WP-71 | `grid.view.zoom.selection` |
+| ● | Zoom dialog, slider and Ctrl+wheel (10 %–400 %) | Excel ▸ View ▸ Zoom | critical | P0 | WP-71 | `grid.view.zoom.zoom` |
+| ● | Zoom to 100 % | Excel ▸ View ▸ Zoom ▸ 100% | critical | P0 | WP-71 | `grid.view.zoom.hundred` |
+| ● | Zoom to selection | Excel ▸ View ▸ Zoom to Selection | commonly-missed | P0 | WP-71 | `grid.view.zoom.selection` |
 
 ### View ▸ Window
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Freeze Panes, Freeze Top Row, Freeze First Column, Unfreeze | Excel ▸ View ▸ Window ▸ Freeze Panes | critical | P0 | WP-71 | `grid.view.window.freeze-panes` |
-| ○ | Split into four panes | Excel ▸ View ▸ Window ▸ Split | commonly-missed | P0 | WP-71 | `grid.view.window.split` |
+| ● | Freeze Panes, Freeze Top Row, Freeze First Column, Unfreeze | Excel ▸ View ▸ Window ▸ Freeze Panes | critical | P0 | WP-71 | `grid.view.window.freeze-panes` |
+| ● | Split into four panes | Excel ▸ View ▸ Window ▸ Split | commonly-missed | P0 | WP-71 | `grid.view.window.split` |
 | ○ | New window and arrange all | Excel ▸ View ▸ Window ▸ New Window / Arrange All | niche | P2 | WP-88 | `grid.view.window.new-window` |
 | ○ | Hide and unhide windows | Excel ▸ View ▸ Window ▸ Hide | niche | P2 | WP-71 | `grid.view.window.hide-unhide` |
 | ○ | View side by side with synchronous scrolling | Excel ▸ View ▸ Window ▸ View Side by Side | niche | P2 | WP-88 | `grid.view.window.side-by-side` |
@@ -1288,23 +1350,23 @@ Score 19.1 % over 261 rows in scope; 0 better, 25 done, 41 partial, 195 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | 1,048,576 rows × 16,384 columns addressable | Excel ▸ sheet size | critical | P0 | WP-71 | `grid.surface.size` |
-| ○ | Smooth scrolling of a 1,000,000-cell sheet at 55+ fps | Excel ▸ large sheets | critical | P0 | WP-71 | `grid.surface.scroll-1m` |
-| ○ | In-cell editing (F2, typing replaces, Esc cancels, Enter/Tab/Shift moves) | Excel ▸ cell editing | critical | P0 | WP-71 | `grid.surface.in-cell-edit` |
-| ○ | Formula bar (expandable) with fx, cancel and enter buttons | Excel ▸ Formula Bar | critical | P0 | WP-71 | `grid.surface.formula-bar` |
-| ○ | Name Box: shows the address, defines names, jumps to ranges | Excel ▸ Name Box | critical | P0 | WP-71 | `grid.surface.name-box` |
-| ○ | Excel keyboard habits: Ctrl+Arrows, Ctrl+Shift+Arrows, Ctrl+Home/End, Shift+Space, Ctrl+Space, Page Up/Down, Alt+Page Up/Down | Excel ▸ keyboard navigation | critical | P0 | WP-71 | `grid.surface.keyboard-navigation` |
-| ○ | F4 toggles $ absolute/relative references while editing | Excel ▸ F4 | critical | P0 | WP-71 | `grid.surface.f4-absolute` |
-| ○ | Multiple selections with Ctrl+click and Shift+F8 | Excel ▸ non-contiguous selection | critical | P0 | WP-71 | `grid.surface.multi-select` |
-| ○ | Ctrl+Enter fills the selection; Alt+Enter new line in cell | Excel ▸ Ctrl+Enter | critical | P0 | WP-71 | `grid.surface.ctrl-enter-fill` |
-| ○ | AutoComplete of values in a column and Alt+Down pick list | Excel ▸ AutoComplete | critical | P0 | WP-71 | `grid.surface.autocomplete` |
-| ○ | Formula autocompletion with argument tooltips and inline documentation | Excel ▸ Formula AutoComplete | critical | P0 | WP-71 | `grid.surface.formula-autocomplete` |
-| ○ | Range colouring of references while editing formulas, with point mode | Excel ▸ formula reference highlighting | critical | P0 | WP-71 | `grid.surface.range-colouring` |
-| ○ | Status bar Average/Count/Sum (and Min, Max, Numerical Count, configurable) | Excel ▸ status bar | critical | P0 | WP-71 | `grid.surface.status-bar-stats` |
-| ○ | Sheet tabs: add, rename, reorder, colour, hide, context menu; Ctrl+Page Up/Down | Excel ▸ sheet tabs | critical | P0 | WP-71 | `grid.surface.sheet-tabs` |
-| ○ | Text overflow into empty neighbours, ### for narrow numbers | Excel ▸ cell overflow | critical | P0 | WP-71 | `grid.surface.overflow-text` |
-| ○ | Error values (#DIV/0!, #N/A, #REF!, #VALUE!, #NAME?, #SPILL!, #CALC!) with indicators and help | Excel ▸ error values | critical | P0 | WP-71 | `grid.surface.error-indicators` |
-| ○ | Undo and redo with history for every edit, format and structure change | Excel ▸ Undo / Redo | critical | P0 | WP-71 | `grid.surface.undo-redo` |
+| ● | 1,048,576 rows × 16,384 columns addressable | Excel ▸ sheet size | critical | P0 | WP-71 | `grid.surface.size` |
+| ● | Smooth scrolling of a 1,000,000-cell sheet at 55+ fps | Excel ▸ large sheets | critical | P0 | WP-71 | `grid.surface.scroll-1m` |
+| ● | In-cell editing (F2, typing replaces, Esc cancels, Enter/Tab/Shift moves) | Excel ▸ cell editing | critical | P0 | WP-71 | `grid.surface.in-cell-edit` |
+| ● | Formula bar (expandable) with fx, cancel and enter buttons | Excel ▸ Formula Bar | critical | P0 | WP-71 | `grid.surface.formula-bar` |
+| ● | Name Box: shows the address, defines names, jumps to ranges | Excel ▸ Name Box | critical | P0 | WP-71 | `grid.surface.name-box` |
+| ● | Excel keyboard habits: Ctrl+Arrows, Ctrl+Shift+Arrows, Ctrl+Home/End, Shift+Space, Ctrl+Space, Page Up/Down, Alt+Page Up/Down | Excel ▸ keyboard navigation | critical | P0 | WP-71 | `grid.surface.keyboard-navigation` |
+| ● | F4 toggles $ absolute/relative references while editing | Excel ▸ F4 | critical | P0 | WP-71 | `grid.surface.f4-absolute` |
+| ◐ | Multiple selections with Ctrl+click and Shift+F8 | Excel ▸ non-contiguous selection | critical | P0 | WP-71 | `grid.surface.multi-select` |
+| ● | Ctrl+Enter fills the selection; Alt+Enter new line in cell | Excel ▸ Ctrl+Enter | critical | P0 | WP-71 | `grid.surface.ctrl-enter-fill` |
+| ● | AutoComplete of values in a column and Alt+Down pick list | Excel ▸ AutoComplete | critical | P0 | WP-71 | `grid.surface.autocomplete` |
+| ● | Formula autocompletion with argument tooltips and inline documentation | Excel ▸ Formula AutoComplete | critical | P0 | WP-71 | `grid.surface.formula-autocomplete` |
+| ● | Range colouring of references while editing formulas, with point mode | Excel ▸ formula reference highlighting | critical | P0 | WP-71 | `grid.surface.range-colouring` |
+| ● | Status bar Average/Count/Sum (and Min, Max, Numerical Count, configurable) | Excel ▸ status bar | critical | P0 | WP-71 | `grid.surface.status-bar-stats` |
+| ● | Sheet tabs: add, rename, reorder, colour, hide, context menu; Ctrl+Page Up/Down | Excel ▸ sheet tabs | critical | P0 | WP-71 | `grid.surface.sheet-tabs` |
+| ● | Text overflow into empty neighbours, ### for narrow numbers | Excel ▸ cell overflow | critical | P0 | WP-71 | `grid.surface.overflow-text` |
+| ◐ | Error values (#DIV/0!, #N/A, #REF!, #VALUE!, #NAME?, #SPILL!, #CALC!) with indicators and help | Excel ▸ error values | critical | P0 | WP-71 | `grid.surface.error-indicators` |
+| ● | Undo and redo with history for every edit, format and structure change | Excel ▸ Undo / Redo | critical | P0 | WP-71 | `grid.surface.undo-redo` |
 | ○ | Drag to move or copy cells (Ctrl), insert-drag with Shift | Excel ▸ drag and drop cells | commonly-missed | P0 | WP-71 | `grid.surface.drag-move` |
 | ○ | Context menus for cells, headers, sheet tabs, charts | Excel ▸ right-click menus | critical | P0 | WP-58 | `grid.surface.right-click-menu` |
 | ○ | Number-format mini toolbar on right-click | Excel ▸ mini toolbar | critical | P0 | WP-58 | `grid.surface.mini-toolbar` |

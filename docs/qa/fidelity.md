@@ -13,7 +13,7 @@ Lowest value of any file of the format (— = not measured).
 | Format | Adapter | Files | Passing | structural | text | visual | values | formulas | oracle_opens | byte_identical_untouched |
 |---|---|---|---|---|---|---|---|---|---|---|
 | docx | kiln-io-docx | 31 | 31 | 1.000 | 1.000 | 0.916 | — | — | yes | yes |
-| xlsx | kiln-io-xlsx | 31 | 31 | 1.000 | 1.000 | 0.999 | 1.000 | 1.000 | yes | yes |
+| xlsx | kiln-io-xlsx | 44 | 44 | 1.000 | 1.000 | 0.999 | 1.000 | 1.000 | yes | yes |
 | pptx | kiln-io-pptx | 29 | 29 | 1.000 | 1.000 | 0.999 | — | — | yes | yes |
 
 ## Files
@@ -72,9 +72,22 @@ Lowest value of any file of the format (— = not measured).
 | `xlsx/features/styles.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
 | `xlsx/features/tables.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
 | `xlsx/manual/minimal.xlsx` | pass | 1.000 | 1.000 | 0.999 | 1.000 | 1.000 | yes | yes |  |
+| `xlsx/charts/area.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
+| `xlsx/charts/axes.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
+| `xlsx/charts/bar.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
+| `xlsx/charts/bubble.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
+| `xlsx/charts/column.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
+| `xlsx/charts/combo.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
+| `xlsx/charts/doughnut.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
+| `xlsx/charts/line.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
+| `xlsx/charts/pie.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
+| `xlsx/charts/radar.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
+| `xlsx/charts/scatter.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
+| `xlsx/charts/sunburst.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
+| `xlsx/charts/treemap.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
 | `external/xlsx/poi-ExcelTables.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
 | `external/xlsx/poi-Formatting.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
-| `external/xlsx/poi-SampleSS.strict.xlsx` | pass | 1.000 | 1.000 | — | 1.000 | 1.000 | yes | yes | visual: the original does not convert: LibreOffice could not convert /home/muth/OfficeSuite/fixtures/external/xlsx/poi-SampleSS.strict.xlsx to pdf: convert /home/muth/OfficeSuite/fixtures/external/xlsx/poi-SampleSS.strict.xlsx as a Calc document -> /tmp/kiln-fidelity-2207971/external__xlsx__poi-SampleSS.strict.xlsx/in/poi-SampleSS.strict.pdf using filter : calc_pdf_Export |
+| `external/xlsx/poi-SampleSS.strict.xlsx` | pass | 1.000 | 1.000 | — | 1.000 | 1.000 | yes | yes | visual: the original does not convert: LibreOffice could not convert /home/muth/OfficeSuite/fixtures/external/xlsx/poi-SampleSS.strict.xlsx to pdf: convert /home/muth/OfficeSuite/fixtures/external/xlsx/poi-SampleSS.strict.xlsx as a Calc document -> /tmp/kiln-fidelity-2781587/external__xlsx__poi-SampleSS.strict.xlsx/in/poi-SampleSS.strict.pdf using filter : calc_pdf_Export |
 | `external/xlsx/poi-SampleSS.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
 | `external/xlsx/poi-Themes.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
 | `external/xlsx/poi-WithChart.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
@@ -124,5 +137,6 @@ Every package opened and saved by `kiln-ooxml` without edits (what `kiln-cli rep
 | `xlsx/features` | 20 | 196 | 196 | pass |
 | `xlsx/manual` | 1 | 4 | 4 | pass |
 | `external/xlsx` | 10 | 124 | 124 | pass |
+| `xlsx/charts` | 13 | 168 | 168 | pass |
 | `pptx/features` | 19 | 900 | 900 | pass |
 | `external/pptx` | 10 | 426 | 426 | pass |

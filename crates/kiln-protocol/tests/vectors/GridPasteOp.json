@@ -1,0 +1,13 @@
+{
+  "type": "GridPasteOp",
+  "format": {
+    "TYPENAME": "GridPasteOp"
+  },
+  "values": [
+    "None",
+    "Divide",
+    "None",
+    "Add",
+    "Subtract"
+  ]
+}

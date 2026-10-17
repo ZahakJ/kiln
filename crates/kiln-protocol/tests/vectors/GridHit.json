@@ -1,0 +1,56 @@
+{
+  "type": "GridHit",
+  "format": {
+    "TYPENAME": "GridHit"
+  },
+  "values": [
+    "None",
+    {
+      "Cell": {
+        "row": 3,
+        "col": 9
+      }
+    },
+    "FillHandle",
+    {
+      "ColumnBorder": {
+        "col": 2,
+        "start": 172.5,
+        "size": 64.0
+      }
+    },
+    "Corner",
+    "None",
+    {
+      "Cell": {
+        "row": 0,
+        "col": 0
+      }
+    },
+    "FillHandle",
+    {
+      "ColumnHeader": {
+        "col": 0
+      }
+    },
+    {
+      "RowHeader": {
+        "row": 0
+      }
+    },
+    {
+      "ColumnBorder": {
+        "col": 0,
+        "start": 0.0,
+        "size": 0.0
+      }
+    },
+    {
+      "RowBorder": {
+        "row": 0,
+        "start": 0.0,
+        "size": 0.0
+      }
+    }
+  ]
+}

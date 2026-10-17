@@ -44,7 +44,7 @@ pub struct Options {
 
 /// Usage text of the subcommand.
 pub const USAGE: &str = "kiln-cli render <file> --png <out.png | out/page-%03d.png | dir/>
-    [--page N[,M...]] [--dpi 96] [--dark]
+    [--page N[,M...]] [--dpi 96] [--dark]   (workbooks: one PNG per sheet, --page picks sheets)
 kiln-cli render --scratch <file.txt> --png <out.png>
     [--width 1000] [--height 900] [--zoom 1] [--dpr 1]
     [--scroll-x <px>] [--scroll-y 0] [--theme light|dark]";
@@ -254,6 +254,10 @@ pub fn parse_file(args: &[String]) -> Result<FileOptions, String> {
 ///
 /// Unreadable or unsupported files and render errors.
 pub fn render_file(o: &FileOptions) -> Result<Vec<RenderedPage>, String> {
+    // Workbooks render one PNG per sheet (WP-71).
+    if crate::render_grid::is_workbook(&o.input) {
+        return crate::render_grid::render_workbook(&o.input, &o.pages);
+    }
     let bytes = std::fs::read(&o.input).map_err(|e| format!("{}: {e}", o.input.display()))?;
     let mut session = Session::new(Box::new(DeferredHost::new(|| 0)));
     let hint = OpenHint {

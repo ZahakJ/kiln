@@ -16,6 +16,7 @@ import type {
   Selection,
   StatusBar,
 } from '@kiln/protocol';
+import { GRID_CORE_STATE } from '../catalog/grid.ts';
 import { WRITE_CORE_STATE } from '../catalog/write.ts';
 import type { CommandRegistry } from '../registry.ts';
 import type { CommandContext, CommandDefinition, Disposable } from '../types.ts';
@@ -91,7 +92,7 @@ const APP_STATE: Readonly<
       }
     >
   >
-> = { write: WRITE_CORE_STATE, notes: WRITE_CORE_STATE };
+> = { write: WRITE_CORE_STATE, notes: WRITE_CORE_STATE, grid: GRID_CORE_STATE };
 
 /** One command sent to the core, for the session's command log. */
 export interface CommandLogEntry {
@@ -233,7 +234,10 @@ export function connectCore(registry: CommandRegistry, options: ConnectCoreOptio
       if (event.Opened.summary.doc === current) publish({ ...state, summary: event.Opened.summary });
     } else if ('Changed' in event) {
       const { summary, selection, status } = event.Changed;
-      if (summary.doc === current) publish({ summary, selection, status });
+      // A change that changes nothing here (a scroll: the viewport moved) is not published, so
+      // the ribbon does not re-render on every frame of a scroll.
+      if (summary.doc === current && !sameState(state, { summary, selection, status }))
+        publish({ summary, selection, status });
     } else if ('Saved' in event) {
       if (event.Saved.summary.doc === current) publish({ ...state, summary: event.Saved.summary });
     } else if ('Closed' in event) {
@@ -261,4 +265,13 @@ export function connectCore(registry: CommandRegistry, options: ConnectCoreOptio
       registry.setContext({ core: undefined });
     },
   };
+}
+
+/** Whether two reports of the core carry the same state (they are plain JSON data). */
+function sameState(a: CoreDocState, b: CoreDocState): boolean {
+  return (
+    JSON.stringify(a.summary) === JSON.stringify(b.summary) &&
+    JSON.stringify(a.selection) === JSON.stringify(b.selection) &&
+    JSON.stringify(a.status) === JSON.stringify(b.status)
+  );
 }

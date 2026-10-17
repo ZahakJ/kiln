@@ -29,6 +29,7 @@ mod fidelity;
 mod inspect;
 mod pages;
 mod render;
+mod render_grid; // WP-71: workbooks
 mod repack;
 
 use std::fmt;

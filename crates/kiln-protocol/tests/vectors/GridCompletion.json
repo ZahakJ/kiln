@@ -1,0 +1,20 @@
+{
+  "type": "GridCompletion",
+  "format": {
+    "TYPENAME": "GridCompletion"
+  },
+  "values": [
+    {
+      "label": "apple pie",
+      "kind": "Value",
+      "detail": null,
+      "syntax": null
+    },
+    {
+      "label": "",
+      "kind": "Function",
+      "detail": "",
+      "syntax": ""
+    }
+  ]
+}

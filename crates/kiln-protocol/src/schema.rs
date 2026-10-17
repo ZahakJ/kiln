@@ -81,6 +81,8 @@ pub fn visit_all(v: &mut impl Visitor) {
     );
     // WP-64: the Write editor's commands, queries and the shared editing commands.
     crate::commands::write_samples::visit(v);
+    // WP-71: Kiln Grid's commands and queries.
+    crate::commands::grid_samples::visit(v);
 }
 
 /// The ts-rs configuration: 64-bit integers are JavaScript numbers (ids and revisions stay below
@@ -357,7 +359,8 @@ mod tests {
             assert!(text.starts_with(TS_BANNER), "{name} lacks the banner");
             assert!(!text.contains("bigint"), "{name} uses bigint");
         }
-        assert!(files["GridCommand.ts"].contains("never"));
+        assert!(files["DeckCommand.ts"].contains("never"));
+        assert!(files["GridCommand.ts"].contains("\"Move\""));
         assert!(files["index.ts"].contains("export const PROTOCOL_VERSION = 1;"));
         assert!(files["Command.ts"].contains("\"Suite\": SuiteCommand"));
     }

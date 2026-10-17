@@ -86,6 +86,15 @@ pub trait FrameSource {
 
     /// Size of the whole surface before any viewport is known (for a first, empty frame).
     fn extent(&self) -> Bounds;
+
+    /// Regions besides the viewport's that the surface shows at the same time, as `(send,
+    /// keep)` pairs in document pixels: Grid's frozen panes and its row and column headers stay
+    /// on screen while the rest scrolls (WP-71). Their tiles are sent and kept like the
+    /// viewport's. Most sources show one region and keep the default.
+    fn extra_regions(&self, request: &FrameRequest) -> Vec<(Bounds, Bounds)> {
+        let _ = request;
+        Vec::new()
+    }
 }
 
 /// Per-document frame bookkeeping.
@@ -138,9 +147,18 @@ impl FrameState {
             });
         };
         source.prepare(&request)?;
-        let mut delta = self
-            .tracker
-            .delta(source.scene(), &request.send, &request.keep, revision);
+        let extra = source.extra_regions(&request);
+        let mut delta = if extra.is_empty() {
+            self.tracker
+                .delta(source.scene(), &request.send, &request.keep, revision)
+        } else {
+            let (sends, keeps): (Vec<Bounds>, Vec<Bounds>) =
+                std::iter::once((request.send, request.keep))
+                    .chain(extra)
+                    .unzip();
+            self.tracker
+                .delta_regions(source.scene(), &sends, &keeps, revision)
+        };
         delta.atlas = source.atlas_updates(delta.reset);
         delta.images = source.image_updates(delta.reset);
         Ok(delta)

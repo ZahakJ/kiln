@@ -1,0 +1,16 @@
+{
+  "type": "GridHAlign",
+  "format": {
+    "TYPENAME": "GridHAlign"
+  },
+  "values": [
+    "General",
+    "Fill",
+    "General",
+    "Left",
+    "Center",
+    "Right",
+    "Fill",
+    "Justify"
+  ]
+}

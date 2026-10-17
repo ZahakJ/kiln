@@ -1,0 +1,14 @@
+{
+  "type": "GridClear",
+  "format": {
+    "TYPENAME": "GridClear"
+  },
+  "values": [
+    "All",
+    "Hyperlinks",
+    "All",
+    "Contents",
+    "Formats",
+    "Comments"
+  ]
+}

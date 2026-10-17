@@ -1,0 +1,14 @@
+{
+  "type": "GridPaste",
+  "format": {
+    "TYPENAME": "GridPaste"
+  },
+  "values": [
+    "Values",
+    "AllExceptBorders",
+    "All",
+    "Values",
+    "Formulas",
+    "Formats"
+  ]
+}

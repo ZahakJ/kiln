@@ -1,0 +1,40 @@
+{
+  "type": "GridQuery",
+  "format": {
+    "TYPENAME": "GridQuery"
+  },
+  "values": [
+    "State",
+    {
+      "HitTest": {
+        "x": 120.5,
+        "y": -3.0
+      }
+    },
+    "FormatCells",
+    {
+      "FormatPreview": {
+        "code": "[Red]0.00"
+      }
+    },
+    {
+      "FormulaHint": {
+        "text": "=IF(A1>2,",
+        "caret": 9
+      }
+    },
+    {
+      "ZoomToSelection": {
+        "width": 1200.0,
+        "height": 700.0
+      }
+    },
+    {
+      "Functions": {
+        "prefix": "SU",
+        "category": "Math & Trig"
+      }
+    },
+    "State"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "GridMode",
+  "format": {
+    "TYPENAME": "GridMode"
+  },
+  "values": [
+    "Ready",
+    "Point",
+    "Ready",
+    "Enter",
+    "Edit"
+  ]
+}

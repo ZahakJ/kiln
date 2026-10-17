@@ -29,7 +29,15 @@ pub use edit::{
     BorderPreset, CellVerticalAlign, ClipboardData, EditCommand, ListNumberStyle, MarginsPreset,
     PageOrientation, PaperSize, PasteMode, TableDeleteTarget, TextAlign, TextCase, TextSeparator,
 };
-pub use grid::{GRID_COMMANDS, GridCommand};
+#[cfg(any(test, feature = "schema"))]
+pub(crate) use grid::samples as grid_samples;
+pub use grid::{
+    CellShift, CompletionKind, GRID_COMMANDS, GridBorderSide, GridBorders, GridCellFormat,
+    GridClear, GridCommand, GridCompletion, GridDirection, GridEditor, GridFill, GridFormat,
+    GridFormatCells, GridFormulaHint, GridFunctionInfo, GridHAlign, GridHintArg, GridHit,
+    GridLayout, GridLineStyle, GridMode, GridPaste, GridPasteOp, GridQuery, GridQueryResult,
+    GridRange, GridRefSpan, GridReveal, GridSheetTab, GridState, GridStats, GridVAlign,
+};
 pub use notes::{NOTES_COMMANDS, NotesCommand};
 pub use suite::{
     ChartAxisState, ChartAxisTarget, ChartBound, ChartElementKind, ChartKind, ChartLabelPosition,

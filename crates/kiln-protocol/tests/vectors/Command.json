@@ -1233,6 +1233,625 @@
           }
         }
       }
+    },
+    {
+      "Grid": {
+        "Move": {
+          "dir": "Down",
+          "extend": true
+        }
+      }
+    },
+    {
+      "Grid": {
+        "Jump": {
+          "dir": "Right",
+          "extend": false
+        }
+      }
+    },
+    {
+      "Grid": {
+        "Page": {
+          "dir": "Up",
+          "extend": false
+        }
+      }
+    },
+    {
+      "Grid": {
+        "RowStart": {
+          "extend": true
+        }
+      }
+    },
+    {
+      "Grid": {
+        "FirstCell": {
+          "extend": false
+        }
+      }
+    },
+    {
+      "Grid": {
+        "LastCell": {
+          "extend": true
+        }
+      }
+    },
+    {
+      "Grid": {
+        "Advance": {
+          "backward": true,
+          "across": true
+        }
+      }
+    },
+    {
+      "Grid": {
+        "SelectCell": {
+          "row": 1048575,
+          "col": 16383,
+          "extend": false,
+          "add": true
+        }
+      }
+    },
+    {
+      "Grid": {
+        "SelectRange": {
+          "range": {
+            "r0": 2,
+            "c0": 1,
+            "r1": 9,
+            "c1": 4
+          },
+          "add": false
+        }
+      }
+    },
+    {
+      "Grid": {
+        "SelectRows": {
+          "from": 3,
+          "to": 7,
+          "extend": false,
+          "add": false
+        }
+      }
+    },
+    {
+      "Grid": {
+        "SelectColumns": {
+          "from": 0,
+          "to": 2,
+          "extend": true,
+          "add": false
+        }
+      }
+    },
+    {
+      "Grid": "SelectAll"
+    },
+    {
+      "Grid": "SelectRow"
+    },
+    {
+      "Grid": "SelectColumn"
+    },
+    {
+      "Grid": {
+        "GoTo": {
+          "reference": "'Q1 «Ü»'!B2:C9",
+          "define": false
+        }
+      }
+    },
+    {
+      "Grid": {
+        "ActivateSheet": {
+          "index": 2
+        }
+      }
+    },
+    {
+      "Grid": "PreviousSheet"
+    },
+    {
+      "Grid": "NextSheet"
+    },
+    {
+      "Grid": "InsertSheet"
+    },
+    {
+      "Grid": {
+        "RenameSheet": {
+          "index": 0,
+          "name": "Budget 2026"
+        }
+      }
+    },
+    {
+      "Grid": {
+        "DeleteSheet": {
+          "index": 3
+        }
+      }
+    },
+    {
+      "Grid": {
+        "MoveSheet": {
+          "from": 0,
+          "to": 2
+        }
+      }
+    },
+    {
+      "Grid": {
+        "DuplicateSheet": {
+          "index": 1
+        }
+      }
+    },
+    {
+      "Grid": {
+        "SheetTabColor": {
+          "index": 1,
+          "color": "E05A27"
+        }
+      }
+    },
+    {
+      "Grid": {
+        "HideSheet": {
+          "index": 1
+        }
+      }
+    },
+    {
+      "Grid": {
+        "UnhideSheet": {
+          "index": 1
+        }
+      }
+    },
+    {
+      "Grid": "EditCell"
+    },
+    {
+      "Grid": {
+        "BeginEdit": {
+          "text": "="
+        }
+      }
+    },
+    {
+      "Grid": {
+        "SetEditText": {
+          "text": "=SUM(A1:A9)+😀",
+          "start": 5,
+          "end": 9,
+          "formula_bar": true
+        }
+      }
+    },
+    {
+      "Grid": {
+        "CommitEdit": {
+          "advance": "Down"
+        }
+      }
+    },
+    {
+      "Grid": "FillSelection"
+    },
+    {
+      "Grid": "ArrayFormula"
+    },
+    {
+      "Grid": "CancelEdit"
+    },
+    {
+      "Grid": "NewLineInCell"
+    },
+    {
+      "Grid": "ToggleAbsolute"
+    },
+    {
+      "Grid": {
+        "AcceptCompletion": {
+          "index": 1
+        }
+      }
+    },
+    {
+      "Grid": {
+        "MoveCompletion": {
+          "down": true
+        }
+      }
+    },
+    {
+      "Grid": {
+        "PointRef": {
+          "row": 4,
+          "col": 6,
+          "extend": true
+        }
+      }
+    },
+    {
+      "Grid": {
+        "PointMove": {
+          "dir": "Left",
+          "extend": false
+        }
+      }
+    },
+    {
+      "Grid": "OpenDropdown"
+    },
+    {
+      "Grid": "ClearContents"
+    },
+    {
+      "Grid": {
+        "Clear": {
+          "what": "Formats"
+        }
+      }
+    },
+    {
+      "Grid": "FillDown"
+    },
+    {
+      "Grid": "FillRight"
+    },
+    {
+      "Grid": "FillUp"
+    },
+    {
+      "Grid": "FillLeft"
+    },
+    {
+      "Grid": {
+        "DragFill": {
+          "row": 30,
+          "col": 2
+        }
+      }
+    },
+    {
+      "Grid": {
+        "AutoFill": {
+          "row": 30,
+          "col": 2,
+          "mode": "Months"
+        }
+      }
+    },
+    {
+      "Grid": {
+        "AutoSum": {
+          "function": "AVERAGE"
+        }
+      }
+    },
+    {
+      "Grid": {
+        "InsertDateTime": {
+          "time": true,
+          "utc_offset_minutes": -240
+        }
+      }
+    },
+    {
+      "Grid": {
+        "FindNext": {
+          "text": "kiln",
+          "match_case": false,
+          "whole_cell": true,
+          "backward": false,
+          "in_formulas": true
+        }
+      }
+    },
+    {
+      "Grid": "CalculateNow"
+    },
+    {
+      "Grid": "CalculateSheet"
+    },
+    {
+      "Grid": "ShowFormulas"
+    },
+    {
+      "Grid": {
+        "InsertCells": {
+          "shift": "Auto"
+        }
+      }
+    },
+    {
+      "Grid": {
+        "DeleteCells": {
+          "shift": "Horizontal"
+        }
+      }
+    },
+    {
+      "Grid": "InsertRows"
+    },
+    {
+      "Grid": "InsertColumns"
+    },
+    {
+      "Grid": "DeleteRows"
+    },
+    {
+      "Grid": "DeleteColumns"
+    },
+    {
+      "Grid": {
+        "RowHeight": {
+          "points": 22.5
+        }
+      }
+    },
+    {
+      "Grid": {
+        "ColumnWidth": {
+          "chars": 12.71
+        }
+      }
+    },
+    {
+      "Grid": {
+        "ResizeRows": {
+          "from": 0,
+          "to": 4,
+          "px": 31.5
+        }
+      }
+    },
+    {
+      "Grid": {
+        "ResizeColumns": {
+          "from": 2,
+          "to": 2,
+          "px": 140.0
+        }
+      }
+    },
+    {
+      "Grid": {
+        "AutoFitRows": {
+          "from": null,
+          "to": null
+        }
+      }
+    },
+    {
+      "Grid": {
+        "AutoFitColumns": {
+          "from": 1,
+          "to": 3
+        }
+      }
+    },
+    {
+      "Grid": "HideRows"
+    },
+    {
+      "Grid": "HideColumns"
+    },
+    {
+      "Grid": "UnhideRows"
+    },
+    {
+      "Grid": "UnhideColumns"
+    },
+    {
+      "Grid": {
+        "Borders": {
+          "preset": "ThickBox",
+          "style": "Double",
+          "color": "000000"
+        }
+      }
+    },
+    {
+      "Grid": "BorderOutline"
+    },
+    {
+      "Grid": "BorderNone"
+    },
+    {
+      "Grid": {
+        "FillColor": {
+          "color": "FFE066"
+        }
+      }
+    },
+    {
+      "Grid": "AlignTop"
+    },
+    {
+      "Grid": "AlignMiddle"
+    },
+    {
+      "Grid": "AlignBottom"
+    },
+    {
+      "Grid": {
+        "AlignHorizontal": {
+          "align": "CenterAcross"
+        }
+      }
+    },
+    {
+      "Grid": {
+        "Orientation": {
+          "angle": -45
+        }
+      }
+    },
+    {
+      "Grid": "WrapText"
+    },
+    {
+      "Grid": "MergeCenter"
+    },
+    {
+      "Grid": "MergeAcross"
+    },
+    {
+      "Grid": "MergeCells"
+    },
+    {
+      "Grid": "UnmergeCells"
+    },
+    {
+      "Grid": {
+        "NumberFormat": {
+          "format": "Short Date"
+        }
+      }
+    },
+    {
+      "Grid": "NumberStyle"
+    },
+    {
+      "Grid": "CurrencyStyle"
+    },
+    {
+      "Grid": "PercentStyle"
+    },
+    {
+      "Grid": {
+        "AccountingStyle": {
+          "currency": "GBP"
+        }
+      }
+    },
+    {
+      "Grid": "CommaStyle"
+    },
+    {
+      "Grid": "IncreaseDecimal"
+    },
+    {
+      "Grid": "DecreaseDecimal"
+    },
+    {
+      "Grid": {
+        "ApplyFormat": {
+          "format": {
+            "number_format": "0.0%",
+            "font_family": null,
+            "font_size": 14.5,
+            "bold": true,
+            "italic": null,
+            "underline": null,
+            "strike": null,
+            "superscript": null,
+            "subscript": null,
+            "font_color": null,
+            "fill_color": null,
+            "pattern": null,
+            "pattern_color": null,
+            "h_align": "Distributed",
+            "v_align": "Center",
+            "wrap": null,
+            "shrink": null,
+            "indent": null,
+            "rotation": 255,
+            "merge": null,
+            "border_left": {
+              "style": "MediumDashDot",
+              "color": "1D8A60"
+            },
+            "border_right": null,
+            "border_top": null,
+            "border_bottom": null,
+            "border_inside_h": null,
+            "border_inside_v": null,
+            "border_diagonal_up": null,
+            "border_diagonal_down": null,
+            "locked": null,
+            "hidden": null
+          }
+        }
+      }
+    },
+    {
+      "Grid": "FreezePanes"
+    },
+    {
+      "Grid": "FreezeTopRow"
+    },
+    {
+      "Grid": "FreezeFirstColumn"
+    },
+    {
+      "Grid": "Split"
+    },
+    {
+      "Grid": "Gridlines"
+    },
+    {
+      "Grid": "Headings"
+    },
+    {
+      "Grid": {
+        "PasteSpecial": {
+          "what": "ValuesAndNumberFormats",
+          "op": "Multiply",
+          "skip_blanks": true,
+          "transpose": true,
+          "data": {
+            "text": "1\t2\n3\t4",
+            "html": "<table><tr><td>1</td></tr></table>",
+            "kiln": null
+          }
+        }
+      }
+    },
+    {
+      "Grid": {
+        "PasteValues": {
+          "data": {
+            "text": "1\t2\n3\t4",
+            "html": "<table><tr><td>1</td></tr></table>",
+            "kiln": null
+          }
+        }
+      }
+    },
+    {
+      "Grid": {
+        "PasteFormulas": {
+          "data": null
+        }
+      }
+    },
+    {
+      "Grid": {
+        "PasteFormatting": {
+          "data": null
+        }
+      }
+    },
+    {
+      "Grid": {
+        "PasteTranspose": {
+          "data": {
+            "text": "1\t2\n3\t4",
+            "html": "<table><tr><td>1</td></tr></table>",
+            "kiln": null
+          }
+        }
+      }
     }
   ]
 }

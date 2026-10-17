@@ -31,7 +31,16 @@ export {
   type PainterCanvas,
   tileDeviceSize,
 } from './painter';
-export { channels, cssColor, DARK, LIGHT, paletteFor, resolvePaint, roleColor } from './palette';
+export {
+  channels,
+  cssColor,
+  DARK,
+  LIGHT,
+  type PaletteApp,
+  paletteFor,
+  resolvePaint,
+  roleColor,
+} from './palette';
 export { Surface, type SurfaceProps } from './Surface';
 export { type AtlasPage, type CachedTile, DeltaError, glyphPages, SceneCache, tileKey } from './scene-cache';
 export * from './shapes';

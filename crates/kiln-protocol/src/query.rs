@@ -7,7 +7,7 @@ use ts_rs::TS;
 
 use crate::a11y::A11yTree;
 use crate::app::FileFormat;
-use crate::commands::{WriteQuery, WriteQueryResult};
+use crate::commands::{GridQuery, GridQueryResult, WriteQuery, WriteQueryResult};
 use crate::print::{PdfFile, PrintPreview, PrintSettings};
 use crate::selection::Selection;
 use crate::status::StatusBar;
@@ -54,6 +54,8 @@ pub enum Query {
     },
     /// Document: a question about a Write document (formatting, rulers, panes; WP-64).
     Write(WriteQuery),
+    /// Document: a question about a Grid workbook (state, hit testing, dialogs; WP-71).
+    Grid(GridQuery),
 }
 
 /// How serious a compatibility issue is.
@@ -125,6 +127,8 @@ pub enum QueryResult {
     Pdf(PdfFile),
     /// The answer to a [`Query::Write`].
     Write(WriteQueryResult),
+    /// The answer to a [`Query::Grid`].
+    Grid(GridQueryResult),
 }
 
 impl Query {

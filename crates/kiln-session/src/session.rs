@@ -1054,6 +1054,7 @@ impl Session {
             }
             Query::Pdf { settings } => QueryResult::Pdf(self.pdf(id, settings)?),
             Query::Write(_) => d.model.app_query(query)?,
+            Query::Grid(_) => d.model.app_query(query)?,
             Query::CompatReport { format } => {
                 let format = format
                     .or(d.format.filter(|f| d.model.save_formats().contains(f)))

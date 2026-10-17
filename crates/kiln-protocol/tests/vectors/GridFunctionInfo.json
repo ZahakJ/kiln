@@ -1,0 +1,20 @@
+{
+  "type": "GridFunctionInfo",
+  "format": {
+    "TYPENAME": "GridFunctionInfo"
+  },
+  "values": [
+    {
+      "name": "SUM",
+      "category": "Math & Trig",
+      "syntax": "SUM(number1, …)",
+      "summary": "Adds."
+    },
+    {
+      "name": "",
+      "category": "",
+      "syntax": "",
+      "summary": ""
+    }
+  ]
+}

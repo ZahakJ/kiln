@@ -55,4 +55,32 @@ selection_blend: SelectionBlend,
 /**
  * The page shadow (`--kiln-shadow-page`), painted for [`crate::ShadowStyle::Page`].
  */
-page_shadow: Array<ShadowLayer>, };
+page_shadow: Array<ShadowLayer>, 
+/**
+ * [`ColorRole::Panel`] (`--kiln-panel`).
+ */
+panel: number, 
+/**
+ * [`ColorRole::Muted`] (`--kiln-muted`).
+ */
+muted: number, 
+/**
+ * [`ColorRole::Line`] (`--kiln-line`).
+ */
+line: number, 
+/**
+ * [`ColorRole::Gridline`] (`--kiln-line` at 70 % over the page).
+ */
+gridline: number, 
+/**
+ * [`ColorRole::AppFill`] (`--app`).
+ */
+app_fill: number, 
+/**
+ * [`ColorRole::AppTint`] (`--app-tint`).
+ */
+app_tint: number, 
+/**
+ * [`ColorRole::AppText`] (`--app-text`).
+ */
+app_text: number, };

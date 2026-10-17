@@ -131,3 +131,27 @@ limit = 16.7
 unit = "ms"
 bench = "write-frame"
 group = "component"
+
+[[budget]]
+id = "grid-open"
+scenario = "Open the 1M-cell .xlsx in a session (read, bind, calculate) to its first painted frame (WP-71; B7 for twice its 500k cells)"
+limit = 2400.0
+unit = "ms"
+bench = "grid-open"
+group = "component"
+
+[[budget]]
+id = "grid-frame"
+scenario = "One Grid frame after jumping within the 1M-cell sheet at DPR 2 (kiln-sheet-layout, WP-71; B6 core side)"
+limit = 16.7
+unit = "ms"
+bench = "grid-frame"
+group = "component"
+
+[[budget]]
+id = "grid-scroll"
+scenario = "One Grid frame per animation frame while scrolling the 1M-cell sheet at 2,000 px/s (WP-71; B6 core side)"
+limit = 16.7
+unit = "ms"
+bench = "grid-scroll"
+group = "component"

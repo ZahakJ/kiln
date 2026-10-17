@@ -190,6 +190,8 @@ pub fn commands() -> Vec<Command> {
     .into_iter()
     // WP-64: the Write editor and the shared editing commands.
     .chain(crate::commands::write_samples::commands())
+    // WP-71: Kiln Grid.
+    .chain(crate::commands::grid_samples::commands())
     .collect()
 }
 
@@ -427,7 +429,8 @@ samples! {
         Query::CompatReport { format: Some(FileFormat::Docx) },
         Query::PrintPreview { settings: print_settings(), sheet: 1, scale: 1.5 },
         Query::Pdf { settings: PrintSettings::default() },
-        Query::Write(crate::commands::WriteQuery::Rulers)];
+        Query::Write(crate::commands::WriteQuery::Rulers),
+        Query::Grid(crate::commands::GridQuery::State)];
     CompatSeverity => vec![CompatSeverity::Loss, CompatSeverity::Change, CompatSeverity::Info];
     CompatOrigin => vec![CompatOrigin::Save, CompatOrigin::Open];
     CompatIssue => vec![compat_issue()];
@@ -462,6 +465,7 @@ samples! {
             ua_issues: vec!["a figure has no alt text".into()],
         }),
         QueryResult::Write(crate::commands::WriteQueryResult::Bookmarks(vec!["intro".into()])),
+        QueryResult::Grid(crate::commands::GridQueryResult::Zoom(0.75)),
     ];
     ErrorKind => vec![ErrorKind::NotFound, ErrorKind::Internal];
     ErrorInfo => vec![error()];

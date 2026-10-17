@@ -16,6 +16,8 @@ parallel = ["kiln-sheet/parallel"]
 
 [dependencies]
 kiln-common.workspace = true
+# Chart parts (`c:chartSpace`, `cx:chartSpace`): read into the chart model, written back when edited.
+kiln-charts.workspace = true
 kiln-formula = { workspace = true, default-features = false }
 kiln-ooxml.workspace = true
 kiln-sheet = { workspace = true, default-features = false }

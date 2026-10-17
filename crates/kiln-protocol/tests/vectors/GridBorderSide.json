@@ -1,0 +1,20 @@
+{
+  "type": "GridBorderSide",
+  "format": {
+    "TYPENAME": "GridBorderSide"
+  },
+  "values": [
+    {
+      "style": "MediumDashDot",
+      "color": "1D8A60"
+    },
+    {
+      "style": "None",
+      "color": null
+    },
+    {
+      "style": "None",
+      "color": null
+    }
+  ]
+}

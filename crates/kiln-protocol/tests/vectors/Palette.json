@@ -31,7 +31,14 @@
           "spread": 0.0,
           "rgba": 1008601626
         }
-      ]
+      ],
+      "panel": 4294768639,
+      "muted": 1800751103,
+      "line": 3839280383,
+      "gridline": 3974289151,
+      "app_fill": 827967231,
+      "app_tint": 3891067647,
+      "app_text": 760198655
     },
     {
       "name": "dark",
@@ -60,7 +67,14 @@
           "spread": 0.0,
           "rgba": 128
         }
-      ]
+      ],
+      "panel": 538448895,
+      "muted": 3097727743,
+      "line": 925508351,
+      "gridline": 824516351,
+      "app_fill": 827967231,
+      "app_tint": 472137983,
+      "app_text": 2544825599
     },
     {
       "name": "",
@@ -74,7 +88,14 @@
       "guide": 0,
       "spark": 0,
       "selection_blend": "Darken",
-      "page_shadow": []
+      "page_shadow": [],
+      "panel": 0,
+      "muted": 0,
+      "line": 0,
+      "gridline": 0,
+      "app_fill": 0,
+      "app_tint": 0,
+      "app_text": 0
     }
   ]
 }

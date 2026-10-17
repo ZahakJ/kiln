@@ -1,30 +1,52 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //! Kiln Grid workbooks: `.xlsx`, `.xlsm` and `.xltx` files read and written by `kiln-io-xlsx`
-//! and `.csv` files by `kiln-io-csv` (WP-70), into the `kiln-sheet` model (WP-69).
+//! and `.csv` files by `kiln-io-csv` (WP-70), into the `kiln-sheet` model (WP-69), painted and
+//! edited through `kiln-sheet-layout` (WP-71).
 //!
-//! - **Open**: the file's values, formulas (calculated on open), formats and metadata; the
-//!   reader's source is kept so a save carries every part the model does not cover.
-//! - **Save**: `.xlsx`, `.xlsm` and `.xltx` with everything kept; `.csv` writes the active sheet
-//!   as displayed, as Excel does. The Compatibility Checker says what a format loses.
-//! - **Status and accessibility**: the selection's statistics and the sheets as grids.
-//!
-//! The grid surface, selection and editing commands arrive with WP-71; until then commands
-//! return `Unsupported` with the reason, never a silent no-op.
+//! - **Open and save**: the file's values, formulas, formats and metadata; the reader's source is
+//!   kept so a save carries every part the model does not cover. `.csv` saves the active sheet
+//!   as displayed. The Compatibility Checker says what a format loses.
+//! - **Surface** ([`view`]): tiles of cells and headers for every pane of the view (frozen panes
+//!   share one tile cache), the selection overlay and the in-cell editor, the accessibility tree
+//!   of the visible cells.
+//! - **Commands** ([`nav`], [`editor`], [`format`], [`structure`], [`clipboard`]): navigation
+//!   and selection for every Grid row of PLAN.md §1.7, in-cell editing with autocomplete of
+//!   functions, names and column values, argument hints, point mode and `$` toggling, fill, rows
+//!   and columns, sheets, number formats, fonts, fills, borders, alignment, merges, frozen
+//!   panes, Paste Special; every change one undo step of the sheet model's command log.
+//! - **Queries** ([`state`]): what the chrome shows (`Query::Grid`): sheet tabs, the name box
+//!   and formula bar, the mode, the editor, the active cell's format, hit testing, Format Cells.
 
+mod clipboard;
+#[cfg(test)]
+mod command_tests;
+mod editor;
+mod format;
+mod nav;
+mod state;
+mod structure;
 #[cfg(test)]
 mod tests;
+mod view;
 
-use kiln_common::{KilnError, NodeId, Result};
+use kiln_common::{KilnError, Result};
 use kiln_io_csv::{ExportOptions, ImportOptions, read_csv, write_delimited};
 use kiln_io_xlsx::{WriteOptions, XlsxKind, XlsxSource, read_xlsx, write_xlsx};
+use kiln_protocol::commands::{ClipboardData, GridCommand};
 use kiln_protocol::{
-    A11yNode, A11yRole, A11yTree, CellAddr, CellRange, CellStats, Command, CompatIssue,
-    CompatOrigin, CompatSeverity, DocKind, FileFormat, OpenHint, SelKind, Selection, StatusBar,
+    A11yTree, CellAddr, CellRange, CellStats, Command, CompatIssue, CompatOrigin, CompatSeverity,
+    DocKind, FileFormat, OpenHint, Query, QueryResult, SelKind, Selection, StatusBar, SuiteCommand,
 };
-use kiln_sheet::{CellValue, Workbook};
+use kiln_sheet::meta::Selection as SheetSelection;
+use kiln_sheet::{CellValue, CommandLog, Range, SheetId, Workbook};
+use kiln_sheet_layout::{GridScene, SheetGeometry};
+use rustc_hash::FxHashMap;
 
 use crate::model::{AppFactory, Change, DocModel};
 use crate::undo::StateId;
+
+pub use editor::EditState;
+pub use view::ViewState;
 
 /// The formats Grid opens; the first four it also saves.
 const FORMATS: [FileFormat; 4] = [
@@ -96,15 +118,67 @@ impl AppFactory for GridApp {
     }
 }
 
+/// Mark of a Copy or Cut (the marquee; Cut moves on the next paste).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct CopyMark {
+    /// Sheet.
+    pub sheet: SheetId,
+    /// Range.
+    pub range: Range,
+    /// Cut.
+    pub cut: bool,
+}
+
+/// One step of the undo history as the session sees it.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+struct Step {
+    state: StateId,
+    label: &'static str,
+}
+
 /// A Grid workbook held by the session.
 #[derive(Debug)]
 pub struct GridDoc {
-    workbook: Workbook,
+    pub(crate) workbook: Workbook,
     /// The file read, for a faithful save.
     source: Option<XlsxSource>,
     /// What the reader reported.
     warnings: Vec<String>,
     file_name: Option<String>,
+    /// Undo and redo of the sheet model.
+    log: CommandLog,
+    done: Vec<Step>,
+    undone: Vec<Step>,
+    state: StateId,
+    next_state: StateId,
+    /// The view of each sheet (selection, scroll).
+    views: FxHashMap<SheetId, ViewState>,
+    /// The sheet shown.
+    active: usize,
+    /// The entry being typed.
+    pub(crate) edit: Option<EditState>,
+    /// Painting.
+    scene: Option<GridScene>,
+    /// Geometry of the active sheet (rebuilt when rows, columns or merges change).
+    geo: Option<SheetGeometry>,
+    /// The view of the last frame.
+    pub(crate) last_view: kiln_sheet_layout::View,
+    /// Copy/Cut marquee.
+    copy: Option<CopyMark>,
+    /// Kiln's last copy (Paste Special without the system clipboard).
+    clip: Option<kiln_sheet::clipboard::ClipData>,
+    /// What Copy/Cut put on the clipboard, for the session to write.
+    copied: Option<ClipboardData>,
+    /// Fill-handle drag preview.
+    fill_preview: Option<Range>,
+    /// The last scroll request.
+    reveal: Option<kiln_protocol::commands::GridReveal>,
+    /// The host's clock.
+    now_ms: u64,
+    /// The headers changed since the last frame (selection marks).
+    selection_epoch: u64,
+    /// Where a run of Tab entries started: Enter returns to its column on the next row (Excel).
+    pub(crate) tab_origin: Option<kiln_sheet::CellPos>,
 }
 
 fn w3cdtf(unix_ms: u64) -> String {
@@ -128,6 +202,11 @@ fn w3cdtf(unix_ms: u64) -> String {
     )
 }
 
+/// A model error as a session error.
+pub(crate) fn model_err(e: kiln_sheet::ModelError) -> KilnError {
+    KilnError::InvalidInput(e.to_string())
+}
+
 impl GridDoc {
     fn new(
         workbook: Workbook,
@@ -135,12 +214,60 @@ impl GridDoc {
         warnings: Vec<String>,
         file_name: Option<String>,
     ) -> Self {
-        Self {
+        let active = workbook
+            .props()
+            .active_sheet
+            .min(workbook.sheets().len().saturating_sub(1));
+        let mut views = FxHashMap::default();
+        for s in workbook.sheets() {
+            views.insert(s.id(), ViewState::from_meta(&s.meta().view));
+        }
+        let mut doc = Self {
             workbook,
             source,
             warnings,
             file_name,
+            log: CommandLog::new(),
+            done: Vec::new(),
+            undone: Vec::new(),
+            state: 0,
+            next_state: 1,
+            views,
+            active,
+            edit: None,
+            scene: None,
+            geo: None,
+            last_view: kiln_sheet_layout::View {
+                width: 0.0,
+                height: 0.0,
+                scroll_x: 0.0,
+                scroll_y: 0.0,
+                zoom: 1.0,
+            },
+            copy: None,
+            clip: None,
+            copied: None,
+            fill_preview: None,
+            reveal: None,
+            now_ms: 0,
+            selection_epoch: 0,
+            tab_origin: None,
+        };
+        // A hidden active sheet (or an empty workbook made by a reader) shows the first visible one.
+        if doc
+            .workbook
+            .sheets()
+            .get(doc.active)
+            .is_some_and(|s| s.meta().visibility != kiln_sheet::meta::SheetVisibility::Visible)
+        {
+            doc.active = doc
+                .workbook
+                .sheets()
+                .iter()
+                .position(|s| s.meta().visibility == kiln_sheet::meta::SheetVisibility::Visible)
+                .unwrap_or(0);
         }
+        doc
     }
 
     /// The workbook.
@@ -161,13 +288,225 @@ impl GridDoc {
         self.file_name.as_deref()
     }
 
+    /// The active sheet's index.
+    #[must_use]
+    pub fn active_index(&self) -> usize {
+        self.active
+    }
+
     fn active_sheet(&self) -> Option<(usize, &kiln_sheet::Sheet)> {
-        let i = self.workbook.props().active_sheet;
         self.workbook
             .sheets()
-            .get(i)
-            .map(|s| (i, s))
+            .get(self.active)
+            .map(|s| (self.active, s))
             .or_else(|| self.workbook.sheets().first().map(|s| (0, s)))
+    }
+
+    /// The active sheet's id.
+    pub(crate) fn sid(&self) -> Result<SheetId> {
+        self.active_sheet()
+            .map(|(_, s)| s.id())
+            .ok_or_else(|| KilnError::InvalidInput("the workbook has no sheet".into()))
+    }
+
+    /// The view of the active sheet.
+    pub(crate) fn view(&self) -> ViewState {
+        self.sid()
+            .ok()
+            .and_then(|id| self.views.get(&id).cloned())
+            .unwrap_or_default()
+    }
+
+    /// Replaces the view of the active sheet.
+    pub(crate) fn set_view(&mut self, v: ViewState) {
+        if let Ok(id) = self.sid() {
+            if self.views.get(&id).is_none_or(|old| old.sel != v.sel) {
+                self.selection_epoch += 1;
+            }
+            self.views.insert(id, v);
+        }
+    }
+
+    /// Applies a model command as one undo step labelled with the Grid command's id.
+    pub(crate) fn exec(&mut self, label: &'static str, cmd: kiln_sheet::Command) -> Result<bool> {
+        let depth = self.log.undo_depth();
+        let redo = self.log.redo_depth();
+        self.log
+            .exec_labelled(&mut self.workbook, cmd, label)
+            .map_err(model_err)?;
+        let recorded = self.log.undo_depth() != depth || self.log.redo_depth() != redo;
+        self.after_change(label, recorded);
+        Ok(recorded)
+    }
+
+    /// Applies several model commands as one undo step.
+    pub(crate) fn exec_all(
+        &mut self,
+        label: &'static str,
+        cmds: Vec<kiln_sheet::Command>,
+    ) -> Result<bool> {
+        if cmds.is_empty() {
+            return Ok(false);
+        }
+        let depth = self.log.undo_depth();
+        let redo = self.log.redo_depth();
+        let result = self.log.transaction(&mut self.workbook, label, |log, wb| {
+            for c in cmds {
+                log.exec_labelled(wb, c, label)?;
+            }
+            Ok(())
+        });
+        let recorded = self.log.undo_depth() != depth || self.log.redo_depth() != redo;
+        self.after_change(label, recorded);
+        result.map_err(model_err)?;
+        Ok(recorded)
+    }
+
+    fn after_change(&mut self, label: &'static str, recorded: bool) {
+        if recorded {
+            let state = self.next_state;
+            self.next_state += 1;
+            self.done.push(Step { state, label });
+            // The log keeps at most 1,000 steps; so does this mirror.
+            let keep = self.log.undo_depth();
+            if self.done.len() > keep {
+                let excess = self.done.len() - keep;
+                self.done.drain(..excess);
+            }
+            self.undone.clear();
+            self.state = state;
+        }
+        self.absorb_changes();
+    }
+
+    /// Takes the model's change list: repaints what changed, rebuilds geometry when rows,
+    /// columns, merges or sheets changed, keeps the views valid.
+    pub(crate) fn absorb_changes(&mut self) {
+        let changes = self.workbook.take_changes();
+        if changes.is_empty() {
+            return;
+        }
+        let Ok(sid) = self.sid() else {
+            return;
+        };
+        let full = changes.structure.contains(&sid)
+            || changes.layout.contains(&sid)
+            || changes.meta.contains(&sid)
+            || changes.sheets
+            || changes.props
+            || changes.names;
+        if changes.sheets {
+            // Sheets added or removed: keep a view for each, and a valid active index.
+            let ids: Vec<SheetId> = self
+                .workbook
+                .sheets()
+                .iter()
+                .map(kiln_sheet::Sheet::id)
+                .collect();
+            self.views.retain(|id, _| ids.contains(id));
+            for s in self.workbook.sheets() {
+                self.views
+                    .entry(s.id())
+                    .or_insert_with(|| ViewState::from_meta(&s.meta().view));
+            }
+            self.active = self.active.min(ids.len().saturating_sub(1));
+        }
+        if full {
+            self.geo = None;
+            if let Some(s) = &mut self.scene {
+                s.invalidate_all();
+            }
+            self.clamp_selection();
+            return;
+        }
+        let Some(sheet) = self.workbook.sheets().get(self.active) else {
+            return;
+        };
+        let mut areas: Vec<Range> = changes
+            .cells
+            .iter()
+            .filter(|(s, _)| *s == sid)
+            .map(|(_, r)| *r)
+            .collect();
+        for c in &changes.recalculated {
+            if c.sheet == sid {
+                areas.push(self.workbook.result_area(sid, c.row, c.col));
+            }
+        }
+        if areas.is_empty() {
+            return;
+        }
+        if self.geo.is_none() {
+            return;
+        }
+        let geo = self.geo.clone();
+        if let (Some(scene), Some(geo)) = (&mut self.scene, geo.as_ref()) {
+            if areas.len() > 256 {
+                scene.invalidate_all();
+            } else {
+                for a in areas {
+                    scene.invalidate_cells(geo, sheet, a);
+                }
+            }
+        }
+    }
+
+    /// Keeps the selection inside the sheet after structural changes.
+    fn clamp_selection(&mut self) {
+        let mut v = self.view();
+        let clamp = |r: Range| {
+            Range::new(
+                r.r0.min(kiln_sheet::MAX_ROWS - 1),
+                r.c0.min(kiln_sheet::MAX_COLS - 1),
+                r.r1.min(kiln_sheet::MAX_ROWS - 1),
+                r.c1.min(kiln_sheet::MAX_COLS - 1),
+            )
+        };
+        v.sel.ranges = v.sel.ranges.into_iter().map(clamp).collect();
+        if v.sel.ranges.is_empty() {
+            v.sel.ranges.push(Range::cell(0, 0));
+        }
+        self.set_view(v);
+    }
+
+    /// Stores the views (selection, active sheet) in the model as Excel saves them. Not an
+    /// edit: no undo step, and the change notes it makes are dropped (nothing to repaint).
+    fn sync_views_into_meta(&mut self) {
+        self.absorb_changes();
+        let mut touched = false;
+        let ids: Vec<SheetId> = self
+            .workbook
+            .sheets()
+            .iter()
+            .map(kiln_sheet::Sheet::id)
+            .collect();
+        for id in ids {
+            let (Some(v), Some(s)) = (self.views.get(&id), self.workbook.sheet(id)) else {
+                continue;
+            };
+            let sel = &s.meta().view.selection;
+            if sel.ranges == v.sel.ranges && sel.active == v.sel.active {
+                continue;
+            }
+            let mut meta = s.meta().clone();
+            meta.view.selection = SheetSelection {
+                ranges: v.sel.ranges.clone(),
+                active: v.sel.active,
+            };
+            let _ = self.workbook.load_sheet_meta(id, meta);
+            touched = true;
+        }
+        if self.workbook.props().active_sheet != self.active {
+            let mut props = self.workbook.props().clone();
+            props.active_sheet = self.active;
+            let _ = self.workbook.apply(&kiln_sheet::Command::SetProps {
+                props: Box::new(props),
+            });
+            touched = true;
+        }
+        if touched {
+            let _ = self.workbook.take_changes();
+        }
     }
 
     fn write(&self, format: FileFormat, now: Option<String>) -> Result<Vec<u8>> {
@@ -175,6 +514,7 @@ impl GridDoc {
             format: format.extension().to_owned(),
             message: e,
         };
+        let wb = &self.workbook;
         let kind = match format {
             FileFormat::Csv => {
                 let (_, sheet) = self
@@ -197,7 +537,7 @@ impl GridDoc {
             }
         };
         write_xlsx(
-            &self.workbook,
+            wb,
             self.source.as_ref(),
             &WriteOptions {
                 kind: Some(kind),
@@ -207,6 +547,162 @@ impl GridDoc {
         )
         .map(|w| w.bytes)
         .map_err(|e| failed(e.to_string()))
+    }
+
+    /// Runs a Grid command.
+    fn grid(&mut self, cmd: &GridCommand) -> Result<Change> {
+        use GridCommand as G;
+        // A Tab run lasts while entries are typed and committed with Tab, Enter or the advance
+        // keys; anything else forgets where it started.
+        if !matches!(
+            cmd,
+            G::SetEditText { .. }
+                | G::CommitEdit { .. }
+                | G::BeginEdit { .. }
+                | G::EditCell
+                | G::Advance { .. }
+                | G::AcceptCompletion { .. }
+                | G::MoveCompletion { .. }
+        ) {
+            self.tab_origin = None;
+        }
+        // Commands other than the editor's own end the entry first (Excel commits the cell
+        // before a ribbon command runs; navigation commits and moves).
+        let editing_cmd = matches!(
+            cmd,
+            G::SetEditText { .. }
+                | G::CommitEdit { .. }
+                | G::CancelEdit
+                | G::NewLineInCell
+                | G::ToggleAbsolute
+                | G::AcceptCompletion { .. }
+                | G::MoveCompletion { .. }
+                | G::PointRef { .. }
+                | G::PointMove { .. }
+                | G::OpenDropdown
+                | G::FillSelection
+                | G::ArrayFormula
+                | G::BeginEdit { .. }
+                | G::EditCell
+                | G::InsertDateTime { .. }
+                | G::AutoSum { .. }
+        );
+        if !editing_cmd && self.edit.is_some() {
+            self.commit_edit(None)?;
+        }
+        match cmd {
+            G::Move { .. }
+            | G::Jump { .. }
+            | G::Page { .. }
+            | G::RowStart { .. }
+            | G::FirstCell { .. }
+            | G::LastCell { .. }
+            | G::Advance { .. }
+            | G::SelectCell { .. }
+            | G::SelectRange { .. }
+            | G::SelectRows { .. }
+            | G::SelectColumns { .. }
+            | G::SelectAll
+            | G::SelectRow
+            | G::SelectColumn
+            | G::GoTo { .. }
+            | G::FindNext { .. } => self.navigate(cmd),
+            G::EditCell
+            | G::BeginEdit { .. }
+            | G::SetEditText { .. }
+            | G::CommitEdit { .. }
+            | G::FillSelection
+            | G::ArrayFormula
+            | G::CancelEdit
+            | G::NewLineInCell
+            | G::ToggleAbsolute
+            | G::AcceptCompletion { .. }
+            | G::MoveCompletion { .. }
+            | G::PointRef { .. }
+            | G::PointMove { .. }
+            | G::OpenDropdown
+            | G::InsertDateTime { .. }
+            | G::AutoSum { .. } => self.editing(cmd),
+            G::ActivateSheet { .. }
+            | G::PreviousSheet
+            | G::NextSheet
+            | G::InsertSheet
+            | G::RenameSheet { .. }
+            | G::DeleteSheet { .. }
+            | G::MoveSheet { .. }
+            | G::DuplicateSheet { .. }
+            | G::SheetTabColor { .. }
+            | G::HideSheet { .. }
+            | G::UnhideSheet { .. }
+            | G::InsertCells { .. }
+            | G::DeleteCells { .. }
+            | G::InsertRows
+            | G::InsertColumns
+            | G::DeleteRows
+            | G::DeleteColumns
+            | G::RowHeight { .. }
+            | G::ColumnWidth { .. }
+            | G::ResizeRows { .. }
+            | G::ResizeColumns { .. }
+            | G::AutoFitRows { .. }
+            | G::AutoFitColumns { .. }
+            | G::HideRows
+            | G::HideColumns
+            | G::UnhideRows
+            | G::UnhideColumns
+            | G::ClearContents
+            | G::Clear { .. }
+            | G::FillDown
+            | G::FillRight
+            | G::FillUp
+            | G::FillLeft
+            | G::DragFill { .. }
+            | G::AutoFill { .. }
+            | G::CalculateNow
+            | G::CalculateSheet
+            | G::ShowFormulas
+            | G::FreezePanes
+            | G::FreezeTopRow
+            | G::FreezeFirstColumn
+            | G::Split
+            | G::Gridlines
+            | G::Headings => self.structure(cmd),
+            G::PasteSpecial { .. }
+            | G::PasteValues { .. }
+            | G::PasteFormulas { .. }
+            | G::PasteFormatting { .. }
+            | G::PasteTranspose { .. } => self.paste_special(cmd),
+            _ => self.format(cmd),
+        }
+    }
+
+    /// The selection as the protocol describes it.
+    fn protocol_selection(&self) -> Selection {
+        let Some((index, _)) = self.active_sheet() else {
+            return Selection::default();
+        };
+        let v = self.view();
+        let sheet_no = u32::try_from(index).unwrap_or(0);
+        let addr = |row, col| CellAddr {
+            sheet: sheet_no,
+            row,
+            col,
+        };
+        Selection {
+            kind: SelKind::Cells {
+                ranges: v
+                    .sel
+                    .ranges
+                    .iter()
+                    .map(|r| CellRange {
+                        start: addr(r.r0, r.c0),
+                        end: addr(r.r1, r.c1),
+                    })
+                    .collect(),
+                active: addr(v.sel.active.row, v.sel.active.col),
+            },
+            ..Selection::default()
+        }
     }
 }
 
@@ -232,67 +728,98 @@ impl DocModel for GridDoc {
     }
 
     fn execute(&mut self, command: &Command) -> Result<Change> {
-        Err(KilnError::Unsupported(format!(
-            "{} in Kiln Grid (the grid editor arrives with WP-71)",
-            command.id()
-        )))
+        let before_state = self.state;
+        let before_view = self.view();
+        let before_sheet = self.active;
+        let before_edit = self.edit.clone();
+        let before_epoch = self.selection_epoch;
+        let result = match command {
+            Command::Grid(g) => self.grid(g),
+            Command::Suite(SuiteCommand::Edit(e)) => self.edit_command(e),
+            other => Err(KilnError::Unsupported(format!(
+                "{} in Kiln Grid",
+                other.id()
+            ))),
+        };
+        self.absorb_changes();
+        if self.view().sel != before_view.sel || self.active != before_sheet {
+            self.sync_views_into_meta();
+        }
+        let change = result?;
+        if self.state != before_state || change == Change::Content {
+            return Ok(Change::Content);
+        }
+        if change == Change::Selection
+            || self.view() != before_view
+            || self.active != before_sheet
+            || self.edit != before_edit
+            || self.selection_epoch != before_epoch
+        {
+            return Ok(Change::Selection);
+        }
+        Ok(Change::None)
     }
 
     fn undo(&mut self) -> bool {
-        false
+        if self.edit.is_some() {
+            // Undo while typing discards the entry, as Esc does.
+            self.edit = None;
+            return true;
+        }
+        match self.log.undo(&mut self.workbook) {
+            Ok(true) => {
+                if let Some(step) = self.done.pop() {
+                    self.undone.push(step);
+                }
+                self.state = self.done.last().map_or(0, |s| s.state);
+                self.absorb_changes();
+                true
+            }
+            _ => false,
+        }
     }
 
     fn redo(&mut self) -> bool {
-        false
+        match self.log.redo(&mut self.workbook) {
+            Ok(true) => {
+                if let Some(step) = self.undone.pop() {
+                    self.state = step.state;
+                    self.done.push(step);
+                }
+                self.absorb_changes();
+                true
+            }
+            _ => false,
+        }
     }
 
     fn can_undo(&self) -> bool {
-        false
+        self.edit.is_some() || self.log.can_undo()
     }
 
     fn can_redo(&self) -> bool {
-        false
+        self.edit.is_none() && self.log.can_redo()
     }
 
     fn undo_label(&self) -> Option<&'static str> {
-        None
+        if self.edit.is_some() {
+            return Some("grid.editing.cancel_edit");
+        }
+        self.done.last().map(|s| s.label)
     }
 
     fn redo_label(&self) -> Option<&'static str> {
-        None
+        self.undone.last().map(|s| s.label)
     }
 
     fn state(&self) -> StateId {
-        0
+        self.state
     }
 
     fn seal_history(&mut self) {}
 
     fn selection(&self) -> Selection {
-        let Some((index, sheet)) = self.active_sheet() else {
-            return Selection::default();
-        };
-        let sel = &sheet.meta().view.selection;
-        let sheet_no = u32::try_from(index).unwrap_or(0);
-        let addr = |row, col| CellAddr {
-            sheet: sheet_no,
-            row,
-            col,
-        };
-        Selection {
-            kind: SelKind::Cells {
-                ranges: sel
-                    .ranges
-                    .iter()
-                    .map(|r| CellRange {
-                        start: addr(r.r0, r.c0),
-                        end: addr(r.r1, r.c1),
-                    })
-                    .collect(),
-                active: addr(sel.active.row, sel.active.col),
-            },
-            ..Selection::default()
-        }
+        self.protocol_selection()
     }
 
     fn status(&self) -> StatusBar {
@@ -308,19 +835,34 @@ impl DocModel for GridDoc {
             min: None,
             max: None,
         };
-        for r in &sheet.meta().view.selection.ranges {
-            // The status bar sums what is stored (an entire column is no slower than its cells).
-            for (row, col, _) in sheet.cells().iter_range(*r) {
-                let v = self.workbook.value(id, row, col);
-                if v.is_blank() {
-                    continue;
+        let v = self.view();
+        let mut seen = rustc_hash::FxHashSet::default();
+        for r in &v.sel.ranges {
+            // Small ranges are read cell by cell (spilled results count); large ones by the
+            // stored cells (an entire column is no slower than its cells).
+            let mut visit = |row: u32, col: u32| {
+                if !seen.insert((row, col)) {
+                    return;
+                }
+                let val = self.workbook.value(id, row, col);
+                if val.is_blank() {
+                    return;
                 }
                 stats.count += 1;
-                if let CellValue::Number(n) = v {
+                if let CellValue::Number(n) = val {
                     stats.numeric_count += 1;
                     stats.sum += n;
                     stats.min = Some(stats.min.map_or(n, |m: f64| m.min(n)));
                     stats.max = Some(stats.max.map_or(n, |m: f64| m.max(n)));
+                }
+            };
+            if r.cell_count() <= 4_096 {
+                for p in r.cells() {
+                    visit(p.row, p.col);
+                }
+            } else {
+                for (row, col, _) in sheet.cells().iter_range(*r) {
+                    visit(row, col);
                 }
             }
         }
@@ -338,35 +880,34 @@ impl DocModel for GridDoc {
     }
 
     fn a11y(&self, title: &str) -> A11yTree {
-        let sheets = self.workbook.sheets();
-        let mut nodes = Vec::with_capacity(sheets.len() + 1);
-        nodes.push(A11yNode {
-            id: NodeId(1),
-            role: A11yRole::Document,
-            name: Some(title.to_owned()),
-            text: None,
-            bounds: None,
-            level: None,
-            children: (0..sheets.len() as u64).map(|i| NodeId(i + 2)).collect(),
-        });
-        for (i, s) in sheets.iter().enumerate() {
-            nodes.push(A11yNode {
-                id: NodeId(i as u64 + 2),
-                role: A11yRole::Grid,
-                name: Some(s.name().to_owned()),
-                text: None,
-                bounds: None,
-                level: None,
-                children: Vec::new(),
-            });
+        self.a11y_tree(title)
+    }
+
+    fn selected_text(&self) -> Option<String> {
+        let sid = self.sid().ok()?;
+        let r = *self.view().sel.ranges.last()?;
+        self.workbook.copy(sid, r, false).ok().map(|c| c.to_tsv())
+    }
+
+    fn app_query(&self, query: &Query) -> Result<QueryResult> {
+        match query {
+            Query::Grid(q) => Ok(QueryResult::Grid(self.grid_query(q)?)),
+            _ => Err(KilnError::Unsupported(format!(
+                "{query:?} for a Grid workbook"
+            ))),
         }
-        let active = self.active_sheet().map(|(i, _)| NodeId(i as u64 + 2));
-        A11yTree {
-            nodes,
-            active,
-            announce: None,
-            caret: None,
-        }
+    }
+
+    fn set_clock(&mut self, now_ms: u64) {
+        self.now_ms = now_ms;
+    }
+
+    fn take_clipboard(&mut self) -> Option<ClipboardData> {
+        self.copied.take()
+    }
+
+    fn frame_source(&mut self) -> Option<&mut dyn crate::frame::FrameSource> {
+        Some(self)
     }
 
     fn save_formats(&self) -> &'static [FileFormat] {

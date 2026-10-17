@@ -1,0 +1,105 @@
+{
+  "type": "GridFormatCells",
+  "format": {
+    "TYPENAME": "GridFormatCells"
+  },
+  "values": [
+    {
+      "number_format": "0.00%",
+      "category": "Percentage",
+      "sample": "12.50%",
+      "format": {
+        "font_family": "Calibri",
+        "font_size": 11.0,
+        "bold": true,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "font_color": "C00000",
+        "fill_color": null,
+        "h_align": "Right",
+        "v_align": "Bottom",
+        "wrap": false,
+        "merged": false,
+        "indent": 1,
+        "rotation": 45,
+        "number_format": "#,##0.00 \"£\"",
+        "number_format_name": "Custom"
+      },
+      "underline": "doubleAccounting",
+      "superscript": false,
+      "subscript": true,
+      "pattern": "lightGrid",
+      "pattern_color": "A5A5A5",
+      "shrink": true,
+      "border_left": {
+        "style": "MediumDashDot",
+        "color": "1D8A60"
+      },
+      "border_right": null,
+      "border_top": null,
+      "border_bottom": {
+        "style": "MediumDashDot",
+        "color": "1D8A60"
+      },
+      "border_diagonal_up": null,
+      "border_diagonal_down": {
+        "style": "MediumDashDot",
+        "color": "1D8A60"
+      },
+      "locked": true,
+      "hidden": false,
+      "fonts": [
+        "Calibri",
+        "Figtree"
+      ]
+    },
+    {
+      "number_format": "",
+      "category": "",
+      "sample": "",
+      "format": {
+        "font_family": "",
+        "font_size": 0.0,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "font_color": null,
+        "fill_color": null,
+        "h_align": "General",
+        "v_align": "Top",
+        "wrap": false,
+        "merged": false,
+        "indent": 0,
+        "rotation": 0,
+        "number_format": "",
+        "number_format_name": ""
+      },
+      "underline": "",
+      "superscript": false,
+      "subscript": false,
+      "pattern": "",
+      "pattern_color": null,
+      "shrink": false,
+      "border_left": null,
+      "border_right": {
+        "style": "None",
+        "color": null
+      },
+      "border_top": {
+        "style": "None",
+        "color": null
+      },
+      "border_bottom": null,
+      "border_diagonal_up": {
+        "style": "None",
+        "color": null
+      },
+      "border_diagonal_down": null,
+      "locked": false,
+      "hidden": false,
+      "fonts": []
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "name": "@kiln/editor-grid",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Kiln Grid's editor views: the grid surface (canvas tiles, frozen panes, headers, in-cell editor), the formula bar with autocomplete and argument hints, sheet tabs, the status bar, Format Cells and the other dialogs. Presentation only; every edit is a core command.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@kiln/commands": "workspace:*",
+    "@kiln/protocol": "workspace:*",
+    "@kiln/surface": "workspace:*",
+    "@kiln/ui-kit": "workspace:*",
+    "lucide-react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "zustand": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@testing-library/dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "jsdom": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  }
+}

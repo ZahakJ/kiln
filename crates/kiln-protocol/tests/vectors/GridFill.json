@@ -1,0 +1,20 @@
+{
+  "type": "GridFill",
+  "format": {
+    "TYPENAME": "GridFill"
+  },
+  "values": [
+    "Auto",
+    "Growth",
+    "Auto",
+    "Copy",
+    "Series",
+    "FormatsOnly",
+    "WithoutFormatting",
+    "Days",
+    "Weekdays",
+    "Months",
+    "Years",
+    "LinearTrend"
+  ]
+}

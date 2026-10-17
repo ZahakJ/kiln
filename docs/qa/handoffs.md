@@ -983,3 +983,41 @@ WP-54 had to touch these files outside its owned paths; every change is additive
 - For WP-68 (gate) and the plan owner: the B5 exception in `docs/qa/perf.md` is still proposed. Under
   §3.9's own method a keystroke → screen p95 below 16 ms is at the 60 Hz vsync floor (see the B5 section
   there); approve the exception, redefine B5, or keep it for WP-94.
+
+## WP-71 → WP-58 (commands, app frame), WP-54 (scene, surface), WP-52 (protocol, session), WP-69 (sheet model), WP-60 (fidelity), WP-70 (XLSX), WP-73 (charts)
+
+- Outside WP-71's paths, as the integration of the Grid surface needs (additive; owners please acknowledge):
+  - `packages/commands/src/core/connect.ts` (WP-58): one registration line (`grid: GRID_CORE_STATE`) and
+    `sameState`: an `Event::Changed` that carries the same summary, selection and status as the last one is not
+    published. Every scroll frame sets the viewport, and the session emits `Changed` for it; publishing it
+    re-rendered the whole ribbon on every frame (B6). `core.test.ts` tests it, and its release-tier test now
+    expects `suite.format.bold` visible in Grid (Grid formats cells) and checks a still-planned id instead.
+    `core/build.ts` spreads `GRID_BUILDERS` from the Grid catalog.
+  - `apps/web/src/routes/app-frame/AppFrameRoute.tsx` (WP-58): mounts `useGridParts` beside `useWriteParts`.
+  - `crates/kiln-scene` (WP-54): `DeltaTracker::delta_regions` (several send/keep regions: frozen panes and
+    headers stay while the cells scroll; `delta` is the one-region case) and the colour roles `Panel`,
+    `Muted`, `Line`, `Gridline`, `AppFill`, `AppTint` with their light and dark values in
+    `packages/surface/src/palette.ts` (and `fixtures/golden/scene/palette.json`). `packages/surface/src/painter.ts`:
+    text with alpha `0xFE` is drawn in its own colour (a cell's text chosen for its fill), not adapted to the page.
+  - `crates/kiln-session` (WP-52): `FrameSource::extra_regions` in `frame/mod.rs` and the `Query::Grid` arm in
+    `session.rs`; `crates/kiln-protocol` `query.rs`, `samples.rs`, `schema.rs` and `commands/mod.rs` register the
+    Grid types (regenerated with `cargo xtask protocol`); `commands/suite.rs` opens the shared editing and
+    formatting commands to Grid (`GRID_EDIT_APPS`).
+  - `crates/kiln-io-xlsx/src/parts.rs` (WP-70), `crates/kiln-testing/src/formats/xlsx.rs` and
+    `fixtures/mod.rs` (WP-60), `crates/kiln-cli/src/fidelity.rs` (WP-60): the WP-73 carry-over (chart part
+    handler `XlsxSource::charts`/`set_chart`, chart facts in the XLSX snapshot, `FixtureKind::Charts`, and
+    `--format x` merging only that format's rows into `docs/qa/fidelity.md`). `crates/kiln-cli/src/render.rs`
+    sends workbooks to `render_grid.rs`. `docs/qa/perf.md`: a "B6 and B7 — Kiln Grid" section and a proposed
+    exception row (the frame interval, see below), for the gate (WP-68) to approve or refuse.
+- For WP-52 (session): `Session::set_viewport` emits `Event::Changed` on every viewport change, so a scroll sends
+  one `Changed` per frame to every listener (the chrome now ignores unchanged ones, see above). Emitting it only
+  when the status changes (zoom, view) would save the Worker the summary and statistics of every scroll frame.
+- For WP-69 (sheet model): `Command::SetStyle` over a whole-sheet range (Ctrl+A, then Bold) updates the row
+  properties of all 1,048,576 rows (`set_style_with`, `whole_rows`): ~6.5 s in a debug build, fast enough in
+  release. Excel stores such a format as column formats (16,384 entries); doing the same, or keeping one
+  sheet-wide default style, would make it constant time.
+- For WP-94 (performance): B6 is measured as the surface's work per frame (`kiln:grid-frame`, p95 ~5 ms) on the
+  production web build, as `surface.spec.ts` does for pages; the frame interval p95 is ~33 ms in headless
+  Chromium on this machine (p50 16.7 ms) because each scroll frame still costs the Worker a viewport, a frame
+  and a state query. Painting in the Worker (OffscreenCanvas) and a cheaper state query while scrolling are the
+  next steps.

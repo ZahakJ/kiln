@@ -1,0 +1,32 @@
+{
+  "type": "GridLayout",
+  "format": {
+    "TYPENAME": "GridLayout"
+  },
+  "values": [
+    {
+      "header_w": 44.0,
+      "header_h": 24.0,
+      "freeze_rows": 1,
+      "freeze_cols": 0,
+      "frozen_h": 20.0,
+      "frozen_w": 0.0,
+      "content_w": 1048576.0,
+      "content_h": 20971520.0,
+      "sheet_zoom": 1.25,
+      "split": false
+    },
+    {
+      "header_w": 0.0,
+      "header_h": 0.0,
+      "freeze_rows": 0,
+      "freeze_cols": 0,
+      "frozen_h": 0.0,
+      "frozen_w": 0.0,
+      "content_w": 0.0,
+      "content_h": 0.0,
+      "sheet_zoom": 0.0,
+      "split": false
+    }
+  ]
+}

@@ -11,6 +11,20 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+kiln-formula = { workspace = true, default-features = false }
+kiln-sheet = { workspace = true, default-features = false }
+kiln-scene.workspace = true
+kiln-protocol.workspace = true
+kiln-text = { workspace = true, default-features = false }
+kurbo.workspace = true
+rustc-hash.workspace = true
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+kiln-text = { workspace = true, default-features = false, features = ["bundled-fonts"] }
+
+[dev-dependencies]
+kiln-raster.workspace = true
+kiln-io-xlsx = { workspace = true, default-features = false }
 
 [lints]
 workspace = true

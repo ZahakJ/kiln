@@ -384,6 +384,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Selection"
@@ -396,6 +397,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Selection"
@@ -408,6 +410,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -420,6 +423,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -432,6 +436,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -444,6 +449,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -456,6 +462,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -480,6 +487,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -492,6 +500,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -504,6 +513,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -516,6 +526,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -528,6 +539,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -540,6 +552,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -552,6 +565,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -576,6 +590,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -588,6 +603,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -600,6 +616,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -612,6 +629,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -636,6 +654,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -648,6 +667,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -708,6 +728,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -720,6 +741,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -732,6 +754,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -744,6 +767,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -756,6 +780,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -768,6 +793,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -792,6 +818,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -804,6 +831,7 @@
       "tier": "P0",
       "apps": [
         "Write",
+        "Grid",
         "Notes"
       ],
       "availability": "Editable"
@@ -2019,6 +2047,1150 @@
         "Notes"
       ],
       "availability": "Document"
+    },
+    {
+      "id": "grid.nav.move",
+      "label_key": "cmd.grid.nav.move",
+      "keytip": null,
+      "group": "nav",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.nav.jump",
+      "label_key": "cmd.grid.nav.jump",
+      "keytip": null,
+      "group": "nav",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.nav.page",
+      "label_key": "cmd.grid.nav.page",
+      "keytip": null,
+      "group": "nav",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.nav.row_start",
+      "label_key": "cmd.grid.nav.row_start",
+      "keytip": null,
+      "group": "nav",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.nav.first_cell",
+      "label_key": "cmd.grid.nav.first_cell",
+      "keytip": null,
+      "group": "nav",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.nav.last_cell",
+      "label_key": "cmd.grid.nav.last_cell",
+      "keytip": null,
+      "group": "nav",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.nav.advance",
+      "label_key": "cmd.grid.nav.advance",
+      "keytip": null,
+      "group": "nav",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.nav.select_cell",
+      "label_key": "cmd.grid.nav.select_cell",
+      "keytip": null,
+      "group": "nav",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.nav.select_range",
+      "label_key": "cmd.grid.nav.select_range",
+      "keytip": null,
+      "group": "nav",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.nav.select_rows",
+      "label_key": "cmd.grid.nav.select_rows",
+      "keytip": null,
+      "group": "nav",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.nav.select_columns",
+      "label_key": "cmd.grid.nav.select_columns",
+      "keytip": null,
+      "group": "nav",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.nav.select_all",
+      "label_key": "cmd.grid.nav.select_all",
+      "keytip": "SA",
+      "group": "nav",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.editing.select_row",
+      "label_key": "cmd.grid.editing.select_row",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.editing.select_column",
+      "label_key": "cmd.grid.editing.select_column",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.nav.go_to",
+      "label_key": "cmd.grid.nav.go_to",
+      "keytip": "G",
+      "group": "nav",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.sheet.activate",
+      "label_key": "cmd.grid.sheet.activate",
+      "keytip": null,
+      "group": "sheet",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.cells.previous_sheet",
+      "label_key": "cmd.grid.cells.previous_sheet",
+      "keytip": null,
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.cells.next_sheet",
+      "label_key": "cmd.grid.cells.next_sheet",
+      "keytip": null,
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.cells.new_sheet",
+      "label_key": "cmd.grid.cells.new_sheet",
+      "keytip": "S",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.rename_sheet",
+      "label_key": "cmd.grid.cells.rename_sheet",
+      "keytip": "R",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.sheet.delete",
+      "label_key": "cmd.grid.sheet.delete",
+      "keytip": null,
+      "group": "sheet",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.sheet.move",
+      "label_key": "cmd.grid.sheet.move",
+      "keytip": null,
+      "group": "sheet",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.sheet.duplicate",
+      "label_key": "cmd.grid.sheet.duplicate",
+      "keytip": null,
+      "group": "sheet",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.sheet.tab_color",
+      "label_key": "cmd.grid.sheet.tab_color",
+      "keytip": "T",
+      "group": "sheet",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.sheet.hide",
+      "label_key": "cmd.grid.sheet.hide",
+      "keytip": null,
+      "group": "sheet",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.sheet.unhide",
+      "label_key": "cmd.grid.sheet.unhide",
+      "keytip": null,
+      "group": "sheet",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.edit_cell",
+      "label_key": "cmd.grid.editing.edit_cell",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.begin",
+      "label_key": "cmd.grid.editing.begin",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.set_text",
+      "label_key": "cmd.grid.editing.set_text",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.commit",
+      "label_key": "cmd.grid.editing.commit",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.fill_selection",
+      "label_key": "cmd.grid.editing.fill_selection",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.array_formula",
+      "label_key": "cmd.grid.editing.array_formula",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.cancel_edit",
+      "label_key": "cmd.grid.editing.cancel_edit",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.editing.new_line_in_cell",
+      "label_key": "cmd.grid.editing.new_line_in_cell",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.toggle_absolute",
+      "label_key": "cmd.grid.editing.toggle_absolute",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.accept_completion",
+      "label_key": "cmd.grid.editing.accept_completion",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.move_completion",
+      "label_key": "cmd.grid.editing.move_completion",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.point_ref",
+      "label_key": "cmd.grid.editing.point_ref",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.point_move",
+      "label_key": "cmd.grid.editing.point_move",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.open_dropdown",
+      "label_key": "cmd.grid.editing.open_dropdown",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.clear_contents",
+      "label_key": "cmd.grid.editing.clear_contents",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.clear",
+      "label_key": "cmd.grid.editing.clear",
+      "keytip": "E",
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.fill_down",
+      "label_key": "cmd.grid.editing.fill_down",
+      "keytip": "D",
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.fill_right",
+      "label_key": "cmd.grid.editing.fill_right",
+      "keytip": "R",
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.fill_up",
+      "label_key": "cmd.grid.editing.fill_up",
+      "keytip": "U",
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.fill_left",
+      "label_key": "cmd.grid.editing.fill_left",
+      "keytip": "L",
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.drag_fill",
+      "label_key": "cmd.grid.editing.drag_fill",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.auto_fill",
+      "label_key": "cmd.grid.editing.auto_fill",
+      "keytip": "S",
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.auto_sum",
+      "label_key": "cmd.grid.editing.auto_sum",
+      "keytip": "U",
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.insert_date_time",
+      "label_key": "cmd.grid.editing.insert_date_time",
+      "keytip": null,
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.editing.find_next",
+      "label_key": "cmd.grid.editing.find_next",
+      "keytip": "FD",
+      "group": "editing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.formulas.calculate_now",
+      "label_key": "cmd.grid.formulas.calculate_now",
+      "keytip": "B",
+      "group": "formulas",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.formulas.calculate_sheet",
+      "label_key": "cmd.grid.formulas.calculate_sheet",
+      "keytip": "J",
+      "group": "formulas",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.formulas.show_formulas",
+      "label_key": "cmd.grid.formulas.show_formulas",
+      "keytip": "H",
+      "group": "formulas",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.cells.insert_cells",
+      "label_key": "cmd.grid.cells.insert_cells",
+      "keytip": "I",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.delete_cells",
+      "label_key": "cmd.grid.cells.delete_cells",
+      "keytip": "D",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.insert_rows",
+      "label_key": "cmd.grid.cells.insert_rows",
+      "keytip": "R",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.insert_columns",
+      "label_key": "cmd.grid.cells.insert_columns",
+      "keytip": "C",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.delete_rows",
+      "label_key": "cmd.grid.cells.delete_rows",
+      "keytip": "R",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.delete_columns",
+      "label_key": "cmd.grid.cells.delete_columns",
+      "keytip": "C",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.row_height",
+      "label_key": "cmd.grid.cells.row_height",
+      "keytip": "H",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.column_width",
+      "label_key": "cmd.grid.cells.column_width",
+      "keytip": "W",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.resize_rows",
+      "label_key": "cmd.grid.cells.resize_rows",
+      "keytip": null,
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.resize_columns",
+      "label_key": "cmd.grid.cells.resize_columns",
+      "keytip": null,
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.autofit_rows",
+      "label_key": "cmd.grid.cells.autofit_rows",
+      "keytip": "A",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.autofit_columns",
+      "label_key": "cmd.grid.cells.autofit_columns",
+      "keytip": "I",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.hide_rows",
+      "label_key": "cmd.grid.cells.hide_rows",
+      "keytip": "R",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.hide_columns",
+      "label_key": "cmd.grid.cells.hide_columns",
+      "keytip": "C",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.unhide_rows",
+      "label_key": "cmd.grid.cells.unhide_rows",
+      "keytip": "O",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.cells.unhide_columns",
+      "label_key": "cmd.grid.cells.unhide_columns",
+      "keytip": "L",
+      "group": "cells",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.font.borders",
+      "label_key": "cmd.grid.font.borders",
+      "keytip": "B",
+      "group": "font",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.font.border_outline",
+      "label_key": "cmd.grid.font.border_outline",
+      "keytip": "S",
+      "group": "font",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.font.border_none",
+      "label_key": "cmd.grid.font.border_none",
+      "keytip": "N",
+      "group": "font",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.font.fill_color",
+      "label_key": "cmd.grid.font.fill_color",
+      "keytip": "H",
+      "group": "font",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.alignment.align_top",
+      "label_key": "cmd.grid.alignment.align_top",
+      "keytip": "AT",
+      "group": "alignment",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.alignment.align_middle",
+      "label_key": "cmd.grid.alignment.align_middle",
+      "keytip": "AM",
+      "group": "alignment",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.alignment.align_bottom",
+      "label_key": "cmd.grid.alignment.align_bottom",
+      "keytip": "AB",
+      "group": "alignment",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.alignment.horizontal",
+      "label_key": "cmd.grid.alignment.horizontal",
+      "keytip": null,
+      "group": "alignment",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.alignment.orientation",
+      "label_key": "cmd.grid.alignment.orientation",
+      "keytip": "FQ",
+      "group": "alignment",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.alignment.wrap_text",
+      "label_key": "cmd.grid.alignment.wrap_text",
+      "keytip": "W",
+      "group": "alignment",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.alignment.merge_center",
+      "label_key": "cmd.grid.alignment.merge_center",
+      "keytip": "M",
+      "group": "alignment",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.alignment.merge_across",
+      "label_key": "cmd.grid.alignment.merge_across",
+      "keytip": "A",
+      "group": "alignment",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.alignment.merge_cells",
+      "label_key": "cmd.grid.alignment.merge_cells",
+      "keytip": "M",
+      "group": "alignment",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.alignment.unmerge_cells",
+      "label_key": "cmd.grid.alignment.unmerge_cells",
+      "keytip": "U",
+      "group": "alignment",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.number.number_format",
+      "label_key": "cmd.grid.number.number_format",
+      "keytip": "N",
+      "group": "number",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.number.number",
+      "label_key": "cmd.grid.number.number",
+      "keytip": null,
+      "group": "number",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.number.currency",
+      "label_key": "cmd.grid.number.currency",
+      "keytip": null,
+      "group": "number",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.number.percent",
+      "label_key": "cmd.grid.number.percent",
+      "keytip": "P",
+      "group": "number",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.number.accounting",
+      "label_key": "cmd.grid.number.accounting",
+      "keytip": "AN",
+      "group": "number",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.number.comma",
+      "label_key": "cmd.grid.number.comma",
+      "keytip": "K",
+      "group": "number",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.number.increase_decimal",
+      "label_key": "cmd.grid.number.increase_decimal",
+      "keytip": "0",
+      "group": "number",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.number.decrease_decimal",
+      "label_key": "cmd.grid.number.decrease_decimal",
+      "keytip": "9",
+      "group": "number",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.format.apply",
+      "label_key": "cmd.grid.format.apply",
+      "keytip": null,
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.view.freeze_panes",
+      "label_key": "cmd.grid.view.freeze_panes",
+      "keytip": "F",
+      "group": "view",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.view.freeze_top_row",
+      "label_key": "cmd.grid.view.freeze_top_row",
+      "keytip": "R",
+      "group": "view",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.view.freeze_first_column",
+      "label_key": "cmd.grid.view.freeze_first_column",
+      "keytip": "C",
+      "group": "view",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.view.split",
+      "label_key": "cmd.grid.view.split",
+      "keytip": "S",
+      "group": "view",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.view.gridlines",
+      "label_key": "cmd.grid.view.gridlines",
+      "keytip": "VG",
+      "group": "view",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.page_layout.headings",
+      "label_key": "cmd.grid.page_layout.headings",
+      "keytip": "VH",
+      "group": "page_layout",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.clipboard.paste_special",
+      "label_key": "cmd.grid.clipboard.paste_special",
+      "keytip": "S",
+      "group": "clipboard",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.clipboard.paste_values",
+      "label_key": "cmd.grid.clipboard.paste_values",
+      "keytip": "V",
+      "group": "clipboard",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.clipboard.paste_formulas",
+      "label_key": "cmd.grid.clipboard.paste_formulas",
+      "keytip": "F",
+      "group": "clipboard",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.clipboard.paste_formatting",
+      "label_key": "cmd.grid.clipboard.paste_formatting",
+      "keytip": "R",
+      "group": "clipboard",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.clipboard.paste_transpose",
+      "label_key": "cmd.grid.clipboard.paste_transpose",
+      "keytip": "T",
+      "group": "clipboard",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
     }
   ]
 }

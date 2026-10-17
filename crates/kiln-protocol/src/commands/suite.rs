@@ -289,31 +289,31 @@ crate::command_table! {
     // WP-64: shared editing commands, implemented by Kiln Write (and Notes, which reuses it).
     Self::Edit(EditCommand::Cut) => {
         id: "suite.edit.cut", keytip: Some("X"), group: "edit",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Selection,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Selection,
     };
     Self::Edit(EditCommand::Copy) => {
         id: "suite.edit.copy", keytip: Some("C"), group: "edit",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Selection,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Selection,
     };
     Self::Edit(EditCommand::Paste { .. }) => {
         id: "suite.edit.paste", keytip: Some("V"), group: "edit",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::PasteKeepSource { .. }) => {
         id: "suite.edit.paste_keep_source", keytip: Some("K"), group: "edit",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::PasteMerge { .. }) => {
         id: "suite.edit.paste_merge_formatting", keytip: Some("M"), group: "edit",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::PasteTextOnly { .. }) => {
         id: "suite.edit.paste_text_only", keytip: Some("T"), group: "edit",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::PasteAs { .. }) => {
         id: "suite.edit.paste_as", keytip: None, group: "edit",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::Repeat) => {
         id: "suite.edit.repeat", keytip: None, group: "edit",
@@ -321,31 +321,31 @@ crate::command_table! {
     };
     Self::Edit(EditCommand::Bold) => {
         id: "suite.format.bold", keytip: Some("1"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::Italic) => {
         id: "suite.format.italic", keytip: Some("2"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::Underline) => {
         id: "suite.format.underline", keytip: Some("3"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::DoubleUnderline) => {
         id: "suite.format.double_underline", keytip: None, group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::Strikethrough) => {
         id: "suite.format.strikethrough", keytip: Some("4"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::Subscript) => {
         id: "suite.format.subscript", keytip: Some("5"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::Superscript) => {
         id: "suite.format.superscript", keytip: Some("6"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::AllCaps) => {
         id: "suite.format.all_caps", keytip: None, group: "format",
@@ -353,19 +353,19 @@ crate::command_table! {
     };
     Self::Edit(EditCommand::FontFamily { .. }) => {
         id: "suite.format.font_family", keytip: Some("FF"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::FontSize { .. }) => {
         id: "suite.format.font_size", keytip: Some("FS"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::GrowFont { .. }) => {
         id: "suite.format.grow_font", keytip: Some("FG"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::ShrinkFont { .. }) => {
         id: "suite.format.shrink_font", keytip: Some("FK"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::ChangeCase { .. }) => {
         id: "suite.format.change_case", keytip: Some("7"), group: "format",
@@ -373,11 +373,11 @@ crate::command_table! {
     };
     Self::Edit(EditCommand::ClearFormatting) => {
         id: "suite.format.clear_formatting", keytip: Some("E"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::FontColor { .. }) => {
         id: "suite.format.font_color", keytip: Some("FC"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::Highlight { .. }) => {
         id: "suite.format.highlight", keytip: Some("I"), group: "format",
@@ -397,27 +397,27 @@ crate::command_table! {
     };
     Self::Edit(EditCommand::Indent) => {
         id: "suite.format.indent", keytip: Some("AI"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::Outdent) => {
         id: "suite.format.outdent", keytip: Some("AO"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::AlignLeft) => {
         id: "suite.format.align_left", keytip: Some("AL"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::AlignCenter) => {
         id: "suite.format.align_center", keytip: Some("AC"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::AlignRight) => {
         id: "suite.format.align_right", keytip: Some("AR"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::Justify) => {
         id: "suite.format.justify", keytip: Some("AJ"), group: "format",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::LineSpacing { .. }) => {
         id: "suite.format.line_spacing", keytip: Some("K"), group: "format",
@@ -425,11 +425,11 @@ crate::command_table! {
     };
     Self::Edit(EditCommand::InsertDate) => {
         id: "suite.insert.date", keytip: None, group: "insert",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::InsertTime) => {
         id: "suite.insert.time", keytip: None, group: "insert",
-        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+        tier: P0, apps: GRID_EDIT_APPS, availability: Editable,
     };
     Self::Edit(EditCommand::InsertPictures) => {
         id: "suite.insert.pictures", keytip: Some("P"), group: "insert",
@@ -542,6 +542,10 @@ const CHART_APPS: AppMask = AppMask::GRID.union(AppMask::WRITE).union(AppMask::D
 /// Apps that implement the shared editing commands of [`EditCommand`] (WP-64). Grid and Deck add
 /// themselves when their editors implement them.
 const TEXT_EDIT_APPS: AppMask = AppMask::WRITE.union(AppMask::NOTES);
+
+/// The shared editing commands Grid's model applies to cells too (WP-71): the clipboard, the font,
+/// alignment and indent, and the date and time.
+const GRID_EDIT_APPS: AppMask = TEXT_EDIT_APPS.union(AppMask::GRID);
 
 /// The chart types of the Insert ▸ Charts galleries and Change Chart Type.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, TS)]

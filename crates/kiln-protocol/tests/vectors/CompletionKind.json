@@ -1,0 +1,12 @@
+{
+  "type": "CompletionKind",
+  "format": {
+    "TYPENAME": "CompletionKind"
+  },
+  "values": [
+    "Function",
+    "Value",
+    "Function",
+    "Name"
+  ]
+}

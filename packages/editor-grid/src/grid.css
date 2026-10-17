@@ -1,0 +1,904 @@
+/* Kiln Grid's editing area (the Grid mockup): the formula bar in two cards, the sheet in a
+ * rounded panel, the sheet tabs under it with the active one lifted out of the strip. */
+
+.kiln-grid {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  gap: 8px;
+  padding: 8px 10px 0;
+  background: var(--kiln-bg-canvas, var(--kiln-bg));
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+}
+
+/* ── formula bar ─────────────────────────────────────────────────────────────── */
+
+.kiln-formulabar {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex: none;
+}
+
+.kiln-namebox {
+  display: flex;
+  align-items: center;
+  width: 92px;
+  height: 32px;
+  flex: none;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-md, 8px);
+  background: var(--kiln-panel, var(--kiln-bg-surface));
+}
+
+.kiln-namebox__input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0 0 0 10px;
+  color: var(--kiln-fg);
+  font: var(--kiln-weight-semibold) var(--kiln-text-sm) / 1 var(--kiln-font-ui);
+  outline: none;
+}
+
+.kiln-namebox:focus-within {
+  border-color: var(--kiln-grid-fill);
+  box-shadow: 0 0 0 1px var(--kiln-grid-fill);
+}
+
+.kiln-namebox__menu {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--kiln-fg-muted);
+  cursor: pointer;
+}
+
+.kiln-formulabar__buttons {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  gap: 2px;
+}
+
+.kiln-formulabar__field {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 0;
+  min-height: 32px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-md, 8px);
+  background: var(--kiln-panel, var(--kiln-bg-surface));
+}
+
+.kiln-formulabar__field:focus-within {
+  border-color: var(--kiln-grid-fill);
+}
+
+.kiln-formulabar__fx {
+  flex: none;
+  height: 30px;
+  padding: 0 8px 0 12px;
+  border: 0;
+  background: transparent;
+  color: var(--kiln-grid-text);
+  font: italic var(--kiln-weight-bold) 15px / 1 var(--kiln-font-display, serif);
+  cursor: pointer;
+}
+
+.kiln-formulabar__expand {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 30px;
+  border: 0;
+  background: transparent;
+  color: var(--kiln-fg-muted);
+  cursor: pointer;
+}
+
+.kiln-formulabox {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 30px;
+}
+
+.kiln-formulabox--expanded {
+  height: 84px;
+}
+
+.kiln-formulabox__mirror,
+.kiln-formulabox__input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 7px 4px;
+  border: 0;
+  font: var(--kiln-text-sm) / 16px var(--kiln-font-ui);
+  letter-spacing: normal;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  overflow: hidden;
+}
+
+.kiln-formulabox__mirror {
+  color: var(--kiln-fg);
+  pointer-events: none;
+}
+
+.kiln-formulabox__input {
+  resize: none;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--kiln-fg);
+  outline: none;
+}
+
+.kiln-formulabox__input::selection {
+  background: var(--kiln-selection);
+  color: transparent;
+}
+
+.kiln-formulabox--expanded .kiln-formulabox__mirror,
+.kiln-formulabox--expanded .kiln-formulabox__input {
+  overflow-y: auto;
+}
+
+.kiln-formulabox__ref {
+  border-radius: 3px;
+  font-weight: var(--kiln-weight-semibold);
+}
+
+/* ── sheet ───────────────────────────────────────────────────────────────────── */
+
+.kiln-grid__sheet {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-md, 8px) var(--kiln-radius-md, 8px) 0 0;
+  overflow: hidden;
+  background: var(--kiln-page);
+}
+
+.kiln-grid-surface {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.kiln-grid-surface__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.kiln-grid-surface__scroller {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--kiln-scrollbar) transparent;
+}
+
+.kiln-grid-surface__spacer {
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.kiln-grid-surface__proxy {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  opacity: 0;
+  resize: none;
+  overflow: hidden;
+  white-space: pre;
+  color: transparent;
+  background: transparent;
+  caret-color: transparent;
+  pointer-events: none;
+}
+
+.kiln-grid-surface__a11y {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.kiln-grid__notice {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: min(560px, calc(100% - 32px));
+  padding: 8px 10px 8px 14px;
+  border-radius: var(--kiln-radius-md, 8px);
+  background: var(--kiln-bg-tooltip);
+  color: var(--kiln-fg-tooltip);
+  font-size: var(--kiln-text-sm);
+  box-shadow: var(--kiln-shadow-2);
+  z-index: 3;
+}
+
+.kiln-grid__notice button {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ── autocomplete ────────────────────────────────────────────────────────────── */
+
+.kiln-autocomplete {
+  position: absolute;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: calc(100% - 16px);
+  font-size: var(--kiln-text-sm);
+  pointer-events: none;
+}
+
+.kiln-autocomplete > * {
+  pointer-events: auto;
+}
+
+.kiln-autocomplete__panel {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-md, 8px);
+  background: var(--kiln-raised, var(--kiln-panel));
+  box-shadow: var(--kiln-shadow-2);
+  overflow: hidden;
+}
+
+.kiln-autocomplete__list {
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  min-width: 180px;
+  max-height: 232px;
+  overflow-y: auto;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-md, 8px);
+  background: var(--kiln-raised, var(--kiln-panel));
+  box-shadow: var(--kiln-shadow-2);
+}
+
+.kiln-autocomplete__panel .kiln-autocomplete__list {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.kiln-autocomplete__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: var(--kiln-radius-sm, 4px);
+  cursor: default;
+  white-space: nowrap;
+}
+
+.kiln-autocomplete__item--selected {
+  background: var(--kiln-grid-tint);
+  color: var(--kiln-grid-text);
+}
+
+.kiln-autocomplete__kind {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--kiln-bg-surface-2, var(--kiln-sunken));
+  color: var(--kiln-fg-muted);
+  font: italic var(--kiln-weight-semibold) 11px / 1 var(--kiln-font-ui);
+}
+
+.kiln-autocomplete__kind--function {
+  color: var(--kiln-grid-text);
+}
+
+.kiln-autocomplete__label {
+  font-family: var(--kiln-font-mono);
+  font-size: 12px;
+}
+
+.kiln-autocomplete__doc {
+  width: 260px;
+  padding: 10px 12px;
+  border-left: 1px solid var(--kiln-line);
+  color: var(--kiln-fg);
+  line-height: 1.4;
+}
+
+.kiln-autocomplete__docsyntax {
+  margin-bottom: 6px;
+  font-family: var(--kiln-font-mono);
+  font-size: 12px;
+  font-weight: var(--kiln-weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.kiln-autocomplete__tip {
+  margin-top: 8px;
+  color: var(--kiln-fg-muted);
+  font-size: var(--kiln-text-xs);
+}
+
+.kiln-autocomplete__hint {
+  max-width: 420px;
+  padding: 6px 10px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-sm, 6px);
+  background: var(--kiln-raised, var(--kiln-panel));
+  box-shadow: var(--kiln-shadow-1);
+  line-height: 1.4;
+}
+
+.kiln-autocomplete__syntax {
+  font-family: var(--kiln-font-mono);
+  font-size: 12px;
+}
+
+.kiln-autocomplete__syntax b {
+  color: var(--kiln-grid-text);
+}
+
+.kiln-autocomplete__arg,
+.kiln-autocomplete__summary {
+  margin-top: 2px;
+  color: var(--kiln-fg-muted);
+  font-size: var(--kiln-text-xs);
+}
+
+/* ── find bar ────────────────────────────────────────────────────────────────── */
+
+.kiln-findbar {
+  position: absolute;
+  top: 8px;
+  right: 24px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 4px 4px 8px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-md, 8px);
+  background: var(--kiln-raised, var(--kiln-panel));
+  box-shadow: var(--kiln-shadow-2);
+  font-size: var(--kiln-text-sm);
+}
+
+.kiln-findbar__input {
+  width: 180px;
+  height: 26px;
+  padding: 0 8px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-sm, 4px);
+  background: var(--kiln-bg-input, var(--kiln-page));
+  color: var(--kiln-fg);
+  font: inherit;
+}
+
+.kiln-findbar__opt {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--kiln-fg-muted);
+  white-space: nowrap;
+}
+
+/* ── sheet tabs ──────────────────────────────────────────────────────────────── */
+
+.kiln-sheettabs {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  height: 32px;
+  flex: none;
+  margin-top: -9px;
+  padding: 0 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.kiln-sheettabs__list {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+}
+
+.kiln-sheettabs__add {
+  align-self: center;
+  margin-right: 6px;
+}
+
+.kiln-sheettab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 18px;
+  border-radius: 0 0 var(--kiln-radius-md, 8px) var(--kiln-radius-md, 8px);
+  color: var(--kiln-fg);
+  font-size: var(--kiln-text-sm);
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+}
+
+.kiln-sheettab:hover {
+  background: var(--kiln-bg-hover);
+}
+
+.kiln-sheettab--active {
+  border: 1px solid var(--kiln-line);
+  border-top-color: var(--kiln-page);
+  background: var(--kiln-page);
+  color: var(--kiln-grid-text);
+  font-weight: var(--kiln-weight-bold);
+}
+
+.kiln-sheettab--active:hover {
+  background: var(--kiln-page);
+}
+
+.kiln-sheettab:focus-visible {
+  outline: var(--kiln-focus-width, 2px) solid var(--kiln-focus);
+  outline-offset: -2px;
+}
+
+.kiln-sheettab--dragging {
+  opacity: 0.5;
+}
+
+.kiln-sheettab__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.kiln-sheettab__rename {
+  width: 120px;
+  height: 22px;
+  padding: 0 4px;
+  border: 1px solid var(--kiln-grid-fill);
+  border-radius: 4px;
+  background: var(--kiln-bg-input, var(--kiln-page));
+  color: var(--kiln-fg);
+  font: inherit;
+}
+
+.kiln-gridstat b {
+  font-weight: var(--kiln-weight-semibold);
+}
+
+/* ── dialogs ─────────────────────────────────────────────────────────────────── */
+
+.kiln-griddlg {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: var(--kiln-text-sm);
+}
+
+.kiln-griddlg__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.kiln-griddlg__row {
+  display: flex;
+  gap: 24px;
+}
+
+.kiln-griddlg__radios {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 8px 12px 10px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-sm, 6px);
+}
+
+.kiln-griddlg__radios legend {
+  padding: 0 4px;
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-griddlg__check,
+.kiln-fc__check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kiln-griddlg__label,
+.kiln-fc__label {
+  color: var(--kiln-fg-muted);
+  font-size: var(--kiln-text-sm);
+}
+
+.kiln-griddlg__field,
+.kiln-fc__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kiln-griddlg__input,
+.kiln-fc__input {
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid var(--kiln-border, var(--kiln-line));
+  border-radius: var(--kiln-radius-control, 6px);
+  background: var(--kiln-bg-input, var(--kiln-page));
+  color: var(--kiln-fg);
+  font: inherit;
+}
+
+.kiln-griddlg__list,
+.kiln-fc__list {
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  min-height: 120px;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-sm, 6px);
+  background: var(--kiln-bg-input, var(--kiln-page));
+}
+
+.kiln-griddlg__option,
+.kiln-fc__option {
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: default;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kiln-griddlg__option:hover,
+.kiln-fc__option:hover {
+  background: var(--kiln-bg-hover);
+}
+
+.kiln-griddlg__option--on,
+.kiln-fc__option--on,
+.kiln-griddlg__option--on:hover,
+.kiln-fc__option--on:hover {
+  background: var(--kiln-grid-tint);
+  color: var(--kiln-grid-text);
+}
+
+.kiln-griddlg__functions {
+  font-family: var(--kiln-font-mono);
+  font-size: 12px;
+}
+
+.kiln-griddlg__doc {
+  min-height: 56px;
+  line-height: 1.4;
+}
+
+.kiln-griddlg__syntax {
+  font-family: var(--kiln-font-mono);
+  font-weight: var(--kiln-weight-semibold);
+  font-size: 12px;
+}
+
+/* Format Cells */
+
+.kiln-fc__tab {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  padding-top: 12px;
+  min-height: 330px;
+  align-content: flex-start;
+  font-size: var(--kiln-text-sm);
+}
+
+.kiln-fc__col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 160px;
+}
+
+.kiln-fc__grow {
+  flex: 1;
+}
+
+.kiln-fc__codes {
+  font-family: var(--kiln-font-mono);
+  font-size: 12px;
+}
+
+.kiln-fc__sample {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 8px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-sm, 6px);
+}
+
+.kiln-fc__sample output {
+  font-family: var(--kiln-font-doc-calibri, var(--kiln-font-doc));
+  min-height: 1.2em;
+}
+
+.kiln-fc__fillsample {
+  height: 56px;
+}
+
+.kiln-fc__group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  width: 100%;
+  margin: 0;
+  padding: 8px 12px 10px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-sm, 6px);
+}
+
+.kiln-fc__group legend {
+  padding: 0 4px;
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-fc__wide {
+  width: 100%;
+}
+
+.kiln-fc__preview {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  height: 56px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-sm, 6px);
+  background: var(--kiln-page);
+  font-size: 18px;
+}
+
+.kiln-fc__lines {
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 72px);
+  gap: 2px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-sm, 6px);
+}
+
+.kiln-fc__lines .kiln-fc__option {
+  display: grid;
+  place-items: center;
+  height: 18px;
+  padding: 2px;
+}
+
+.kiln-fc__line-none {
+  font-size: var(--kiln-text-xs);
+}
+
+.kiln-fc__presets {
+  display: flex;
+  gap: 8px;
+}
+
+.kiln-fc__borderbox {
+  position: relative;
+  width: 220px;
+  height: 160px;
+  margin: 8px auto;
+}
+
+.kiln-fc__borderpreview {
+  position: absolute;
+  inset: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px dashed var(--kiln-line-strong, var(--kiln-line));
+  color: var(--kiln-fg-muted);
+  pointer-events: none;
+}
+
+.kiln-fc__side {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--kiln-fg);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.kiln-fc__side:hover {
+  border-color: var(--kiln-line);
+}
+
+.kiln-fc__side--on {
+  background: var(--kiln-grid-tint);
+}
+
+.kiln-fc__side--top,
+.kiln-fc__side--insideH,
+.kiln-fc__side--bottom {
+  left: 28px;
+  right: 28px;
+  height: 24px;
+}
+
+.kiln-fc__side--top {
+  top: 16px;
+}
+
+.kiln-fc__side--insideH {
+  top: 68px;
+}
+
+.kiln-fc__side--bottom {
+  bottom: 16px;
+}
+
+.kiln-fc__side--left,
+.kiln-fc__side--insideV,
+.kiln-fc__side--right {
+  top: 28px;
+  bottom: 28px;
+  width: 24px;
+}
+
+.kiln-fc__side--left {
+  left: 16px;
+}
+
+.kiln-fc__side--insideV {
+  left: 98px;
+}
+
+.kiln-fc__side--right {
+  right: 16px;
+}
+
+.kiln-fc__side--left svg,
+.kiln-fc__side--insideV svg,
+.kiln-fc__side--right svg {
+  transform: rotate(90deg);
+}
+
+.kiln-fc__side--diagUp,
+.kiln-fc__side--diagDown {
+  width: 24px;
+  height: 24px;
+  bottom: -8px;
+}
+
+.kiln-fc__side--diagUp {
+  left: -6px;
+}
+
+.kiln-fc__side--diagDown {
+  right: -6px;
+}
+
+.kiln-fc__side--diagUp::after,
+.kiln-fc__side--diagDown::after {
+  content: "";
+  width: 16px;
+  border-top: 1px solid currentColor;
+  transform: rotate(-45deg);
+}
+
+.kiln-fc__side--diagDown::after {
+  transform: rotate(45deg);
+}
+
+.kiln-colorbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  min-width: 160px;
+  padding: 0 8px;
+  border: 1px solid var(--kiln-border, var(--kiln-line));
+  border-radius: var(--kiln-radius-control, 6px);
+  background: var(--kiln-bg-input, var(--kiln-page));
+  color: var(--kiln-fg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.kiln-colorbtn__swatch {
+  width: 18px;
+  height: 14px;
+  border: 1px solid var(--kiln-line-strong, var(--kiln-line));
+  border-radius: 3px;
+}
+
+.kiln-colorbtn__swatch--empty {
+  background: linear-gradient(135deg, transparent 45%, var(--kiln-danger) 45% 55%, transparent 55%);
+}
+
+.kiln-colorbtn__text {
+  flex: 1;
+  text-align: left;
+  font-family: var(--kiln-font-mono);
+  font-size: 12px;
+}
+
+.kiln-fc__note {
+  width: 100%;
+  margin: 8px 0 0;
+  color: var(--kiln-fg-muted);
+  line-height: 1.4;
+}
+
+@media (max-width: 640px) {
+  .kiln-grid {
+    padding: 6px 6px 0;
+    gap: 6px;
+  }
+  .kiln-namebox {
+    width: 72px;
+  }
+  .kiln-formulabar__buttons {
+    display: none;
+  }
+  .kiln-findbar {
+    left: 8px;
+    right: 8px;
+    flex-wrap: wrap;
+  }
+  .kiln-findbar__input {
+    flex: 1;
+    width: auto;
+  }
+}

@@ -730,6 +730,9 @@ export class Painter {
    */
   private textColor(paint: Paint): number {
     const rgba = resolvePaint(this.palette, paint);
+    // Alpha 0xFE marks text drawn on its own fill (a Grid cell's background): its colour was
+    // chosen for that fill, not for the page (WP-71).
+    if ('Rgba' in paint && (paint.Rgba & 0xff) === 0xfe) return rgba;
     return 'Rgba' in paint ? textOnPage(rgba, this.palette.page) : rgba;
   }
 

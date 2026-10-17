@@ -82,7 +82,11 @@ fn parse(args: &[String]) -> Result<Args, CliError> {
 pub fn run(args: &[String]) -> Result<String, CliError> {
     let a = parse(args)?;
     let corpus = Corpus::load_repo().map_err(CliError::Failed)?;
-    let mut kinds = vec![FixtureKind::Features, FixtureKind::Manual];
+    let mut kinds = vec![
+        FixtureKind::Features,
+        FixtureKind::Manual,
+        FixtureKind::Charts,
+    ];
     if !a.ci {
         kinds.push(FixtureKind::External);
     }
@@ -115,7 +119,15 @@ pub fn run(args: &[String]) -> Result<String, CliError> {
             std::fs::create_dir_all(dir)
                 .map_err(|e| CliError::Failed(format!("{}: {e}", dir.display())))?;
         }
-        std::fs::write(path, report.to_markdown())
+        let mut md = report.to_markdown();
+        // `--format x` rewrites only the rows of x: the other formats' rows stay as they were.
+        if !a.formats.is_empty()
+            && a.formats.len() < FixtureFormat::ALL.len()
+            && let Ok(old) = std::fs::read_to_string(path)
+        {
+            md = merge_report(&old, &md, &a.formats);
+        }
+        std::fs::write(path, md)
             .map_err(|e| CliError::Failed(format!("{}: {e}", path.display())))?;
         text.push_str(&format!("wrote {}\n", path.display()));
     }
@@ -129,6 +141,128 @@ pub fn run(args: &[String]) -> Result<String, CliError> {
         )));
     }
     Ok(text)
+}
+
+/// The format a table row of the report belongs to: its first cell is a format (`| xlsx |`), a
+/// fixture path (`` | `xlsx/features/a.xlsx` | ``, `` | `large/sheet-1m.xlsx` | ``) or a fixture
+/// directory (`` | `external/xlsx` | ``).
+fn row_format(line: &str) -> Option<FixtureFormat> {
+    let first = line
+        .trim()
+        .strip_prefix('|')?
+        .split('|')
+        .next()?
+        .trim()
+        .trim_matches('`');
+    if let Some(f) = FixtureFormat::parse(first) {
+        return Some(f);
+    }
+    if let Some(f) = std::path::Path::new(first)
+        .extension()
+        .and_then(|e| e.to_str())
+        .and_then(FixtureFormat::parse)
+    {
+        return Some(f);
+    }
+    first.split('/').find_map(FixtureFormat::parse)
+}
+
+/// The report written for some formats merged into the previous report: every table keeps the
+/// previous rows of the other formats and takes the new rows of `formats` (in the order of
+/// [`FixtureFormat::ALL`]); the header lists every format and the result is the merged one.
+#[must_use]
+pub fn merge_report(old: &str, new: &str, formats: &[FixtureFormat]) -> String {
+    /// The rows of each table, by the heading the table is under.
+    fn tables(md: &str) -> Vec<(String, Vec<String>)> {
+        let mut out: Vec<(String, Vec<String>)> = Vec::new();
+        let mut heading = String::new();
+        for line in md.lines() {
+            if line.starts_with("## ") {
+                heading = line.to_owned();
+            } else if line.starts_with('|')
+                && !line.starts_with("|---")
+                && row_format(line).is_some()
+            {
+                match out.iter_mut().find(|(h, _)| *h == heading) {
+                    Some((_, rows)) => rows.push(line.to_owned()),
+                    None => out.push((heading.clone(), vec![line.to_owned()])),
+                }
+            }
+        }
+        out
+    }
+    let old_tables = tables(old);
+    let new_tables = tables(new);
+    let rank = |l: &str| {
+        row_format(l)
+            .and_then(|f| FixtureFormat::ALL.iter().position(|x| *x == f))
+            .unwrap_or(usize::MAX)
+    };
+    let mut kept_formats: Vec<FixtureFormat> = Vec::new();
+    let mut out = String::new();
+    let mut heading = String::new();
+    let mut emitted = std::collections::HashSet::new();
+    let mut failed = false;
+    for line in new.lines() {
+        if line.starts_with("## ") {
+            heading = line.to_owned();
+        }
+        let is_row =
+            line.starts_with('|') && !line.starts_with("|---") && row_format(line).is_some();
+        if !is_row {
+            out.push_str(line);
+            out.push('\n');
+            continue;
+        }
+        if !emitted.insert(heading.clone()) {
+            continue;
+        }
+        let mut rows: Vec<String> = old_tables
+            .iter()
+            .find(|(h, _)| *h == heading)
+            .map(|(_, r)| {
+                r.iter()
+                    .filter(|l| row_format(l).is_some_and(|f| !formats.contains(&f)))
+                    .cloned()
+                    .collect()
+            })
+            .unwrap_or_default();
+        rows.extend(
+            new_tables
+                .iter()
+                .find(|(h, _)| *h == heading)
+                .map(|(_, r)| r.clone())
+                .unwrap_or_default(),
+        );
+        rows.sort_by_key(|l| rank(l));
+        for r in rows {
+            if let Some(f) = row_format(&r)
+                && !kept_formats.contains(&f)
+            {
+                kept_formats.push(f);
+            }
+            if r.contains("| FAIL |") || r.contains("| fail |") {
+                failed = true;
+            }
+            out.push_str(&r);
+            out.push('\n');
+        }
+    }
+    kept_formats.sort_by_key(|f| FixtureFormat::ALL.iter().position(|x| x == f));
+    let names: Vec<String> = kept_formats.iter().map(ToString::to_string).collect();
+    out.lines()
+        .map(|l| {
+            if l.starts_with("- Formats: ") {
+                format!("- Formats: {}", names.join(", "))
+            } else if l.starts_with("- Result: ") {
+                format!("- Result: **{}**", if failed { "FAIL" } else { "pass" })
+            } else {
+                l.to_owned()
+            }
+        })
+        .collect::<Vec<_>>()
+        .join("\n")
+        + "\n"
 }
 
 #[cfg(test)]
@@ -189,5 +323,26 @@ mod tests {
         // Interactively, an empty registry is not a result.
         let err = run(&["--no-oracle".into(), "--format".into(), name]).unwrap_err();
         assert!(err.to_string().contains("pass --ci"));
+    }
+
+    #[test]
+    fn a_format_run_rewrites_only_its_own_rows() {
+        let old = "# R\n\n- Formats: docx, xlsx, pptx\n- Result: **pass**\n\n## Summary\n\n| Format | A |\n|---|---|\n| docx | 1 |\n| xlsx | 0.5 |\n| pptx | 1 |\n\n## Files\n\n| File | Result |\n|---|---|\n| `docx/features/a.docx` | pass |\n| `xlsx/features/b.xlsx` | FAIL |\n| `external/pptx/c.pptx` | pass |\n";
+        let new = "# R\n\n- Formats: xlsx\n- Result: **pass**\n\n## Summary\n\n| Format | A |\n|---|---|\n| xlsx | 1 |\n\n## Files\n\n| File | Result |\n|---|---|\n| `xlsx/charts/bar.xlsx` | pass |\n| `xlsx/features/b.xlsx` | pass |\n";
+        let m = merge_report(old, new, &[FixtureFormat::Xlsx]);
+        assert!(m.contains("- Formats: docx, xlsx, pptx"));
+        assert!(m.contains("- Result: **pass**"));
+        assert!(m.contains("| docx | 1 |\n| xlsx | 1 |\n| pptx | 1 |"));
+        assert!(m.contains("| `docx/features/a.docx` | pass |\n| `xlsx/charts/bar.xlsx` | pass |\n| `xlsx/features/b.xlsx` | pass |\n| `external/pptx/c.pptx` | pass |"));
+        assert!(!m.contains("FAIL"));
+        assert_eq!(
+            row_format("| `large/sheet-1m.xlsx` | pass |"),
+            Some(FixtureFormat::Xlsx)
+        );
+        assert_eq!(
+            row_format("| `external/docx` | 10 |"),
+            Some(FixtureFormat::Docx)
+        );
+        assert_eq!(row_format("| File | Result |"), None);
     }
 }

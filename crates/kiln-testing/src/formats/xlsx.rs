@@ -42,11 +42,12 @@ impl Roundtrip for Xlsx {
             .map(|c| c.value.as_str())
             .collect::<Vec<_>>()
             .join("\n");
-        Ok(Snapshot {
-            facts: snapshot_facts(wb),
-            text,
-            cells,
-        })
+        // Charts are scored structurally: their series, types and axes as facts.
+        let mut facts = snapshot_facts(wb);
+        facts.extend(kiln_charts::package::package_chart_facts(
+            read.source.package(),
+        ));
+        Ok(Snapshot { facts, text, cells })
     }
 
     fn roundtrip(&self, bytes: &[u8]) -> Result<RoundtripOutput, String> {

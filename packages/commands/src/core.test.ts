@@ -198,6 +198,21 @@ describe('connectCore', () => {
     expect(registry.getState('suite.file.save').enabled).toBe(false);
   });
 
+  it('publishes a change only when the state differs (a scroll moves the viewport only)', () => {
+    const client = new FakeClient();
+    const registry = createCommandRegistry({ app: 'write' });
+    const conn = connectCore(registry, { client: client as unknown as KilnClient, document: summary() });
+    const seen: number[] = [];
+    conn.subscribe((s) => seen.push(s.summary?.revision ?? -1));
+    const changed = (revision: number) =>
+      client.emit({ Changed: { summary: summary({ revision }), selection: NO_SELECTION, status: STATUS } });
+    changed(1);
+    changed(1);
+    changed(1);
+    changed(2);
+    expect(seen).toEqual([1, 2]);
+  });
+
   it('offers only the commands of the window app and hides planned ones in release builds', () => {
     const client = new FakeClient();
     const registry = createCommandRegistry({ app: 'grid', tiers: RELEASE_TIERS });
@@ -207,7 +222,8 @@ describe('connectCore', () => {
     });
     expect(registry.getState('suite.chart.move').visible).toBe(true);
     expect(registry.getState('write.caret.move').visible).toBe(false);
-    expect(registry.getState('suite.format.bold').visible).toBe(false); // planned: hidden, never greyed
+    expect(registry.getState('suite.format.bold').visible).toBe(true); // Grid formats cells (WP-71)
+    expect(registry.getState('grid.data.toggle_filter').visible).toBe(false); // planned: hidden, never greyed
     expect(registry.getState('suite.file.save').visible).toBe(true);
   });
 });

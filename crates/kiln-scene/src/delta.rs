@@ -224,6 +224,24 @@ impl DeltaTracker {
         keep: &Bounds,
         revision: u64,
     ) -> SceneDelta {
+        self.delta_regions(
+            scene,
+            std::slice::from_ref(send),
+            std::slice::from_ref(keep),
+            revision,
+        )
+    }
+
+    /// [`DeltaTracker::delta`] for a surface that shows several regions of its document at once
+    /// (Grid's frozen panes and headers, PLAN.md §3.6): built tiles intersecting any of `sends`
+    /// are sent, and held tiles outside every one of `keeps` are dropped.
+    pub fn delta_regions(
+        &mut self,
+        scene: &Scene,
+        sends: &[Bounds],
+        keeps: &[Bounds],
+        revision: u64,
+    ) -> SceneDelta {
         let reset = self.will_reset(scene.scale);
         if reset {
             self.sent.clear();
@@ -232,7 +250,11 @@ impl DeltaTracker {
             self.scale = Some(scene.scale.to_bits());
         }
         let mut tiles = Vec::new();
-        for slot in scene.slots_in(send) {
+        for slot in scene
+            .slots()
+            .iter()
+            .filter(|s| sends.iter().any(|r| s.rect.intersects(r)))
+        {
             let Some(built) = scene.built(slot.id) else {
                 continue;
             };
@@ -252,9 +274,9 @@ impl DeltaTracker {
             .sent
             .iter()
             .filter(|(id, (version, _))| {
-                scene
-                    .slot(**id)
-                    .is_none_or(|s| s.version != *version || !s.rect.intersects(keep))
+                scene.slot(**id).is_none_or(|s| {
+                    s.version != *version || !keeps.iter().any(|k| s.rect.intersects(k))
+                })
             })
             .map(|(id, _)| *id)
             .collect();
@@ -444,5 +466,23 @@ mod tests {
         let mut img = d.images[0].clone();
         img.width = u32::MAX;
         assert!(!img.is_valid());
+    }
+
+    #[test]
+    fn several_regions_send_and_keep_the_tiles_of_each() {
+        // Tiles at y = 0, 1000, …, 9000; regions around the first and the ninth.
+        let sc = scene(&[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
+        let mut t = DeltaTracker::new();
+        let top = Bounds::new(0.0, 0.0, 800.0, 10.0);
+        let far = Bounds::new(0.0, 8500.0, 800.0, 10.0);
+        let d = t.delta_regions(&sc, &[top, far], &[top, far], 1);
+        assert_eq!(ids(&d.tiles), vec![0, 8]);
+        // Keeping only the far region drops the first tile; a single region is `delta`.
+        let d = t.delta_regions(&sc, &[far], &[far], 2);
+        assert!(d.tiles.is_empty());
+        assert_eq!(d.removed, vec![TileId::content(0)]);
+        let d = t.delta(&sc, &top, &top, 3);
+        assert_eq!(ids(&d.tiles), vec![0]);
+        assert_eq!(d.removed, vec![TileId::content(8)]);
     }
 }

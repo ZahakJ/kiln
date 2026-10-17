@@ -6,6 +6,8 @@
 //!
 //! [`harness`]: crate::harness
 
+#[path = "../benches/grid.rs"]
+mod grid; // WP-71: Kiln Grid surface
 mod ooxml_repack;
 #[path = "../benches/pdf.rs"]
 mod pdf; // WP-67: PDF export (B11)
@@ -102,6 +104,21 @@ pub fn all() -> Vec<Bench> {
             name: "xlsx-open",
             description: "Read a 1,000,000-cell .xlsx ready to paint; calc_ms: bind and calculate; full_ms: both (B7)",
             run: xlsx::open,
+        },
+        Bench {
+            name: "grid-open",
+            description: "Open the 1,000,000-cell .xlsx in a session to its first painted frame (B7); frame_ms: that frame",
+            run: grid::open_first_frame,
+        },
+        Bench {
+            name: "grid-frame",
+            description: "One frame after jumping within the 1,000,000-cell sheet at DPR 2 (kiln-sheet-layout → SceneDelta)",
+            run: grid::frame,
+        },
+        Bench {
+            name: "grid-scroll",
+            description: "One frame per animation frame while scrolling the 1,000,000-cell sheet at 2,000 px/s (B6 core side)",
+            run: grid::scroll,
         },
         Bench {
             name: "pdf-export-300p",

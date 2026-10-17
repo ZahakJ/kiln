@@ -22,4 +22,17 @@ describe('palettes', () => {
     expect(cssColor(0x3159c6ff)).toBe('rgb(49 89 198)');
     expect(cssColor(0x00000080)).toBe(`rgb(0 0 0 / ${128 / 255})`);
   });
+
+  it('carries the app colours of kiln_scene::Palette::for_app', () => {
+    expect(paletteFor('light', 'write')).toBe(LIGHT);
+    const grid = paletteFor('light', 'grid');
+    expect(resolvePaint(grid, { Role: 'AppFill' })).toBe(0x1d8a60ff);
+    expect(resolvePaint(grid, { Role: 'Gridline' })).toBe(0xece2d6ff);
+    expect(grid.caret).toBe(0x1d8a60ff);
+    const dark = paletteFor('dark', 'grid');
+    expect(dark.app_text).toBe(0x6fd0a6ff);
+    expect(dark.caret).toBe(0x6fd0a6ff);
+    expect(resolvePaint(dark, { Role: 'Panel' })).toBe(0x201813ff);
+    expect(paletteFor('dark', 'grid')).toBe(dark);
+  });
 });

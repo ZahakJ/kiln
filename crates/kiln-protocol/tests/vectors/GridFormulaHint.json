@@ -1,0 +1,30 @@
+{
+  "type": "GridFormulaHint",
+  "format": {
+    "TYPENAME": "GridFormulaHint"
+  },
+  "values": [
+    {
+      "function": "XLOOKUP",
+      "syntax": "XLOOKUP(lookup_value, lookup_array, return_array, …)",
+      "summary": "Looks up a value.",
+      "args": [
+        {
+          "name": "lookup_value",
+          "description": "What to find.",
+          "optional": false
+        }
+      ],
+      "current": 0,
+      "since": "365"
+    },
+    {
+      "function": "",
+      "syntax": "",
+      "summary": "",
+      "args": [],
+      "current": 0,
+      "since": ""
+    }
+  ]
+}

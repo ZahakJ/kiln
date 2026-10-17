@@ -2529,7 +2529,9 @@ dependencies = [
  "kiln-scene",
  "kiln-session",
  "kiln-sheet",
+ "kiln-sheet-layout",
  "kiln-testing",
+ "kiln-text",
  "serde",
  "serde_json",
 ]
@@ -2719,6 +2721,7 @@ dependencies = [
 name = "kiln-io-xlsx"
 version = "0.1.0"
 dependencies = [
+ "kiln-charts",
  "kiln-common",
  "kiln-formula",
  "kiln-io-csv",
@@ -2802,6 +2805,7 @@ dependencies = [
  "kiln-common",
  "kiln-doc",
  "kiln-doc-layout",
+ "kiln-formula",
  "kiln-io-csv",
  "kiln-io-docx",
  "kiln-io-pdf",
@@ -2811,6 +2815,7 @@ dependencies = [
  "kiln-raster",
  "kiln-scene",
  "kiln-sheet",
+ "kiln-sheet-layout",
  "kiln-text",
  "proptest",
  "regex",
@@ -2842,6 +2847,15 @@ name = "kiln-sheet-layout"
 version = "0.1.0"
 dependencies = [
  "kiln-common",
+ "kiln-formula",
+ "kiln-io-xlsx",
+ "kiln-protocol",
+ "kiln-raster",
+ "kiln-scene",
+ "kiln-sheet",
+ "kiln-text",
+ "kurbo",
+ "rustc-hash",
 ]
 
 [[package]]

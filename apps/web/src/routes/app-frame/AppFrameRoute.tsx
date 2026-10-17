@@ -46,6 +46,7 @@ import {
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { appHash } from '../../App.tsx';
 import { useClient } from '../../client/useClient.ts';
+import { useGridParts } from '../grid/index.tsx';
 import { CREATABLE } from '../home/index.tsx';
 import { useWriteParts } from '../write/index.tsx';
 import { installDebugHandle } from './debug.ts';
@@ -221,7 +222,12 @@ export function AppFrameRoute({ app, doc, prefs }: { app: EditorApp; doc: number
   const execute = useCallback((id: string, args?: unknown) => void registry.execute(id, args), [registry]);
   const theme = useTheme();
   // The app's editor (WP-64 Write): its surface, status bar and ribbon replace the frame's own.
-  const editor = useWriteParts(app === 'write' && !problem ? { client, registry, summary, ribbon } : null);
+  const writeEditor = useWriteParts(
+    app === 'write' && !problem ? { client, registry, summary, ribbon } : null,
+  );
+  // WP-71 Grid: the formula bar, sheet and tabs, and Grid's status bar.
+  const gridEditor = useGridParts(app === 'grid' && !problem ? { client, registry, summary, ribbon } : null);
+  const editor = writeEditor ?? gridEditor;
 
   const [recent, setRecent] = useState<RecentFile[] | null>(null);
   const [compat, setCompat] = useState<CompatIssue[] | null>(null);

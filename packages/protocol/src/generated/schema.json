@@ -330,6 +330,25 @@
         }
       ]
     },
+    "CellShift": {
+      "ENUM": {
+        "0": {
+          "Vertical": "UNIT"
+        },
+        "1": {
+          "Horizontal": "UNIT"
+        },
+        "2": {
+          "Rows": "UNIT"
+        },
+        "3": {
+          "Columns": "UNIT"
+        },
+        "4": {
+          "Auto": "UNIT"
+        }
+      }
+    },
     "CellStats": {
       "STRUCT": [
         {
@@ -802,6 +821,27 @@
         },
         "7": {
           "Guide": "UNIT"
+        },
+        "8": {
+          "Panel": "UNIT"
+        },
+        "9": {
+          "Muted": "UNIT"
+        },
+        "10": {
+          "Line": "UNIT"
+        },
+        "11": {
+          "Gridline": "UNIT"
+        },
+        "12": {
+          "AppFill": "UNIT"
+        },
+        "13": {
+          "AppTint": "UNIT"
+        },
+        "14": {
+          "AppText": "UNIT"
         }
       }
     },
@@ -818,6 +858,13 @@
           "Write": {
             "NEWTYPE": {
               "TYPENAME": "WriteCommand"
+            }
+          }
+        },
+        "2": {
+          "Grid": {
+            "NEWTYPE": {
+              "TYPENAME": "GridCommand"
             }
           }
         }
@@ -939,6 +986,19 @@
         },
         "2": {
           "Info": "UNIT"
+        }
+      }
+    },
+    "CompletionKind": {
+      "ENUM": {
+        "0": {
+          "Function": "UNIT"
+        },
+        "1": {
+          "Name": "UNIT"
+        },
+        "2": {
+          "Value": "UNIT"
         }
       }
     },
@@ -2633,6 +2693,1984 @@
         }
       ]
     },
+    "GridBorderSide": {
+      "STRUCT": [
+        {
+          "style": {
+            "TYPENAME": "GridLineStyle"
+          }
+        },
+        {
+          "color": {
+            "OPTION": "STR"
+          }
+        }
+      ]
+    },
+    "GridBorders": {
+      "ENUM": {
+        "0": {
+          "All": "UNIT"
+        },
+        "1": {
+          "Outside": "UNIT"
+        },
+        "2": {
+          "ThickBox": "UNIT"
+        },
+        "3": {
+          "Inside": "UNIT"
+        },
+        "4": {
+          "Top": "UNIT"
+        },
+        "5": {
+          "Bottom": "UNIT"
+        },
+        "6": {
+          "Left": "UNIT"
+        },
+        "7": {
+          "Right": "UNIT"
+        },
+        "8": {
+          "BottomDouble": "UNIT"
+        },
+        "9": {
+          "BottomThick": "UNIT"
+        },
+        "10": {
+          "TopBottom": "UNIT"
+        },
+        "11": {
+          "None": "UNIT"
+        }
+      }
+    },
+    "GridCellFormat": {
+      "STRUCT": [
+        {
+          "font_family": "STR"
+        },
+        {
+          "font_size": "F64"
+        },
+        {
+          "bold": "BOOL"
+        },
+        {
+          "italic": "BOOL"
+        },
+        {
+          "underline": "BOOL"
+        },
+        {
+          "strike": "BOOL"
+        },
+        {
+          "font_color": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "fill_color": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "h_align": {
+            "TYPENAME": "GridHAlign"
+          }
+        },
+        {
+          "v_align": {
+            "TYPENAME": "GridVAlign"
+          }
+        },
+        {
+          "wrap": "BOOL"
+        },
+        {
+          "merged": "BOOL"
+        },
+        {
+          "indent": "U8"
+        },
+        {
+          "rotation": "U8"
+        },
+        {
+          "number_format": "STR"
+        },
+        {
+          "number_format_name": "STR"
+        }
+      ]
+    },
+    "GridClear": {
+      "ENUM": {
+        "0": {
+          "All": "UNIT"
+        },
+        "1": {
+          "Contents": "UNIT"
+        },
+        "2": {
+          "Formats": "UNIT"
+        },
+        "3": {
+          "Comments": "UNIT"
+        },
+        "4": {
+          "Hyperlinks": "UNIT"
+        }
+      }
+    },
+    "GridCommand": {
+      "ENUM": {
+        "0": {
+          "Move": {
+            "STRUCT": [
+              {
+                "dir": {
+                  "TYPENAME": "GridDirection"
+                }
+              },
+              {
+                "extend": "BOOL"
+              }
+            ]
+          }
+        },
+        "1": {
+          "Jump": {
+            "STRUCT": [
+              {
+                "dir": {
+                  "TYPENAME": "GridDirection"
+                }
+              },
+              {
+                "extend": "BOOL"
+              }
+            ]
+          }
+        },
+        "2": {
+          "Page": {
+            "STRUCT": [
+              {
+                "dir": {
+                  "TYPENAME": "GridDirection"
+                }
+              },
+              {
+                "extend": "BOOL"
+              }
+            ]
+          }
+        },
+        "3": {
+          "RowStart": {
+            "STRUCT": [
+              {
+                "extend": "BOOL"
+              }
+            ]
+          }
+        },
+        "4": {
+          "FirstCell": {
+            "STRUCT": [
+              {
+                "extend": "BOOL"
+              }
+            ]
+          }
+        },
+        "5": {
+          "LastCell": {
+            "STRUCT": [
+              {
+                "extend": "BOOL"
+              }
+            ]
+          }
+        },
+        "6": {
+          "Advance": {
+            "STRUCT": [
+              {
+                "backward": "BOOL"
+              },
+              {
+                "across": "BOOL"
+              }
+            ]
+          }
+        },
+        "7": {
+          "SelectCell": {
+            "STRUCT": [
+              {
+                "row": "U32"
+              },
+              {
+                "col": "U32"
+              },
+              {
+                "extend": "BOOL"
+              },
+              {
+                "add": "BOOL"
+              }
+            ]
+          }
+        },
+        "8": {
+          "SelectRange": {
+            "STRUCT": [
+              {
+                "range": {
+                  "TYPENAME": "GridRange"
+                }
+              },
+              {
+                "add": "BOOL"
+              }
+            ]
+          }
+        },
+        "9": {
+          "SelectRows": {
+            "STRUCT": [
+              {
+                "from": "U32"
+              },
+              {
+                "to": "U32"
+              },
+              {
+                "extend": "BOOL"
+              },
+              {
+                "add": "BOOL"
+              }
+            ]
+          }
+        },
+        "10": {
+          "SelectColumns": {
+            "STRUCT": [
+              {
+                "from": "U32"
+              },
+              {
+                "to": "U32"
+              },
+              {
+                "extend": "BOOL"
+              },
+              {
+                "add": "BOOL"
+              }
+            ]
+          }
+        },
+        "11": {
+          "SelectAll": "UNIT"
+        },
+        "12": {
+          "SelectRow": "UNIT"
+        },
+        "13": {
+          "SelectColumn": "UNIT"
+        },
+        "14": {
+          "GoTo": {
+            "STRUCT": [
+              {
+                "reference": "STR"
+              },
+              {
+                "define": "BOOL"
+              }
+            ]
+          }
+        },
+        "15": {
+          "ActivateSheet": {
+            "STRUCT": [
+              {
+                "index": "U32"
+              }
+            ]
+          }
+        },
+        "16": {
+          "PreviousSheet": "UNIT"
+        },
+        "17": {
+          "NextSheet": "UNIT"
+        },
+        "18": {
+          "InsertSheet": "UNIT"
+        },
+        "19": {
+          "RenameSheet": {
+            "STRUCT": [
+              {
+                "index": "U32"
+              },
+              {
+                "name": "STR"
+              }
+            ]
+          }
+        },
+        "20": {
+          "DeleteSheet": {
+            "STRUCT": [
+              {
+                "index": "U32"
+              }
+            ]
+          }
+        },
+        "21": {
+          "MoveSheet": {
+            "STRUCT": [
+              {
+                "from": "U32"
+              },
+              {
+                "to": "U32"
+              }
+            ]
+          }
+        },
+        "22": {
+          "DuplicateSheet": {
+            "STRUCT": [
+              {
+                "index": "U32"
+              }
+            ]
+          }
+        },
+        "23": {
+          "SheetTabColor": {
+            "STRUCT": [
+              {
+                "index": "U32"
+              },
+              {
+                "color": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "24": {
+          "HideSheet": {
+            "STRUCT": [
+              {
+                "index": "U32"
+              }
+            ]
+          }
+        },
+        "25": {
+          "UnhideSheet": {
+            "STRUCT": [
+              {
+                "index": "U32"
+              }
+            ]
+          }
+        },
+        "26": {
+          "EditCell": "UNIT"
+        },
+        "27": {
+          "BeginEdit": {
+            "STRUCT": [
+              {
+                "text": "STR"
+              }
+            ]
+          }
+        },
+        "28": {
+          "SetEditText": {
+            "STRUCT": [
+              {
+                "text": "STR"
+              },
+              {
+                "start": "U32"
+              },
+              {
+                "end": "U32"
+              },
+              {
+                "formula_bar": "BOOL"
+              }
+            ]
+          }
+        },
+        "29": {
+          "CommitEdit": {
+            "STRUCT": [
+              {
+                "advance": {
+                  "OPTION": {
+                    "TYPENAME": "GridDirection"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "30": {
+          "FillSelection": "UNIT"
+        },
+        "31": {
+          "ArrayFormula": "UNIT"
+        },
+        "32": {
+          "CancelEdit": "UNIT"
+        },
+        "33": {
+          "NewLineInCell": "UNIT"
+        },
+        "34": {
+          "ToggleAbsolute": "UNIT"
+        },
+        "35": {
+          "AcceptCompletion": {
+            "STRUCT": [
+              {
+                "index": "U32"
+              }
+            ]
+          }
+        },
+        "36": {
+          "MoveCompletion": {
+            "STRUCT": [
+              {
+                "down": "BOOL"
+              }
+            ]
+          }
+        },
+        "37": {
+          "PointRef": {
+            "STRUCT": [
+              {
+                "row": "U32"
+              },
+              {
+                "col": "U32"
+              },
+              {
+                "extend": "BOOL"
+              }
+            ]
+          }
+        },
+        "38": {
+          "PointMove": {
+            "STRUCT": [
+              {
+                "dir": {
+                  "TYPENAME": "GridDirection"
+                }
+              },
+              {
+                "extend": "BOOL"
+              }
+            ]
+          }
+        },
+        "39": {
+          "OpenDropdown": "UNIT"
+        },
+        "40": {
+          "ClearContents": "UNIT"
+        },
+        "41": {
+          "Clear": {
+            "STRUCT": [
+              {
+                "what": {
+                  "TYPENAME": "GridClear"
+                }
+              }
+            ]
+          }
+        },
+        "42": {
+          "FillDown": "UNIT"
+        },
+        "43": {
+          "FillRight": "UNIT"
+        },
+        "44": {
+          "FillUp": "UNIT"
+        },
+        "45": {
+          "FillLeft": "UNIT"
+        },
+        "46": {
+          "DragFill": {
+            "STRUCT": [
+              {
+                "row": "U32"
+              },
+              {
+                "col": "U32"
+              }
+            ]
+          }
+        },
+        "47": {
+          "AutoFill": {
+            "STRUCT": [
+              {
+                "row": "U32"
+              },
+              {
+                "col": "U32"
+              },
+              {
+                "mode": {
+                  "TYPENAME": "GridFill"
+                }
+              }
+            ]
+          }
+        },
+        "48": {
+          "AutoSum": {
+            "STRUCT": [
+              {
+                "function": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "49": {
+          "InsertDateTime": {
+            "STRUCT": [
+              {
+                "time": "BOOL"
+              },
+              {
+                "utc_offset_minutes": "I32"
+              }
+            ]
+          }
+        },
+        "50": {
+          "FindNext": {
+            "STRUCT": [
+              {
+                "text": "STR"
+              },
+              {
+                "match_case": "BOOL"
+              },
+              {
+                "whole_cell": "BOOL"
+              },
+              {
+                "backward": "BOOL"
+              },
+              {
+                "in_formulas": "BOOL"
+              }
+            ]
+          }
+        },
+        "51": {
+          "CalculateNow": "UNIT"
+        },
+        "52": {
+          "CalculateSheet": "UNIT"
+        },
+        "53": {
+          "ShowFormulas": "UNIT"
+        },
+        "54": {
+          "InsertCells": {
+            "STRUCT": [
+              {
+                "shift": {
+                  "TYPENAME": "CellShift"
+                }
+              }
+            ]
+          }
+        },
+        "55": {
+          "DeleteCells": {
+            "STRUCT": [
+              {
+                "shift": {
+                  "TYPENAME": "CellShift"
+                }
+              }
+            ]
+          }
+        },
+        "56": {
+          "InsertRows": "UNIT"
+        },
+        "57": {
+          "InsertColumns": "UNIT"
+        },
+        "58": {
+          "DeleteRows": "UNIT"
+        },
+        "59": {
+          "DeleteColumns": "UNIT"
+        },
+        "60": {
+          "RowHeight": {
+            "STRUCT": [
+              {
+                "points": "F64"
+              }
+            ]
+          }
+        },
+        "61": {
+          "ColumnWidth": {
+            "STRUCT": [
+              {
+                "chars": "F64"
+              }
+            ]
+          }
+        },
+        "62": {
+          "ResizeRows": {
+            "STRUCT": [
+              {
+                "from": "U32"
+              },
+              {
+                "to": "U32"
+              },
+              {
+                "px": "F64"
+              }
+            ]
+          }
+        },
+        "63": {
+          "ResizeColumns": {
+            "STRUCT": [
+              {
+                "from": "U32"
+              },
+              {
+                "to": "U32"
+              },
+              {
+                "px": "F64"
+              }
+            ]
+          }
+        },
+        "64": {
+          "AutoFitRows": {
+            "STRUCT": [
+              {
+                "from": {
+                  "OPTION": "U32"
+                }
+              },
+              {
+                "to": {
+                  "OPTION": "U32"
+                }
+              }
+            ]
+          }
+        },
+        "65": {
+          "AutoFitColumns": {
+            "STRUCT": [
+              {
+                "from": {
+                  "OPTION": "U32"
+                }
+              },
+              {
+                "to": {
+                  "OPTION": "U32"
+                }
+              }
+            ]
+          }
+        },
+        "66": {
+          "HideRows": "UNIT"
+        },
+        "67": {
+          "HideColumns": "UNIT"
+        },
+        "68": {
+          "UnhideRows": "UNIT"
+        },
+        "69": {
+          "UnhideColumns": "UNIT"
+        },
+        "70": {
+          "Borders": {
+            "STRUCT": [
+              {
+                "preset": {
+                  "TYPENAME": "GridBorders"
+                }
+              },
+              {
+                "style": {
+                  "OPTION": {
+                    "TYPENAME": "GridLineStyle"
+                  }
+                }
+              },
+              {
+                "color": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "71": {
+          "BorderOutline": "UNIT"
+        },
+        "72": {
+          "BorderNone": "UNIT"
+        },
+        "73": {
+          "FillColor": {
+            "STRUCT": [
+              {
+                "color": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "74": {
+          "AlignTop": "UNIT"
+        },
+        "75": {
+          "AlignMiddle": "UNIT"
+        },
+        "76": {
+          "AlignBottom": "UNIT"
+        },
+        "77": {
+          "AlignHorizontal": {
+            "STRUCT": [
+              {
+                "align": {
+                  "TYPENAME": "GridHAlign"
+                }
+              }
+            ]
+          }
+        },
+        "78": {
+          "Orientation": {
+            "STRUCT": [
+              {
+                "angle": "I16"
+              }
+            ]
+          }
+        },
+        "79": {
+          "WrapText": "UNIT"
+        },
+        "80": {
+          "MergeCenter": "UNIT"
+        },
+        "81": {
+          "MergeAcross": "UNIT"
+        },
+        "82": {
+          "MergeCells": "UNIT"
+        },
+        "83": {
+          "UnmergeCells": "UNIT"
+        },
+        "84": {
+          "NumberFormat": {
+            "STRUCT": [
+              {
+                "format": "STR"
+              }
+            ]
+          }
+        },
+        "85": {
+          "NumberStyle": "UNIT"
+        },
+        "86": {
+          "CurrencyStyle": "UNIT"
+        },
+        "87": {
+          "PercentStyle": "UNIT"
+        },
+        "88": {
+          "AccountingStyle": {
+            "STRUCT": [
+              {
+                "currency": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "89": {
+          "CommaStyle": "UNIT"
+        },
+        "90": {
+          "IncreaseDecimal": "UNIT"
+        },
+        "91": {
+          "DecreaseDecimal": "UNIT"
+        },
+        "92": {
+          "ApplyFormat": {
+            "STRUCT": [
+              {
+                "format": {
+                  "TYPENAME": "GridFormat"
+                }
+              }
+            ]
+          }
+        },
+        "93": {
+          "FreezePanes": "UNIT"
+        },
+        "94": {
+          "FreezeTopRow": "UNIT"
+        },
+        "95": {
+          "FreezeFirstColumn": "UNIT"
+        },
+        "96": {
+          "Split": "UNIT"
+        },
+        "97": {
+          "Gridlines": "UNIT"
+        },
+        "98": {
+          "Headings": "UNIT"
+        },
+        "99": {
+          "PasteSpecial": {
+            "STRUCT": [
+              {
+                "what": {
+                  "TYPENAME": "GridPaste"
+                }
+              },
+              {
+                "op": {
+                  "TYPENAME": "GridPasteOp"
+                }
+              },
+              {
+                "skip_blanks": "BOOL"
+              },
+              {
+                "transpose": "BOOL"
+              },
+              {
+                "data": {
+                  "OPTION": {
+                    "TYPENAME": "ClipboardData"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "100": {
+          "PasteValues": {
+            "STRUCT": [
+              {
+                "data": {
+                  "OPTION": {
+                    "TYPENAME": "ClipboardData"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "101": {
+          "PasteFormulas": {
+            "STRUCT": [
+              {
+                "data": {
+                  "OPTION": {
+                    "TYPENAME": "ClipboardData"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "102": {
+          "PasteFormatting": {
+            "STRUCT": [
+              {
+                "data": {
+                  "OPTION": {
+                    "TYPENAME": "ClipboardData"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "103": {
+          "PasteTranspose": {
+            "STRUCT": [
+              {
+                "data": {
+                  "OPTION": {
+                    "TYPENAME": "ClipboardData"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "GridCompletion": {
+      "STRUCT": [
+        {
+          "label": "STR"
+        },
+        {
+          "kind": {
+            "TYPENAME": "CompletionKind"
+          }
+        },
+        {
+          "detail": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "syntax": {
+            "OPTION": "STR"
+          }
+        }
+      ]
+    },
+    "GridDirection": {
+      "ENUM": {
+        "0": {
+          "Up": "UNIT"
+        },
+        "1": {
+          "Down": "UNIT"
+        },
+        "2": {
+          "Left": "UNIT"
+        },
+        "3": {
+          "Right": "UNIT"
+        }
+      }
+    },
+    "GridEditor": {
+      "STRUCT": [
+        {
+          "text": "STR"
+        },
+        {
+          "start": "U32"
+        },
+        {
+          "end": "U32"
+        },
+        {
+          "refs": {
+            "SEQ": {
+              "TYPENAME": "GridRefSpan"
+            }
+          }
+        },
+        {
+          "completions": {
+            "SEQ": {
+              "TYPENAME": "GridCompletion"
+            }
+          }
+        },
+        {
+          "completion_index": "U32"
+        },
+        {
+          "inline_completion": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "hint": {
+            "OPTION": {
+              "TYPENAME": "GridFormulaHint"
+            }
+          }
+        },
+        {
+          "rect": {
+            "TYPENAME": "Rect"
+          }
+        },
+        {
+          "caret": {
+            "TYPENAME": "Rect"
+          }
+        },
+        {
+          "pick_list": {
+            "OPTION": {
+              "SEQ": "STR"
+            }
+          }
+        },
+        {
+          "formula_bar": "BOOL"
+        }
+      ]
+    },
+    "GridFill": {
+      "ENUM": {
+        "0": {
+          "Auto": "UNIT"
+        },
+        "1": {
+          "Copy": "UNIT"
+        },
+        "2": {
+          "Series": "UNIT"
+        },
+        "3": {
+          "FormatsOnly": "UNIT"
+        },
+        "4": {
+          "WithoutFormatting": "UNIT"
+        },
+        "5": {
+          "Days": "UNIT"
+        },
+        "6": {
+          "Weekdays": "UNIT"
+        },
+        "7": {
+          "Months": "UNIT"
+        },
+        "8": {
+          "Years": "UNIT"
+        },
+        "9": {
+          "LinearTrend": "UNIT"
+        },
+        "10": {
+          "Growth": "UNIT"
+        }
+      }
+    },
+    "GridFormat": {
+      "STRUCT": [
+        {
+          "number_format": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "font_family": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "font_size": {
+            "OPTION": "F64"
+          }
+        },
+        {
+          "bold": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "italic": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "underline": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "strike": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "superscript": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "subscript": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "font_color": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "fill_color": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "pattern": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "pattern_color": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "h_align": {
+            "OPTION": {
+              "TYPENAME": "GridHAlign"
+            }
+          }
+        },
+        {
+          "v_align": {
+            "OPTION": {
+              "TYPENAME": "GridVAlign"
+            }
+          }
+        },
+        {
+          "wrap": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "shrink": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "indent": {
+            "OPTION": "U8"
+          }
+        },
+        {
+          "rotation": {
+            "OPTION": "U8"
+          }
+        },
+        {
+          "merge": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "border_left": {
+            "OPTION": {
+              "TYPENAME": "GridBorderSide"
+            }
+          }
+        },
+        {
+          "border_right": {
+            "OPTION": {
+              "TYPENAME": "GridBorderSide"
+            }
+          }
+        },
+        {
+          "border_top": {
+            "OPTION": {
+              "TYPENAME": "GridBorderSide"
+            }
+          }
+        },
+        {
+          "border_bottom": {
+            "OPTION": {
+              "TYPENAME": "GridBorderSide"
+            }
+          }
+        },
+        {
+          "border_inside_h": {
+            "OPTION": {
+              "TYPENAME": "GridBorderSide"
+            }
+          }
+        },
+        {
+          "border_inside_v": {
+            "OPTION": {
+              "TYPENAME": "GridBorderSide"
+            }
+          }
+        },
+        {
+          "border_diagonal_up": {
+            "OPTION": {
+              "TYPENAME": "GridBorderSide"
+            }
+          }
+        },
+        {
+          "border_diagonal_down": {
+            "OPTION": {
+              "TYPENAME": "GridBorderSide"
+            }
+          }
+        },
+        {
+          "locked": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "hidden": {
+            "OPTION": "BOOL"
+          }
+        }
+      ]
+    },
+    "GridFormatCells": {
+      "STRUCT": [
+        {
+          "number_format": "STR"
+        },
+        {
+          "category": "STR"
+        },
+        {
+          "sample": "STR"
+        },
+        {
+          "format": {
+            "TYPENAME": "GridCellFormat"
+          }
+        },
+        {
+          "underline": "STR"
+        },
+        {
+          "superscript": "BOOL"
+        },
+        {
+          "subscript": "BOOL"
+        },
+        {
+          "pattern": "STR"
+        },
+        {
+          "pattern_color": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "shrink": "BOOL"
+        },
+        {
+          "border_left": {
+            "OPTION": {
+              "TYPENAME": "GridBorderSide"
+            }
+          }
+        },
+        {
+          "border_right": {
+            "OPTION": {
+              "TYPENAME": "GridBorderSide"
+            }
+          }
+        },
+        {
+          "border_top": {
+            "OPTION": {
+              "TYPENAME": "GridBorderSide"
+            }
+          }
+        },
+        {
+          "border_bottom": {
+            "OPTION": {
+              "TYPENAME": "GridBorderSide"
+            }
+          }
+        },
+        {
+          "border_diagonal_up": {
+            "OPTION": {
+              "TYPENAME": "GridBorderSide"
+            }
+          }
+        },
+        {
+          "border_diagonal_down": {
+            "OPTION": {
+              "TYPENAME": "GridBorderSide"
+            }
+          }
+        },
+        {
+          "locked": "BOOL"
+        },
+        {
+          "hidden": "BOOL"
+        },
+        {
+          "fonts": {
+            "SEQ": "STR"
+          }
+        }
+      ]
+    },
+    "GridFormulaHint": {
+      "STRUCT": [
+        {
+          "function": "STR"
+        },
+        {
+          "syntax": "STR"
+        },
+        {
+          "summary": "STR"
+        },
+        {
+          "args": {
+            "SEQ": {
+              "TYPENAME": "GridHintArg"
+            }
+          }
+        },
+        {
+          "current": "U32"
+        },
+        {
+          "since": "STR"
+        }
+      ]
+    },
+    "GridFunctionInfo": {
+      "STRUCT": [
+        {
+          "name": "STR"
+        },
+        {
+          "category": "STR"
+        },
+        {
+          "syntax": "STR"
+        },
+        {
+          "summary": "STR"
+        }
+      ]
+    },
+    "GridHAlign": {
+      "ENUM": {
+        "0": {
+          "General": "UNIT"
+        },
+        "1": {
+          "Left": "UNIT"
+        },
+        "2": {
+          "Center": "UNIT"
+        },
+        "3": {
+          "Right": "UNIT"
+        },
+        "4": {
+          "Fill": "UNIT"
+        },
+        "5": {
+          "Justify": "UNIT"
+        },
+        "6": {
+          "CenterAcross": "UNIT"
+        },
+        "7": {
+          "Distributed": "UNIT"
+        }
+      }
+    },
+    "GridHintArg": {
+      "STRUCT": [
+        {
+          "name": "STR"
+        },
+        {
+          "description": "STR"
+        },
+        {
+          "optional": "BOOL"
+        }
+      ]
+    },
+    "GridHit": {
+      "ENUM": {
+        "0": {
+          "None": "UNIT"
+        },
+        "1": {
+          "Cell": {
+            "STRUCT": [
+              {
+                "row": "U32"
+              },
+              {
+                "col": "U32"
+              }
+            ]
+          }
+        },
+        "2": {
+          "FillHandle": "UNIT"
+        },
+        "3": {
+          "ColumnHeader": {
+            "STRUCT": [
+              {
+                "col": "U32"
+              }
+            ]
+          }
+        },
+        "4": {
+          "RowHeader": {
+            "STRUCT": [
+              {
+                "row": "U32"
+              }
+            ]
+          }
+        },
+        "5": {
+          "ColumnBorder": {
+            "STRUCT": [
+              {
+                "col": "U32"
+              },
+              {
+                "start": "F32"
+              },
+              {
+                "size": "F32"
+              }
+            ]
+          }
+        },
+        "6": {
+          "RowBorder": {
+            "STRUCT": [
+              {
+                "row": "U32"
+              },
+              {
+                "start": "F32"
+              },
+              {
+                "size": "F32"
+              }
+            ]
+          }
+        },
+        "7": {
+          "Corner": "UNIT"
+        }
+      }
+    },
+    "GridLayout": {
+      "STRUCT": [
+        {
+          "header_w": "F32"
+        },
+        {
+          "header_h": "F32"
+        },
+        {
+          "freeze_rows": "U32"
+        },
+        {
+          "freeze_cols": "U32"
+        },
+        {
+          "frozen_h": "F32"
+        },
+        {
+          "frozen_w": "F32"
+        },
+        {
+          "content_w": "F32"
+        },
+        {
+          "content_h": "F32"
+        },
+        {
+          "sheet_zoom": "F32"
+        },
+        {
+          "split": "BOOL"
+        }
+      ]
+    },
+    "GridLineStyle": {
+      "ENUM": {
+        "0": {
+          "None": "UNIT"
+        },
+        "1": {
+          "Thin": "UNIT"
+        },
+        "2": {
+          "Medium": "UNIT"
+        },
+        "3": {
+          "Thick": "UNIT"
+        },
+        "4": {
+          "Double": "UNIT"
+        },
+        "5": {
+          "Dotted": "UNIT"
+        },
+        "6": {
+          "Dashed": "UNIT"
+        },
+        "7": {
+          "Hair": "UNIT"
+        },
+        "8": {
+          "MediumDashed": "UNIT"
+        },
+        "9": {
+          "DashDot": "UNIT"
+        },
+        "10": {
+          "MediumDashDot": "UNIT"
+        },
+        "11": {
+          "DashDotDot": "UNIT"
+        },
+        "12": {
+          "MediumDashDotDot": "UNIT"
+        },
+        "13": {
+          "SlantDashDot": "UNIT"
+        }
+      }
+    },
+    "GridMode": {
+      "ENUM": {
+        "0": {
+          "Ready": "UNIT"
+        },
+        "1": {
+          "Enter": "UNIT"
+        },
+        "2": {
+          "Edit": "UNIT"
+        },
+        "3": {
+          "Point": "UNIT"
+        }
+      }
+    },
+    "GridPaste": {
+      "ENUM": {
+        "0": {
+          "All": "UNIT"
+        },
+        "1": {
+          "Values": "UNIT"
+        },
+        "2": {
+          "Formulas": "UNIT"
+        },
+        "3": {
+          "Formats": "UNIT"
+        },
+        "4": {
+          "ValuesAndNumberFormats": "UNIT"
+        },
+        "5": {
+          "AllExceptBorders": "UNIT"
+        }
+      }
+    },
+    "GridPasteOp": {
+      "ENUM": {
+        "0": {
+          "None": "UNIT"
+        },
+        "1": {
+          "Add": "UNIT"
+        },
+        "2": {
+          "Subtract": "UNIT"
+        },
+        "3": {
+          "Multiply": "UNIT"
+        },
+        "4": {
+          "Divide": "UNIT"
+        }
+      }
+    },
+    "GridQuery": {
+      "ENUM": {
+        "0": {
+          "State": "UNIT"
+        },
+        "1": {
+          "HitTest": {
+            "STRUCT": [
+              {
+                "x": "F32"
+              },
+              {
+                "y": "F32"
+              }
+            ]
+          }
+        },
+        "2": {
+          "FormatCells": "UNIT"
+        },
+        "3": {
+          "FormatPreview": {
+            "STRUCT": [
+              {
+                "code": "STR"
+              }
+            ]
+          }
+        },
+        "4": {
+          "FormulaHint": {
+            "STRUCT": [
+              {
+                "text": "STR"
+              },
+              {
+                "caret": "U32"
+              }
+            ]
+          }
+        },
+        "5": {
+          "ZoomToSelection": {
+            "STRUCT": [
+              {
+                "width": "F32"
+              },
+              {
+                "height": "F32"
+              }
+            ]
+          }
+        },
+        "6": {
+          "Functions": {
+            "STRUCT": [
+              {
+                "prefix": "STR"
+              },
+              {
+                "category": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "GridQueryResult": {
+      "ENUM": {
+        "0": {
+          "State": {
+            "NEWTYPE": {
+              "TYPENAME": "GridState"
+            }
+          }
+        },
+        "1": {
+          "Hit": {
+            "NEWTYPE": {
+              "TYPENAME": "GridHit"
+            }
+          }
+        },
+        "2": {
+          "FormatCells": {
+            "NEWTYPE": {
+              "TYPENAME": "GridFormatCells"
+            }
+          }
+        },
+        "3": {
+          "Preview": {
+            "NEWTYPE": "STR"
+          }
+        },
+        "4": {
+          "Hint": {
+            "NEWTYPE": {
+              "OPTION": {
+                "TYPENAME": "GridFormulaHint"
+              }
+            }
+          }
+        },
+        "5": {
+          "Zoom": {
+            "NEWTYPE": "F32"
+          }
+        },
+        "6": {
+          "Functions": {
+            "NEWTYPE": {
+              "SEQ": {
+                "TYPENAME": "GridFunctionInfo"
+              }
+            }
+          }
+        }
+      }
+    },
+    "GridRange": {
+      "STRUCT": [
+        {
+          "r0": "U32"
+        },
+        {
+          "c0": "U32"
+        },
+        {
+          "r1": "U32"
+        },
+        {
+          "c1": "U32"
+        }
+      ]
+    },
+    "GridRefSpan": {
+      "STRUCT": [
+        {
+          "start": "U32"
+        },
+        {
+          "end": "U32"
+        },
+        {
+          "color": "STR"
+        }
+      ]
+    },
+    "GridReveal": {
+      "STRUCT": [
+        {
+          "seq": "U32"
+        },
+        {
+          "x": "F32"
+        },
+        {
+          "y": "F32"
+        }
+      ]
+    },
+    "GridSheetTab": {
+      "STRUCT": [
+        {
+          "name": "STR"
+        },
+        {
+          "color": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "hidden": "BOOL"
+        }
+      ]
+    },
+    "GridState": {
+      "STRUCT": [
+        {
+          "sheets": {
+            "SEQ": {
+              "TYPENAME": "GridSheetTab"
+            }
+          }
+        },
+        {
+          "active_sheet": "U32"
+        },
+        {
+          "name_box": "STR"
+        },
+        {
+          "formula": "STR"
+        },
+        {
+          "mode": {
+            "TYPENAME": "GridMode"
+          }
+        },
+        {
+          "editor": {
+            "OPTION": {
+              "TYPENAME": "GridEditor"
+            }
+          }
+        },
+        {
+          "format": {
+            "TYPENAME": "GridCellFormat"
+          }
+        },
+        {
+          "layout": {
+            "TYPENAME": "GridLayout"
+          }
+        },
+        {
+          "gridlines": "BOOL"
+        },
+        {
+          "headings": "BOOL"
+        },
+        {
+          "show_formulas": "BOOL"
+        },
+        {
+          "reveal": {
+            "OPTION": {
+              "TYPENAME": "GridReveal"
+            }
+          }
+        },
+        {
+          "copy_marked": "BOOL"
+        },
+        {
+          "multi": "BOOL"
+        },
+        {
+          "whole_rows": "BOOL"
+        },
+        {
+          "whole_columns": "BOOL"
+        },
+        {
+          "stats": {
+            "OPTION": {
+              "TYPENAME": "GridStats"
+            }
+          }
+        },
+        {
+          "names": {
+            "SEQ": "STR"
+          }
+        }
+      ]
+    },
+    "GridStats": {
+      "STRUCT": [
+        {
+          "average": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "count": "U32"
+        },
+        {
+          "numerical_count": "U32"
+        },
+        {
+          "min": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "max": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "sum": {
+            "OPTION": "STR"
+          }
+        }
+      ]
+    },
+    "GridVAlign": {
+      "ENUM": {
+        "0": {
+          "Top": "UNIT"
+        },
+        "1": {
+          "Center": "UNIT"
+        },
+        "2": {
+          "Bottom": "UNIT"
+        },
+        "3": {
+          "Justify": "UNIT"
+        },
+        "4": {
+          "Distributed": "UNIT"
+        }
+      }
+    },
     "Handle": {
       "STRUCT": [
         {
@@ -3285,6 +5323,27 @@
               "TYPENAME": "ShadowLayer"
             }
           }
+        },
+        {
+          "panel": "U32"
+        },
+        {
+          "muted": "U32"
+        },
+        {
+          "line": "U32"
+        },
+        {
+          "gridline": "U32"
+        },
+        {
+          "app_fill": "U32"
+        },
+        {
+          "app_tint": "U32"
+        },
+        {
+          "app_text": "U32"
         }
       ]
     },
@@ -3712,6 +5771,13 @@
               "TYPENAME": "WriteQuery"
             }
           }
+        },
+        "11": {
+          "Grid": {
+            "NEWTYPE": {
+              "TYPENAME": "GridQuery"
+            }
+          }
         }
       }
     },
@@ -3795,6 +5861,13 @@
           "Write": {
             "NEWTYPE": {
               "TYPENAME": "WriteQueryResult"
+            }
+          }
+        },
+        "11": {
+          "Grid": {
+            "NEWTYPE": {
+              "TYPENAME": "GridQueryResult"
             }
           }
         }

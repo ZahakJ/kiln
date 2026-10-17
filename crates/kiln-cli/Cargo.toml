@@ -29,6 +29,9 @@ kiln-io-pptx.workspace = true
 kiln-io-xlsx.workspace = true
 kiln-io-csv.workspace = true
 kiln-sheet.workspace = true
+# `render` of workbooks (WP-71).
+kiln-sheet-layout.workspace = true
+kiln-text.workspace = true
 # `convert … out.pdf` (WP-67).
 kiln-io-pdf.workspace = true
 kiln-doc-layout.workspace = true

@@ -1,0 +1,18 @@
+{
+  "type": "GridHintArg",
+  "format": {
+    "TYPENAME": "GridHintArg"
+  },
+  "values": [
+    {
+      "name": "lookup_value",
+      "description": "What to find.",
+      "optional": false
+    },
+    {
+      "name": "",
+      "description": "",
+      "optional": false
+    }
+  ]
+}

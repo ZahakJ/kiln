@@ -1,0 +1,181 @@
+{
+  "type": "GridState",
+  "format": {
+    "TYPENAME": "GridState"
+  },
+  "values": [
+    {
+      "sheets": [
+        {
+          "name": "Budget",
+          "color": "1D8A60",
+          "hidden": false
+        },
+        {
+          "name": "Firings «Ü»",
+          "color": null,
+          "hidden": true
+        }
+      ],
+      "active_sheet": 0,
+      "name_box": "G10",
+      "formula": "=SUM(G5:G9)",
+      "mode": "Edit",
+      "editor": {
+        "text": "=SUM(G5:G9)",
+        "start": 11,
+        "end": 11,
+        "refs": [
+          {
+            "start": 5,
+            "end": 10,
+            "color": "1D8A60"
+          }
+        ],
+        "completions": [
+          {
+            "label": "SUMIFS",
+            "kind": "Function",
+            "detail": "Adds the cells that meet several criteria.",
+            "syntax": "SUMIFS(sum_range, criteria_range1, criteria1, …)"
+          }
+        ],
+        "completion_index": 0,
+        "inline_completion": "na",
+        "hint": {
+          "function": "XLOOKUP",
+          "syntax": "XLOOKUP(lookup_value, lookup_array, return_array, …)",
+          "summary": "Looks up a value.",
+          "args": [
+            {
+              "name": "lookup_value",
+              "description": "What to find.",
+              "optional": false
+            }
+          ],
+          "current": 0,
+          "since": "365"
+        },
+        "rect": {
+          "x": 320.5,
+          "y": 250.0,
+          "width": 92.0,
+          "height": 28.0
+        },
+        "caret": {
+          "x": 400.0,
+          "y": 254.0,
+          "width": 1.5,
+          "height": 18.0
+        },
+        "pick_list": [
+          "apple",
+          "cherry"
+        ],
+        "formula_bar": false
+      },
+      "format": {
+        "font_family": "Calibri",
+        "font_size": 11.0,
+        "bold": true,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "font_color": "C00000",
+        "fill_color": null,
+        "h_align": "Right",
+        "v_align": "Bottom",
+        "wrap": false,
+        "merged": false,
+        "indent": 1,
+        "rotation": 45,
+        "number_format": "#,##0.00 \"£\"",
+        "number_format_name": "Custom"
+      },
+      "layout": {
+        "header_w": 44.0,
+        "header_h": 24.0,
+        "freeze_rows": 1,
+        "freeze_cols": 0,
+        "frozen_h": 20.0,
+        "frozen_w": 0.0,
+        "content_w": 1048576.0,
+        "content_h": 20971520.0,
+        "sheet_zoom": 1.25,
+        "split": false
+      },
+      "gridlines": true,
+      "headings": true,
+      "show_formulas": false,
+      "reveal": {
+        "seq": 7,
+        "x": 0.0,
+        "y": 1200.5
+      },
+      "copy_marked": true,
+      "multi": false,
+      "whole_rows": false,
+      "whole_columns": true,
+      "stats": {
+        "average": "£1,590.00",
+        "count": 5,
+        "numerical_count": 5,
+        "min": "£380.00",
+        "max": null,
+        "sum": "£7,950.00"
+      },
+      "names": [
+        "SalesTax",
+        "Q1_Total"
+      ]
+    },
+    {
+      "sheets": [],
+      "active_sheet": 0,
+      "name_box": "",
+      "formula": "",
+      "mode": "Ready",
+      "editor": null,
+      "format": {
+        "font_family": "",
+        "font_size": 0.0,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "font_color": null,
+        "fill_color": null,
+        "h_align": "General",
+        "v_align": "Top",
+        "wrap": false,
+        "merged": false,
+        "indent": 0,
+        "rotation": 0,
+        "number_format": "",
+        "number_format_name": ""
+      },
+      "layout": {
+        "header_w": 0.0,
+        "header_h": 0.0,
+        "freeze_rows": 0,
+        "freeze_cols": 0,
+        "frozen_h": 0.0,
+        "frozen_w": 0.0,
+        "content_w": 0.0,
+        "content_h": 0.0,
+        "sheet_zoom": 0.0,
+        "split": false
+      },
+      "gridlines": false,
+      "headings": false,
+      "show_formulas": false,
+      "reveal": null,
+      "copy_marked": false,
+      "multi": false,
+      "whole_rows": false,
+      "whole_columns": false,
+      "stats": null,
+      "names": []
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "GridRefSpan",
+  "format": {
+    "TYPENAME": "GridRefSpan"
+  },
+  "values": [
+    {
+      "start": 1,
+      "end": 3,
+      "color": "3159C6"
+    },
+    {
+      "start": 0,
+      "end": 0,
+      "color": ""
+    }
+  ]
+}

@@ -214,14 +214,16 @@ the slide thumbnails have focus; `slideshow`: a show is running).
 | Ctrl+Shift+P | `ui.palette.open` |  |
 | Ctrl+/ | `ui.shortcuts.show` |  |
 | Esc | `ui.edit.cancel` |  |
-| Ctrl+A | `suite.edit.select_all` |  |
+| Ctrl+A | `grid.nav.select_all` |  |
 | Ctrl+G | `suite.edit.go_to` |  |
 | Ctrl+Shift+L | `grid.data.toggle_filter` |  |
+| F5 | `suite.edit.go_to` |  |
 | Ctrl+E | `grid.editing.flash_fill` |  |
 | Ctrl+1 | `grid.cells.format_cells` |  |
 | Ctrl+Enter | `grid.editing.fill_selection` |  |
 | Ctrl+Shift+Enter | `grid.editing.array_formula` | cell-edit |
 | Ctrl+D | `grid.editing.fill_down` |  |
+| Ctrl+R | `grid.editing.fill_right` |  |
 | Ctrl+Space | `grid.editing.select_column` |  |
 | Shift+F2 | `grid.review.new_note` |  |
 | Ctrl+Shift+8 | `grid.data.show_outline_symbols` |  |
@@ -233,10 +235,9 @@ the slide thumbnails have focus; `slideshow`: a show is running).
 | F4 | `grid.editing.toggle_absolute` | cell-edit |
 | F9 | `grid.formulas.calculate_now` |  |
 | Shift+F9 | `grid.formulas.calculate_sheet` |  |
-| F5 | `suite.edit.go_to` |  |
 | Ctrl+` | `grid.formulas.show_formulas` |  |
-| Ctrl+; | `suite.insert.date` |  |
-| Ctrl+: | `suite.insert.time` |  |
+| Ctrl+; | `grid.editing.insert_date_time` { time: false } |  |
+| Ctrl+: | `grid.editing.insert_date_time` { time: true } |  |
 | Ctrl+T | `grid.styles.format_as_table` |  |
 | Ctrl+L | `grid.styles.format_as_table` |  |
 | Ctrl+Shift+1 | `grid.number.number` |  |
@@ -250,14 +251,14 @@ the slide thumbnails have focus; `slideshow`: a show is running).
 | Ctrl+Shift+0 | `grid.cells.unhide_columns` |  |
 | Ctrl+Page Up | `grid.cells.previous_sheet` |  |
 | Ctrl+Page Down | `grid.cells.next_sheet` |  |
-| Ctrl+↑ | `grid.nav.jump_up` |  |
-| Ctrl+↓ | `grid.nav.jump_down` |  |
-| Ctrl+← | `grid.nav.jump_left` |  |
-| Ctrl+→ | `grid.nav.jump_right` |  |
-| Ctrl+Shift+↑ | `grid.nav.extend_up` |  |
-| Ctrl+Shift+↓ | `grid.nav.extend_down` |  |
-| Ctrl+Shift+← | `grid.nav.extend_left` |  |
-| Ctrl+Shift+→ | `grid.nav.extend_right` |  |
+| Ctrl+↑ | `grid.nav.jump` { dir: "Up" } |  |
+| Ctrl+↓ | `grid.nav.jump` { dir: "Down" } |  |
+| Ctrl+← | `grid.nav.jump` { dir: "Left" } |  |
+| Ctrl+→ | `grid.nav.jump` { dir: "Right" } |  |
+| Ctrl+Shift+↑ | `grid.nav.jump` { dir: "Up", extend: true } |  |
+| Ctrl+Shift+↓ | `grid.nav.jump` { dir: "Down", extend: true } |  |
+| Ctrl+Shift+← | `grid.nav.jump` { dir: "Left", extend: true } |  |
+| Ctrl+Shift+→ | `grid.nav.jump` { dir: "Right", extend: true } |  |
 | Ctrl+Home | `grid.nav.first_cell` |  |
 | Ctrl+End | `grid.nav.last_cell` |  |
 | Shift+Space | `grid.editing.select_row` |  |

@@ -104,8 +104,32 @@ work (the core's ~3 ms, the composite) puts the p95 above 16 ms. Painting in the
 to roughly one frame plus the work (~20–25 ms), but not under 16 ms. The choice is the plan owner's;
 see the exception below.
 
+## B6 and B7 — Kiln Grid on the 1M-cell sheet (WP-71)
+
+`fixtures/large/sheet-1m.xlsx` (6.4 MB, 1,000,000 populated cells, 200,000 formulas), measured on 2026-10-17 on
+this machine while another agent was building (4 CPUs shared).
+
+| Measure | Where | Result |
+|---|---|---|
+| `grid-open`: read, bind, calculate and paint the first frame (native) | `kiln-bench`, component budget 2.4 s (B7's 1.2 s for twice its 500k cells) | p95 1.50 s (p50 1.43 s), first frame 4.1 ms |
+| `grid-frame`: one frame after a jump at DPR 2 (native) | `kiln-bench`, component budget 16.7 ms | p95 12.7 ms |
+| `grid-scroll`: one frame per animation frame at 2,000 px/s (native) | `kiln-bench`, component budget 16.7 ms | p95 2.2 ms (prefetched tiles: most frames send nothing) |
+| B6 surface work per frame (composite + prefetched tile steps, `kiln:grid-frame`) | `e2e/specs/grid.spec.ts`, production web build, budget 16.7 ms p95 | 4.4–5.3 ms quiet, 8.4–9.3 ms under load |
+| Applying a frame's delta (`kiln:grid-apply`) | same | p95 0.1 ms |
+| Frame interval while scrolling | same | quiet: p50 16.7 ms, p95 33.4 ms; under load: p50 33.3 ms, p95 50 ms |
+| Core round trip per frame (viewport + frame, Worker) | same | p95 13–21 ms quiet, 35–40 ms under load |
+| B7 in the web core: open to first paint (Worker, wasm) | same | 6.7–10 s (the native core: 1.45 s) |
+
+B6 is asserted on the surface's work per frame, as for pages (`surface.spec.ts`); the frame interval is held to
+two vsyncs at the median (see Exceptions). What keeps the interval above one vsync is the Worker's share of each
+scroll frame (a viewport change, which also emits `Event::Changed`, a frame and a state query) on a machine whose
+four cores are shared with the build: painting in the Worker (`OffscreenCanvas`, WP-94) and a cheaper state
+query while scrolling are the next steps (`docs/qa/handoffs.md`, WP-71). B7 in the web core is the wasm build's
+single thread reading and calculating the whole file; the native core meets the budget.
+
 ## Exceptions
 
 | Budget | Proposed by | Allowance | Until | Status |
 |---|---|---|---|---|
 | B5 typing latency, p95 < 16 ms | WP-64 | p95 < 60 ms keystroke → screen on the development machine (the former 40 ms to the composite plus one frame), × 1.5 on CI runners (§3.9); the e2e assertion reads this row | the painter runs in the worker (WP-94); or B5 is redefined, since a keystroke → screen p95 under 16 ms is below the 60 Hz vsync floor (see "B5" above): e.g. "the edit is on screen in the first frame after the core's answer", or about one frame plus the work (≤ 25 ms) | approved 2026-10-17 (orchestrator): interim allowance until WP-94; B5 redefined as keystroke → screen p95 ≤ 33 ms (two 60 Hz frames), owned by WP-94 |
+| B6 frame interval while scrolling the 1M-cell sheet in the web build (one vsync) | WP-71 | median ≤ 33.4 ms (two vsyncs) in headless Chromium on the development machine, × 1.5 on CI; the surface's own work stays ≤ 16.7 ms p95 | the painter runs in the worker (WP-94) | proposed |

@@ -3,4 +3,4 @@
 /**
  * A colour the painter resolves against its [`Palette`].
  */
-export type ColorRole = "Canvas" | "Page" | "Ink" | "Selection" | "Caret" | "Composition" | "Squiggle" | "Guide";
+export type ColorRole = "Canvas" | "Page" | "Ink" | "Selection" | "Caret" | "Composition" | "Squiggle" | "Guide" | "Panel" | "Muted" | "Line" | "Gridline" | "AppFill" | "AppTint" | "AppText";
