@@ -23,6 +23,8 @@ kiln-raster.workspace = true
 # `inspect`, `repack`.
 kiln-ooxml.workspace = true
 kiln-io-docx.workspace = true
+# `inspect --pptx` (WP-77).
+kiln-io-pptx.workspace = true
 # `convert` of workbooks, CSV/TSV and JSON (WP-70).
 kiln-io-xlsx.workspace = true
 kiln-io-csv.workspace = true

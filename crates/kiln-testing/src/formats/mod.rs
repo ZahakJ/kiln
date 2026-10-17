@@ -18,7 +18,8 @@
 use crate::fidelity::Roundtrip;
 
 pub mod docx; // WP-62/WP-65: kiln-io-docx
-pub mod xlsx; // WP-70: kiln-io-xlsx
+pub mod pptx;
+pub mod xlsx; // WP-70: kiln-io-xlsx // WP-77: kiln-io-pptx read half; WP-79 adds the writer and the registration below
 
 /// Every registered adapter, in registration order. Empty until the first format lands, in which
 /// case `cargo xtask fidelity` reports "no formats registered" and measures only the OPC

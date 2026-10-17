@@ -1,0 +1,60 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 2,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Slide",
+   "notes": "I am the notes of the first slide",
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "The Title",
+     "text": "Title of the first slide"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Another Subtitle",
+     "text": "Subtitle of the first slide\n\nThis bit is in italic green"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": "These are the notes of the 2nd slide\nTHIS LINE IS BOLD",
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "This is the second slide"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "It has bullet points on it\nThey’re fun, aren’t they?\nEspecially in a different font like Arial Black at 16 point!"
+    }
+   ]
+  }
+ ]
+}

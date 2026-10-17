@@ -9,6 +9,7 @@ it with `cargo run -p kiln-cli --`.
 kiln-cli inspect report.docx                      # parts, content types, sizes, relationships
 kiln-cli inspect report.docx --xml word/document.xml
 kiln-cli inspect report.docx --docx               # heading outline, counts, import diagnostics
+kiln-cli inspect talk.pptx --pptx                 # masters, layouts, slides with shape counts
 kiln-cli repack book.xlsx /tmp/book.xlsx          # open and save without edits
 kiln-cli convert report.docx copy.docx            # read and save as Kiln Write saves
 kiln-cli convert book.xlsx book.csv               # workbooks, CSV, TSV and JSON too
@@ -35,7 +36,7 @@ readers land, with no change to the commands. `eval` knows the engine's core fun
 ## inspect
 
 ```text
-kiln-cli inspect <file> [--xml <part>] [--docx] [--json]
+kiln-cli inspect <file> [--xml <part>] [--docx|--pptx] [--json]
 ```
 
 Lists every part of an Office package (the zip inside a `.docx`, `.xlsx` or `.pptx`) with its uncompressed
@@ -49,6 +50,13 @@ the counts — sections, paragraphs, tables, list paragraphs, headers and footer
 tracked changes, pictures, other drawings, fields, bookmarks, equations, styles, list definitions, words and parts
 kept verbatim — and every import diagnostic with its part and location (what the Compatibility Checker will list).
 With `--json` the same comes as `format`, `outline`, `counts` and `warnings`.
+
+`--pptx` reads a presentation the way Kiln Deck does (`.pptx`, `.pptm`, `.potx`, `.potm`, `.ppsx`, `.ppsm`) and
+prints its slide size, each slide master with its layouts, one line per slide — number, layout name, number of
+shapes, title, and whether it is hidden or has a transition, animations, notes or comments — then the sections,
+the shapes of every kind (placeholder, text box, shape, freeform, picture, group, table, chart, connector, media,
+OLE object, SmartArt), the parts kept verbatim and every import diagnostic. With `--json` the same comes as
+`format`, `slide_size`, `masters`, `slides`, `sections`, `shape_kinds`, `passthrough_parts` and `warnings`.
 
 Password-protected files and old binary `.doc`/`.xls`/`.ppt` files are recognised and refused with a message
 saying so; so are archives that would inflate beyond Kiln's safety limits.

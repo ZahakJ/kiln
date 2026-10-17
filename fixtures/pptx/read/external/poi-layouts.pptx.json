@@ -1,0 +1,240 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 10,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Centered Title"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Subtitle 2",
+     "text": "subtitle"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Title"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Content\nLevel 2\nLevel 3\nLevel 4\nLevel 5\nLevel 6\nLevel 7\nLevel 8\nLevel 9"
+    }
+   ]
+  },
+  {
+   "layout": "Section Header",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Section Title"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 2",
+     "text": "Section Header"
+    }
+   ]
+  },
+  {
+   "layout": "Two Content",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Title"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Left\nLevel 2\nLevel 3\nLevel 4\nLevel 5\nLevel 6"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 3",
+     "text": "Right\nLevel 2\nLevel 3\nLevel 4\nLevel 5"
+    }
+   ]
+  },
+  {
+   "layout": "Comparison",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Title"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 2",
+     "text": "file1"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 3",
+     "text": "Comparison1\nLevel 2\nLevel 3"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 4",
+     "text": "file2"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 5",
+     "text": "Comparison2\nLevel 2\nLevel 3"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Title Only"
+    }
+   ]
+  },
+  {
+   "layout": "Blank",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Blank with Default Title"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 3",
+     "text": "Default Text"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 4",
+     "text": "Default\nText with levels\nLevel 1\nLevel 2\nLevel 3"
+    }
+   ]
+  },
+  {
+   "layout": "Content with Caption",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Caption"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Level 1\nLevel 2\nLevel 3\nLevel 4\nLevel 5"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 3",
+     "text": "Content with caption"
+    }
+   ]
+  },
+  {
+   "layout": "Picture with Caption",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Picture with Caption"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Picture Placeholder 4"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 3",
+     "text": "Some text"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": "",
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 4",
+     "text": "Headers & Footers"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 5",
+     "text": "This slide has the following stuff:\nHeader\nDate/Time placeholder\nSlide Number\n"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Date Placeholder 6",
+     "text": "Friday, October 21, 2011"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Footer Placeholder 7",
+     "text": "Apache Software Foundation"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "10"
+    }
+   ]
+  }
+ ]
+}

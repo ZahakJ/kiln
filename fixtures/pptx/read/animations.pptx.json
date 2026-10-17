@@ -1,0 +1,80 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 2,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Animation builds 1"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Appear on click"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 3",
+     "text": "Fade on click"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 4",
+     "text": "Wipe on click"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Animation builds 2"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Appear on click"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 3",
+     "text": "Fade on click"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 4",
+     "text": "Wipe on click"
+    }
+   ]
+  }
+ ]
+}

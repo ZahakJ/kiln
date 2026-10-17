@@ -1,0 +1,70 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 2,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Text formatting"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 2",
+     "text": "Bold italic underline red 24pt Georgia\nAligned left\nAligned center\nAligned right\nAligned justify\nLine spacing 1.5, space before 12pt"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 3",
+     "text": "Shrink text on overflow, anchored middle. Shrink text on overflow, anchored middle. Shrink text on overflow, anchored middle. Shrink text on overflow, anchored middle. "
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 4",
+     "text": "Vertical"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Bullets and levels"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Level one\nLevel 2\nLevel 3\nLevel 4\nLevel 5\nNumbered paragraph"
+    }
+   ]
+  }
+ ]
+}

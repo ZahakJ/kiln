@@ -1,0 +1,84 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 8,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "Subtitle 2",
+     "text": ""
+    },
+    {
+     "cells": [
+      [
+       "Row 1 Col 1",
+       "Row 1 Col 2",
+       "Row 1 Col 3"
+      ],
+      [
+       "Row 2 Col 1",
+       "Row 2 Col 2",
+       "Row 2 Col 3"
+      ]
+     ],
+     "kind": "table",
+     "name": "Table 3"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 2",
+     "text": ""
+    },
+    {
+     "kind": "textbox",
+     "name": "Text Box 1",
+     "text": "Here is a text box"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": "\nFootnote appears here[1]\nBold italic underline superscript subscript\nHere is a list:\nBullet 1\nBullet 2\nBullet 3\nHere is a numbered list:\nNumber bullet 1\nNumber bullet 2\nNumber bullet 3\n Keyword1 Keyword2\nThis is a hyperlink\n Subject is here\nSuddenly some Japanese text:\nゾルゲと尾崎、淡々と最期\n（ＧＨＱ）\nAnd then some Gothic text:\n𐌲𐌿𐍄𐌹𐍃𐌺\nHere is a citation:\n(Kramer)\nFigure 1 This is a caption for Figure 1\n\u000b\nRow 1 column 1\nRow 2 column 1\nRow 1 column 2\nRow 2 column 2\n\u000b\n\u000b"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 4",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 5",
+     "text": "[1] This is a footnote."
+    }
+   ]
+  }
+ ]
+}

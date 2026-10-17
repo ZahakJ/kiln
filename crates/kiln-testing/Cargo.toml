@@ -20,6 +20,9 @@ kiln-doc.workspace = true
 kiln-io-docx.workspace = true
 # The `.xlsx` fidelity adapter (formats/xlsx.rs, WP-70).
 kiln-io-xlsx.workspace = true
+# The `.pptx` fidelity adapter (formats/pptx.rs, WP-77 read half) and its chart facts.
+kiln-io-pptx.workspace = true
+kiln-charts.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 

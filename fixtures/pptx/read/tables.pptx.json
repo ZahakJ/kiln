@@ -1,0 +1,107 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 2,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Tables"
+    },
+    {
+     "cells": [
+      [
+       "Header 1",
+       "Header 2",
+       "Header 3",
+       "Header 4"
+      ],
+      [
+       "Merged across three columns",
+       "",
+       "",
+       "13"
+      ],
+      [
+       "20",
+       "21",
+       "22",
+       "Merged down"
+      ],
+      [
+       "30",
+       "31",
+       "32",
+       ""
+      ],
+      [
+       "40",
+       "41",
+       "42",
+       ""
+      ]
+     ],
+     "kind": "table",
+     "name": "Table 2"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Second table, no header row"
+    },
+    {
+     "cells": [
+      [
+       "r0c0",
+       "r0c1",
+       "r0c2"
+      ],
+      [
+       "r1c0",
+       "r1c1",
+       "r1c2"
+      ],
+      [
+       "r2c0",
+       "r2c1",
+       "r2c2"
+      ]
+     ],
+     "kind": "table",
+     "name": "Table 2"
+    }
+   ]
+  }
+ ]
+}

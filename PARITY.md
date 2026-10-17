@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **11.5 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **11.6 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,24 +12,24 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 11.5 % | 782 | 0 | 38 | 87 | 657 | 20 |
+| **Overall** | 11.6 % | 782 | 0 | 38 | 90 | 654 | 20 |
 | Kiln Write | 7.1 % | 231 | 0 | 2 | 26 | 203 | 1 |
 | Kiln Grid | 19.1 % | 261 | 0 | 25 | 41 | 195 | 6 |
-| Kiln Deck | 11.7 % | 184 | 0 | 11 | 16 | 157 | 3 |
+| Kiln Deck | 12.5 % | 184 | 0 | 11 | 19 | 154 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
 | Suite | 3.3 % | 62 | 0 | 0 | 4 | 58 | 9 |
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 12.3 % | 462 | 0 | 32 | 50 | 380 | 0 |
-| commonly-missed | 9.6 % | 224 | 0 | 4 | 35 | 185 | 0 |
+| critical | 12.4 % | 462 | 0 | 32 | 51 | 379 | 0 |
+| commonly-missed | 10.0 % | 224 | 0 | 4 | 37 | 183 | 0 |
 | niche | 3.1 % | 96 | 0 | 2 | 2 | 92 | 20 |
 
 | App | Critical | Commonly-missed | Niche |
 |---|---:|---:|---:|
 | Kiln Write | 7.5 % (146) | 6.0 % (58) | 1.9 % (27) |
 | Kiln Grid | 21.0 % (143) | 15.7 % (83) | 7.1 % (35) |
-| Kiln Deck | 12.6 % (119) | 9.5 % (42) | 0.0 % (23) |
+| Kiln Deck | 13.0 % (119) | 11.9 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
 | Suite | 3.2 % (31) | 3.4 % (29) | 0.0 % (2) |
 
@@ -176,6 +176,7 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `grid.files.xlsx-save` | Save .xlsx that Excel opens without repair; formulas preserved exactly | missing | partial |
 | `grid.files.csv-tsv` | Open and save CSV and TSV with encoding, delimiter and locale options | missing | partial |
 | `grid.files.json-export` | Export a range or table as JSON | missing | partial |
+| `deck.insert.illustrations.smartart` | SmartArt: imported diagrams rendered as grouped shapes | missing | partial |
 | `deck.insert.illustrations.chart` | Insert chart with an embedded data sheet | missing | partial |
 | `deck.design.themes` | Themes gallery (12 bundled themes, OOXML theme compatible) | missing | partial |
 | `deck.design.variants` | Variants: colours, fonts, effects, background styles | missing | partial |
@@ -203,6 +204,8 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `deck.charts.treemap` | Treemap charts on slides (rendered and edited through kiln-charts) | missing | partial |
 | `deck.charts.sunburst` | Sunburst charts on slides (rendered and edited through kiln-charts) | missing | partial |
 | `deck.charts.radar` | Radar charts on slides (rendered and edited through kiln-charts) | missing | partial |
+| `deck.files.pptx-open` | Open .pptx with masters, layouts, themes, shapes, pictures, tables, charts, transitions, animations and notes | missing | partial |
+| `deck.files.ppsx` | Open .ppsx/.potx and start the show directly | missing | partial |
 | `suite.files.byte-preserving` | Byte-preserving saves: every part not edited is byte-identical after save | missing | partial |
 | `suite.files.macros-preserve` | Macro-enabled files (.docm/.xlsm/.pptm): vbaProject.bin preserved, never run | missing | partial |
 | `suite.files.compatibility-checker` | Compatibility checker: features that will not survive .docx/.xlsx/.pptx | missing | partial |
@@ -1221,7 +1224,7 @@ Score 19.1 % over 261 rows in scope; 0 better, 25 done, 41 partial, 195 missing,
 
 ## Kiln Deck
 
-Score 11.7 % over 184 rows in scope; 0 better, 11 done, 16 partial, 157 missing, 3 out of scope.
+Score 12.5 % over 184 rows in scope; 0 better, 11 done, 19 partial, 154 missing, 3 out of scope.
 
 ### Home ▸ Clipboard
 
@@ -1296,7 +1299,7 @@ Score 11.7 % over 184 rows in scope; 0 better, 11 done, 16 partial, 157 missing,
 | ○ | Photo album | PowerPoint ▸ Insert ▸ Images ▸ Photo Album | niche | P2 | WP-78 | `deck.insert.images.photo-album` |
 | ○ | Icons | PowerPoint ▸ Insert ▸ Illustrations ▸ Icons | commonly-missed | P0 | WP-78 | `deck.insert.illustrations.icons` |
 | – | 3-D models | PowerPoint ▸ Insert ▸ Illustrations ▸ 3D Models | niche | out | — | `deck.insert.illustrations.3d-models` |
-| ○ | SmartArt: imported diagrams rendered as grouped shapes | PowerPoint ▸ Insert ▸ Illustrations ▸ SmartArt | commonly-missed | P1 | WP-77 | `deck.insert.illustrations.smartart` |
+| ◐ | SmartArt: imported diagrams rendered as grouped shapes | PowerPoint ▸ Insert ▸ Illustrations ▸ SmartArt | commonly-missed | P1 | WP-77 | `deck.insert.illustrations.smartart` |
 | ◐ | Insert chart with an embedded data sheet | PowerPoint ▸ Insert ▸ Illustrations ▸ Chart | critical | P0 | WP-73 | `deck.insert.illustrations.chart` |
 | ○ | Hyperlinks on text and shapes (to web, slide, file, e-mail) | PowerPoint ▸ Insert ▸ Links ▸ Link | critical | P0 | WP-78 | `deck.insert.links.link` |
 | ○ | Action settings (on click, mouse over) | PowerPoint ▸ Insert ▸ Links ▸ Action | niche | P2 | WP-78 | `deck.insert.links.action` |
@@ -1511,12 +1514,12 @@ Score 11.7 % over 184 rows in scope; 0 better, 11 done, 16 partial, 157 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Open .pptx with masters, layouts, themes, shapes, pictures, tables, charts, transitions, animations and notes | PowerPoint ▸ Open .pptx | critical | P0 | WP-77 | `deck.files.pptx-open` |
+| ◐ | Open .pptx with masters, layouts, themes, shapes, pictures, tables, charts, transitions, animations and notes | PowerPoint ▸ Open .pptx | critical | P0 | WP-77 | `deck.files.pptx-open` |
 | ○ | Save .pptx that PowerPoint opens without repair; untouched parts byte-identical | PowerPoint ▸ Save .pptx | critical | P0 | WP-79 | `deck.files.pptx-save` |
 | ○ | Export slides as PNG | PowerPoint ▸ Export ▸ PNG | commonly-missed | P0 | WP-79 | `deck.files.png-export` |
 | ○ | Export to PDF with notes or handouts | PowerPoint ▸ Export ▸ PDF | critical | P0 | WP-67 | `deck.files.pdf-export` |
 | ○ | Open legacy .ppt files (import through conversion) | PowerPoint ▸ PowerPoint 97–2003 | niche | P2 | — | `deck.files.ppt-legacy` |
-| ○ | Open .ppsx/.potx and start the show directly | PowerPoint ▸ PowerPoint Show | commonly-missed | P0 | WP-77 | `deck.files.ppsx` |
+| ◐ | Open .ppsx/.potx and start the show directly | PowerPoint ▸ PowerPoint Show | commonly-missed | P0 | WP-77 | `deck.files.ppsx` |
 | ○ | Speaker notes pane below the stage (toggle) | PowerPoint ▸ Notes | critical | P0 | WP-78 | `deck.files.notes-pane` |
 | ○ | Status bar: slide n of m, theme, notes, comments, view buttons, zoom, fit | PowerPoint ▸ status bar | critical | P0 | WP-58 | `deck.files.status-bar` |
 

@@ -1,0 +1,361 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 5,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Blank",
+   "notes": null,
+   "shape_count": 12,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Action Button: Back or Previous 1",
+     "text": "action_button_back_or_previous"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Action Button: Document 2",
+     "text": "action_button_document"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Action Button: Help 3",
+     "text": "action_button_help"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Action Button: Movie 4",
+     "text": "action_button_movie"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Arc 5",
+     "text": "arc"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Bent-Up Arrow 6",
+     "text": "bent_up_arrow"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Can 7",
+     "text": "can"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Chart X 8",
+     "text": "chart_x"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Circular Arrow 9",
+     "text": "circular_arrow"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Corner 10",
+     "text": "corner"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Cube 11",
+     "text": "cube"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Curved Left Arrow 12",
+     "text": "curved_left_arrow"
+    }
+   ]
+  },
+  {
+   "layout": "Blank",
+   "notes": null,
+   "shape_count": 12,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Curved Up Ribbon 1",
+     "text": "curved_up_ribbon"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Diamond 2",
+     "text": "diamond"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Double Brace 3",
+     "text": "double_brace"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Down Arrow 4",
+     "text": "down_arrow"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Explosion 5",
+     "text": "explosion1"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Card 6",
+     "text": "flowchart_card"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Data 7",
+     "text": "flowchart_data"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Direct Access Storage 8",
+     "text": "flowchart_direct_access_storage"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Extract 9",
+     "text": "flowchart_extract"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Manual Input 10",
+     "text": "flowchart_manual_input"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Multidocument 11",
+     "text": "flowchart_multidocument"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Or 12",
+     "text": "flowchart_or"
+    }
+   ]
+  },
+  {
+   "layout": "Blank",
+   "notes": null,
+   "shape_count": 12,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Process 1",
+     "text": "flowchart_process"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Sort 2",
+     "text": "flowchart_sort"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Terminator 3",
+     "text": "flowchart_terminator"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Funnel 4",
+     "text": "funnel"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Half Frame 5",
+     "text": "half_frame"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Hexagon 6",
+     "text": "hexagon"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Left Arrow 7",
+     "text": "left_arrow"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Left Bracket 8",
+     "text": "left_bracket"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Left-Right Arrow Callout 9",
+     "text": "left_right_arrow_callout"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Left-Right-Up Arrow 10",
+     "text": "left_right_up_arrow"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Line Callout 1 11",
+     "text": "line_callout_1"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Line Callout 1 (No Border) 12",
+     "text": "line_callout_1_no_border"
+    }
+   ]
+  },
+  {
+   "layout": "Blank",
+   "notes": null,
+   "shape_count": 12,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Line Callout 2 (Border and Accent Bar) 1",
+     "text": "line_callout_2_border_and_accent_bar"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Line Callout 3 (Accent Bar) 2",
+     "text": "line_callout_3_accent_bar"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Line Callout 3 3",
+     "text": "line_callout_4"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Line Callout 3 (No Border) 4",
+     "text": "line_callout_4_no_border"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Equal 5",
+     "text": "math_equal"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Not Equal 6",
+     "text": "math_not_equal"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Non-isosceles Trapezoid 7",
+     "text": "non_isosceles_trapezoid"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Octagon 8",
+     "text": "octagon"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Parallelogram 9",
+     "text": "parallelogram"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Pie 10",
+     "text": "pie_wedge"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Quad Arrow 11",
+     "text": "quad_arrow"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangular Callout 12",
+     "text": "rectangular_callout"
+    }
+   ]
+  },
+  {
+   "layout": "Blank",
+   "notes": null,
+   "shape_count": 12,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Right Arrow Callout 1",
+     "text": "right_arrow_callout"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Right Triangle 2",
+     "text": "right_triangle"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Round Single Corner Rectangle 3",
+     "text": "round_1_rectangle"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Smiley Face 4",
+     "text": "smiley_face"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Snip Same Side Corner Rectangle 5",
+     "text": "snip_2_same_rectangle"
+    },
+    {
+     "kind": "autoshape",
+     "name": "10-Point Star 6",
+     "text": "star_10_point"
+    },
+    {
+     "kind": "autoshape",
+     "name": "24-Point Star 7",
+     "text": "star_24_point"
+    },
+    {
+     "kind": "autoshape",
+     "name": "5-Point Star 8",
+     "text": "star_5_point"
+    },
+    {
+     "kind": "autoshape",
+     "name": "8-Point Star 9",
+     "text": "star_8_point"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Swoosh Arrow 10",
+     "text": "swoosh_arrow"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Up Arrow 11",
+     "text": "up_arrow"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Up-Down Arrow Callout 12",
+     "text": "up_down_arrow_callout"
+    }
+   ]
+  }
+ ]
+}

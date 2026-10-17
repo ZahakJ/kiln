@@ -1,0 +1,58 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 3",
+     "text": "Paragraphs and Rich Formatting"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 4",
+     "text": "The Paragraphs and Rich Formatting portion of the DrawingML framework stores text and related formatting information for a text body contained within a shape. Formatting for text within a shape can be broken down into three levels of precision, namely body, paragraph, and run formatting properties.\nBody Formatting\nBeing the highest level of formatting available within a shape, the body properties allow for the manipulation of the text area as a whole. This means that all paragraphs and runs of text for the shape in question would be encompassed within here and, therefore, follow the text body style defined here.\nA quick brown fox jumped over a lazy dog"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Right Arrow 2",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Oval 5",
+     "text": "POI"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Left Arrow 11",
+     "text": ""
+    }
+   ]
+  }
+ ]
+}

@@ -5,7 +5,7 @@
 //! apps use, driven from a shell or an agent (PLAN.md §3.1 principle 2).
 //!
 //! ```text
-//! kiln-cli inspect <file> [--xml <part>] [--docx] [--json]  parts, relationships; --docx: outline and counts
+//! kiln-cli inspect <file> [--xml <part>] [--docx|--pptx] [--json]  parts, relationships; --docx/--pptx: outline and counts
 //! kiln-cli repack <in> <out>                          passthrough round trip, identical parts
 //! kiln-cli convert <in.docx> <out.docx>               read and save as Kiln saves (Save As)
 //! kiln-cli render <file> --png out/page-%03d.png      pages to PNG [--page N] [--dpi 96] [--dark]

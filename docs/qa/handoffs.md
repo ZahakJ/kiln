@@ -732,3 +732,37 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   are bundled, those themes fall back to the default family. Other themes use Office fonts whose substitutes are
   approximate (Trebuchet MS, Gill Sans MT, Book Antiqua, Garamond, Constantia, Corbel → the Liberation, Caladea
   and Carlito families; Aptos → the UI sans). Mapping Aptos to Figtree once it is bundled would suit the Slate theme.
+
+## WP-77 → WP-79 (PPTX writer), WP-78 (Deck app, layout), WP-60/WP-96 (CLI, testing), WP-93 (corpus), WP-80 (show)
+
+- Edits outside WP-77's paths, for the owners to acknowledge (all additive): `crates/kiln-cli` (WP-60/WP-96):
+  `inspect --pptx [--json]` in `src/inspect.rs` (one function, two options, a test), the usage line in `main.rs`,
+  `kiln-io-pptx` in `Cargo.toml`, the `inspect` section of `docs/manual/cli.md`. `crates/kiln-testing` (WP-60):
+  `kiln-io-pptx` and `kiln-charts` in `Cargo.toml` for the adapter. `tools/make-fixtures.py` (WP-60/WP-93): a
+  self-contained `--dump-pptx` mode (the python-pptx oracle the task names) writing `fixtures/pptx/read/*.pptx.json`
+  (and `fixtures/pptx/read/external/` for `fixtures/external/pptx`); it does not touch the generators.
+- For WP-79 (writer): read with `kiln_io_pptx::read_pptx`; `PptxRead` has the model, `passthrough` (presProps,
+  viewProps, tableStyles, the notes master's theme, SmartArt diagram parts, OLE embeddings, thumbnails, VBA, …
+  with the relationships from modelled parts to them) and `extras` (`PptxExtras`): the part each slide, layout,
+  master, notes page and theme came from, `p:sldId`/`p:sldMasterId`/`p:sldLayoutId` and `p:cNvPr` ids, section
+  GUIDs, the original XML of SmartArt/OLE/alternate-content shapes (`shape_sources`), spTree children without a
+  model shape with their position (`opaque_shapes`, parent = slide/layout/master/group id, or
+  `extras.notes_keys[slide]` for a notes page), unmodelled shape XML (`shape_xml`: 3-D, extension lists),
+  unmodelled root children per owner (`owner_xml`), `presentation_xml`/`presentation_attrs`, and the original
+  `p:transition`/`p:timing` per slide (write them back verbatim while the slide's motion is unchanged). Every XML
+  string is a self-contained fragment (`common::xml::fragment`/`parse_fragment`). Model conventions: images,
+  picture fills/bullets, media and charts are **part names** into `Presentation::parts` (a chart's `.rels` part
+  and its targets are stored beside it); links are URLs, `#slide:<id>` or `ppaction://…`; `a:fld` is a kiln-doc
+  simple field with the DrawingML type as instruction. Then implement `Roundtrip::roundtrip` in
+  `crates/kiln-testing/src/formats/pptx.rs` (the snapshot is done: `snapshot_facts` + chart facts +
+  `plain_text`) and add `Box::new(pptx::Pptx)` to `formats::registered()` — WP-77 left it out on purpose, since
+  registering an adapter without a writer would fail `cargo xtask fidelity --ci` on every deck.
+- For WP-78 (Deck app): there is no Deck app in the session yet (`crates/kiln-session/src/apps/deck/` is WP-78's),
+  so `kiln-cli render`/`control` cannot open `.pptx` until it exists. Open files with
+  `kiln_io_pptx::read_pptx(&bytes)?` and keep the `PptxRead` for the save; draw pictures from
+  `presentation.parts[&picture.media]`, charts with `kiln_charts::read_chart(&parts[&chart.part].bytes)` and
+  SmartArt as the group it already is. `kiln_io_pptx::shape_kind` gives python-pptx's/PowerPoint's shape
+  vocabulary for the Selection Pane, `PptxWarning`s are what the Compatibility Checker lists.
+- For WP-80 (show): `PptxKind::Show`/`MacroEnabledShow` (`read.kind`) is how `.ppsx`/`.ppsm` say "start the show".
+- For WP-93 (corpus): new decks under `fixtures/pptx/**` need an oracle dump
+  (`python3 -I tools/make-fixtures.py --dump-pptx`); `tests/read_oracle.rs` fails on a deck without one.

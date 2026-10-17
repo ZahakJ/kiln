@@ -1,6 +1,6 @@
 [package]
 name = "kiln-io-pptx"
-description = "Reads and writes "
+description = "Reads and writes .pptx, .potx and .pptm files to and from the Kiln Deck model"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -11,6 +11,20 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+# The presentation model the reader builds (slides, masters, layouts, shapes, text, motion).
+kiln-deck.workspace = true
+# Text bodies are kiln-doc paragraphs and runs.
+kiln-doc.workspace = true
+# OPC packages, the XML tree, DrawingML values, passthrough and document properties.
+kiln-ooxml.workspace = true
+# The chart part handler: chart parts are checked and described with kiln-charts.
+kiln-charts.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+kiln-testing.workspace = true
+proptest.workspace = true
+serde_json.workspace = true
 
 [lints]
 workspace = true

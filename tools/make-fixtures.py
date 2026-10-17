@@ -3,6 +3,7 @@
 
     python3 -I tools/make-fixtures.py --out fixtures [--large] [--only docx,xlsx,pptx]
     python3 -I tools/make-fixtures.py --synthetic-large [--only docx,xlsx,pptx]
+    python3 -I tools/make-fixtures.py --dump-pptx
 
 Files go to <out>/<format>/features/<name>.<ext> (``--out`` defaults to the repository's fixtures/). The
 ``--large`` flag also writes the 100 000-row workbook to <out>/xlsx/large/ (gitignored; too big for the
@@ -12,6 +13,10 @@ repository and for PDF conversion tests).
 (gitignored, regenerated on demand): ``doc-300p.docx`` (300 pages of headings, body text, tables and
 pictures, one page per explicit page break), ``sheet-1m.xlsx`` (1 000 000 populated cells, 200 000 of them
 formulas) and ``deck-200.pptx`` (200 slides: bullets, two columns, pictures, tables, shapes, charts).
+
+``--dump-pptx`` writes the python-pptx oracle for the presentation reader: one
+<out>/pptx/read/<name>.pptx.json per deck in pptx/features, pptx/manual and external/pptx (slide size,
+layout names, slide count, every shape's kind, name and text, table cells, notes).
 
 Output is deterministic: fixed random seeds, a fixed document date, fixed zip timestamps and a fixed
 entry order, so regenerating produces byte-identical files and the committed corpus only changes when
@@ -2532,6 +2537,98 @@ def make_pptx(out: Path) -> int:
     return w.count
 
 
+# ----------------------------------------------------------------------------- pptx oracle dump
+
+GRAPHIC_URI_DIAGRAM = "http://schemas.openxmlformats.org/drawingml/2006/diagram"
+
+
+def _pptx_shape_kind(sh) -> str:
+    """python-pptx's view of a shape, as a short label (compared with kiln-io-pptx's model)."""
+    from pptx.enum.shapes import MSO_SHAPE_TYPE as T
+
+    if sh.is_placeholder:
+        return "placeholder"
+    try:
+        st = sh.shape_type
+    except NotImplementedError:
+        return "other"
+    labels = {
+        T.TEXT_BOX: "textbox",
+        T.AUTO_SHAPE: "autoshape",
+        T.FREEFORM: "freeform",
+        T.PICTURE: "picture",
+        T.GROUP: "group",
+        T.TABLE: "table",
+        T.CHART: "chart",
+        T.LINE: "connector",
+        T.MEDIA: "media",
+        T.EMBEDDED_OLE_OBJECT: "ole",
+        T.LINKED_OLE_OBJECT: "ole",
+    }
+    if st in labels:
+        return labels[st]
+    if st is None and sh._element.tag.endswith("}graphicFrame"):
+        uri = sh._element.xpath("./a:graphic/a:graphicData/@uri")
+        return "diagram" if uri and uri[0] == GRAPHIC_URI_DIAGRAM else "graphicFrame"
+    return "other"
+
+
+def _pptx_shape_dump(sh) -> dict:
+    d = {"kind": _pptx_shape_kind(sh), "name": sh.name}
+    if d["kind"] == "group":
+        d["children"] = [_pptx_shape_dump(c) for c in sh.shapes]
+    elif getattr(sh, "has_table", False) and sh.has_table:
+        d["cells"] = [[c.text_frame.text for c in row.cells] for row in sh.table.rows]
+    elif getattr(sh, "has_text_frame", False) and sh.has_text_frame:
+        d["text"] = sh.text_frame.text
+    return d
+
+
+def dump_pptx(path: Path) -> dict:
+    """The oracle facts kiln-io-pptx's read tests compare: slides, layouts, shapes and text."""
+    from pptx import Presentation
+
+    prs = Presentation(str(path))
+    slides = []
+    for s in prs.slides:
+        notes = None
+        if s.has_notes_slide and s.notes_slide.notes_text_frame is not None:
+            notes = s.notes_slide.notes_text_frame.text
+        slides.append(
+            {
+                "layout": s.slide_layout.name,
+                "shape_count": len(s.shapes),
+                "shapes": [_pptx_shape_dump(sh) for sh in s.shapes],
+                "notes": notes,
+            }
+        )
+    return {
+        "slide_size": [prs.slide_width, prs.slide_height],
+        "slide_count": len(prs.slides),
+        "masters": [
+            {"layouts": [lay.name for lay in m.slide_layouts]} for m in prs.slide_masters
+        ],
+        "slides": slides,
+    }
+
+
+def dump_pptx_tree(root: Path) -> int:
+    """Writes ``pptx/read/<name>.pptx.json`` for every ``pptx/features`` and ``pptx/manual`` deck
+    (``pptx/read/external/`` for ``external/pptx``)."""
+    import json
+
+    count = 0
+    jobs = [(root / "pptx" / d, root / "pptx" / "read") for d in ("features", "manual")]
+    jobs.append((root / "external" / "pptx", root / "pptx" / "read" / "external"))
+    for src, dst in jobs:
+        for path in sorted(src.glob("*.pptx")) if src.is_dir() else []:
+            dst.mkdir(parents=True, exist_ok=True)
+            text = json.dumps(dump_pptx(path), indent=1, ensure_ascii=False, sort_keys=True)
+            (dst / f"{path.name}.json").write_text(text + "\n", encoding="utf-8")
+            count += 1
+    return count
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument(
@@ -2547,8 +2644,16 @@ def main() -> None:
         action="store_true",
         help="write only the budget inputs large/doc-300p.docx, sheet-1m.xlsx, deck-200.pptx",
     )
+    ap.add_argument(
+        "--dump-pptx",
+        action="store_true",
+        help="write the python-pptx oracle dumps pptx/read/<name>.pptx.json (kiln-io-pptx read tests)",
+    )
     args = ap.parse_args()
     ensure_dependencies()
+    if args.dump_pptx:
+        print(f"pptx: {dump_pptx_tree(args.out)} oracle dumps in {args.out / 'pptx' / 'read'}")
+        return
     out: Path = args.out
     formats = [f.strip() for f in args.only.split(",") if f.strip()]
     makers = {"docx": make_docx, "xlsx": make_xlsx, "pptx": make_pptx}

@@ -1,0 +1,56 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Title Only",
+    "Blank",
+    "Title and 2 Content",
+    "Title and Text",
+    "Title and 2-Column Text"
+   ]
+  }
+ ],
+ "slide_count": 2,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Slide",
+   "notes": "",
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "Lorem ipsum dolor sit amet"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "Nunc at risus vel erat tempus posuere. Aenean non ante.\n"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Text",
+   "notes": "",
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "Lorem ipsum dolor sit amet"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "Lorem\nipsum\ndolor\nsit\namet\n"
+    }
+   ]
+  }
+ ]
+}

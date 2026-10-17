@@ -1,0 +1,238 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 6,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Blank",
+   "notes": null,
+   "shape_count": 7,
+   "shapes": [
+    {
+     "kind": "textbox",
+     "name": "TextBox 3",
+     "text": "Learning PPTX"
+    },
+    {
+     "kind": "connector",
+     "name": "Straight Connector 5"
+    },
+    {
+     "kind": "freeform",
+     "name": "Freeform 6",
+     "text": "Cloud"
+    },
+    {
+     "kind": "picture",
+     "name": "Picture 1"
+    },
+    {
+     "cells": [
+      [
+       "Column1",
+       "Column2",
+       "Column3"
+      ],
+      [
+       "data1",
+       "data2",
+       "data3"
+      ]
+     ],
+     "kind": "table",
+     "name": "Table 2"
+    },
+    {
+     "kind": "connector",
+     "name": "Straight Arrow Connector 7"
+    },
+    {
+     "kind": "connector",
+     "name": "Elbow Connector 9"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 2",
+     "text": "PPTX Title"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Subtitle 3",
+     "text": "Subtitle\nAnd second line"
+    }
+   ]
+  },
+  {
+   "layout": "Blank",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "children": [
+      {
+       "kind": "autoshape",
+       "name": "Rectangle 1",
+       "text": ""
+      },
+      {
+       "kind": "autoshape",
+       "name": "Oval 2",
+       "text": ""
+      },
+      {
+       "kind": "autoshape",
+       "name": "Right Arrow 3",
+       "text": ""
+      }
+     ],
+     "kind": "group",
+     "name": "Group 4"
+    }
+   ]
+  },
+  {
+   "layout": "Blank",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "cells": [
+      [
+       "header1",
+       "header2",
+       "header3"
+      ],
+      [
+       "A1",
+       "B1",
+       "C1"
+      ],
+      [
+       "A2",
+       "",
+       ""
+      ],
+      [
+       "A3",
+       "B3 and C3 are merged",
+       ""
+      ],
+      [
+       "A4",
+       "",
+       ""
+      ],
+      [
+       "A5",
+       "",
+       ""
+      ]
+     ],
+     "kind": "table",
+     "name": "Table 1"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "cells": [
+      [
+       "Link Type",
+       "Target URI"
+      ],
+      [
+       "Web Page",
+       "http://poi.apache.org/"
+      ],
+      [
+       "Place in this document",
+       "/ppt/slides/slide2.xml"
+      ],
+      [
+       "Email",
+       "mailto:dev@poi.apache.org?subject=Hi%20There"
+      ],
+      [
+       "",
+       ""
+      ]
+     ],
+     "kind": "table",
+     "name": "Table 1"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Title 2",
+     "text": "Hyperlinks"
+    }
+   ]
+  },
+  {
+   "layout": "Blank",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 1",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 8",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 9",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 10",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 11",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 12",
+     "text": ""
+    }
+   ]
+  }
+ ]
+}

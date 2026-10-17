@@ -2483,6 +2483,7 @@ dependencies = [
  "kiln-formula",
  "kiln-io-csv",
  "kiln-io-docx",
+ "kiln-io-pptx",
  "kiln-io-xlsx",
  "kiln-ooxml",
  "kiln-protocol",
@@ -2656,7 +2657,15 @@ dependencies = [
 name = "kiln-io-pptx"
 version = "0.1.0"
 dependencies = [
+ "kiln-charts",
  "kiln-common",
+ "kiln-deck",
+ "kiln-doc",
+ "kiln-ooxml",
+ "kiln-testing",
+ "proptest",
+ "serde_json",
+ "thiserror 2.0.21",
 ]
 
 [[package]]
@@ -2802,9 +2811,11 @@ dependencies = [
 name = "kiln-testing"
 version = "0.1.0"
 dependencies = [
+ "kiln-charts",
  "kiln-common",
  "kiln-doc",
  "kiln-io-docx",
+ "kiln-io-pptx",
  "kiln-io-xlsx",
  "kiln-ooxml",
  "kiln-raster",

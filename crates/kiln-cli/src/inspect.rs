@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-//! `kiln-cli inspect <file> [--xml <part>] [--docx] [--json]`: the parts of an Office (OPC)
-//! package with their content types and sizes, and the relationships of every source part;
+//! `kiln-cli inspect <file> [--xml <part>] [--docx|--pptx] [--json]`: the parts of an Office
+//! (OPC) package with their content types and sizes, and the relationships of every source part;
 //! `--xml` prints one part's XML indented, exactly as stored (prefixes are not normalised);
 //! `--docx` reads a Word document with `kiln-io-docx` and prints its heading outline, counts and
-//! import diagnostics.
+//! import diagnostics; `--pptx` reads a presentation with `kiln-io-pptx` and prints its masters
+//! and layouts, one line per slide (layout, shape count, title), counts and diagnostics.
 
 use std::fmt::Write as _;
 use std::path::PathBuf;
@@ -17,13 +18,14 @@ use serde_json::json;
 use crate::CliError;
 
 /// Usage text.
-pub const USAGE: &str = "kiln-cli inspect <file> [--xml <part>] [--docx] [--json]";
+pub const USAGE: &str = "kiln-cli inspect <file> [--xml <part>] [--docx|--pptx] [--json]";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct Options {
     input: PathBuf,
     xml: Option<String>,
     docx: bool,
+    pptx: bool,
     json: bool,
 }
 
@@ -32,6 +34,7 @@ fn parse(args: &[String]) -> Result<Options, CliError> {
     let mut xml = None;
     let mut json = false;
     let mut docx = false;
+    let mut pptx = false;
     let mut it = args.iter();
     while let Some(a) = it.next() {
         match a.as_str() {
@@ -44,6 +47,7 @@ fn parse(args: &[String]) -> Result<Options, CliError> {
             }
             "--json" => json = true,
             "--docx" => docx = true,
+            "--pptx" => pptx = true,
             s if s.starts_with('-') => {
                 return Err(CliError::usage(format!("unknown option '{s}'"), USAGE));
             }
@@ -55,6 +59,7 @@ fn parse(args: &[String]) -> Result<Options, CliError> {
         input: input.ok_or_else(|| CliError::usage("a file is required", USAGE))?,
         xml,
         docx,
+        pptx,
         json,
     })
 }
@@ -336,6 +341,43 @@ fn docx_summary(path: &std::path::Path, as_json: bool) -> Result<String, CliErro
     Ok(out.trim_end().to_owned())
 }
 
+/// `--pptx`: the presentation as Kiln Deck reads it.
+fn pptx_summary(path: &std::path::Path, as_json: bool) -> Result<String, CliError> {
+    let bytes =
+        std::fs::read(path).map_err(|e| CliError::Failed(format!("{}: {e}", path.display())))?;
+    let read = kiln_io_pptx::read_pptx(&bytes)
+        .map_err(|e| CliError::Failed(format!("{}: {e}", path.display())))?;
+    let s = kiln_io_pptx::Summary::of(&read);
+    if as_json {
+        let doc = json!({
+            "format": s.kind,
+            "slide_size": [s.size.0, s.size.1],
+            "masters": s.masters.iter().map(|(name, layouts)| json!({"name": name, "layouts": layouts})).collect::<Vec<_>>(),
+            "slides": s.slides.iter().map(|sl| json!({
+                "number": sl.number, "layout": sl.layout, "shapes": sl.shapes, "title": sl.title,
+                "hidden": sl.hidden, "transition": sl.transition, "animations": sl.animations,
+                "notes_chars": sl.notes_chars, "comments": sl.comments,
+            })).collect::<Vec<_>>(),
+            "sections": s.sections.iter().map(|(n, l)| json!({"name": n, "slides": l})).collect::<Vec<_>>(),
+            "shape_kinds": s.shape_kinds.iter().map(|(k, n)| (k.to_string(), json!(n))).collect::<serde_json::Map<_, _>>(),
+            "passthrough_parts": s.passthrough_parts,
+            "warnings": read.warnings.iter().map(|w| json!({
+                "code": w.code.as_str(), "severity": w.severity.as_str(),
+                "message": w.message, "part": w.part, "location": w.location,
+            })).collect::<Vec<_>>(),
+        });
+        return serde_json::to_string_pretty(&doc).map_err(|e| CliError::Failed(e.to_string()));
+    }
+    let mut out = format!("{}\n\n{}", path.display(), s.to_text());
+    if !read.warnings.is_empty() {
+        out.push_str("\nDiagnostics\n");
+        for w in &read.warnings {
+            let _ = writeln!(out, "  {w}");
+        }
+    }
+    Ok(out.trim_end().to_owned())
+}
+
 /// Runs the subcommand.
 ///
 /// # Errors
@@ -343,6 +385,21 @@ fn docx_summary(path: &std::path::Path, as_json: bool) -> Result<String, CliErro
 /// Usage errors, unreadable files and missing parts.
 pub fn run(args: &[String]) -> Result<String, CliError> {
     let o = parse(args)?;
+    if o.docx && o.pptx {
+        return Err(CliError::usage(
+            "--docx and --pptx cannot be combined",
+            USAGE,
+        ));
+    }
+    if o.pptx {
+        if o.xml.is_some() {
+            return Err(CliError::usage(
+                "--pptx and --xml cannot be combined",
+                USAGE,
+            ));
+        }
+        return pptx_summary(&o.input, o.json);
+    }
     if o.docx {
         if o.xml.is_some() {
             return Err(CliError::usage(
@@ -441,6 +498,36 @@ mod tests {
         ));
         assert!(matches!(
             run(&["a.docx".into(), "--docx".into(), "--xml".into(), "x".into()]),
+            Err(CliError::Usage(_))
+        ));
+    }
+
+    #[test]
+    fn pptx_prints_slides_with_layouts_and_shape_counts() {
+        let out = run(&["--pptx".into(), fixture("pptx/features/placeholders.pptx")]).unwrap();
+        assert!(out.contains("11 slides"), "{out}");
+        assert!(out.contains("Title and Content"), "{out}");
+        assert!(out.contains("  placeholder 25"), "{out}");
+        let json = run(&[
+            fixture("pptx/features/placeholders.pptx"),
+            "--pptx".into(),
+            "--json".into(),
+        ])
+        .unwrap();
+        let v: serde_json::Value = serde_json::from_str(&json).unwrap();
+        assert_eq!(v["format"], "pptx");
+        assert_eq!(v["slides"][4]["layout"], "Comparison");
+        assert_eq!(v["slides"][4]["shapes"], 5);
+        assert!(matches!(
+            run(&[fixture("docx/features/tables.docx"), "--pptx".into()]),
+            Err(CliError::Failed(_))
+        ));
+        assert!(matches!(
+            run(&["a.pptx".into(), "--pptx".into(), "--docx".into()]),
+            Err(CliError::Usage(_))
+        ));
+        assert!(matches!(
+            run(&["a.pptx".into(), "--pptx".into(), "--xml".into(), "x".into()]),
             Err(CliError::Usage(_))
         ));
     }

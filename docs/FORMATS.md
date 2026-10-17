@@ -205,19 +205,39 @@ the data.
 
 ## PowerPoint presentations (`.pptx`, `.potx`, `.pptm`) — `kiln-io-pptx`
 
-**Read and written:** slide size, masters, layouts and slides with placeholder
-inheritance; shapes with all 187 preset geometries, fills, lines and effects;
-text with paragraph and character formatting and fields; pictures with
-cropping; tables; charts; groups and connectors; backgrounds; transitions;
-speaker notes; comments; sections.
+Reading (WP-77) is in place: `.pptx`, `.pptm`, `.potx`, `.potm`, `.ppsx` and `.ppsm` files open into
+the Deck model (`kiln-cli inspect --pptx` shows what was read). Writing follows with WP-79.
 
-**Mapped:** SmartArt is imported as a group of ordinary shapes. Transitions map
-to Kiln's set, and an unknown transition becomes Fade. Animations Kiln
-supports are editable; the others are kept in the file and dropped only if you
-change the shapes on that slide.
+**Read into the model:** slide and notes size, `firstSlideNum`, the default text style; masters
+with their theme, colour map, background, title/body/other text styles and header/footer flags;
+every layout (the eleven standard ones and custom ones) with placeholders that inherit position,
+shape and text formatting master → layout → slide; slides with their layout, name, background,
+colour map override, hidden flag, transition, animations, notes page and comments; sections.
+Shapes: preset geometries with adjust values and custom geometry, fills, lines and effects,
+Quick Style references, text boxes, placeholders by type and index, alt text and titles, click
+hyperlinks; text with paragraph levels, alignment, indents, bullets (character, numbered and
+picture), spacing, run formatting, theme colours (with their exact RGB), line breaks, fields,
+hyperlinks to web pages, slides and actions, and equations (kept as OMML); pictures with
+cropping and opacity; video and audio (embedded or linked) with poster frame and trim; tables
+with spans, merges, cell fills, borders, margins, anchoring, text direction, table style and its
+options; charts (read with kiln-charts and stored with their embedded workbooks); groups with
+their coordinate space; connectors glued to their shapes; notes pages; legacy and threaded
+(modern) comments with replies and resolved state; document properties. Images, media and charts
+are referred to by part name in the model.
 
-**Kept, not edited:** embedded OLE objects, the VBA project of a `.pptm`,
-custom XML.
+**Mapped:** SmartArt is imported as a group of the ordinary shapes PowerPoint drew for it (an
+empty frame when the file has no drawing) and OLE objects as their preview picture; both keep
+their original XML and parts for saving. Transitions map to Kiln's set, and a transition without
+an exact twin becomes its nearest relative (Fade when there is none) with the original kept. The
+animation timeline keeps the main sequence and trigger sequences with start, delay, duration,
+repeat and the options of spin, grow/shrink and colour pulse; animations Kiln does not play are
+kept in the file and dropped only if you change the shapes on that slide.
+
+**Kept, not edited:** embedded OLE objects, the VBA project of a `.pptm`, custom XML, ink, 3-D
+scene and bevel settings, custom shows, the photo album, extension lists, presentation and view
+properties, table styles, thumbnails and printer settings. Diagnostics (`PptxWarning`, with
+stable codes) say what was approximated, what is kept without being editable and what was
+dropped; a malformed slide, layout or theme is reported and the rest of the file opens.
 
 ## Kiln Deck themes (`.kdeck-theme`) — `kiln-deck`
 
