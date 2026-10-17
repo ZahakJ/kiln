@@ -810,6 +810,8 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   Suggested amendment: "every referenced id is declared; core ids come from catalog.json, `ui.*` ids are chrome
   actions, every other id is a reservation hidden in release builds" — which is what
   `packages/commands/src/catalog.test.ts` enforces (suite renamed to say so). Until decided, the criterion is unmet.
+  **Decided 2026-10-17 (orchestrator):** amendment adopted in PLAN.md and plan/work-packages.json; the gates WP-68/75/81
+  now require that no P0/P1 item of their app is still a reservation.
 - WP-58 fix round 1: `packages/ui-kit/src/primitives/index.ts` (WP-51) imports `primitives.css`, but production
   bundlers skip a pure re-export barrel and its CSS. `statusbar/StatusBar.tsx` now imports the stylesheet at the
   barrel's place in the module order (same cascade in dev and release); WP-51 may prefer importing it from the
