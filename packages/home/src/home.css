@@ -805,7 +805,11 @@
 @media (max-width: 639px) {
   .kiln-home {
     flex-direction: column;
-    padding-bottom: 76px;
+    /* Bottom nav (76) plus the floating New button (52 + 16 gap): the last list scrolls clear. */
+    padding-bottom: 144px;
+  }
+  .kiln-home__empty {
+    padding: 22px 18px;
   }
   .kiln-home__rail {
     position: fixed;

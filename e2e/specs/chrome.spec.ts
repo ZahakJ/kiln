@@ -4,6 +4,12 @@
  * collapse (Ctrl+F1), Classic/Simplified, Key Tips (Alt → H → B reaches its catalog id), the
  * palette's Office synonyms, the theme switch and File ▸ Options.
  */
+import { execFileSync } from 'node:child_process';
+import { mkdtempSync, readFileSync, rmSync, statSync } from 'node:fs';
+import { createServer, type Server } from 'node:http';
+import type { AddressInfo } from 'node:net';
+import { tmpdir } from 'node:os';
+import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { expect, type Page, test } from '@playwright/test';
 import { expectNoSeriousA11yViolations } from '../../packages/testing/src/playwright/a11y.ts';
@@ -38,7 +44,7 @@ const APPS = ['write', 'grid', 'deck', 'notes'] as const;
 async function openFrame(page: Page, app: string) {
   await page.goto(`/#/${app}`);
   await expect(page.getByRole('tablist', { name: 'Ribbon tabs' })).toBeVisible();
-  await expect(page.getByTestId('document-title')).not.toHaveText('Opening…', { timeout: 20_000 });
+  await expect(page.getByTestId('document-title')).not.toHaveText('Opening…', { timeout: 30_000 });
   await page.evaluate(() => document.fonts.ready);
 }
 
@@ -156,7 +162,9 @@ test.describe('chrome', () => {
       .poll(async () => (await executed(page)).map((e) => e.id))
       .toContain('write.paragraph.borders');
     await page.keyboard.press('Alt');
+    await expect(page.locator('[data-keytip-badge="H"]')).toBeVisible();
     await page.keyboard.press('h');
+    await expect(page.locator('[data-keytip-badge="1"]')).toBeVisible();
     await page.keyboard.press('1');
     await expect.poll(async () => (await executed(page)).map((e) => e.id)).toContain('suite.format.bold');
   });
@@ -213,5 +221,153 @@ test.describe('chrome', () => {
     await page.getByRole('button', { name: 'Cut' }).click();
     await expect(page.getByText('Cut is not in this build yet')).toBeVisible();
     expect((await executed(page)).at(-1)).toEqual({ id: 'suite.edit.cut', status: 'pending' });
+  });
+});
+
+const MIME: Record<string, string> = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript',
+  '.css': 'text/css',
+  '.wasm': 'application/wasm',
+  '.json': 'application/json',
+  '.webmanifest': 'application/manifest+json',
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.ttf': 'font/ttf',
+  '.woff2': 'font/woff2',
+  '.map': 'application/json',
+};
+
+/** Serves a built site (no SPA fallback needed: the app routes by hash). */
+function serveStatic(root: string): Promise<Server> {
+  const server = createServer((req, res) => {
+    const path = decodeURIComponent(new URL(req.url ?? '/', 'http://x').pathname);
+    const file = normalize(join(root, path === '/' ? 'index.html' : path));
+    try {
+      if (!file.startsWith(root) || !statSync(file).isFile()) throw new Error('not found');
+      res.writeHead(200, { 'content-type': MIME[extname(file)] ?? 'application/octet-stream' });
+      res.end(readFileSync(file));
+    } catch {
+      res.writeHead(404).end();
+    }
+  });
+  return new Promise((resolve) => server.listen(0, '127.0.0.1', () => resolve(server)));
+}
+
+/**
+ * What production (and the Pages site) ships: `vite build` with VITE_KILN_RELEASE=1, where every
+ * command the core does not implement yet is hidden. The chrome must still be whole: no group slab
+ * without a command, no tab that opens onto nothing, the base styles present, the zoom control
+ * laid out in one row.
+ */
+test.describe('chrome (release build)', () => {
+  test.describe.configure({ mode: 'serial' });
+  const repoRoot = fileURLToPath(new URL('../..', import.meta.url));
+  let outDir = '';
+  let server: Server | undefined;
+  let base = '';
+
+  test.beforeAll(async () => {
+    test.setTimeout(240_000);
+    outDir = mkdtempSync(join(tmpdir(), 'kiln-release-'));
+    execFileSync(
+      'pnpm',
+      ['--filter', '@kiln/web', 'exec', 'vite', 'build', '--outDir', outDir, '--emptyOutDir'],
+      {
+        cwd: repoRoot,
+        env: { ...process.env, VITE_KILN_RELEASE: '1' },
+        stdio: 'pipe',
+      },
+    );
+    server = await serveStatic(outDir);
+    base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
+  });
+
+  test.afterAll(async () => {
+    await new Promise<void>((resolve) => (server ? server.close(() => resolve()) : resolve()));
+    if (outDir) rmSync(outDir, { recursive: true, force: true });
+  });
+
+  async function openRelease(page: Page, app: string) {
+    await page.goto(`${base}/#/${app}`);
+    await expect(page.getByRole('tablist', { name: 'Ribbon tabs' })).toBeVisible();
+    await expect(page.getByTestId('document-title')).not.toHaveText('Opening…', { timeout: 30_000 });
+    await page.evaluate(() => document.fonts.ready);
+  }
+
+  /** Every group of the shown tab holds at least one visible control in its body. */
+  async function expectNoEmptyGroups(page: Page, where: string) {
+    const groups = page.locator('.kiln-ribbon__groups > [role="group"]');
+    const count = await groups.count();
+    expect(count, `${where}: a tab with no group should not exist`).toBeGreaterThan(0);
+    for (let i = 0; i < count; i++) {
+      const g = groups.nth(i);
+      const label = await g.getAttribute('aria-label');
+      const controls = g.locator(
+        '.kiln-ribbon__group-body :is(button, input, [role="combobox"]):visible, :scope > button:visible',
+      );
+      expect(await controls.count(), `${where}: group "${label}" is an empty slab`).toBeGreaterThan(0);
+    }
+  }
+
+  for (const app of ['write', 'grid'] as const) {
+    for (const scheme of ['light', 'dark'] as const) {
+      test(`${app} frame (${scheme}): no empty groups or tabs, styled controls, zoom in one row`, async ({
+        page,
+      }) => {
+        await page.emulateMedia({ colorScheme: scheme });
+        await openRelease(page, app);
+        // The primitives' styles made it into the bundle: only their `.kiln-btn` rule sets `--btn-px`.
+        const buttonBase = await page
+          .locator('.kiln-ribbon .kiln-btn')
+          .first()
+          .evaluate((el) => getComputedStyle(el).getPropertyValue('--btn-px').trim());
+        expect(buttonBase).not.toBe('');
+        const tabs = page.getByRole('tab');
+        const names = await tabs.allTextContents();
+        expect(names.length).toBeGreaterThan(0);
+        for (const name of names) {
+          await page.getByRole('tab', { name, exact: true }).click();
+          await expectNoEmptyGroups(page, `${app} ▸ ${name}`);
+        }
+        // Zoom: −, slider, + and the percentage centred on one line.
+        const zoom = page.locator('.kiln-statusbar__zoom');
+        await expect(zoom.getByRole('slider', { name: 'Zoom' })).toBeVisible();
+        const centres = await zoom.locator('.kiln-zoom > *').evaluateAll((els) =>
+          els.map((el) => {
+            const r = el.getBoundingClientRect();
+            return r.top + r.height / 2;
+          }),
+        );
+        expect(centres.length).toBeGreaterThanOrEqual(4);
+        for (const c of centres) expect(Math.abs(c - (centres[0] ?? 0))).toBeLessThan(3);
+        await page.getByRole('tab', { name: names[0] ?? '', exact: true }).click();
+        await page.mouse.move(720, 600); // no hover highlight in the reviewed screenshot
+        await page.waitForTimeout(300); // let the tab's hover transition finish
+        await page.screenshot({ path: shot(`release-${app}-frame-${scheme}-desktop.png`) });
+        await expectNoSeriousA11yViolations(page);
+      });
+    }
+  }
+
+  for (const app of ['deck', 'notes'] as const) {
+    test(`${app} frame (light): no document, so tabs only over the notice`, async ({ page }) => {
+      await openRelease(page, app);
+      await expect(page.getByText(/cannot be created in this build yet/)).toBeVisible();
+      await expect(page.locator('.kiln-ribbon__groups')).toHaveCount(0);
+      await page.screenshot({ path: shot(`release-${app}-frame-light-desktop.png`) });
+      await expectNoSeriousA11yViolations(page);
+    });
+  }
+
+  test('Home (light, desktop and phone) renders with its base styles', async ({ page }) => {
+    await page.goto(`${base}/#/home`);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('What are we making today?');
+    await page.evaluate(() => document.fonts.ready);
+    await page.screenshot({ path: shot('release-home-light-desktop.png') });
+    await page.setViewportSize({ width: 390, height: 844 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
+    await page.screenshot({ path: shot('release-home-light-phone.png') });
+    await expectNoSeriousA11yViolations(page);
   });
 });

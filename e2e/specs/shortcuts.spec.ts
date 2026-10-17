@@ -77,7 +77,7 @@ function eventInit(key: string): { key: string; ctrlKey: boolean; shiftKey: bool
 
 async function openApp(page: Page, app: App) {
   await page.goto(`/#/${app}`);
-  await expect(page.getByTestId('document-title')).not.toHaveText('Opening…', { timeout: 20_000 });
+  await expect(page.getByTestId('document-title')).not.toHaveText('Opening…', { timeout: 30_000 });
   await expect.poll(() => page.evaluate(() => window.__kiln?.app)).toBe(app);
 }
 

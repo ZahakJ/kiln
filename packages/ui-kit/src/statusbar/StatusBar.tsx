@@ -7,6 +7,12 @@ import { NumberInput } from '../primitives/NumberInput.tsx';
 import { Popover, PopoverAnchor, PopoverContent } from '../primitives/Popover.tsx';
 import { ZoomSlider } from '../primitives/Slider.tsx';
 import { Tooltip } from '../primitives/Tooltip.tsx';
+// The primitives' base styles. Their barrel (primitives/index.ts) imports them too, but a bundler
+// skips a pure re-export barrel, and its CSS with it, in production builds. Importing them here,
+// at the barrel's place in the module order (ui-kit index: primitives, ribbon, then statusbar),
+// keeps the cascade of development and release builds identical: component rules first, then the
+// primitives, then the status bar. chrome.spec's release-build test fails if they go missing.
+import '../primitives/primitives.css';
 import './statusbar.css';
 
 export interface StatusBarItem {

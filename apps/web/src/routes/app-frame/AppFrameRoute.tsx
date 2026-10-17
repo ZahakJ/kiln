@@ -289,8 +289,11 @@ export function AppFrameRoute({ app, doc, prefs }: { app: EditorApp; doc: number
         setLayout(l);
         void storePref('ribbonLayout', l);
       }}
-      ribbonCollapsed={collapsed}
+      // Without a document there is nothing for the commands to act on: tabs only (File still
+      // opens Backstage for New and Open), never a full slab over the "not available" notice.
+      ribbonCollapsed={collapsed || problem !== null}
       onRibbonCollapsedChange={(c) => {
+        if (problem !== null) return;
         setCollapsed(c);
         void storePref('ribbonCollapsed', c);
       }}

@@ -8,11 +8,13 @@ import { expect, type Page, test } from '@playwright/test';
 import { expectNoSeriousA11yViolations } from '../../packages/testing/src/playwright/a11y.ts';
 
 const shot = (name: string) => fileURLToPath(new URL(`../screenshots/chrome/${name}`, import.meta.url));
+/** Starting the wasm core (first document) can take well over the 5 s expect default under CPU load. */
+const CORE_START = 30_000;
 
 async function openHome(page: Page) {
   await page.goto('/#/home');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('What are we making today?');
-  await expect(page.getByText('Your recent files will gather here')).toBeVisible();
+  await expect(page.getByText('Your recent files will gather here')).toBeVisible({ timeout: CORE_START });
   await page.evaluate(() => document.fonts.ready);
 }
 
@@ -47,7 +49,8 @@ test.describe('home', () => {
     await openHome(page);
     await page.getByRole('button', { name: /^New document in Kiln Write:/ }).click();
     await expect(page).toHaveURL(/#\/write$/);
-    await expect(page.getByTestId('document-title')).toContainText('Document');
+    // The wasm core starts on first use: allow for a loaded machine (as openFrame in chrome.spec).
+    await expect(page.getByTestId('document-title')).toContainText('Document', { timeout: CORE_START });
     await expect(page.locator('.kiln-appframe')).toHaveAttribute('data-app', 'write');
   });
 
@@ -57,7 +60,7 @@ test.describe('home', () => {
     await expect(page.getByRole('menuitem', { name: /Blank deck/ })).toBeDisabled();
     await page.getByRole('menuitem', { name: /Blank workbook/ }).click();
     await expect(page).toHaveURL(/#\/grid$/);
-    await expect(page.getByTestId('document-title')).toContainText('Book');
+    await expect(page.getByTestId('document-title')).toContainText('Book', { timeout: CORE_START });
   });
 
   test('Ctrl+K searches, the app filters narrow the lists, Settings opens Options', async ({ page }) => {

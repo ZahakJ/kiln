@@ -18,6 +18,27 @@ Development builds (the e2e target) show the P0 ribbon in full, including comman
 implement yet, so the layout can be compared with the mockups; running one shows a "not in this build
 yet" toast. Release builds hide those commands (PLAN.md §1.4: never greyed).
 
+**What release builds ship (fix round 1).** The rows below compare the development ribbon with the
+mockups; a production build (`vite build`, also the Pages site) is reviewed separately here, from
+`e2e/screenshots/chrome/release-*.png`, which chrome.spec's "chrome (release build)" tests take from a
+real `VITE_KILN_RELEASE=1` build. With 38 commands in the core's `catalog.json`, the release ribbon is
+small and honest: a group whose commands are all hidden disappears, a tab with no group left
+disappears, and a group thinned to one command shows it as a full-height button.
+
+| Release screenshot | Verdict | What it shows | Deviations (until the editors' commands land) |
+|---|---|---|---|
+| `release-write-frame-{light,dark}-desktop.png` | Whole, sparse | Title bar as in development; tabs Home (Editing ▸ Select ▾ with Select All), Insert (Illustrations ▸ Chart), View (Views, Zoom, Theme, Macros); status bar with words, view buttons and the zoom slider in one row | No Clipboard/Font/Paragraph/Styles, Layout, References or Review until WP-64 implements them; no Comments or Share (their commands do not exist yet, and §1.4 forbids greyed slots) |
+| `release-grid-frame-{light,dark}-desktop.png` | Whole, sparse | Insert (Charts ▸ Chart), View; status bar Ready, view buttons, zoom | Home tab hidden until WP-71's cell commands exist |
+| `release-{deck,notes}-frame-light-desktop.png` | Whole | No document can be created yet: tabs only (no slab over the notice), File opens Backstage for New and Open | Editors arrive with WP-78/WP-86 |
+| `release-home-light-{desktop,phone}.png` | Matches the development Home | Same layout; the base primitive styles are present | — |
+
+Fixed in this round: the primitives' stylesheet was missing from production bundles (the bundler
+skipped its re-export barrel, and the CSS with it), which unstyled every `.kiln-btn` and broke the zoom
+control; empty group slabs and empty tabs in release builds; Deck and Notes frames no longer draw a full
+ribbon over the "cannot be created" notice (development screenshots `deck-frame-*` and `notes-frame-*`
+now show the tab strip only); on the phone Home the floating New button no longer covers the Recent
+card (the page scrolls clear of it).
+
 | Mockup | Verdict | Matches | Deviations | Fixed during the review |
 |---|---|---|---|---|
 | `home-light.png` | Matches | Left rail (kiln lockup, ember **New** with Ctrl N, Home/Recent/Shared with me/Pinned/Open file with counts and shortcuts, *Apps* filters, local-first card with the fire gradient meter, Settings), the glow behind the greeting, "What are we making today?" in Fraunces 46/800, the four arch doors (exact outline from `home-light.html`, glazed solids, rim light, fire glow, the 92 px tiles, format chips, + buttons), the "Coming from Microsoft Office?" banner with the tilted format cards, the Recent/Pinned/Shared segmented control, Open file button | Recent table is empty on the web build (the core's recents arrive with WP-83) and shows a designed empty state instead of the mockup's rows; "Fresh from the kiln" templates, "All templates", the tour and "Import settings" appear when WP-85 provides them; no avatar until sign-in exists; the Deck and Notes doors show **Soon** instead of + because the core cannot create those documents yet; Notes' chip reads `.md` (`.one` import is out of scope, PLAN.md §2.5) | Search field, kbd and labels moved from the kit's `faint` to `muted` text (faint fails WCAG AA on panel, 4.0:1); New's kbd on a darker inset for contrast; door names exposed to screen readers without a label mismatch |

@@ -1,4 +1,3 @@
-import { isTierEnabled } from '@kiln/commands';
 import { ChevronDown } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 import {
@@ -23,6 +22,7 @@ import { SplitButton } from '../primitives/SplitButton.tsx';
 import { ariaKeyShortcuts } from '../primitives/shortcut.ts';
 import { Tooltip } from '../primitives/Tooltip.tsx';
 import type { RibbonItemSize, RibbonLayout, RibbonLeafItem } from './types.ts';
+import { isLeafVisible } from './visibility.ts';
 
 /** Icon sized for the ribbon with a constant ~1.5 px stroke whatever the source grid. */
 export function RibbonIcon({ name, size }: { name: string | undefined; size: number }) {
@@ -90,8 +90,7 @@ export function RibbonItemView({ item, size, layout, keyTip, keyTipLevel }: Ribb
   const tip = useTip(command, 'label' in item ? item.label : undefined);
   const execute = useExecute();
   if (item.kind === 'spacer') return <span className="kiln-ribbon__spacer" aria-hidden="true" />;
-  if ('tier' in item && item.tier && !isTierEnabled(item.tier, registry.tiers)) return null;
-  if (command && !tip.state.visible) return null;
+  if (!isLeafVisible(registry, item)) return null;
 
   const enabled = command ? tip.state.enabled : true;
   const iconName = ('icon' in item ? item.icon : undefined) ?? tip.meta?.icon;

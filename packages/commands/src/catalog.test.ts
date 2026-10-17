@@ -57,7 +57,15 @@ describe('command catalog', () => {
   });
 });
 
-describe('every id exists in catalog.json', () => {
+/*
+ * WP-58's acceptance names an "every id exists in catalog.json" test. The core's catalog.json
+ * (WP-52) lists only the commands the core implements (38 today), so that literal check cannot
+ * pass until the core grows; it is an open plan decision (docs/qa/handoffs.md, WP-58 fix round 1).
+ * What this suite enforces instead: every referenced id is declared; an id is either a core
+ * command from catalog.json, a `ui.*` chrome action, or a reservation for a command the core does
+ * not implement yet, and every reservation is hidden in release builds of every app.
+ */
+describe('every id is declared: catalog.json core commands, chrome actions, or release-hidden reservations', () => {
   it('reads the generated catalog of the core', () => {
     expect(CORE_CATALOG.length).toBeGreaterThanOrEqual(38);
     expect(isCoreCommand('suite.file.save')).toBe(true);
@@ -97,13 +105,17 @@ describe('every id exists in catalog.json', () => {
     );
   });
 
-  it('hides every reserved (planned) command in release builds, and keeps core and chrome ids', () => {
-    const registry = createCommandRegistry({ app: 'write', tiers: RELEASE_TIERS });
-    const planned = COMMAND_CATALOG.filter(
-      (c) => idKind(c.id) === 'planned' && (c.apps ?? ['write']).includes('write'),
-    );
-    expect(planned.length).toBeGreaterThan(100);
-    for (const c of planned) expect(registry.getState(c.id).visible, c.id).toBe(false);
+  it('hides every reserved (planned) command in release builds of every app', () => {
+    const apps: AppId[] = ['write', 'grid', 'deck', 'notes'];
+    let checked = 0;
+    for (const app of apps) {
+      const registry = createCommandRegistry({ app, tiers: RELEASE_TIERS });
+      for (const c of COMMAND_CATALOG.filter((d) => idKind(d.id) === 'planned')) {
+        expect(registry.getState(c.id).visible, `${app}: ${c.id}`).toBe(false);
+        checked++;
+      }
+    }
+    expect(checked).toBeGreaterThan(400);
   });
 
   it('takes apps and tier of core commands from catalog.json', () => {

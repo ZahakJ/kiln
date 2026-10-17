@@ -11,7 +11,7 @@ const shot = (name: string) => fileURLToPath(new URL(`../screenshots/chrome/${na
 
 async function openWrite(page: Page) {
   await page.goto('/#/write');
-  await expect(page.getByTestId('document-title')).toContainText('Document', { timeout: 20_000 });
+  await expect(page.getByTestId('document-title')).toContainText('Document', { timeout: 30_000 });
 }
 
 test.describe('backstage', () => {

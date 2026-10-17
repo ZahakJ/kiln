@@ -803,3 +803,17 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   ribbon sheet of §1.8 are yours. Home's phone layout follows `phone-*.png` (FAB New, bottom tab bar).
 - Kit gap: `--kiln-faint` text on `--kiln-panel` is 4.0:1, under WCAG AA; WP-58 uses `--kiln-muted` for every text
   the mockups draw in faint (group labels, table headers, hints). Worth a line in `docs/design/kit-gaps.md` (WP-51).
+- WP-58 fix round 1 — **plan decision needed (orchestrator):** WP-58's first acceptance criterion asks for an
+  "every id exists in catalog.json" test, but `catalog.json` is the core's generated list of implemented commands
+  (WP-52 seeded 38), while the ribbons, keymaps, Key Tips and synonyms reference ~900 ids, most of them reservations
+  for commands later WPs implement. The criterion cannot hold literally until the core implements every command.
+  Suggested amendment: "every referenced id is declared; core ids come from catalog.json, `ui.*` ids are chrome
+  actions, every other id is a reservation hidden in release builds" — which is what
+  `packages/commands/src/catalog.test.ts` enforces (suite renamed to say so). Until decided, the criterion is unmet.
+- WP-58 fix round 1: `packages/ui-kit/src/primitives/index.ts` (WP-51) imports `primitives.css`, but production
+  bundlers skip a pure re-export barrel and its CSS. `statusbar/StatusBar.tsx` now imports the stylesheet at the
+  barrel's place in the module order (same cascade in dev and release); WP-51 may prefer importing it from the
+  primitive components themselves. chrome.spec's release-build tests fail if it goes missing again.
+- WP-58: `apps/web/src/App.test.tsx`, `e2e/specs/smoke.spec.ts` and `packages/ui-kit/stories/Chrome.tsx` were edited
+  outside WP-58's owned paths in 775ea9a (App.test.tsx follows the new routes; smoke.spec and the story follow the
+  new frame); their owners may want to review them.

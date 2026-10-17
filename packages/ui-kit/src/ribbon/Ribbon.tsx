@@ -1,4 +1,4 @@
-import { assignKeyTips, isTierEnabled, normalizeKeyTip, TAB_KEYTIPS } from '@kiln/commands';
+import { assignKeyTips, normalizeKeyTip, TAB_KEYTIPS } from '@kiln/commands';
 import { Check, ChevronDown, ChevronUp, Ellipsis } from 'lucide-react';
 import {
   Fragment,
@@ -30,6 +30,7 @@ import type {
   RibbonSpec,
   RibbonTab,
 } from './types.ts';
+import { visibleTab } from './visibility.ts';
 import './ribbon.css';
 
 /** Width at which the automatic layout switches from Simplified to Classic (PLAN.md §1.2). */
@@ -109,9 +110,11 @@ export function Ribbon({
 
   const tabs = useMemo(
     () =>
-      spec.tabs.filter(
-        (t) => isTierEnabled(t.tier, registry.tiers) && (!t.when || safeWhen(t.when, registry.context)),
-      ),
+      spec.tabs
+        .filter((t) => !t.when || safeWhen(t.when, registry.context))
+        // Hidden commands take their rows, groups and tabs with them (no empty slabs in release).
+        .map((t) => visibleTab(registry, t))
+        .filter((t): t is RibbonTab => t !== null),
     [spec, registry, version],
   );
   const [activeState, setActiveState] = useState(defaultTab ?? tabs[0]?.id ?? '');
@@ -447,9 +450,9 @@ interface PanelProps {
 }
 
 function RibbonTabPanel({ tab, layout }: PanelProps) {
-  const { registry } = useCommands();
   const tips = useItemKeyTips(tab);
-  const groups = tab.groups.filter((g) => isTierEnabled(g.tier, registry.tiers));
+  // `tab` comes from `visibleTab`: only groups with something to show.
+  const groups = tab.groups as RibbonGroup[];
   const level = `tab:${tab.id}`;
   return layout === 'classic' ? (
     <ClassicGroups tab={tab} groups={groups} tips={tips} level={level} />
