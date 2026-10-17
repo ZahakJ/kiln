@@ -16,6 +16,7 @@ import type {
   Selection,
   StatusBar,
 } from '@kiln/protocol';
+import { WRITE_CORE_STATE } from '../catalog/write.ts';
 import type { CommandRegistry } from '../registry.ts';
 import type { CommandContext, CommandDefinition, Disposable } from '../types.ts';
 import { buildCommand } from './build.ts';
@@ -75,6 +76,22 @@ const CORE_VALUES: Readonly<Record<string, (ctx: CommandContext) => unknown>> = 
   'suite.view.mode': (ctx) => coreStateOf(ctx).status?.view,
   'suite.view.zoom': (ctx) => coreStateOf(ctx).status?.zoom,
 };
+
+/**
+ * Pressed states and values an app's editor reports through the registry context (WP-64: Write's
+ * selection formatting). Each entry reads one field the core sent; nothing is computed here.
+ */
+const APP_STATE: Readonly<
+  Partial<
+    Record<
+      string,
+      {
+        checked: Readonly<Record<string, (ctx: CommandContext) => boolean | undefined>>;
+        values: Readonly<Record<string, (ctx: CommandContext) => unknown>>;
+      }
+    >
+  >
+> = { write: WRITE_CORE_STATE, notes: WRITE_CORE_STATE };
 
 /** One command sent to the core, for the session's command log. */
 export interface CommandLogEntry {
@@ -170,6 +187,7 @@ export function connectCore(registry: CommandRegistry, options: ConnectCoreOptio
     for (const l of [...listeners]) l(state);
   };
 
+  const appState = app ? APP_STATE[app] : undefined;
   const definitions: CommandDefinition<unknown>[] = CORE_CATALOG.filter(
     (info) => !app || coreApps(info).includes(app),
   ).map((info) => ({
@@ -178,6 +196,10 @@ export function connectCore(registry: CommandRegistry, options: ConnectCoreOptio
     title: info.id,
     isEnabled: (ctx: CommandContext) => isAvailable(info.availability, coreStateOf(ctx)),
     ...(CORE_VALUES[info.id] ? { value: CORE_VALUES[info.id] } : {}),
+    ...(appState?.values[info.id] ? { value: appState.values[info.id] } : {}),
+    ...(appState?.checked[info.id]
+      ? { isChecked: (ctx: CommandContext) => appState.checked[info.id]?.(ctx) === true }
+      : {}),
     run: async (ctx: CommandContext, args: unknown) => {
       const command = buildCommand(info.id, args, { app: ctx.app });
       // Session-level commands (New, Open, Ping) need no document; the others address the window's.

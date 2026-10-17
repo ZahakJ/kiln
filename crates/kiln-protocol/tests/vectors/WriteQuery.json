@@ -1,0 +1,35 @@
+{
+  "type": "WriteQuery",
+  "format": {
+    "TYPENAME": "WriteQuery"
+  },
+  "values": [
+    "Format",
+    "Rulers",
+    "Styles",
+    "Headings",
+    "Pages",
+    {
+      "FindAll": {
+        "query": {
+          "text": "<(K)iln>",
+          "match_case": true,
+          "whole_word": false,
+          "wildcards": true,
+          "regex": false
+        }
+      }
+    },
+    {
+      "WordCount": {
+        "include_notes": true
+      }
+    },
+    "Properties",
+    "Clipboard",
+    "PageSetup",
+    "Bookmarks",
+    "CommandLog",
+    "Format"
+  ]
+}

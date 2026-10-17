@@ -21,7 +21,7 @@ use kiln_doc::st::{NoteKind, NumberFormat};
 use kiln_doc::{Document, InlineObject, Mark};
 use kiln_scene::Bounds;
 use kiln_text::{FontStore, TextEngine};
-use rustc_hash::FxHashMap;
+use rustc_hash::{FxHashMap, FxHashSet};
 
 use crate::cx::{BoxContent, Caches, Cx, Options};
 use crate::flow::{Flow, FlowState, View, flat_blocks};
@@ -89,6 +89,16 @@ pub struct DocLayout {
     stale: Vec<Page>,
     stale_from: usize,
     until: Option<usize>,
+    /// The list labels and note numbers still match the document: no change since they were
+    /// computed could have affected them.
+    numbers_fresh: bool,
+    /// Body paragraphs that held note references when the note numbers were computed.
+    note_paras: FxHashSet<NodeId>,
+    /// Pages the last update laid out again (first, last); the others are unchanged and keep
+    /// their index entries.
+    reflowed: Option<(usize, usize)>,
+    /// Pages per section when the index was last built in full.
+    indexed_sections: Vec<(usize, usize)>,
 }
 
 impl std::fmt::Debug for DocLayout {
@@ -144,6 +154,14 @@ pub fn note_numbers(doc: &Document) -> FxHashMap<NodeId, String> {
     out
 }
 
+/// Whether a paragraph holds a footnote or endnote reference.
+fn has_note_refs(p: &kiln_doc::Paragraph) -> bool {
+    p.content
+        .objects()
+        .iter()
+        .any(|o| matches!(o, InlineObject::NoteRef(_)))
+}
+
 /// The default font store: the bundled OFL fonts (identical layout on every platform).
 #[must_use]
 pub fn default_fonts() -> FontStore {
@@ -158,6 +176,16 @@ pub fn default_fonts() -> FontStore {
             system: false,
         })
     }
+}
+
+/// The previous layout from a restart point on, while the flow re-lays it out.
+struct OldLayout {
+    snaps: Vec<crate::flow::Snap>,
+    /// Index of `snaps[0]` in the whole list.
+    snap_base: usize,
+    pages: Vec<Page>,
+    /// Index of `pages[0]` in the whole list.
+    page_base: usize,
 }
 
 impl DocLayout {
@@ -180,6 +208,10 @@ impl DocLayout {
             stale: Vec::new(),
             stale_from: 0,
             until: None,
+            numbers_fresh: false,
+            note_paras: FxHashSet::default(),
+            reflowed: None,
+            indexed_sections: Vec::new(),
         }
     }
 
@@ -223,6 +255,7 @@ impl DocLayout {
     }
 
     fn reset(&mut self) {
+        self.numbers_fresh = false;
         self.stale.clear();
         let view = self.state.view();
         self.state = FlowState::new(view);
@@ -303,9 +336,41 @@ impl DocLayout {
             self.layout(doc);
             return;
         }
+        let blocks = flat_blocks(doc);
+        // Blocks whose snapshot no longer matches (deleted or inserted blocks).
+        let mismatch = self
+            .state
+            .snaps
+            .iter()
+            .zip(&blocks)
+            .position(|(s, b)| s.block != b.block.id())
+            .unwrap_or(self.state.snaps.len().min(blocks.len()));
+        // Labels and note numbers change with the blocks' order and with numbered paragraphs or
+        // note references; typing in an ordinary paragraph changes neither. When they may have
+        // changed, every paragraph whose label or note number changed is laid out again too
+        // (a paragraph joining a list renumbers the items after it).
+        let structure_changed = mismatch < self.state.snaps.len().min(blocks.len())
+            || blocks.len() != self.state.snaps.len();
+        let mut ids: Vec<NodeId> = ids.clone();
+        if structure_changed || self.numbers_affected(doc, &ids) {
+            let old_labels = std::mem::take(&mut self.labels);
+            let old_notes = std::mem::take(&mut self.note_numbers);
+            let old_note_paras = std::mem::take(&mut self.note_paras);
+            self.numbers_fresh = false;
+            self.prepare_numbers(doc);
+            for (id, label) in &self.labels {
+                if old_labels.get(id) != Some(label) {
+                    ids.push(*id);
+                }
+            }
+            ids.extend(old_labels.keys().filter(|id| !self.labels.contains_key(id)));
+            if old_notes != self.note_numbers {
+                ids.extend(self.note_paras.iter().chain(&old_note_paras));
+            }
+        }
+        let ids = &ids;
         self.caches.invalidate(ids);
         // Ancestors (cells, rows, tables) of changed nodes are stale too.
-        let blocks = flat_blocks(doc);
         let mut tops: Vec<NodeId> = Vec::new();
         for id in ids {
             let mut cur = *id;
@@ -335,14 +400,6 @@ impl DocLayout {
                 last = last.max(i);
             }
         }
-        // Blocks whose snapshot no longer matches (deleted or inserted blocks).
-        let mismatch = self
-            .state
-            .snaps
-            .iter()
-            .zip(&blocks)
-            .position(|(s, b)| s.block != b.block.id())
-            .unwrap_or(self.state.snaps.len().min(blocks.len()));
         if mismatch < first {
             first = mismatch;
         }
@@ -377,23 +434,53 @@ impl DocLayout {
     }
 
     fn restart_at(&mut self, doc: &Document, start: usize, dirty_until: usize) {
-        let old_snaps = self.state.snaps.clone();
-        let old_pages = self.state.pages.clone();
-        let old_next = self.state.next;
-        if let Some(s) = self.state.snaps.get(start).cloned() {
+        // The previous layout from the restart point on is moved out, not copied: the flow
+        // compares against it and splices it back where it converges (a keystroke in a long
+        // document must not copy every page and snapshot, B5).
+        let (old, page_base) = if let Some(s) = self.state.snaps.get(start).cloned() {
+            let snaps = self.state.snaps.split_off(start);
+            let page_base = s.pages.saturating_sub(1);
+            let pages = self
+                .state
+                .pages
+                .split_off(page_base.min(self.state.pages.len()));
+            // The page the restart point is on stays (restore trims it to the snapshot).
+            if let Some(open) = pages.first() {
+                self.state.pages.push(open.clone());
+            }
             self.state.restore(&s, doc);
-            self.state.snaps.truncate(start);
             self.state.next = start;
+            (
+                OldLayout {
+                    snaps,
+                    snap_base: start,
+                    pages,
+                    page_base,
+                },
+                page_base,
+            )
         } else {
+            let snaps = std::mem::take(&mut self.state.snaps);
+            let pages = std::mem::take(&mut self.state.pages);
             self.reset();
-        }
-        let _ = old_next;
+            (
+                OldLayout {
+                    snaps,
+                    snap_base: 0,
+                    pages,
+                    page_base: 0,
+                },
+                0,
+            )
+        };
+        let _ = page_base;
         self.finished = false;
-        self.flow_converging(doc, &old_snaps, &old_pages, dirty_until);
+        let old = self.flow_converging(doc, old, dirty_until);
         if !self.state.done {
             let live = self.state.pages.len();
-            self.stale = old_pages
-                .get(live..)
+            self.stale = live
+                .checked_sub(old.page_base)
+                .and_then(|i| old.pages.get(i..))
                 .map(<[Page]>::to_vec)
                 .unwrap_or_default();
             self.stale_from = live;
@@ -402,15 +489,41 @@ impl DocLayout {
     }
 
     fn prepare_numbers(&mut self, doc: &Document) {
+        if self.numbers_fresh {
+            return;
+        }
         self.labels = doc.list_labels();
         self.note_numbers = note_numbers(doc);
+        self.note_paras = doc
+            .body_paragraphs()
+            .into_iter()
+            .filter(|p| has_note_refs(p))
+            .map(|p| p.id)
+            .collect();
+        self.numbers_fresh = true;
+    }
+
+    /// Whether a change to `ids` (no block added, removed or moved) can change list labels or
+    /// note numbers: only through a paragraph that is or was numbered, or that holds or held a
+    /// note reference. Anything that is not a body paragraph counts as a change.
+    fn numbers_affected(&self, doc: &Document, ids: &[NodeId]) -> bool {
+        let ctx = doc.context();
+        ids.iter().any(|id| {
+            let Some(p) = doc.paragraph(*id) else {
+                return true;
+            };
+            self.labels.contains_key(id)
+                || self.note_paras.contains(id)
+                || has_note_refs(p)
+                || kiln_doc::resolve::effective_numbering(&ctx, &p.props).is_some()
+        })
     }
 
     fn flow(
         &mut self,
         doc: &Document,
         until: Option<usize>,
-        old: Option<&[crate::flow::Snap]>,
+        old: Option<(&[crate::flow::Snap], usize)>,
         dirty: usize,
     ) -> bool {
         self.prepare_numbers(doc);
@@ -438,13 +551,15 @@ impl DocLayout {
         self.state.done
     }
 
+    /// Flows from the restored state until it meets the previous layout again, then splices the
+    /// previous layout back from there. Returns what is left of the previous layout (the pages
+    /// after the point an incomplete flow reached, shown as stale until it catches up).
     fn flow_converging(
         &mut self,
         doc: &Document,
-        old_snaps: &[crate::flow::Snap],
-        old_pages: &[Page],
+        mut old: OldLayout,
         dirty_until: usize,
-    ) {
+    ) -> OldLayout {
         self.prepare_numbers(doc);
         let blocks = flat_blocks(doc);
         let before = self.state.next;
@@ -460,18 +575,29 @@ impl DocLayout {
                 cx: &mut cx,
                 st: &mut self.state,
             };
-            flow.run(&blocks, self.until, Some(old_snaps), dirty_until)
+            flow.run(
+                &blocks,
+                self.until,
+                Some((&old.snaps, old.snap_base)),
+                dirty_until,
+            )
         };
         self.stats.blocks_placed = self.state.next.saturating_sub(before);
         self.stats.converged = met.is_some();
-        if let Some(k) = met {
+        if let Some(k) = met
+            && let Some(s) = k
+                .checked_sub(old.snap_base)
+                .and_then(|i| old.snaps.get(i))
+                .cloned()
+        {
             // Splice the previous layout from block k on: same page, same place.
-            let s = &old_snaps[k];
             let cur_page = self.state.pages.len();
             debug_assert_eq!(cur_page, s.pages);
+            let last = s.pages.saturating_sub(1);
             if let (Some(new_last), Some(old_same)) = (
                 self.state.pages.last_mut(),
-                old_pages.get(s.pages.saturating_sub(1)),
+                last.checked_sub(old.page_base)
+                    .and_then(|i| old.pages.get(i)),
             ) {
                 // The current page: keep what the new flow placed, then the old page's items
                 // from the snapshot on.
@@ -490,18 +616,22 @@ impl DocLayout {
                 new_last.notes.clone_from(&old_same.notes);
                 new_last.column_rules.clone_from(&old_same.column_rules);
             }
-            self.state
-                .pages
-                .extend(old_pages.iter().skip(s.pages).cloned());
-            self.state.snaps.extend(old_snaps.iter().skip(k).cloned());
+            let from = s.pages.saturating_sub(old.page_base).min(old.pages.len());
+            self.state.pages.extend(old.pages.drain(from..));
+            let from = k.saturating_sub(old.snap_base).min(old.snaps.len());
+            self.state.snaps.extend(old.snaps.drain(from..));
             self.state.next = blocks.len();
             self.state.done = true;
+            // Only the pages from the restart point to here were laid out again.
+            self.reflowed = Some((old.page_base, last));
         }
         self.stats.cached_paragraphs = self.caches.cached_paragraphs();
         self.finished = false;
         if self.state.done {
             self.finish(doc);
         }
+        self.reflowed = None;
+        old
     }
 
     /// Statistics of the last layout call.
@@ -867,49 +997,150 @@ impl DocLayout {
         Some((page, g.rect.x - o.0, g.rect.y - o.1))
     }
 
+    /// The lines of a page (all stories) in page coordinates, in index order: header, behind,
+    /// body, front, notes, footer.
+    fn page_line_items(p: &Page) -> Vec<LineItem> {
+        let mut lines = Vec::new();
+        let mut push = |it: &Item, dy: f32| {
+            if let Item::Line(l) = it {
+                let mut l = l.clone();
+                l.y += dy;
+                lines.push(l);
+            }
+        };
+        for it in p.header.iter().chain(&p.behind) {
+            push(it, 0.0);
+        }
+        for it in &p.items {
+            push(it, p.body_dy);
+        }
+        for it in p.front.iter().chain(&p.notes).chain(&p.footer) {
+            push(it, 0.0);
+        }
+        lines
+    }
+
+    /// Body paragraphs of some pages' lines, in order of first appearance.
+    fn body_paragraph_sequence(pages: &[Vec<LineItem>]) -> Vec<NodeId> {
+        let mut seen = FxHashSet::default();
+        let mut out = Vec::new();
+        for l in pages.iter().flatten() {
+            if l.story == StoryKind::Body && seen.insert(l.para.id()) {
+                out.push(l.para.id());
+            }
+        }
+        out
+    }
+
     fn index_pages(&mut self) {
+        if let Some((a, b)) = self.reflowed
+            && self.index_pages_range(a, b)
+        {
+            return;
+        }
         self.page_lines.clear();
         self.para_lines.clear();
         self.order.clear();
         self.para_rank.clear();
         for (pi, p) in self.state.pages.iter().enumerate() {
-            let mut lines = Vec::new();
-            let body: Vec<(&Item, f32)> = p.items.iter().map(|i| (i, p.body_dy)).collect();
-            for (it, dy) in p
-                .header
-                .iter()
-                .chain(&p.behind)
-                .map(|i| (i, 0.0))
-                .chain(body)
-                .chain(
-                    p.front
-                        .iter()
-                        .chain(&p.notes)
-                        .chain(&p.footer)
-                        .map(|i| (i, 0.0)),
-                )
-            {
-                if let Item::Line(l) = it {
-                    let mut l = l.clone();
-                    l.y += dy;
-                    let r = LineRef {
-                        page: u32::try_from(pi).unwrap_or(u32::MAX),
-                        index: u32::try_from(lines.len()).unwrap_or(u32::MAX),
-                    };
-                    let id = l.para.id();
-                    self.para_lines.entry(id).or_default().push(r);
-                    if l.story == StoryKind::Body {
-                        self.order.push(r);
-                        let n = self.para_rank.len();
-                        self.para_rank.entry(id).or_insert(n);
-                    }
-                    lines.push(l);
+            let lines = Self::page_line_items(p);
+            for (li, l) in lines.iter().enumerate() {
+                let r = LineRef {
+                    page: u32::try_from(pi).unwrap_or(u32::MAX),
+                    index: u32::try_from(li).unwrap_or(u32::MAX),
+                };
+                let id = l.para.id();
+                self.para_lines.entry(id).or_default().push(r);
+                if l.story == StoryKind::Body {
+                    self.order.push(r);
+                    let n = self.para_rank.len();
+                    self.para_rank.entry(id).or_insert(n);
                 }
             }
             self.page_lines.push(lines);
         }
-        // Body lines in reading order: pages in order, items in placement order, which the
-        // walk above follows except that headers come first; sort by (page, placement).
+        self.indexed_sections = self.section_page_counts();
+    }
+
+    /// Pages per section, to tell whether headers outside a re-flowed range can have changed.
+    fn section_page_counts(&self) -> Vec<(usize, usize)> {
+        let mut out: Vec<(usize, usize)> = Vec::new();
+        for p in &self.state.pages {
+            match out.last_mut() {
+                Some((s, n)) if *s == p.section => *n += 1,
+                _ => out.push((p.section, 1)),
+            }
+        }
+        out
+    }
+
+    /// Re-indexes only pages `a..=b` after an update that re-flowed just those (same page count,
+    /// same pages per section, so the other pages and their headers are unchanged). Returns
+    /// false when the full index is needed: the range is not valid for the current layout, or
+    /// the re-flow changed which paragraphs come in what order (their reading ranks).
+    fn index_pages_range(&mut self, a: usize, b: usize) -> bool {
+        let pages = self.state.pages.len();
+        if a > b || b >= pages || self.page_lines.len() != pages || !self.stale.is_empty() {
+            return false;
+        }
+        if self.section_page_counts() != self.indexed_sections {
+            return false;
+        }
+        let new: Vec<Vec<LineItem>> = self.state.pages[a..=b]
+            .iter()
+            .map(Self::page_line_items)
+            .collect();
+        if Self::body_paragraph_sequence(&new)
+            != Self::body_paragraph_sequence(&self.page_lines[a..=b])
+        {
+            return false;
+        }
+        let in_range = |r: &LineRef| (a..=b).contains(&(r.page as usize));
+        // Paragraph lines: drop the range's old references, add the new ones.
+        let mut ids: FxHashSet<NodeId> = FxHashSet::default();
+        for l in self.page_lines[a..=b]
+            .iter()
+            .flatten()
+            .chain(new.iter().flatten())
+        {
+            ids.insert(l.para.id());
+        }
+        for id in &ids {
+            if let Some(v) = self.para_lines.get_mut(id) {
+                v.retain(|r| !in_range(r));
+            }
+        }
+        let mut body: Vec<LineRef> = Vec::new();
+        for (off, lines) in new.iter().enumerate() {
+            let pi = a + off;
+            for (li, l) in lines.iter().enumerate() {
+                let r = LineRef {
+                    page: u32::try_from(pi).unwrap_or(u32::MAX),
+                    index: u32::try_from(li).unwrap_or(u32::MAX),
+                };
+                self.para_lines.entry(l.para.id()).or_default().push(r);
+                if l.story == StoryKind::Body {
+                    body.push(r);
+                }
+            }
+        }
+        for id in &ids {
+            if let Some(v) = self.para_lines.get_mut(id) {
+                if v.is_empty() {
+                    self.para_lines.remove(id);
+                } else {
+                    v.sort_unstable_by_key(|r| (r.page, r.index));
+                }
+            }
+        }
+        // Reading order: the range's body lines replace the old ones (the order is by page).
+        let lo = self.order.partition_point(|r| (r.page as usize) < a);
+        let hi = self.order.partition_point(|r| (r.page as usize) <= b);
+        self.order.splice(lo..hi, body);
+        for (off, lines) in new.into_iter().enumerate() {
+            self.page_lines[a + off] = lines;
+        }
+        true
     }
 
     /// Page origins are in document coordinates: a page-local point to document coordinates.

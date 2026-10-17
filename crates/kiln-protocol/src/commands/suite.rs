@@ -5,6 +5,7 @@
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
+use super::edit::EditCommand;
 use crate::app::{AppMask, DocKind, FileFormat};
 use crate::print::PrintSettings;
 use crate::viewport::ViewMode;
@@ -165,6 +166,10 @@ pub enum SuiteCommand {
         /// What to print.
         settings: PrintSettings,
     },
+    // ── WP-64: editing commands the document editors share (clipboard, formatting, lists, page
+    // setup, tables); the session hands them to the document model.
+    /// An editing command applied by the document's model to its selection.
+    Edit(EditCommand),
 }
 
 crate::command_table! {
@@ -281,6 +286,247 @@ crate::command_table! {
         id: "suite.file.save_pdf", keytip: None, group: "file",
         tier: P0, apps: AppMask::WRITE, availability: Document,
     };
+    // WP-64: shared editing commands, implemented by Kiln Write (and Notes, which reuses it).
+    Self::Edit(EditCommand::Cut) => {
+        id: "suite.edit.cut", keytip: Some("X"), group: "edit",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Selection,
+    };
+    Self::Edit(EditCommand::Copy) => {
+        id: "suite.edit.copy", keytip: Some("C"), group: "edit",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Selection,
+    };
+    Self::Edit(EditCommand::Paste { .. }) => {
+        id: "suite.edit.paste", keytip: Some("V"), group: "edit",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::PasteKeepSource { .. }) => {
+        id: "suite.edit.paste_keep_source", keytip: Some("K"), group: "edit",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::PasteMerge { .. }) => {
+        id: "suite.edit.paste_merge_formatting", keytip: Some("M"), group: "edit",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::PasteTextOnly { .. }) => {
+        id: "suite.edit.paste_text_only", keytip: Some("T"), group: "edit",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::PasteAs { .. }) => {
+        id: "suite.edit.paste_as", keytip: None, group: "edit",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Repeat) => {
+        id: "suite.edit.repeat", keytip: None, group: "edit",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Bold) => {
+        id: "suite.format.bold", keytip: Some("1"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Italic) => {
+        id: "suite.format.italic", keytip: Some("2"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Underline) => {
+        id: "suite.format.underline", keytip: Some("3"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::DoubleUnderline) => {
+        id: "suite.format.double_underline", keytip: None, group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Strikethrough) => {
+        id: "suite.format.strikethrough", keytip: Some("4"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Subscript) => {
+        id: "suite.format.subscript", keytip: Some("5"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Superscript) => {
+        id: "suite.format.superscript", keytip: Some("6"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::AllCaps) => {
+        id: "suite.format.all_caps", keytip: None, group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::FontFamily { .. }) => {
+        id: "suite.format.font_family", keytip: Some("FF"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::FontSize { .. }) => {
+        id: "suite.format.font_size", keytip: Some("FS"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::GrowFont { .. }) => {
+        id: "suite.format.grow_font", keytip: Some("FG"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::ShrinkFont { .. }) => {
+        id: "suite.format.shrink_font", keytip: Some("FK"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::ChangeCase { .. }) => {
+        id: "suite.format.change_case", keytip: Some("7"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::ClearFormatting) => {
+        id: "suite.format.clear_formatting", keytip: Some("E"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::FontColor { .. }) => {
+        id: "suite.format.font_color", keytip: Some("FC"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Highlight { .. }) => {
+        id: "suite.format.highlight", keytip: Some("I"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Bullets { .. }) => {
+        id: "suite.format.bullets", keytip: Some("U"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Numbering { .. }) => {
+        id: "suite.format.numbering", keytip: Some("N"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::MultilevelList { .. }) => {
+        id: "suite.format.multilevel_list", keytip: Some("M"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Indent) => {
+        id: "suite.format.indent", keytip: Some("AI"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Outdent) => {
+        id: "suite.format.outdent", keytip: Some("AO"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::AlignLeft) => {
+        id: "suite.format.align_left", keytip: Some("AL"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::AlignCenter) => {
+        id: "suite.format.align_center", keytip: Some("AC"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::AlignRight) => {
+        id: "suite.format.align_right", keytip: Some("AR"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Justify) => {
+        id: "suite.format.justify", keytip: Some("AJ"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::LineSpacing { .. }) => {
+        id: "suite.format.line_spacing", keytip: Some("K"), group: "format",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::InsertDate) => {
+        id: "suite.insert.date", keytip: None, group: "insert",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::InsertTime) => {
+        id: "suite.insert.time", keytip: None, group: "insert",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::InsertPictures) => {
+        id: "suite.insert.pictures", keytip: Some("P"), group: "insert",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Margins { .. }) => {
+        id: "suite.layout.margins", keytip: Some("M"), group: "layout",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::Orientation { .. }) => {
+        id: "suite.layout.orientation", keytip: Some("O"), group: "layout",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::PageSize { .. }) => {
+        id: "suite.layout.size", keytip: Some("SZ"), group: "layout",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableInsertRowAbove) => {
+        id: "suite.table.insert_row_above", keytip: Some("A"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableInsertRowBelow) => {
+        id: "suite.table.insert_row_below", keytip: Some("BE"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableInsertColumnLeft) => {
+        id: "suite.table.insert_column_left", keytip: Some("L"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableInsertColumnRight) => {
+        id: "suite.table.insert_column_right", keytip: Some("R"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableDelete { .. }) => {
+        id: "suite.table.delete", keytip: Some("D"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableMergeCells) => {
+        id: "suite.table.merge_cells", keytip: Some("M"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableSplitCells { .. }) => {
+        id: "suite.table.split_cells", keytip: Some("P"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableDistributeRows) => {
+        id: "suite.table.distribute_rows", keytip: Some("DR"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableDistributeColumns) => {
+        id: "suite.table.distribute_columns", keytip: Some("DC"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableCellAlignment { .. }) => {
+        id: "suite.table.cell_alignment", keytip: None, group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableRepeatHeaderRows) => {
+        id: "suite.table.repeat_header_rows", keytip: Some("RH"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableConvertToText { .. }) => {
+        id: "suite.table.convert_to_text", keytip: Some("V"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableHeaderRow) => {
+        id: "suite.table.header_row", keytip: Some("HR"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableTotalRow) => {
+        id: "suite.table.total_row", keytip: Some("TR"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableBandedRows) => {
+        id: "suite.table.banded_rows", keytip: Some("BR"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableFirstColumn) => {
+        id: "suite.table.first_column", keytip: Some("FC"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableBandedColumns) => {
+        id: "suite.table.banded_columns", keytip: Some("BC"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableStyle { .. }) => {
+        id: "suite.table.styles", keytip: None, group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableShading { .. }) => {
+        id: "suite.table.shading", keytip: Some("H"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
+    Self::Edit(EditCommand::TableBorders { .. }) => {
+        id: "suite.table.borders", keytip: Some("B"), group: "table",
+        tier: P0, apps: TEXT_EDIT_APPS, availability: Editable,
+    };
 }
 
 impl SuiteCommand {
@@ -292,6 +538,10 @@ impl SuiteCommand {
 
 /// The apps that host charts.
 const CHART_APPS: AppMask = AppMask::GRID.union(AppMask::WRITE).union(AppMask::DECK);
+
+/// Apps that implement the shared editing commands of [`EditCommand`] (WP-64). Grid and Deck add
+/// themselves when their editors implement them.
+const TEXT_EDIT_APPS: AppMask = AppMask::WRITE.union(AppMask::NOTES);
 
 /// The chart types of the Insert ▸ Charts galleries and Change Chart Type.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, TS)]

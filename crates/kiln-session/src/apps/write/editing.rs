@@ -40,7 +40,7 @@ fn word_starts(text: &str) -> Vec<usize> {
 }
 
 /// The word around a char offset as a char range.
-fn word_at(text: &str, offset: usize) -> (usize, usize) {
+pub(super) fn word_at(text: &str, offset: usize) -> (usize, usize) {
     let mut chars = 0;
     let mut last = (0, 0);
     for w in text.split_word_bounds() {
@@ -64,7 +64,7 @@ impl WriteDoc {
             .unwrap_or_default()
     }
 
-    fn para_len(&self, id: NodeId) -> usize {
+    pub(super) fn para_len(&self, id: NodeId) -> usize {
         self.doc.paragraph(id).map_or(0, |p| p.content.len())
     }
 
@@ -88,7 +88,7 @@ impl WriteDoc {
         }
     }
 
-    fn doc_start(&self) -> Pos {
+    pub(super) fn doc_start(&self) -> Pos {
         let first = self
             .doc
             .body_paragraphs()
@@ -97,7 +97,7 @@ impl WriteDoc {
         Pos::new(first, 0)
     }
 
-    fn doc_end(&self) -> Pos {
+    pub(super) fn doc_end(&self) -> Pos {
         let last = self
             .doc
             .body_paragraphs()
@@ -149,7 +149,7 @@ impl WriteDoc {
     }
 
     /// Sets the selection; `keep_goal` keeps the remembered column of Up/Down.
-    fn select(&mut self, anchor: Pos, head: Pos, keep_goal: bool) {
+    pub(super) fn select(&mut self, anchor: Pos, head: Pos, keep_goal: bool) {
         self.anchor = anchor;
         self.head = head;
         if !keep_goal {
@@ -169,9 +169,7 @@ impl WriteDoc {
             .apply(&mut self.doc, tx.clone())
             .map_err(|e| KilnError::InvalidInput(e.to_string()))?;
         self.touched.record(&self.doc, &tx);
-        if let Some(v) = &mut self.view {
-            v.note(&tx);
-        }
+        self.note_edit(&tx);
         self.bump_state(self.history.undo_len() > before_len);
         if let Some(r) = after {
             self.anchor = r.anchor;
@@ -182,7 +180,7 @@ impl WriteDoc {
     }
 
     /// Deletes the selection; returns whether there was one.
-    fn delete_selection(&mut self) -> Result<bool> {
+    pub(super) fn delete_selection(&mut self) -> Result<bool> {
         let (s, e) = self.ordered();
         if s == e {
             return Ok(false);
@@ -397,6 +395,8 @@ impl WriteDoc {
                 self.insert(text)?;
             }
             WriteCommand::CancelComposition => self.end_composition(),
+            // The Write editor (WP-64).
+            other => return self.run_editor(other),
         }
         Ok(if self.state != state {
             Change::Content
@@ -421,9 +421,7 @@ impl WriteDoc {
             .apply(tx.clone())
             .map_err(|e| KilnError::InvalidInput(e.to_string()))?;
         self.touched.record(&self.doc, &tx);
-        if let Some(v) = &mut self.view {
-            v.note(&tx);
-        }
+        self.note_edit(&tx);
         let len = text.chars().count();
         self.composition = Some(super::Composition { at, len, inverse });
         let c = (caret as usize).min(len);
@@ -435,11 +433,9 @@ impl WriteDoc {
     /// Removes the composition text (commit inserts the final text through the history).
     pub(super) fn end_composition(&mut self) {
         if let Some(c) = self.composition.take() {
-            if let Ok(redo) = self.doc.apply(c.inverse.clone())
-                && let Some(v) = &mut self.view
-            {
-                v.note(&redo);
-                v.note(&c.inverse);
+            if let Ok(redo) = self.doc.apply(c.inverse.clone()) {
+                self.note_edit(&redo);
+                self.note_edit(&c.inverse);
             }
             self.anchor = c.at;
             self.head = c.at;

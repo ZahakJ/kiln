@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **13.3 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **28.1 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,8 +12,8 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 13.3 % | 782 | 1 | 44 | 97 | 640 | 20 |
-| Kiln Write | 7.1 % | 231 | 0 | 2 | 26 | 203 | 1 |
+| **Overall** | 28.1 % | 782 | 1 | 141 | 89 | 551 | 20 |
+| Kiln Write | 56.3 % | 231 | 0 | 99 | 18 | 114 | 1 |
 | Kiln Grid | 19.1 % | 261 | 0 | 25 | 41 | 195 | 6 |
 | Kiln Deck | 14.1 % | 184 | 0 | 13 | 20 | 151 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
@@ -21,13 +21,13 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 14.5 % | 462 | 0 | 38 | 58 | 366 | 0 |
+| critical | 34.6 % | 462 | 0 | 135 | 50 | 277 | 0 |
 | commonly-missed | 10.5 % | 224 | 1 | 4 | 37 | 182 | 0 |
 | niche | 3.1 % | 96 | 0 | 2 | 2 | 92 | 20 |
 
 | App | Critical | Commonly-missed | Niche |
 |---|---:|---:|---:|
-| Kiln Write | 7.5 % (146) | 6.0 % (58) | 1.9 % (27) |
+| Kiln Write | 71.2 % (146) | 6.0 % (58) | 1.9 % (27) |
 | Kiln Grid | 21.0 % (143) | 15.7 % (83) | 7.1 % (35) |
 | Kiln Deck | 15.1 % (119) | 11.9 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
@@ -82,14 +82,78 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 
 | Row | Feature | From | To |
 |---|---|---|---|
-| `write.home.styles.builtin` | Word's built-in styles with their names (Normal, No Spacing, Heading 1–9, Title, Subtitle, Emphasis, Strong, Quote, Intense Quote, references, Book Title, List Paragraph) | missing | partial |
+| `write.home.clipboard.paste-keep-source` | Paste keeping source formatting (Ctrl+V) | missing | done |
+| `write.home.clipboard.paste-merge` | Paste merging formatting with the destination | missing | done |
+| `write.home.clipboard.paste-text-only` | Paste as plain text (Ctrl+Shift+V in the paste menu) | missing | done |
+| `write.home.clipboard.paste-special` | Paste Special dialog (Ctrl+Alt+V): formatted text, unformatted, HTML, picture | missing | partial |
+| `write.home.clipboard.cut-copy` | Cut and copy (Ctrl+X / Ctrl+C) producing rich, HTML and plain text | missing | done |
+| `write.home.clipboard.html-paste` | Paste from browsers and other apps: sanitised HTML mapped to styles, lists and tables | missing | done |
+| `write.home.font.family` | Font family box with previews, recent fonts and theme fonts | missing | done |
+| `write.home.font.size` | Font size box with presets and typed half-point sizes | missing | done |
+| `write.home.font.grow-shrink` | Grow and shrink font (Ctrl+] / Ctrl+[ and Ctrl+Shift+> / <) | missing | done |
+| `write.home.font.change-case` | Change Case: sentence, lower, upper, capitalise each word, toggle (Shift+F3) | missing | done |
+| `write.home.font.clear-formatting` | Clear All Formatting (and Ctrl+Space / Ctrl+Q) | missing | done |
+| `write.home.font.bold-italic` | Bold and italic (Ctrl+B / Ctrl+I) | missing | done |
+| `write.home.font.underline` | Underline with styles and colour: single, double (Ctrl+Shift+D), words only, dotted, wave | missing | done |
+| `write.home.font.strikethrough` | Strikethrough and double strikethrough | missing | done |
+| `write.home.font.subscript-superscript` | Subscript and superscript (Ctrl+= / Ctrl+Shift+=) | missing | done |
+| `write.home.font.highlight` | Text highlight colour with the 15 Word highlight colours | missing | done |
+| `write.home.font.colour` | Font colour: theme colours, standard colours, more colours, automatic | missing | done |
+| `write.home.font.dialog` | Font dialog (Ctrl+D): effects, small caps, all caps, hidden, character spacing, kerning | missing | done |
+| `write.home.font.all-caps-small-caps` | All caps (Ctrl+Shift+A) and small caps (Ctrl+Shift+K) | missing | done |
+| `write.home.paragraph.bullets` | Bullets gallery with recent bullets and Define New Bullet | missing | done |
+| `write.home.paragraph.numbering` | Numbering gallery, restart and continue numbering, set numbering value | missing | done |
+| `write.home.paragraph.multilevel` | Multilevel lists with Word numbering definitions, legal numbering and list levels (Tab / Shift+Tab) | missing | done |
+| `write.home.paragraph.indent` | Decrease and increase indent (Ctrl+M / Ctrl+Shift+M) | missing | done |
+| `write.home.paragraph.show-marks` | Show/hide formatting marks ¶ (Ctrl+Shift+8) | missing | done |
+| `write.home.paragraph.align-left` | Align left (Ctrl+L) | missing | done |
+| `write.home.paragraph.align-center` | Centre (Ctrl+E) | missing | done |
+| `write.home.paragraph.align-right` | Align right (Ctrl+R) | missing | done |
+| `write.home.paragraph.justify` | Justify and distributed alignment (Ctrl+J) | missing | done |
+| `write.home.paragraph.line-spacing` | Line and paragraph spacing presets, add/remove space before/after (Ctrl+1/2/5) | missing | done |
+| `write.home.paragraph.shading` | Paragraph shading | missing | done |
+| `write.home.paragraph.borders` | Paragraph borders gallery and Borders and Shading dialog | missing | done |
+| `write.home.paragraph.dialog` | Paragraph dialog: indents, spacing, line spacing, keep with next, keep lines together, widow/orphan, page break before | missing | done |
+| `write.home.paragraph.tabs` | Tabs dialog: stops, alignment, leaders, clear all | missing | done |
+| `write.home.styles.gallery` | Quick Styles gallery with live preview | missing | done |
+| `write.home.styles.builtin` | Word's built-in styles with their names (Normal, No Spacing, Heading 1–9, Title, Subtitle, Emphasis, Strong, Quote, Intense Quote, references, Book Title, List Paragraph) | missing | done |
+| `write.home.styles.shortcuts` | Style shortcuts: Normal (Ctrl+Shift+N), Heading 1–3 (Ctrl+Alt+1/2/3) | missing | done |
+| `write.home.styles.pane` | Styles pane (Ctrl+Alt+Shift+S): apply, show preview, new style, style inspector | missing | done |
+| `write.home.styles.update-from-selection` | Update style to match selection and create a style from formatting | missing | done |
+| `write.home.styles.modify-dialog` | Modify Style dialog: based on, next style, formatting, add to gallery | missing | done |
+| `write.home.editing.find` | Find in the navigation pane with highlighted results (Ctrl+F) | missing | done |
+| `write.home.editing.advanced-find` | Advanced Find: match case, whole words, wildcards, formatting | missing | done |
+| `write.home.editing.replace` | Replace and Replace All (Ctrl+H), including formatting and special characters | missing | done |
+| `write.home.editing.go-to` | Go To page, section, line, bookmark, comment, footnote (Ctrl+G / F5) | missing | done |
+| `write.home.editing.select` | Select All, Select Objects, Select Text with Similar Formatting | missing | done |
+| `write.home.editing.undo-redo` | Undo and redo with history (Ctrl+Z / Ctrl+Y), word-sized undo steps | missing | done |
+| `write.home.editing.repeat` | Repeat last action (F4) | missing | done |
+| `write.insert.pages.blank-page` | Insert a blank page | missing | done |
+| `write.insert.pages.page-break` | Page break (Ctrl+Enter) | missing | done |
+| `write.insert.tables.grid-picker` | Insert a table from the grid picker | missing | done |
+| `write.insert.tables.dialog` | Insert Table dialog: columns, rows, AutoFit behaviour | missing | done |
+| `write.insert.tables.text-to-table` | Convert text to table and table to text | missing | done |
+| `write.insert.illustrations.pictures` | Insert pictures from this device (PNG, JPEG, GIF, SVG, WebP), inline by default | missing | done |
 | `write.insert.illustrations.chart` | Insert a chart (Grid chart engine with embedded data sheet) | missing | partial |
-| `write.layout.page-setup.margins` | Margins presets and custom margins, mirrored and gutter | missing | partial |
-| `write.layout.page-setup.orientation` | Portrait and landscape per section | missing | partial |
-| `write.layout.page-setup.size` | Paper sizes (Letter, A4, Legal, A3, A5, custom) | missing | partial |
-| `write.layout.page-setup.columns` | Text columns (one to three, left, right, more columns, line between) | missing | partial |
-| `write.layout.page-setup.breaks` | Breaks: page, column, text wrapping, section next page/continuous/even/odd | missing | partial |
+| `write.insert.links.link` | Insert and edit hyperlinks (Ctrl+K), Ctrl+click to follow | missing | done |
+| `write.insert.links.bookmark` | Bookmarks: add, go to, delete | missing | done |
+| `write.insert.header-footer.header` | Header gallery and edit header | missing | done |
+| `write.insert.header-footer.footer` | Footer gallery and edit footer | missing | done |
+| `write.insert.header-footer.page-number` | Page number gallery (top, bottom, margins, current position) and Format Page Numbers | missing | done |
+| `write.insert.text.fields` | Quick Parts ▸ Field: PAGE, NUMPAGES, DATE, TIME, AUTHOR, FILENAME, TOC, REF, SEQ; update (F9) and toggle codes (Shift+F9) | missing | done |
+| `write.insert.text.drop-cap` | Drop cap (dropped and in margin) | missing | done |
+| `write.insert.text.date-time` | Insert date and time with formats and update automatically (Alt+Shift+D / Alt+Shift+T) | missing | done |
+| `write.insert.symbols.symbol` | Symbol gallery and Symbol dialog with recent symbols and character codes (Alt+X) | missing | partial |
+| `write.layout.page-setup.margins` | Margins presets and custom margins, mirrored and gutter | missing | done |
+| `write.layout.page-setup.orientation` | Portrait and landscape per section | missing | done |
+| `write.layout.page-setup.size` | Paper sizes (Letter, A4, Legal, A3, A5, custom) | missing | done |
+| `write.layout.page-setup.columns` | Text columns (one to three, left, right, more columns, line between) | missing | done |
+| `write.layout.page-setup.breaks` | Breaks: page, column, text wrapping, section next page/continuous/even/odd | missing | done |
 | `write.layout.page-setup.hyphenation` | Automatic and manual hyphenation | missing | partial |
+| `write.layout.page-setup.dialog` | Page Setup dialog: margins, paper, layout (section start, headers different, vertical alignment) | missing | done |
+| `write.layout.paragraph.indent` | Indent left and right spinners | missing | done |
+| `write.layout.paragraph.spacing` | Spacing before and after spinners | missing | done |
+| `write.review.proofing.word-count` | Word Count dialog (pages, words, characters with/without spaces, paragraphs, lines; include notes) | missing | done |
 | `write.review.comments.new` | New comment with author, time and threaded replies | missing | partial |
 | `write.review.tracking.track-changes` | Track Changes on/off (Ctrl+Shift+E) recording insertions, deletions, formatting and moves | missing | partial |
 | `write.view.views.read-mode` | Read Mode: columns, page turning, zoomed objects | missing | partial |
@@ -97,12 +161,37 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `write.view.views.web-layout` | Web Layout (reflowed to the window width) | missing | partial |
 | `write.view.views.draft` | Draft view | missing | partial |
 | `write.view.page-movement.vertical` | Vertical page movement (default) | missing | partial |
-| `write.table-layout.repeat-header` | Repeat header rows on each page | missing | partial |
+| `write.view.show.ruler` | Horizontal and vertical rulers with indent markers, tab stops and margin dragging | missing | done |
+| `write.view.show.navigation-pane` | Navigation pane: headings (drag to reorder), pages thumbnails, search results | missing | done |
+| `write.view.zoom.hundred` | Zoom to 100 % | missing | done |
+| `write.view.zoom.one-page` | One page | missing | done |
+| `write.view.zoom.multiple-pages` | Multiple pages | missing | done |
+| `write.view.zoom.page-width` | Page width | missing | done |
+| `write.table-design.styles` | Table styles gallery with Word's built-in table styles | missing | done |
+| `write.table-design.style-options` | Style options: header row, total row, banded rows/columns, first/last column | missing | done |
+| `write.table-design.shading` | Cell shading | missing | done |
+| `write.table-design.borders` | Borders gallery, border styles, pen colour and the border painter | missing | done |
+| `write.table-layout.insert` | Insert rows above/below and columns left/right (and the + insert control) | missing | done |
+| `write.table-layout.delete` | Delete cells, rows, columns, table | missing | done |
+| `write.table-layout.merge` | Merge cells | missing | done |
+| `write.table-layout.split-cells` | Split cells | missing | done |
+| `write.table-layout.split-table` | Split table | missing | done |
+| `write.table-layout.cell-size` | Cell size and AutoFit (contents, window, fixed column width) | missing | done |
+| `write.table-layout.distribute` | Distribute rows and columns evenly | missing | done |
+| `write.table-layout.alignment` | Cell alignment (nine positions), text direction and cell margins | missing | done |
+| `write.table-layout.repeat-header` | Repeat header rows on each page | missing | done |
+| `write.table-layout.convert-to-text` | Convert table to text | missing | done |
 | `write.table-layout.nested-tables` | Nested tables (displayed and edited) | missing | partial |
-| `write.header-footer.different-first` | Different first page | missing | partial |
-| `write.header-footer.different-odd-even` | Different odd and even pages | missing | partial |
-| `write.header-footer.link-previous` | Link to previous section | missing | partial |
+| `write.header-footer.different-first` | Different first page | missing | done |
+| `write.header-footer.different-odd-even` | Different odd and even pages | missing | done |
+| `write.header-footer.link-previous` | Link to previous section | missing | done |
 | `write.header-footer.position` | Header and footer distance from edge | missing | partial |
+| `write.header-footer.navigate-close` | Go to header/footer, previous/next section, close (Esc, double-click body) | missing | done |
+| `write.editing.caret-movement` | Caret movement and selection by character, word, line, paragraph, page; Ctrl+Home/End; click, double and triple click | missing | done |
+| `write.editing.mini-toolbar` | Mini toolbar on selection and right-click (font, size, bold, italic, highlight, colour, styles) | missing | done |
+| `write.editing.context-menu` | Context menus for text, tables, pictures, links, misspellings and comments | missing | done |
+| `write.editing.move-paragraph` | Move paragraph up/down (Alt+Shift+Up/Down) | missing | done |
+| `write.editing.ime` | Input methods, dead keys and composition (CJK, Arabic, accents) | missing | done |
 | `write.layout.pagination-fidelity` | Pagination matching Word within ±1 line per page for standard fonts | missing | partial |
 | `write.layout.keep-rules` | Keep with next, keep lines together, widow/orphan control, page break before | missing | partial |
 | `write.layout.sections` | Sections with different page size, orientation, margins, columns and headers | missing | partial |
@@ -281,18 +370,18 @@ Out of scope:
 
 ## Kiln Write
 
-Score 7.1 % over 231 rows in scope; 0 better, 2 done, 26 partial, 203 missing, 1 out of scope.
+Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing, 1 out of scope.
 
 ### Home ▸ Clipboard
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Paste keeping source formatting (Ctrl+V) | Word ▸ Home ▸ Clipboard ▸ Paste ▸ Keep Source Formatting | critical | P0 | WP-64 | `write.home.clipboard.paste-keep-source` |
-| ○ | Paste merging formatting with the destination | Word ▸ Home ▸ Clipboard ▸ Paste ▸ Merge Formatting | critical | P0 | WP-64 | `write.home.clipboard.paste-merge` |
-| ○ | Paste as plain text (Ctrl+Shift+V in the paste menu) | Word ▸ Home ▸ Clipboard ▸ Paste ▸ Keep Text Only | critical | P0 | WP-64 | `write.home.clipboard.paste-text-only` |
-| ○ | Paste Special dialog (Ctrl+Alt+V): formatted text, unformatted, HTML, picture | Word ▸ Home ▸ Clipboard ▸ Paste ▸ Paste Special | critical | P0 | WP-64 | `write.home.clipboard.paste-special` |
-| ○ | Cut and copy (Ctrl+X / Ctrl+C) producing rich, HTML and plain text | Word ▸ Home ▸ Clipboard ▸ Cut / Copy | critical | P0 | WP-64 | `write.home.clipboard.cut-copy` |
-| ○ | Paste from browsers and other apps: sanitised HTML mapped to styles, lists and tables | Word ▸ paste from the web | critical | P0 | WP-64 | `write.home.clipboard.html-paste` |
+| ● | Paste keeping source formatting (Ctrl+V) | Word ▸ Home ▸ Clipboard ▸ Paste ▸ Keep Source Formatting | critical | P0 | WP-64 | `write.home.clipboard.paste-keep-source` |
+| ● | Paste merging formatting with the destination | Word ▸ Home ▸ Clipboard ▸ Paste ▸ Merge Formatting | critical | P0 | WP-64 | `write.home.clipboard.paste-merge` |
+| ● | Paste as plain text (Ctrl+Shift+V in the paste menu) | Word ▸ Home ▸ Clipboard ▸ Paste ▸ Keep Text Only | critical | P0 | WP-64 | `write.home.clipboard.paste-text-only` |
+| ◐ | Paste Special dialog (Ctrl+Alt+V): formatted text, unformatted, HTML, picture | Word ▸ Home ▸ Clipboard ▸ Paste ▸ Paste Special | critical | P0 | WP-64 | `write.home.clipboard.paste-special` |
+| ● | Cut and copy (Ctrl+X / Ctrl+C) producing rich, HTML and plain text | Word ▸ Home ▸ Clipboard ▸ Cut / Copy | critical | P0 | WP-64 | `write.home.clipboard.cut-copy` |
+| ● | Paste from browsers and other apps: sanitised HTML mapped to styles, lists and tables | Word ▸ paste from the web | critical | P0 | WP-64 | `write.home.clipboard.html-paste` |
 | ○ | Format Painter (single click, and double-click to keep painting) | Word ▸ Home ▸ Clipboard ▸ Format Painter | critical | P0 | WP-66 | `write.home.clipboard.format-painter` |
 | ○ | Copy and paste formatting by keyboard (Ctrl+Shift+C / Ctrl+Shift+V) | Word ▸ Ctrl+Shift+C / Ctrl+Shift+V | critical | P0 | WP-66 | `write.home.clipboard.copy-paste-formatting` |
 
@@ -300,64 +389,64 @@ Score 7.1 % over 231 rows in scope; 0 better, 2 done, 26 partial, 203 missing, 1
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Font family box with previews, recent fonts and theme fonts | Word ▸ Home ▸ Font ▸ Font | critical | P0 | WP-64 | `write.home.font.family` |
-| ○ | Font size box with presets and typed half-point sizes | Word ▸ Home ▸ Font ▸ Font Size | critical | P0 | WP-64 | `write.home.font.size` |
-| ○ | Grow and shrink font (Ctrl+] / Ctrl+[ and Ctrl+Shift+> / <) | Word ▸ Home ▸ Font ▸ Increase / Decrease Font Size | critical | P0 | WP-64 | `write.home.font.grow-shrink` |
-| ○ | Change Case: sentence, lower, upper, capitalise each word, toggle (Shift+F3) | Word ▸ Home ▸ Font ▸ Change Case | critical | P0 | WP-64 | `write.home.font.change-case` |
-| ○ | Clear All Formatting (and Ctrl+Space / Ctrl+Q) | Word ▸ Home ▸ Font ▸ Clear All Formatting | critical | P0 | WP-64 | `write.home.font.clear-formatting` |
-| ○ | Bold and italic (Ctrl+B / Ctrl+I) | Word ▸ Home ▸ Font ▸ Bold / Italic | critical | P0 | WP-64 | `write.home.font.bold-italic` |
-| ○ | Underline with styles and colour: single, double (Ctrl+Shift+D), words only, dotted, wave | Word ▸ Home ▸ Font ▸ Underline | critical | P0 | WP-64 | `write.home.font.underline` |
-| ○ | Strikethrough and double strikethrough | Word ▸ Home ▸ Font ▸ Strikethrough | critical | P0 | WP-64 | `write.home.font.strikethrough` |
-| ○ | Subscript and superscript (Ctrl+= / Ctrl+Shift+=) | Word ▸ Home ▸ Font ▸ Subscript / Superscript | critical | P0 | WP-64 | `write.home.font.subscript-superscript` |
+| ● | Font family box with previews, recent fonts and theme fonts | Word ▸ Home ▸ Font ▸ Font | critical | P0 | WP-64 | `write.home.font.family` |
+| ● | Font size box with presets and typed half-point sizes | Word ▸ Home ▸ Font ▸ Font Size | critical | P0 | WP-64 | `write.home.font.size` |
+| ● | Grow and shrink font (Ctrl+] / Ctrl+[ and Ctrl+Shift+> / <) | Word ▸ Home ▸ Font ▸ Increase / Decrease Font Size | critical | P0 | WP-64 | `write.home.font.grow-shrink` |
+| ● | Change Case: sentence, lower, upper, capitalise each word, toggle (Shift+F3) | Word ▸ Home ▸ Font ▸ Change Case | critical | P0 | WP-64 | `write.home.font.change-case` |
+| ● | Clear All Formatting (and Ctrl+Space / Ctrl+Q) | Word ▸ Home ▸ Font ▸ Clear All Formatting | critical | P0 | WP-64 | `write.home.font.clear-formatting` |
+| ● | Bold and italic (Ctrl+B / Ctrl+I) | Word ▸ Home ▸ Font ▸ Bold / Italic | critical | P0 | WP-64 | `write.home.font.bold-italic` |
+| ● | Underline with styles and colour: single, double (Ctrl+Shift+D), words only, dotted, wave | Word ▸ Home ▸ Font ▸ Underline | critical | P0 | WP-64 | `write.home.font.underline` |
+| ● | Strikethrough and double strikethrough | Word ▸ Home ▸ Font ▸ Strikethrough | critical | P0 | WP-64 | `write.home.font.strikethrough` |
+| ● | Subscript and superscript (Ctrl+= / Ctrl+Shift+=) | Word ▸ Home ▸ Font ▸ Subscript / Superscript | critical | P0 | WP-64 | `write.home.font.subscript-superscript` |
 | ○ | Text effects: outline, shadow, reflection, glow | Word ▸ Home ▸ Font ▸ Text Effects and Typography | niche | P2 | — | `write.home.font.text-effects` |
-| ○ | Text highlight colour with the 15 Word highlight colours | Word ▸ Home ▸ Font ▸ Text Highlight Color | critical | P0 | WP-64 | `write.home.font.highlight` |
-| ○ | Font colour: theme colours, standard colours, more colours, automatic | Word ▸ Home ▸ Font ▸ Font Color | critical | P0 | WP-64 | `write.home.font.colour` |
-| ○ | Font dialog (Ctrl+D): effects, small caps, all caps, hidden, character spacing, kerning | Word ▸ Home ▸ Font ▸ dialog launcher | critical | P0 | WP-64 | `write.home.font.dialog` |
-| ○ | All caps (Ctrl+Shift+A) and small caps (Ctrl+Shift+K) | Word ▸ Font dialog ▸ Small caps / All caps | critical | P0 | WP-64 | `write.home.font.all-caps-small-caps` |
+| ● | Text highlight colour with the 15 Word highlight colours | Word ▸ Home ▸ Font ▸ Text Highlight Color | critical | P0 | WP-64 | `write.home.font.highlight` |
+| ● | Font colour: theme colours, standard colours, more colours, automatic | Word ▸ Home ▸ Font ▸ Font Color | critical | P0 | WP-64 | `write.home.font.colour` |
+| ● | Font dialog (Ctrl+D): effects, small caps, all caps, hidden, character spacing, kerning | Word ▸ Home ▸ Font ▸ dialog launcher | critical | P0 | WP-64 | `write.home.font.dialog` |
+| ● | All caps (Ctrl+Shift+A) and small caps (Ctrl+Shift+K) | Word ▸ Font dialog ▸ Small caps / All caps | critical | P0 | WP-64 | `write.home.font.all-caps-small-caps` |
 
 ### Home ▸ Paragraph
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Bullets gallery with recent bullets and Define New Bullet | Word ▸ Home ▸ Paragraph ▸ Bullets | critical | P0 | WP-64 | `write.home.paragraph.bullets` |
-| ○ | Numbering gallery, restart and continue numbering, set numbering value | Word ▸ Home ▸ Paragraph ▸ Numbering | critical | P0 | WP-64 | `write.home.paragraph.numbering` |
-| ○ | Multilevel lists with Word numbering definitions, legal numbering and list levels (Tab / Shift+Tab) | Word ▸ Home ▸ Paragraph ▸ Multilevel List | critical | P0 | WP-64 | `write.home.paragraph.multilevel` |
-| ○ | Decrease and increase indent (Ctrl+M / Ctrl+Shift+M) | Word ▸ Home ▸ Paragraph ▸ Decrease / Increase Indent | critical | P0 | WP-64 | `write.home.paragraph.indent` |
+| ● | Bullets gallery with recent bullets and Define New Bullet | Word ▸ Home ▸ Paragraph ▸ Bullets | critical | P0 | WP-64 | `write.home.paragraph.bullets` |
+| ● | Numbering gallery, restart and continue numbering, set numbering value | Word ▸ Home ▸ Paragraph ▸ Numbering | critical | P0 | WP-64 | `write.home.paragraph.numbering` |
+| ● | Multilevel lists with Word numbering definitions, legal numbering and list levels (Tab / Shift+Tab) | Word ▸ Home ▸ Paragraph ▸ Multilevel List | critical | P0 | WP-64 | `write.home.paragraph.multilevel` |
+| ● | Decrease and increase indent (Ctrl+M / Ctrl+Shift+M) | Word ▸ Home ▸ Paragraph ▸ Decrease / Increase Indent | critical | P0 | WP-64 | `write.home.paragraph.indent` |
 | ○ | Sort paragraphs or table rows (text, number, date; ascending/descending) | Word ▸ Home ▸ Paragraph ▸ Sort | commonly-missed | P1 | WP-64 | `write.home.paragraph.sort` |
-| ○ | Show/hide formatting marks ¶ (Ctrl+Shift+8) | Word ▸ Home ▸ Paragraph ▸ Show/Hide ¶ | critical | P0 | WP-64 | `write.home.paragraph.show-marks` |
-| ○ | Align left (Ctrl+L) | Word ▸ Home ▸ Paragraph ▸ Align Left | critical | P0 | WP-64 | `write.home.paragraph.align-left` |
-| ○ | Centre (Ctrl+E) | Word ▸ Home ▸ Paragraph ▸ Center | critical | P0 | WP-64 | `write.home.paragraph.align-center` |
-| ○ | Align right (Ctrl+R) | Word ▸ Home ▸ Paragraph ▸ Align Right | critical | P0 | WP-64 | `write.home.paragraph.align-right` |
-| ○ | Justify and distributed alignment (Ctrl+J) | Word ▸ Home ▸ Paragraph ▸ Justify | critical | P0 | WP-64 | `write.home.paragraph.justify` |
-| ○ | Line and paragraph spacing presets, add/remove space before/after (Ctrl+1/2/5) | Word ▸ Home ▸ Paragraph ▸ Line and Paragraph Spacing | critical | P0 | WP-64 | `write.home.paragraph.line-spacing` |
-| ○ | Paragraph shading | Word ▸ Home ▸ Paragraph ▸ Shading | critical | P0 | WP-64 | `write.home.paragraph.shading` |
-| ○ | Paragraph borders gallery and Borders and Shading dialog | Word ▸ Home ▸ Paragraph ▸ Borders | critical | P0 | WP-64 | `write.home.paragraph.borders` |
-| ○ | Paragraph dialog: indents, spacing, line spacing, keep with next, keep lines together, widow/orphan, page break before | Word ▸ Home ▸ Paragraph ▸ dialog launcher | critical | P0 | WP-64 | `write.home.paragraph.dialog` |
-| ○ | Tabs dialog: stops, alignment, leaders, clear all | Word ▸ Paragraph dialog ▸ Tabs | critical | P0 | WP-64 | `write.home.paragraph.tabs` |
+| ● | Show/hide formatting marks ¶ (Ctrl+Shift+8) | Word ▸ Home ▸ Paragraph ▸ Show/Hide ¶ | critical | P0 | WP-64 | `write.home.paragraph.show-marks` |
+| ● | Align left (Ctrl+L) | Word ▸ Home ▸ Paragraph ▸ Align Left | critical | P0 | WP-64 | `write.home.paragraph.align-left` |
+| ● | Centre (Ctrl+E) | Word ▸ Home ▸ Paragraph ▸ Center | critical | P0 | WP-64 | `write.home.paragraph.align-center` |
+| ● | Align right (Ctrl+R) | Word ▸ Home ▸ Paragraph ▸ Align Right | critical | P0 | WP-64 | `write.home.paragraph.align-right` |
+| ● | Justify and distributed alignment (Ctrl+J) | Word ▸ Home ▸ Paragraph ▸ Justify | critical | P0 | WP-64 | `write.home.paragraph.justify` |
+| ● | Line and paragraph spacing presets, add/remove space before/after (Ctrl+1/2/5) | Word ▸ Home ▸ Paragraph ▸ Line and Paragraph Spacing | critical | P0 | WP-64 | `write.home.paragraph.line-spacing` |
+| ● | Paragraph shading | Word ▸ Home ▸ Paragraph ▸ Shading | critical | P0 | WP-64 | `write.home.paragraph.shading` |
+| ● | Paragraph borders gallery and Borders and Shading dialog | Word ▸ Home ▸ Paragraph ▸ Borders | critical | P0 | WP-64 | `write.home.paragraph.borders` |
+| ● | Paragraph dialog: indents, spacing, line spacing, keep with next, keep lines together, widow/orphan, page break before | Word ▸ Home ▸ Paragraph ▸ dialog launcher | critical | P0 | WP-64 | `write.home.paragraph.dialog` |
+| ● | Tabs dialog: stops, alignment, leaders, clear all | Word ▸ Paragraph dialog ▸ Tabs | critical | P0 | WP-64 | `write.home.paragraph.tabs` |
 | ○ | Right-to-left and left-to-right paragraph direction | Word ▸ Home ▸ Paragraph ▸ Right-to-Left Text Direction | commonly-missed | P1 | WP-84 | `write.home.paragraph.rtl-direction` |
 
 ### Home ▸ Styles
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Quick Styles gallery with live preview | Word ▸ Home ▸ Styles ▸ gallery | critical | P0 | WP-64 | `write.home.styles.gallery` |
-| ◐ | Word's built-in styles with their names (Normal, No Spacing, Heading 1–9, Title, Subtitle, Emphasis, Strong, Quote, Intense Quote, references, Book Title, List Paragraph) | Word ▸ built-in styles | critical | P0 | WP-64 | `write.home.styles.builtin` |
-| ○ | Style shortcuts: Normal (Ctrl+Shift+N), Heading 1–3 (Ctrl+Alt+1/2/3) | Word ▸ style keyboard shortcuts | critical | P0 | WP-64 | `write.home.styles.shortcuts` |
-| ○ | Styles pane (Ctrl+Alt+Shift+S): apply, show preview, new style, style inspector | Word ▸ Home ▸ Styles ▸ dialog launcher | critical | P0 | WP-64 | `write.home.styles.pane` |
-| ○ | Update style to match selection and create a style from formatting | Word ▸ Styles ▸ Update Heading 1 to Match Selection | critical | P0 | WP-64 | `write.home.styles.update-from-selection` |
-| ○ | Modify Style dialog: based on, next style, formatting, add to gallery | Word ▸ Styles ▸ Modify | critical | P0 | WP-64 | `write.home.styles.modify-dialog` |
+| ● | Quick Styles gallery with live preview | Word ▸ Home ▸ Styles ▸ gallery | critical | P0 | WP-64 | `write.home.styles.gallery` |
+| ● | Word's built-in styles with their names (Normal, No Spacing, Heading 1–9, Title, Subtitle, Emphasis, Strong, Quote, Intense Quote, references, Book Title, List Paragraph) | Word ▸ built-in styles | critical | P0 | WP-64 | `write.home.styles.builtin` |
+| ● | Style shortcuts: Normal (Ctrl+Shift+N), Heading 1–3 (Ctrl+Alt+1/2/3) | Word ▸ style keyboard shortcuts | critical | P0 | WP-64 | `write.home.styles.shortcuts` |
+| ● | Styles pane (Ctrl+Alt+Shift+S): apply, show preview, new style, style inspector | Word ▸ Home ▸ Styles ▸ dialog launcher | critical | P0 | WP-64 | `write.home.styles.pane` |
+| ● | Update style to match selection and create a style from formatting | Word ▸ Styles ▸ Update Heading 1 to Match Selection | critical | P0 | WP-64 | `write.home.styles.update-from-selection` |
+| ● | Modify Style dialog: based on, next style, formatting, add to gallery | Word ▸ Styles ▸ Modify | critical | P0 | WP-64 | `write.home.styles.modify-dialog` |
 
 ### Home ▸ Editing
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Find in the navigation pane with highlighted results (Ctrl+F) | Word ▸ Home ▸ Editing ▸ Find | critical | P0 | WP-64 | `write.home.editing.find` |
-| ○ | Advanced Find: match case, whole words, wildcards, formatting | Word ▸ Home ▸ Editing ▸ Find ▸ Advanced Find | critical | P0 | WP-64 | `write.home.editing.advanced-find` |
-| ○ | Replace and Replace All (Ctrl+H), including formatting and special characters | Word ▸ Home ▸ Editing ▸ Replace | critical | P0 | WP-64 | `write.home.editing.replace` |
-| ○ | Go To page, section, line, bookmark, comment, footnote (Ctrl+G / F5) | Word ▸ Home ▸ Editing ▸ Find ▸ Go To | critical | P0 | WP-64 | `write.home.editing.go-to` |
-| ○ | Select All, Select Objects, Select Text with Similar Formatting | Word ▸ Home ▸ Editing ▸ Select | critical | P0 | WP-64 | `write.home.editing.select` |
-| ○ | Undo and redo with history (Ctrl+Z / Ctrl+Y), word-sized undo steps | Word ▸ Undo / Redo | critical | P0 | WP-64 | `write.home.editing.undo-redo` |
-| ○ | Repeat last action (F4) | Word ▸ F4 Repeat | critical | P0 | WP-64 | `write.home.editing.repeat` |
+| ● | Find in the navigation pane with highlighted results (Ctrl+F) | Word ▸ Home ▸ Editing ▸ Find | critical | P0 | WP-64 | `write.home.editing.find` |
+| ● | Advanced Find: match case, whole words, wildcards, formatting | Word ▸ Home ▸ Editing ▸ Find ▸ Advanced Find | critical | P0 | WP-64 | `write.home.editing.advanced-find` |
+| ● | Replace and Replace All (Ctrl+H), including formatting and special characters | Word ▸ Home ▸ Editing ▸ Replace | critical | P0 | WP-64 | `write.home.editing.replace` |
+| ● | Go To page, section, line, bookmark, comment, footnote (Ctrl+G / F5) | Word ▸ Home ▸ Editing ▸ Find ▸ Go To | critical | P0 | WP-64 | `write.home.editing.go-to` |
+| ● | Select All, Select Objects, Select Text with Similar Formatting | Word ▸ Home ▸ Editing ▸ Select | critical | P0 | WP-64 | `write.home.editing.select` |
+| ● | Undo and redo with history (Ctrl+Z / Ctrl+Y), word-sized undo steps | Word ▸ Undo / Redo | critical | P0 | WP-64 | `write.home.editing.undo-redo` |
+| ● | Repeat last action (F4) | Word ▸ F4 Repeat | critical | P0 | WP-64 | `write.home.editing.repeat` |
 
 ### Home ▸ Focus
 
@@ -370,16 +459,16 @@ Score 7.1 % over 231 rows in scope; 0 better, 2 done, 26 partial, 203 missing, 1
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
 | ○ | Cover page gallery | Word ▸ Insert ▸ Pages ▸ Cover Page | commonly-missed | P1 | WP-85 | `write.insert.pages.cover-page` |
-| ○ | Insert a blank page | Word ▸ Insert ▸ Pages ▸ Blank Page | critical | P0 | WP-64 | `write.insert.pages.blank-page` |
-| ○ | Page break (Ctrl+Enter) | Word ▸ Insert ▸ Pages ▸ Page Break | critical | P0 | WP-64 | `write.insert.pages.page-break` |
+| ● | Insert a blank page | Word ▸ Insert ▸ Pages ▸ Blank Page | critical | P0 | WP-64 | `write.insert.pages.blank-page` |
+| ● | Page break (Ctrl+Enter) | Word ▸ Insert ▸ Pages ▸ Page Break | critical | P0 | WP-64 | `write.insert.pages.page-break` |
 
 ### Insert ▸ Tables
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Insert a table from the grid picker | Word ▸ Insert ▸ Tables ▸ Table | critical | P0 | WP-64 | `write.insert.tables.grid-picker` |
-| ○ | Insert Table dialog: columns, rows, AutoFit behaviour | Word ▸ Insert ▸ Table ▸ Insert Table | critical | P0 | WP-64 | `write.insert.tables.dialog` |
-| ○ | Convert text to table and table to text | Word ▸ Insert ▸ Table ▸ Convert Text to Table | critical | P0 | WP-64 | `write.insert.tables.text-to-table` |
+| ● | Insert a table from the grid picker | Word ▸ Insert ▸ Tables ▸ Table | critical | P0 | WP-64 | `write.insert.tables.grid-picker` |
+| ● | Insert Table dialog: columns, rows, AutoFit behaviour | Word ▸ Insert ▸ Table ▸ Insert Table | critical | P0 | WP-64 | `write.insert.tables.dialog` |
+| ● | Convert text to table and table to text | Word ▸ Insert ▸ Table ▸ Convert Text to Table | critical | P0 | WP-64 | `write.insert.tables.text-to-table` |
 | ○ | Paste a Markdown table as a styled table | — | commonly-missed | P0 | WP-66 | `write.insert.tables.paste-markdown` |
 | ○ | Quick Tables gallery (calendars, tabular lists) | Word ▸ Insert ▸ Table ▸ Quick Tables | niche | P2 | WP-64 | `write.insert.tables.quick-tables` |
 
@@ -387,7 +476,7 @@ Score 7.1 % over 231 rows in scope; 0 better, 2 done, 26 partial, 203 missing, 1
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Insert pictures from this device (PNG, JPEG, GIF, SVG, WebP), inline by default | Word ▸ Insert ▸ Illustrations ▸ Pictures | critical | P0 | WP-64 | `write.insert.illustrations.pictures` |
+| ● | Insert pictures from this device (PNG, JPEG, GIF, SVG, WebP), inline by default | Word ▸ Insert ▸ Illustrations ▸ Pictures | critical | P0 | WP-64 | `write.insert.illustrations.pictures` |
 | ○ | Stock images hook (configurable provider; no network by default) | — | commonly-missed | P1 | WP-85 | `write.insert.illustrations.stock-images` |
 | ○ | Shapes gallery (DrawingML presets) with drawing and text in shapes | Word ▸ Insert ▸ Illustrations ▸ Shapes | critical | P0 | WP-66 | `write.insert.illustrations.shapes` |
 | ○ | Icons gallery (bundled, offline) | Word ▸ Insert ▸ Illustrations ▸ Icons | commonly-missed | P1 | WP-66 | `write.insert.illustrations.icons` |
@@ -399,8 +488,8 @@ Score 7.1 % over 231 rows in scope; 0 better, 2 done, 26 partial, 203 missing, 1
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Insert and edit hyperlinks (Ctrl+K), Ctrl+click to follow | Word ▸ Insert ▸ Links ▸ Link | critical | P0 | WP-64 | `write.insert.links.link` |
-| ○ | Bookmarks: add, go to, delete | Word ▸ Insert ▸ Links ▸ Bookmark | critical | P0 | WP-66 | `write.insert.links.bookmark` |
+| ● | Insert and edit hyperlinks (Ctrl+K), Ctrl+click to follow | Word ▸ Insert ▸ Links ▸ Link | critical | P0 | WP-64 | `write.insert.links.link` |
+| ● | Bookmarks: add, go to, delete | Word ▸ Insert ▸ Links ▸ Bookmark | critical | P0 | WP-66 | `write.insert.links.bookmark` |
 | ○ | Cross-references to headings, bookmarks, figures, tables, footnotes (REF fields) | Word ▸ Insert ▸ Links ▸ Cross-reference | critical | P0 | WP-66 | `write.insert.links.cross-reference` |
 
 ### Insert ▸ Comments
@@ -413,20 +502,20 @@ Score 7.1 % over 231 rows in scope; 0 better, 2 done, 26 partial, 203 missing, 1
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Header gallery and edit header | Word ▸ Insert ▸ Header & Footer ▸ Header | critical | P0 | WP-64 | `write.insert.header-footer.header` |
-| ○ | Footer gallery and edit footer | Word ▸ Insert ▸ Header & Footer ▸ Footer | critical | P0 | WP-64 | `write.insert.header-footer.footer` |
-| ○ | Page number gallery (top, bottom, margins, current position) and Format Page Numbers | Word ▸ Insert ▸ Header & Footer ▸ Page Number | critical | P0 | WP-64 | `write.insert.header-footer.page-number` |
+| ● | Header gallery and edit header | Word ▸ Insert ▸ Header & Footer ▸ Header | critical | P0 | WP-64 | `write.insert.header-footer.header` |
+| ● | Footer gallery and edit footer | Word ▸ Insert ▸ Header & Footer ▸ Footer | critical | P0 | WP-64 | `write.insert.header-footer.footer` |
+| ● | Page number gallery (top, bottom, margins, current position) and Format Page Numbers | Word ▸ Insert ▸ Header & Footer ▸ Page Number | critical | P0 | WP-64 | `write.insert.header-footer.page-number` |
 
 ### Insert ▸ Text
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
 | ○ | Text boxes: draw, built-in gallery, linked flow off | Word ▸ Insert ▸ Text ▸ Text Box | critical | P0 | WP-66 | `write.insert.text.text-box` |
-| ○ | Quick Parts ▸ Field: PAGE, NUMPAGES, DATE, TIME, AUTHOR, FILENAME, TOC, REF, SEQ; update (F9) and toggle codes (Shift+F9) | Word ▸ Insert ▸ Text ▸ Quick Parts ▸ Field | critical | P0 | WP-64 | `write.insert.text.fields` |
+| ● | Quick Parts ▸ Field: PAGE, NUMPAGES, DATE, TIME, AUTHOR, FILENAME, TOC, REF, SEQ; update (F9) and toggle codes (Shift+F9) | Word ▸ Insert ▸ Text ▸ Quick Parts ▸ Field | critical | P0 | WP-64 | `write.insert.text.fields` |
 | ○ | Quick Parts ▸ Document Property content controls | Word ▸ Insert ▸ Quick Parts ▸ Document Property | niche | P2 | WP-64 | `write.insert.text.document-property` |
 | ○ | WordArt | Word ▸ Insert ▸ Text ▸ WordArt | niche | P2 | — | `write.insert.text.wordart` |
-| ○ | Drop cap (dropped and in margin) | Word ▸ Insert ▸ Text ▸ Drop Cap | critical | P0 | WP-64 | `write.insert.text.drop-cap` |
-| ○ | Insert date and time with formats and update automatically (Alt+Shift+D / Alt+Shift+T) | Word ▸ Insert ▸ Text ▸ Date & Time | critical | P0 | WP-64 | `write.insert.text.date-time` |
+| ● | Drop cap (dropped and in margin) | Word ▸ Insert ▸ Text ▸ Drop Cap | critical | P0 | WP-64 | `write.insert.text.drop-cap` |
+| ● | Insert date and time with formats and update automatically (Alt+Shift+D / Alt+Shift+T) | Word ▸ Insert ▸ Text ▸ Date & Time | critical | P0 | WP-64 | `write.insert.text.date-time` |
 | – | Insert Object (embedded OLE objects) | Word ▸ Insert ▸ Text ▸ Object | niche | out | — | `write.insert.text.object` |
 | ○ | Content controls and form fields (check box, drop-down, date picker) display and fill-in | Word ▸ Developer ▸ Controls | commonly-missed | P1 | — | `write.insert.text.content-controls` |
 
@@ -435,7 +524,7 @@ Score 7.1 % over 231 rows in scope; 0 better, 2 done, 26 partial, 203 missing, 1
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
 | ○ | Equations: OMML model, Rust math layout, equation editor with linear input | Word ▸ Insert ▸ Symbols ▸ Equation | commonly-missed | P1 | — | `write.insert.symbols.equation` |
-| ○ | Symbol gallery and Symbol dialog with recent symbols and character codes (Alt+X) | Word ▸ Insert ▸ Symbols ▸ Symbol | critical | P0 | WP-64 | `write.insert.symbols.symbol` |
+| ◐ | Symbol gallery and Symbol dialog with recent symbols and character codes (Alt+X) | Word ▸ Insert ▸ Symbols ▸ Symbol | critical | P0 | WP-64 | `write.insert.symbols.symbol` |
 
 ### Insert ▸ Smart
 
@@ -449,21 +538,21 @@ Score 7.1 % over 231 rows in scope; 0 better, 2 done, 26 partial, 203 missing, 1
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ◐ | Margins presets and custom margins, mirrored and gutter | Word ▸ Layout ▸ Page Setup ▸ Margins | critical | P0 | WP-63 | `write.layout.page-setup.margins` |
-| ◐ | Portrait and landscape per section | Word ▸ Layout ▸ Page Setup ▸ Orientation | critical | P0 | WP-63 | `write.layout.page-setup.orientation` |
-| ◐ | Paper sizes (Letter, A4, Legal, A3, A5, custom) | Word ▸ Layout ▸ Page Setup ▸ Size | critical | P0 | WP-63 | `write.layout.page-setup.size` |
-| ◐ | Text columns (one to three, left, right, more columns, line between) | Word ▸ Layout ▸ Page Setup ▸ Columns | critical | P0 | WP-63 | `write.layout.page-setup.columns` |
-| ◐ | Breaks: page, column, text wrapping, section next page/continuous/even/odd | Word ▸ Layout ▸ Page Setup ▸ Breaks | critical | P0 | WP-63 | `write.layout.page-setup.breaks` |
+| ● | Margins presets and custom margins, mirrored and gutter | Word ▸ Layout ▸ Page Setup ▸ Margins | critical | P0 | WP-63 | `write.layout.page-setup.margins` |
+| ● | Portrait and landscape per section | Word ▸ Layout ▸ Page Setup ▸ Orientation | critical | P0 | WP-63 | `write.layout.page-setup.orientation` |
+| ● | Paper sizes (Letter, A4, Legal, A3, A5, custom) | Word ▸ Layout ▸ Page Setup ▸ Size | critical | P0 | WP-63 | `write.layout.page-setup.size` |
+| ● | Text columns (one to three, left, right, more columns, line between) | Word ▸ Layout ▸ Page Setup ▸ Columns | critical | P0 | WP-63 | `write.layout.page-setup.columns` |
+| ● | Breaks: page, column, text wrapping, section next page/continuous/even/odd | Word ▸ Layout ▸ Page Setup ▸ Breaks | critical | P0 | WP-63 | `write.layout.page-setup.breaks` |
 | ○ | Line numbers (continuous, restart each page/section) | Word ▸ Layout ▸ Page Setup ▸ Line Numbers | niche | P2 | WP-63 | `write.layout.page-setup.line-numbers` |
 | ◐ | Automatic and manual hyphenation | Word ▸ Layout ▸ Page Setup ▸ Hyphenation | commonly-missed | P1 | WP-63 | `write.layout.page-setup.hyphenation` |
-| ○ | Page Setup dialog: margins, paper, layout (section start, headers different, vertical alignment) | Word ▸ Layout ▸ Page Setup ▸ dialog launcher | critical | P0 | WP-63 | `write.layout.page-setup.dialog` |
+| ● | Page Setup dialog: margins, paper, layout (section start, headers different, vertical alignment) | Word ▸ Layout ▸ Page Setup ▸ dialog launcher | critical | P0 | WP-63 | `write.layout.page-setup.dialog` |
 
 ### Layout ▸ Paragraph
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Indent left and right spinners | Word ▸ Layout ▸ Paragraph ▸ Indent | critical | P0 | WP-64 | `write.layout.paragraph.indent` |
-| ○ | Spacing before and after spinners | Word ▸ Layout ▸ Paragraph ▸ Spacing | critical | P0 | WP-64 | `write.layout.paragraph.spacing` |
+| ● | Indent left and right spinners | Word ▸ Layout ▸ Paragraph ▸ Indent | critical | P0 | WP-64 | `write.layout.paragraph.indent` |
+| ● | Spacing before and after spinners | Word ▸ Layout ▸ Paragraph ▸ Spacing | critical | P0 | WP-64 | `write.layout.paragraph.spacing` |
 
 ### Layout ▸ Arrange
 
@@ -533,7 +622,7 @@ Score 7.1 % over 231 rows in scope; 0 better, 2 done, 26 partial, 203 missing, 1
 | ○ | Spelling check as you type (squiggles, suggestions, ignore, add to dictionary) and Spelling pane (F7) | Word ▸ Review ▸ Proofing ▸ Spelling & Grammar | critical | P0 | WP-64 | `write.review.proofing.spelling` |
 | ○ | Grammar checking | Word ▸ Review ▸ Editor (grammar) | commonly-missed | P1 | — | `write.review.proofing.grammar` |
 | ○ | Thesaurus (Shift+F7) | Word ▸ Review ▸ Proofing ▸ Thesaurus | niche | P2 | WP-64 | `write.review.proofing.thesaurus` |
-| ○ | Word Count dialog (pages, words, characters with/without spaces, paragraphs, lines; include notes) | Word ▸ Review ▸ Proofing ▸ Word Count | critical | P0 | WP-64 | `write.review.proofing.word-count` |
+| ● | Word Count dialog (pages, words, characters with/without spaces, paragraphs, lines; include notes) | Word ▸ Review ▸ Proofing ▸ Word Count | critical | P0 | WP-64 | `write.review.proofing.word-count` |
 
 ### Review ▸ Language
 
@@ -618,19 +707,19 @@ Score 7.1 % over 231 rows in scope; 0 better, 2 done, 26 partial, 203 missing, 1
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Horizontal and vertical rulers with indent markers, tab stops and margin dragging | Word ▸ View ▸ Show ▸ Ruler | critical | P0 | WP-64 | `write.view.show.ruler` |
+| ● | Horizontal and vertical rulers with indent markers, tab stops and margin dragging | Word ▸ View ▸ Show ▸ Ruler | critical | P0 | WP-64 | `write.view.show.ruler` |
 | ○ | Drawing gridlines | Word ▸ View ▸ Show ▸ Gridlines | niche | P2 | WP-64 | `write.view.show.gridlines` |
-| ○ | Navigation pane: headings (drag to reorder), pages thumbnails, search results | Word ▸ View ▸ Show ▸ Navigation Pane | critical | P0 | WP-64 | `write.view.show.navigation-pane` |
+| ● | Navigation pane: headings (drag to reorder), pages thumbnails, search results | Word ▸ View ▸ Show ▸ Navigation Pane | critical | P0 | WP-64 | `write.view.show.navigation-pane` |
 
 ### View ▸ Zoom
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
 | ○ | Zoom dialog and zoom slider (10 %–500 %) | Word ▸ View ▸ Zoom ▸ Zoom | critical | P0 | WP-64 | `write.view.zoom.dialog` |
-| ○ | Zoom to 100 % | Word ▸ View ▸ Zoom ▸ 100% | critical | P0 | WP-64 | `write.view.zoom.hundred` |
-| ○ | One page | Word ▸ View ▸ Zoom ▸ One Page | critical | P0 | WP-64 | `write.view.zoom.one-page` |
-| ○ | Multiple pages | Word ▸ View ▸ Zoom ▸ Multiple Pages | critical | P0 | WP-64 | `write.view.zoom.multiple-pages` |
-| ○ | Page width | Word ▸ View ▸ Zoom ▸ Page Width | critical | P0 | WP-64 | `write.view.zoom.page-width` |
+| ● | Zoom to 100 % | Word ▸ View ▸ Zoom ▸ 100% | critical | P0 | WP-64 | `write.view.zoom.hundred` |
+| ● | One page | Word ▸ View ▸ Zoom ▸ One Page | critical | P0 | WP-64 | `write.view.zoom.one-page` |
+| ● | Multiple pages | Word ▸ View ▸ Zoom ▸ Multiple Pages | critical | P0 | WP-64 | `write.view.zoom.multiple-pages` |
+| ● | Page width | Word ▸ View ▸ Zoom ▸ Page Width | critical | P0 | WP-64 | `write.view.zoom.page-width` |
 
 ### View ▸ Window
 
@@ -650,25 +739,25 @@ Score 7.1 % over 231 rows in scope; 0 better, 2 done, 26 partial, 203 missing, 1
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Table styles gallery with Word's built-in table styles | Word ▸ Table Design ▸ Table Styles | critical | P0 | WP-64 | `write.table-design.styles` |
-| ○ | Style options: header row, total row, banded rows/columns, first/last column | Word ▸ Table Design ▸ Table Style Options | critical | P0 | WP-64 | `write.table-design.style-options` |
-| ○ | Cell shading | Word ▸ Table Design ▸ Shading | critical | P0 | WP-64 | `write.table-design.shading` |
-| ○ | Borders gallery, border styles, pen colour and the border painter | Word ▸ Table Design ▸ Borders | critical | P0 | WP-64 | `write.table-design.borders` |
+| ● | Table styles gallery with Word's built-in table styles | Word ▸ Table Design ▸ Table Styles | critical | P0 | WP-64 | `write.table-design.styles` |
+| ● | Style options: header row, total row, banded rows/columns, first/last column | Word ▸ Table Design ▸ Table Style Options | critical | P0 | WP-64 | `write.table-design.style-options` |
+| ● | Cell shading | Word ▸ Table Design ▸ Shading | critical | P0 | WP-64 | `write.table-design.shading` |
+| ● | Borders gallery, border styles, pen colour and the border painter | Word ▸ Table Design ▸ Borders | critical | P0 | WP-64 | `write.table-design.borders` |
 
 ### Table Layout (contextual)
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Insert rows above/below and columns left/right (and the + insert control) | Word ▸ Table Layout ▸ Rows & Columns | critical | P0 | WP-64 | `write.table-layout.insert` |
-| ○ | Delete cells, rows, columns, table | Word ▸ Table Layout ▸ Delete | critical | P0 | WP-64 | `write.table-layout.delete` |
-| ○ | Merge cells | Word ▸ Table Layout ▸ Merge ▸ Merge Cells | critical | P0 | WP-64 | `write.table-layout.merge` |
-| ○ | Split cells | Word ▸ Table Layout ▸ Merge ▸ Split Cells | critical | P0 | WP-64 | `write.table-layout.split-cells` |
-| ○ | Split table | Word ▸ Table Layout ▸ Merge ▸ Split Table | critical | P0 | WP-64 | `write.table-layout.split-table` |
-| ○ | Cell size and AutoFit (contents, window, fixed column width) | Word ▸ Table Layout ▸ Cell Size | critical | P0 | WP-64 | `write.table-layout.cell-size` |
-| ○ | Distribute rows and columns evenly | Word ▸ Table Layout ▸ Cell Size ▸ Distribute | critical | P0 | WP-64 | `write.table-layout.distribute` |
-| ○ | Cell alignment (nine positions), text direction and cell margins | Word ▸ Table Layout ▸ Alignment | critical | P0 | WP-64 | `write.table-layout.alignment` |
-| ◐ | Repeat header rows on each page | Word ▸ Table Layout ▸ Data ▸ Repeat Header Rows | critical | P0 | WP-63 | `write.table-layout.repeat-header` |
-| ○ | Convert table to text | Word ▸ Table Layout ▸ Data ▸ Convert to Text | critical | P0 | WP-64 | `write.table-layout.convert-to-text` |
+| ● | Insert rows above/below and columns left/right (and the + insert control) | Word ▸ Table Layout ▸ Rows & Columns | critical | P0 | WP-64 | `write.table-layout.insert` |
+| ● | Delete cells, rows, columns, table | Word ▸ Table Layout ▸ Delete | critical | P0 | WP-64 | `write.table-layout.delete` |
+| ● | Merge cells | Word ▸ Table Layout ▸ Merge ▸ Merge Cells | critical | P0 | WP-64 | `write.table-layout.merge` |
+| ● | Split cells | Word ▸ Table Layout ▸ Merge ▸ Split Cells | critical | P0 | WP-64 | `write.table-layout.split-cells` |
+| ● | Split table | Word ▸ Table Layout ▸ Merge ▸ Split Table | critical | P0 | WP-64 | `write.table-layout.split-table` |
+| ● | Cell size and AutoFit (contents, window, fixed column width) | Word ▸ Table Layout ▸ Cell Size | critical | P0 | WP-64 | `write.table-layout.cell-size` |
+| ● | Distribute rows and columns evenly | Word ▸ Table Layout ▸ Cell Size ▸ Distribute | critical | P0 | WP-64 | `write.table-layout.distribute` |
+| ● | Cell alignment (nine positions), text direction and cell margins | Word ▸ Table Layout ▸ Alignment | critical | P0 | WP-64 | `write.table-layout.alignment` |
+| ● | Repeat header rows on each page | Word ▸ Table Layout ▸ Data ▸ Repeat Header Rows | critical | P0 | WP-63 | `write.table-layout.repeat-header` |
+| ● | Convert table to text | Word ▸ Table Layout ▸ Data ▸ Convert to Text | critical | P0 | WP-64 | `write.table-layout.convert-to-text` |
 | ○ | Table formulas (=SUM(ABOVE), bookmarks, number format) | Word ▸ Table Layout ▸ Data ▸ Formula | niche | P2 | WP-64 | `write.table-layout.formula` |
 | ○ | Sort table rows by columns | Word ▸ Table Layout ▸ Data ▸ Sort | commonly-missed | P1 | WP-64 | `write.table-layout.sort` |
 | ○ | Table Properties dialog (table, row, column, cell; alignment, text wrapping around floating tables) | Word ▸ Table Layout ▸ Table ▸ Properties | critical | P0 | WP-64 | `write.table-layout.properties` |
@@ -698,17 +787,17 @@ Score 7.1 % over 231 rows in scope; 0 better, 2 done, 26 partial, 203 missing, 1
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ◐ | Different first page | Word ▸ Header & Footer ▸ Options ▸ Different First Page | critical | P0 | WP-63 | `write.header-footer.different-first` |
-| ◐ | Different odd and even pages | Word ▸ Header & Footer ▸ Options ▸ Different Odd & Even Pages | critical | P0 | WP-63 | `write.header-footer.different-odd-even` |
-| ◐ | Link to previous section | Word ▸ Header & Footer ▸ Navigation ▸ Link to Previous | critical | P0 | WP-63 | `write.header-footer.link-previous` |
+| ● | Different first page | Word ▸ Header & Footer ▸ Options ▸ Different First Page | critical | P0 | WP-63 | `write.header-footer.different-first` |
+| ● | Different odd and even pages | Word ▸ Header & Footer ▸ Options ▸ Different Odd & Even Pages | critical | P0 | WP-63 | `write.header-footer.different-odd-even` |
+| ● | Link to previous section | Word ▸ Header & Footer ▸ Navigation ▸ Link to Previous | critical | P0 | WP-63 | `write.header-footer.link-previous` |
 | ◐ | Header and footer distance from edge | Word ▸ Header & Footer ▸ Position | critical | P0 | WP-63 | `write.header-footer.position` |
-| ○ | Go to header/footer, previous/next section, close (Esc, double-click body) | Word ▸ Header & Footer ▸ Navigation / Close | critical | P0 | WP-64 | `write.header-footer.navigate-close` |
+| ● | Go to header/footer, previous/next section, close (Esc, double-click body) | Word ▸ Header & Footer ▸ Navigation / Close | critical | P0 | WP-64 | `write.header-footer.navigate-close` |
 
 ### Editing behaviour
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Caret movement and selection by character, word, line, paragraph, page; Ctrl+Home/End; click, double and triple click | Word ▸ keyboard navigation | critical | P0 | WP-64 | `write.editing.caret-movement` |
+| ● | Caret movement and selection by character, word, line, paragraph, page; Ctrl+Home/End; click, double and triple click | Word ▸ keyboard navigation | critical | P0 | WP-64 | `write.editing.caret-movement` |
 | ○ | AutoCorrect: common typos, capitalise first letter, replace as you type list | Word ▸ File ▸ Options ▸ Proofing ▸ AutoCorrect Options | critical | P0 | WP-64 | `write.editing.autocorrect` |
 | ○ | AutoFormat as you type: automatic bulleted and numbered lists, borders from ---, ordinals | Word ▸ AutoCorrect ▸ AutoFormat As You Type | critical | P0 | WP-66 | `write.editing.autoformat` |
 | ○ | Smart quotes, en/em dashes, ellipsis, fractions (toggleable) | Word ▸ AutoFormat As You Type ▸ smart quotes | critical | P0 | WP-66 | `write.editing.smart-typography` |
@@ -716,12 +805,12 @@ Score 7.1 % over 231 rows in scope; 0 better, 2 done, 26 partial, 203 missing, 1
 | ○ | Smart paste: Markdown text becomes headings, lists, emphasis and code | — | commonly-missed | P0 | WP-66 | `write.editing.smart-paste-markdown` |
 | ○ | Word-count goal in the status bar with progress | — | commonly-missed | P0 | WP-66 | `write.editing.word-count-goal` |
 | ○ | Document outline health: skipped heading levels and empty headings flagged | — | commonly-missed | P1 | WP-66 | `write.editing.outline-health` |
-| ○ | Mini toolbar on selection and right-click (font, size, bold, italic, highlight, colour, styles) | Word ▸ mini toolbar | critical | P0 | WP-58 | `write.editing.mini-toolbar` |
-| ○ | Context menus for text, tables, pictures, links, misspellings and comments | Word ▸ right-click menus | critical | P0 | WP-58 | `write.editing.context-menu` |
+| ● | Mini toolbar on selection and right-click (font, size, bold, italic, highlight, colour, styles) | Word ▸ mini toolbar | critical | P0 | WP-58 | `write.editing.mini-toolbar` |
+| ● | Context menus for text, tables, pictures, links, misspellings and comments | Word ▸ right-click menus | critical | P0 | WP-58 | `write.editing.context-menu` |
 | ○ | Drag and drop of selected text and objects | Word ▸ drag and drop | commonly-missed | P0 | WP-64 | `write.editing.drag-drop-text` |
-| ○ | Move paragraph up/down (Alt+Shift+Up/Down) | Word ▸ Alt+Shift+Arrows | critical | P0 | WP-64 | `write.editing.move-paragraph` |
+| ● | Move paragraph up/down (Alt+Shift+Up/Down) | Word ▸ Alt+Shift+Arrows | critical | P0 | WP-64 | `write.editing.move-paragraph` |
 | ○ | Overtype mode (Insert key, off by default) | Word ▸ Options ▸ Use overtype mode | niche | P2 | WP-64 | `write.editing.insert-overtype` |
-| ○ | Input methods, dead keys and composition (CJK, Arabic, accents) | Word ▸ IME input | critical | P0 | WP-54 | `write.editing.ime` |
+| ● | Input methods, dead keys and composition (CJK, Arabic, accents) | Word ▸ IME input | critical | P0 | WP-54 | `write.editing.ime` |
 
 ### Layout engine
 

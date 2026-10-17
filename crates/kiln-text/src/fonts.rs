@@ -408,25 +408,37 @@ impl FontStore {
                         return make(&ui, rule.kind);
                     }
                 }
-                Target::Symbol => {
-                    return make(
-                        substitution::default_family(substitution::StyleGuess::Sans),
-                        rule.kind,
-                    );
-                }
-                Target::ScriptFallback => {
-                    return make(
-                        substitution::default_family(substitution::StyleGuess::Sans),
-                        rule.kind,
-                    );
+                Target::Symbol | Target::ScriptFallback => {
+                    let family = self.available_default(substitution::StyleGuess::Sans);
+                    return make(&family, rule.kind);
                 }
             }
         }
         let guess = substitution::guess_style(name);
-        make(
-            substitution::default_family(guess),
-            SubstitutionKind::Missing,
-        )
+        let family = self.available_default(guess);
+        make(&family, SubstitutionKind::Missing)
+    }
+
+    /// The default family for a style when it is loaded; otherwise the first loaded family of
+    /// the Latin fallback chain, or any loaded family. A store with fewer fonts (the web core
+    /// embeds Carlito only) must not resolve to a family it does not have: text in that family,
+    /// such as a bullet in Symbol, would find no font for characters of no particular script.
+    fn available_default(&mut self, style: substitution::StyleGuess) -> String {
+        let preferred = substitution::default_family(style);
+        if self.has_family(preferred) {
+            return preferred.to_owned();
+        }
+        let latin = DEFAULT_FALLBACKS
+            .iter()
+            .find(|(script, _)| script == b"Latn")
+            .map_or(&[][..], |(_, families)| *families);
+        if let Some(found) = latin.iter().find(|f| self.has_family(f)) {
+            return (*found).to_owned();
+        }
+        self.family_names()
+            .into_iter()
+            .next()
+            .unwrap_or_else(|| preferred.to_owned())
     }
 
     /// The font instance behind an id.

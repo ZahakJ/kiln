@@ -265,3 +265,33 @@ fn shaping_cache_reuses_words_and_keeps_results_identical() {
     let fresh = common::engine().layout(&spec);
     assert_eq!(first, fresh);
 }
+
+#[test]
+fn a_store_with_one_family_resolves_every_request_to_a_family_it_has() {
+    // The web core embeds Carlito only: Symbol bullets, Arial text and unknown families must
+    // land on Carlito, not on a Liberation family that is not loaded (WP-64: bullets did not
+    // show on the web because "•" in Symbol found no font).
+    let mut fonts = FontStore::new(&FontStoreOptions {
+        bundled: false,
+        system: false,
+        ..FontStoreOptions::default()
+    });
+    let carlito = std::fs::read(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../assets/fonts/carlito/Carlito-Regular.ttf"
+    ))
+    .expect("Carlito");
+    fonts.add_font_data(carlito);
+    for (requested, kind) in [
+        ("Symbol", SubstitutionKind::SymbolFallback),
+        ("Wingdings", SubstitutionKind::SymbolFallback),
+        ("Arial", SubstitutionKind::Missing),
+        ("Some Unknown Serif", SubstitutionKind::Missing),
+    ] {
+        let r = fonts.resolve(requested);
+        assert_eq!(r.family, "Carlito", "{requested}");
+        if requested != "Arial" {
+            assert_eq!(r.kind, kind, "{requested}");
+        }
+    }
+}

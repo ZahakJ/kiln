@@ -1,0 +1,13 @@
+{
+  "type": "TableDeleteTarget",
+  "format": {
+    "TYPENAME": "TableDeleteTarget"
+  },
+  "values": [
+    "Rows",
+    "CellContents",
+    "Rows",
+    "Columns",
+    "Table"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "TabAlign",
+  "format": {
+    "TYPENAME": "TabAlign"
+  },
+  "values": [
+    "Left",
+    "Bar",
+    "Left",
+    "Center",
+    "Right"
+  ]
+}

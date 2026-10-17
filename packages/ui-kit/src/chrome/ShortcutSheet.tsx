@@ -21,7 +21,7 @@ export function ShortcutSheet({ open, onOpenChange }: ShortcutSheetProps) {
   const rev = useKeymapRevision();
   const [filter, setFilter] = useState('');
   const groups = useMemo(() => {
-    if (!keymap) return [];
+    if (!keymap || !open) return [];
     const byGroup = new Map<string, Map<string, { title: string; keys: string[] }>>();
     for (const b of keymap.bindings(app)) {
       if (b.onRelease) continue;
@@ -50,7 +50,7 @@ export function ShortcutSheet({ open, onOpenChange }: ShortcutSheetProps) {
         ),
       }))
       .filter((g) => g.rows.length > 0);
-  }, [keymap, registry, app, platform, filter, rev]);
+  }, [keymap, registry, app, platform, filter, rev, open]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

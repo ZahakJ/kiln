@@ -2196,6 +2196,7 @@ dependencies = [
  "byteorder-lite",
  "color_quant",
  "gif",
+ "image-webp",
  "moxcms",
  "num-traits",
  "png 0.18.1",
@@ -2797,6 +2798,7 @@ name = "kiln-session"
 version = "0.1.0"
 dependencies = [
  "flume",
+ "image",
  "kiln-common",
  "kiln-doc",
  "kiln-doc-layout",
@@ -2811,7 +2813,9 @@ dependencies = [
  "kiln-sheet",
  "kiln-text",
  "proptest",
+ "regex",
  "rustc-hash",
+ "serde",
  "serde_json",
  "unicode-segmentation",
 ]

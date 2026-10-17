@@ -23,6 +23,10 @@ export interface SurfaceProps {
   onError?: (error: unknown) => void;
   /** Receives the zoom factor whenever it changes. */
   onZoom?: (zoom: number) => void;
+  /** Receives scroll, zoom and size changes (rulers beside the surface). */
+  onViewChange?: SurfaceOptions['onViewChange'];
+  /** Ctrl+= / Ctrl+- / Ctrl+0 zoom (default true; Write gives them to subscript and superscript). */
+  zoomKeys?: boolean;
 }
 
 const ROOT: CSSProperties = { position: 'relative', width: '100%', height: '100%', overflow: 'hidden' };
@@ -74,6 +78,8 @@ export function Surface({
   onController,
   onError,
   onZoom,
+  onViewChange,
+  zoomKeys = true,
 }: SurfaceProps) {
   const root = useRef<HTMLDivElement>(null);
   const scroller = useRef<HTMLDivElement>(null);
@@ -83,8 +89,8 @@ export function Surface({
   const proxy = useRef<HTMLDivElement>(null);
   const controller = useRef<SurfaceController | null>(null);
   const [tree, setTree] = useState<A11yTree | null>(null);
-  const callbacks = useRef({ onController, onError, onZoom });
-  callbacks.current = { onController, onError, onZoom };
+  const callbacks = useRef({ onController, onError, onZoom, onViewChange });
+  callbacks.current = { onController, onError, onZoom, onViewChange };
 
   useEffect(() => {
     if (
@@ -111,9 +117,11 @@ export function Surface({
       {
         theme,
         blink,
+        zoomKeys,
         onA11y: setTree,
         onError: (e) => callbacks.current.onError?.(e),
         onZoom: (z) => callbacks.current.onZoom?.(z),
+        onViewChange: (v) => callbacks.current.onViewChange?.(v),
       },
     );
     controller.current = c;

@@ -1,0 +1,16 @@
+{
+  "type": "ListNumberStyle",
+  "format": {
+    "TYPENAME": "ListNumberStyle"
+  },
+  "values": [
+    "Decimal",
+    "UpperRoman",
+    "Decimal",
+    "DecimalParen",
+    "UpperRoman",
+    "UpperLetter",
+    "LowerLetterParen",
+    "LowerLetter"
+  ]
+}

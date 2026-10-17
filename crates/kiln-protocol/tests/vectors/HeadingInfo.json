@@ -1,0 +1,22 @@
+{
+  "type": "HeadingInfo",
+  "format": {
+    "TYPENAME": "HeadingInfo"
+  },
+  "values": [
+    {
+      "para": 1,
+      "level": 1,
+      "text": "Intro",
+      "page": null,
+      "current": true
+    },
+    {
+      "para": 0,
+      "level": 0,
+      "text": "",
+      "page": null,
+      "current": false
+    }
+  ]
+}

@@ -2,8 +2,8 @@ import { type CommandMatch, type RegisteredCommand, searchCommands } from '@kiln
 import * as RD from '@radix-ui/react-dialog';
 import { Command } from 'cmdk';
 import { Search } from 'lucide-react';
-import { useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { useCommands, useKeymapRevision, useRegistryVersion } from '../chrome/CommandContext.tsx';
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { useCommands, useKeymapRevision } from '../chrome/CommandContext.tsx';
 import { CommandIcon } from '../chrome/commandIcons.tsx';
 import { Icon } from '../icons/Icon.tsx';
 import { Kbd } from '../primitives/Kbd.tsx';
@@ -36,7 +36,16 @@ const EMPTY: readonly string[] = [];
 export function CommandPalette({ open, onOpenChange, placeholder, limit = 60 }: CommandPaletteProps) {
   const { registry, keymap, app } = useCommands();
   const [query, setQuery] = useState('');
-  const version = useRegistryVersion();
+  // Registry changes re-list the commands only while the palette is open: closed, it must not
+  // re-render for every change (editors report one per keystroke; typing latency, B5).
+  const [version, setVersion] = useState(0);
+  useEffect(() => {
+    if (!open) return;
+    setVersion((v) => v + 1);
+    return registry.subscribe((e) => {
+      if (e.type !== 'executed') setVersion((v) => v + 1);
+    });
+  }, [open, registry]);
   useKeymapRevision();
   const recentIds = useRecent();
   // Opened by shortcut or the search box: give focus back to where it was (usually the document).
@@ -45,10 +54,11 @@ export function CommandPalette({ open, onOpenChange, placeholder, limit = 60 }: 
     returnFocus.current = document.activeElement as HTMLElement | null;
   }
 
+  // Only while open: closed, the palette must not re-list ~900 commands on every registry change
+  // (each selection change of an editor updates the context; WP-64 typing latency, B5).
   const commands = useMemo(
     () =>
-      registry
-        .list({ visibleOnly: true })
+      (open ? registry.list({ visibleOnly: true }) : [])
         .filter((c) => c.palette !== false)
         // Available commands first; not-yet-implemented ones (development builds only) after them.
         .sort((a, b) => Number(a.pending) - Number(b.pending) || a.title.localeCompare(b.title)),

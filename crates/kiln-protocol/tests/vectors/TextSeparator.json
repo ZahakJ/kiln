@@ -1,0 +1,13 @@
+{
+  "type": "TextSeparator",
+  "format": {
+    "TYPENAME": "TextSeparator"
+  },
+  "values": [
+    "Tabs",
+    "Paragraphs",
+    "Tabs",
+    "Commas",
+    "Paragraphs"
+  ]
+}

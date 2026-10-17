@@ -1,0 +1,11 @@
+{
+  "type": "TableAutofit",
+  "format": {
+    "TYPENAME": "TableAutofit"
+  },
+  "values": [
+    "Fixed",
+    "Window",
+    "Fixed"
+  ]
+}

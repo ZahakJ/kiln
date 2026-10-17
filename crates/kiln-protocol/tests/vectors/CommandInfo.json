@@ -379,6 +379,726 @@
       "availability": "Document"
     },
     {
+      "id": "suite.edit.cut",
+      "label_key": "cmd.suite.edit.cut",
+      "keytip": "X",
+      "group": "edit",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Selection"
+    },
+    {
+      "id": "suite.edit.copy",
+      "label_key": "cmd.suite.edit.copy",
+      "keytip": "C",
+      "group": "edit",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Selection"
+    },
+    {
+      "id": "suite.edit.paste",
+      "label_key": "cmd.suite.edit.paste",
+      "keytip": "V",
+      "group": "edit",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.edit.paste_keep_source",
+      "label_key": "cmd.suite.edit.paste_keep_source",
+      "keytip": "K",
+      "group": "edit",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.edit.paste_merge_formatting",
+      "label_key": "cmd.suite.edit.paste_merge_formatting",
+      "keytip": "M",
+      "group": "edit",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.edit.paste_text_only",
+      "label_key": "cmd.suite.edit.paste_text_only",
+      "keytip": "T",
+      "group": "edit",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.edit.paste_as",
+      "label_key": "cmd.suite.edit.paste_as",
+      "keytip": null,
+      "group": "edit",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.edit.repeat",
+      "label_key": "cmd.suite.edit.repeat",
+      "keytip": null,
+      "group": "edit",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.bold",
+      "label_key": "cmd.suite.format.bold",
+      "keytip": "1",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.italic",
+      "label_key": "cmd.suite.format.italic",
+      "keytip": "2",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.underline",
+      "label_key": "cmd.suite.format.underline",
+      "keytip": "3",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.double_underline",
+      "label_key": "cmd.suite.format.double_underline",
+      "keytip": null,
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.strikethrough",
+      "label_key": "cmd.suite.format.strikethrough",
+      "keytip": "4",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.subscript",
+      "label_key": "cmd.suite.format.subscript",
+      "keytip": "5",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.superscript",
+      "label_key": "cmd.suite.format.superscript",
+      "keytip": "6",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.all_caps",
+      "label_key": "cmd.suite.format.all_caps",
+      "keytip": null,
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.font_family",
+      "label_key": "cmd.suite.format.font_family",
+      "keytip": "FF",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.font_size",
+      "label_key": "cmd.suite.format.font_size",
+      "keytip": "FS",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.grow_font",
+      "label_key": "cmd.suite.format.grow_font",
+      "keytip": "FG",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.shrink_font",
+      "label_key": "cmd.suite.format.shrink_font",
+      "keytip": "FK",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.change_case",
+      "label_key": "cmd.suite.format.change_case",
+      "keytip": "7",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.clear_formatting",
+      "label_key": "cmd.suite.format.clear_formatting",
+      "keytip": "E",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.font_color",
+      "label_key": "cmd.suite.format.font_color",
+      "keytip": "FC",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.highlight",
+      "label_key": "cmd.suite.format.highlight",
+      "keytip": "I",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.bullets",
+      "label_key": "cmd.suite.format.bullets",
+      "keytip": "U",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.numbering",
+      "label_key": "cmd.suite.format.numbering",
+      "keytip": "N",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.multilevel_list",
+      "label_key": "cmd.suite.format.multilevel_list",
+      "keytip": "M",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.indent",
+      "label_key": "cmd.suite.format.indent",
+      "keytip": "AI",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.outdent",
+      "label_key": "cmd.suite.format.outdent",
+      "keytip": "AO",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.align_left",
+      "label_key": "cmd.suite.format.align_left",
+      "keytip": "AL",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.align_center",
+      "label_key": "cmd.suite.format.align_center",
+      "keytip": "AC",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.align_right",
+      "label_key": "cmd.suite.format.align_right",
+      "keytip": "AR",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.justify",
+      "label_key": "cmd.suite.format.justify",
+      "keytip": "AJ",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.format.line_spacing",
+      "label_key": "cmd.suite.format.line_spacing",
+      "keytip": "K",
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.insert.date",
+      "label_key": "cmd.suite.insert.date",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.insert.time",
+      "label_key": "cmd.suite.insert.time",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.insert.pictures",
+      "label_key": "cmd.suite.insert.pictures",
+      "keytip": "P",
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.layout.margins",
+      "label_key": "cmd.suite.layout.margins",
+      "keytip": "M",
+      "group": "layout",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.layout.orientation",
+      "label_key": "cmd.suite.layout.orientation",
+      "keytip": "O",
+      "group": "layout",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.layout.size",
+      "label_key": "cmd.suite.layout.size",
+      "keytip": "SZ",
+      "group": "layout",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.insert_row_above",
+      "label_key": "cmd.suite.table.insert_row_above",
+      "keytip": "A",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.insert_row_below",
+      "label_key": "cmd.suite.table.insert_row_below",
+      "keytip": "BE",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.insert_column_left",
+      "label_key": "cmd.suite.table.insert_column_left",
+      "keytip": "L",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.insert_column_right",
+      "label_key": "cmd.suite.table.insert_column_right",
+      "keytip": "R",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.delete",
+      "label_key": "cmd.suite.table.delete",
+      "keytip": "D",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.merge_cells",
+      "label_key": "cmd.suite.table.merge_cells",
+      "keytip": "M",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.split_cells",
+      "label_key": "cmd.suite.table.split_cells",
+      "keytip": "P",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.distribute_rows",
+      "label_key": "cmd.suite.table.distribute_rows",
+      "keytip": "DR",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.distribute_columns",
+      "label_key": "cmd.suite.table.distribute_columns",
+      "keytip": "DC",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.cell_alignment",
+      "label_key": "cmd.suite.table.cell_alignment",
+      "keytip": null,
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.repeat_header_rows",
+      "label_key": "cmd.suite.table.repeat_header_rows",
+      "keytip": "RH",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.convert_to_text",
+      "label_key": "cmd.suite.table.convert_to_text",
+      "keytip": "V",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.header_row",
+      "label_key": "cmd.suite.table.header_row",
+      "keytip": "HR",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.total_row",
+      "label_key": "cmd.suite.table.total_row",
+      "keytip": "TR",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.banded_rows",
+      "label_key": "cmd.suite.table.banded_rows",
+      "keytip": "BR",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.first_column",
+      "label_key": "cmd.suite.table.first_column",
+      "keytip": "FC",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.banded_columns",
+      "label_key": "cmd.suite.table.banded_columns",
+      "keytip": "BC",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.styles",
+      "label_key": "cmd.suite.table.styles",
+      "keytip": null,
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.shading",
+      "label_key": "cmd.suite.table.shading",
+      "keytip": "H",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "suite.table.borders",
+      "label_key": "cmd.suite.table.borders",
+      "keytip": "B",
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
       "id": "write.edit.insert_text",
       "label_key": "cmd.write.edit.insert_text",
       "keytip": null,
@@ -523,13 +1243,793 @@
       "availability": "Editable"
     },
     {
+      "id": "write.edit.tab",
+      "label_key": "cmd.write.edit.tab",
+      "keytip": null,
+      "group": "edit",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.edit.line_break",
+      "label_key": "cmd.write.edit.line_break",
+      "keytip": null,
+      "group": "edit",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.paragraph.show_marks",
+      "label_key": "cmd.write.paragraph.show_marks",
+      "keytip": null,
+      "group": "paragraph",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "write.paragraph.clear_paragraph_formatting",
+      "label_key": "cmd.write.paragraph.clear_paragraph_formatting",
+      "keytip": null,
+      "group": "paragraph",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.paragraph.clear_character_formatting",
+      "label_key": "cmd.write.paragraph.clear_character_formatting",
+      "keytip": null,
+      "group": "paragraph",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.paragraph.move_paragraph_up",
+      "label_key": "cmd.write.paragraph.move_paragraph_up",
+      "keytip": null,
+      "group": "paragraph",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.paragraph.move_paragraph_down",
+      "label_key": "cmd.write.paragraph.move_paragraph_down",
+      "keytip": null,
+      "group": "paragraph",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.paragraph.promote",
+      "label_key": "cmd.write.paragraph.promote",
+      "keytip": null,
+      "group": "paragraph",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.paragraph.demote",
+      "label_key": "cmd.write.paragraph.demote",
+      "keytip": null,
+      "group": "paragraph",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.paragraph.shading",
+      "label_key": "cmd.write.paragraph.shading",
+      "keytip": null,
+      "group": "paragraph",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.paragraph.borders",
+      "label_key": "cmd.write.paragraph.borders",
+      "keytip": null,
+      "group": "paragraph",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.format.paragraph",
+      "label_key": "cmd.write.format.paragraph",
+      "keytip": null,
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.format.font",
+      "label_key": "cmd.write.format.font",
+      "keytip": null,
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.format.tabs",
+      "label_key": "cmd.write.format.tabs",
+      "keytip": null,
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.format.small_caps",
+      "label_key": "cmd.write.format.small_caps",
+      "keytip": null,
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.format.underline_style",
+      "label_key": "cmd.write.format.underline_style",
+      "keytip": null,
+      "group": "format",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.styles.apply",
+      "label_key": "cmd.write.styles.apply",
+      "keytip": null,
+      "group": "styles",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.styles.normal",
+      "label_key": "cmd.write.styles.normal",
+      "keytip": null,
+      "group": "styles",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.styles.heading_1",
+      "label_key": "cmd.write.styles.heading_1",
+      "keytip": null,
+      "group": "styles",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.styles.heading_2",
+      "label_key": "cmd.write.styles.heading_2",
+      "keytip": null,
+      "group": "styles",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.styles.heading_3",
+      "label_key": "cmd.write.styles.heading_3",
+      "keytip": null,
+      "group": "styles",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.styles.title",
+      "label_key": "cmd.write.styles.title",
+      "keytip": null,
+      "group": "styles",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.styles.update_from_selection",
+      "label_key": "cmd.write.styles.update_from_selection",
+      "keytip": null,
+      "group": "styles",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.styles.new_from_selection",
+      "label_key": "cmd.write.styles.new_from_selection",
+      "keytip": null,
+      "group": "styles",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.styles.modify",
+      "label_key": "cmd.write.styles.modify",
+      "keytip": null,
+      "group": "styles",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.list.set_level",
+      "label_key": "cmd.write.list.set_level",
+      "keytip": null,
+      "group": "list",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.list.restart",
+      "label_key": "cmd.write.list.restart",
+      "keytip": null,
+      "group": "list",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.list.continue",
+      "label_key": "cmd.write.list.continue",
+      "keytip": null,
+      "group": "list",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.list.set_value",
+      "label_key": "cmd.write.list.set_value",
+      "keytip": null,
+      "group": "list",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.page_break",
+      "label_key": "cmd.write.insert.page_break",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.column_break",
+      "label_key": "cmd.write.insert.column_break",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.blank_page",
+      "label_key": "cmd.write.insert.blank_page",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.layout.section_break",
+      "label_key": "cmd.write.layout.section_break",
+      "keytip": null,
+      "group": "layout",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.layout.columns",
+      "label_key": "cmd.write.layout.columns",
+      "keytip": null,
+      "group": "layout",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.layout.indent_left",
+      "label_key": "cmd.write.layout.indent_left",
+      "keytip": null,
+      "group": "layout",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.layout.indent_right",
+      "label_key": "cmd.write.layout.indent_right",
+      "keytip": null,
+      "group": "layout",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.layout.spacing_before",
+      "label_key": "cmd.write.layout.spacing_before",
+      "keytip": null,
+      "group": "layout",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.layout.spacing_after",
+      "label_key": "cmd.write.layout.spacing_after",
+      "keytip": null,
+      "group": "layout",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.layout.page_setup",
+      "label_key": "cmd.write.layout.page_setup",
+      "keytip": null,
+      "group": "layout",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.header",
+      "label_key": "cmd.write.insert.header",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.footer",
+      "label_key": "cmd.write.insert.footer",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.header_footer.close",
+      "label_key": "cmd.write.header_footer.close",
+      "keytip": null,
+      "group": "header_footer",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "write.header_footer.different_first_page",
+      "label_key": "cmd.write.header_footer.different_first_page",
+      "keytip": null,
+      "group": "header_footer",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.header_footer.different_odd_even",
+      "label_key": "cmd.write.header_footer.different_odd_even",
+      "keytip": null,
+      "group": "header_footer",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.header_footer.link_to_previous",
+      "label_key": "cmd.write.header_footer.link_to_previous",
+      "keytip": null,
+      "group": "header_footer",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.page_number",
+      "label_key": "cmd.write.insert.page_number",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.link",
+      "label_key": "cmd.write.insert.link",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.remove_link",
+      "label_key": "cmd.write.insert.remove_link",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.bookmark",
+      "label_key": "cmd.write.insert.bookmark",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.date_time",
+      "label_key": "cmd.write.insert.date_time",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.field",
+      "label_key": "cmd.write.insert.field",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.update_fields",
+      "label_key": "cmd.write.insert.update_fields",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.drop_cap",
+      "label_key": "cmd.write.insert.drop_cap",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.picture",
+      "label_key": "cmd.write.insert.picture",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.table.insert",
+      "label_key": "cmd.write.table.insert",
+      "keytip": null,
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.insert.convert_text_to_table",
+      "label_key": "cmd.write.insert.convert_text_to_table",
+      "keytip": null,
+      "group": "insert",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.table.autofit",
+      "label_key": "cmd.write.table.autofit",
+      "keytip": null,
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.table.align",
+      "label_key": "cmd.write.table.align",
+      "keytip": null,
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.table.split",
+      "label_key": "cmd.write.table.split",
+      "keytip": null,
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.table.select",
+      "label_key": "cmd.write.table.select",
+      "keytip": null,
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "write.table.cell_size",
+      "label_key": "cmd.write.table.cell_size",
+      "keytip": null,
+      "group": "table",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.find.next",
+      "label_key": "cmd.write.find.next",
+      "keytip": null,
+      "group": "find",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "write.find.replace",
+      "label_key": "cmd.write.find.replace",
+      "keytip": null,
+      "group": "find",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.find.replace_all",
+      "label_key": "cmd.write.find.replace_all",
+      "keytip": null,
+      "group": "find",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "write.find.go_to",
+      "label_key": "cmd.write.find.go_to",
+      "keytip": null,
+      "group": "find",
+      "tier": "P0",
+      "apps": [
+        "Write",
+        "Notes"
+      ],
+      "availability": "Document"
+    },
+    {
       "id": "",
       "label_key": "",
       "keytip": null,
       "group": "",
       "tier": "P1",
       "apps": [],
-      "availability": "Selection"
+      "availability": "Always"
     }
   ]
 }

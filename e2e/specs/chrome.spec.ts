@@ -157,7 +157,14 @@ test.describe('chrome', () => {
     await page.screenshot({ path: shot('write-keytips-light-desktop.png') });
     await page.keyboard.press('h');
     await expect(page.locator('[data-keytip-badge="B"]')).toBeVisible();
+    // Borders is a drop-down in Kiln Write (WP-64): its Key Tip takes the focus to it, and Enter
+    // opens the borders menu.
     await page.keyboard.press('b');
+    await expect(page.locator('[data-command="write.paragraph.borders"]').first()).toBeFocused();
+    await page.keyboard.press('Enter');
+    const borders = page.getByRole('menuitem', { name: 'Bottom Border' });
+    await expect(borders).toBeVisible();
+    await borders.click();
     await expect
       .poll(async () => (await executed(page)).map((e) => e.id))
       .toContain('write.paragraph.borders');
@@ -177,8 +184,9 @@ test.describe('chrome', () => {
     await dialog.getByRole('combobox').fill('combine cells');
     await expect(dialog.getByRole('option', { name: /Merge & Center/ }).first()).toBeVisible();
     await page.screenshot({ path: shot('grid-palette-light-desktop.png') });
-    await dialog.getByRole('combobox').fill('bold');
-    await expect(dialog.getByRole('option', { name: /Bold/ }).first()).toContainText('Ctrl+B');
+    // (Bold is Kiln Write's core command since WP-64; Grid offers it when its core does, WP-71.)
+    await dialog.getByRole('combobox').fill('save');
+    await expect(dialog.getByRole('option', { name: /^Save/ }).first()).toContainText('Ctrl+S');
     await expectNoSeriousA11yViolations(page);
     await page.keyboard.press('Escape');
     await expect(dialog).toBeHidden();
@@ -217,10 +225,11 @@ test.describe('chrome', () => {
   });
 
   test('a planned command says it is not in this build rather than doing nothing', async ({ page }) => {
+    // Format Painter arrives with WP-66 (Cut, the example before WP-64, is in the core now).
     await openFrame(page, 'write');
-    await page.getByRole('button', { name: 'Cut' }).click();
-    await expect(page.getByText('Cut is not in this build yet')).toBeVisible();
-    expect((await executed(page)).at(-1)).toEqual({ id: 'suite.edit.cut', status: 'pending' });
+    await page.locator('[data-command="suite.edit.format_painter"]').first().click();
+    await expect(page.getByText(/is not in this build yet/)).toBeVisible();
+    expect((await executed(page)).at(-1)).toEqual({ id: 'suite.edit.format_painter', status: 'pending' });
   });
 });
 

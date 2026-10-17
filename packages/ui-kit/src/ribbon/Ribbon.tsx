@@ -1,17 +1,19 @@
-import { assignKeyTips, normalizeKeyTip, TAB_KEYTIPS } from '@kiln/commands';
+import { assignKeyTips, type CommandRegistry, normalizeKeyTip, TAB_KEYTIPS } from '@kiln/commands';
 import { Check, ChevronDown, ChevronUp, Ellipsis } from 'lucide-react';
 import {
   Fragment,
   type KeyboardEvent,
   type ReactNode,
+  useCallback,
   useEffect,
   useId,
   useLayoutEffect,
   useMemo,
   useRef,
   useState,
+  useSyncExternalStore,
 } from 'react';
-import { useCommands, useRegistryVersion } from '../chrome/CommandContext.tsx';
+import { useCommands } from '../chrome/CommandContext.tsx';
 import { Icon } from '../icons/Icon.tsx';
 import { cx } from '../primitives/cx.ts';
 import { Menu, MenuContent, MenuItem, MenuLabel, MenuSeparator, MenuTrigger } from '../primitives/Menu.tsx';
@@ -99,7 +101,6 @@ export function Ribbon({
   className,
 }: RibbonProps) {
   const { registry, app } = useCommands();
-  const version = useRegistryVersion();
   const baseId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef(new Map<string, HTMLButtonElement>());
@@ -108,15 +109,7 @@ export function Ribbon({
   const layout: RibbonLayout =
     layoutPref === 'auto' ? (width >= CLASSIC_MIN_WIDTH ? 'classic' : 'simplified') : layoutPref;
 
-  const tabs = useMemo(
-    () =>
-      spec.tabs
-        .filter((t) => !t.when || safeWhen(t.when, registry.context))
-        // Hidden commands take their rows, groups and tabs with them (no empty slabs in release).
-        .map((t) => visibleTab(registry, t))
-        .filter((t): t is RibbonTab => t !== null),
-    [spec, registry, version],
-  );
+  const tabs = useVisibleTabs(spec, registry);
   const [activeState, setActiveState] = useState(defaultTab ?? tabs[0]?.id ?? '');
   const requested = activeTabProp ?? activeState;
   const active = tabs.find((t) => t.id === requested) ?? tabs[0];
@@ -761,4 +754,51 @@ function SimplifiedGroups({ tab, groups, tips, level }: GroupsProps) {
       ) : null}
     </Toolbar>
   );
+}
+
+/** What a visible tab list shows, as text: tab, group and item ids in order. */
+function tabsSignature(tabs: readonly RibbonTab[]): string {
+  return tabs
+    .map(
+      (t) =>
+        `${t.id}[${t.groups
+          .map(
+            (g) =>
+              `${g.id}${g.launcher ? '↘' : ''}(${g.items
+                .map((it, i) => (it.kind === 'row' ? `{${it.items.map(itemId).join(',')}}` : itemId(it, i)))
+                .join(',')})`,
+          )
+          .join(';')}]`,
+    )
+    .join('|');
+}
+
+/**
+ * The tabs of `spec` this build shows for the current context, re-rendering only when that set
+ * changes. Registry changes are frequent (the core's state after every keystroke, the selection's
+ * formatting) and each item follows its own command state, so the ribbon itself must not rebuild
+ * for them (typing latency, PLAN.md §3.9 B5).
+ */
+function useVisibleTabs(spec: RibbonSpec, registry: CommandRegistry): RibbonTab[] {
+  const cache = useRef<{ spec: RibbonSpec; sig: string; tabs: RibbonTab[] } | null>(null);
+  const subscribe = useCallback(
+    (cb: () => void) =>
+      registry.subscribe((e) => {
+        if (e.type !== 'executed') cb();
+      }),
+    [registry],
+  );
+  const get = useCallback(() => {
+    const tabs = spec.tabs
+      .filter((t) => !t.when || safeWhen(t.when, registry.context))
+      // Hidden commands take their rows, groups and tabs with them (no empty slabs in release).
+      .map((t) => visibleTab(registry, t))
+      .filter((t): t is RibbonTab => t !== null);
+    const sig = tabsSignature(tabs);
+    const c = cache.current;
+    if (c && c.spec === spec && c.sig === sig) return c.tabs;
+    cache.current = { spec, sig, tabs };
+    return tabs;
+  }, [spec, registry]);
+  return useSyncExternalStore(subscribe, get, get);
 }

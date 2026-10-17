@@ -1,0 +1,36 @@
+{
+  "type": "TableState",
+  "format": {
+    "TYPENAME": "TableState"
+  },
+  "values": [
+    {
+      "rows": 4,
+      "cols": 3,
+      "row": 1,
+      "col": 2,
+      "style": "TableGrid",
+      "header_row": true,
+      "total_row": false,
+      "banded_rows": true,
+      "first_column": true,
+      "banded_columns": false,
+      "repeat_header": false,
+      "multi_cell": true
+    },
+    {
+      "rows": 0,
+      "cols": 0,
+      "row": 0,
+      "col": 0,
+      "style": null,
+      "header_row": false,
+      "total_row": false,
+      "banded_rows": false,
+      "first_column": false,
+      "banded_columns": false,
+      "repeat_header": false,
+      "multi_cell": false
+    }
+  ]
+}

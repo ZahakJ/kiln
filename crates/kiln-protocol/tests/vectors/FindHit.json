@@ -1,0 +1,36 @@
+{
+  "type": "FindHit",
+  "format": {
+    "TYPENAME": "FindHit"
+  },
+  "values": [
+    {
+      "start": {
+        "block": 1,
+        "offset": 0
+      },
+      "end": {
+        "block": 1,
+        "offset": 3
+      },
+      "before": "",
+      "text": "abc",
+      "after": "",
+      "page": null
+    },
+    {
+      "start": {
+        "block": 0,
+        "offset": 0
+      },
+      "end": {
+        "block": 0,
+        "offset": 0
+      },
+      "before": "",
+      "text": "",
+      "after": "",
+      "page": null
+    }
+  ]
+}

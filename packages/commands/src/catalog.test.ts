@@ -69,7 +69,9 @@ describe('every id is declared: catalog.json core commands, chrome actions, or r
   it('reads the generated catalog of the core', () => {
     expect(CORE_CATALOG.length).toBeGreaterThanOrEqual(38);
     expect(isCoreCommand('suite.file.save')).toBe(true);
-    expect(isCoreCommand('suite.format.bold')).toBe(false);
+    // WP-64: the Write editor implements the shared formatting commands.
+    expect(isCoreCommand('suite.format.bold')).toBe(true);
+    expect(isCoreCommand('suite.format.text_effects')).toBe(false);
   });
 
   it('gives every core command a presentation (title, and an icon when it is in the palette)', () => {

@@ -55,6 +55,9 @@ export function commandForKey(e: KeyLike, apple = isApplePlatform()): Command | 
     if (k === 'y' || (k === 'z' && e.shiftKey)) return { Suite: 'Redo' };
     if (k === 'a' && !e.shiftKey) return { Write: 'SelectAll' };
   }
+  // Alt with an arrow is the application's on Windows and Linux (Word: Alt+Shift+Up moves the
+  // paragraph); on macOS Option is the word modifier.
+  if (!apple && e.altKey) return null;
   // Word motion: Ctrl on Windows/Linux, Option on macOS (Cmd+arrows are line/document ends there).
   const word = apple ? e.altKey : e.ctrlKey;
   if (apple && e.metaKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {

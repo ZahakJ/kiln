@@ -82,6 +82,8 @@ export class TauriHost implements HostHandler {
 export class TauriClient implements KilnClient {
   readonly bridge = 'tauri' as const;
   private readonly listeners = new Listeners();
+  /** The last command sent: the next one waits for it. */
+  private order: Promise<void> = Promise.resolve();
   private channel: Channel<Event> | null = null;
 
   private constructor(private readonly host: HostHandler) {}
@@ -113,7 +115,14 @@ export class TauriClient implements KilnClient {
   }
 
   execute(doc: DocId | null, command: Command): Promise<ExecResult> {
-    return call('kiln_execute', { doc, cmd: command });
+    // Tauri may run concurrent invocations in any order: commands go one after the other, in
+    // the order of the calls (the contract of `KilnClient.execute`).
+    const run = this.order.then(() => call<ExecResult>('kiln_execute', { doc, cmd: command }));
+    this.order = run.then(
+      () => undefined,
+      () => undefined,
+    );
+    return run;
   }
 
   query(doc: DocId | null, query: Query): Promise<QueryResult> {

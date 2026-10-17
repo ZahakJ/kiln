@@ -10,11 +10,6 @@
     "CanUndo",
     "CanRedo",
     "Selection",
-    "Always",
-    "Document",
-    "Editable",
-    "CanUndo",
-    "CanRedo",
-    "Selection"
+    "Always"
   ]
 }

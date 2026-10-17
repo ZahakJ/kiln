@@ -728,12 +728,12 @@ impl Flow<'_, '_> {
 
     /// Places blocks from `self.st.next` until the end, or until `until_pages` pages are
     /// complete, or until the state meets `old` snapshots again (then returns the index where
-    /// they meet).
+    /// they meet). `old` is the previous snapshots from block index `base` on.
     pub fn run(
         &mut self,
         blocks: &[FlatBlock<'_>],
         until_pages: Option<usize>,
-        old: Option<&[Snap]>,
+        old: Option<(&[Snap], usize)>,
         dirty_until: usize,
     ) -> Option<usize> {
         let mut k = self.st.next;
@@ -757,8 +757,8 @@ impl Flow<'_, '_> {
             let snap = self.st.snap(fb.block.id());
             // Converged with the previous layout: everything from here is unchanged.
             if k > dirty_until
-                && let Some(old) = old
-                && let Some(o) = old.get(k)
+                && let Some((old, base)) = old
+                && let Some(o) = k.checked_sub(base).and_then(|i| old.get(i))
                 && o.block == snap.block
                 && o.same_place(&snap)
             {

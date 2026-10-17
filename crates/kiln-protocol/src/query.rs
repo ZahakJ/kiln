@@ -7,6 +7,7 @@ use ts_rs::TS;
 
 use crate::a11y::A11yTree;
 use crate::app::FileFormat;
+use crate::commands::{WriteQuery, WriteQueryResult};
 use crate::print::{PdfFile, PrintPreview, PrintSettings};
 use crate::selection::Selection;
 use crate::status::StatusBar;
@@ -51,6 +52,8 @@ pub enum Query {
         /// The settings.
         settings: PrintSettings,
     },
+    /// Document: a question about a Write document (formatting, rulers, panes; WP-64).
+    Write(WriteQuery),
 }
 
 /// How serious a compatibility issue is.
@@ -120,6 +123,8 @@ pub enum QueryResult {
     PrintPreview(PrintPreview),
     /// A PDF.
     Pdf(PdfFile),
+    /// The answer to a [`Query::Write`].
+    Write(WriteQueryResult),
 }
 
 impl Query {

@@ -18,12 +18,17 @@
 //! command registry, ribbon, palette and Key Tips read.
 
 mod deck;
+mod edit;
 mod grid;
 mod notes;
 mod suite;
 mod write;
 
 pub use deck::{DECK_COMMANDS, DeckCommand};
+pub use edit::{
+    BorderPreset, CellVerticalAlign, ClipboardData, EditCommand, ListNumberStyle, MarginsPreset,
+    PageOrientation, PaperSize, PasteMode, TableDeleteTarget, TextAlign, TextCase, TextSeparator,
+};
 pub use grid::{GRID_COMMANDS, GridCommand};
 pub use notes::{NOTES_COMMANDS, NotesCommand};
 pub use suite::{
@@ -31,7 +36,16 @@ pub use suite::{
     ChartLegendPosition, ChartMoveTarget, ChartSeriesState, ChartState, SUITE_COMMANDS,
     SuiteCommand,
 };
-pub use write::{CaretMotion, SelectUnit, WRITE_COMMANDS, WriteCommand};
+#[cfg(any(test, feature = "schema"))]
+pub(crate) use write::samples as write_samples;
+pub use write::{
+    CaretMotion, CommandLogEntry, DocPropertiesInfo, DropCapPlacement, FindHit, FindQuery,
+    FindResults, FontFormat, FormatState, GoToTarget, HeaderFooterState, HeadingInfo, ListState,
+    PageNumberPosition, PageSetupSpec, PagesInfo, ParagraphFormat, RulerInfo, RulerTabInfo,
+    SectionStart, SectionState, SelectUnit, StoryKind, StyleInfo, StyleKindInfo, StyleSpec,
+    TabAlign, TabLeaderKind, TabStopSpec, TableAutofit, TableSelectTarget, TableState,
+    UnderlineKind, WRITE_COMMANDS, WordCountInfo, WriteCommand, WriteQuery, WriteQueryResult,
+};
 
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;
@@ -180,6 +194,12 @@ impl From<WriteCommand> for Command {
     }
 }
 
+impl From<GridCommand> for Command {
+    fn from(c: GridCommand) -> Self {
+        Command::Grid(c)
+    }
+}
+
 /// Every app's command table, in catalog order.
 pub const TABLES: [&[CommandMeta]; 5] = [
     SUITE_COMMANDS,
@@ -291,9 +311,14 @@ mod tests {
                 let parts: Vec<&str> = m.id.split('.').collect();
                 assert_eq!(parts.len(), 3, "{} must be <app>.<group>.<name>", m.id);
                 assert!(
-                    m.id.bytes()
-                        .all(|b| b.is_ascii_lowercase() || b == b'.' || b == b'_'),
-                    "{} must be lowercase snake case",
+                    m.id.bytes().all(|b| b.is_ascii_lowercase()
+                        || b.is_ascii_digit()
+                        || b == b'.'
+                        || b == b'_')
+                        && parts
+                            .iter()
+                            .all(|p| p.starts_with(|c: char| c.is_ascii_lowercase())),
+                    "{} must be lowercase snake case (digits after the first letter, as in heading_1)",
                     m.id
                 );
                 assert_eq!(parts[1], m.group, "{}: group must match the id", m.id);

@@ -1,0 +1,14 @@
+{
+  "type": "MarginsPreset",
+  "format": {
+    "TYPENAME": "MarginsPreset"
+  },
+  "values": [
+    "Normal",
+    "Mirrored",
+    "Normal",
+    "Narrow",
+    "Moderate",
+    "Wide"
+  ]
+}

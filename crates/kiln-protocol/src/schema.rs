@@ -43,6 +43,7 @@ macro_rules! visit_types {
         $( $v.visit::<$ty>(stringify!($ty), true); )*
     };
 }
+pub(crate) use visit_types;
 
 /// Visits every protocol type, in a stable order.
 pub fn visit_all(v: &mut impl Visitor) {
@@ -78,6 +79,8 @@ pub fn visit_all(v: &mut impl Visitor) {
         print::PrintParity, print::PrintPaper, print::PrintOrientation, print::PrintMargins,
         print::PrintSettings, print::PrintPreview, print::PdfFile,
     );
+    // WP-64: the Write editor's commands, queries and the shared editing commands.
+    crate::commands::write_samples::visit(v);
 }
 
 /// The ts-rs configuration: 64-bit integers are JavaScript numbers (ids and revisions stay below

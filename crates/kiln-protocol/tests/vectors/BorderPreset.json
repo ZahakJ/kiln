@@ -1,0 +1,19 @@
+{
+  "type": "BorderPreset",
+  "format": {
+    "TYPENAME": "BorderPreset"
+  },
+  "values": [
+    "None",
+    "InsideVertical",
+    "None",
+    "All",
+    "Outside",
+    "Inside",
+    "Top",
+    "Bottom",
+    "Left",
+    "Right",
+    "InsideHorizontal"
+  ]
+}

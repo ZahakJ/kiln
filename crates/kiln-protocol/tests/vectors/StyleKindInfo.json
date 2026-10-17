@@ -1,0 +1,14 @@
+{
+  "type": "StyleKindInfo",
+  "format": {
+    "TYPENAME": "StyleKindInfo"
+  },
+  "values": [
+    "Paragraph",
+    "Numbering",
+    "Paragraph",
+    "Character",
+    "Linked",
+    "Table"
+  ]
+}

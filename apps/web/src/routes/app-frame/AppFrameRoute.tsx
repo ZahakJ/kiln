@@ -47,6 +47,7 @@ import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } fro
 import { appHash } from '../../App.tsx';
 import { useClient } from '../../client/useClient.ts';
 import { CREATABLE } from '../home/index.tsx';
+import { useWriteParts } from '../write/index.tsx';
 import { installDebugHandle } from './debug.ts';
 import { storePref, type UiPrefs } from './prefs.ts';
 import { FrameStatusBar } from './statusbar.tsx';
@@ -131,7 +132,25 @@ export function AppFrameRoute({ app, doc, prefs }: { app: EditorApp; doc: number
   useEffect(() => {
     if (!client) return;
     const conn = connectCore(registry, { client, log });
-    const unsubscribe = conn.subscribe(setCore);
+    // The frame (title, save state, status bar) follows the core after the document has
+    // painted: React renders synchronously for these updates, and a keystroke's frame must not
+    // wait for them (typing latency, B5). Several changes in one frame make one update.
+    let pendingCore: CoreDocState | null = null;
+    let raf = 0;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const unsubscribe = conn.subscribe((state) => {
+      pendingCore = state;
+      if (raf || timer) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        timer = setTimeout(() => {
+          timer = null;
+          const next = pendingCore;
+          pendingCore = null;
+          if (next) setCore(next);
+        }, 0);
+      });
+    });
     setConnection(conn);
     let live = true;
     const show = async () => {
@@ -161,6 +180,8 @@ export function AppFrameRoute({ app, doc, prefs }: { app: EditorApp; doc: number
     void show();
     return () => {
       live = false;
+      if (raf) cancelAnimationFrame(raf);
+      if (timer) clearTimeout(timer);
       unsubscribe();
       conn.dispose();
       setConnection(null);
@@ -187,19 +208,29 @@ export function AppFrameRoute({ app, doc, prefs }: { app: EditorApp; doc: number
     [app, registry, keymap, log, client],
   );
 
-  const summary = core.summary;
+  // What the frame shows of the document changes far less often than the core reports a change
+  // (every keystroke): keep one summary object while those fields stay the same, so the frame
+  // below is not rebuilt while typing (B5 typing latency).
+  const summary = useStableSummary(core.summary);
+  const coreRef = useRef(core);
+  coreRef.current = core;
   useEffect(() => {
     document.title = `${summary?.title ?? APP_NAMES[app]} – ${APP_NAMES[app]}`;
   }, [summary?.title, app]);
 
   const execute = useCallback((id: string, args?: unknown) => void registry.execute(id, args), [registry]);
   const theme = useTheme();
+  // The app's editor (WP-64 Write): its surface, status bar and ribbon replace the frame's own.
+  const editor = useWriteParts(app === 'write' && !problem ? { client, registry, summary, ribbon } : null);
 
   const [recent, setRecent] = useState<RecentFile[] | null>(null);
   const [compat, setCompat] = useState<CompatIssue[] | null>(null);
   const [compatError, setCompatError] = useState<string | null>(null);
   const [coreInfo, setCoreInfo] = useState<string | null>(null);
+  // Backstage covers the document, so its Info page shows the status of when it opened.
+  const [infoStatus, setInfoStatus] = useState(core.status);
   const loadBackstageData = useCallback(async () => {
+    setInfoStatus(coreRef.current.status);
     const reply = await prefsHost.handle('Recents');
     setRecent(typeof reply === 'object' && 'Recents' in reply ? reply.Recents : []);
     if (client) {
@@ -305,7 +336,7 @@ export function AppFrameRoute({ app, doc, prefs }: { app: EditorApp; doc: number
     info: (
       <BackstageInfoPage
         summary={summary}
-        status={core.status}
+        status={infoStatus}
         compat={compat}
         compatError={compatError}
         onCheckCompat={summary ? () => void checkCompat() : undefined}
@@ -359,36 +390,88 @@ export function AppFrameRoute({ app, doc, prefs }: { app: EditorApp; doc: number
     execute('suite.file.open', { path: file.path });
   }
 
-  return (
-    <AppFrame
-      app={app}
-      registry={registry}
-      keymap={keymap}
-      title={summary?.title ?? (problem ? APP_NAMES[app] : 'Opening…')}
-      extension={summary?.format ? EXTENSIONS[summary.format] : undefined}
-      saveStatus={saveStatusOf(summary, problem)}
-      ribbon={ribbon}
-      ribbonLayout={layout}
-      onRibbonLayoutChange={(l) => {
-        setLayout(l);
-        void storePref('ribbonLayout', l);
-      }}
-      // Without a document there is nothing for the commands to act on: tabs only (File still
-      // opens Backstage for New and Open), never a full slab over the "not available" notice.
-      ribbonCollapsed={collapsed || problem !== null}
-      onRibbonCollapsedChange={(c) => {
-        if (problem !== null) return;
-        setCollapsed(c);
-        void storePref('ribbonCollapsed', c);
-      }}
-      backstage={backstage}
-      onBackstagePageChange={() => void loadBackstageData()}
-      ribbonTrailing={<StripButton command="suite.review.show_comments" label="Comments" />}
-      statusBar={<FrameStatusBar app={app} core={core} execute={execute} />}
-    >
-      <SurfaceSlot app={app} summary={summary} problem={problem} ready={!!connection} />
-    </AppFrame>
+  // The status bar of apps without an editor of their own follows every change of the core.
+  const frameCore = editor ? null : core;
+  return useMemo(
+    () => (
+      <AppFrame
+        app={app}
+        registry={registry}
+        keymap={keymap}
+        title={summary?.title ?? (problem ? APP_NAMES[app] : 'Opening…')}
+        extension={summary?.format ? EXTENSIONS[summary.format] : undefined}
+        saveStatus={saveStatusOf(summary, problem)}
+        ribbon={editor?.ribbon ?? ribbon}
+        ribbonLayout={layout}
+        onRibbonLayoutChange={(l) => {
+          setLayout(l);
+          void storePref('ribbonLayout', l);
+        }}
+        // Without a document there is nothing for the commands to act on: tabs only (File still
+        // opens Backstage for New and Open), never a full slab over the "not available" notice.
+        ribbonCollapsed={collapsed || problem !== null}
+        onRibbonCollapsedChange={(c) => {
+          if (problem !== null) return;
+          setCollapsed(c);
+          void storePref('ribbonCollapsed', c);
+        }}
+        backstage={backstage}
+        onBackstagePageChange={() => void loadBackstageData()}
+        ribbonTrailing={<StripButton command="suite.review.show_comments" label="Comments" />}
+        statusBar={
+          editor?.statusBar ??
+          (frameCore ? <FrameStatusBar app={app} core={frameCore} execute={execute} /> : null)
+        }
+      >
+        {editor?.surface ?? (
+          <SurfaceSlot app={app} summary={summary} problem={problem} ready={!!connection} />
+        )}
+      </AppFrame>
+    ),
+    [
+      app,
+      registry,
+      keymap,
+      summary,
+      problem,
+      ribbon,
+      layout,
+      collapsed,
+      recent,
+      compat,
+      compatError,
+      coreInfo,
+      infoStatus,
+      theme.preference,
+      theme.setPreference,
+      editor,
+      frameCore,
+      connection,
+      execute,
+      loadBackstageData,
+      checkCompat,
+    ],
   );
+}
+
+/** The summary, as the same object while the fields the frame shows are unchanged. */
+function useStableSummary(summary: DocSummary | null): DocSummary | null {
+  const ref = useRef(summary);
+  const prev = ref.current;
+  if (
+    summary === null ||
+    prev === null ||
+    prev.doc !== summary.doc ||
+    prev.title !== summary.title ||
+    prev.format !== summary.format ||
+    prev.dirty !== summary.dirty ||
+    prev.path !== summary.path ||
+    prev.read_only !== summary.read_only ||
+    prev.app !== summary.app
+  ) {
+    ref.current = summary;
+  }
+  return ref.current;
 }
 
 function kindOf(summary: DocSummary): EditorApp {

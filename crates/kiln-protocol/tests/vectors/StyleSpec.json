@@ -1,0 +1,98 @@
+{
+  "type": "StyleSpec",
+  "format": {
+    "TYPENAME": "StyleSpec"
+  },
+  "values": [
+    {
+      "name": null,
+      "based_on": null,
+      "next": null,
+      "font": {
+        "family": null,
+        "size": null,
+        "bold": null,
+        "italic": null,
+        "underline": null,
+        "underline_none": false,
+        "underline_color": null,
+        "color": null,
+        "strike": null,
+        "double_strike": null,
+        "superscript": null,
+        "subscript": null,
+        "small_caps": null,
+        "all_caps": null,
+        "hidden": null,
+        "spacing": null,
+        "scale": null,
+        "position": null,
+        "kerning": null
+      },
+      "paragraph": {
+        "alignment": null,
+        "indent_left": null,
+        "indent_right": null,
+        "first_line": null,
+        "space_before": null,
+        "space_after": null,
+        "line_multiple": null,
+        "line_exact": null,
+        "line_at_least": null,
+        "keep_next": null,
+        "keep_lines": null,
+        "widow_control": null,
+        "page_break_before": null,
+        "contextual_spacing": null,
+        "outline_level": null,
+        "rtl": null
+      },
+      "quick": null
+    },
+    {
+      "name": null,
+      "based_on": null,
+      "next": null,
+      "font": {
+        "family": null,
+        "size": null,
+        "bold": null,
+        "italic": null,
+        "underline": null,
+        "underline_none": false,
+        "underline_color": null,
+        "color": null,
+        "strike": null,
+        "double_strike": null,
+        "superscript": null,
+        "subscript": null,
+        "small_caps": null,
+        "all_caps": null,
+        "hidden": null,
+        "spacing": null,
+        "scale": null,
+        "position": null,
+        "kerning": null
+      },
+      "paragraph": {
+        "alignment": null,
+        "indent_left": null,
+        "indent_right": null,
+        "first_line": null,
+        "space_before": null,
+        "space_after": null,
+        "line_multiple": null,
+        "line_exact": null,
+        "line_at_least": null,
+        "keep_next": null,
+        "keep_lines": null,
+        "widow_control": null,
+        "page_break_before": null,
+        "contextual_spacing": null,
+        "outline_level": null,
+        "rtl": null
+      },
+      "quick": null
+    }
+  ]
+}

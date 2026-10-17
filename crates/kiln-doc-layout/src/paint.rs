@@ -30,6 +30,9 @@ pub const TALL: f32 = 2048.0;
 pub const BAND: f32 = 1024.0;
 /// Tiles per page in the tile index (`page × 64 + band`).
 pub const BANDS_PER_PAGE: u32 = 64;
+/// Height of the tiles of pages in Print Layout and Read Mode: an edit sends and repaints only
+/// the bands whose content changed, not the whole page (typing latency, B5).
+pub const PAGE_BAND: f32 = 256.0;
 
 fn ink(color: u32, auto: bool) -> Paint {
     if auto {
@@ -107,6 +110,108 @@ pub fn page_version(p: &Page) -> u64 {
     }
     p.column_rules.len().hash(&mut h);
     h.finish()
+}
+
+/// The vertical extent of what an item paints, in page coordinates, as the painter decides
+/// whether to draw it in a region (`None`: the whole page).
+fn item_extent(it: &Item, dy: f32) -> Option<(f32, f32)> {
+    let b = match it {
+        Item::Line(l) => {
+            let mut r = l.rect().inflate(8.0, 16.0);
+            r.y += dy;
+            r
+        }
+        Item::Fill { rect, .. } => rect.translate(0.0, dy),
+        Item::Rule {
+            x0,
+            y0,
+            x1,
+            y1,
+            rule,
+        } => Bounds::from_corners(*x0, *y0 + dy, *x1, *y1 + dy).inflate(rule.width, rule.width),
+        Item::Drawing(d) => d.rect.translate(0.0, dy),
+    };
+    (b.h.is_finite() && b.y.is_finite()).then_some((b.y, b.bottom()))
+}
+
+/// What an item contributes to a version.
+fn hash_item(it: &Item, h: &mut FxHasher) {
+    match it {
+        Item::Line(l) => {
+            (Arc::as_ptr(&l.para) as usize).hash(h);
+            l.para.id().hash(h);
+            l.line.hash(h);
+            l.x.to_bits().hash(h);
+            l.y.to_bits().hash(h);
+        }
+        Item::Fill { rect, color } => {
+            rect_bits(rect).hash(h);
+            color.hash(h);
+        }
+        Item::Rule {
+            x0,
+            y0,
+            x1,
+            y1,
+            rule,
+        } => {
+            [x0, y0, x1, y1, &rule.width].map(|v| v.to_bits()).hash(h);
+            rule.color.hash(h);
+        }
+        Item::Drawing(d) => {
+            rect_bits(&d.rect).hash(h);
+            (Arc::as_ptr(&d.drawing) as usize).hash(h);
+        }
+    }
+}
+
+/// Versions of horizontal bands of a page (`bands`: top and bottom in page coordinates, in
+/// order): each changes whenever what the painter draws in that band does, so an edit re-sends
+/// only the bands it touched. Everything that concerns the whole page (number, place, size,
+/// column rules) is in every band's version.
+#[must_use]
+pub fn band_versions(p: &Page, bands: &[(f32, f32)]) -> Vec<u64> {
+    let mut base = FxHasher::default();
+    p.number_text.hash(&mut base);
+    p.origin.0.to_bits().hash(&mut base);
+    p.origin.1.to_bits().hash(&mut base);
+    p.width.to_bits().hash(&mut base);
+    p.height.to_bits().hash(&mut base);
+    p.body_dy.to_bits().hash(&mut base);
+    for &(x, y0, y1) in &p.column_rules {
+        [x, y0, y1].map(f32::to_bits).hash(&mut base);
+    }
+    let base = base.finish();
+    let mut hashers: Vec<FxHasher> = bands
+        .iter()
+        .map(|_| {
+            let mut h = FxHasher::default();
+            base.hash(&mut h);
+            h
+        })
+        .collect();
+    let lists: [(&[Item], f32); 6] = [
+        (&p.behind, 0.0),
+        (&p.header, 0.0),
+        (&p.footer, 0.0),
+        (&p.items, p.body_dy),
+        (&p.notes, 0.0),
+        (&p.front, 0.0),
+    ];
+    for (n, (list, dy)) in lists.into_iter().enumerate() {
+        for (i, it) in list.iter().enumerate() {
+            let extent = item_extent(it, dy);
+            for (b, &(top, bottom)) in bands.iter().enumerate() {
+                // The painter's test: the item inflated as above against the band inflated by 4.
+                let hit = extent.is_none_or(|(y0, y1)| y0 < bottom + 4.0 && top - 4.0 < y1);
+                if hit && let Some(h) = hashers.get_mut(b) {
+                    (n, i).hash(h);
+                    hash_item(it, h);
+                }
+            }
+        }
+    }
+    hashers.into_iter().map(|h| h.finish()).collect()
 }
 
 fn rect_bits(r: &Bounds) -> [u32; 4] {
@@ -452,7 +557,34 @@ impl DocScene {
             };
             let v = versions.get(i).copied().unwrap_or(0) ^ scale_bits;
             let page = u32::try_from(i).unwrap_or(u32::MAX);
-            if rect.h > TALL {
+            if paged && let Some(p) = layout.display_page(i) {
+                // Bands of PAGE_BAND px from the top of the page's shadow to the bottom of it.
+                let top = rect.y - t;
+                let bottom = rect.bottom() + b;
+                #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+                let n = (((bottom - top) / PAGE_BAND).ceil() as u32).clamp(1, BANDS_PER_PAGE);
+                let edges: Vec<(f32, f32)> = (0..n)
+                    .map(|k| {
+                        #[allow(clippy::cast_precision_loss)]
+                        let y0 = top + k as f32 * PAGE_BAND;
+                        let y1 = if k + 1 == n { bottom } else { y0 + PAGE_BAND };
+                        (y0, y1)
+                    })
+                    .collect();
+                let local: Vec<(f32, f32)> = edges
+                    .iter()
+                    .map(|&(y0, y1)| (y0 - rect.y, y1 - rect.y))
+                    .collect();
+                let versions = band_versions(p, &local);
+                for (k, (&(y0, y1), bv)) in edges.iter().zip(versions).enumerate() {
+                    let k = u32::try_from(k).unwrap_or(0);
+                    out.push(TileSlot {
+                        id: TileId::content(page * BANDS_PER_PAGE + k),
+                        rect: Bounds::new(rect.x - l, y0, rect.w + l + r, y1 - y0),
+                        version: bv ^ scale_bits ^ u64::from(k).rotate_left(40),
+                    });
+                }
+            } else if rect.h > TALL {
                 #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
                 let bands = (rect.h / BAND).ceil() as u32;
                 for band in 0..bands {
@@ -497,9 +629,14 @@ impl DocScene {
             self.scene = Scene::new(scale, layout.extent(), Paint::Role(ColorRole::Canvas));
         }
         self.scene.extent = layout.extent();
-        self.versions = (0..layout.display_len())
-            .filter_map(|i| layout.display_page(i).map(page_version))
-            .collect();
+        // Pages in Print Layout and Read Mode are versioned per band (`slots`).
+        self.versions = if matches!(layout.view(), View::Web { .. } | View::Draft) {
+            (0..layout.display_len())
+                .filter_map(|i| layout.display_page(i).map(page_version))
+                .collect()
+        } else {
+            Vec::new()
+        };
         let slots = Self::slots(layout, &self.versions, scale);
         self.scene.set_slots(slots);
         let wanted: Vec<TileSlot> = self.scene.slots_in(send).copied().collect();

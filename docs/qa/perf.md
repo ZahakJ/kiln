@@ -67,6 +67,29 @@ the CI pipeline duration (budget < 25 min) is read from the `ci.yml` run of each
 The crates are scaffolds at this point, so these times are the floor; every engine work package that adds
 dependencies re-measures and records the new clean-build time here.
 
+## B5 — typing latency in the 300-page document (budget p95 < 16 ms)
+
+Measured by `e2e/specs/write.spec.ts` ("B5: keystroke to paint on the 300-page document") on a
+production build (`vite build` with `VITE_KILN_RELEASE=1`, served statically) in headless Chromium:
+`fixtures/large/doc-300p.docx` opened through the file picker, the caret at the end of the first line,
+77 characters typed 70 ms apart; latency is the key event's timestamp to the end of the composite that
+draws the keystroke's frame into the page (the surface's `kiln:input-paint` mark; the browser shows it
+at the following vsync).
+
+| Date | WP | Machine | p50 | p95 | Notes |
+|---|---|---|---|---|---|
+| 2026-10-17 | WP-64 | development machine, 3 runs, `--workers=1` | 12.3–13.7 ms | 22.5–26.0 ms | before this WP's work: p50 ≈ 40 ms, p95 ≈ 60–180 ms |
+
+Where the time goes (traced): the core's work per key is ~1 ms natively and ~3 ms in the web core
+(execute ~1.5 ms, frame ~1–3 ms, after the layout and painting changes of WP-64), the frame's decode
+and composite ~2–4 ms on the main thread. The rest is waiting: Chrome renders a frame after the key
+event and delivers the worker's answer after it, so a keystroke usually waits for one vsync, and
+sometimes two when the answer lands just after a frame deadline. The budget needs the page to be
+painted where the core runs (an `OffscreenCanvas` painted in the worker), which removes the
+main-thread hop; that is WP-94's.
+
 ## Exceptions
 
-None.
+| Budget | Proposed by | Allowance | Until | Status |
+|---|---|---|---|---|
+| B5 typing latency, p95 < 16 ms | WP-64 | p95 < 40 ms on the development machine, × 1.5 on CI runners (the e2e assertion) | the painter runs in the worker (WP-94) | proposed — for approval at the next gate (WP-68) |

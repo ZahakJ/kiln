@@ -4,6 +4,7 @@
  * dispatched and checked in the session's command log (a fresh document per app); the others are
  * checked through the registry (they resolve, and release builds hide them).
  */
+import { readFileSync } from 'node:fs';
 import { expect, type Page, test } from '@playwright/test';
 import type { KeyBinding } from '../../packages/commands/src/keymap.ts';
 import {
@@ -41,6 +42,15 @@ declare global {
 }
 
 const APPS = { write: writeKeymap, grid: gridKeymap, deck: deckKeymap } as const;
+
+/** The core's commands (`catalog.json`); every other implemented id is a chrome action (a dialog, a pane). */
+const CORE_IDS: ReadonlySet<string> = new Set(
+  (
+    JSON.parse(
+      readFileSync(new URL('../../packages/protocol/src/generated/catalog.json', import.meta.url), 'utf8'),
+    ) as { commands: { id: string }[] }
+  ).commands.map((c) => c.id),
+);
 type App = keyof typeof APPS;
 const NONE = /^[—–-]?$/;
 
@@ -79,6 +89,9 @@ async function openApp(page: Page, app: App) {
   await page.goto(`/#/${app}`);
   await expect(page.getByTestId('document-title')).not.toHaveText('Opening…', { timeout: 30_000 });
   await expect.poll(() => page.evaluate(() => window.__kiln?.app)).toBe(app);
+  // The keymap is tested on its own: with the focus in a document the editor takes some keys
+  // first (typing, the caret keys; write-shortcuts.spec covers that path).
+  await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur?.());
 }
 
 /** Dispatches a key press as the browser would and returns what it resolved to. */
@@ -154,12 +167,18 @@ test.describe('shortcuts', () => {
           expect(r?.args ?? null, where).toEqual(b.args ?? null);
           if (state && !state.pending && state.enabled) {
             // A core command: it reached the session.
-            const isCore = await page.evaluate(
-              ({ id, n }) => (window.__kiln?.log() ?? []).slice(n).some((e) => e.id === id),
-              { id: b.command, n: logBefore },
-            );
-            if (!b.command.startsWith('ui.')) {
-              expect(isCore, `${where} did not reach the core`).toBe(true);
+            if (CORE_IDS.has(b.command)) {
+              // The registry runs the command asynchronously: wait for its log entry.
+              await expect
+                .poll(
+                  () =>
+                    page.evaluate(
+                      ({ id, n }) => (window.__kiln?.log() ?? []).slice(n).some((e) => e.id === id),
+                      { id: b.command, n: logBefore },
+                    ),
+                  { message: `${where} did not reach the core`, timeout: 5_000 },
+                )
+                .toBe(true);
               dispatchedToCore++;
             }
           }

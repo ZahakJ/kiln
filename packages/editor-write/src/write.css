@@ -1,0 +1,723 @@
+/*
+ * Kiln Write's editing area (brand kit mockups write-light.png / write-dark.png): the page on the
+ * canvas, rulers in a quiet strip, the Navigation and Styles panes as floating cards, the dialogs'
+ * fields. Colours are brand tokens only, so light, dark and high contrast follow the theme.
+ */
+
+.kiln-write {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  height: 100%;
+  min-height: 0;
+  padding: 10px 10px 0;
+  font-family: var(--kiln-font-ui);
+  color: var(--kiln-fg);
+}
+
+/* ----- the document column: rulers + surface --------------------------------------------- */
+
+.kiln-write__doc {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+}
+.kiln-write__doc--rulers {
+  grid-template-columns: 22px minmax(0, 1fr);
+  grid-template-rows: 22px minmax(0, 1fr);
+}
+.kiln-write__corner {
+  grid-column: 1;
+  grid-row: 1;
+}
+.kiln-write-ruler {
+  display: block;
+  touch-action: none;
+}
+.kiln-write-ruler--h {
+  grid-column: 2;
+  grid-row: 1;
+}
+.kiln-write-ruler--v {
+  grid-column: 1;
+  grid-row: 2;
+}
+.kiln-write__surface {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  grid-column: 1;
+  grid-row: 1;
+}
+.kiln-write__notice {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(560px, 90%);
+  padding: 8px 10px 8px 14px;
+  border-radius: var(--kiln-radius-pill);
+  background: var(--kiln-fg);
+  color: var(--kiln-bg);
+  font-size: var(--kiln-text-sm);
+  box-shadow: var(--kiln-shadow-2);
+  z-index: 2;
+}
+.kiln-write__notice button {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ----- panes (Navigation left, Styles right) --------------------------------------------- */
+
+.kiln-write__pane {
+  flex: 0 0 248px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-bottom: 10px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 14px;
+  background: var(--kiln-raised);
+  box-shadow: var(--kiln-shadow-1);
+  animation: kiln-write-pane-in 160ms var(--kiln-ease, ease-out);
+}
+.kiln-write__pane--right {
+  flex-basis: 268px;
+}
+@keyframes kiln-write-pane-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+.kiln-write__pane-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 12px 8px 16px;
+}
+.kiln-write__pane-head h2 {
+  margin: 0;
+  font-size: var(--kiln-text-md, 14px);
+  font-weight: var(--kiln-weight-semibold, 600);
+}
+.kiln-write__pane-close {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--kiln-muted);
+  cursor: pointer;
+}
+.kiln-write__pane-close:hover {
+  background: var(--kiln-bg-hover);
+  color: var(--kiln-fg);
+}
+.kiln-write__pane-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px 12px;
+  overflow: auto;
+}
+
+/* Navigation pane */
+.kiln-write-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  flex: 1;
+}
+.kiln-write-nav__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--kiln-line-strong);
+  border-radius: 8px;
+  background: var(--kiln-page);
+  color: var(--kiln-muted);
+}
+.kiln-write-nav__search:focus-within {
+  border-color: var(--kiln-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kiln-accent) 22%, transparent);
+}
+.kiln-write-nav__search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--kiln-fg);
+  font: inherit;
+  font-size: var(--kiln-text-sm);
+}
+.kiln-write-nav__search input::-webkit-search-cancel-button {
+  display: none;
+}
+.kiln-write-nav__clear {
+  display: inline-grid;
+  place-items: center;
+  border: 0;
+  padding: 2px;
+  background: transparent;
+  color: var(--kiln-muted);
+  cursor: pointer;
+}
+.kiln-write-nav__steps {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: var(--kiln-text-xs);
+  color: var(--kiln-muted);
+}
+.kiln-write-nav__option {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-inline-start: 6px;
+  white-space: nowrap;
+}
+.kiln-write-nav__option input {
+  margin: 0;
+  accent-color: var(--kiln-accent);
+}
+.kiln-write-nav__tabs {
+  width: 100%;
+}
+.kiln-write-nav__list {
+  min-height: 0;
+  overflow: auto;
+  padding-top: 6px;
+}
+.kiln-write-nav__empty {
+  margin: 8px 4px;
+  font-size: var(--kiln-text-sm);
+  color: var(--kiln-muted);
+  line-height: 1.45;
+}
+.kiln-write-nav__headings,
+.kiln-write-nav__results,
+.kiln-write-nav__pages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.kiln-write-nav__headings li {
+  display: flex;
+  align-items: center;
+}
+.kiln-write-nav__twisty {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--kiln-muted);
+  cursor: pointer;
+}
+.kiln-write-nav__heading {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--kiln-fg);
+  font: inherit;
+  font-size: var(--kiln-text-sm);
+  text-align: start;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.kiln-write-nav__heading:hover,
+.kiln-write-nav__result:hover,
+.kiln-write-nav__page:hover {
+  background: var(--kiln-bg-hover);
+}
+.kiln-write-nav__heading[data-current] {
+  position: relative;
+  background: var(--kiln-write-tint, var(--kiln-selection));
+  color: var(--kiln-write-text, var(--kiln-accent));
+  font-weight: var(--kiln-weight-medium, 500);
+}
+.kiln-write-nav__heading[data-current]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--kiln-accent);
+}
+.kiln-write-nav__pages {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.kiln-write-nav__page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 6px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--kiln-muted);
+  font: inherit;
+  font-size: var(--kiln-text-xs);
+  cursor: pointer;
+}
+.kiln-write-nav__sheet {
+  display: block;
+  max-width: 100%;
+  border-radius: 2px;
+  background: var(--kiln-page);
+  box-shadow:
+    0 0 0 1px var(--kiln-line),
+    0 2px 6px rgb(0 0 0 / 0.08);
+}
+.kiln-write-nav__page[data-current] .kiln-write-nav__sheet {
+  box-shadow: 0 0 0 2px var(--kiln-accent);
+}
+.kiln-write-nav__page[data-current] {
+  color: var(--kiln-accent);
+}
+.kiln-write-nav__count {
+  margin: 2px 4px 8px;
+  font-size: var(--kiln-text-xs);
+  color: var(--kiln-muted);
+}
+.kiln-write-nav__result {
+  display: block;
+  width: 100%;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--kiln-fg);
+  font: inherit;
+  font-size: var(--kiln-text-sm);
+  text-align: start;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.kiln-write-nav__result mark {
+  background: color-mix(in srgb, var(--kiln-ember) 28%, transparent);
+  color: inherit;
+  border-radius: 2px;
+}
+.kiln-write-nav__result-page {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--kiln-text-xs);
+  color: var(--kiln-muted);
+}
+.kiln-write-nav__facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: auto;
+  padding: 12px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 12px;
+  background: var(--kiln-page);
+  font-size: var(--kiln-text-xs);
+  color: var(--kiln-muted);
+}
+.kiln-write-nav__facts > div {
+  display: flex;
+  flex-direction: column;
+}
+.kiln-write-nav__fact {
+  font-family: var(--kiln-font-display);
+  font-size: 20px;
+  font-weight: var(--kiln-weight-bold, 700);
+  color: var(--kiln-fg);
+  line-height: 1.2;
+}
+
+/* Styles pane */
+.kiln-write-styles {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  flex: 1;
+}
+.kiln-write-styles__empty {
+  color: var(--kiln-muted);
+  font-size: var(--kiln-text-sm);
+}
+.kiln-write-styles__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  min-height: 0;
+  flex: 1;
+}
+.kiln-write-styles__item {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+}
+.kiln-write-styles__item:hover {
+  background: var(--kiln-bg-hover);
+}
+.kiln-write-styles__item[data-current] {
+  background: var(--kiln-write-tint, var(--kiln-selection));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kiln-accent) 45%, transparent);
+}
+.kiln-write-styles__apply {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 8px;
+  border: 0;
+  background: transparent;
+  color: var(--kiln-fg);
+  text-align: start;
+  cursor: pointer;
+}
+.kiln-write-styles__name {
+  /* A style's own colour (set inline as --style-color), mixed with the text colour: enough of it
+     to recognise the style, enough text colour for WCAG AA on the pane in either theme. */
+  --style-mix: 45%;
+  color: color-mix(in oklab, var(--style-color, var(--kiln-fg)) var(--style-mix), var(--kiln-fg));
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.kiln-write-styles__kind {
+  flex: none;
+  font-size: var(--kiln-text-xs);
+  color: var(--kiln-muted);
+}
+.kiln-write-styles__more {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--kiln-muted);
+  cursor: pointer;
+  opacity: 0;
+}
+.kiln-write-styles__item:hover .kiln-write-styles__more,
+.kiln-write-styles__more:focus-visible,
+.kiln-write-styles__more[data-state="open"] {
+  opacity: 1;
+}
+.kiln-write-styles__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--kiln-line);
+}
+.kiln-write-styles__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--kiln-text-xs);
+  color: var(--kiln-muted);
+}
+
+/* ----- Insert ▸ Table grid picker --------------------------------------------------------- */
+
+.kiln-write-gridpicker__popover {
+  padding: 10px;
+}
+.kiln-write-gridpicker__label {
+  margin: 0 0 8px;
+  font-size: var(--kiln-text-sm);
+  font-weight: var(--kiln-weight-medium, 500);
+}
+.kiln-write-gridpicker__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  outline: none;
+}
+.kiln-write-gridpicker__grid:focus-visible {
+  box-shadow: 0 0 0 2px var(--kiln-accent);
+  border-radius: 4px;
+}
+.kiln-write-gridpicker__row {
+  display: flex;
+  gap: 3px;
+}
+.kiln-write-gridpicker__cell {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid var(--kiln-line-strong);
+  border-radius: 3px;
+  background: var(--kiln-page);
+  cursor: pointer;
+}
+.kiln-write-gridpicker__cell[data-on] {
+  border-color: var(--kiln-accent);
+  background: color-mix(in srgb, var(--kiln-accent) 22%, var(--kiln-page));
+}
+.kiln-write-gridpicker__menu {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  padding-top: 6px;
+  border-top: 1px solid var(--kiln-line);
+}
+.kiln-write-menuitem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--kiln-fg);
+  font: inherit;
+  font-size: var(--kiln-text-sm);
+  text-align: start;
+  cursor: pointer;
+}
+.kiln-write-menuitem:hover,
+.kiln-write-menuitem:focus-visible {
+  background: var(--kiln-bg-hover);
+  outline: none;
+}
+
+/* ----- dialogs ---------------------------------------------------------------------------- */
+
+.kiln-write-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.kiln-write-field__label {
+  font-size: var(--kiln-text-sm);
+  font-weight: var(--kiln-weight-medium, 500);
+  color: var(--kiln-fg);
+}
+.kiln-write-field__hint {
+  font-size: var(--kiln-text-xs);
+  color: var(--kiln-muted);
+}
+.kiln-write-input {
+  height: var(--kiln-control-h, 32px);
+  padding: 0 10px;
+  border: 1px solid var(--kiln-line-strong);
+  border-radius: 8px;
+  background: var(--kiln-page);
+  color: var(--kiln-fg);
+  font: inherit;
+  font-size: var(--kiln-text-sm);
+}
+.kiln-write-input:focus {
+  outline: none;
+  border-color: var(--kiln-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kiln-accent) 22%, transparent);
+}
+.kiln-write-grid {
+  display: grid;
+  gap: 12px 16px;
+  margin-bottom: 12px;
+}
+.kiln-write-section {
+  margin: 0 0 14px;
+}
+.kiln-write-section__title {
+  margin: 0 0 8px;
+  font-size: var(--kiln-text-xs);
+  font-weight: var(--kiln-weight-semibold, 600);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--kiln-muted);
+}
+.kiln-write-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--kiln-text-sm);
+  color: var(--kiln-fg);
+}
+.kiln-write-check input {
+  accent-color: var(--kiln-accent);
+}
+.kiln-write-radios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+}
+.kiln-write-radios legend {
+  width: 100%;
+  margin-bottom: 6px;
+  font-size: var(--kiln-text-sm);
+  font-weight: var(--kiln-weight-medium, 500);
+}
+.kiln-write-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.kiln-write-actions {
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+.kiln-write-preview {
+  min-height: 64px;
+  display: grid;
+  place-items: center;
+  padding: 10px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 10px;
+  background: var(--kiln-page);
+  color: #1c1917;
+  overflow: hidden;
+}
+.kiln-write-tabs-list {
+  list-style: none;
+  margin: 8px 0;
+  padding: 4px;
+  max-height: 140px;
+  overflow: auto;
+  border: 1px solid var(--kiln-line);
+  border-radius: 8px;
+  background: var(--kiln-page);
+}
+.kiln-write-tabs-list button {
+  width: 100%;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--kiln-fg);
+  font: inherit;
+  font-size: var(--kiln-text-sm);
+  text-align: start;
+  cursor: pointer;
+}
+.kiln-write-tabs-list button[aria-pressed="true"] {
+  background: var(--kiln-write-tint, var(--kiln-selection));
+  color: var(--kiln-write-text, var(--kiln-accent));
+}
+.kiln-write-symbols {
+  min-width: 0;
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+  gap: 4px;
+}
+.kiln-write-symbol {
+  height: 34px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 6px;
+  background: var(--kiln-page);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-doc);
+  font-size: 16px;
+  cursor: pointer;
+}
+.kiln-write-symbol:hover,
+.kiln-write-symbol:focus-visible {
+  border-color: var(--kiln-accent);
+  outline: none;
+}
+.kiln-write-stats {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--kiln-text-sm);
+}
+.kiln-write-stats th {
+  padding: 6px 0;
+  font-weight: var(--kiln-weight-regular, 400);
+  color: var(--kiln-muted);
+  text-align: start;
+}
+.kiln-write-stats td {
+  padding: 6px 0;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--kiln-weight-semibold, 600);
+}
+.kiln-write-stats tr + tr {
+  border-top: 1px solid var(--kiln-line);
+}
+
+@media (max-width: 1023px) {
+  .kiln-write {
+    padding: 0;
+    gap: 0;
+  }
+  .kiln-write__pane {
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    z-index: 5;
+    width: min(300px, 86vw);
+    box-shadow: var(--kiln-shadow-2);
+  }
+  .kiln-write__pane--left {
+    left: 8px;
+  }
+  .kiln-write__pane--right {
+    right: 8px;
+  }
+}
+[data-theme="dark"] .kiln-write-styles__name {
+  --style-mix: 22%;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .kiln-write-styles__name {
+    --style-mix: 22%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kiln-write__pane {
+    animation: none;
+  }
+}

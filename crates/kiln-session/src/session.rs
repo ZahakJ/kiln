@@ -8,8 +8,10 @@ use kiln_protocol::{
     A11yTree, App, Availability, Command, CoreInfo, DocKind, DocSummary, Event, ExecResult,
     ExecValue, FileFilter, FileFormat, HostOp, HostReply, HostRequest, OpenHint, Outcome, PdfFile,
     PrintSettings, Query, QueryResult, RequestId, SceneDelta, StatusBar, SuiteCommand, ViewMode,
-    Viewport,
+    Viewport, WriteCommand,
 };
+
+use kiln_protocol::commands::{ClipboardData, EditCommand};
 
 use crate::frame::FrameState;
 use crate::host::Host;
@@ -66,6 +68,29 @@ enum Pending {
     PdfWrite { doc: DocId, path: String },
     /// Print handed to the host: only a failure is reported.
     Printed { doc: DocId },
+    /// Clipboard read → paste into the document (WP-64).
+    Paste { doc: DocId, cmd: EditCommand },
+    /// Picture dialog → read the chosen image (WP-64).
+    PicturePick { doc: DocId },
+    /// Read → insert the picture.
+    PictureRead { doc: DocId, path: String },
+}
+
+impl Pending {
+    /// The document the continuation works on.
+    fn doc(&self) -> Option<DocId> {
+        match self {
+            Pending::SavePick { doc, .. }
+            | Pending::SaveWrite { doc, .. }
+            | Pending::PdfPick { doc, .. }
+            | Pending::PdfWrite { doc, .. }
+            | Pending::Printed { doc }
+            | Pending::Paste { doc, .. }
+            | Pending::PicturePick { doc }
+            | Pending::PictureRead { doc, .. } => Some(*doc),
+            Pending::OpenPick | Pending::OpenRead { .. } | Pending::Ignore => None,
+        }
+    }
 }
 
 /// The facade over the whole core: the only API the bridges use (PLAN.md §3.3).
@@ -84,6 +109,9 @@ pub struct Session {
     /// The document a command or host reply is working on, while it runs (see
     /// [`Session::recover_from_panic`]).
     in_flight: Option<DocId>,
+    /// The last content copied in Kiln, with its rich format: a paste whose plain text matches
+    /// it pastes the rich format (the system clipboard only carries text and HTML).
+    clipboard: Option<ClipboardData>,
 }
 
 impl std::fmt::Debug for Session {
@@ -120,6 +148,7 @@ impl Session {
             pending: BTreeMap::new(),
             next_request: 1,
             in_flight: None,
+            clipboard: None,
         }
     }
 
@@ -352,6 +381,12 @@ impl Session {
 
     fn execute_checked(&mut self, doc: Option<DocId>, cmd: Command) -> Result<ExecResult> {
         self.check(doc, &cmd)?;
+        if let Some(id) = doc {
+            let now = self.host.now_ms();
+            if let Some(d) = self.docs.get_mut(&id) {
+                d.model.set_clock(now);
+            }
+        }
         match cmd {
             Command::Suite(s) => self.execute_suite(doc, s),
             app_command => {
@@ -510,6 +545,7 @@ impl Session {
                 }
                 self.finish(id, change != Change::None)
             }
+            SuiteCommand::Edit(edit) => self.execute_edit(require(doc)?, edit),
             SuiteCommand::SetViewMode { mode } => {
                 let id = require(doc)?;
                 let d = self.doc_mut(id)?;
@@ -524,6 +560,77 @@ impl Session {
                 self.finish(id, changed)
             }
         }
+    }
+
+    // ----- shared editing commands (WP-64) ------------------------------------------------------
+
+    /// Runs a shared editing command: clipboard reads and the picture dialog go through the host
+    /// first; everything else goes to the document model, and what a copy produced goes to the
+    /// system clipboard.
+    fn execute_edit(&mut self, id: DocId, cmd: EditCommand) -> Result<ExecResult> {
+        match cmd {
+            EditCommand::InsertPictures => {
+                let outcome = self.request(
+                    HostOp::PickOpen {
+                        filters: vec![FileFilter {
+                            name: "Pictures".into(),
+                            extensions: ["png", "jpg", "jpeg", "gif", "bmp", "webp", "svg"]
+                                .into_iter()
+                                .map(str::to_owned)
+                                .collect(),
+                        }],
+                    },
+                    Pending::PicturePick { doc: id },
+                );
+                return Ok(ExecResult {
+                    outcome,
+                    summary: Some(self.summary(id)?),
+                    value: ExecValue::None,
+                });
+            }
+            ref paste if paste_data(paste).is_some_and(Option::is_none) => {
+                let outcome = self.request(HostOp::ClipboardRead, Pending::Paste { doc: id, cmd });
+                return Ok(ExecResult {
+                    outcome,
+                    summary: Some(self.summary(id)?),
+                    value: ExecValue::None,
+                });
+            }
+            _ => {}
+        }
+        let cmd = self.with_rich_clipboard(cmd);
+        self.apply_to_model(id, &Command::Suite(SuiteCommand::Edit(cmd)))
+    }
+
+    /// Adds Kiln's rich format to pasted data whose text is what Kiln copied last.
+    fn with_rich_clipboard(&self, mut cmd: EditCommand) -> EditCommand {
+        if let Some(Some(data)) = paste_data_mut(&mut cmd)
+            && data.kiln.is_none()
+            && let Some(own) = &self.clipboard
+            && normalise_newlines(&own.text) == normalise_newlines(&data.text)
+        {
+            data.kiln.clone_from(&own.kiln);
+        }
+        cmd
+    }
+
+    /// Executes an app command on a document and sends what it copied to the clipboard.
+    fn apply_to_model(&mut self, id: DocId, cmd: &Command) -> Result<ExecResult> {
+        let d = self.doc_mut(id)?;
+        let change = d.model.execute(cmd)?;
+        if change == Change::Content {
+            d.revision += 1;
+        }
+        let copied = d.model.take_clipboard();
+        if let Some(c) = copied {
+            let op = HostOp::ClipboardWrite {
+                text: c.text.clone(),
+                html: c.html.clone(),
+            };
+            self.clipboard = Some(c);
+            self.request(op, Pending::Ignore);
+        }
+        self.finish(id, change != Change::None)
     }
 
     fn open_filters(&self) -> Vec<FileFilter> {
@@ -756,14 +863,7 @@ impl Session {
             .pending
             .remove(&id)
             .ok_or_else(|| KilnError::not_found(format!("host request {}", id.0)))?;
-        self.in_flight = match &pending {
-            Pending::SavePick { doc, .. }
-            | Pending::SaveWrite { doc, .. }
-            | Pending::PdfPick { doc, .. }
-            | Pending::PdfWrite { doc, .. }
-            | Pending::Printed { doc } => Some(*doc),
-            _ => None,
-        };
+        self.in_flight = pending.doc();
         self.continue_with(pending, reply);
         self.in_flight = None;
         Ok(())
@@ -805,14 +905,7 @@ impl Session {
     }
 
     fn continue_with(&mut self, pending: Pending, reply: HostReply) {
-        let doc = match &pending {
-            Pending::SavePick { doc, .. }
-            | Pending::SaveWrite { doc, .. }
-            | Pending::PdfPick { doc, .. }
-            | Pending::PdfWrite { doc, .. }
-            | Pending::Printed { doc } => Some(*doc),
-            _ => None,
-        };
+        let doc = pending.doc();
         match (pending, reply) {
             (Pending::PdfPick { doc, .. }, HostReply::Cancelled) => {
                 self.events.push_back(Event::Exported { doc, path: None });
@@ -874,6 +967,36 @@ impl Session {
                     self.events.push_back(Event::Saved { summary });
                 }
             }
+            (Pending::Paste { doc, mut cmd }, HostReply::Clipboard { text, html }) => {
+                if let Some(slot) = paste_data_mut(&mut cmd) {
+                    *slot = Some(ClipboardData {
+                        text,
+                        html,
+                        kiln: None,
+                    });
+                }
+                let cmd = self.with_rich_clipboard(cmd);
+                if let Err(e) = self.apply_to_model(doc, &Command::Suite(SuiteCommand::Edit(cmd))) {
+                    self.fail(Some(doc), &e);
+                }
+            }
+            (Pending::PicturePick { doc }, HostReply::Path(path)) => {
+                self.request(
+                    HostOp::ReadFile { path: path.clone() },
+                    Pending::PictureRead { doc, path },
+                );
+            }
+            (Pending::PictureRead { doc, path }, HostReply::Bytes(bytes)) => {
+                let name = path.rsplit(['/', '\\']).next().unwrap_or(&path).to_owned();
+                let cmd = Command::Write(WriteCommand::InsertPicture {
+                    name,
+                    bytes,
+                    floating: false,
+                });
+                if let Err(e) = self.apply_to_model(doc, &cmd) {
+                    self.fail(Some(doc), &e);
+                }
+            }
             (_, other) => self.fail(
                 doc,
                 &KilnError::InvalidInput(format!("unexpected host reply {other:?}")),
@@ -930,6 +1053,7 @@ impl Session {
                 }
             }
             Query::Pdf { settings } => QueryResult::Pdf(self.pdf(id, settings)?),
+            Query::Write(_) => d.model.app_query(query)?,
             Query::CompatReport { format } => {
                 let format = format
                     .or(d.format.filter(|f| d.model.save_formats().contains(f)))
@@ -976,7 +1100,9 @@ impl Session {
     ///
     /// `NotFound` for an unknown document.
     pub fn frame(&mut self, doc: DocId) -> Result<SceneDelta> {
+        let now = self.host.now_ms();
         let d = self.doc_mut(doc)?;
+        d.model.set_clock(now);
         let viewport = d.viewport;
         let revision = d.revision;
         d.frames
@@ -1014,6 +1140,34 @@ impl Session {
     pub fn now_ms(&self) -> u64 {
         self.host.now_ms()
     }
+}
+
+/// The clipboard data of a paste command (`None` for other commands).
+fn paste_data(cmd: &EditCommand) -> Option<&Option<ClipboardData>> {
+    match cmd {
+        EditCommand::Paste { data }
+        | EditCommand::PasteKeepSource { data }
+        | EditCommand::PasteMerge { data }
+        | EditCommand::PasteTextOnly { data }
+        | EditCommand::PasteAs { data, .. } => Some(data),
+        _ => None,
+    }
+}
+
+fn paste_data_mut(cmd: &mut EditCommand) -> Option<&mut Option<ClipboardData>> {
+    match cmd {
+        EditCommand::Paste { data }
+        | EditCommand::PasteKeepSource { data }
+        | EditCommand::PasteMerge { data }
+        | EditCommand::PasteTextOnly { data }
+        | EditCommand::PasteAs { data, .. } => Some(data),
+        _ => None,
+    }
+}
+
+/// Text with `\r\n` and `\r` as `\n` (clipboards differ per platform).
+fn normalise_newlines(text: &str) -> String {
+    text.replace("\r\n", "\n").replace('\r', "\n")
 }
 
 fn require(doc: Option<DocId>) -> Result<DocId> {

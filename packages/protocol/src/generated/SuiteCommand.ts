@@ -7,6 +7,7 @@ import type { ChartLabelPosition } from "./ChartLabelPosition";
 import type { ChartLegendPosition } from "./ChartLegendPosition";
 import type { ChartMoveTarget } from "./ChartMoveTarget";
 import type { DocKind } from "./DocKind";
+import type { EditCommand } from "./EditCommand";
 import type { FileFormat } from "./FileFormat";
 import type { PrintSettings } from "./PrintSettings";
 import type { ViewMode } from "./ViewMode";
@@ -150,4 +151,4 @@ path: string | null,
 /**
  * What to print.
  */
-settings: PrintSettings, } };
+settings: PrintSettings, } } | { "Edit": EditCommand };

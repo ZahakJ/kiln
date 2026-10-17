@@ -28,7 +28,10 @@ export interface KilnClient {
   readonly bridge: 'wasm' | 'tauri';
   /** Round trip that returns the core's version, protocol and target. */
   ping(): Promise<CoreInfo>;
-  /** Runs a command on a document, or on the session with `doc: null`. */
+  /**
+   * Runs a command on a document, or on the session with `doc: null`. Commands reach the core
+   * in the order of the calls, whoever makes them (the surface's typing, shortcuts, the ribbon).
+   */
   execute(doc: DocId | null, command: Command): Promise<ExecResult>;
   /** Asks a read-only question about a document, or the session with `doc: null`. */
   query(doc: DocId | null, query: Query): Promise<QueryResult>;

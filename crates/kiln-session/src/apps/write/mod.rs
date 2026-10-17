@@ -16,9 +16,11 @@
 //!   parts no edit touched are copied byte for byte from the file that was opened. The
 //!   Compatibility Checker lists what a save loses or changes.
 //!
-//! The full editor arrives with WP-64; until then its commands return `Unsupported` with the
-//! reason, never a silent no-op.
+//! - **The editor** ([`commands`], WP-64): formatting, styles, lists, tables, page setup,
+//!   headers and footers, the clipboard, Find and Replace, and the queries of the editor's
+//!   panes and rulers (`Query::Write`).
 
+mod commands;
 mod editing;
 mod save;
 #[cfg(test)]
@@ -116,6 +118,8 @@ pub struct WriteDoc {
     touched: TouchedParts,
     /// The layout for print, kept between previews (WP-67).
     print: crate::print::PrintCache,
+    /// The editor's state (WP-64): formatting marks, pending formatting, the command log.
+    editor: commands::EditorState,
 }
 
 impl WriteDoc {
@@ -138,6 +142,7 @@ impl WriteDoc {
             original: None,
             touched: TouchedParts::new(),
             print: crate::print::PrintCache::new(),
+            editor: commands::EditorState::default(),
         }
     }
 
@@ -163,9 +168,10 @@ impl WriteDoc {
     pub(crate) fn view_synced(&mut self) -> &mut WriteView {
         let doc = &self.doc;
         let file = self.file_name.clone();
+        let now = view::date_time(self.editor.now_ms.unwrap_or(0));
         let v = self
             .view
-            .get_or_insert_with(|| Box::new(WriteView::new(doc, file)));
+            .get_or_insert_with(|| Box::new(WriteView::new(doc, file, now)));
         v.sync(doc, true);
         v
     }
@@ -195,7 +201,12 @@ impl WriteDoc {
             return Vec::new();
         };
         let comp = self.composition.as_ref().map(|c| (c.at, c.len));
-        v.overlay(&self.doc, self.anchor, self.head, comp)
+        let mut ops = Vec::new();
+        if self.editor.show_marks {
+            ops.extend(commands::marks::marks(v, &self.doc));
+        }
+        ops.extend(v.overlay(&self.doc, self.anchor, self.head, comp));
+        ops
     }
 }
 
@@ -235,7 +246,12 @@ fn rect(b: Bounds) -> Rect {
 impl FrameSource for WriteDoc {
     fn prepare(&mut self, request: &FrameRequest) -> Result<()> {
         if self.view.is_none() {
-            self.view = Some(Box::new(WriteView::new(&self.doc, self.file_name.clone())));
+            let now = view::date_time(self.editor.now_ms.unwrap_or(0));
+            self.view = Some(Box::new(WriteView::new(
+                &self.doc,
+                self.file_name.clone(),
+                now,
+            )));
         }
         // The overlay needs the layout of this frame: prepare twice is wasteful, so lay out
         // first, then build the overlay and the scene.
@@ -285,13 +301,26 @@ impl DocModel for WriteDoc {
     }
 
     fn execute(&mut self, command: &Command) -> Result<Change> {
-        match command {
-            Command::Write(cmd) => self.run(cmd),
+        self.execute_logged(command)
+    }
+
+    fn app_query(&self, query: &kiln_protocol::Query) -> Result<kiln_protocol::QueryResult> {
+        match query {
+            kiln_protocol::Query::Write(q) => {
+                Ok(kiln_protocol::QueryResult::Write(self.write_query(q)?))
+            }
             _ => Err(KilnError::Unsupported(format!(
-                "{} in Kiln Write",
-                command.id()
+                "{query:?} for a Write document"
             ))),
         }
+    }
+
+    fn take_clipboard(&mut self) -> Option<kiln_protocol::commands::ClipboardData> {
+        self.take_copied()
+    }
+
+    fn set_clock(&mut self, now_ms: u64) {
+        self.editor.now_ms = Some(now_ms);
     }
 
     fn undo(&mut self) -> bool {
@@ -299,9 +328,7 @@ impl DocModel for WriteDoc {
         match self.history.undo(&mut self.doc) {
             Ok(Some(tx)) => {
                 self.touched.record(&self.doc, &tx);
-                if let Some(v) = &mut self.view {
-                    v.note(&tx);
-                }
+                self.note_edit(&tx);
                 if let Some(r) = tx.selection_after {
                     self.anchor = r.anchor;
                     self.head = r.head;
@@ -321,9 +348,7 @@ impl DocModel for WriteDoc {
         match self.history.redo(&mut self.doc) {
             Ok(Some(tx)) => {
                 self.touched.record(&self.doc, &tx);
-                if let Some(v) = &mut self.view {
-                    v.note(&tx);
-                }
+                self.note_edit(&tx);
                 if let Some(r) = tx.selection_after {
                     self.anchor = r.anchor;
                     self.head = r.head;
@@ -412,7 +437,7 @@ impl DocModel for WriteDoc {
     }
 
     fn status(&self) -> StatusBar {
-        let stats = self.doc.statistics(Default::default());
+        let stats = self.body_statistics();
         let page = self.view.as_ref().and_then(|v| {
             let total = u32::try_from(v.layout.pages().len()).ok()?;
             let c = v.caret(self.head)?;

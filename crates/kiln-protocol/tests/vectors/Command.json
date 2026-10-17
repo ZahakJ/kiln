@@ -327,6 +327,912 @@
           }
         }
       }
+    },
+    {
+      "Suite": {
+        "Edit": "Cut"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "Copy"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "Paste": {
+            "data": null
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "PasteKeepSource": {
+            "data": {
+              "text": "Kiln «Write»\tok",
+              "html": "<p><b>Kiln</b> «Write»</p>",
+              "kiln": "{\"v\":1}"
+            }
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "PasteMerge": {
+            "data": null
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "PasteTextOnly": {
+            "data": {
+              "text": "Kiln «Write»\tok",
+              "html": "<p><b>Kiln</b> «Write»</p>",
+              "kiln": "{\"v\":1}"
+            }
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "PasteAs": {
+            "mode": "Html",
+            "data": null
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "Repeat"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "Bold"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "Italic"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "Underline"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "DoubleUnderline"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "Strikethrough"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "Subscript"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "Superscript"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "AllCaps"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "FontFamily": {
+            "family": "Figtree"
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "FontSize": {
+            "size": 10.5
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "GrowFont": {
+            "one_point": false
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "ShrinkFont": {
+            "one_point": true
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "ChangeCase": {
+            "case": "Title"
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "ClearFormatting"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "FontColor": {
+            "color": "C8352B"
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "Highlight": {
+            "color": null
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "Bullets": {
+            "glyph": "✓"
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "Numbering": {
+            "style": "LowerRoman"
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "MultilevelList": {
+            "legal": true
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "Indent"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "Outdent"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "AlignLeft"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "AlignCenter"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "AlignRight"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "Justify"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "LineSpacing": {
+            "spacing": 1.15
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "InsertDate"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "InsertTime"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "InsertPictures"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "Margins": {
+            "preset": "Narrow"
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "Orientation": {
+            "orientation": "Landscape"
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "PageSize": {
+            "size": "A4"
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "TableInsertRowAbove"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "TableInsertRowBelow"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "TableInsertColumnLeft"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "TableInsertColumnRight"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "TableDelete": {
+            "what": "Columns"
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "TableMergeCells"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "TableSplitCells": {
+            "rows": 2,
+            "cols": 3
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "TableDistributeRows"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "TableDistributeColumns"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "TableCellAlignment": {
+            "vertical": "Bottom",
+            "horizontal": "Right"
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "TableRepeatHeaderRows"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "TableConvertToText": {
+            "separator": "Commas"
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "TableHeaderRow"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "TableTotalRow"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "TableBandedRows"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "TableFirstColumn"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": "TableBandedColumns"
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "TableStyle": {
+            "style": "GridTable4-Accent1"
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "TableShading": {
+            "color": "DCE6FB"
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "Edit": {
+          "TableBorders": {
+            "preset": "Outside"
+          }
+        }
+      }
+    },
+    {
+      "Write": {
+        "Tab": {
+          "back": true
+        }
+      }
+    },
+    {
+      "Write": "LineBreak"
+    },
+    {
+      "Write": "ShowMarks"
+    },
+    {
+      "Write": "ClearParagraphFormatting"
+    },
+    {
+      "Write": "ClearCharacterFormatting"
+    },
+    {
+      "Write": "MoveParagraphUp"
+    },
+    {
+      "Write": "MoveParagraphDown"
+    },
+    {
+      "Write": "Promote"
+    },
+    {
+      "Write": "Demote"
+    },
+    {
+      "Write": {
+        "ParagraphShading": {
+          "color": "FFF2CC"
+        }
+      }
+    },
+    {
+      "Write": {
+        "ParagraphBorders": {
+          "preset": "Bottom"
+        }
+      }
+    },
+    {
+      "Write": {
+        "SetParagraph": {
+          "format": {
+            "alignment": "Justify",
+            "indent_left": 36.0,
+            "indent_right": null,
+            "first_line": -18.0,
+            "space_before": null,
+            "space_after": 8.0,
+            "line_multiple": 1.08,
+            "line_exact": null,
+            "line_at_least": null,
+            "keep_next": true,
+            "keep_lines": null,
+            "widow_control": null,
+            "page_break_before": null,
+            "contextual_spacing": null,
+            "outline_level": 0,
+            "rtl": null
+          }
+        }
+      }
+    },
+    {
+      "Write": {
+        "SetFont": {
+          "format": {
+            "family": "Fraunces",
+            "size": 10.5,
+            "bold": true,
+            "italic": null,
+            "underline": "Wave",
+            "underline_none": false,
+            "underline_color": null,
+            "color": "3159C6",
+            "strike": null,
+            "double_strike": null,
+            "superscript": null,
+            "subscript": null,
+            "small_caps": null,
+            "all_caps": null,
+            "hidden": null,
+            "spacing": -0.5,
+            "scale": 120,
+            "position": null,
+            "kerning": null
+          }
+        }
+      }
+    },
+    {
+      "Write": {
+        "SetTabs": {
+          "tabs": [
+            {
+              "pos": 216.5,
+              "align": "Decimal",
+              "leader": "Dot"
+            },
+            {
+              "pos": 216.5,
+              "align": "Decimal",
+              "leader": "Dot"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "Write": "SmallCaps"
+    },
+    {
+      "Write": {
+        "UnderlineStyle": {
+          "style": "Double"
+        }
+      }
+    },
+    {
+      "Write": {
+        "ApplyStyle": {
+          "style_id": "IntenseQuote"
+        }
+      }
+    },
+    {
+      "Write": "StyleNormal"
+    },
+    {
+      "Write": "StyleHeading1"
+    },
+    {
+      "Write": "StyleHeading2"
+    },
+    {
+      "Write": "StyleHeading3"
+    },
+    {
+      "Write": "StyleTitle"
+    },
+    {
+      "Write": {
+        "UpdateStyleFromSelection": {
+          "style_id": null
+        }
+      }
+    },
+    {
+      "Write": {
+        "NewStyleFromSelection": {
+          "name": "Pull Quote"
+        }
+      }
+    },
+    {
+      "Write": {
+        "ModifyStyle": {
+          "style_id": "Heading1",
+          "spec": {
+            "name": "Heading 1",
+            "based_on": "Normal",
+            "next": "Normal",
+            "font": {
+              "family": "Fraunces",
+              "size": 10.5,
+              "bold": true,
+              "italic": null,
+              "underline": "Wave",
+              "underline_none": false,
+              "underline_color": null,
+              "color": "3159C6",
+              "strike": null,
+              "double_strike": null,
+              "superscript": null,
+              "subscript": null,
+              "small_caps": null,
+              "all_caps": null,
+              "hidden": null,
+              "spacing": -0.5,
+              "scale": 120,
+              "position": null,
+              "kerning": null
+            },
+            "paragraph": {
+              "alignment": "Justify",
+              "indent_left": 36.0,
+              "indent_right": null,
+              "first_line": -18.0,
+              "space_before": null,
+              "space_after": 8.0,
+              "line_multiple": 1.08,
+              "line_exact": null,
+              "line_at_least": null,
+              "keep_next": true,
+              "keep_lines": null,
+              "widow_control": null,
+              "page_break_before": null,
+              "contextual_spacing": null,
+              "outline_level": 0,
+              "rtl": null
+            },
+            "quick": true
+          }
+        }
+      }
+    },
+    {
+      "Write": {
+        "ListLevel": {
+          "level": 8
+        }
+      }
+    },
+    {
+      "Write": "RestartNumbering"
+    },
+    {
+      "Write": "ContinueNumbering"
+    },
+    {
+      "Write": {
+        "SetNumberingValue": {
+          "value": 300
+        }
+      }
+    },
+    {
+      "Write": "PageBreak"
+    },
+    {
+      "Write": "ColumnBreak"
+    },
+    {
+      "Write": "BlankPage"
+    },
+    {
+      "Write": {
+        "SectionBreak": {
+          "kind": "OddPage"
+        }
+      }
+    },
+    {
+      "Write": {
+        "Columns": {
+          "count": 3
+        }
+      }
+    },
+    {
+      "Write": {
+        "IndentLeft": {
+          "cm": 1.27
+        }
+      }
+    },
+    {
+      "Write": {
+        "IndentRight": {
+          "cm": 0.0
+        }
+      }
+    },
+    {
+      "Write": {
+        "SpacingBefore": {
+          "pt": 12.0
+        }
+      }
+    },
+    {
+      "Write": {
+        "SpacingAfter": {
+          "pt": 6.0
+        }
+      }
+    },
+    {
+      "Write": {
+        "PageSetup": {
+          "setup": {
+            "top": 72.0,
+            "bottom": null,
+            "left": 90.0,
+            "right": null,
+            "gutter": null,
+            "header": null,
+            "footer": null,
+            "width": 595.3,
+            "height": 841.9,
+            "landscape": false,
+            "columns": 2,
+            "column_space": null,
+            "vertical_align": "Center"
+          }
+        }
+      }
+    },
+    {
+      "Write": "EditHeader"
+    },
+    {
+      "Write": "EditFooter"
+    },
+    {
+      "Write": "CloseHeaderFooter"
+    },
+    {
+      "Write": "DifferentFirstPage"
+    },
+    {
+      "Write": "DifferentOddEven"
+    },
+    {
+      "Write": "LinkToPrevious"
+    },
+    {
+      "Write": {
+        "PageNumber": {
+          "position": "BottomCenter"
+        }
+      }
+    },
+    {
+      "Write": {
+        "InsertLink": {
+          "url": "https://zahakj.github.io/kiln/",
+          "text": "Kiln",
+          "tooltip": null
+        }
+      }
+    },
+    {
+      "Write": "RemoveLink"
+    },
+    {
+      "Write": {
+        "InsertBookmark": {
+          "name": "Résumé_2"
+        }
+      }
+    },
+    {
+      "Write": {
+        "InsertDateTime": {
+          "format": "d MMMM yyyy",
+          "as_field": true
+        }
+      }
+    },
+    {
+      "Write": {
+        "InsertField": {
+          "code": "NUMPAGES \\* Arabic"
+        }
+      }
+    },
+    {
+      "Write": "UpdateFields"
+    },
+    {
+      "Write": {
+        "DropCap": {
+          "placement": "InMargin"
+        }
+      }
+    },
+    {
+      "Write": {
+        "InsertPicture": {
+          "name": "kiln.png",
+          "bytes": [
+            137,
+            80,
+            78,
+            71,
+            0,
+            255
+          ],
+          "floating": false
+        }
+      }
+    },
+    {
+      "Write": {
+        "InsertTable": {
+          "rows": 3,
+          "cols": 4,
+          "autofit": "Window"
+        }
+      }
+    },
+    {
+      "Write": {
+        "ConvertTextToTable": {
+          "separator": "Tabs"
+        }
+      }
+    },
+    {
+      "Write": {
+        "TableAutofit": {
+          "mode": "Contents"
+        }
+      }
+    },
+    {
+      "Write": {
+        "TableAlign": {
+          "align": "Center"
+        }
+      }
+    },
+    {
+      "Write": "TableSplit"
+    },
+    {
+      "Write": {
+        "TableSelect": {
+          "what": "Column"
+        }
+      }
+    },
+    {
+      "Write": {
+        "TableCellSize": {
+          "width": 120.5,
+          "height": null
+        }
+      }
+    },
+    {
+      "Write": {
+        "FindNext": {
+          "query": {
+            "text": "<(K)iln>",
+            "match_case": true,
+            "whole_word": false,
+            "wildcards": true,
+            "regex": false
+          },
+          "backward": true
+        }
+      }
+    },
+    {
+      "Write": {
+        "Replace": {
+          "query": {
+            "text": "<(K)iln>",
+            "match_case": true,
+            "whole_word": false,
+            "wildcards": true,
+            "regex": false
+          },
+          "replacement": "\\1ln"
+        }
+      }
+    },
+    {
+      "Write": {
+        "ReplaceAll": {
+          "query": {
+            "text": "",
+            "match_case": false,
+            "whole_word": false,
+            "wildcards": false,
+            "regex": false
+          },
+          "replacement": ""
+        }
+      }
+    },
+    {
+      "Write": {
+        "GoTo": {
+          "target": {
+            "Page": {
+              "number": -2,
+              "relative": true
+            }
+          }
+        }
+      }
     }
   ]
 }

@@ -986,6 +986,14 @@ impl DocModel for ScratchDoc {
                     Change::None
                 }
             }
+            // The Write editor's commands (WP-64) need the Write model: the scratch document is
+            // plain paragraphs.
+            other => {
+                return Err(KilnError::Unsupported(format!(
+                    "{} in the scratch document",
+                    other.meta().id
+                )));
+            }
         };
         let change = if committed && change != Change::Content {
             Change::Content

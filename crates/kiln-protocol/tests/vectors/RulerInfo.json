@@ -1,0 +1,54 @@
+{
+  "type": "RulerInfo",
+  "format": {
+    "TYPENAME": "RulerInfo"
+  },
+  "values": [
+    {
+      "page": 0,
+      "page_rect": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.0,
+        "height": 0.0
+      },
+      "text_rect": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.0,
+        "height": 0.0
+      },
+      "columns": [],
+      "indent_left": 0.0,
+      "indent_right": 0.0,
+      "first_line": 0.0,
+      "tabs": [],
+      "default_tab": 0.0,
+      "margin_top": 0.0,
+      "margin_bottom": 0.0
+    },
+    {
+      "page": 0,
+      "page_rect": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.0,
+        "height": 0.0
+      },
+      "text_rect": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.0,
+        "height": 0.0
+      },
+      "columns": [],
+      "indent_left": 0.0,
+      "indent_right": 0.0,
+      "first_line": 0.0,
+      "tabs": [],
+      "default_tab": 0.0,
+      "margin_top": 0.0,
+      "margin_bottom": 0.0
+    }
+  ]
+}

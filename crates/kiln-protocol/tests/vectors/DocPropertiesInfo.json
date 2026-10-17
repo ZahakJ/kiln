@@ -1,0 +1,40 @@
+{
+  "type": "DocPropertiesInfo",
+  "format": {
+    "TYPENAME": "DocPropertiesInfo"
+  },
+  "values": [
+    {
+      "title": null,
+      "subject": null,
+      "author": null,
+      "keywords": null,
+      "description": null,
+      "last_modified_by": null,
+      "created": null,
+      "modified": null,
+      "revision": null,
+      "application": null,
+      "pages": 0,
+      "words": 0,
+      "characters": 0,
+      "paragraphs": 0
+    },
+    {
+      "title": null,
+      "subject": "",
+      "author": null,
+      "keywords": "",
+      "description": "",
+      "last_modified_by": "",
+      "created": null,
+      "modified": "",
+      "revision": "",
+      "application": "",
+      "pages": 0,
+      "words": 0,
+      "characters": 0,
+      "paragraphs": 0
+    }
+  ]
+}

@@ -196,6 +196,301 @@
       }
     },
     {
+      "Edit": "Cut"
+    },
+    {
+      "Edit": "Copy"
+    },
+    {
+      "Edit": {
+        "Paste": {
+          "data": null
+        }
+      }
+    },
+    {
+      "Edit": {
+        "PasteKeepSource": {
+          "data": {
+            "text": "Kiln «Write»\tok",
+            "html": "<p><b>Kiln</b> «Write»</p>",
+            "kiln": "{\"v\":1}"
+          }
+        }
+      }
+    },
+    {
+      "Edit": {
+        "PasteMerge": {
+          "data": null
+        }
+      }
+    },
+    {
+      "Edit": {
+        "PasteTextOnly": {
+          "data": {
+            "text": "Kiln «Write»\tok",
+            "html": "<p><b>Kiln</b> «Write»</p>",
+            "kiln": "{\"v\":1}"
+          }
+        }
+      }
+    },
+    {
+      "Edit": {
+        "PasteAs": {
+          "mode": "Html",
+          "data": null
+        }
+      }
+    },
+    {
+      "Edit": "Repeat"
+    },
+    {
+      "Edit": "Bold"
+    },
+    {
+      "Edit": "Italic"
+    },
+    {
+      "Edit": "Underline"
+    },
+    {
+      "Edit": "DoubleUnderline"
+    },
+    {
+      "Edit": "Strikethrough"
+    },
+    {
+      "Edit": "Subscript"
+    },
+    {
+      "Edit": "Superscript"
+    },
+    {
+      "Edit": "AllCaps"
+    },
+    {
+      "Edit": {
+        "FontFamily": {
+          "family": "Figtree"
+        }
+      }
+    },
+    {
+      "Edit": {
+        "FontSize": {
+          "size": 10.5
+        }
+      }
+    },
+    {
+      "Edit": {
+        "GrowFont": {
+          "one_point": false
+        }
+      }
+    },
+    {
+      "Edit": {
+        "ShrinkFont": {
+          "one_point": true
+        }
+      }
+    },
+    {
+      "Edit": {
+        "ChangeCase": {
+          "case": "Title"
+        }
+      }
+    },
+    {
+      "Edit": "ClearFormatting"
+    },
+    {
+      "Edit": {
+        "FontColor": {
+          "color": "C8352B"
+        }
+      }
+    },
+    {
+      "Edit": {
+        "Highlight": {
+          "color": null
+        }
+      }
+    },
+    {
+      "Edit": {
+        "Bullets": {
+          "glyph": "✓"
+        }
+      }
+    },
+    {
+      "Edit": {
+        "Numbering": {
+          "style": "LowerRoman"
+        }
+      }
+    },
+    {
+      "Edit": {
+        "MultilevelList": {
+          "legal": true
+        }
+      }
+    },
+    {
+      "Edit": "Indent"
+    },
+    {
+      "Edit": "Outdent"
+    },
+    {
+      "Edit": "AlignLeft"
+    },
+    {
+      "Edit": "AlignCenter"
+    },
+    {
+      "Edit": "AlignRight"
+    },
+    {
+      "Edit": "Justify"
+    },
+    {
+      "Edit": {
+        "LineSpacing": {
+          "spacing": 1.15
+        }
+      }
+    },
+    {
+      "Edit": "InsertDate"
+    },
+    {
+      "Edit": "InsertTime"
+    },
+    {
+      "Edit": "InsertPictures"
+    },
+    {
+      "Edit": {
+        "Margins": {
+          "preset": "Narrow"
+        }
+      }
+    },
+    {
+      "Edit": {
+        "Orientation": {
+          "orientation": "Landscape"
+        }
+      }
+    },
+    {
+      "Edit": {
+        "PageSize": {
+          "size": "A4"
+        }
+      }
+    },
+    {
+      "Edit": "TableInsertRowAbove"
+    },
+    {
+      "Edit": "TableInsertRowBelow"
+    },
+    {
+      "Edit": "TableInsertColumnLeft"
+    },
+    {
+      "Edit": "TableInsertColumnRight"
+    },
+    {
+      "Edit": {
+        "TableDelete": {
+          "what": "Columns"
+        }
+      }
+    },
+    {
+      "Edit": "TableMergeCells"
+    },
+    {
+      "Edit": {
+        "TableSplitCells": {
+          "rows": 2,
+          "cols": 3
+        }
+      }
+    },
+    {
+      "Edit": "TableDistributeRows"
+    },
+    {
+      "Edit": "TableDistributeColumns"
+    },
+    {
+      "Edit": {
+        "TableCellAlignment": {
+          "vertical": "Bottom",
+          "horizontal": "Right"
+        }
+      }
+    },
+    {
+      "Edit": "TableRepeatHeaderRows"
+    },
+    {
+      "Edit": {
+        "TableConvertToText": {
+          "separator": "Commas"
+        }
+      }
+    },
+    {
+      "Edit": "TableHeaderRow"
+    },
+    {
+      "Edit": "TableTotalRow"
+    },
+    {
+      "Edit": "TableBandedRows"
+    },
+    {
+      "Edit": "TableFirstColumn"
+    },
+    {
+      "Edit": "TableBandedColumns"
+    },
+    {
+      "Edit": {
+        "TableStyle": {
+          "style": "GridTable4-Accent1"
+        }
+      }
+    },
+    {
+      "Edit": {
+        "TableShading": {
+          "color": "DCE6FB"
+        }
+      }
+    },
+    {
+      "Edit": {
+        "TableBorders": {
+          "preset": "Outside"
+        }
+      }
+    },
+    {
       "Open": {
         "path": ""
       }

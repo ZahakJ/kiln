@@ -619,6 +619,30 @@ pub struct Document {
     /// Embedded media by part name.
     pub media: BTreeMap<String, Media>,
     next_id: u64,
+    /// Where every node is, rebuilt on demand (see [`NodeIndex`]).
+    #[serde(skip)]
+    index: NodeIndex,
+}
+
+/// A cache of node locations: `locate` answers from it after checking that the cached path
+/// still leads to the node, and rebuilds it with one walk of the document when the path is stale
+/// or the node unknown. Edits that move nodes therefore cost one walk at the next lookup, and
+/// lookups between them (typing, formatting) cost a path check instead of a walk (WP-64: the
+/// 300-page document's keystrokes did dozens of whole-document walks).
+#[derive(Default)]
+pub(crate) struct NodeIndex(std::sync::Mutex<Option<std::collections::HashMap<NodeId, Location>>>);
+
+impl Clone for NodeIndex {
+    /// A copy starts without a cache (it is rebuilt on its first lookup).
+    fn clone(&self) -> Self {
+        Self::default()
+    }
+}
+
+impl std::fmt::Debug for NodeIndex {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("NodeIndex")
+    }
 }
 
 impl PartialEq for Document {
@@ -809,6 +833,7 @@ impl Document {
             theme: DocTheme::office(),
             media: BTreeMap::new(),
             next_id: 1,
+            index: NodeIndex::default(),
         }
     }
 
@@ -893,8 +918,85 @@ impl Document {
         ControlFlow::Continue(())
     }
 
-    /// Finds a node.
+    /// Finds a node: from the location cache when its path still leads there, else with one
+    /// walk that also rebuilds the cache.
     pub(crate) fn locate(&self, id: NodeId) -> Option<Location> {
+        let cached = self
+            .index
+            .0
+            .lock()
+            .ok()
+            .and_then(|g| g.as_ref().and_then(|m| m.get(&id).cloned()));
+        if let Some(loc) = cached
+            && self.leads_to(&loc, id)
+        {
+            return Some(loc);
+        }
+        let all = self.index_all();
+        let found = all.get(&id).cloned();
+        if let Ok(mut g) = self.index.0.lock() {
+            *g = Some(all);
+        }
+        found
+    }
+
+    /// Whether a location still names node `id`.
+    fn leads_to(&self, loc: &Location, id: NodeId) -> bool {
+        if loc.steps.is_empty() {
+            return self.story_id(loc.story).is_some_and(|(sid, _)| sid == id);
+        }
+        let vid = match self.walk_to(loc.story, &loc.steps) {
+            Some(Visit::Block(b)) => b.id(),
+            Some(Visit::Row(r)) => r.id,
+            Some(Visit::Cell(c)) => c.id,
+            Some(Visit::Drawing(d)) => d.id,
+            None => return false,
+        };
+        vid == id
+    }
+
+    /// Every node's location (one walk).
+    fn index_all(&self) -> std::collections::HashMap<NodeId, Location> {
+        let mut out = std::collections::HashMap::new();
+        for story in self.stories() {
+            if let Some((sid, kind)) = self.story_id(story) {
+                out.entry(sid).or_insert(Location {
+                    story,
+                    steps: Vec::new(),
+                    kind,
+                });
+            }
+        }
+        let _ = self.walk(|story, v, path| {
+            let (vid, kind) = match v {
+                Visit::Block(b) => (
+                    b.id(),
+                    match b {
+                        Block::Paragraph(_) => NodeKind::Paragraph,
+                        Block::Table(_) => NodeKind::Table,
+                        Block::Sdt(_) => NodeKind::Sdt,
+                        Block::Field(_) => NodeKind::FieldBlock,
+                        Block::Opaque(_) => NodeKind::Opaque,
+                    },
+                ),
+                Visit::Row(r) => (r.id, NodeKind::Row),
+                Visit::Cell(c) => (c.id, NodeKind::Cell),
+                Visit::Drawing(d) => (d.id, NodeKind::Drawing),
+            };
+            // The first occurrence wins, as the walk below would find it.
+            out.entry(vid).or_insert_with(|| Location {
+                story,
+                steps: path.to_vec(),
+                kind,
+            });
+            ControlFlow::<()>::Continue(())
+        });
+        out
+    }
+
+    /// Finds a node by walking the document (the cache's reference implementation).
+    #[cfg(test)]
+    pub(crate) fn locate_by_walking(&self, id: NodeId) -> Option<Location> {
         for story in self.stories() {
             if let Some((sid, kind)) = self.story_id(story)
                 && sid == id
@@ -1370,6 +1472,51 @@ mod tests {
         };
         doc.sections.push(section);
         Ok((doc, inner_id, table_id, tb_id))
+    }
+
+    #[test]
+    fn the_location_cache_agrees_with_walking_through_edits_and_direct_changes()
+    -> Result<(), DocError> {
+        let (mut doc, inner, table, tb) = sample()?;
+        let check = |doc: &Document| {
+            for id in doc.all_ids() {
+                assert_eq!(doc.locate(id), doc.locate_by_walking(id), "{id}");
+            }
+            assert_eq!(doc.locate(NodeId(987_654)), None);
+        };
+        check(&doc);
+        // Moving nodes (a paragraph inserted before everything) makes cached paths stale.
+        let body = doc.sections[0].id;
+        let fresh = para(&mut doc, "first")?;
+        let fresh_id = fresh.id();
+        doc.apply(crate::Transaction::new(vec![crate::Op::InsertBlocks {
+            container: body,
+            index: 0,
+            blocks: vec![fresh],
+        }]))?;
+        check(&doc);
+        assert_eq!(
+            doc.paragraph(fresh_id).map(Paragraph::text).as_deref(),
+            Some("first")
+        );
+        assert!(doc.paragraph(inner).is_some() && doc.table(table).is_some());
+        // Direct changes to the public fields are seen too.
+        let direct = para(&mut doc, "direct")?;
+        let direct_id = direct.id();
+        doc.sections[0].blocks.insert(0, direct);
+        check(&doc);
+        assert_eq!(
+            doc.paragraph(direct_id).map(Paragraph::text).as_deref(),
+            Some("direct")
+        );
+        assert_eq!(
+            doc.paragraph(tb).map(Paragraph::text).as_deref(),
+            Some("boxed")
+        );
+        // A copy rebuilds its own cache.
+        let copy = doc.clone();
+        check(&copy);
+        Ok(())
     }
 
     #[test]

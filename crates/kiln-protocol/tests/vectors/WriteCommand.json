@@ -52,8 +52,716 @@
     },
     "CancelComposition",
     {
+      "Tab": {
+        "back": true
+      }
+    },
+    "LineBreak",
+    "ShowMarks",
+    "ClearParagraphFormatting",
+    "ClearCharacterFormatting",
+    "MoveParagraphUp",
+    "MoveParagraphDown",
+    "Promote",
+    "Demote",
+    {
+      "ParagraphShading": {
+        "color": "FFF2CC"
+      }
+    },
+    {
+      "ParagraphBorders": {
+        "preset": "Bottom"
+      }
+    },
+    {
+      "SetParagraph": {
+        "format": {
+          "alignment": "Justify",
+          "indent_left": 36.0,
+          "indent_right": null,
+          "first_line": -18.0,
+          "space_before": null,
+          "space_after": 8.0,
+          "line_multiple": 1.08,
+          "line_exact": null,
+          "line_at_least": null,
+          "keep_next": true,
+          "keep_lines": null,
+          "widow_control": null,
+          "page_break_before": null,
+          "contextual_spacing": null,
+          "outline_level": 0,
+          "rtl": null
+        }
+      }
+    },
+    {
+      "SetFont": {
+        "format": {
+          "family": "Fraunces",
+          "size": 10.5,
+          "bold": true,
+          "italic": null,
+          "underline": "Wave",
+          "underline_none": false,
+          "underline_color": null,
+          "color": "3159C6",
+          "strike": null,
+          "double_strike": null,
+          "superscript": null,
+          "subscript": null,
+          "small_caps": null,
+          "all_caps": null,
+          "hidden": null,
+          "spacing": -0.5,
+          "scale": 120,
+          "position": null,
+          "kerning": null
+        }
+      }
+    },
+    {
+      "SetTabs": {
+        "tabs": [
+          {
+            "pos": 216.5,
+            "align": "Decimal",
+            "leader": "Dot"
+          },
+          {
+            "pos": 216.5,
+            "align": "Decimal",
+            "leader": "Dot"
+          }
+        ]
+      }
+    },
+    "SmallCaps",
+    {
+      "UnderlineStyle": {
+        "style": "Double"
+      }
+    },
+    {
+      "ApplyStyle": {
+        "style_id": "IntenseQuote"
+      }
+    },
+    "StyleNormal",
+    "StyleHeading1",
+    "StyleHeading2",
+    "StyleHeading3",
+    "StyleTitle",
+    {
+      "UpdateStyleFromSelection": {
+        "style_id": null
+      }
+    },
+    {
+      "NewStyleFromSelection": {
+        "name": "Pull Quote"
+      }
+    },
+    {
+      "ModifyStyle": {
+        "style_id": "Heading1",
+        "spec": {
+          "name": "Heading 1",
+          "based_on": "Normal",
+          "next": "Normal",
+          "font": {
+            "family": "Fraunces",
+            "size": 10.5,
+            "bold": true,
+            "italic": null,
+            "underline": "Wave",
+            "underline_none": false,
+            "underline_color": null,
+            "color": "3159C6",
+            "strike": null,
+            "double_strike": null,
+            "superscript": null,
+            "subscript": null,
+            "small_caps": null,
+            "all_caps": null,
+            "hidden": null,
+            "spacing": -0.5,
+            "scale": 120,
+            "position": null,
+            "kerning": null
+          },
+          "paragraph": {
+            "alignment": "Justify",
+            "indent_left": 36.0,
+            "indent_right": null,
+            "first_line": -18.0,
+            "space_before": null,
+            "space_after": 8.0,
+            "line_multiple": 1.08,
+            "line_exact": null,
+            "line_at_least": null,
+            "keep_next": true,
+            "keep_lines": null,
+            "widow_control": null,
+            "page_break_before": null,
+            "contextual_spacing": null,
+            "outline_level": 0,
+            "rtl": null
+          },
+          "quick": true
+        }
+      }
+    },
+    {
+      "ListLevel": {
+        "level": 8
+      }
+    },
+    "RestartNumbering",
+    "ContinueNumbering",
+    {
+      "SetNumberingValue": {
+        "value": 300
+      }
+    },
+    "PageBreak",
+    "ColumnBreak",
+    "BlankPage",
+    {
+      "SectionBreak": {
+        "kind": "OddPage"
+      }
+    },
+    {
+      "Columns": {
+        "count": 3
+      }
+    },
+    {
+      "IndentLeft": {
+        "cm": 1.27
+      }
+    },
+    {
+      "IndentRight": {
+        "cm": 0.0
+      }
+    },
+    {
+      "SpacingBefore": {
+        "pt": 12.0
+      }
+    },
+    {
+      "SpacingAfter": {
+        "pt": 6.0
+      }
+    },
+    {
+      "PageSetup": {
+        "setup": {
+          "top": 72.0,
+          "bottom": null,
+          "left": 90.0,
+          "right": null,
+          "gutter": null,
+          "header": null,
+          "footer": null,
+          "width": 595.3,
+          "height": 841.9,
+          "landscape": false,
+          "columns": 2,
+          "column_space": null,
+          "vertical_align": "Center"
+        }
+      }
+    },
+    "EditHeader",
+    "EditFooter",
+    "CloseHeaderFooter",
+    "DifferentFirstPage",
+    "DifferentOddEven",
+    "LinkToPrevious",
+    {
+      "PageNumber": {
+        "position": "BottomCenter"
+      }
+    },
+    {
+      "InsertLink": {
+        "url": "https://zahakj.github.io/kiln/",
+        "text": "Kiln",
+        "tooltip": null
+      }
+    },
+    "RemoveLink",
+    {
+      "InsertBookmark": {
+        "name": "Résumé_2"
+      }
+    },
+    {
+      "InsertDateTime": {
+        "format": "d MMMM yyyy",
+        "as_field": true
+      }
+    },
+    {
+      "InsertField": {
+        "code": "NUMPAGES \\* Arabic"
+      }
+    },
+    "UpdateFields",
+    {
+      "DropCap": {
+        "placement": "InMargin"
+      }
+    },
+    {
+      "InsertPicture": {
+        "name": "kiln.png",
+        "bytes": [
+          137,
+          80,
+          78,
+          71,
+          0,
+          255
+        ],
+        "floating": false
+      }
+    },
+    {
+      "InsertTable": {
+        "rows": 3,
+        "cols": 4,
+        "autofit": "Window"
+      }
+    },
+    {
+      "ConvertTextToTable": {
+        "separator": "Tabs"
+      }
+    },
+    {
+      "TableAutofit": {
+        "mode": "Contents"
+      }
+    },
+    {
+      "TableAlign": {
+        "align": "Center"
+      }
+    },
+    "TableSplit",
+    {
+      "TableSelect": {
+        "what": "Column"
+      }
+    },
+    {
+      "TableCellSize": {
+        "width": 120.5,
+        "height": null
+      }
+    },
+    {
+      "FindNext": {
+        "query": {
+          "text": "<(K)iln>",
+          "match_case": true,
+          "whole_word": false,
+          "wildcards": true,
+          "regex": false
+        },
+        "backward": true
+      }
+    },
+    {
+      "Replace": {
+        "query": {
+          "text": "<(K)iln>",
+          "match_case": true,
+          "whole_word": false,
+          "wildcards": true,
+          "regex": false
+        },
+        "replacement": "\\1ln"
+      }
+    },
+    {
+      "ReplaceAll": {
+        "query": {
+          "text": "",
+          "match_case": false,
+          "whole_word": false,
+          "wildcards": false,
+          "regex": false
+        },
+        "replacement": ""
+      }
+    },
+    {
+      "GoTo": {
+        "target": {
+          "Page": {
+            "number": -2,
+            "relative": true
+          }
+        }
+      }
+    },
+    {
       "InsertText": {
         "text": ""
+      }
+    },
+    "DeleteBackward",
+    {
+      "MoveCaret": {
+        "motion": "Backward",
+        "extend": false
+      }
+    },
+    {
+      "SelectTo": {
+        "pos": {
+          "block": 0,
+          "offset": 0
+        },
+        "extend": false
+      }
+    },
+    "DeleteForward",
+    "DeleteWordBackward",
+    "DeleteWordForward",
+    "SelectAll",
+    {
+      "SelectAt": {
+        "point": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "extend": false,
+        "unit": "Char"
+      }
+    },
+    {
+      "SetComposition": {
+        "text": "",
+        "caret": 0
+      }
+    },
+    {
+      "CommitComposition": {
+        "text": ""
+      }
+    },
+    "CancelComposition",
+    {
+      "Tab": {
+        "back": false
+      }
+    },
+    "LineBreak",
+    "ShowMarks",
+    "ClearParagraphFormatting",
+    "ClearCharacterFormatting",
+    "MoveParagraphUp",
+    "MoveParagraphDown",
+    "Promote",
+    "Demote",
+    {
+      "ParagraphShading": {
+        "color": ""
+      }
+    },
+    {
+      "ParagraphBorders": {
+        "preset": "None"
+      }
+    },
+    {
+      "SetParagraph": {
+        "format": {
+          "alignment": null,
+          "indent_left": null,
+          "indent_right": 0.0,
+          "first_line": null,
+          "space_before": 0.0,
+          "space_after": null,
+          "line_multiple": null,
+          "line_exact": 0.0,
+          "line_at_least": 0.0,
+          "keep_next": null,
+          "keep_lines": false,
+          "widow_control": false,
+          "page_break_before": false,
+          "contextual_spacing": false,
+          "outline_level": null,
+          "rtl": false
+        }
+      }
+    },
+    {
+      "SetFont": {
+        "format": {
+          "family": null,
+          "size": null,
+          "bold": null,
+          "italic": false,
+          "underline": null,
+          "underline_none": false,
+          "underline_color": "",
+          "color": null,
+          "strike": false,
+          "double_strike": false,
+          "superscript": false,
+          "subscript": false,
+          "small_caps": false,
+          "all_caps": false,
+          "hidden": false,
+          "spacing": null,
+          "scale": null,
+          "position": 0.0,
+          "kerning": 0.0
+        }
+      }
+    },
+    {
+      "SetTabs": {
+        "tabs": [
+          {
+            "pos": 0.0,
+            "align": "Left",
+            "leader": "None"
+          }
+        ]
+      }
+    },
+    "SmallCaps",
+    {
+      "UnderlineStyle": {
+        "style": "Single"
+      }
+    },
+    {
+      "ApplyStyle": {
+        "style_id": ""
+      }
+    },
+    "StyleNormal",
+    "StyleHeading1",
+    "StyleHeading2",
+    "StyleHeading3",
+    "StyleTitle",
+    {
+      "UpdateStyleFromSelection": {
+        "style_id": ""
+      }
+    },
+    {
+      "NewStyleFromSelection": {
+        "name": ""
+      }
+    },
+    {
+      "ModifyStyle": {
+        "style_id": "",
+        "spec": {
+          "name": null,
+          "based_on": null,
+          "next": null,
+          "font": {
+            "family": null,
+            "size": null,
+            "bold": null,
+            "italic": null,
+            "underline": null,
+            "underline_none": false,
+            "underline_color": null,
+            "color": null,
+            "strike": null,
+            "double_strike": null,
+            "superscript": null,
+            "subscript": null,
+            "small_caps": null,
+            "all_caps": null,
+            "hidden": null,
+            "spacing": null,
+            "scale": null,
+            "position": null,
+            "kerning": null
+          },
+          "paragraph": {
+            "alignment": null,
+            "indent_left": null,
+            "indent_right": null,
+            "first_line": null,
+            "space_before": null,
+            "space_after": null,
+            "line_multiple": null,
+            "line_exact": null,
+            "line_at_least": null,
+            "keep_next": null,
+            "keep_lines": null,
+            "widow_control": null,
+            "page_break_before": null,
+            "contextual_spacing": null,
+            "outline_level": null,
+            "rtl": null
+          },
+          "quick": null
+        }
+      }
+    },
+    {
+      "ListLevel": {
+        "level": 0
+      }
+    },
+    "RestartNumbering",
+    "ContinueNumbering",
+    {
+      "SetNumberingValue": {
+        "value": 0
+      }
+    },
+    "PageBreak",
+    "ColumnBreak",
+    "BlankPage",
+    {
+      "SectionBreak": {
+        "kind": "NextPage"
+      }
+    },
+    {
+      "Columns": {
+        "count": 0
+      }
+    },
+    {
+      "IndentLeft": {
+        "cm": 0.0
+      }
+    },
+    {
+      "IndentRight": {
+        "cm": 0.0
+      }
+    },
+    {
+      "SpacingBefore": {
+        "pt": 0.0
+      }
+    },
+    {
+      "SpacingAfter": {
+        "pt": 0.0
+      }
+    },
+    {
+      "PageSetup": {
+        "setup": {
+          "top": null,
+          "bottom": 0.0,
+          "left": null,
+          "right": 0.0,
+          "gutter": 0.0,
+          "header": 0.0,
+          "footer": 0.0,
+          "width": null,
+          "height": null,
+          "landscape": null,
+          "columns": null,
+          "column_space": 0.0,
+          "vertical_align": null
+        }
+      }
+    },
+    "EditHeader",
+    "EditFooter",
+    "CloseHeaderFooter",
+    "DifferentFirstPage",
+    "DifferentOddEven",
+    "LinkToPrevious",
+    {
+      "PageNumber": {
+        "position": "TopLeft"
+      }
+    },
+    {
+      "InsertLink": {
+        "url": "",
+        "text": "",
+        "tooltip": ""
+      }
+    },
+    "RemoveLink",
+    {
+      "InsertBookmark": {
+        "name": ""
+      }
+    },
+    {
+      "InsertDateTime": {
+        "format": "",
+        "as_field": false
+      }
+    },
+    {
+      "InsertField": {
+        "code": ""
+      }
+    },
+    "UpdateFields",
+    {
+      "DropCap": {
+        "placement": "Dropped"
+      }
+    },
+    {
+      "InsertPicture": {
+        "name": "",
+        "bytes": [
+          0
+        ],
+        "floating": false
+      }
+    },
+    {
+      "InsertTable": {
+        "rows": 0,
+        "cols": 0,
+        "autofit": "Fixed"
+      }
+    },
+    {
+      "ConvertTextToTable": {
+        "separator": "Paragraphs"
+      }
+    },
+    {
+      "TableAutofit": {
+        "mode": "Fixed"
+      }
+    },
+    {
+      "TableAlign": {
+        "align": "Left"
+      }
+    },
+    "TableSplit",
+    {
+      "TableSelect": {
+        "what": "Cell"
+      }
+    },
+    {
+      "TableCellSize": {
+        "width": 0.0,
+        "height": 0.0
       }
     }
   ]

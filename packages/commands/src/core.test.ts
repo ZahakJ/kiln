@@ -95,7 +95,11 @@ describe('buildCommand', () => {
     expect(() => buildCommand('suite.view.zoom', {})).toThrow(/"zoom" must be a number/);
     expect(() => buildCommand('write.caret.move', { motion: 'Up', extend: 'yes' })).toThrow(/extend/);
     expect(() => buildCommand('suite.file.new', {})).toThrow(/kind/);
-    expect(() => buildCommand('suite.format.bold')).toThrow(/not a core command/);
+    expect(() => buildCommand('suite.format.text_effects')).toThrow(/not a core command/);
+    expect(() => buildCommand('suite.format.font_size', { value: 'big' })).toThrow(/size/);
+    expect(buildCommand('suite.format.font_color', { color: { type: 'rgb', hex: '#c8352b' } })).toEqual({
+      Suite: { Edit: { FontColor: { color: 'C8352B' } } },
+    });
     expect(() => buildCommand('suite.view.zoom', { zoom: Number.NaN })).toThrow(CommandArgsError);
   });
 });

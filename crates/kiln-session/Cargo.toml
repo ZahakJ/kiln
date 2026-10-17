@@ -30,6 +30,12 @@ kiln-io-csv.workspace = true
 kiln-text = { path = "../kiln-text", default-features = false }
 rustc-hash.workspace = true
 unicode-segmentation.workspace = true
+# The Write editor (WP-64): Find and Replace, Kiln's clipboard format, picture headers (WebP
+# joins the formats kiln-doc-layout decodes).
+regex.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+image = { workspace = true, features = ["png", "jpeg", "gif", "bmp", "webp"] }
 
 # The session thread and its channels exist only on native targets; the web build runs the
 # session directly inside a Web Worker.

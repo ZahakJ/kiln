@@ -195,6 +195,40 @@
         }
       }
     },
+    "BorderPreset": {
+      "ENUM": {
+        "0": {
+          "None": "UNIT"
+        },
+        "1": {
+          "All": "UNIT"
+        },
+        "2": {
+          "Outside": "UNIT"
+        },
+        "3": {
+          "Inside": "UNIT"
+        },
+        "4": {
+          "Top": "UNIT"
+        },
+        "5": {
+          "Bottom": "UNIT"
+        },
+        "6": {
+          "Left": "UNIT"
+        },
+        "7": {
+          "Right": "UNIT"
+        },
+        "8": {
+          "InsideHorizontal": "UNIT"
+        },
+        "9": {
+          "InsideVertical": "UNIT"
+        }
+      }
+    },
     "Bounds": {
       "STRUCT": [
         {
@@ -323,6 +357,19 @@
           }
         }
       ]
+    },
+    "CellVerticalAlign": {
+      "ENUM": {
+        "0": {
+          "Top": "UNIT"
+        },
+        "1": {
+          "Center": "UNIT"
+        },
+        "2": {
+          "Bottom": "UNIT"
+        }
+      }
     },
     "ChartAxisState": {
       "STRUCT": [
@@ -713,6 +760,23 @@
         }
       ]
     },
+    "ClipboardData": {
+      "STRUCT": [
+        {
+          "text": "STR"
+        },
+        {
+          "html": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "kiln": {
+            "OPTION": "STR"
+          }
+        }
+      ]
+    },
     "ColorRole": {
       "ENUM": {
         "0": {
@@ -791,6 +855,16 @@
           "availability": {
             "TYPENAME": "Availability"
           }
+        }
+      ]
+    },
+    "CommandLogEntry": {
+      "STRUCT": [
+        {
+          "id": "STR"
+        },
+        {
+          "outcome": "STR"
         }
       ]
     },
@@ -899,6 +973,72 @@
           "Notes": "UNIT"
         }
       }
+    },
+    "DocPropertiesInfo": {
+      "STRUCT": [
+        {
+          "title": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "subject": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "author": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "keywords": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "description": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "last_modified_by": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "created": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "modified": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "revision": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "application": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "pages": "U32"
+        },
+        {
+          "words": "U32"
+        },
+        {
+          "characters": "U32"
+        },
+        {
+          "paragraphs": "U32"
+        }
+      ]
     },
     "DocSummary": {
       "STRUCT": [
@@ -1279,6 +1419,419 @@
         }
       }
     },
+    "DropCapPlacement": {
+      "ENUM": {
+        "0": {
+          "Dropped": "UNIT"
+        },
+        "1": {
+          "InMargin": "UNIT"
+        }
+      }
+    },
+    "EditCommand": {
+      "ENUM": {
+        "0": {
+          "Cut": "UNIT"
+        },
+        "1": {
+          "Copy": "UNIT"
+        },
+        "2": {
+          "Paste": {
+            "STRUCT": [
+              {
+                "data": {
+                  "OPTION": {
+                    "TYPENAME": "ClipboardData"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "3": {
+          "PasteKeepSource": {
+            "STRUCT": [
+              {
+                "data": {
+                  "OPTION": {
+                    "TYPENAME": "ClipboardData"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "4": {
+          "PasteMerge": {
+            "STRUCT": [
+              {
+                "data": {
+                  "OPTION": {
+                    "TYPENAME": "ClipboardData"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "5": {
+          "PasteTextOnly": {
+            "STRUCT": [
+              {
+                "data": {
+                  "OPTION": {
+                    "TYPENAME": "ClipboardData"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "6": {
+          "PasteAs": {
+            "STRUCT": [
+              {
+                "mode": {
+                  "TYPENAME": "PasteMode"
+                }
+              },
+              {
+                "data": {
+                  "OPTION": {
+                    "TYPENAME": "ClipboardData"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "7": {
+          "Repeat": "UNIT"
+        },
+        "8": {
+          "Bold": "UNIT"
+        },
+        "9": {
+          "Italic": "UNIT"
+        },
+        "10": {
+          "Underline": "UNIT"
+        },
+        "11": {
+          "DoubleUnderline": "UNIT"
+        },
+        "12": {
+          "Strikethrough": "UNIT"
+        },
+        "13": {
+          "Subscript": "UNIT"
+        },
+        "14": {
+          "Superscript": "UNIT"
+        },
+        "15": {
+          "AllCaps": "UNIT"
+        },
+        "16": {
+          "FontFamily": {
+            "STRUCT": [
+              {
+                "family": "STR"
+              }
+            ]
+          }
+        },
+        "17": {
+          "FontSize": {
+            "STRUCT": [
+              {
+                "size": "F32"
+              }
+            ]
+          }
+        },
+        "18": {
+          "GrowFont": {
+            "STRUCT": [
+              {
+                "one_point": "BOOL"
+              }
+            ]
+          }
+        },
+        "19": {
+          "ShrinkFont": {
+            "STRUCT": [
+              {
+                "one_point": "BOOL"
+              }
+            ]
+          }
+        },
+        "20": {
+          "ChangeCase": {
+            "STRUCT": [
+              {
+                "case": {
+                  "OPTION": {
+                    "TYPENAME": "TextCase"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "21": {
+          "ClearFormatting": "UNIT"
+        },
+        "22": {
+          "FontColor": {
+            "STRUCT": [
+              {
+                "color": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "23": {
+          "Highlight": {
+            "STRUCT": [
+              {
+                "color": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "24": {
+          "Bullets": {
+            "STRUCT": [
+              {
+                "glyph": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "25": {
+          "Numbering": {
+            "STRUCT": [
+              {
+                "style": {
+                  "OPTION": {
+                    "TYPENAME": "ListNumberStyle"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "26": {
+          "MultilevelList": {
+            "STRUCT": [
+              {
+                "legal": "BOOL"
+              }
+            ]
+          }
+        },
+        "27": {
+          "Indent": "UNIT"
+        },
+        "28": {
+          "Outdent": "UNIT"
+        },
+        "29": {
+          "AlignLeft": "UNIT"
+        },
+        "30": {
+          "AlignCenter": "UNIT"
+        },
+        "31": {
+          "AlignRight": "UNIT"
+        },
+        "32": {
+          "Justify": "UNIT"
+        },
+        "33": {
+          "LineSpacing": {
+            "STRUCT": [
+              {
+                "spacing": "F32"
+              }
+            ]
+          }
+        },
+        "34": {
+          "InsertDate": "UNIT"
+        },
+        "35": {
+          "InsertTime": "UNIT"
+        },
+        "36": {
+          "InsertPictures": "UNIT"
+        },
+        "37": {
+          "Margins": {
+            "STRUCT": [
+              {
+                "preset": {
+                  "TYPENAME": "MarginsPreset"
+                }
+              }
+            ]
+          }
+        },
+        "38": {
+          "Orientation": {
+            "STRUCT": [
+              {
+                "orientation": {
+                  "TYPENAME": "PageOrientation"
+                }
+              }
+            ]
+          }
+        },
+        "39": {
+          "PageSize": {
+            "STRUCT": [
+              {
+                "size": {
+                  "TYPENAME": "PaperSize"
+                }
+              }
+            ]
+          }
+        },
+        "40": {
+          "TableInsertRowAbove": "UNIT"
+        },
+        "41": {
+          "TableInsertRowBelow": "UNIT"
+        },
+        "42": {
+          "TableInsertColumnLeft": "UNIT"
+        },
+        "43": {
+          "TableInsertColumnRight": "UNIT"
+        },
+        "44": {
+          "TableDelete": {
+            "STRUCT": [
+              {
+                "what": {
+                  "TYPENAME": "TableDeleteTarget"
+                }
+              }
+            ]
+          }
+        },
+        "45": {
+          "TableMergeCells": "UNIT"
+        },
+        "46": {
+          "TableSplitCells": {
+            "STRUCT": [
+              {
+                "rows": "U32"
+              },
+              {
+                "cols": "U32"
+              }
+            ]
+          }
+        },
+        "47": {
+          "TableDistributeRows": "UNIT"
+        },
+        "48": {
+          "TableDistributeColumns": "UNIT"
+        },
+        "49": {
+          "TableCellAlignment": {
+            "STRUCT": [
+              {
+                "vertical": {
+                  "TYPENAME": "CellVerticalAlign"
+                }
+              },
+              {
+                "horizontal": {
+                  "TYPENAME": "TextAlign"
+                }
+              }
+            ]
+          }
+        },
+        "50": {
+          "TableRepeatHeaderRows": "UNIT"
+        },
+        "51": {
+          "TableConvertToText": {
+            "STRUCT": [
+              {
+                "separator": {
+                  "TYPENAME": "TextSeparator"
+                }
+              }
+            ]
+          }
+        },
+        "52": {
+          "TableHeaderRow": "UNIT"
+        },
+        "53": {
+          "TableTotalRow": "UNIT"
+        },
+        "54": {
+          "TableBandedRows": "UNIT"
+        },
+        "55": {
+          "TableFirstColumn": "UNIT"
+        },
+        "56": {
+          "TableBandedColumns": "UNIT"
+        },
+        "57": {
+          "TableStyle": {
+            "STRUCT": [
+              {
+                "style": "STR"
+              }
+            ]
+          }
+        },
+        "58": {
+          "TableShading": {
+            "STRUCT": [
+              {
+                "color": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "59": {
+          "TableBorders": {
+            "STRUCT": [
+              {
+                "preset": {
+                  "TYPENAME": "BorderPreset"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
     "ErrorInfo": {
       "STRUCT": [
         {
@@ -1578,6 +2131,354 @@
         }
       }
     },
+    "FindHit": {
+      "STRUCT": [
+        {
+          "start": {
+            "TYPENAME": "TextPos"
+          }
+        },
+        {
+          "end": {
+            "TYPENAME": "TextPos"
+          }
+        },
+        {
+          "before": "STR"
+        },
+        {
+          "text": "STR"
+        },
+        {
+          "after": "STR"
+        },
+        {
+          "page": {
+            "OPTION": "U32"
+          }
+        }
+      ]
+    },
+    "FindQuery": {
+      "STRUCT": [
+        {
+          "text": "STR"
+        },
+        {
+          "match_case": "BOOL"
+        },
+        {
+          "whole_word": "BOOL"
+        },
+        {
+          "wildcards": "BOOL"
+        },
+        {
+          "regex": "BOOL"
+        }
+      ]
+    },
+    "FindResults": {
+      "STRUCT": [
+        {
+          "hits": {
+            "SEQ": {
+              "TYPENAME": "FindHit"
+            }
+          }
+        },
+        {
+          "total": "U32"
+        },
+        {
+          "error": {
+            "OPTION": "STR"
+          }
+        }
+      ]
+    },
+    "FontFormat": {
+      "STRUCT": [
+        {
+          "family": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "size": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "bold": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "italic": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "underline": {
+            "OPTION": {
+              "TYPENAME": "UnderlineKind"
+            }
+          }
+        },
+        {
+          "underline_none": "BOOL"
+        },
+        {
+          "underline_color": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "color": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "strike": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "double_strike": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "superscript": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "subscript": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "small_caps": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "all_caps": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "hidden": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "spacing": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "scale": {
+            "OPTION": "U32"
+          }
+        },
+        {
+          "position": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "kerning": {
+            "OPTION": "F32"
+          }
+        }
+      ]
+    },
+    "FormatState": {
+      "STRUCT": [
+        {
+          "font": "STR"
+        },
+        {
+          "size": "F32"
+        },
+        {
+          "bold": "BOOL"
+        },
+        {
+          "italic": "BOOL"
+        },
+        {
+          "underline": {
+            "OPTION": {
+              "TYPENAME": "UnderlineKind"
+            }
+          }
+        },
+        {
+          "strike": "BOOL"
+        },
+        {
+          "double_strike": "BOOL"
+        },
+        {
+          "subscript": "BOOL"
+        },
+        {
+          "superscript": "BOOL"
+        },
+        {
+          "all_caps": "BOOL"
+        },
+        {
+          "small_caps": "BOOL"
+        },
+        {
+          "hidden": "BOOL"
+        },
+        {
+          "color": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "highlight": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "spacing": "F32"
+        },
+        {
+          "mixed": {
+            "SEQ": "STR"
+          }
+        },
+        {
+          "alignment": {
+            "OPTION": {
+              "TYPENAME": "TextAlign"
+            }
+          }
+        },
+        {
+          "line_multiple": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "line_points": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "indent_left": "F32"
+        },
+        {
+          "indent_right": "F32"
+        },
+        {
+          "first_line": "F32"
+        },
+        {
+          "space_before": "F32"
+        },
+        {
+          "space_after": "F32"
+        },
+        {
+          "keep_next": "BOOL"
+        },
+        {
+          "keep_lines": "BOOL"
+        },
+        {
+          "widow_control": "BOOL"
+        },
+        {
+          "page_break_before": "BOOL"
+        },
+        {
+          "contextual_spacing": "BOOL"
+        },
+        {
+          "outline_level": "U8"
+        },
+        {
+          "style_id": "STR"
+        },
+        {
+          "style_name": "STR"
+        },
+        {
+          "char_style_id": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "list": {
+            "OPTION": {
+              "TYPENAME": "ListState"
+            }
+          }
+        },
+        {
+          "table": {
+            "OPTION": {
+              "TYPENAME": "TableState"
+            }
+          }
+        },
+        {
+          "story": {
+            "TYPENAME": "StoryKind"
+          }
+        },
+        {
+          "header_footer": {
+            "OPTION": {
+              "TYPENAME": "HeaderFooterState"
+            }
+          }
+        },
+        {
+          "section": {
+            "TYPENAME": "SectionState"
+          }
+        },
+        {
+          "show_marks": "BOOL"
+        },
+        {
+          "collapsed": "BOOL"
+        },
+        {
+          "link": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "can_repeat": "BOOL"
+        },
+        {
+          "tabs": {
+            "SEQ": {
+              "TYPENAME": "TabStopSpec"
+            }
+          }
+        },
+        {
+          "shading": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "borders": "BOOL"
+        }
+      ]
+    },
     "GlyphRun": {
       "STRUCT": [
         {
@@ -1596,6 +2497,76 @@
           }
         }
       ]
+    },
+    "GoToTarget": {
+      "ENUM": {
+        "0": {
+          "Page": {
+            "STRUCT": [
+              {
+                "number": "I32"
+              },
+              {
+                "relative": "BOOL"
+              }
+            ]
+          }
+        },
+        "1": {
+          "Section": {
+            "STRUCT": [
+              {
+                "number": "U32"
+              }
+            ]
+          }
+        },
+        "2": {
+          "Line": {
+            "STRUCT": [
+              {
+                "number": "U32"
+              }
+            ]
+          }
+        },
+        "3": {
+          "Bookmark": {
+            "STRUCT": [
+              {
+                "name": "STR"
+              }
+            ]
+          }
+        },
+        "4": {
+          "Paragraph": {
+            "STRUCT": [
+              {
+                "para": "U64"
+              }
+            ]
+          }
+        },
+        "5": {
+          "Footnote": {
+            "STRUCT": [
+              {
+                "backward": "BOOL"
+              }
+            ]
+          }
+        },
+        "6": {
+          "Comment": {
+            "STRUCT": [
+              {
+                "backward": "BOOL"
+              }
+            ]
+          }
+        }
+      }
     },
     "Gradient": {
       "STRUCT": [
@@ -1711,6 +2682,46 @@
           "Caret": "UNIT"
         }
       }
+    },
+    "HeaderFooterState": {
+      "STRUCT": [
+        {
+          "different_first": "BOOL"
+        },
+        {
+          "different_odd_even": "BOOL"
+        },
+        {
+          "linked": "BOOL"
+        },
+        {
+          "has_previous": "BOOL"
+        },
+        {
+          "label": "STR"
+        }
+      ]
+    },
+    "HeadingInfo": {
+      "STRUCT": [
+        {
+          "para": "U64"
+        },
+        {
+          "level": "U8"
+        },
+        {
+          "text": "STR"
+        },
+        {
+          "page": {
+            "OPTION": "U32"
+          }
+        },
+        {
+          "current": "BOOL"
+        }
+      ]
     },
     "HostOp": {
       "ENUM": {
@@ -1971,6 +2982,66 @@
         }
       }
     },
+    "ListNumberStyle": {
+      "ENUM": {
+        "0": {
+          "Decimal": "UNIT"
+        },
+        "1": {
+          "DecimalParen": "UNIT"
+        },
+        "2": {
+          "UpperRoman": "UNIT"
+        },
+        "3": {
+          "UpperLetter": "UNIT"
+        },
+        "4": {
+          "LowerLetterParen": "UNIT"
+        },
+        "5": {
+          "LowerLetter": "UNIT"
+        },
+        "6": {
+          "LowerRoman": "UNIT"
+        }
+      }
+    },
+    "ListState": {
+      "STRUCT": [
+        {
+          "num_id": "U32"
+        },
+        {
+          "level": "U8"
+        },
+        {
+          "bullet": "BOOL"
+        },
+        {
+          "label": "STR"
+        }
+      ]
+    },
+    "MarginsPreset": {
+      "ENUM": {
+        "0": {
+          "Normal": "UNIT"
+        },
+        "1": {
+          "Narrow": "UNIT"
+        },
+        "2": {
+          "Moderate": "UNIT"
+        },
+        "3": {
+          "Wide": "UNIT"
+        },
+        "4": {
+          "Mirrored": "UNIT"
+        }
+      }
+    },
     "OpenHint": {
       "STRUCT": [
         {
@@ -2020,6 +3091,137 @@
             "SEQ": {
               "TYPENAME": "DrawOp"
             }
+          }
+        }
+      ]
+    },
+    "PageNumberPosition": {
+      "ENUM": {
+        "0": {
+          "TopLeft": "UNIT"
+        },
+        "1": {
+          "TopCenter": "UNIT"
+        },
+        "2": {
+          "TopRight": "UNIT"
+        },
+        "3": {
+          "BottomLeft": "UNIT"
+        },
+        "4": {
+          "BottomCenter": "UNIT"
+        },
+        "5": {
+          "BottomRight": "UNIT"
+        },
+        "6": {
+          "Caret": "UNIT"
+        }
+      }
+    },
+    "PageOrientation": {
+      "ENUM": {
+        "0": {
+          "Portrait": "UNIT"
+        },
+        "1": {
+          "Landscape": "UNIT"
+        }
+      }
+    },
+    "PageSetupSpec": {
+      "STRUCT": [
+        {
+          "top": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "bottom": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "left": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "right": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "gutter": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "header": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "footer": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "width": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "height": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "landscape": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "columns": {
+            "OPTION": "U8"
+          }
+        },
+        {
+          "column_space": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "vertical_align": {
+            "OPTION": {
+              "TYPENAME": "CellVerticalAlign"
+            }
+          }
+        }
+      ]
+    },
+    "PagesInfo": {
+      "STRUCT": [
+        {
+          "count": "U32"
+        },
+        {
+          "complete": "BOOL"
+        },
+        {
+          "current": "U32"
+        },
+        {
+          "rects": {
+            "SEQ": {
+              "TYPENAME": "Rect"
+            }
+          }
+        },
+        {
+          "extent": {
+            "TYPENAME": "Rect"
           }
         }
       ]
@@ -2086,6 +3288,120 @@
         }
       ]
     },
+    "PaperSize": {
+      "ENUM": {
+        "0": {
+          "Letter": "UNIT"
+        },
+        "1": {
+          "Legal": "UNIT"
+        },
+        "2": {
+          "Executive": "UNIT"
+        },
+        "3": {
+          "A3": "UNIT"
+        },
+        "4": {
+          "A4": "UNIT"
+        },
+        "5": {
+          "A5": "UNIT"
+        },
+        "6": {
+          "B5": "UNIT"
+        },
+        "7": {
+          "Tabloid": "UNIT"
+        }
+      }
+    },
+    "ParagraphFormat": {
+      "STRUCT": [
+        {
+          "alignment": {
+            "OPTION": {
+              "TYPENAME": "TextAlign"
+            }
+          }
+        },
+        {
+          "indent_left": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "indent_right": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "first_line": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "space_before": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "space_after": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "line_multiple": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "line_exact": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "line_at_least": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "keep_next": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "keep_lines": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "widow_control": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "page_break_before": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "contextual_spacing": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "outline_level": {
+            "OPTION": "U8"
+          }
+        },
+        {
+          "rtl": {
+            "OPTION": "BOOL"
+          }
+        }
+      ]
+    },
     "ParagraphText": {
       "STRUCT": [
         {
@@ -2095,6 +3411,22 @@
           "text": "STR"
         }
       ]
+    },
+    "PasteMode": {
+      "ENUM": {
+        "0": {
+          "KeepSource": "UNIT"
+        },
+        "1": {
+          "Merge": "UNIT"
+        },
+        "2": {
+          "TextOnly": "UNIT"
+        },
+        "3": {
+          "Html": "UNIT"
+        }
+      }
     },
     "PathData": {
       "STRUCT": [
@@ -2373,6 +3705,13 @@
               }
             ]
           }
+        },
+        "10": {
+          "Write": {
+            "NEWTYPE": {
+              "TYPENAME": "WriteQuery"
+            }
+          }
         }
       }
     },
@@ -2451,6 +3790,13 @@
               "TYPENAME": "PdfFile"
             }
           }
+        },
+        "10": {
+          "Write": {
+            "NEWTYPE": {
+              "TYPENAME": "WriteQueryResult"
+            }
+          }
         }
       }
     },
@@ -2503,6 +3849,67 @@
         },
         {
           "height": "F32"
+        }
+      ]
+    },
+    "RulerInfo": {
+      "STRUCT": [
+        {
+          "page": "U32"
+        },
+        {
+          "page_rect": {
+            "TYPENAME": "Rect"
+          }
+        },
+        {
+          "text_rect": {
+            "TYPENAME": "Rect"
+          }
+        },
+        {
+          "columns": {
+            "SEQ": {
+              "TYPENAME": "Rect"
+            }
+          }
+        },
+        {
+          "indent_left": "F32"
+        },
+        {
+          "indent_right": "F32"
+        },
+        {
+          "first_line": "F32"
+        },
+        {
+          "tabs": {
+            "SEQ": {
+              "TYPENAME": "RulerTabInfo"
+            }
+          }
+        },
+        {
+          "default_tab": "F32"
+        },
+        {
+          "margin_top": "F32"
+        },
+        {
+          "margin_bottom": "F32"
+        }
+      ]
+    },
+    "RulerTabInfo": {
+      "STRUCT": [
+        {
+          "pos": "F32"
+        },
+        {
+          "align": {
+            "TYPENAME": "TabAlign"
+          }
         }
       ]
     },
@@ -2561,6 +3968,53 @@
               "TYPENAME": "Overlay"
             }
           }
+        }
+      ]
+    },
+    "SectionStart": {
+      "ENUM": {
+        "0": {
+          "NextPage": "UNIT"
+        },
+        "1": {
+          "Continuous": "UNIT"
+        },
+        "2": {
+          "EvenPage": "UNIT"
+        },
+        "3": {
+          "OddPage": "UNIT"
+        }
+      }
+    },
+    "SectionState": {
+      "STRUCT": [
+        {
+          "width": "F32"
+        },
+        {
+          "height": "F32"
+        },
+        {
+          "landscape": "BOOL"
+        },
+        {
+          "top": "F32"
+        },
+        {
+          "bottom": "F32"
+        },
+        {
+          "left": "F32"
+        },
+        {
+          "right": "F32"
+        },
+        {
+          "columns": "U8"
+        },
+        {
+          "paper": "STR"
         }
       ]
     },
@@ -2793,6 +4247,28 @@
         }
       ]
     },
+    "StoryKind": {
+      "ENUM": {
+        "0": {
+          "Body": "UNIT"
+        },
+        "1": {
+          "Header": "UNIT"
+        },
+        "2": {
+          "Footer": "UNIT"
+        },
+        "3": {
+          "Note": "UNIT"
+        },
+        "4": {
+          "Comment": "UNIT"
+        },
+        "5": {
+          "TextBox": "UNIT"
+        }
+      }
+    },
     "Stroke": {
       "STRUCT": [
         {
@@ -2816,6 +4292,116 @@
         {
           "dash": {
             "SEQ": "F32"
+          }
+        }
+      ]
+    },
+    "StyleInfo": {
+      "STRUCT": [
+        {
+          "id": "STR"
+        },
+        {
+          "name": "STR"
+        },
+        {
+          "kind": {
+            "TYPENAME": "StyleKindInfo"
+          }
+        },
+        {
+          "quick": "BOOL"
+        },
+        {
+          "hidden": "BOOL"
+        },
+        {
+          "priority": "U32"
+        },
+        {
+          "based_on": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "next": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "font": "STR"
+        },
+        {
+          "size": "F32"
+        },
+        {
+          "bold": "BOOL"
+        },
+        {
+          "italic": "BOOL"
+        },
+        {
+          "color": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "current": "BOOL"
+        },
+        {
+          "in_use": "BOOL"
+        }
+      ]
+    },
+    "StyleKindInfo": {
+      "ENUM": {
+        "0": {
+          "Paragraph": "UNIT"
+        },
+        "1": {
+          "Character": "UNIT"
+        },
+        "2": {
+          "Linked": "UNIT"
+        },
+        "3": {
+          "Table": "UNIT"
+        },
+        "4": {
+          "Numbering": "UNIT"
+        }
+      }
+    },
+    "StyleSpec": {
+      "STRUCT": [
+        {
+          "name": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "based_on": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "next": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "font": {
+            "TYPENAME": "FontFormat"
+          }
+        },
+        {
+          "paragraph": {
+            "TYPENAME": "ParagraphFormat"
+          }
+        },
+        {
+          "quick": {
+            "OPTION": "BOOL"
           }
         }
       ]
@@ -3136,6 +4722,187 @@
               }
             ]
           }
+        },
+        "28": {
+          "Edit": {
+            "NEWTYPE": {
+              "TYPENAME": "EditCommand"
+            }
+          }
+        }
+      }
+    },
+    "TabAlign": {
+      "ENUM": {
+        "0": {
+          "Left": "UNIT"
+        },
+        "1": {
+          "Center": "UNIT"
+        },
+        "2": {
+          "Right": "UNIT"
+        },
+        "3": {
+          "Decimal": "UNIT"
+        },
+        "4": {
+          "Bar": "UNIT"
+        }
+      }
+    },
+    "TabLeaderKind": {
+      "ENUM": {
+        "0": {
+          "None": "UNIT"
+        },
+        "1": {
+          "Dot": "UNIT"
+        },
+        "2": {
+          "Hyphen": "UNIT"
+        },
+        "3": {
+          "Underscore": "UNIT"
+        }
+      }
+    },
+    "TabStopSpec": {
+      "STRUCT": [
+        {
+          "pos": "F32"
+        },
+        {
+          "align": {
+            "TYPENAME": "TabAlign"
+          }
+        },
+        {
+          "leader": {
+            "TYPENAME": "TabLeaderKind"
+          }
+        }
+      ]
+    },
+    "TableAutofit": {
+      "ENUM": {
+        "0": {
+          "Fixed": "UNIT"
+        },
+        "1": {
+          "Contents": "UNIT"
+        },
+        "2": {
+          "Window": "UNIT"
+        }
+      }
+    },
+    "TableDeleteTarget": {
+      "ENUM": {
+        "0": {
+          "Rows": "UNIT"
+        },
+        "1": {
+          "Columns": "UNIT"
+        },
+        "2": {
+          "Table": "UNIT"
+        },
+        "3": {
+          "CellContents": "UNIT"
+        }
+      }
+    },
+    "TableSelectTarget": {
+      "ENUM": {
+        "0": {
+          "Cell": "UNIT"
+        },
+        "1": {
+          "Row": "UNIT"
+        },
+        "2": {
+          "Column": "UNIT"
+        },
+        "3": {
+          "Table": "UNIT"
+        }
+      }
+    },
+    "TableState": {
+      "STRUCT": [
+        {
+          "rows": "U32"
+        },
+        {
+          "cols": "U32"
+        },
+        {
+          "row": "U32"
+        },
+        {
+          "col": "U32"
+        },
+        {
+          "style": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "header_row": "BOOL"
+        },
+        {
+          "total_row": "BOOL"
+        },
+        {
+          "banded_rows": "BOOL"
+        },
+        {
+          "first_column": "BOOL"
+        },
+        {
+          "banded_columns": "BOOL"
+        },
+        {
+          "repeat_header": "BOOL"
+        },
+        {
+          "multi_cell": "BOOL"
+        }
+      ]
+    },
+    "TextAlign": {
+      "ENUM": {
+        "0": {
+          "Left": "UNIT"
+        },
+        "1": {
+          "Center": "UNIT"
+        },
+        "2": {
+          "Right": "UNIT"
+        },
+        "3": {
+          "Justify": "UNIT"
+        }
+      }
+    },
+    "TextCase": {
+      "ENUM": {
+        "0": {
+          "Sentence": "UNIT"
+        },
+        "1": {
+          "Lower": "UNIT"
+        },
+        "2": {
+          "Upper": "UNIT"
+        },
+        "3": {
+          "Title": "UNIT"
+        },
+        "4": {
+          "Toggle": "UNIT"
         }
       }
     },
@@ -3148,6 +4915,19 @@
           "offset": "U32"
         }
       ]
+    },
+    "TextSeparator": {
+      "ENUM": {
+        "0": {
+          "Tabs": "UNIT"
+        },
+        "1": {
+          "Commas": "UNIT"
+        },
+        "2": {
+          "Paragraphs": "UNIT"
+        }
+      }
     },
     "Tier": {
       "ENUM": {
@@ -3195,6 +4975,34 @@
           "index": "U32"
         }
       ]
+    },
+    "UnderlineKind": {
+      "ENUM": {
+        "0": {
+          "Single": "UNIT"
+        },
+        "1": {
+          "Words": "UNIT"
+        },
+        "2": {
+          "Double": "UNIT"
+        },
+        "3": {
+          "Thick": "UNIT"
+        },
+        "4": {
+          "Dotted": "UNIT"
+        },
+        "5": {
+          "Dash": "UNIT"
+        },
+        "6": {
+          "DotDash": "UNIT"
+        },
+        "7": {
+          "Wave": "UNIT"
+        }
+      }
     },
     "ViewMode": {
       "ENUM": {
@@ -3259,6 +5067,31 @@
           "mode": {
             "TYPENAME": "ViewMode"
           }
+        }
+      ]
+    },
+    "WordCountInfo": {
+      "STRUCT": [
+        {
+          "pages": "U32"
+        },
+        {
+          "words": "U32"
+        },
+        {
+          "characters": "U32"
+        },
+        {
+          "characters_with_spaces": "U32"
+        },
+        {
+          "paragraphs": "U32"
+        },
+        {
+          "lines": "U32"
+        },
+        {
+          "selection": "BOOL"
         }
       ]
     },
@@ -3358,6 +5191,669 @@
         },
         "11": {
           "CancelComposition": "UNIT"
+        },
+        "12": {
+          "Tab": {
+            "STRUCT": [
+              {
+                "back": "BOOL"
+              }
+            ]
+          }
+        },
+        "13": {
+          "LineBreak": "UNIT"
+        },
+        "14": {
+          "ShowMarks": "UNIT"
+        },
+        "15": {
+          "ClearParagraphFormatting": "UNIT"
+        },
+        "16": {
+          "ClearCharacterFormatting": "UNIT"
+        },
+        "17": {
+          "MoveParagraphUp": "UNIT"
+        },
+        "18": {
+          "MoveParagraphDown": "UNIT"
+        },
+        "19": {
+          "Promote": "UNIT"
+        },
+        "20": {
+          "Demote": "UNIT"
+        },
+        "21": {
+          "ParagraphShading": {
+            "STRUCT": [
+              {
+                "color": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "22": {
+          "ParagraphBorders": {
+            "STRUCT": [
+              {
+                "preset": {
+                  "TYPENAME": "BorderPreset"
+                }
+              }
+            ]
+          }
+        },
+        "23": {
+          "SetParagraph": {
+            "STRUCT": [
+              {
+                "format": {
+                  "TYPENAME": "ParagraphFormat"
+                }
+              }
+            ]
+          }
+        },
+        "24": {
+          "SetFont": {
+            "STRUCT": [
+              {
+                "format": {
+                  "TYPENAME": "FontFormat"
+                }
+              }
+            ]
+          }
+        },
+        "25": {
+          "SetTabs": {
+            "STRUCT": [
+              {
+                "tabs": {
+                  "SEQ": {
+                    "TYPENAME": "TabStopSpec"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "26": {
+          "SmallCaps": "UNIT"
+        },
+        "27": {
+          "UnderlineStyle": {
+            "STRUCT": [
+              {
+                "style": {
+                  "OPTION": {
+                    "TYPENAME": "UnderlineKind"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "28": {
+          "ApplyStyle": {
+            "STRUCT": [
+              {
+                "style_id": "STR"
+              }
+            ]
+          }
+        },
+        "29": {
+          "StyleNormal": "UNIT"
+        },
+        "30": {
+          "StyleHeading1": "UNIT"
+        },
+        "31": {
+          "StyleHeading2": "UNIT"
+        },
+        "32": {
+          "StyleHeading3": "UNIT"
+        },
+        "33": {
+          "StyleTitle": "UNIT"
+        },
+        "34": {
+          "UpdateStyleFromSelection": {
+            "STRUCT": [
+              {
+                "style_id": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "35": {
+          "NewStyleFromSelection": {
+            "STRUCT": [
+              {
+                "name": "STR"
+              }
+            ]
+          }
+        },
+        "36": {
+          "ModifyStyle": {
+            "STRUCT": [
+              {
+                "style_id": "STR"
+              },
+              {
+                "spec": {
+                  "TYPENAME": "StyleSpec"
+                }
+              }
+            ]
+          }
+        },
+        "37": {
+          "ListLevel": {
+            "STRUCT": [
+              {
+                "level": "U8"
+              }
+            ]
+          }
+        },
+        "38": {
+          "RestartNumbering": "UNIT"
+        },
+        "39": {
+          "ContinueNumbering": "UNIT"
+        },
+        "40": {
+          "SetNumberingValue": {
+            "STRUCT": [
+              {
+                "value": "U32"
+              }
+            ]
+          }
+        },
+        "41": {
+          "PageBreak": "UNIT"
+        },
+        "42": {
+          "ColumnBreak": "UNIT"
+        },
+        "43": {
+          "BlankPage": "UNIT"
+        },
+        "44": {
+          "SectionBreak": {
+            "STRUCT": [
+              {
+                "kind": {
+                  "TYPENAME": "SectionStart"
+                }
+              }
+            ]
+          }
+        },
+        "45": {
+          "Columns": {
+            "STRUCT": [
+              {
+                "count": "U8"
+              }
+            ]
+          }
+        },
+        "46": {
+          "IndentLeft": {
+            "STRUCT": [
+              {
+                "cm": "F32"
+              }
+            ]
+          }
+        },
+        "47": {
+          "IndentRight": {
+            "STRUCT": [
+              {
+                "cm": "F32"
+              }
+            ]
+          }
+        },
+        "48": {
+          "SpacingBefore": {
+            "STRUCT": [
+              {
+                "pt": "F32"
+              }
+            ]
+          }
+        },
+        "49": {
+          "SpacingAfter": {
+            "STRUCT": [
+              {
+                "pt": "F32"
+              }
+            ]
+          }
+        },
+        "50": {
+          "PageSetup": {
+            "STRUCT": [
+              {
+                "setup": {
+                  "TYPENAME": "PageSetupSpec"
+                }
+              }
+            ]
+          }
+        },
+        "51": {
+          "EditHeader": "UNIT"
+        },
+        "52": {
+          "EditFooter": "UNIT"
+        },
+        "53": {
+          "CloseHeaderFooter": "UNIT"
+        },
+        "54": {
+          "DifferentFirstPage": "UNIT"
+        },
+        "55": {
+          "DifferentOddEven": "UNIT"
+        },
+        "56": {
+          "LinkToPrevious": "UNIT"
+        },
+        "57": {
+          "PageNumber": {
+            "STRUCT": [
+              {
+                "position": {
+                  "TYPENAME": "PageNumberPosition"
+                }
+              }
+            ]
+          }
+        },
+        "58": {
+          "InsertLink": {
+            "STRUCT": [
+              {
+                "url": "STR"
+              },
+              {
+                "text": {
+                  "OPTION": "STR"
+                }
+              },
+              {
+                "tooltip": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "59": {
+          "RemoveLink": "UNIT"
+        },
+        "60": {
+          "InsertBookmark": {
+            "STRUCT": [
+              {
+                "name": "STR"
+              }
+            ]
+          }
+        },
+        "61": {
+          "InsertDateTime": {
+            "STRUCT": [
+              {
+                "format": "STR"
+              },
+              {
+                "as_field": "BOOL"
+              }
+            ]
+          }
+        },
+        "62": {
+          "InsertField": {
+            "STRUCT": [
+              {
+                "code": "STR"
+              }
+            ]
+          }
+        },
+        "63": {
+          "UpdateFields": "UNIT"
+        },
+        "64": {
+          "DropCap": {
+            "STRUCT": [
+              {
+                "placement": {
+                  "OPTION": {
+                    "TYPENAME": "DropCapPlacement"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "65": {
+          "InsertPicture": {
+            "STRUCT": [
+              {
+                "name": "STR"
+              },
+              {
+                "bytes": {
+                  "SEQ": "U8"
+                }
+              },
+              {
+                "floating": "BOOL"
+              }
+            ]
+          }
+        },
+        "66": {
+          "InsertTable": {
+            "STRUCT": [
+              {
+                "rows": "U32"
+              },
+              {
+                "cols": "U32"
+              },
+              {
+                "autofit": {
+                  "TYPENAME": "TableAutofit"
+                }
+              }
+            ]
+          }
+        },
+        "67": {
+          "ConvertTextToTable": {
+            "STRUCT": [
+              {
+                "separator": {
+                  "TYPENAME": "TextSeparator"
+                }
+              }
+            ]
+          }
+        },
+        "68": {
+          "TableAutofit": {
+            "STRUCT": [
+              {
+                "mode": {
+                  "TYPENAME": "TableAutofit"
+                }
+              }
+            ]
+          }
+        },
+        "69": {
+          "TableAlign": {
+            "STRUCT": [
+              {
+                "align": {
+                  "TYPENAME": "TextAlign"
+                }
+              }
+            ]
+          }
+        },
+        "70": {
+          "TableSplit": "UNIT"
+        },
+        "71": {
+          "TableSelect": {
+            "STRUCT": [
+              {
+                "what": {
+                  "TYPENAME": "TableSelectTarget"
+                }
+              }
+            ]
+          }
+        },
+        "72": {
+          "TableCellSize": {
+            "STRUCT": [
+              {
+                "width": {
+                  "OPTION": "F32"
+                }
+              },
+              {
+                "height": {
+                  "OPTION": "F32"
+                }
+              }
+            ]
+          }
+        },
+        "73": {
+          "FindNext": {
+            "STRUCT": [
+              {
+                "query": {
+                  "TYPENAME": "FindQuery"
+                }
+              },
+              {
+                "backward": "BOOL"
+              }
+            ]
+          }
+        },
+        "74": {
+          "Replace": {
+            "STRUCT": [
+              {
+                "query": {
+                  "TYPENAME": "FindQuery"
+                }
+              },
+              {
+                "replacement": "STR"
+              }
+            ]
+          }
+        },
+        "75": {
+          "ReplaceAll": {
+            "STRUCT": [
+              {
+                "query": {
+                  "TYPENAME": "FindQuery"
+                }
+              },
+              {
+                "replacement": "STR"
+              }
+            ]
+          }
+        },
+        "76": {
+          "GoTo": {
+            "STRUCT": [
+              {
+                "target": {
+                  "TYPENAME": "GoToTarget"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "WriteQuery": {
+      "ENUM": {
+        "0": {
+          "Format": "UNIT"
+        },
+        "1": {
+          "Rulers": "UNIT"
+        },
+        "2": {
+          "Styles": "UNIT"
+        },
+        "3": {
+          "Headings": "UNIT"
+        },
+        "4": {
+          "Pages": "UNIT"
+        },
+        "5": {
+          "FindAll": {
+            "STRUCT": [
+              {
+                "query": {
+                  "TYPENAME": "FindQuery"
+                }
+              }
+            ]
+          }
+        },
+        "6": {
+          "WordCount": {
+            "STRUCT": [
+              {
+                "include_notes": "BOOL"
+              }
+            ]
+          }
+        },
+        "7": {
+          "Properties": "UNIT"
+        },
+        "8": {
+          "Clipboard": "UNIT"
+        },
+        "9": {
+          "PageSetup": "UNIT"
+        },
+        "10": {
+          "Bookmarks": "UNIT"
+        },
+        "11": {
+          "CommandLog": "UNIT"
+        }
+      }
+    },
+    "WriteQueryResult": {
+      "ENUM": {
+        "0": {
+          "Format": {
+            "NEWTYPE": {
+              "TYPENAME": "FormatState"
+            }
+          }
+        },
+        "1": {
+          "Rulers": {
+            "NEWTYPE": {
+              "OPTION": {
+                "TYPENAME": "RulerInfo"
+              }
+            }
+          }
+        },
+        "2": {
+          "Styles": {
+            "NEWTYPE": {
+              "SEQ": {
+                "TYPENAME": "StyleInfo"
+              }
+            }
+          }
+        },
+        "3": {
+          "Headings": {
+            "NEWTYPE": {
+              "SEQ": {
+                "TYPENAME": "HeadingInfo"
+              }
+            }
+          }
+        },
+        "4": {
+          "Pages": {
+            "NEWTYPE": {
+              "TYPENAME": "PagesInfo"
+            }
+          }
+        },
+        "5": {
+          "FindAll": {
+            "NEWTYPE": {
+              "TYPENAME": "FindResults"
+            }
+          }
+        },
+        "6": {
+          "WordCount": {
+            "NEWTYPE": {
+              "TYPENAME": "WordCountInfo"
+            }
+          }
+        },
+        "7": {
+          "Properties": {
+            "NEWTYPE": {
+              "TYPENAME": "DocPropertiesInfo"
+            }
+          }
+        },
+        "8": {
+          "Clipboard": {
+            "NEWTYPE": {
+              "OPTION": {
+                "TYPENAME": "ClipboardData"
+              }
+            }
+          }
+        },
+        "9": {
+          "PageSetup": {
+            "NEWTYPE": {
+              "TYPENAME": "PageSetupSpec"
+            }
+          }
+        },
+        "10": {
+          "Bookmarks": {
+            "NEWTYPE": {
+              "SEQ": "STR"
+            }
+          }
+        },
+        "11": {
+          "CommandLog": {
+            "NEWTYPE": {
+              "SEQ": {
+                "TYPENAME": "CommandLogEntry"
+              }
+            }
+          }
         }
       }
     }

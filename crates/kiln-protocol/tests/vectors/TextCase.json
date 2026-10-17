@@ -1,0 +1,13 @@
+{
+  "type": "TextCase",
+  "format": {
+    "TYPENAME": "TextCase"
+  },
+  "values": [
+    "Sentence",
+    "Toggle",
+    "Sentence",
+    "Lower",
+    "Upper"
+  ]
+}

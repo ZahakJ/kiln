@@ -15,11 +15,13 @@ import type {
   DrawOp,
   GlyphRun,
   Gradient,
+  Paint,
   Palette,
   PathData,
   Shadow,
   ShadowLayer,
 } from '@kiln/protocol';
+import { textOnPage } from './contrast';
 import { channels, cssColor, resolvePaint } from './palette';
 import type { AtlasPage, CachedImage, CachedTile, SceneCache } from './scene-cache';
 import {
@@ -508,7 +510,7 @@ export class Painter {
       ctx.stroke(p);
     } else if ('Underline' in op) {
       const u = op.Underline;
-      const rgba = resolvePaint(pal, u.paint);
+      const rgba = this.textColor(u.paint);
       for (const [x, w] of underlineSegments(u.x, u.width, u.thickness, u.style)) {
         this.fillBounds(ctx, { x, y: u.y, w, h: u.thickness }, 0, rgba);
       }
@@ -558,7 +560,7 @@ export class Painter {
   ): void {
     const page = cache.atlas.get(run.page);
     if (!page) return;
-    const src = this.atlasCanvas(page, resolvePaint(this.palette, run.paint));
+    const src = this.atlasCanvas(page, this.textColor(run.paint));
     if (!src) return;
     // Glyphs are device-positioned: a transform pushed inside the pass only moves them.
     const m = ctx.getTransform();
@@ -638,7 +640,7 @@ export class Painter {
     for (const run of runs) {
       const page = cache.atlas.get(run.page);
       if (!page) continue;
-      const [r, g, b, a] = channels(resolvePaint(this.palette, run.paint));
+      const [r, g, b, a] = channels(this.textColor(run.paint));
       const colour = page.format === 'Rgba8';
       if (!colour) {
         // Coverage → packed straight-alpha pixel, as kiln-raster computes alpha.
@@ -720,6 +722,15 @@ export class Painter {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.drawImage(layer as unknown as CanvasImageSource, 0, 0, w, h, x0, y0, w, h);
     ctx.restore();
+  }
+
+  /**
+   * The colour of text, underlines and strike lines: an explicit document colour is adapted for a
+   * dark page the way Word does (`contrast.ts`); theme roles are already right for the page.
+   */
+  private textColor(paint: Paint): number {
+    const rgba = resolvePaint(this.palette, paint);
+    return 'Rgba' in paint ? textOnPage(rgba, this.palette.page) : rgba;
   }
 
   private atlasCanvas(page: AtlasPage, rgba: number): PainterCanvas | null {

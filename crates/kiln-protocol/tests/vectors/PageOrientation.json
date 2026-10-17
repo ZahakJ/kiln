@@ -1,0 +1,11 @@
+{
+  "type": "PageOrientation",
+  "format": {
+    "TYPENAME": "PageOrientation"
+  },
+  "values": [
+    "Portrait",
+    "Landscape",
+    "Portrait"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "PasteMode",
+  "format": {
+    "TYPENAME": "PasteMode"
+  },
+  "values": [
+    "KeepSource",
+    "Merge",
+    "TextOnly",
+    "Html",
+    "KeepSource"
+  ]
+}

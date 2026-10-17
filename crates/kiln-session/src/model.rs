@@ -3,10 +3,12 @@
 
 use std::fmt;
 
+use kiln_common::KilnError;
 use kiln_common::Result;
+use kiln_protocol::commands::ClipboardData;
 use kiln_protocol::{
-    A11yTree, Command, CompatIssue, DocKind, FileFormat, OpenHint, ParagraphText, Selection,
-    StatusBar,
+    A11yTree, Command, CompatIssue, DocKind, FileFormat, OpenHint, ParagraphText, Query,
+    QueryResult, Selection, StatusBar,
 };
 
 use crate::frame::FrameSource;
@@ -65,6 +67,30 @@ pub trait DocModel: Send + fmt::Debug {
 
     /// The selected text as plain text (Copy, Cut), for models with text selections.
     fn selected_text(&self) -> Option<String> {
+        None
+    }
+
+    /// Answers an app-specific query (`Query::Write`, WP-64).
+    ///
+    /// # Errors
+    ///
+    /// `Unsupported` for queries of another app; `InvalidInput` for a malformed query (a bad
+    /// Find pattern is an answer, not an error).
+    fn app_query(&self, query: &Query) -> Result<QueryResult> {
+        Err(KilnError::Unsupported(format!(
+            "{query:?} for this document"
+        )))
+    }
+
+    /// Gives the model the host's clock (Unix milliseconds) before a command or frame, for
+    /// dates, times and fields (WP-64; `wasm32` has no clock of its own).
+    fn set_clock(&mut self, now_ms: u64) {
+        let _ = now_ms;
+    }
+
+    /// What the last command copied (Copy, Cut), taken once: the session writes it to the system
+    /// clipboard and remembers its rich format (WP-64).
+    fn take_clipboard(&mut self) -> Option<ClipboardData> {
         None
     }
 

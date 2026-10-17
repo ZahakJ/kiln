@@ -101,12 +101,16 @@ pub fn is_global(tx: &Transaction) -> bool {
 impl WriteView {
     /// A view laid out up to its first pages.
     #[must_use]
-    pub fn new(doc: &Document, file_name: Option<String>) -> Self {
+    pub fn new(
+        doc: &Document,
+        file_name: Option<String>,
+        now: kiln_doc::fields::FieldDateTime,
+    ) -> Self {
         // The same fonts as the scratch surface: the bundled set natively, Carlito in the web core.
         let mut layout = DocLayout::new(crate::apps::scratch::fonts::store());
         let mut options = layout.options().clone();
         options.file_name = file_name;
-        options.now = Some(now());
+        options.now = Some(now);
         layout.set_options(options);
         layout.layout_until(doc, FIRST_PAGES);
         Self {
@@ -277,11 +281,12 @@ impl WriteView {
     }
 }
 
-/// The current local time for DATE and TIME fields.
-fn now() -> kiln_doc::fields::FieldDateTime {
-    let secs = std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .map_or(0, |d| d.as_secs());
+/// A date-time for DATE and TIME fields from the host's clock (Unix milliseconds, UTC).
+/// `wasm32-unknown-unknown` has no clock of its own (`SystemTime::now` panics there), so the
+/// session passes the host's (WP-64).
+#[must_use]
+pub fn date_time(now_ms: u64) -> kiln_doc::fields::FieldDateTime {
+    let secs = now_ms / 1000;
     let days = i64::try_from(secs / 86_400).unwrap_or(0);
     let rem = secs % 86_400;
     // Civil date from days since 1970-01-01 (H. Hinnant's algorithm), UTC.

@@ -1,0 +1,23 @@
+{
+  "type": "ClipboardData",
+  "format": {
+    "TYPENAME": "ClipboardData"
+  },
+  "values": [
+    {
+      "text": "Kiln «Write»\tok",
+      "html": "<p><b>Kiln</b> «Write»</p>",
+      "kiln": "{\"v\":1}"
+    },
+    {
+      "text": "",
+      "html": null,
+      "kiln": null
+    },
+    {
+      "text": "",
+      "html": null,
+      "kiln": null
+    }
+  ]
+}

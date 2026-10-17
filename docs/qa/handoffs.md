@@ -884,3 +884,77 @@ WP-54 had to touch these files outside its owned paths; every change is additive
 - Poppler is the PDF oracle: `crates/kiln-io-pdf/tests/fixtures.rs` needs `pdfinfo`, `pdffonts`, `pdftotext` and
   `pdftoppm` (CI installs `poppler-utils`).
 
+## WP-64 → WP-63 (layout), WP-61 (model), WP-53 (text), WP-52 (protocol, session), WP-54 (surface), WP-58 (chrome, specs), WP-66, WP-71, WP-94
+
+- Edits outside WP-64's paths, for the owners to acknowledge:
+  - `crates/kiln-doc/src/model.rs` (WP-61): `Document::locate` answers from a node-location cache
+    (`NodeIndex`, rebuilt by one walk when a cached path no longer leads to the node); typing in a
+    300-page document did dozens of whole-document walks per key.
+  - `crates/kiln-doc-layout` (WP-63): `engine.rs` — list labels and note numbers are recomputed only
+    when the block order changed or a changed paragraph is, or was, numbered or holds a note reference
+    (`numbers_fresh`, `numbers_affected`); when they are recomputed, every paragraph whose label or
+    note number changed is laid out again (before, a paragraph joining a list did not renumber the
+    items after it until a full layout — `tests/incremental_index.rs` pins it); `restart_at` moves the
+    previous layout's tail out instead of cloning every page and snapshot (`OldLayout`); the page index
+    is rebuilt only for the pages a converged update re-flowed (`reflowed`, `index_pages_range`, with
+    a full rebuild whenever the page count, the pages per section or the paragraphs' reading order
+    changed). `flow.rs`: `Flow::run` takes the old snapshots with their base index. `paint.rs`: pages
+    in Print Layout and Read Mode are tiles of `PAGE_BAND` (256) px with per-band versions
+    (`band_versions`), so a keystroke re-sends and repaints one band instead of the page (goldens and
+    painter parity unchanged). One keystroke in `doc-300p` went from 6.5 ms to 0.5 ms natively.
+  - `crates/kiln-text/src/fonts.rs` (WP-53): a family the store does not have (Symbol, Wingdings,
+    Arial without Liberation) resolves to a family it has — the default, else the first of the Latin
+    fallback chain, else any — instead of "Liberation Sans"; the web core (Carlito only) drew no list
+    bullets. Test `a_store_with_one_family_resolves_every_request_to_a_family_it_has`.
+  - `crates/kiln-protocol` (WP-52): `commands/edit.rs` (the shared `EditCommand`s: clipboard,
+    formatting, lists, page setup, tables), `SuiteCommand::Edit` and its metas in `suite.rs`
+    (`TEXT_EDIT_APPS` = Write and Notes), `Query::Write`/`QueryResult::Write`, exports, samples and
+    schema registration (`write_samples`).
+  - `crates/kiln-session` (WP-52/WP-63): `model.rs` (`app_query`, `set_clock`, `take_clipboard`),
+    `session.rs` (Edit commands to the model; Paste reads the host clipboard when it carries no data;
+    Insert Pictures picks and reads through the host; what Copy produced goes to the host clipboard and
+    is remembered so a paste of the same text keeps Kiln's rich format; `Query::Write`), `apps/write/
+    {mod,editing,view}.rs` (the editor's state, the `commands` module, Show ¶ marks in the overlay,
+    cached word counts), `apps/scratch/mod.rs` (Write-only commands are `Unsupported` there), deps
+    `regex`, `serde`, `serde_json`, `image`.
+  - `packages/surface` (WP-54): `controller.ts` — `exec` sends at once (the client orders commands)
+    and asks for the frame right behind the command; that frame is composited as soon as it arrives
+    (`performance.mark('kiln:input-paint')`, which the B5 test observes); the change event a command of
+    this surface caused asks for no second frame; the caret paints with the frame instead of on the
+    key (painting early made Chrome hold the core's answer until after the next frame); `zoomKeys`
+    option (Write gives Ctrl+= to subscript); the view mode follows the core's status;
+    `onViewChange`, `reveal`, `clientRectOf`, `documentPoint`, `viewState` for rulers and menus.
+    `input.ts`: Alt+arrows are the application's on Windows/Linux. `Surface.tsx`: the new props.
+  - `packages/protocol` (WP-52): `KilnClient.execute` delivers commands in call order (documented);
+    `TauriClient.execute` chains them (Tauri may run concurrent invocations in any order).
+  - `packages/ui-kit` (WP-58): `Ribbon` rebuilds only when the visible tabs change
+    (`useVisibleTabs`); the closed `CommandPalette` and `ShortcutSheet` no longer list commands on
+    every registry change. Each re-rendered for every keystroke (the core's state reaches the registry
+    after each change).
+  - `packages/commands` (WP-58): `core/build.ts` builders and `core/connect.ts` (`APP_STATE`: Write's
+    pressed states and values from the selection's formatting); `catalog.test.ts`/`core.test.ts`
+    follow (Bold is a core command now).
+  - `apps/web/src/routes/app-frame/AppFrameRoute.tsx` (WP-58): the Write editor's parts
+    (`routes/write`) replace the surface slot, status bar and ribbon; the frame element is memoized and
+    the core's state reaches it after the document has painted, with a summary object kept while the
+    fields the frame shows are unchanged (B5); Backstage ▸ Info shows the status of when it opened.
+  - `e2e/specs/chrome.spec.ts` and `shortcuts.spec.ts` (WP-58): Alt H B focuses the Borders drop-down
+    (Enter opens it); the "planned command" example is Format Painter (Cut is implemented); the Grid
+    palette test searches Save (Bold is Write's core command until Grid's arrives); the shortcut table
+    test blurs the document first, polls the session log, and takes core ids from `catalog.json`.
+- For WP-71 (Grid): Grid's Font group uses the shared `suite.format.*`/`suite.edit.*` commands, whose
+  metas name Write and Notes (`TEXT_EDIT_APPS` in `suite.rs`). Add Grid to their apps when the Grid
+  model applies them; until then they are reservations in Grid (hidden in release builds).
+- For the surface/painter owner (WP-54, WP-84): `packages/surface/src/contrast.ts` (new) and
+  `painter.ts`: on a dark page, glyph runs, underlines and strike lines in an explicit document colour
+  below 4.5:1 keep their hue and take the inverse lightness (Word's dark mode; theme roles unchanged,
+  light pages unchanged). Borders, rules and fills in explicit colours are not adapted yet, nor
+  `kiln-raster`'s dark previews (print and PDF stay as stored).
+- For WP-66: the Write model logs every command (`WriteQuery::CommandLog`); Format Painter, comments,
+  Track Changes, spelling, Markdown autoformat and the word goal are reservations the editor shows
+  once they exist. Smart quotes and autocorrect (`write.editing.autocorrect`) are not done.
+- For WP-94 (performance): B5 (keystroke → paint p95 < 16 ms on doc-300p) is not met on this machine:
+  see `docs/qa/perf.md` ("B5 typing latency"). The core's share per key is now ~1 ms native and
+  ~3 ms in the web core; the rest is the browser (the worker's answers arrive after the frame Chrome
+  renders for the key) and the main thread. Painting the surface in the worker (OffscreenCanvas)
+  would remove the main-thread hop.

@@ -1,0 +1,13 @@
+{
+  "type": "TabLeaderKind",
+  "format": {
+    "TYPENAME": "TabLeaderKind"
+  },
+  "values": [
+    "None",
+    "Underscore",
+    "None",
+    "Dot",
+    "Hyphen"
+  ]
+}

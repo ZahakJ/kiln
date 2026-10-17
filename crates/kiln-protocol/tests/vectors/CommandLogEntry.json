@@ -1,0 +1,16 @@
+{
+  "type": "CommandLogEntry",
+  "format": {
+    "TYPENAME": "CommandLogEntry"
+  },
+  "values": [
+    {
+      "id": "write.edit.tab",
+      "outcome": "error"
+    },
+    {
+      "id": "",
+      "outcome": ""
+    }
+  ]
+}

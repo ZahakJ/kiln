@@ -56,6 +56,19 @@ export interface SurfaceOptions {
   onError?: (error: unknown) => void;
   /** Receives the zoom factor whenever it changes (pinch, Ctrl+wheel, fit to width). */
   onZoom?: (zoom: number) => void;
+  /**
+   * Ctrl+= / Ctrl+- / Ctrl+0 zoom the surface (default). Editors whose shortcut table gives these
+   * keys other meanings (Word: subscript, superscript) turn this off and zoom from their chrome.
+   */
+  zoomKeys?: boolean;
+  /** Receives the scroll position, zoom and size after a frame that changed them (rulers). */
+  onViewChange?: (view: {
+    scrollX: number;
+    scrollY: number;
+    zoom: number;
+    width: number;
+    height: number;
+  }) => void;
 }
 
 /** Counters for diagnostics and tests. */
@@ -91,7 +104,8 @@ function sameViewport(a: Viewport | null, b: Viewport): boolean {
     a.scroll.x === b.scroll.x &&
     a.scroll.y === b.scroll.y &&
     a.zoom === b.zoom &&
-    a.dpr === b.dpr
+    a.dpr === b.dpr &&
+    a.mode === b.mode
   );
 }
 
@@ -102,6 +116,8 @@ export class SurfaceController {
   private options: SurfaceOptions;
   private zoom = 1;
   private dpr = 1;
+  /** The view the core reports (Print Layout, Web Layout, Read Mode, Draft — WP-64). */
+  private mode: Viewport['mode'] = 'PrintLayout';
   private cssW = 0;
   private cssH = 0;
   /** Document x at the spacer's left edge (negative when the page is centred). */
@@ -126,6 +142,10 @@ export class SurfaceController {
   private selectedText = '';
   private revealCaret = false;
   private queue: Promise<unknown> = Promise.resolve();
+  /** A command ran since the last frame: its frame is composited as soon as it arrives. */
+  private typed = false;
+  /** Commands sent with their frame requested right behind them, whose change events are due. */
+  private pipelined = 0;
   private drag: { unit: 'Char' | 'Word' | 'Paragraph'; x: number; y: number; pointer: number } | null = null;
   private selectBusy = false;
   private selectNext: Command | null = null;
@@ -280,35 +300,117 @@ export class SurfaceController {
     else console.error('Kiln surface:', error);
   };
 
-  /** Runs a command after the previous ones (commands are ordered). */
+  /**
+   * Runs a command. It is sent at once: the client delivers commands in the order they are
+   * called (`KilnClient.execute`), so typing stays in order with the shortcuts and ribbon
+   * commands that other parts of the window send between two keys.
+   */
   exec(command: Command, reveal = true): Promise<unknown> {
     if (reveal) this.revealCaret = true;
+    this.typed = true;
+    // The caret shows steadily from the frame that answers the command (`pump`); drawing it now
+    // would ask the browser for a frame, and Chrome then holds the core's answer until after it.
     this.caretOn = true;
-    this.restartBlink();
-    const run = this.queue.then(() => this.client.execute(this.doc, command));
-    this.queue = run.catch((e: unknown) => {
-      // Unavailable commands (nothing to undo, read-only) are expected; others are reported.
-      const kind = (e as { kind?: string }).kind;
-      if (kind !== 'Unavailable') this.report(e);
-    });
+    const run = this.client.execute(this.doc, command);
+    // The frame is requested right behind the command: the core answers both in one turn, in
+    // order, instead of a second round trip once the command's answer arrives (budget B5). The
+    // change event that follows then needs no frame of its own.
+    this.pipelined += 1;
+    this.requestFrame();
+    const settled = run.then(
+      (r) => {
+        // Only an applied command is followed by a change event (a pending one changes the
+        // document later, after the frame that was requested with it).
+        if ((r as { outcome?: string } | undefined)?.outcome !== 'Applied')
+          this.pipelined = Math.max(0, this.pipelined - 1);
+      },
+      (e: unknown) => {
+        this.pipelined = Math.max(0, this.pipelined - 1);
+        // Unavailable commands (nothing to undo, read-only) are expected; others are reported.
+        const kind = (e as { kind?: string }).kind;
+        if (kind !== 'Unavailable') this.report(e);
+      },
+    );
+    this.queue = settled;
     return this.queue;
   }
 
   private onEvent(e: KilnEvent): void {
     if (this.disposed || typeof e !== 'object' || !('Changed' in e)) return;
-    const { summary, selection } = e.Changed;
+    const { summary, selection, status } = e.Changed;
     if (summary.doc !== this.doc) return;
+    this.followStatus(status);
     const revisionChanged = summary.revision !== this.revision;
     this.revision = summary.revision;
     const selectionChanged = this.setSelection(selection);
+    // A command this surface sent asked for its frame already (`exec`).
+    const covered = this.pipelined > 0;
+    if (covered) this.pipelined -= 1;
     if (revisionChanged || selectionChanged) {
-      this.requestFrame();
+      if (!covered) this.requestFrame();
       this.scheduleA11y(120);
       if (this.revealCaret) {
         this.revealCaret = false;
         this.scrollCaretIntoView();
       }
     }
+  }
+
+  /**
+   * Follows a view or zoom the core changed (View ▸ Read Mode, the zoom slider's commands):
+   * the core's viewport is authoritative for the mode, and for a zoom it reports that differs
+   * from the one this surface last sent (WP-64).
+   */
+  private followStatus(status: { view: Viewport['mode']; zoom: number } | undefined): void {
+    if (!status) return;
+    if (status.view && status.view !== this.mode) {
+      this.mode = status.view;
+      this.requestFrame();
+    }
+    const sent = this.sentViewport?.zoom;
+    if (
+      sent !== undefined &&
+      Number.isFinite(status.zoom) &&
+      status.zoom > 0 &&
+      Math.abs(status.zoom - sent) > 1e-3 &&
+      Math.abs(status.zoom - this.zoom) > 1e-3
+    ) {
+      this.setZoom(status.zoom);
+    }
+  }
+
+  /** Scrolls the caret into view after the next change (commands run outside the surface). */
+  reveal(): void {
+    this.revealCaret = true;
+    this.scrollCaretIntoView();
+  }
+
+  /** The client (viewport) rectangle of a rectangle in document coordinates. */
+  clientRectOf(r: Rect): { left: number; top: number; width: number; height: number } {
+    const base = this.els.scroller.getBoundingClientRect();
+    return {
+      left: base.left + (r.x - this.scrollX) * this.zoom,
+      top: base.top + (r.y - this.scrollY) * this.zoom,
+      width: r.width * this.zoom,
+      height: r.height * this.zoom,
+    };
+  }
+
+  /** The document point under client coordinates (rulers, context menus). */
+  documentPoint(clientX: number, clientY: number): { x: number; y: number } {
+    const p = this.docPoint(clientX, clientY);
+    return { x: p.x, y: p.y };
+  }
+
+  /** Scroll position and zoom, for rulers drawn beside the surface. */
+  viewState(): { scrollX: number; scrollY: number; zoom: number; width: number; height: number } {
+    return {
+      scrollX: this.scrollX,
+      scrollY: this.scrollY,
+      zoom: this.zoom,
+      width: this.cssW,
+      height: this.cssH,
+    };
   }
 
   private setSelection(selection: Selection): boolean {
@@ -381,7 +483,21 @@ export class SurfaceController {
           if (!sameViewport(this.sentViewport, this.viewport())) this.frameWanted = true;
         }
         this.positionHandles();
-        this.scheduleComposite();
+        if (this.typed && delta.overlay) {
+          // The answer to an edit is drawn now rather than at the next animation frame: the
+          // browser presents it at the coming vsync either way, and drawing at once keeps a
+          // keystroke's latency to the core's work plus this composite (budget B5).
+          this.typed = false;
+          if (this.raf) cancelAnimationFrame(this.raf);
+          this.raf = 0;
+          this.composite();
+          // Typing latency (B5) is measured to here (e2e/specs/write.spec.ts observes the mark;
+          // only the latest is kept, so long sessions do not accumulate entries).
+          performance.clearMarks('kiln:input-paint');
+          performance.mark('kiln:input-paint');
+        } else {
+          this.scheduleComposite();
+        }
       }
     } catch (e) {
       this.report(e);
@@ -397,7 +513,7 @@ export class SurfaceController {
       scroll: { x: Math.fround(this.scrollX), y: Math.fround(this.scrollY) },
       zoom: Math.fround(this.zoom),
       dpr: Math.fround(this.dpr),
-      mode: 'PrintLayout',
+      mode: this.mode,
     };
   }
 
@@ -578,6 +694,13 @@ export class SurfaceController {
     };
     this.painter.composite(ctx, this.cache, view);
     this.paintOverlay();
+    if (this.options.onViewChange) {
+      const key = `${this.scrollX}|${this.scrollY}|${this.zoom}|${this.cssW}|${this.cssH}`;
+      if (key !== this.viewKey) {
+        this.viewKey = key;
+        this.options.onViewChange(this.viewState());
+      }
+    }
     this.stats.composites += 1;
     // Spare time: render prefetched tiles in small steps, so scrolling onto them costs nothing
     // and no frame is ever spent on a whole tile.
@@ -590,6 +713,7 @@ export class SurfaceController {
   }
 
   private prefetchRaf = 0;
+  private viewKey = '';
 
   private schedulePrefetch(frameStart: number): void {
     const visible = {
@@ -694,7 +818,12 @@ export class SurfaceController {
   private onKeyDown(e: KeyboardEvent): void {
     if (e.isComposing || e.keyCode === 229) return;
     const primary = isApplePlatform() ? e.metaKey : e.ctrlKey;
-    if (primary && !e.altKey && (e.key === '=' || e.key === '+' || e.key === '-' || e.key === '0')) {
+    if (
+      this.options.zoomKeys !== false &&
+      primary &&
+      !e.altKey &&
+      (e.key === '=' || e.key === '+' || e.key === '-' || e.key === '0')
+    ) {
       e.preventDefault();
       if (e.key === '0') this.setZoom(1);
       else this.setZoom(Math.round((this.zoom + (e.key === '-' ? -0.1 : 0.1)) * 10) / 10);

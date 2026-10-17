@@ -1,0 +1,30 @@
+{
+  "type": "SectionState",
+  "format": {
+    "TYPENAME": "SectionState"
+  },
+  "values": [
+    {
+      "width": 612.0,
+      "height": 792.0,
+      "landscape": false,
+      "top": 72.0,
+      "bottom": 72.0,
+      "left": 72.0,
+      "right": 72.0,
+      "columns": 1,
+      "paper": "Letter"
+    },
+    {
+      "width": 0.0,
+      "height": 0.0,
+      "landscape": false,
+      "top": 0.0,
+      "bottom": 0.0,
+      "left": 0.0,
+      "right": 0.0,
+      "columns": 0,
+      "paper": ""
+    }
+  ]
+}

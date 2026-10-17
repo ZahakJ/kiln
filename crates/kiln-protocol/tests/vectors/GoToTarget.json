@@ -1,0 +1,50 @@
+{
+  "type": "GoToTarget",
+  "format": {
+    "TYPENAME": "GoToTarget"
+  },
+  "values": [
+    {
+      "Page": {
+        "number": 3,
+        "relative": false
+      }
+    },
+    {
+      "Section": {
+        "number": 2
+      }
+    },
+    {
+      "Line": {
+        "number": 40
+      }
+    },
+    {
+      "Bookmark": {
+        "name": "intro"
+      }
+    },
+    {
+      "Paragraph": {
+        "para": 9
+      }
+    },
+    {
+      "Footnote": {
+        "backward": false
+      }
+    },
+    {
+      "Comment": {
+        "backward": true
+      }
+    },
+    {
+      "Page": {
+        "number": 0,
+        "relative": false
+      }
+    }
+  ]
+}
