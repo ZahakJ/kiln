@@ -72,9 +72,13 @@ fn feature_and_manual_decks_match_python_pptx() {
 
 #[test]
 fn external_decks_match_python_pptx() {
-    // Not an acceptance criterion (the external corpus is not ours), but they match too.
-    let n = check("external/pptx", false);
-    assert!(n >= 10, "only {n} external decks compared");
+    // Not an acceptance criterion (the external corpus is not ours, and only there after
+    // `tools/fetch-corpus.sh`), but every deck with a dump matches too.
+    let present = read_support::decks("external/pptx")
+        .iter()
+        .filter(|d| oracle_dump(d).is_some())
+        .count();
+    assert_eq!(check("external/pptx", false), present);
 }
 
 #[test]

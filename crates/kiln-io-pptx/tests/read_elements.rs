@@ -411,6 +411,73 @@ fn ragged_and_empty_tables() {
 }
 
 #[test]
+fn smart_art_reads_the_drawing_as_a_group() {
+    let frame = r#"<p:graphicFrame><p:nvGraphicFramePr><p:cNvPr id="4" name="Diagram 3"/><p:cNvGraphicFramePr/><p:nvPr/></p:nvGraphicFramePr><p:xfrm><a:off x="1000" y="2000"/><a:ext cx="8000" cy="4000"/></p:xfrm><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/diagram"><dgm:relIds xmlns:dgm="http://schemas.openxmlformats.org/drawingml/2006/diagram" r:dm="rId60" r:lo="rId62" r:qs="rId63" r:cs="rId64"/></a:graphicData></a:graphic></p:graphicFrame>"#;
+    let mut pkg = deck_with_slide(
+        &slide_xml("", frame, ""),
+        &[
+            (
+                "rId60",
+                &rt("diagramData"),
+                "/ppt/diagrams/data1.xml",
+                false,
+            ),
+            (
+                "rId61",
+                "http://schemas.microsoft.com/office/2007/relationships/diagramDrawing",
+                "/ppt/diagrams/drawing1.xml",
+                false,
+            ),
+        ],
+    );
+    pkg.add_part(
+        "/ppt/diagrams/data1.xml",
+        "application/vnd.openxmlformats-officedocument.drawingml.diagramData+xml",
+        r#"<dgm:dataModel xmlns:dgm="http://schemas.openxmlformats.org/drawingml/2006/diagram" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><dgm:ptLst/><dgm:extLst><a:ext uri="http://schemas.microsoft.com/office/drawing/2008/diagram"><dsp:dataModelExt xmlns:dsp="http://schemas.microsoft.com/office/drawing/2008/diagram" relId="rId61" minVer="http://schemas.openxmlformats.org/drawingml/2006/diagram"/></a:ext></dgm:extLst></dgm:dataModel>"#,
+    )
+    .unwrap();
+    let dsp = |x: u32, t: &str| {
+        format!(
+            r#"<dsp:sp modelId="{{{x}}}"><dsp:nvSpPr><dsp:cNvPr id="0" name=""/><dsp:cNvSpPr/></dsp:nvSpPr><dsp:spPr><a:xfrm><a:off x="{x}" y="0"/><a:ext cx="3000" cy="2000"/></a:xfrm><a:prstGeom prst="roundRect"><a:avLst/></a:prstGeom><a:solidFill><a:schemeClr val="accent1"/></a:solidFill></dsp:spPr><dsp:style><a:lnRef idx="2"><a:scrgbClr r="0" g="0" b="0"/></a:lnRef><a:fillRef idx="1"><a:scrgbClr r="0" g="0" b="0"/></a:fillRef><a:effectRef idx="0"><a:scrgbClr r="0" g="0" b="0"/></a:effectRef><a:fontRef idx="minor"><a:schemeClr val="lt1"/></a:fontRef></dsp:style><dsp:txBody><a:bodyPr anchor="ctr"/><a:lstStyle/><a:p><a:r><a:t>{t}</a:t></a:r></a:p></dsp:txBody><dsp:txXfrm><a:off x="{x}" y="0"/><a:ext cx="3000" cy="2000"/></dsp:txXfrm></dsp:sp>"#
+        )
+    };
+    pkg.add_part(
+        "/ppt/diagrams/drawing1.xml",
+        "application/vnd.ms-office.drawingml.diagramDrawing+xml",
+        format!(
+            r#"<dsp:drawing xmlns:dsp="http://schemas.microsoft.com/office/drawing/2008/diagram" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><dsp:spTree><dsp:nvGrpSpPr><dsp:cNvPr id="0" name=""/><dsp:cNvGrpSpPr/></dsp:nvGrpSpPr><dsp:grpSpPr/>{}{}</dsp:spTree></dsp:drawing>"#,
+            dsp(0, "Plan"),
+            dsp(4000, "Ship")
+        ),
+    )
+    .unwrap();
+    let read = read_package_bytes(&pkg);
+    let s = first_slide(&read);
+    let d = &s.shapes[0];
+    assert!(read.extras.is_smart_art(d.id));
+    assert_eq!(kiln_io_pptx::shape_kind(d, &read.extras), "diagram");
+    let ShapeKind::Group(g) = &d.kind else {
+        panic!("{:?}", d.kind)
+    };
+    assert_eq!(
+        (g.child_space.x, g.child_space.cx, g.child_space.cy),
+        (0, 8000, 4000)
+    );
+    assert_eq!(d.xfrm.unwrap().x, 1000);
+    let texts: Vec<_> = g
+        .children
+        .iter()
+        .map(|c| body_text(c.text().unwrap()))
+        .collect();
+    assert_eq!(texts, ["Plan", "Ship"]);
+    assert!(g.children[1].props().unwrap().style.is_some());
+    assert_eq!(g.children[1].xfrm.unwrap().x, 4000);
+    assert!(read.passthrough.has("/ppt/diagrams/data1.xml"));
+    assert!(read.passthrough.has("/ppt/diagrams/drawing1.xml"));
+    assert!(has(&read, WarningCode::SmartArt));
+}
+
+#[test]
 fn smart_art_without_a_drawing_is_an_empty_frame() {
     let frame = r#"<p:graphicFrame><p:nvGraphicFramePr><p:cNvPr id="4" name="Diagram 3"/><p:cNvGraphicFramePr/><p:nvPr/></p:nvGraphicFramePr><p:xfrm><a:off x="0" y="0"/><a:ext cx="500" cy="500"/></p:xfrm><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/diagram"><dgm:relIds xmlns:dgm="http://schemas.openxmlformats.org/drawingml/2006/diagram" r:dm="rId40" r:lo="rId41" r:qs="rId42" r:cs="rId43"/></a:graphicData></a:graphic></p:graphicFrame>"#;
     let read = read_package_bytes(&deck_with_slide(&slide_xml("", frame, ""), &[]));
