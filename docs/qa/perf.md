@@ -67,7 +67,7 @@ the CI pipeline duration (budget < 25 min) is read from the `ci.yml` run of each
 The crates are scaffolds at this point, so these times are the floor; every engine work package that adds
 dependencies re-measures and records the new clean-build time here.
 
-## B5 — typing latency in the 300-page document (budget p95 < 16 ms)
+## B5 — typing latency in the 300-page document (budget p95 ≤ 33 ms keystroke → screen; interim < 60 ms until WP-94)
 
 Measured by `e2e/specs/write.spec.ts` ("B5: keystroke to paint on the 300-page document") on a
 production build (`vite build` with `VITE_KILN_RELEASE=1`, served statically) in headless Chromium:
@@ -108,4 +108,4 @@ see the exception below.
 
 | Budget | Proposed by | Allowance | Until | Status |
 |---|---|---|---|---|
-| B5 typing latency, p95 < 16 ms | WP-64 | p95 < 60 ms keystroke → screen on the development machine (the former 40 ms to the composite plus one frame), × 1.5 on CI runners (§3.9); the e2e assertion reads this row | the painter runs in the worker (WP-94); or B5 is redefined, since a keystroke → screen p95 under 16 ms is below the 60 Hz vsync floor (see "B5" above): e.g. "the edit is on screen in the first frame after the core's answer", or about one frame plus the work (≤ 25 ms) | proposed — for approval at the next gate (WP-68) |
+| B5 typing latency, p95 < 16 ms | WP-64 | p95 < 60 ms keystroke → screen on the development machine (the former 40 ms to the composite plus one frame), × 1.5 on CI runners (§3.9); the e2e assertion reads this row | the painter runs in the worker (WP-94); or B5 is redefined, since a keystroke → screen p95 under 16 ms is below the 60 Hz vsync floor (see "B5" above): e.g. "the edit is on screen in the first frame after the core's answer", or about one frame plus the work (≤ 25 ms) | approved 2026-10-17 (orchestrator): interim allowance until WP-94; B5 redefined as keystroke → screen p95 ≤ 33 ms (two 60 Hz frames), owned by WP-94 |
