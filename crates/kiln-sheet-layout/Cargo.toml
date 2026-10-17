@@ -11,6 +11,9 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+# Charts on sheets (WP-73's model and renderer) and the theme they are coloured with.
+kiln-charts.workspace = true
+kiln-ooxml.workspace = true
 kiln-formula = { workspace = true, default-features = false }
 kiln-sheet = { workspace = true, default-features = false }
 kiln-scene.workspace = true

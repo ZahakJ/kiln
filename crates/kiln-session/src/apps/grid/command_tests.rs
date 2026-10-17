@@ -3164,3 +3164,293 @@ fn paste_tiles_a_multiple_selection_and_pastes_once_into_any_other() {
     assert_eq!(val(&d, 12, 2), CellValue::Blank);
     assert_eq!(val(&d, 10, 2), CellValue::Blank);
 }
+
+// ── charts (WP-73 carry-over) ───────────────────────────────────────────────────────────────
+
+fn chart_doc() -> GridDoc {
+    let mut d = doc();
+    for (r, row) in [
+        ["", "Q1", "Q2", "Q3"],
+        ["Clay", "420", "380", "455"],
+        ["Glaze", "310", "125", "290"],
+    ]
+    .iter()
+    .enumerate()
+    {
+        for (c, v) in row.iter().enumerate() {
+            if !v.is_empty() {
+                put(&mut d, r as u32, c as u32, v);
+            }
+        }
+    }
+    at(&mut d, 1, 1);
+    d
+}
+
+fn suite(d: &mut GridDoc, c: SuiteCommand) -> Change {
+    d.execute(&Command::Suite(c.clone()))
+        .unwrap_or_else(|e| panic!("{c:?}: {e}"))
+}
+
+fn frame_of(d: &mut GridDoc, f: &mut FrameState, rev: u64) -> kiln_scene::SceneDelta {
+    let vp = Viewport {
+        width_px: 1200.0,
+        height_px: 700.0,
+        scroll: Point::new(0.0, 0.0),
+        zoom: 1.0,
+        dpr: 1.0,
+        mode: ViewMode::Normal,
+    };
+    f.produce(d.frame_source(), &vp, rev).expect("frame")
+}
+
+#[test]
+fn insert_chart_from_the_region_selects_it_and_draws_a_tile() {
+    use kiln_protocol::commands::ChartKind;
+    let mut d = chart_doc();
+    let mut f = FrameState::new();
+    frame_of(&mut d, &mut f, 1);
+    suite(
+        &mut d,
+        SuiteCommand::ChartInsert {
+            kind: Some(ChartKind::ColumnClustered),
+        },
+    );
+    let s = state(&d);
+    let drawing = s.drawing.expect("the new chart is selected");
+    assert_eq!(drawing.chart.kind, Some(ChartKind::ColumnClustered));
+    assert_eq!(drawing.chart.series.len(), 2, "{:?}", drawing.chart.series);
+    assert_eq!(drawing.chart.categories, vec!["Q1", "Q2", "Q3"]);
+    assert_eq!(drawing.chart.data_range, "Sheet1!$A$1:$D$3");
+    assert!((drawing.width - 480.0).abs() < 0.5 && (drawing.height - 288.0).abs() < 0.5);
+    let delta = frame_of(&mut d, &mut f, 2);
+    let tile = delta
+        .tiles
+        .iter()
+        .find(|t| t.id.layer == kiln_sheet_layout::scene::DRAWING_LAYER)
+        .expect("a chart tile");
+    assert!(tile.ops.len() > 10, "the chart is drawn");
+    assert!(
+        delta
+            .overlay
+            .iter()
+            .flat_map(|o| o.ops.iter())
+            .any(|op| matches!(op, kiln_scene::DrawOp::PushTransform { .. })),
+        "the selection frame"
+    );
+    // One undo step removes it.
+    assert_eq!(d.undo_label(), Some("suite.chart.insert"));
+    assert!(d.undo());
+    assert!(state(&d).drawing.is_none());
+    assert!(d.workbook.sheets()[0].meta().drawings.is_empty());
+    assert!(d.redo());
+    assert_eq!(d.workbook.sheets()[0].meta().drawings.len(), 1);
+}
+
+#[test]
+fn chart_commands_edit_the_selected_chart_with_undo() {
+    use kiln_protocol::commands::{ChartKind, ChartLegendPosition};
+    let mut d = chart_doc();
+    suite(&mut d, SuiteCommand::ChartInsert { kind: None });
+    let kind = state(&d).drawing.unwrap().chart.kind;
+    assert!(kind.is_some(), "a recommended chart");
+    at(&mut d, 1, 1);
+    let GridQueryResult::Charts(rec) = d.grid_query(&GridQuery::RecommendedCharts).unwrap() else {
+        panic!("charts");
+    };
+    assert_eq!(rec.first().copied(), kind, "{rec:?}");
+    run(&mut d, G::SelectDrawing { index: Some(0) });
+    suite(
+        &mut d,
+        SuiteCommand::ChartChangeType {
+            kind: ChartKind::Line,
+        },
+    );
+    assert_eq!(state(&d).drawing.unwrap().chart.kind, Some(ChartKind::Line));
+    suite(&mut d, SuiteCommand::ChartSwitchRowColumn);
+    let c = state(&d).drawing.unwrap().chart;
+    assert_eq!(c.series.len(), 3, "three quarters are now the series");
+    assert_eq!(c.categories, vec!["Clay", "Glaze"]);
+    suite(
+        &mut d,
+        SuiteCommand::ChartSetTitle {
+            text: "Spend".into(),
+        },
+    );
+    suite(
+        &mut d,
+        SuiteCommand::ChartSetLegend {
+            position: Some(ChartLegendPosition::Top),
+        },
+    );
+    let c = state(&d).drawing.unwrap().chart;
+    assert_eq!(c.title.as_deref(), Some("Spend"));
+    assert_eq!(c.legend, Some(ChartLegendPosition::Top));
+    // Undo walks back through the chart's own steps.
+    assert_eq!(d.undo_label(), Some("suite.chart.legend"));
+    assert!(d.undo());
+    assert!(d.undo());
+    assert!(d.undo());
+    assert_eq!(state(&d).drawing.unwrap().chart.series.len(), 2);
+    assert!(d.undo());
+    assert_eq!(state(&d).drawing.unwrap().chart.kind, kind);
+    assert!(d.can_redo());
+    assert!(d.redo());
+    assert_eq!(state(&d).drawing.unwrap().chart.kind, Some(ChartKind::Line));
+    // A cell edit clears the redo of chart steps and the chart follows the cells.
+    put(&mut d, 1, 1, "999");
+    assert!(!d.can_redo());
+    run(&mut d, G::SelectDrawing { index: Some(0) });
+    let c = state(&d).drawing.unwrap().chart;
+    let max = c.axes.iter().find_map(|a| a.max).unwrap_or_default();
+    assert!(
+        max >= 999.0,
+        "the value axis grew to the new value: {:?}",
+        c.axes
+    );
+}
+
+#[test]
+fn charts_are_hit_selected_moved_resized_and_deleted() {
+    let mut d = chart_doc();
+    let mut f = FrameState::new();
+    frame_of(&mut d, &mut f, 1);
+    suite(&mut d, SuiteCommand::ChartInsert { kind: None });
+    let r = state(&d).drawing.unwrap();
+    // A click on a cell deselects it; a click inside the chart is a hit on it.
+    at(&mut d, 0, 0);
+    assert!(state(&d).drawing.is_none());
+    let geo = d.geometry_ref();
+    let hw = d.header_w(&geo);
+    let (cx, cy) = (
+        hw + r.x + r.width / 2.0,
+        geo.header_h() + r.y + r.height / 2.0,
+    );
+    let q = |d: &GridDoc, x: f32, y: f32| match d.grid_query(&GridQuery::HitTest { x, y }).unwrap()
+    {
+        GridQueryResult::Hit(h) => h,
+        other => panic!("{other:?}"),
+    };
+    assert_eq!(q(&d, cx, cy), GridHit::Drawing { index: 0 });
+    run(&mut d, G::SelectDrawing { index: Some(0) });
+    // Its bottom-right handle.
+    assert_eq!(
+        q(&d, hw + r.x + r.width, geo.header_h() + r.y + r.height),
+        GridHit::DrawingHandle {
+            index: 0,
+            handle: 4
+        }
+    );
+    run(
+        &mut d,
+        G::PlaceDrawing {
+            index: 0,
+            x: 10.0,
+            y: 30.0,
+            width: 300.0,
+            height: 200.0,
+        },
+    );
+    let moved = state(&d).drawing.unwrap();
+    assert!(
+        (moved.x - 10.0).abs() < 0.5 && (moved.y - 30.0).abs() < 0.5,
+        "{moved:?}"
+    );
+    assert!((moved.width - 300.0).abs() < 0.5 && (moved.height - 200.0).abs() < 0.5);
+    // Rows inserted above move it down (the anchor is in the model).
+    at(&mut d, 0, 0);
+    run(&mut d, G::InsertRows);
+    run(&mut d, G::SelectDrawing { index: Some(0) });
+    assert!(state(&d).drawing.unwrap().y > moved.y + 10.0);
+    // Delete removes it; Esc deselects.
+    run(&mut d, G::ClearContents);
+    assert!(d.workbook.sheets()[0].meta().drawings.is_empty());
+    assert!(d.undo());
+    run(&mut d, G::SelectDrawing { index: Some(0) });
+    run(&mut d, G::CancelEdit);
+    assert!(state(&d).drawing.is_none());
+    assert!(fails(&mut d, G::SelectDrawing { index: Some(7) }).contains("no chart"));
+}
+
+#[test]
+fn charts_are_saved_and_read_back() {
+    use kiln_protocol::commands::ChartKind;
+    let mut d = chart_doc();
+    suite(
+        &mut d,
+        SuiteCommand::ChartInsert {
+            kind: Some(ChartKind::Pie),
+        },
+    );
+    suite(
+        &mut d,
+        SuiteCommand::ChartSetTitle {
+            text: "Clay share".into(),
+        },
+    );
+    let bytes = d.save(kiln_protocol::FileFormat::Xlsx).expect("save");
+    let read = kiln_io_xlsx::read_xlsx(&bytes).expect("read");
+    let drawings = &read.workbook.sheets()[0].meta().drawings;
+    assert_eq!(drawings.len(), 1);
+    let charts = read.source.charts();
+    assert_eq!(charts.len(), 1);
+    let (_, chart) = &charts[0];
+    let chart = chart.as_ref().expect("chart");
+    assert_eq!(kiln_charts::edit::kind_of(chart), Some(ChartKind::Pie));
+    assert_eq!(
+        kiln_charts::layout::title_text(chart).as_deref(),
+        Some("Clay share")
+    );
+    // Opened again in a session, the chart is there and can be selected.
+    let mut again = GridDoc::new(read.workbook, Some(read.source), Vec::new(), None);
+    run(&mut again, G::SelectDrawing { index: Some(0) });
+    assert_eq!(
+        state(&again).drawing.unwrap().chart.kind,
+        Some(ChartKind::Pie)
+    );
+}
+
+#[test]
+fn the_theme_recolours_charts_and_move_chart_goes_to_another_sheet() {
+    use kiln_protocol::commands::ChartMoveTarget;
+    let mut d = chart_doc();
+    let mut f = FrameState::new();
+    suite(&mut d, SuiteCommand::ChartInsert { kind: None });
+    frame_of(&mut d, &mut f, 1);
+    run(&mut d, G::Theme { dark: true });
+    let delta = frame_of(&mut d, &mut f, 2);
+    assert!(
+        delta
+            .tiles
+            .iter()
+            .any(|t| t.id.layer == kiln_sheet_layout::scene::DRAWING_LAYER),
+        "the chart is drawn again in the dark theme"
+    );
+    run(&mut d, G::InsertSheet);
+    run(&mut d, G::ActivateSheet { index: 0 });
+    run(&mut d, G::SelectDrawing { index: Some(0) });
+    let other = d.workbook.sheets()[1].name().to_owned();
+    suite(
+        &mut d,
+        SuiteCommand::ChartMove {
+            to: ChartMoveTarget::ObjectIn { sheet: other },
+        },
+    );
+    assert_eq!(d.active_index(), 1);
+    assert!(state(&d).drawing.is_some());
+    assert!(d.workbook.sheets()[0].meta().drawings.is_empty());
+    let err = d
+        .execute(&Command::Suite(SuiteCommand::ChartMove {
+            to: ChartMoveTarget::NewSheet {
+                name: "Chart1".into(),
+            },
+        }))
+        .expect_err("chart sheets");
+    assert!(err.to_string().contains("chart sheets"));
+    // Without a chart selected, chart commands say so.
+    at(&mut d, 0, 0);
+    assert!(
+        d.execute(&Command::Suite(SuiteCommand::ChartSwitchRowColumn))
+            .is_err()
+    );
+}

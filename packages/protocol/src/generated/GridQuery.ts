@@ -39,4 +39,4 @@ prefix: string,
 /**
  * Category name (`Math & Trig`…), `None` for all.
  */
-category: string | null, } };
+category: string | null, } } | "RecommendedCharts";

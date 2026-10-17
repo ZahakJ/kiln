@@ -3663,6 +3663,50 @@
               }
             ]
           }
+        },
+        "104": {
+          "SelectDrawing": {
+            "STRUCT": [
+              {
+                "index": {
+                  "OPTION": "U32"
+                }
+              }
+            ]
+          }
+        },
+        "105": {
+          "PlaceDrawing": {
+            "STRUCT": [
+              {
+                "index": "U32"
+              },
+              {
+                "x": "F32"
+              },
+              {
+                "y": "F32"
+              },
+              {
+                "width": "F32"
+              },
+              {
+                "height": "F32"
+              }
+            ]
+          }
+        },
+        "106": {
+          "DeleteDrawing": "UNIT"
+        },
+        "107": {
+          "Theme": {
+            "STRUCT": [
+              {
+                "dark": "BOOL"
+              }
+            ]
+          }
         }
       }
     },
@@ -3703,6 +3747,33 @@
           "Right": "UNIT"
         }
       }
+    },
+    "GridDrawing": {
+      "STRUCT": [
+        {
+          "index": "U32"
+        },
+        {
+          "name": "STR"
+        },
+        {
+          "x": "F32"
+        },
+        {
+          "y": "F32"
+        },
+        {
+          "width": "F32"
+        },
+        {
+          "height": "F32"
+        },
+        {
+          "chart": {
+            "TYPENAME": "ChartState"
+          }
+        }
+      ]
     },
     "GridEditor": {
       "STRUCT": [
@@ -4221,6 +4292,27 @@
         },
         "7": {
           "Corner": "UNIT"
+        },
+        "8": {
+          "Drawing": {
+            "STRUCT": [
+              {
+                "index": "U32"
+              }
+            ]
+          }
+        },
+        "9": {
+          "DrawingHandle": {
+            "STRUCT": [
+              {
+                "index": "U32"
+              },
+              {
+                "handle": "U8"
+              }
+            ]
+          }
         }
       }
     },
@@ -4427,6 +4519,9 @@
               }
             ]
           }
+        },
+        "7": {
+          "RecommendedCharts": "UNIT"
         }
       }
     },
@@ -4477,6 +4572,15 @@
             "NEWTYPE": {
               "SEQ": {
                 "TYPENAME": "GridFunctionInfo"
+              }
+            }
+          }
+        },
+        "7": {
+          "Charts": {
+            "NEWTYPE": {
+              "SEQ": {
+                "TYPENAME": "ChartKind"
               }
             }
           }
@@ -4618,6 +4722,13 @@
         {
           "names": {
             "SEQ": "STR"
+          }
+        },
+        {
+          "drawing": {
+            "OPTION": {
+              "TYPENAME": "GridDrawing"
+            }
           }
         }
       ]

@@ -72,6 +72,7 @@ export type { GridClear } from './GridClear';
 export type { GridCommand } from './GridCommand';
 export type { GridCompletion } from './GridCompletion';
 export type { GridDirection } from './GridDirection';
+export type { GridDrawing } from './GridDrawing';
 export type { GridEditor } from './GridEditor';
 export type { GridFill } from './GridFill';
 export type { GridFormat } from './GridFormat';

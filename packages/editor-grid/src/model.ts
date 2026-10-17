@@ -8,6 +8,7 @@
  */
 import { buildCommand, type CommandRegistry } from '@kiln/commands';
 import type {
+  ChartKind,
   DocId,
   GridFormatCells,
   GridHit,
@@ -16,6 +17,7 @@ import type {
   GridState,
   KilnClient,
   StatusBar,
+  SuiteCommand,
 } from '@kiln/protocol';
 import { createStore, type StoreApi } from 'zustand/vanilla';
 
@@ -30,7 +32,8 @@ export type GridDialog =
   | 'columnWidth'
   | 'renameSheet'
   | 'tabColor'
-  | 'insertFunction';
+  | 'insertFunction'
+  | 'recommendedCharts';
 
 /** A context menu: where and for what. */
 export interface GridMenu {
@@ -56,6 +59,8 @@ export interface GridUiState {
   menu: GridMenu | null;
   /** A message for the user (a refused entry, a failed command). */
   notice: string | null;
+  /** The Format Chart pane is open (while a chart is selected). */
+  chartPane: boolean;
 }
 
 export interface GridModelDeps {
@@ -116,7 +121,9 @@ export class GridEditorModel {
   private disposed = false;
   private readonly unsubscribe: () => void;
   /** Listeners told about every new state (the surface follows the layout). */
-  private readonly listeners = new Set<(s: GridState) => void>();
+  private readonly listeners = new Set<(s: GridState, asked: number) => void>();
+  /** Numbers the state requests (a listener can tell a state asked before something it did). */
+  asked = 0;
 
   constructor({ client, doc, registry }: GridModelDeps) {
     this.client = client;
@@ -132,6 +139,7 @@ export class GridEditorModel {
       showFormulaBar: prefs.showFormulaBar ?? true,
       menu: null,
       notice: null,
+      chartPane: false,
     }));
     this.unsubscribe = client.subscribe((e) => {
       if (typeof e !== 'object' || !('Changed' in e) || e.Changed.summary.doc !== this.doc) return;
@@ -169,7 +177,7 @@ export class GridEditorModel {
   }
 
   /** Follows every new state (returns the unsubscribe function). */
-  onState(listener: (s: GridState) => void): () => void {
+  onState(listener: (s: GridState, asked: number) => void): () => void {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
   }
@@ -185,6 +193,8 @@ export class GridEditorModel {
 
   /** Asks for the state now. */
   async fetch(): Promise<GridState | null> {
+    this.asked += 1;
+    const asked = this.asked;
     const r = await this.query('State');
     if (this.disposed || !r || !('State' in r)) return null;
     const grid = r.State;
@@ -196,12 +206,13 @@ export class GridEditorModel {
       this.store.setState({ grid });
       const editing = grid.mode !== 'Ready';
       this.registry.setContext({ gridState: grid, scopes: editing ? ['cell-edit'] : [] });
+      if (!grid.drawing && this.state.chartPane) this.store.setState({ chartPane: false });
     }
     if (grid.reveal && grid.reveal.seq !== this.lastReveal) {
       this.lastReveal = grid.reveal.seq;
       this.surface?.reveal(grid.reveal.x, grid.reveal.y);
     }
-    for (const l of [...this.listeners]) l(grid);
+    for (const l of [...this.listeners]) l(grid, asked);
     return grid;
   }
 
@@ -254,6 +265,27 @@ export class GridEditorModel {
       if (e.kind !== 'Unavailable') this.store.setState({ notice: messageOf(error) });
       return false;
     }
+  }
+
+  /**
+   * Runs a chart command (Chart Design, Format, the Format pane, Insert ▸ Charts) on the
+   * selected chart or the selection, then shows the new state.
+   */
+  async chart(command: SuiteCommand): Promise<boolean> {
+    try {
+      await this.client.execute(this.doc, { Suite: command });
+      await this.fetch();
+      return true;
+    } catch (error) {
+      this.store.setState({ notice: messageOf(error) });
+      return false;
+    }
+  }
+
+  /** Recommended Charts for the selection, best first. */
+  async recommendedCharts(): Promise<ChartKind[]> {
+    const r = await this.query('RecommendedCharts');
+    return r && 'Charts' in r ? r.Charts : [];
   }
 
   openDialog(id: GridDialog, tab?: string, arg?: number): void {

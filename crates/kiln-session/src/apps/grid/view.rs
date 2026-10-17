@@ -191,10 +191,16 @@ impl GridDoc {
                 .map(|s| Range::from_bounds(s.bounds))
                 .filter(|r| !r.is_single_cell())
         });
+        // A selected chart takes the selection's place (Excel hides the cell cursor).
+        let chart = self.charts.selected.is_some();
         OverlayInput {
-            ranges: v.sel.ranges.clone(),
+            ranges: if chart {
+                Vec::new()
+            } else {
+                v.sel.ranges.clone()
+            },
             active: v.sel.active,
-            fill_handle: self.edit.is_none(),
+            fill_handle: self.edit.is_none() && !chart,
             copy: self.copy.filter(|c| Some(c.sheet) == sid).map(|c| c.range),
             fill_preview: self.fill_preview,
             spill: if self.edit.is_none() { spill } else { None },
@@ -337,7 +343,11 @@ impl FrameSource for GridDoc {
         let extent = self.content_extent(&geo, &view);
         let v = self.view();
         let marks = HeaderMarks {
-            ranges: v.sel.ranges.clone(),
+            ranges: if self.charts.selected.is_some() {
+                Vec::new()
+            } else {
+                v.sel.ranges.clone()
+            },
         };
         let all = v
             .sel
@@ -346,6 +356,8 @@ impl FrameSource for GridDoc {
             .any(|r| r.is_whole_cols() && r.is_whole_rows());
         let snap = Snap(request.scale);
         let mut overlay = overlay_ops(&geo, &self.overlay_input(), snap);
+        overlay.extend(self.chart_overlay(&geo));
+        let places = self.chart_places(&geo);
         let editor = self.editor_layout();
         let Some((index, sheet)) = self.active_sheet() else {
             return Ok(());
@@ -361,6 +373,7 @@ impl FrameSource for GridDoc {
             glyphs.set_scale(request.scale);
             editor_ops(ed, glyphs, text, &mut overlay);
         }
+        let charts = self.charts.tiles(&places);
         scene.prepare(
             &mut self.workbook,
             index,
@@ -374,6 +387,8 @@ impl FrameSource for GridDoc {
                 all_selected: all,
                 opts: &opts,
                 overlay,
+                charts: &charts,
+                chart_look: self.charts.look(),
             },
         );
         Ok(())

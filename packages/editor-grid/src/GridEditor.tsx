@@ -10,6 +10,7 @@ import { Autocomplete } from './Autocomplete.tsx';
 import type { GridSurfaceController } from './controller.ts';
 import { FindBar } from './FindBar.tsx';
 import { FormulaBar } from './FormulaBar.tsx';
+import { FormatChartArea } from './GridCharts.tsx';
 import { GridDialogs } from './GridDialogs.tsx';
 import { GridMenus } from './GridMenus.tsx';
 import { GridSurface } from './GridSurface.tsx';
@@ -52,25 +53,28 @@ export function GridEditor({ model, title, theme, blink, onController }: GridEdi
   return (
     <div className="kiln-grid" data-testid="grid-editor" data-mode={mode}>
       {showFormulaBar ? <FormulaBar model={model} /> : null}
-      <div className="kiln-grid__sheet" onKeyDownCapture={onKeyDownCapture}>
-        <GridSurface
-          client={model.client}
-          model={model}
-          theme={theme}
-          blink={blink}
-          label={title}
-          onController={onController}
-        />
-        <Autocomplete model={model} />
-        <FindBar model={model} />
-        {notice ? (
-          <div className="kiln-grid__notice" role="alert">
-            <span>{notice}</span>
-            <button type="button" aria-label="Dismiss" onClick={() => model.set({ notice: null })}>
-              <Icon icon={X} size={12} />
-            </button>
-          </div>
-        ) : null}
+      <div className="kiln-grid__body">
+        <div className="kiln-grid__sheet" onKeyDownCapture={onKeyDownCapture}>
+          <GridSurface
+            client={model.client}
+            model={model}
+            theme={theme}
+            blink={blink}
+            label={title}
+            onController={onController}
+          />
+          <Autocomplete model={model} />
+          <FindBar model={model} />
+          {notice ? (
+            <div className="kiln-grid__notice" role="alert">
+              <span>{notice}</span>
+              <button type="button" aria-label="Dismiss" onClick={() => model.set({ notice: null })}>
+                <Icon icon={X} size={12} />
+              </button>
+            </div>
+          ) : null}
+        </div>
+        <FormatChartArea model={model} />
       </div>
       <SheetTabs model={model} />
       <GridMenus model={model} />

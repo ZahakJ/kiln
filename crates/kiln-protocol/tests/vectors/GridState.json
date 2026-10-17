@@ -127,7 +127,30 @@
       "names": [
         "SalesTax",
         "Q1_Total"
-      ]
+      ],
+      "drawing": {
+        "index": 0,
+        "name": "Chart 1",
+        "x": 1008.5,
+        "y": 550.0,
+        "width": 400.0,
+        "height": 268.0,
+        "chart": {
+          "kind": null,
+          "style": null,
+          "color_set": 7,
+          "color_sets": [],
+          "title": null,
+          "legend": null,
+          "data_labels": null,
+          "elements": [],
+          "data_range": "",
+          "series": [],
+          "categories": [],
+          "has_cells": false,
+          "axes": []
+        }
+      }
     },
     {
       "sheets": [],
@@ -175,7 +198,8 @@
       "whole_rows": false,
       "whole_columns": false,
       "stats": null,
-      "names": []
+      "names": [],
+      "drawing": null
     }
   ]
 }

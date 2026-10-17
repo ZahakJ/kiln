@@ -33,10 +33,11 @@ pub use edit::{
 pub(crate) use grid::samples as grid_samples;
 pub use grid::{
     CellShift, CompletionKind, GRID_COMMANDS, GridBorderSide, GridBorders, GridCellFormat,
-    GridClear, GridCommand, GridCompletion, GridDirection, GridEditor, GridFill, GridFormat,
-    GridFormatCells, GridFormulaHint, GridFunctionInfo, GridHAlign, GridHintArg, GridHit,
-    GridLayout, GridLineStyle, GridMode, GridPaste, GridPasteOp, GridQuery, GridQueryResult,
-    GridRange, GridRefSpan, GridReveal, GridSheetTab, GridState, GridStats, GridVAlign,
+    GridClear, GridCommand, GridCompletion, GridDirection, GridDrawing, GridEditor, GridFill,
+    GridFormat, GridFormatCells, GridFormulaHint, GridFunctionInfo, GridHAlign, GridHintArg,
+    GridHit, GridLayout, GridLineStyle, GridMode, GridPaste, GridPasteOp, GridQuery,
+    GridQueryResult, GridRange, GridRefSpan, GridReveal, GridSheetTab, GridState, GridStats,
+    GridVAlign,
 };
 pub use notes::{NOTES_COMMANDS, NotesCommand};
 pub use suite::{

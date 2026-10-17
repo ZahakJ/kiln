@@ -14,9 +14,12 @@
 //!   functions, names and column values, argument hints, point mode and `$` toggling, fill, rows
 //!   and columns, sheets, number formats, fonts, fills, borders, alignment, merges, frozen
 //!   panes, Paste Special; every change one undo step of the sheet model's command log.
+//! - **Charts** ([`charts`]): charts read from the file, inserted, selected, moved, resized,
+//!   edited and deleted, with undo; written back on save.
 //! - **Queries** ([`state`]): what the chrome shows (`Query::Grid`): sheet tabs, the name box
 //!   and formula bar, the mode, the editor, the active cell's format, hit testing, Format Cells.
 
+mod charts;
 mod clipboard;
 #[cfg(test)]
 mod command_tests;
@@ -129,11 +132,13 @@ pub struct CopyMark {
     pub cut: bool,
 }
 
-/// One step of the undo history as the session sees it.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+/// One step of the undo history as the session sees it: a step of the sheet model's command
+/// log, or an edit of a chart's content (kept here, before and after).
+#[derive(Debug, Clone)]
 struct Step {
     state: StateId,
     label: &'static str,
+    chart: Option<Box<charts::ChartEdit>>,
 }
 
 /// A Grid workbook held by the session.
@@ -179,6 +184,8 @@ pub struct GridDoc {
     selection_epoch: u64,
     /// Where a run of Tab entries started: Enter returns to its column on the next row (Excel).
     pub(crate) tab_origin: Option<kiln_sheet::CellPos>,
+    /// The charts of the workbook and the selected one.
+    charts: charts::Charts,
 }
 
 fn w3cdtf(unix_ms: u64) -> String {
@@ -222,6 +229,7 @@ impl GridDoc {
         for s in workbook.sheets() {
             views.insert(s.id(), ViewState::from_meta(&s.meta().view));
         }
+        let charts = charts::Charts::from_source(source.as_ref());
         let mut doc = Self {
             workbook,
             source,
@@ -252,6 +260,7 @@ impl GridDoc {
             now_ms: 0,
             selection_epoch: 0,
             tab_origin: None,
+            charts,
         };
         // A hidden active sheet (or an empty workbook made by a reader) shows the first visible one.
         if doc
@@ -366,17 +375,52 @@ impl GridDoc {
         if recorded {
             let state = self.next_state;
             self.next_state += 1;
-            self.done.push(Step { state, label });
-            // The log keeps at most 1,000 steps; so does this mirror.
+            self.done.push(Step {
+                state,
+                label,
+                chart: None,
+            });
+            // The log keeps at most 1,000 steps; so does this mirror (its oldest model steps go
+            // with the log's, chart steps before them too).
             let keep = self.log.undo_depth();
-            if self.done.len() > keep {
-                let excess = self.done.len() - keep;
-                self.done.drain(..excess);
+            let model_steps = self.done.iter().filter(|s| s.chart.is_none()).count();
+            if model_steps > keep {
+                let mut excess = model_steps - keep;
+                let cut = self
+                    .done
+                    .iter()
+                    .position(|s| {
+                        if s.chart.is_none() {
+                            if excess == 0 {
+                                return true;
+                            }
+                            excess -= 1;
+                        }
+                        false
+                    })
+                    .unwrap_or(self.done.len());
+                self.done.drain(..cut);
             }
             self.undone.clear();
             self.state = state;
         }
         self.absorb_changes();
+    }
+
+    /// Records an edit of a chart's content as one undo step.
+    pub(crate) fn record_chart_step(&mut self, label: &'static str, edit: charts::ChartEdit) {
+        let state = self.next_state;
+        self.next_state += 1;
+        self.done.push(Step {
+            state,
+            label,
+            chart: Some(Box::new(edit)),
+        });
+        if self.done.len() > 2_000 {
+            self.done.remove(0);
+        }
+        self.undone.clear();
+        self.state = state;
     }
 
     /// Takes the model's change list: repaints what changed, rebuilds geometry when rows,
@@ -386,6 +430,11 @@ impl GridDoc {
         if changes.is_empty() {
             return;
         }
+        // Charts read the cells: their caches follow every change of values.
+        if !changes.cells.is_empty() || !changes.recalculated.is_empty() || changes.sheets {
+            self.refresh_charts();
+        }
+        self.validate_chart_selection();
         let Ok(sid) = self.sid() else {
             return;
         };
@@ -543,6 +592,7 @@ impl GridDoc {
                 kind: Some(kind),
                 now,
                 author: None,
+                charts: self.charts.to_write(),
             },
         )
         .map(|w| w.bytes)
@@ -589,6 +639,42 @@ impl GridDoc {
         );
         if !editing_cmd && self.edit.is_some() {
             self.commit_edit(None)?;
+        }
+        // A chart stays selected for its own commands and the view's; Delete and Esc act on it;
+        // anything else goes back to the cells.
+        if self.charts.selected.is_some() {
+            match cmd {
+                G::ClearContents | G::DeleteDrawing => return self.delete_drawing(),
+                G::CancelEdit => return self.select_drawing(None),
+                G::SelectDrawing { .. }
+                | G::PlaceDrawing { .. }
+                | G::Theme { .. }
+                | G::Gridlines
+                | G::Headings
+                | G::ShowFormulas
+                | G::CalculateNow
+                | G::CalculateSheet => {}
+                _ => {
+                    self.charts.selected = None;
+                    self.selection_epoch += 1;
+                }
+            }
+        }
+        match cmd {
+            G::SelectDrawing { index } => return self.select_drawing(*index),
+            G::PlaceDrawing {
+                index,
+                x,
+                y,
+                width,
+                height,
+            } => {
+                return self
+                    .place_drawing(*index, kiln_scene::Bounds::new(*x, *y, *width, *height));
+            }
+            G::DeleteDrawing => return self.delete_drawing(),
+            G::Theme { dark } => return Ok(self.set_dark(*dark)),
+            _ => {}
         }
         match cmd {
             G::Move { .. }
@@ -736,6 +822,27 @@ impl DocModel for GridDoc {
         let result = match command {
             Command::Grid(g) => self.grid(g),
             Command::Suite(SuiteCommand::Edit(e)) => self.edit_command(e),
+            Command::Suite(
+                c @ (SuiteCommand::ChartInsert { .. }
+                | SuiteCommand::ChartChangeType { .. }
+                | SuiteCommand::ChartSwitchRowColumn
+                | SuiteCommand::ChartSelectData { .. }
+                | SuiteCommand::ChartSetElement { .. }
+                | SuiteCommand::ChartSetLegend { .. }
+                | SuiteCommand::ChartSetDataLabels { .. }
+                | SuiteCommand::ChartQuickLayout { .. }
+                | SuiteCommand::ChartSetStyle { .. }
+                | SuiteCommand::ChartSetColors { .. }
+                | SuiteCommand::ChartSetTitle { .. }
+                | SuiteCommand::ChartMove { .. }
+                | SuiteCommand::ChartFormatSeries { .. }
+                | SuiteCommand::ChartFormatAxis { .. }),
+            ) => {
+                if self.edit.is_some() {
+                    self.commit_edit(None)?;
+                }
+                self.chart_command(c)
+            }
             other => Err(KilnError::Unsupported(format!(
                 "{} in Kiln Grid",
                 other.id()
@@ -766,6 +873,15 @@ impl DocModel for GridDoc {
             self.edit = None;
             return true;
         }
+        if let Some(edit) = self.done.last().and_then(|s| s.chart.clone()) {
+            // A chart edit: the chart as it was.
+            self.restore_chart(&edit.part, edit.before);
+            if let Some(step) = self.done.pop() {
+                self.undone.push(step);
+            }
+            self.state = self.done.last().map_or(0, |s| s.state);
+            return true;
+        }
         match self.log.undo(&mut self.workbook) {
             Ok(true) => {
                 if let Some(step) = self.done.pop() {
@@ -780,6 +896,17 @@ impl DocModel for GridDoc {
     }
 
     fn redo(&mut self) -> bool {
+        if let Some(edit) = self.undone.last().and_then(|s| s.chart.clone()) {
+            self.restore_chart(&edit.part, edit.after);
+            if let Some(step) = self.undone.pop() {
+                self.state = step.state;
+                self.done.push(step);
+            }
+            return true;
+        }
+        if self.undone.is_empty() {
+            return false;
+        }
         match self.log.redo(&mut self.workbook) {
             Ok(true) => {
                 if let Some(step) = self.undone.pop() {
@@ -794,11 +921,15 @@ impl DocModel for GridDoc {
     }
 
     fn can_undo(&self) -> bool {
-        self.edit.is_some() || self.log.can_undo()
+        self.edit.is_some()
+            || self.done.last().is_some_and(|s| s.chart.is_some())
+            || self.log.can_undo()
     }
 
     fn can_redo(&self) -> bool {
-        self.edit.is_none() && self.log.can_redo()
+        self.edit.is_none()
+            && (self.undone.last().is_some_and(|s| s.chart.is_some())
+                || (!self.undone.is_empty() && self.log.can_redo()))
     }
 
     fn undo_label(&self) -> Option<&'static str> {

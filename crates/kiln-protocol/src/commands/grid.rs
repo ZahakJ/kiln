@@ -780,6 +780,35 @@ pub enum GridCommand {
         /// The clipboard.
         data: Option<ClipboardData>,
     },
+    // ── drawings (charts on the sheet) ────────────────────────────────────────────────────
+    /// Selects a chart on the active sheet by its drawing number (a click on it), or deselects
+    /// (`None`: a click on a cell, Esc). While a chart is selected the `Chart*` commands apply
+    /// to it and Delete removes it.
+    SelectDrawing {
+        /// The drawing number on the sheet.
+        index: Option<u32>,
+    },
+    /// Moves or resizes a chart (a drag of it or of a sizing handle): its new rectangle in
+    /// sheet pixels at 100 %.
+    PlaceDrawing {
+        /// The drawing number on the sheet.
+        index: u32,
+        /// Left.
+        x: f32,
+        /// Top.
+        y: f32,
+        /// Width.
+        width: f32,
+        /// Height.
+        height: f32,
+    },
+    /// Deletes the selected chart (Delete with a chart selected).
+    DeleteDrawing,
+    /// The app's theme, for what the core colours by it (charts on screen). Not an edit.
+    Theme {
+        /// The dark theme.
+        dark: bool,
+    },
 }
 
 crate::command_table! {
@@ -888,6 +917,10 @@ crate::command_table! {
     Self::PasteFormulas { .. } => { id: "grid.clipboard.paste_formulas", keytip: Some("F"), group: "clipboard", tier: P0, apps: G, availability: Editable };
     Self::PasteFormatting { .. } => { id: "grid.clipboard.paste_formatting", keytip: Some("R"), group: "clipboard", tier: P0, apps: G, availability: Editable };
     Self::PasteTranspose { .. } => { id: "grid.clipboard.paste_transpose", keytip: Some("T"), group: "clipboard", tier: P0, apps: G, availability: Editable };
+    Self::SelectDrawing { .. } => { id: "grid.drawing.select", keytip: None, group: "drawing", tier: P0, apps: G, availability: Document };
+    Self::PlaceDrawing { .. } => { id: "grid.drawing.place", keytip: None, group: "drawing", tier: P0, apps: G, availability: Editable };
+    Self::DeleteDrawing => { id: "grid.drawing.delete", keytip: None, group: "drawing", tier: P0, apps: G, availability: Editable };
+    Self::Theme { .. } => { id: "grid.view.theme", keytip: None, group: "view", tier: P0, apps: G, availability: Document };
 }
 
 // ── queries ──────────────────────────────────────────────────────────────────────────────────
@@ -934,6 +967,9 @@ pub enum GridQuery {
         /// Category name (`Math & Trig`…), `None` for all.
         category: Option<String>,
     },
+    /// Recommended Charts for the selection (its shape: text headers, numbers, dates), best
+    /// first.
+    RecommendedCharts,
 }
 
 // `Query` is `Eq`; the points and sizes of a query are finite numbers the UI measured (a NaN
@@ -1185,6 +1221,28 @@ pub struct GridState {
     pub stats: Option<GridStats>,
     /// Defined names the name box lists.
     pub names: Vec<String>,
+    /// The selected chart: its drawing number, rectangle (sheet pixels) and state for the Chart
+    /// Design and Format tabs and the Format pane.
+    pub drawing: Option<GridDrawing>,
+}
+
+/// The selected chart of [`GridState`].
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, TS)]
+pub struct GridDrawing {
+    /// The drawing number on the sheet.
+    pub index: u32,
+    /// Its name (`Chart 1`).
+    pub name: String,
+    /// Left, in sheet pixels at 100 %.
+    pub x: f32,
+    /// Top.
+    pub y: f32,
+    /// Width.
+    pub width: f32,
+    /// Height.
+    pub height: f32,
+    /// The chart's state.
+    pub chart: crate::commands::ChartState,
 }
 
 /// What [`GridQuery::HitTest`] found.
@@ -1231,6 +1289,19 @@ pub enum GridHit {
     },
     /// The corner (Select All).
     Corner,
+    /// A chart on the sheet.
+    Drawing {
+        /// The drawing number on the sheet.
+        index: u32,
+    },
+    /// A sizing handle of the selected chart: 0–7 clockwise from the top-left corner (top-left,
+    /// top, top-right, right, bottom-right, bottom, bottom-left, left).
+    DrawingHandle {
+        /// The drawing number on the sheet.
+        index: u32,
+        /// The handle.
+        handle: u8,
+    },
 }
 
 /// The Format Cells dialog's values.
@@ -1307,6 +1378,8 @@ pub enum GridQueryResult {
     Zoom(f32),
     /// [`GridQuery::Functions`].
     Functions(Vec<GridFunctionInfo>),
+    /// [`GridQuery::RecommendedCharts`].
+    Charts(Vec<crate::commands::ChartKind>),
 }
 
 #[cfg(any(test, feature = "schema"))]
@@ -1586,6 +1659,16 @@ pub(crate) mod samples {
             C::PasteFormulas { data: None },
             C::PasteFormatting { data: None },
             C::PasteTranspose { data: d() },
+            C::SelectDrawing { index: Some(0) },
+            C::PlaceDrawing {
+                index: 0,
+                x: 200.0,
+                y: 40.0,
+                width: 480.0,
+                height: 288.0,
+            },
+            C::DeleteDrawing,
+            C::Theme { dark: true },
         ]
         .into_iter()
         .map(Command::Grid)
@@ -1697,6 +1780,21 @@ pub(crate) mod samples {
             whole_columns: true,
             stats: Some(stats()),
             names: vec!["SalesTax".into(), "Q1_Total".into()],
+            drawing: Some(drawing()),
+        }
+    }
+
+    fn drawing() -> GridDrawing {
+        GridDrawing {
+            index: 0,
+            name: "Chart 1".into(),
+            x: 1008.5,
+            y: 550.0,
+            width: 400.0,
+            height: 268.0,
+            chart: <crate::commands::ChartState as Samples>::samples()
+                .pop()
+                .unwrap_or_else(|| unreachable!("ChartState has samples")),
         }
     }
 
@@ -1757,6 +1855,7 @@ pub(crate) mod samples {
             GridQuery::FormulaHint { text: "=IF(A1>2,".into(), caret: 9 },
             GridQuery::ZoomToSelection { width: 1200.0, height: 700.0 },
             GridQuery::Functions { prefix: "SU".into(), category: Some("Math & Trig".into()) },
+            GridQuery::RecommendedCharts,
         ];
         GridMode => [GridMode::Ready, GridMode::Point];
         GridSheetTab => [state().sheets[1].clone()];
@@ -1771,7 +1870,8 @@ pub(crate) mod samples {
         GridReveal => [GridReveal { seq: 0, x: 64.0, y: 0.0 }];
         GridStats => [stats()];
         GridState => [state()];
-        GridHit => [GridHit::None, GridHit::Cell { row: 3, col: 9 }, GridHit::FillHandle, GridHit::ColumnBorder { col: 2, start: 172.5, size: 64.0 }, GridHit::Corner];
+        GridHit => [GridHit::None, GridHit::Cell { row: 3, col: 9 }, GridHit::FillHandle, GridHit::ColumnBorder { col: 2, start: 172.5, size: 64.0 }, GridHit::Corner, GridHit::Drawing { index: 1 }, GridHit::DrawingHandle { index: 0, handle: 4 }];
+        GridDrawing => [drawing()];
         GridFormatCells => [format_cells()];
         GridFunctionInfo => [GridFunctionInfo { name: "SUM".into(), category: "Math & Trig".into(), syntax: "SUM(number1, …)".into(), summary: "Adds.".into() }];
         GridQueryResult => [
@@ -1783,6 +1883,7 @@ pub(crate) mod samples {
             GridQueryResult::Hint(None),
             GridQueryResult::Zoom(1.5),
             GridQueryResult::Functions(Vec::new()),
+            GridQueryResult::Charts(vec![crate::commands::ChartKind::ColumnClustered, crate::commands::ChartKind::Line]),
         ];
     }
 
@@ -1794,7 +1895,7 @@ pub(crate) mod samples {
             GridFormat, GridQuery, GridMode, GridSheetTab, GridRefSpan, CompletionKind,
             GridCompletion, GridHintArg, GridFormulaHint, GridEditor, GridCellFormat, GridLayout,
             GridReveal, GridState, GridHit, GridFormatCells, GridFunctionInfo, GridQueryResult,
-            GridStats,
+            GridStats, GridDrawing,
         );
     }
 }

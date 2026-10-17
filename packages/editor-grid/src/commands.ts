@@ -5,6 +5,7 @@
  * register on the window's command registry while the editor is mounted.
  */
 import type { CommandDefinition, Disposable } from '@kiln/commands';
+import type { ChartKind } from '@kiln/protocol';
 import type { GridDialog, GridEditorModel } from './model.ts';
 
 interface DialogSpec {
@@ -27,6 +28,17 @@ export const GRID_DIALOG_COMMANDS: readonly DialogSpec[] = [
   { id: 'ui.grid.rename_sheet', title: 'Rename Sheet', dialog: 'renameSheet' },
   { id: 'ui.grid.tab_color', title: 'Tab Color…', dialog: 'tabColor' },
   { id: 'grid.formulas.insert_function', title: 'Insert Function', dialog: 'insertFunction' },
+  { id: 'grid.insert.recommended_charts', title: 'Recommended Charts', dialog: 'recommendedCharts' },
+];
+
+/** Insert ▸ Charts buttons: a chart of the selection in the first type of each family. */
+export const GRID_CHART_BUTTONS: readonly { id: string; title: string; kind: ChartKind }[] = [
+  { id: 'grid.insert.chart_column', title: 'Column or Bar Chart', kind: 'ColumnClustered' },
+  { id: 'grid.insert.chart_line', title: 'Line or Area Chart', kind: 'Line' },
+  { id: 'grid.insert.chart_pie', title: 'Pie or Doughnut Chart', kind: 'Pie' },
+  { id: 'grid.insert.chart_scatter', title: 'Scatter or Bubble Chart', kind: 'ScatterMarkers' },
+  { id: 'grid.insert.chart_hierarchy', title: 'Hierarchy Chart', kind: 'Treemap' },
+  { id: 'grid.insert.chart_combo', title: 'Combo Chart', kind: 'ComboColumnLine' },
 ];
 
 const str = (args: unknown, key: string): string | undefined => {
@@ -45,6 +57,18 @@ export function registerGridUi(model: GridEditorModel): Disposable {
       model.openDialog(d.dialog, str(args, 'tab') ?? str(args, 'category') ?? d.tab);
     },
   }));
+  for (const b of GRID_CHART_BUTTONS) {
+    defs.push({
+      id: b.id,
+      title: b.title,
+      run: () => model.chart({ ChartInsert: { kind: b.kind } }),
+    });
+  }
+  defs.push({
+    id: 'ui.grid.format_chart',
+    title: 'Format Chart Area',
+    run: () => model.set({ chartPane: true }),
+  });
   const formulaBar = (id: string): CommandDefinition<unknown> => ({
     id,
     title: 'Formula Bar',

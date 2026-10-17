@@ -2726,6 +2726,7 @@ dependencies = [
  "kiln-formula",
  "kiln-io-csv",
  "kiln-ooxml",
+ "kiln-protocol",
  "kiln-sheet",
  "kiln-testing",
  "memchr",
@@ -2802,6 +2803,7 @@ version = "0.1.0"
 dependencies = [
  "flume",
  "image",
+ "kiln-charts",
  "kiln-common",
  "kiln-doc",
  "kiln-doc-layout",
@@ -2846,9 +2848,11 @@ dependencies = [
 name = "kiln-sheet-layout"
 version = "0.1.0"
 dependencies = [
+ "kiln-charts",
  "kiln-common",
  "kiln-formula",
  "kiln-io-xlsx",
+ "kiln-ooxml",
  "kiln-protocol",
  "kiln-raster",
  "kiln-scene",

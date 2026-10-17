@@ -201,6 +201,7 @@ impl GridDoc {
             whole_rows: !ranges.is_empty() && ranges.iter().all(Range::is_whole_rows),
             whole_columns: !ranges.is_empty() && ranges.iter().all(Range::is_whole_cols),
             stats: self.stats_text(),
+            drawing: self.drawing_state(),
             names: {
                 let mut n: Vec<String> = self
                     .workbook
@@ -342,6 +343,9 @@ impl GridDoc {
                 } else {
                     None
                 };
+                if let Some(hit) = self.hit_chart(*x, *y) {
+                    return Ok(GridQueryResult::Hit(hit));
+                }
                 let hit = match geo.hit_test(&self.last_view, *x, *y, hw, fill_sel.as_ref()) {
                     None => GridHit::None,
                     Some(HitTarget::Cell { row, col }) => GridHit::Cell { row, col },
@@ -398,6 +402,7 @@ impl GridDoc {
                 let z = (w / rect.w.max(1.0)).min(h / rect.h.max(1.0));
                 GridQueryResult::Zoom(z.clamp(0.1, 4.0))
             }
+            GridQuery::RecommendedCharts => GridQueryResult::Charts(self.recommended_charts()),
             GridQuery::Functions { prefix, category } => {
                 let p = prefix.to_uppercase();
                 let mut list: Vec<GridFunctionInfo> = kiln_formula::functions::docs()

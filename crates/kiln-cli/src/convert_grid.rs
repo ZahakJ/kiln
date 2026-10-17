@@ -112,7 +112,7 @@ pub fn run(input: &Path, output: &Path, in_ext: &str, out_ext: &str) -> Result<S
                 &WriteOptions {
                     kind: Some(kind),
                     now: Some(crate::convert::now_w3cdtf()),
-                    author: None,
+                    ..WriteOptions::default()
                 },
             )
             .map_err(|e| failed(output, e))?;

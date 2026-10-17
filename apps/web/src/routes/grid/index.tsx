@@ -10,6 +10,7 @@ import {
   type GridEditorModel,
   GridStatusBar,
   type GridSurfaceController,
+  useChartTabs,
   useGridEditorModel,
 } from '@kiln/editor-grid';
 import type { DocSummary, KilnClient } from '@kiln/protocol';
@@ -47,9 +48,15 @@ export function useGridParts(
   const client = deps?.client ?? null;
   const summary = deps?.summary ?? null;
   const registry = deps?.registry ?? null;
-  const ribbon = deps?.ribbon;
+  const baseRibbon = deps?.ribbon;
   const model = useGridEditorModel(
     client && summary && registry ? { client, doc: summary.doc, registry } : null,
+  );
+  // Chart Design and Format join the ribbon while a chart is selected (WP-73's chart tabs).
+  const chartTabs = useChartTabs(model);
+  const ribbon = useMemo(
+    () => (baseRibbon ? { ...baseRibbon, tabs: [...baseRibbon.tabs, ...chartTabs] } : undefined),
+    [baseRibbon, chartTabs],
   );
   const theme = useTheme();
   const dark = theme.isDark;

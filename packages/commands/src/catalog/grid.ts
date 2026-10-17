@@ -292,6 +292,13 @@ export const gridCommands = [
     c('ui.grid.delete_cells', 'Delete Cells…', 'DeleteCells', { palette: false }),
     c('ui.grid.delete_sheet', 'Delete Sheet', 'X', { palette: false }),
     c('ui.grid.formula_bar', 'Formula Bar', 'SquareFunction', { palette: false }),
+    // Charts on the sheet (WP-73 carry-over): selection, move/resize and delete come from the
+    // surface; the theme is the chrome's.
+    c('grid.drawing.select', 'Select Chart', undefined, { palette: false }),
+    c('grid.drawing.place', 'Move or Resize Chart', undefined, { palette: false }),
+    c('grid.drawing.delete', 'Delete Chart', 'X', { palette: false }),
+    c('grid.view.theme', 'Theme', undefined, { palette: false }),
+    c('ui.grid.format_chart', 'Format Chart Area', 'ChartBarIncreasing', { palette: false }),
   ]),
   ...section('View', G, [
     c('grid.view.formula_bar', 'Formula Bar', 'SquareFunction'),
@@ -1305,6 +1312,18 @@ const GRID_BUILDER_TABLE: Readonly<Record<string, GridBuilder>> = {
   'grid.clipboard.paste_formulas': (a, id) => ({ PasteFormulas: { data: clipOf(id, a) } }),
   'grid.clipboard.paste_formatting': (a, id) => ({ PasteFormatting: { data: clipOf(id, a) } }),
   'grid.clipboard.paste_transpose': (a, id) => ({ PasteTranspose: { data: clipOf(id, a) } }),
+  'grid.drawing.select': (a, id) => ({ SelectDrawing: { index: maybe(id, a, 'index', isUint, 'a chart number') } }),
+  'grid.drawing.place': (a, id) => ({
+    PlaceDrawing: {
+      index: want(id, a, 'index', isUint, 'a chart number'),
+      x: want(id, a, 'x', isNum, 'pixels'),
+      y: want(id, a, 'y', isNum, 'pixels'),
+      width: want(id, a, 'width', isNum, 'pixels'),
+      height: want(id, a, 'height', isNum, 'pixels'),
+    },
+  }),
+  'grid.drawing.delete': simple('DeleteDrawing'),
+  'grid.view.theme': (a, id) => ({ Theme: { dark: flag(id, a, 'dark') } }),
 };
 
 /** The builders of every Grid core command (spread into `CORE_BUILDERS`). */

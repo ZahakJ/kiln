@@ -21,6 +21,8 @@
 //!   are repainted and sent.
 //! - [`overlay`]: the selection, fill handle, copy marquee, fill preview, spill range, the
 //!   colours of a formula's references and the in-cell editor.
+//! - [`drawings`]: charts on the sheet — anchors to sheet pixels and back, one tile each, drawn
+//!   by `kiln-charts` with the sheet's glyph atlas.
 //! - [`a11y`]: the accessibility tree of the visible grid.
 //! - [`render`]: an area of a sheet as one self-contained Scene delta (PNGs, golden tests).
 #![forbid(unsafe_code)]
@@ -31,6 +33,7 @@ pub mod axis;
 pub mod border;
 pub mod celltext;
 pub mod display;
+pub mod drawings;
 pub mod geom;
 pub mod glyphs;
 pub mod headers;
@@ -42,6 +45,7 @@ pub mod render;
 pub mod scene;
 
 pub use axis::AxisIndex;
+pub use drawings::{ChartLook, ChartTile, anchor_for, anchor_rect, new_chart_anchor};
 pub use geom::{HitTarget, Pane, SheetGeometry, Snap, View};
 pub use headers::{HeaderMarks, col_letters};
 pub use paint::ViewOptions;

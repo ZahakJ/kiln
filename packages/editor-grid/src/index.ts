@@ -18,11 +18,12 @@ import { GridEditorModel } from './model.ts';
 export const PACKAGE_NAME = '@kiln/editor-grid' as const;
 
 export { Autocomplete, hintParts } from './Autocomplete.tsx';
-export { GRID_DIALOG_COMMANDS, registerGridUi } from './commands.ts';
+export { GRID_CHART_BUTTONS, GRID_DIALOG_COMMANDS, registerGridUi } from './commands.ts';
 export { cursorFor, type GridElements, GridSurfaceController, panes } from './controller.ts';
 export { CATEGORIES, dashOf, FormatCellsDialog } from './dialogs/FormatCellsDialog.tsx';
 export { FindBar } from './FindBar.tsx';
 export { colourRuns, FormulaBar } from './FormulaBar.tsx';
+export { FormatChartArea, RecommendedChartsForSelection, useChartHost, useChartTabs } from './GridCharts.tsx';
 export { GridDialogs } from './GridDialogs.tsx';
 export { GridEditor, type GridEditorProps } from './GridEditor.tsx';
 export { GridMenus, gridMenuEntries } from './GridMenus.tsx';

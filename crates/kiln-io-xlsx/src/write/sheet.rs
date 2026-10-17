@@ -338,9 +338,12 @@ pub(crate) fn patch_worksheet(
             Some(page_margins_el(&meta.print.margins)),
         );
     }
-    if meta.drawings.len() > src.map_or(0, |s| s.meta.drawings.len())
-        && src.is_none_or(|s| s.drawing.is_none())
-    {
+    // Charts added in Kiln are written with their parts (`WriteOptions::charts`); other objects
+    // added here (pictures, shapes) are not yet.
+    let read = src.map_or(&[][..], |s| s.meta.drawings.as_slice());
+    if meta.drawings.iter().any(|a| {
+        a.kind != kiln_sheet::meta::DrawingKind::Chart && !read.iter().any(|r| r.id == a.id)
+    }) {
         issues.push(format!(
             "{}: drawing objects added in Kiln are not written yet",
             sheet.name()

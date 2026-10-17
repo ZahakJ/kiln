@@ -65,6 +65,12 @@ impl TextMeasurer {
         self.engine.fonts()
     }
 
+    /// The text engine, for a host that lays out its own text with the same fonts (so one glyph
+    /// atlas serves both: Grid's cells and the charts on the sheet).
+    pub fn engine_mut(&mut self) -> &mut TextEngine {
+        &mut self.engine
+    }
+
     /// Lays `text` out in `style`, wrapping at `max_width` px (lines break at spaces like Office's
     /// chart titles and legend entries) and aligning lines as `align`.
     pub fn block(

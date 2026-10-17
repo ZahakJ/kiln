@@ -22,8 +22,9 @@ use kiln_ooxml::props::{
     write_document_properties,
 };
 use kiln_ooxml::xml::{WriteOptions as XmlWriteOptions, XmlElement, XmlNode, write_element};
-use kiln_sheet::meta::{CalcMode, Note, SheetVisibility};
+use kiln_sheet::meta::{CalcMode, DrawingAnchor, DrawingKind, Note, SheetVisibility};
 use kiln_sheet::{SheetId, Workbook};
+use rustc_hash::FxHashMap;
 
 use crate::XlsxError;
 use crate::parts::{
@@ -49,6 +50,11 @@ pub struct WriteOptions {
     pub now: Option<String>,
     /// `cp:lastModifiedBy` (with `now`).
     pub author: Option<String>,
+    /// Charts to write, by part name (`/xl/charts/chart3.xml`): the charts edited since reading
+    /// and the charts added on sheets. A drawing anchor of kind chart whose `reference` names one
+    /// of them is written with a frame for it, in the sheet's drawing part (created when the
+    /// sheet has none).
+    pub charts: Vec<(String, kiln_charts::model::ChartSpace)>,
 }
 
 /// The result of a write.
@@ -97,6 +103,9 @@ struct Out {
     pkg: OpcPackage,
     regenerated: BTreeSet<String>,
     issues: Vec<String>,
+    /// The charts written ([`WriteOptions::charts`]), by part key: their vocabulary and whether
+    /// it differs from the part read (a chart that became a chartex chart, or back).
+    charts: FxHashMap<String, (kiln_charts::model::PartFormat, bool)>,
 }
 
 /// A part's XML as bytes. A tree that cannot be serialised (say, a reused subtree with a prefix
@@ -319,7 +328,28 @@ pub fn write_xlsx(
         pkg,
         regenerated: BTreeSet::new(),
         issues: Vec::new(),
+        charts: FxHashMap::default(),
     };
+    // Charts edited or added: their parts first, so the drawings can point at them.
+    for (name, chart) in &options.charts {
+        let was = out
+            .pkg
+            .has(name)
+            .then(|| out.pkg.content_type(name).map(str::to_owned))
+            .flatten();
+        let changed = was
+            .as_deref()
+            .is_some_and(|ct| ct != chart.format.content_type());
+        if was.is_none() {
+            out.pkg
+                .add_part(name, chart.format.content_type(), Vec::new())?;
+        }
+        kiln_charts::package::write_part(&mut out.pkg, name, chart)
+            .map_err(|e| XlsxError::NotWorkbook(format!("{name}: {e}")))?;
+        out.regenerated.insert(name.clone());
+        out.charts
+            .insert(part_key(name), (chart.format, changed || was.is_none()));
+    }
     let wb_part = source.map_or_else(
         || "/xl/workbook.xml".to_owned(),
         |s| s.workbook_part.clone(),
@@ -780,33 +810,188 @@ fn write_sheet_relations(
         );
     }
 
-    // Drawing anchors.
-    if let Some(d) = src.and_then(|x| x.drawing.as_ref())
-        && d.anchors != meta.drawings
-    {
-        if meta.drawings.is_empty() {
-            let ids: Vec<String> = out
-                .pkg
-                .relationships(part)?
-                .by_type(rel_type::DRAWING)
-                .map(|r| r.id.clone())
-                .collect();
-            for id in ids {
-                out.remove_rel(part, &id)?;
-            }
-            replace_children(root, "drawing", Vec::new(), WORKSHEET_ORDER);
-        } else {
-            let mut issues = Vec::new();
-            let patched = patch_drawing(&d.root, &d.anchors, &meta.drawings, &mut issues);
-            out.issues.extend(issues);
-            out.put_xml(
-                &d.part,
-                "application/vnd.openxmlformats-officedocument.drawing+xml",
-                &patched,
-            )?;
-        }
+    // Drawing anchors, and frames for the charts Kiln added (or whose vocabulary changed).
+    let read_anchors: &[DrawingAnchor] = src
+        .and_then(|x| x.drawing.as_ref())
+        .map_or(&[], |d| d.anchors.as_slice());
+    let framed: Vec<(&DrawingAnchor, kiln_charts::model::PartFormat)> = meta
+        .drawings
+        .iter()
+        .filter(|a| a.kind == DrawingKind::Chart)
+        .filter_map(|a| {
+            let (format, retyped) = *out.charts.get(&part_key(&a.reference))?;
+            let new = !read_anchors.iter().any(|r| r.id == a.id);
+            (new || retyped).then_some((a, format))
+        })
+        .collect();
+    let drawing = src.and_then(|x| x.drawing.as_ref());
+    if drawing.is_some_and(|d| d.anchors == meta.drawings) && framed.is_empty() {
+        return Ok(());
     }
+    if drawing.is_none() && framed.is_empty() {
+        // Nothing to write (objects other than charts added in Kiln are reported by the sheet).
+        return Ok(());
+    }
+    if meta.drawings.is_empty() {
+        let ids: Vec<String> = out
+            .pkg
+            .relationships(part)?
+            .by_type(rel_type::DRAWING)
+            .map(|r| r.id.clone())
+            .collect();
+        for id in ids {
+            out.remove_rel(part, &id)?;
+        }
+        replace_children(root, "drawing", Vec::new(), WORKSHEET_ORDER);
+        return Ok(());
+    }
+    let (dpart, droot) = match drawing {
+        Some(d) => (d.part.clone(), d.root.clone()),
+        None => {
+            let n = out.next_name("/xl/drawings/drawing{n}.xml", taken)?;
+            taken.insert(part_key(&n));
+            let root = XmlElement::new("xdr:wsDr")
+                .with_attr(
+                    "xmlns:xdr",
+                    "http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing",
+                )
+                .with_attr(
+                    "xmlns:a",
+                    "http://schemas.openxmlformats.org/drawingml/2006/main",
+                );
+            (n, root)
+        }
+    };
+    if drawing.is_none() {
+        // The drawing part is written below; the sheet points at it.
+        out.put_xml(&dpart, CT_DRAWING, &droot)?;
+        let id = out.rel(part, rel_type::DRAWING, &dpart)?;
+        replace_children(
+            root,
+            "drawing",
+            vec![XmlElement::new("drawing").with_attr("r:id", id)],
+            WORKSHEET_ORDER,
+        );
+    }
+    let mut objects: FxHashMap<String, Vec<XmlElement>> = FxHashMap::default();
+    for (next_id, (a, format)) in (max_object_id(&droot) + 1..).zip(framed) {
+        let rid = out.rel(&dpart, format.relationship_type(), &a.reference)?;
+        let name = a.name.clone().unwrap_or_else(|| format!("Chart {next_id}"));
+        objects.insert(
+            a.id.clone(),
+            vec![
+                chart_frame(format, next_id, &name, a.alt_text.as_deref(), &rid),
+                XmlElement::new("xdr:clientData"),
+            ],
+        );
+    }
+    let mut issues = Vec::new();
+    let patched = patch_drawing(&droot, read_anchors, &meta.drawings, &objects, &mut issues);
+    out.issues.extend(issues);
+    out.put_xml(&dpart, CT_DRAWING, &patched)?;
     Ok(())
+}
+
+const CT_DRAWING: &str = "application/vnd.openxmlformats-officedocument.drawing+xml";
+
+/// The largest `cNvPr` id of a drawing part (new objects take the next ones).
+fn max_object_id(root: &XmlElement) -> u32 {
+    root.descendants("xdr:cNvPr")
+        .iter()
+        .filter_map(|e| e.attr("id").and_then(|v| v.parse::<u32>().ok()))
+        .max()
+        .unwrap_or(1)
+}
+
+/// The graphic frame of a chart (`c:chart`), or for a chartex chart the frame inside
+/// `mc:AlternateContent` that Excel writes (`Requires="cx1"`).
+fn chart_frame(
+    format: kiln_charts::model::PartFormat,
+    id: u32,
+    name: &str,
+    descr: Option<&str>,
+    rid: &str,
+) -> XmlElement {
+    use kiln_charts::model::PartFormat;
+    let mut cnv = XmlElement::new("xdr:cNvPr")
+        .with_attr("id", id.to_string())
+        .with_attr("name", name);
+    if let Some(d) = descr {
+        cnv.attrs.set("descr", d);
+    }
+    let (uri, chart) = match format {
+        PartFormat::Classic => (
+            "http://schemas.openxmlformats.org/drawingml/2006/chart",
+            XmlElement::new("c:chart")
+                .with_attr(
+                    "xmlns:c",
+                    "http://schemas.openxmlformats.org/drawingml/2006/chart",
+                )
+                .with_attr(
+                    "xmlns:r",
+                    "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+                )
+                .with_attr("r:id", rid),
+        ),
+        PartFormat::ChartEx => (
+            "http://schemas.microsoft.com/office/drawing/2014/chartex",
+            XmlElement::new("cx:chart")
+                .with_attr(
+                    "xmlns:cx",
+                    "http://schemas.microsoft.com/office/drawing/2014/chartex",
+                )
+                .with_attr(
+                    "xmlns:r",
+                    "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+                )
+                .with_attr("r:id", rid),
+        ),
+    };
+    let frame = XmlElement::new("xdr:graphicFrame")
+        .with_attr("macro", "")
+        .with_child(
+            XmlElement::new("xdr:nvGraphicFramePr")
+                .with_child(cnv)
+                .with_child(XmlElement::new("xdr:cNvGraphicFramePr")),
+        )
+        .with_child(
+            XmlElement::new("xdr:xfrm")
+                .with_child(
+                    XmlElement::new("a:off")
+                        .with_attr("x", "0")
+                        .with_attr("y", "0"),
+                )
+                .with_child(
+                    XmlElement::new("a:ext")
+                        .with_attr("cx", "0")
+                        .with_attr("cy", "0"),
+                ),
+        )
+        .with_child(
+            XmlElement::new("a:graphic").with_child(
+                XmlElement::new("a:graphicData")
+                    .with_attr("uri", uri)
+                    .with_child(chart),
+            ),
+        );
+    match format {
+        PartFormat::Classic => frame,
+        PartFormat::ChartEx => XmlElement::new("mc:AlternateContent")
+            .with_attr(
+                "xmlns:mc",
+                "http://schemas.openxmlformats.org/markup-compatibility/2006",
+            )
+            .with_child(
+                XmlElement::new("mc:Choice")
+                    .with_attr(
+                        "xmlns:cx1",
+                        "http://schemas.microsoft.com/office/drawing/2015/9/8/chartex",
+                    )
+                    .with_attr("Requires", "cx1")
+                    .with_child(frame),
+            )
+            .with_child(XmlElement::new("mc:Fallback")),
+    }
 }
 
 fn vml_has_other_shapes(pkg: &OpcPackage, vml: &str) -> bool {

@@ -30,7 +30,7 @@ workbook open, light and dark (`grid.spec.ts`, the same test), and on the Grid a
 | Header band (dark jade fill, white caps) and status pills of the mockup's sample | Matches when the file has them | Cell fills and fonts are the workbook's; dark mode keeps explicit fills and picks text colour for its fill | — | Text on light fills in dark mode is no longer adapted to the page (`painter.ts`, alpha 0xFE marks text chosen for its own fill) |
 | Sheet tabs: + button, active tab raised with jade label and colour dot | Matches | Tabs with tab colours as dots, rename by double-click, drag to reorder, context menu | — | — |
 | Status bar: mode, save state, Average/Count/Sum, view buttons, zoom slider and percentage | Matches | Mode (Ready/Enter/Edit/Point), statistics formatted like the active cell, Normal/Page Layout/Page Break views, zoom with presets and Zoom to Selection | Save state lives in the title chip | — |
-| Chart card floating over the cells ("Spend by quarter") | WP-73 carry-over | Charts in workbooks are read and kept; drawing them on the sheet and the chart ribbon are the carry-over of this package | — | — |
+| Chart card floating over the cells ("Spend by quarter") | Matches in substance | The chart is drawn in the sheet's tiles (WP-73's renderer, Kiln's six accents, the theme's fonts), selected with Office's frame and eight handles in jade | Kiln draws the chart as Excel does, a rectangle on the sheet; the mockup's rounded, shadowed card is an illustration style, not the file's chart area | The cell cursor and header highlight hide while a chart is selected (Excel's behaviour) |
 | Formula autocomplete (not in the mockup) | Brand-consistent | The kit's popover: suggestions with an fx/N badge, the highlighted function's syntax, summary and "Tab to insert"; the argument hint with the current argument in bold | — | It now opens above the cell when there is no room below (it was clipped by the sheet at the bottom of the window) |
 | Format Cells (not in the mockup) | Brand-consistent | The kit's dialog: Fraunces title, the six tabs, category list, sample, type list, live preview | — | — |
 | Phone (390 px) | Brand-consistent | The phone ribbon of WP-58 (Paste, Cut, Copy, Format Painter, more), name box and formula bar on one row, the sheet scrolls under fixed headers, tabs and zoom | — | — |
@@ -41,3 +41,24 @@ one tile cache (the frozen tiles are kept while the cells scroll; `delta_regions
 
 **Remaining differences, not regressions.** Default row height follows Excel (above). The mockup's avatar,
 "Editing" mode chip and Help tab belong to collaboration and later packages, as for Write.
+
+## Charts (WP-73 carry-over)
+
+Reviewed with `e2e/specs/charts.spec.ts`: `e2e/screenshots/charts/inserted-light.png` (Insert ▸ Chart from a
+four-row range), `format-pane-light.png` and `format-pane-dark.png` (Chart Design / Format tabs under "Chart Tools",
+the Format Chart Area pane beside the sheet), and one PNG per chart type in each theme
+(`<Kind>-light.png`, `<Kind>-dark.png`: 28 types × 2). axe reports 0 serious or critical violations with the Chart
+Design tab open and with the Format pane, light and dark.
+
+| Element | Verdict | Notes |
+|---|---|---|
+| Chart Tools contextual tabs (Chart Design, Format) | Matches Office, brand-consistent | Jade "Chart Tools" set label over the two tabs; they appear only while a chart is selected and go away on Delete |
+| Chart on the sheet, light | Matches | Office's layout (title, gridlines, axis labels, legend at the bottom), Kiln's accents jade / ember / cobalt |
+| Chart on the sheet, dark | Matches | Chart area follows the dark sheet, accents lifted for contrast, text light |
+| Every chart type | Renders | Column, bar, line, area (each with stacked and 100 %), pie, exploded pie, doughnut, scatter (three), bubble, radar (three), combo (two), treemap and sunburst draw in both themes |
+| Format Chart Area pane | Brand-consistent | The kit's raised card (Fraunces title, chart name, close button) at the right of the sheet, 320 px; on a phone it covers the lower half of the sheet |
+| Selection and dragging | Matches Office | Frame and eight handles; a dashed jade outline follows a move or resize until the pointer is released |
+
+Remaining, handed to WP-73 (its chrome and renderer): the pane's "Minimum"/"Maximum" labels are cut; the
+near-black series swatch is invisible on the dark pane; treemap and sunburst labels are white on light tiles in
+dark mode; a bubble chart made from four numeric columns shows one series.

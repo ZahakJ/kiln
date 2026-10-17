@@ -28,6 +28,8 @@ kiln-io-csv.workspace = true
 # The Grid surface and editor (WP-71): sheet layout and painting, formula tokens and docs.
 kiln-sheet-layout.workspace = true
 kiln-formula = { workspace = true, default-features = false }
+# Charts on Grid sheets (WP-73's model, editor and renderer) and their DrawingML theme.
+kiln-charts.workspace = true
 # Layout of the scratch document. The web core gets no default features (no system fonts, no
 # hyphenation dictionaries) and embeds Carlito itself (apps/scratch/fonts.rs).
 kiln-text = { path = "../kiln-text", default-features = false }

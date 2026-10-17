@@ -141,7 +141,51 @@ type Drag =
   | { kind: 'rows' }
   | { kind: 'cols' }
   | { kind: 'fill' }
-  | { kind: 'resize'; axis: 'row' | 'col'; index: number; start: number; size: number; at: number };
+  | { kind: 'resize'; axis: 'row' | 'col'; index: number; start: number; size: number; at: number }
+  /** A chart moved (`handle` null) or resized by one of its eight handles; sheet pixels. */
+  | {
+      kind: 'drawing';
+      index: number;
+      handle: number | null;
+      from: { x: number; y: number };
+      rect: SheetRect;
+      now: SheetRect;
+    };
+
+/** A rectangle in sheet pixels at 100 %. */
+interface SheetRect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+/**
+ * The rectangle of a drag of a chart by `dx`, `dy` sheet pixels: the whole chart, or the edges a
+ * handle holds (0–7 clockwise from the top-left corner), never smaller than 24 px.
+ */
+export function dragRect(r: SheetRect, handle: number | null, dx: number, dy: number): SheetRect {
+  if (handle === null) return { ...r, x: Math.max(0, r.x + dx), y: Math.max(0, r.y + dy) };
+  const MIN = 24;
+  let { x, y, w, h } = r;
+  const left = handle === 0 || handle === 6 || handle === 7;
+  const right = handle === 2 || handle === 3 || handle === 4;
+  const top = handle === 0 || handle === 1 || handle === 2;
+  const bottom = handle === 4 || handle === 5 || handle === 6;
+  if (left) {
+    const nx = Math.min(x + dx, x + w - MIN);
+    w += x - nx;
+    x = nx;
+  }
+  if (right) w = Math.max(MIN, w + dx);
+  if (top) {
+    const ny = Math.min(y + dy, y + h - MIN);
+    h += y - ny;
+    y = ny;
+  }
+  if (bottom) h = Math.max(MIN, h + dy);
+  return { x: Math.max(0, x), y: Math.max(0, y), w, h };
+}
 
 /** Drives the grid surface of one document. */
 /** Milliseconds of a frame spent rendering prefetched tiles (after the composite's own work). */
@@ -186,6 +230,10 @@ export class GridSurfaceController implements GridSurfaceHandle {
   private echoes: string[] = [];
   /** Commits and cancels sent and not answered yet: the core's editor state may be stale. */
   private ending = 0;
+  /** The model's state request count when the last entry ended (older answers are stale). */
+  private endedAsked = -1;
+  /** The model's state request count when text was last sent from the proxy. */
+  private typedAsked = -1;
   /**
    * The first frame resets the core's record of what the painter holds: another surface of the
    * window (the frame's placeholder before the editor mounted) may have taken earlier frames.
@@ -212,7 +260,13 @@ export class GridSurfaceController implements GridSurfaceHandle {
 
   // ── lifecycle ───────────────────────────────────────────────────────────────────────────
 
+  /** Tells the core the app's theme (charts are coloured for it). */
+  private sendTheme(): void {
+    void this.model.core('grid.view.theme', { dark: this.options.theme === 'dark' });
+  }
+
   start(): void {
+    this.sendTheme();
     const { scroller, proxy } = this.els;
     const on = <K extends keyof HTMLElementEventMap>(
       el: HTMLElement | Document,
@@ -256,7 +310,7 @@ export class GridSurfaceController implements GridSurfaceHandle {
       mq.addEventListener('change', fn, { once: true });
     };
     dprQuery();
-    this.cleanups.push(this.model.onState((s) => this.onState(s)));
+    this.cleanups.push(this.model.onState((s, asked) => this.onState(s, asked)));
     this.measure();
     if (this.options.blink) {
       this.blinkTimer = setInterval(() => {
@@ -278,7 +332,9 @@ export class GridSurfaceController implements GridSurfaceHandle {
   }
 
   setOptions(options: Partial<GridSurfaceOptions>): void {
+    const dark = this.options.theme === 'dark';
     this.options = { ...this.options, ...options };
+    if ((this.options.theme === 'dark') !== dark) this.sendTheme();
     const palette = paletteFor(this.options.theme, 'grid');
     if (palette.name !== this.painter.palette.name) {
       this.painter.setPalette(palette);
@@ -313,7 +369,12 @@ export class GridSurfaceController implements GridSurfaceHandle {
 
   // ── state ───────────────────────────────────────────────────────────────────────────────
 
-  private onState(s: GridState): void {
+  private onState(s: GridState, asked = Number.POSITIVE_INFINITY): void {
+    // A state asked for before the last entry ended describes that entry: its editor is stale
+    // (the keys typed since start a new one).
+    if (asked <= this.endedAsked && s.editor) s = { ...s, editor: null, mode: 'Ready' };
+    // A state asked before the text typed last was sent is older than the entry: keep typing.
+    if (asked <= this.typedAsked && this.editing && !s.editor) return;
     const prev = this.state;
     this.state = s;
     const zoom = this.model.state.status?.zoom ?? 1;
@@ -612,6 +673,26 @@ export class GridSurfaceController implements GridSurfaceHandle {
       const y = Math.round((l.header_h + l.frozen_h) * this.zoom * dpr);
       ctx.fillRect(0, y - line, this.els.canvas.width, line);
     }
+    // A chart being moved or resized: its outline where it will go.
+    if (this.drag?.kind === 'drawing') {
+      const pane = all.filter((x) => x.kind === 'cells').at(-1);
+      if (pane) {
+        const r = this.drag.now;
+        const sx = (pane.rect.x + (r.x - pane.x) * this.zoom) * dpr;
+        const sy = (pane.rect.y + (r.y - pane.y) * this.zoom) * dpr;
+        ctx.save();
+        ctx.strokeStyle = cssColor(resolvePaint(palette, { Role: 'AppFill' }));
+        ctx.lineWidth = Math.max(1, Math.round(1.5 * dpr));
+        ctx.setLineDash([4 * dpr, 3 * dpr]);
+        ctx.strokeRect(
+          Math.round(sx) + 0.5,
+          Math.round(sy) + 0.5,
+          Math.round(r.w * this.zoom * dpr),
+          Math.round(r.h * this.zoom * dpr),
+        );
+        ctx.restore();
+      }
+    }
     // A resize in progress: the guide where the border will go.
     if (this.drag?.kind === 'resize') {
       ctx.fillStyle = cssColor(resolvePaint(palette, { Role: 'AppFill' }));
@@ -713,6 +794,17 @@ export class GridSurfaceController implements GridSurfaceHandle {
       this.drag = { kind: 'fill' };
       return;
     }
+    if ('Drawing' in hit || 'DrawingHandle' in hit) {
+      const index = 'Drawing' in hit ? hit.Drawing.index : hit.DrawingHandle.index;
+      const handle = 'DrawingHandle' in hit ? hit.DrawingHandle.handle : null;
+      if (editing) await this.model.core('grid.editing.commit', { advance: null });
+      await this.model.core('grid.drawing.select', { index });
+      const g = (await this.model.fetch())?.drawing;
+      if (!g || g.index !== index) return;
+      const rect = { x: g.x, y: g.y, w: g.width, h: g.height };
+      this.drag = { kind: 'drawing', index, handle, from: p, rect, now: rect };
+      return;
+    }
     if ('Cell' in hit) {
       const { row, col } = hit.Cell;
       if (editing) {
@@ -758,6 +850,12 @@ export class GridSurfaceController implements GridSurfaceHandle {
     }
     if (this.drag.kind === 'resize') {
       this.drag.at = this.drag.axis === 'col' ? p.x : p.y;
+      this.paint();
+      return;
+    }
+    if (this.drag.kind === 'drawing') {
+      const d = this.drag;
+      d.now = dragRect(d.rect, d.handle, (p.x - d.from.x) / this.zoom, (p.y - d.from.y) / this.zoom);
       this.paint();
       return;
     }
@@ -822,7 +920,7 @@ export class GridSurfaceController implements GridSurfaceHandle {
     const step = () => {
       this.autoscroll = 0;
       const p = this.dragPoint;
-      if (!this.drag || !p || this.drag.kind === 'resize') return;
+      if (!this.drag || !p || this.drag.kind === 'resize' || this.drag.kind === 'drawing') return;
       const l = this.layout;
       const top = (l.header_h + l.frozen_h) * this.zoom;
       const left = (l.header_w + l.frozen_w) * this.zoom;
@@ -847,6 +945,24 @@ export class GridSurfaceController implements GridSurfaceHandle {
     this.dragPoint = null;
     this.els.scroller.releasePointerCapture?.(e.pointerId);
     if (!d) return;
+    if (d.kind === 'drawing') {
+      const r = d.now;
+      const moved =
+        Math.abs(r.x - d.rect.x) +
+        Math.abs(r.y - d.rect.y) +
+        Math.abs(r.w - d.rect.w) +
+        Math.abs(r.h - d.rect.h);
+      if (moved >= 1)
+        await this.model.core('grid.drawing.place', {
+          index: d.index,
+          x: r.x,
+          y: r.y,
+          width: r.w,
+          height: r.h,
+        });
+      this.paint();
+      return;
+    }
     if (d.kind === 'resize') {
       const px = Math.max(0, (d.at - d.start) / this.zoom);
       const id = d.axis === 'col' ? 'grid.cells.resize_columns' : 'grid.cells.resize_rows';
@@ -1068,6 +1184,7 @@ export class GridSurfaceController implements GridSurfaceHandle {
       this.sentText = '';
       this.echoes = [];
       this.els.proxy.value = '';
+      this.endedAsked = this.model.asked;
       this.ending += 1;
       void this.model.core(action.id, args).then((ok) => {
         this.ending -= 1;
@@ -1112,10 +1229,12 @@ export class GridSurfaceController implements GridSurfaceHandle {
       this.sentText = text;
       this.lastSel = this.selKey();
       this.echoes.push(text);
+      this.typedAsked = this.model.asked;
       void this.model.core('grid.editing.begin', { text });
       return;
     }
     this.sentText = text;
+    this.typedAsked = this.model.asked;
     // The browser's selectionchange for this keystroke comes later: it must not send this text
     // again after a key that changed it in the core (F4, a suggestion).
     this.lastSel = this.selKey();
@@ -1183,6 +1302,9 @@ export function cursorFor(hit: GridHit): string {
   if ('RowBorder' in hit) return 'row-resize';
   if ('ColumnHeader' in hit) return 's-resize';
   if ('RowHeader' in hit) return 'e-resize';
+  if ('Drawing' in hit) return 'move';
+  if ('DrawingHandle' in hit)
+    return ['nwse-resize', 'ns-resize', 'nesw-resize', 'ew-resize'][hit.DrawingHandle.handle % 4] ?? 'move';
   return 'cell';
 }
 

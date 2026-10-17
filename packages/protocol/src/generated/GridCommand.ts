@@ -405,4 +405,32 @@ data: ClipboardData | null, } } | { "PasteTranspose": {
 /**
  * The clipboard.
  */
-data: ClipboardData | null, } };
+data: ClipboardData | null, } } | { "SelectDrawing": { 
+/**
+ * The drawing number on the sheet.
+ */
+index: number | null, } } | { "PlaceDrawing": { 
+/**
+ * The drawing number on the sheet.
+ */
+index: number, 
+/**
+ * Left.
+ */
+x: number, 
+/**
+ * Top.
+ */
+y: number, 
+/**
+ * Width.
+ */
+width: number, 
+/**
+ * Height.
+ */
+height: number, } } | "DeleteDrawing" | { "Theme": { 
+/**
+ * The dark theme.
+ */
+dark: boolean, } };

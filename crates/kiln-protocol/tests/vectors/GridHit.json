@@ -20,6 +20,17 @@
       }
     },
     "Corner",
+    {
+      "Drawing": {
+        "index": 1
+      }
+    },
+    {
+      "DrawingHandle": {
+        "index": 0,
+        "handle": 4
+      }
+    },
     "None",
     {
       "Cell": {

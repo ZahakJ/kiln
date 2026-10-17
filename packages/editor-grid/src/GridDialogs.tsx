@@ -8,6 +8,7 @@ import {
   TabColorDialog,
 } from './dialogs/CellDialogs.tsx';
 import { FormatCellsDialog } from './dialogs/FormatCellsDialog.tsx';
+import { RecommendedChartsForSelection } from './GridCharts.tsx';
 import { useGrid } from './hooks.ts';
 import type { GridEditorModel } from './model.ts';
 
@@ -35,6 +36,8 @@ export function GridDialogs({ model }: { model: GridEditorModel }) {
       return <TabColorDialog model={model} sheet={arg ?? active} />;
     case 'insertFunction':
       return <InsertFunctionDialog model={model} category={tab} />;
+    case 'recommendedCharts':
+      return <RecommendedChartsForSelection model={model} />;
     case 'renameSheet':
       // The sheet tab strip edits the name in place (SheetTabs).
       return null;

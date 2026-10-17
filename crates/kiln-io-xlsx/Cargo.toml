@@ -28,6 +28,7 @@ rustc-hash.workspace = true
 thiserror.workspace = true
 
 [dev-dependencies]
+kiln-protocol.workspace = true
 kiln-testing.workspace = true
 kiln-io-csv.workspace = true
 proptest.workspace = true

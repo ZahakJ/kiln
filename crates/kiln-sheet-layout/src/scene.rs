@@ -14,6 +14,7 @@
 //! ([`GridScene::invalidate_all`]). A tile's version mixes the epoch of its last change, its
 //! position and the device scale, so an unchanged tile is never resent.
 
+use kiln_charts::text::TextMeasurer;
 use kiln_scene::{
     AtlasUpdate, Bounds, ColorRole, DrawOp, HitIndex, Paint, Scene, Tile, TileId, TileSlot,
 };
@@ -21,6 +22,7 @@ use kiln_sheet::{CellPos, Range, Sheet, Workbook};
 use kiln_text::{FontStore, TextEngine};
 use rustc_hash::{FxHashMap, FxHashSet};
 
+use crate::drawings::{ChartLook, ChartTile, chart_ops};
 use crate::geom::{Pane, SheetGeometry, Snap, View};
 use crate::glyphs::GlyphCache;
 use crate::headers::{HeaderMarks, column_header_ops, corner_ops, row_header_ops};
@@ -172,6 +174,10 @@ pub struct SceneRequest<'a> {
     pub opts: &'a ViewOptions,
     /// The overlay ops (sheet pixels).
     pub overlay: Vec<DrawOp>,
+    /// The charts on the sheet, each a tile of [`DRAWING_LAYER`] above the cells.
+    pub charts: &'a [ChartTile<'a>],
+    /// How charts are coloured.
+    pub chart_look: ChartLook<'a>,
 }
 
 /// The scene of one sheet view.
@@ -179,7 +185,8 @@ pub struct SceneRequest<'a> {
 pub struct GridScene {
     scene: Scene,
     glyphs: GlyphCache,
-    text: TextEngine,
+    /// Cell, header and chart text (one engine, one glyph atlas).
+    text: TextMeasurer,
     looks: LookCache,
     /// Counts invalidations (partial ones stamp tiles with it).
     epoch: u64,
@@ -202,7 +209,7 @@ impl GridScene {
         Self {
             scene: Scene::new(1.0, Bounds::ZERO, Paint::Role(ColorRole::Page)),
             glyphs: GlyphCache::new(),
-            text: TextEngine::new(fonts),
+            text: TextMeasurer::new(fonts),
             looks: LookCache::default(),
             epoch: 1,
             full: 1,
@@ -222,7 +229,7 @@ impl GridScene {
 
     /// Text shaping (the in-cell editor and autofit measure with it).
     pub fn text_engine(&mut self) -> &mut TextEngine {
-        &mut self.text
+        self.text.engine_mut()
     }
 
     /// The regions of the last frame (for the frame's send and keep lists).
@@ -455,6 +462,35 @@ impl GridScene {
                 }
             }
         }
+        // Charts: one tile each, kept while any cell region shows part of it.
+        // (The workbook's theme is fixed per document; the app's theme changes the colours.)
+        let look_bits = u64::from(req.chart_look.dark);
+        for c in req.charts {
+            if c.rect.w <= 0.0 || c.rect.h <= 0.0 {
+                continue;
+            }
+            let shown = self
+                .regions
+                .iter()
+                .any(|r| r.kind == RegionKind::Cells && r.keep.intersects(&c.rect));
+            if !shown {
+                continue;
+            }
+            let id = TileId {
+                layer: DRAWING_LAYER,
+                index: c.index,
+            };
+            if seen.insert(id) {
+                slots.push(TileSlot {
+                    id,
+                    rect: c.rect,
+                    version: mix(
+                        mix(mix(self.full_epoch(), scale_bits), c.version),
+                        look_bits,
+                    ),
+                });
+            }
+        }
         self.scene.set_slots(slots);
 
         // Build what the send regions need.
@@ -529,15 +565,32 @@ impl GridScene {
                         opts: req.opts,
                     };
                     let mut painter = CellPainter {
-                        text: &mut self.text,
+                        text: self.text.engine_mut(),
                         glyphs: &mut self.glyphs,
                         looks: &mut self.looks,
                     };
                     painter.paint(&cx, slot.rect)
+                } else if slot.id.layer == DRAWING_LAYER {
+                    match req.charts.iter().find(|c| c.index == slot.id.index) {
+                        Some(c) => chart_ops(c, &req.chart_look, &mut self.text, &mut self.glyphs),
+                        None => Vec::new(),
+                    }
                 } else if slot.id.layer == COL_HEADER_LAYER {
-                    column_header_ops(geo, slot.rect, req.marks, &mut self.text, &mut self.glyphs)
+                    column_header_ops(
+                        geo,
+                        slot.rect,
+                        req.marks,
+                        self.text.engine_mut(),
+                        &mut self.glyphs,
+                    )
                 } else if slot.id.layer == ROW_HEADER_LAYER {
-                    row_header_ops(geo, slot.rect, req.marks, &mut self.text, &mut self.glyphs)
+                    row_header_ops(
+                        geo,
+                        slot.rect,
+                        req.marks,
+                        self.text.engine_mut(),
+                        &mut self.glyphs,
+                    )
                 } else {
                     corner_ops(slot.rect.w, slot.rect.h, req.all_selected, snap)
                 };
@@ -559,7 +612,7 @@ impl GridScene {
 
     /// The glyph cache (the overlay's editor text uses it).
     pub fn glyphs_and_text(&mut self) -> (&mut GlyphCache, &mut TextEngine) {
-        (&mut self.glyphs, &mut self.text)
+        (&mut self.glyphs, self.text.engine_mut())
     }
 }
 

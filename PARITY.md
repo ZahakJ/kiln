@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **37.4 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **38.3 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,23 +12,23 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 37.4 % | 782 | 1 | 198 | 94 | 489 | 20 |
+| **Overall** | 38.3 % | 782 | 2 | 210 | 81 | 489 | 20 |
 | Kiln Write | 56.3 % | 231 | 0 | 99 | 18 | 114 | 1 |
-| Kiln Grid | 47.9 % | 261 | 0 | 82 | 46 | 133 | 6 |
+| Kiln Grid | 50.4 % | 261 | 1 | 94 | 33 | 133 | 6 |
 | Kiln Deck | 14.1 % | 184 | 0 | 13 | 20 | 151 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
 | Suite | 18.4 % | 62 | 1 | 4 | 10 | 47 | 9 |
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 47.0 % | 462 | 0 | 190 | 54 | 218 | 0 |
-| commonly-missed | 11.6 % | 224 | 1 | 6 | 38 | 179 | 0 |
+| critical | 47.5 % | 462 | 0 | 195 | 49 | 218 | 0 |
+| commonly-missed | 13.4 % | 224 | 2 | 13 | 30 | 179 | 0 |
 | niche | 3.1 % | 96 | 0 | 2 | 2 | 92 | 20 |
 
 | App | Critical | Commonly-missed | Niche |
 |---|---:|---:|---:|
 | Kiln Write | 71.2 % (146) | 6.0 % (58) | 1.9 % (27) |
-| Kiln Grid | 60.8 % (143) | 18.7 % (83) | 7.1 % (35) |
+| Kiln Grid | 62.6 % (143) | 23.5 % (83) | 7.1 % (35) |
 | Kiln Deck | 15.1 % (119) | 11.9 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
 | Suite | 25.8 % (31) | 6.9 % (29) | 0.0 % (2) |
@@ -52,7 +52,7 @@ Rows that exist to be better than Office (no Office equivalent, `office: "—"`)
 | ○ | Document outline health: skipped heading levels and empty headings flagged | Kiln Write | P1 | structural checks that also improve accessibility |
 | ○ | Export to Markdown and HTML | Kiln Write | P0 | clean Markdown and semantic HTML export built in |
 | ○ | Command palette in the ribbon (Ctrl+Shift+P / Alt+Q) with Office synonyms | Kiln Grid | P0 | fuzzy search over every command with Excel's names as synonyms and shortcuts shown |
-| ◐ | Recommended Charts from the selection's shape | Kiln Grid | P0 | suggestions computed locally from the data shape, previewed live Engine done in WP-73 (kiln-charts: model, layout, rendering, OOXML read/write, SuiteCommand::Chart* editing; ui-kit chart chrome); app wiring and its e2e come with the app surface (Grid WP-71, Deck WP-78). |
+| ★ | Recommended Charts from the selection's shape | Kiln Grid | P0 | suggestions computed locally from the data shape, previewed live Engine done in WP-73 (kiln-charts: model, layout, rendering, OOXML read/write, SuiteCommand::Chart* editing; ui-kit chart chrome); app wiring and its e2e come with the app surface (Grid WP-71, Deck WP-78). Hosted on Grid sheets in WP-71: inserted from the selection, drawn in the sheet's tiles, selected, moved, resized, edited with Chart Design, Format and the Format pane, undone, and saved to .xlsx. |
 | ○ | Formula Lab: formula explainer pane with AST tree and step values | Kiln Grid | P0 | the whole evaluation tree with intermediate values, not one step at a time |
 | ◐ | From JSON (array of objects to a table) | Kiln Grid | P0 | Partial: kiln-io-csv (WP-70) reads an array of objects into a table (keys in first-seen order, typed values) through kiln-cli convert and the session; the Data ▸ From JSON command is WP-72 |
 | ○ | Version history with cell-level diff | Kiln Grid | P1 | cell-level diff of local files with no cloud account |
@@ -236,19 +236,19 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `grid.home.editing.fill-handle` | Fill handle: copy, series, linear trend, dates, weekdays, months, custom lists; Auto Fill options | missing | partial |
 | `grid.home.editing.clear` | Clear all, formats, contents, comments and notes, hyperlinks | missing | done |
 | `grid.home.editing.go-to` | Go To (F5 / Ctrl+G) and Name Box navigation | missing | done |
-| `grid.insert.charts.column` | Clustered, stacked and 100 % column charts | missing | partial |
-| `grid.insert.charts.bar` | Clustered, stacked and 100 % bar charts | missing | partial |
-| `grid.insert.charts.line` | Line charts with markers, stacked line | missing | partial |
-| `grid.insert.charts.area` | Area, stacked and 100 % area charts | missing | partial |
-| `grid.insert.charts.pie` | Pie charts with exploded slices and data labels | missing | partial |
-| `grid.insert.charts.doughnut` | Doughnut charts | missing | partial |
-| `grid.insert.charts.scatter` | Scatter (XY) charts with lines and markers | missing | partial |
-| `grid.insert.charts.bubble` | Bubble charts | missing | partial |
-| `grid.insert.charts.combo` | Combo charts with a secondary axis | missing | partial |
-| `grid.insert.charts.treemap` | Treemap charts | missing | partial |
-| `grid.insert.charts.sunburst` | Sunburst charts | missing | partial |
-| `grid.insert.charts.radar` | Radar charts | missing | partial |
-| `grid.insert.charts.recommended` | Recommended Charts from the selection's shape | missing | partial |
+| `grid.insert.charts.column` | Clustered, stacked and 100 % column charts | missing | done |
+| `grid.insert.charts.bar` | Clustered, stacked and 100 % bar charts | missing | done |
+| `grid.insert.charts.line` | Line charts with markers, stacked line | missing | done |
+| `grid.insert.charts.area` | Area, stacked and 100 % area charts | missing | done |
+| `grid.insert.charts.pie` | Pie charts with exploded slices and data labels | missing | done |
+| `grid.insert.charts.doughnut` | Doughnut charts | missing | done |
+| `grid.insert.charts.scatter` | Scatter (XY) charts with lines and markers | missing | done |
+| `grid.insert.charts.bubble` | Bubble charts | missing | done |
+| `grid.insert.charts.combo` | Combo charts with a secondary axis | missing | done |
+| `grid.insert.charts.treemap` | Treemap charts | missing | done |
+| `grid.insert.charts.sunburst` | Sunburst charts | missing | done |
+| `grid.insert.charts.radar` | Radar charts | missing | done |
+| `grid.insert.charts.recommended` | Recommended Charts from the selection's shape | missing | better |
 | `grid.formulas.library.function-count` | At least 484 Excel functions in v0.1 and all 520+ worksheet functions except cube, RTD and web services in the loop | missing | partial |
 | `grid.formulas.auditing.show-formulas` | Show formulas (Ctrl+`) | missing | done |
 | `grid.formulas.calculation.options` | Calculation options: automatic, automatic except tables, manual | missing | partial |
@@ -903,7 +903,7 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 
 ## Kiln Grid
 
-Score 47.9 % over 261 rows in scope; 0 better, 82 done, 46 partial, 133 missing, 6 out of scope.
+Score 50.4 % over 261 rows in scope; 1 better, 94 done, 33 partial, 133 missing, 6 out of scope.
 
 ### Home ▸ Clipboard
 
@@ -1016,18 +1016,18 @@ Score 47.9 % over 261 rows in scope; 0 better, 82 done, 46 partial, 133 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ◐ | Clustered, stacked and 100 % column charts | Excel ▸ Insert ▸ Charts ▸ Column | critical | P0 | WP-73 | `grid.insert.charts.column` |
-| ◐ | Clustered, stacked and 100 % bar charts | Excel ▸ Insert ▸ Charts ▸ Bar | critical | P0 | WP-73 | `grid.insert.charts.bar` |
-| ◐ | Line charts with markers, stacked line | Excel ▸ Insert ▸ Charts ▸ Line | critical | P0 | WP-73 | `grid.insert.charts.line` |
-| ◐ | Area, stacked and 100 % area charts | Excel ▸ Insert ▸ Charts ▸ Area | commonly-missed | P0 | WP-73 | `grid.insert.charts.area` |
-| ◐ | Pie charts with exploded slices and data labels | Excel ▸ Insert ▸ Charts ▸ Pie | critical | P0 | WP-73 | `grid.insert.charts.pie` |
-| ◐ | Doughnut charts | Excel ▸ Insert ▸ Charts ▸ Doughnut | commonly-missed | P0 | WP-73 | `grid.insert.charts.doughnut` |
-| ◐ | Scatter (XY) charts with lines and markers | Excel ▸ Insert ▸ Charts ▸ Scatter | critical | P0 | WP-73 | `grid.insert.charts.scatter` |
-| ◐ | Bubble charts | Excel ▸ Insert ▸ Charts ▸ Bubble | commonly-missed | P0 | WP-73 | `grid.insert.charts.bubble` |
-| ◐ | Combo charts with a secondary axis | Excel ▸ Insert ▸ Charts ▸ Combo | commonly-missed | P0 | WP-73 | `grid.insert.charts.combo` |
-| ◐ | Treemap charts | Excel ▸ Insert ▸ Charts ▸ Treemap | commonly-missed | P0 | WP-73 | `grid.insert.charts.treemap` |
-| ◐ | Sunburst charts | Excel ▸ Insert ▸ Charts ▸ Sunburst | commonly-missed | P0 | WP-73 | `grid.insert.charts.sunburst` |
-| ◐ | Radar charts | Excel ▸ Insert ▸ Charts ▸ Radar | commonly-missed | P0 | WP-73 | `grid.insert.charts.radar` |
+| ● | Clustered, stacked and 100 % column charts | Excel ▸ Insert ▸ Charts ▸ Column | critical | P0 | WP-73 | `grid.insert.charts.column` |
+| ● | Clustered, stacked and 100 % bar charts | Excel ▸ Insert ▸ Charts ▸ Bar | critical | P0 | WP-73 | `grid.insert.charts.bar` |
+| ● | Line charts with markers, stacked line | Excel ▸ Insert ▸ Charts ▸ Line | critical | P0 | WP-73 | `grid.insert.charts.line` |
+| ● | Area, stacked and 100 % area charts | Excel ▸ Insert ▸ Charts ▸ Area | commonly-missed | P0 | WP-73 | `grid.insert.charts.area` |
+| ● | Pie charts with exploded slices and data labels | Excel ▸ Insert ▸ Charts ▸ Pie | critical | P0 | WP-73 | `grid.insert.charts.pie` |
+| ● | Doughnut charts | Excel ▸ Insert ▸ Charts ▸ Doughnut | commonly-missed | P0 | WP-73 | `grid.insert.charts.doughnut` |
+| ● | Scatter (XY) charts with lines and markers | Excel ▸ Insert ▸ Charts ▸ Scatter | critical | P0 | WP-73 | `grid.insert.charts.scatter` |
+| ● | Bubble charts | Excel ▸ Insert ▸ Charts ▸ Bubble | commonly-missed | P0 | WP-73 | `grid.insert.charts.bubble` |
+| ● | Combo charts with a secondary axis | Excel ▸ Insert ▸ Charts ▸ Combo | commonly-missed | P0 | WP-73 | `grid.insert.charts.combo` |
+| ● | Treemap charts | Excel ▸ Insert ▸ Charts ▸ Treemap | commonly-missed | P0 | WP-73 | `grid.insert.charts.treemap` |
+| ● | Sunburst charts | Excel ▸ Insert ▸ Charts ▸ Sunburst | commonly-missed | P0 | WP-73 | `grid.insert.charts.sunburst` |
+| ● | Radar charts | Excel ▸ Insert ▸ Charts ▸ Radar | commonly-missed | P0 | WP-73 | `grid.insert.charts.radar` |
 | ○ | Histogram and Pareto charts | Excel ▸ Insert ▸ Charts ▸ Histogram | commonly-missed | P1 | WP-73 | `grid.insert.charts.histogram` |
 | ○ | Box and whisker charts | Excel ▸ Insert ▸ Charts ▸ Box & Whisker | commonly-missed | P1 | WP-73 | `grid.insert.charts.box-whisker` |
 | ○ | Waterfall charts | Excel ▸ Insert ▸ Charts ▸ Waterfall | commonly-missed | P1 | WP-73 | `grid.insert.charts.waterfall` |
@@ -1035,7 +1035,7 @@ Score 47.9 % over 261 rows in scope; 0 better, 82 done, 46 partial, 133 missing,
 | ○ | Stock (high-low-close, open-high-low-close) charts | Excel ▸ Insert ▸ Charts ▸ Stock | niche | P2 | WP-73 | `grid.insert.charts.stock` |
 | ○ | Surface and contour charts (drawn as 2-D heat maps) | Excel ▸ Insert ▸ Charts ▸ Surface | niche | P2 | WP-73 | `grid.insert.charts.surface` |
 | – | Filled map charts | Excel ▸ Insert ▸ Charts ▸ Map | niche | out | — | `grid.insert.charts.map` |
-| ◐ | Recommended Charts from the selection's shape | — | commonly-missed | P0 | WP-73 | `grid.insert.charts.recommended` |
+| ★ | Recommended Charts from the selection's shape | — | commonly-missed | P0 | WP-73 | `grid.insert.charts.recommended` |
 
 ### Insert ▸ Sparklines
 

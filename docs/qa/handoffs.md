@@ -1021,3 +1021,14 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   Chromium on this machine (p50 16.7 ms) because each scroll frame still costs the Worker a viewport, a frame
   and a state query. Painting in the Worker (OffscreenCanvas) and a cheaper state query while scrolling are the
   next steps.
+- Charts on Grid sheets (WP-73 carry-over part 2), outside WP-71's paths: `crates/kiln-charts/src/text.rs` gained
+  `TextMeasurer::engine_mut` (Grid's cells and charts share one text engine and one glyph atlas);
+  `crates/kiln-io-xlsx` writes charts added or edited in Kiln (`WriteOptions::charts`, frames in `write/mod.rs`,
+  `patch_drawing` takes writer-made objects, `write/sheet.rs` reports only non-chart objects as unwritten; tests in
+  `tests/charts.rs`) — for WP-70 and WP-73 to acknowledge; `xtask/src/wasm.rs` (WP-50) holds B12 at 4,650 KB under
+  the proposed interim allowance in `docs/qa/perf.md` (the core is ~4,612 KB with charts). For WP-94: three versions of
+  skrifa/read-fonts are linked into the web core (krilla → 0.42, parley → 0.44, kiln-text → 0.48); aligning them is
+  the way back under 4,500 KB (`opt-level = "z"` halves the web open speed of the 1M-cell sheet).
+- For WP-73 (chart chrome), seen in the visual review: the Format pane's axis labels ("Minimum", "Maximum") are cut
+  at 320 px; the near-black swatch of the series colours is invisible on the dark pane; in dark mode the treemap and
+  sunburst labels are white on light tiles; a bubble chart made from four numeric columns shows one series.

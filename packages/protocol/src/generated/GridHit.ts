@@ -43,4 +43,16 @@ start: number,
 /**
  * The row's height at 100 % (CSS pixels).
  */
-size: number, } } | "Corner";
+size: number, } } | "Corner" | { "Drawing": { 
+/**
+ * The drawing number on the sheet.
+ */
+index: number, } } | { "DrawingHandle": { 
+/**
+ * The drawing number on the sheet.
+ */
+index: number, 
+/**
+ * The handle.
+ */
+handle: number, } };

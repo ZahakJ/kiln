@@ -8,9 +8,9 @@ where Excel users expect them; the sheet is drawn by Kiln itself, the same on ev
 > **Status (WP-71).** The sheet, the formula bar, typing and editing cells, formulas with
 > autocomplete and argument hints, the fill handle, rows and columns, sheet tabs, freeze panes,
 > zoom, the clipboard with Paste Special, number formats, fonts, fills, borders, alignment, wrap and
-> merge, Format Cells, undo and redo, Find, Go To and the status bar statistics are in. Sorting and
-> filtering, tables, conditional formatting rules, data validation rules, the Name Manager,
-> comments and charts editing arrive with WP-72 and WP-73; files that already have them show them. Commands that
+> merge, Format Cells, undo and redo, Find, Go To, the status bar statistics and charts are in.
+> Sorting and filtering, tables, conditional formatting rules, data validation rules, the Name
+> Manager and comments arrive with WP-72; files that already have them show them. Commands that
 > are not in a build yet are hidden, never greyed out.
 
 ## The window
@@ -132,6 +132,28 @@ Currency and Percent; Ctrl+Shift+& draws an outline border and Ctrl+Shift+_ remo
   inside line and diagonal on the preview.
 - **Fill**: the background colour, the pattern style and pattern colour.
 - **Protection**: Locked and Hidden (they apply once the sheet is protected).
+
+## Charts
+
+- **Insert a chart**: select the data (or one cell inside it: Kiln takes the whole block around
+  it), then **Insert ▸ Chart** for the chart that suits the data best, **Recommended Charts** to
+  choose among the best ones, or a type button (Column, Line, Pie, Scatter, Hierarchy, Combo). The
+  chart appears in the middle of the window, selected. Text in the first row and column becomes the
+  series names and the categories.
+- **Select, move and resize**: click a chart to select it; drag it to move it, drag one of its
+  eight handles to resize it. It moves and sizes with the cells under it, so inserting rows above
+  moves it down. Click a cell or press Esc to go back to the cells; **Delete** removes the
+  selected chart.
+- **Chart Design** (shown while a chart is selected): Add Chart Element, Quick Layout, Change
+  Colors, Chart Styles, **Switch Row/Column**, **Select Data**, **Change Chart Type** and **Move
+  Chart** (to another sheet).
+- **Format**: **Format Selection** opens the Format Chart Area pane at the right: the chart title,
+  each series' fill, line and width and its axis, and the axes' minimum, maximum, unit, scale and
+  number format. Shape Fill and Shape Outline colour a series.
+- Charts follow their cells: change a value and the chart changes with it. Every chart edit is one
+  step of Undo. Charts are drawn in the app's light or dark theme on screen and saved with the
+  workbook's own colours; Kiln keeps the charts of the files it opens and writes the ones you add
+  or change into the `.xlsx` (Excel opens them as its own charts).
 
 ## Find and Go To
 

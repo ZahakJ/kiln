@@ -1852,6 +1852,34 @@
           }
         }
       }
+    },
+    {
+      "Grid": {
+        "SelectDrawing": {
+          "index": 0
+        }
+      }
+    },
+    {
+      "Grid": {
+        "PlaceDrawing": {
+          "index": 0,
+          "x": 200.0,
+          "y": 40.0,
+          "width": 480.0,
+          "height": 288.0
+        }
+      }
+    },
+    {
+      "Grid": "DeleteDrawing"
+    },
+    {
+      "Grid": {
+        "Theme": {
+          "dark": true
+        }
+      }
     }
   ]
 }

@@ -3191,6 +3191,50 @@
         "Grid"
       ],
       "availability": "Editable"
+    },
+    {
+      "id": "grid.drawing.select",
+      "label_key": "cmd.grid.drawing.select",
+      "keytip": null,
+      "group": "drawing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "grid.drawing.place",
+      "label_key": "cmd.grid.drawing.place",
+      "keytip": null,
+      "group": "drawing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.drawing.delete",
+      "label_key": "cmd.grid.drawing.delete",
+      "keytip": null,
+      "group": "drawing",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Editable"
+    },
+    {
+      "id": "grid.view.theme",
+      "label_key": "cmd.grid.view.theme",
+      "keytip": null,
+      "group": "view",
+      "tier": "P0",
+      "apps": [
+        "Grid"
+      ],
+      "availability": "Document"
     }
   ]
 }

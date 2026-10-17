@@ -163,9 +163,83 @@
 
 /* ── sheet ───────────────────────────────────────────────────────────────────── */
 
+/* The sheet and, at its right, the Format Chart pane. */
+.kiln-grid__body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  gap: 10px;
+}
+
+.kiln-grid__pane {
+  flex: 0 0 320px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-bottom: 4px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 14px;
+  background: var(--kiln-raised);
+  box-shadow: var(--kiln-shadow-1);
+  animation: kiln-grid-pane-in 160ms var(--kiln-ease, ease-out);
+}
+@keyframes kiln-grid-pane-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+.kiln-grid__pane-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 14px 12px 8px 16px;
+}
+.kiln-grid__pane-head h2 {
+  margin: 0;
+  font-family: var(--kiln-font-display, var(--kiln-font-ui));
+  font-size: var(--kiln-text-md, 14px);
+  font-weight: var(--kiln-weight-semibold, 600);
+}
+.kiln-grid__pane-sub {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--kiln-fg-muted);
+  font-size: var(--kiln-text-sm, 12px);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.kiln-grid__pane-close {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--kiln-fg-muted);
+  cursor: pointer;
+}
+.kiln-grid__pane-close:hover {
+  background: var(--kiln-hover, color-mix(in srgb, var(--kiln-fg) 8%, transparent));
+  color: var(--kiln-fg);
+}
+.kiln-grid__pane-close:focus-visible {
+  outline: 2px solid var(--kiln-focus, var(--kiln-app));
+  outline-offset: 1px;
+}
+.kiln-grid__pane-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 12px 12px;
+}
+
 .kiln-grid__sheet {
   position: relative;
   flex: 1;
+  min-width: 0;
   min-height: 0;
   border: 1px solid var(--kiln-line);
   border-radius: var(--kiln-radius-md, 8px) var(--kiln-radius-md, 8px) 0 0;
@@ -885,6 +959,16 @@
   .kiln-grid {
     padding: 6px 6px 0;
     gap: 6px;
+  }
+  /* On a phone the Format Chart pane covers the lower half of the sheet. */
+  .kiln-grid__body {
+    position: relative;
+  }
+  .kiln-grid__pane {
+    position: absolute;
+    inset: auto 0 0 0;
+    max-height: 55%;
+    z-index: 3;
   }
   .kiln-namebox {
     width: 72px;

@@ -15,10 +15,11 @@ import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { hintParts } from './Autocomplete.tsx';
 import { GRID_DIALOG_COMMANDS, registerGridUi } from './commands.ts';
-import { cursorFor, panes } from './controller.ts';
+import { cursorFor, dragRect, panes } from './controller.ts';
 import { CATEGORIES, dashOf } from './dialogs/FormatCellsDialog.tsx';
 import { FindBar } from './FindBar.tsx';
 import { colourRuns, FormulaBar } from './FormulaBar.tsx';
+import { FormatChartArea, useChartTabs } from './GridCharts.tsx';
 import { GridDialogs } from './GridDialogs.tsx';
 import { gridMenuEntries } from './GridMenus.tsx';
 import { modeItems, statItems } from './GridStatusBar.tsx';
@@ -79,7 +80,34 @@ const STATE: GridState = {
   whole_columns: false,
   stats: { average: '1,590', count: 5, numerical_count: 5, min: '380', max: '4,380', sum: '7,950' },
   names: ['Budget2026', 'Members'],
+  drawing: null,
 } as GridState;
+
+const CHART: GridState['drawing'] = {
+  index: 0,
+  name: 'Chart 1',
+  x: 300,
+  y: 40,
+  width: 480,
+  height: 288,
+  chart: {
+    kind: 'ColumnClustered',
+    style: 2,
+    color_set: 0,
+    color_sets: [],
+    title: 'Spend',
+    legend: 'Bottom',
+    data_labels: null,
+    elements: ['ChartTitle', 'Legend'],
+    data_range: 'Budget!$A$1:$D$3',
+    series: [
+      { idx: 0, name: 'Clay', color: '1D8A60', fill: null, line: null, line_width: 0, secondary: false },
+    ],
+    categories: ['Q1', 'Q2', 'Q3'],
+    has_cells: true,
+    axes: [],
+  },
+};
 
 const STATUS = { zoom: 1, view: 'Normal' } as StatusBar;
 
@@ -108,6 +136,7 @@ class FakeCore {
           if (typeof g === 'object' && 'FormatPreview' in g)
             return { Grid: { Preview: `[${g.FormatPreview.code}]` } };
           if (typeof g === 'object' && 'ZoomToSelection' in g) return { Grid: { Zoom: 1.5 } };
+          if (g === 'RecommendedCharts') return { Grid: { Charts: ['Line', 'ColumnClustered'] } };
           if (typeof g === 'object' && 'Functions' in g)
             return {
               Grid: {
@@ -527,5 +556,63 @@ describe('components', () => {
     fireEvent.click(screen.getByRole('button', { name: 'OK' }));
     await settle();
     expect(core.executed).toContainEqual({ Grid: { BeginEdit: { text: '=SUMIF(' } } });
+  });
+});
+
+describe('charts', () => {
+  it('moves and resizes a chart by its handles, never below 24 px', () => {
+    const r = { x: 100, y: 50, w: 480, h: 288 };
+    expect(dragRect(r, null, 20, -60)).toEqual({ x: 120, y: 0, w: 480, h: 288 });
+    expect(dragRect(r, 4, 40, 12)).toEqual({ x: 100, y: 50, w: 520, h: 300 });
+    expect(dragRect(r, 0, 30, 10)).toEqual({ x: 130, y: 60, w: 450, h: 278 });
+    expect(dragRect(r, 7, 1000, 0)).toEqual({ x: 556, y: 50, w: 24, h: 288 });
+    expect(dragRect(r, 1, 0, 400).h).toBe(24);
+    expect(cursorFor({ Drawing: { index: 0 } })).toBe('move');
+    expect(cursorFor({ DrawingHandle: { index: 0, handle: 4 } })).toBe('nwse-resize');
+    expect(cursorFor({ DrawingHandle: { index: 0, handle: 3 } })).toBe('ew-resize');
+  });
+
+  it('inserts charts from Insert ▸ Charts and opens Recommended Charts', async () => {
+    const { core, registry, model } = setup();
+    registerGridUi(model);
+    await registry.execute('grid.insert.chart_line');
+    expect(core.executed).toContainEqual({ Suite: { ChartInsert: { kind: 'Line' } } });
+    await registry.execute('grid.insert.recommended_charts');
+    expect(model.state.dialog?.id).toBe('recommendedCharts');
+    render(<GridDialogs model={model} />);
+    await settle();
+    const list = await screen.findByRole('listbox', { name: 'Recommended charts' });
+    expect(within(list).getAllByRole('option')).toHaveLength(2);
+    fireEvent.click(screen.getByRole('button', { name: 'OK' }));
+    await settle();
+    expect(core.executed).toContainEqual({ Suite: { ChartInsert: { kind: 'Line' } } });
+  });
+
+  it('shows Chart Design and Format while a chart is selected, and the Format pane', async () => {
+    const { core, model } = setup();
+    core.state = { ...STATE, drawing: CHART };
+    await settle();
+    let tabs: readonly { id: string; when?: unknown }[] = [];
+    function Probe() {
+      tabs = useChartTabs(model);
+      return null;
+    }
+    render(<Probe />);
+    expect(tabs.map((t) => t.id)).toEqual(['chart-design', 'chart-format']);
+    model.set({ chartPane: true });
+    render(<FormatChartArea model={model} />);
+    const pane = await screen.findByTestId('grid-chart-pane');
+    expect(within(pane).getByText('Chart 1')).toBeTruthy();
+    const title = within(pane).getByLabelText('Chart title') as HTMLInputElement;
+    expect(title.value).toBe('Spend');
+    fireEvent.change(title, { target: { value: 'Costs' } });
+    fireEvent.keyDown(title, { key: 'Enter' });
+    await settle();
+    expect(core.executed).toContainEqual({ Suite: { ChartSetTitle: { text: 'Costs' } } });
+    // Deselected: the pane closes.
+    core.state = { ...STATE, drawing: null };
+    core.changed(5);
+    await settle();
+    expect(model.state.chartPane).toBe(false);
   });
 });

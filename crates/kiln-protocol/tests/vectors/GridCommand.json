@@ -416,6 +416,26 @@
       }
     },
     {
+      "SelectDrawing": {
+        "index": 0
+      }
+    },
+    {
+      "PlaceDrawing": {
+        "index": 0,
+        "x": 200.0,
+        "y": 40.0,
+        "width": 480.0,
+        "height": 288.0
+      }
+    },
+    "DeleteDrawing",
+    {
+      "Theme": {
+        "dark": true
+      }
+    },
+    {
       "Move": {
         "dir": "Up",
         "extend": false

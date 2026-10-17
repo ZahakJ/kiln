@@ -649,6 +649,7 @@ pub(crate) fn patch_drawing(
     root: &XmlElement,
     read: &[DrawingAnchor],
     anchors: &[DrawingAnchor],
+    objects: &rustc_hash::FxHashMap<String, Vec<XmlElement>>,
     issues: &mut Vec<String>,
 ) -> XmlElement {
     let elements: Vec<&XmlElement> = root
@@ -671,27 +672,31 @@ pub(crate) fn patch_drawing(
     let insert_at = out.children.len();
     let mut new_children = Vec::new();
     for a in anchors {
-        let Some(k) = read.iter().position(|r| r.id == a.id) else {
-            issues.push(format!(
-                "the drawing object \"{}\" is new; it is not written (objects are added by the chart and picture editors)",
-                a.name.as_deref().unwrap_or(&a.id)
-            ));
-            continue;
+        let object: Vec<XmlNode> = if let Some(made) = objects.get(&a.id) {
+            // A frame made by the writer (a chart added in Kiln, or re-typed).
+            made.iter().cloned().map(XmlNode::Element).collect()
+        } else {
+            let Some(k) = read.iter().position(|r| r.id == a.id) else {
+                issues.push(format!(
+                    "the drawing object \"{}\" is new; it is not written (only charts are added here)",
+                    a.name.as_deref().unwrap_or(&a.id)
+                ));
+                continue;
+            };
+            let Some(orig) = elements.get(k) else {
+                continue;
+            };
+            orig.children
+                .iter()
+                .filter(|c| match c {
+                    XmlNode::Element(e) => {
+                        !matches!(local_name(&e.name), "from" | "to" | "ext" | "pos")
+                    }
+                    _ => false,
+                })
+                .cloned()
+                .collect()
         };
-        let Some(orig) = elements.get(k) else {
-            continue;
-        };
-        let object: Vec<XmlNode> = orig
-            .children
-            .iter()
-            .filter(|c| match c {
-                XmlNode::Element(e) => {
-                    !matches!(local_name(&e.name), "from" | "to" | "ext" | "pos")
-                }
-                _ => false,
-            })
-            .cloned()
-            .collect();
         let mut e = match a.anchor {
             Anchor::TwoCell { from, to, edit_as } => {
                 let mut e = XmlElement::new("xdr:twoCellAnchor");
@@ -1001,7 +1006,13 @@ mod tests {
         }
         moved.pop();
         let mut issues = Vec::new();
-        let patched = patch_drawing(&root, &read, &moved, &mut issues);
+        let patched = patch_drawing(
+            &root,
+            &read,
+            &moved,
+            &rustc_hash::FxHashMap::default(),
+            &mut issues,
+        );
         let again = parse_drawing(&patched, &resolve);
         assert_eq!(again, vec![moved[0].clone()]);
         assert!(issues.is_empty());
