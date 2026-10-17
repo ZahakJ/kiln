@@ -262,6 +262,71 @@
           "number_format": "\"£\"#,##0"
         }
       }
+    },
+    {
+      "Suite": {
+        "PrintPdf": {
+          "settings": {
+            "pages": "1-3, 5, 8-",
+            "parity": "Odd",
+            "copies": 300,
+            "paper": "A4",
+            "scale": 0.75,
+            "per_sheet": 4,
+            "orientation": "Landscape",
+            "margins": "Narrow",
+            "grayscale": true,
+            "markup": false,
+            "hidden_text": true,
+            "tagged": true,
+            "bookmarks": false
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "SavePdf": {
+          "path": null,
+          "settings": {
+            "pages": "",
+            "parity": "All",
+            "copies": 1,
+            "paper": null,
+            "scale": 1.0,
+            "per_sheet": 1,
+            "orientation": null,
+            "margins": null,
+            "grayscale": false,
+            "markup": true,
+            "hidden_text": false,
+            "tagged": true,
+            "bookmarks": true
+          }
+        }
+      }
+    },
+    {
+      "Suite": {
+        "SavePdf": {
+          "path": "/home/ana/Quarterly report.pdf",
+          "settings": {
+            "pages": "1-3, 5, 8-",
+            "parity": "Odd",
+            "copies": 300,
+            "paper": "A4",
+            "scale": 0.75,
+            "per_sheet": 4,
+            "orientation": "Landscape",
+            "margins": "Narrow",
+            "grayscale": true,
+            "markup": false,
+            "hidden_text": true,
+            "tagged": true,
+            "bookmarks": false
+          }
+        }
+      }
     }
   ]
 }

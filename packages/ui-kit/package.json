@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "@kiln/commands": "workspace:*",
+    "@kiln/protocol": "workspace:*",
+    "@kiln/surface": "workspace:*",
     "@kiln/tokens": "workspace:*",
     "@radix-ui/react-dialog": "catalog:",
     "@radix-ui/react-dropdown-menu": "catalog:",

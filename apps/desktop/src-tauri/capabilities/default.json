@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "The main window: the Kiln IPC commands (PLAN.md §3.5) and the plugins the host needs (files, dialogs, links, process). Nothing else.",
+  "description": "The main window: the Kiln IPC commands (PLAN.md §3.5) and the plugins the host needs (files, dialogs, links, PDFs to print from the temporary folder, process). Nothing else.",
   "windows": ["main"],
   "permissions": [
     "core:default",
@@ -18,6 +18,10 @@
     "fs:default",
     "dialog:default",
     "opener:default",
+    {
+      "identifier": "opener:allow-open-path",
+      "allow": [{ "path": "$TEMP/kiln-print/**" }]
+    },
     "process:default"
   ]
 }

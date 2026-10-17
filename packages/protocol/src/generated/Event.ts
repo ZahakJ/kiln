@@ -32,7 +32,15 @@ status: StatusBar, } } | { "Saved": {
 /**
  * The summary after saving (path, format, `dirty: false`).
  */
-summary: DocSummary, } } | { "Closed": { 
+summary: DocSummary, } } | { "Exported": { 
+/**
+ * The document.
+ */
+doc: DocId, 
+/**
+ * Where the PDF was written.
+ */
+path: string | null, } } | { "Closed": { 
 /**
  * The document.
  */

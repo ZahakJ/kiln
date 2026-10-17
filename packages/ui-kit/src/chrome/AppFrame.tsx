@@ -261,6 +261,19 @@ function AppFrameInner({
         run: () => live.current.openBackstage('info'),
         when: hasBackstage,
       },
+      // WP-67: Ctrl+P and Export as PDF open their Backstage panes, as in Office.
+      {
+        id: 'suite.file.print',
+        title: 'Print',
+        run: () => live.current.openBackstage('print'),
+        when: () => !!live.current.backstage?.print,
+      },
+      {
+        id: 'suite.file.export_pdf',
+        title: 'Export as PDF',
+        run: () => live.current.openBackstage('export'),
+        when: () => !!live.current.backstage?.print,
+      },
       {
         id: 'ui.backstage.account',
         title: 'Account',

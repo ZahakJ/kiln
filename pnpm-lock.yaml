@@ -603,6 +603,12 @@ importers:
       '@kiln/commands':
         specifier: workspace:*
         version: link:../commands
+      '@kiln/protocol':
+        specifier: workspace:*
+        version: link:../protocol
+      '@kiln/surface':
+        specifier: workspace:*
+        version: link:../surface
       '@kiln/tokens':
         specifier: workspace:*
         version: link:../tokens

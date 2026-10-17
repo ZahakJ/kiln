@@ -19,6 +19,7 @@ import type {
   DocKind,
   FileFormat,
   Point,
+  PrintSettings,
   SelectUnit,
   TextPos,
   ViewMode,
@@ -111,6 +112,18 @@ export const CORE_BUILDERS: Readonly<Record<string, CoreBuilder>> = Object.freez
       },
     }),
   'suite.file.close': () => suite('Close'),
+  // Print and PDF (WP-67): the settings come from the Print and Export panes as a whole.
+  'suite.file.print_pdf': (a) =>
+    suite({
+      PrintPdf: { settings: req(a, 'settings', isRecord, 'print settings') as unknown as PrintSettings },
+    }),
+  'suite.file.save_pdf': (a) =>
+    suite({
+      SavePdf: {
+        path: opt(a, 'path', isString, 'a path'),
+        settings: req(a, 'settings', isRecord, 'print settings') as unknown as PrintSettings,
+      },
+    }),
   // Edit and view
   'suite.edit.undo': () => suite('Undo'),
   'suite.edit.redo': () => suite('Redo'),

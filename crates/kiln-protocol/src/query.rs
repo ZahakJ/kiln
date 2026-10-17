@@ -7,12 +7,13 @@ use ts_rs::TS;
 
 use crate::a11y::A11yTree;
 use crate::app::FileFormat;
+use crate::print::{PdfFile, PrintPreview, PrintSettings};
 use crate::selection::Selection;
 use crate::status::StatusBar;
 use crate::summary::DocSummary;
 
 /// A question about the session (`doc: None`) or one document.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, TS)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, TS)]
 pub enum Query {
     /// Session: every open document.
     Documents,
@@ -35,6 +36,20 @@ pub enum Query {
     CompatReport {
         /// The format to save in.
         format: Option<FileFormat>,
+    },
+    /// Document: one sheet of the print preview (Backstage ▸ Print, WP-67).
+    PrintPreview {
+        /// The settings.
+        settings: PrintSettings,
+        /// The sheet (0-based; clamped).
+        sheet: u32,
+        /// Device pixels per preview pixel (zoom × device pixel ratio), 0.05–8.
+        scale: f32,
+    },
+    /// Document: the PDF printed with `settings` (Export ▸ PDF on the web).
+    Pdf {
+        /// The settings.
+        settings: PrintSettings,
     },
 }
 
@@ -101,6 +116,10 @@ pub enum QueryResult {
     Text(String),
     /// The Compatibility Checker's list, most serious first (empty: nothing to report).
     CompatReport(Vec<CompatIssue>),
+    /// A print preview sheet.
+    PrintPreview(PrintPreview),
+    /// A PDF.
+    Pdf(PdfFile),
 }
 
 impl Query {

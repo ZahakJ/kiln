@@ -44,8 +44,8 @@ async function call<T>(
 
 /**
  * The Tauri host: the core reads and writes files itself (`NativeHost`), so only dialogs,
- * preferences, clipboard and URLs reach the webview. Dialogs use `@tauri-apps/plugin-dialog`,
- * URLs `@tauri-apps/plugin-opener`.
+ * preferences, clipboard, URLs and files to show reach the webview. Dialogs use
+ * `@tauri-apps/plugin-dialog`, URLs and files (a PDF to print) `@tauri-apps/plugin-opener`.
  */
 export class TauriHost implements HostHandler {
   async handle(op: HostOp): Promise<HostReply> {
@@ -62,6 +62,12 @@ export class TauriHost implements HostHandler {
       const { open } = await import('@tauri-apps/plugin-dialog');
       const path = await open({ multiple: false, directory: false, filters: op.PickOpen.filters });
       return typeof path === 'string' ? { Path: path } : 'Cancelled';
+    }
+    if (typeof op === 'object' && 'OpenFile' in op) {
+      // Print (WP-67): the core wrote the PDF to a temporary file; the system viewer prints it.
+      const { openPath } = await import('@tauri-apps/plugin-opener');
+      await openPath(op.OpenFile.path);
+      return 'Done';
     }
     if (typeof op === 'object' && 'PickSave' in op) {
       const { save } = await import('@tauri-apps/plugin-dialog');

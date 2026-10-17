@@ -8,6 +8,7 @@ import type { ErrorKind } from './generated/ErrorKind';
 import type { FileFilter } from './generated/FileFilter';
 import type { HostOp } from './generated/HostOp';
 import type { HostReply } from './generated/HostReply';
+import { printPdfInFrame } from './print-frame';
 
 /** Performs host operations for the core. */
 export interface HostHandler {
@@ -142,7 +143,7 @@ const HANDLE_PREFIX = 'handle:';
  * The browser host (web/PWA): files through the File System Access API where the browser has it
  * (Chromium), otherwise an `<input type=file>` for opening and the Origin Private File System for
  * saving (`opfs:documents/<name>`); picked files are referred to by opaque `handle:<n>/<name>`
- * paths. Recents, printing and richer storage arrive with WP-83.
+ * paths; PDFs print through a hidden frame (WP-67). Recents and richer storage arrive with WP-83.
  */
 export class WebHost implements HostHandler {
   private readonly handles = new Map<string, FileHandleLike | File>();
@@ -171,6 +172,13 @@ export class WebHost implements HostHandler {
     if (common !== undefined) return common;
     if (typeof op !== 'object') return failed('Unsupported', `${String(op)} is not available on the web`);
     try {
+      if ('PrintPdf' in op) {
+        const doc = this.win?.document;
+        if (!doc) return failed('Unsupported', 'no page to print from');
+        await printPdfInFrame(op.PrintPdf.bytes, doc);
+        return 'Done';
+      }
+      if ('OpenFile' in op) return failed('Unsupported', 'the web build opens no local files');
       if ('PickOpen' in op) return await this.pickOpen(op.PickOpen.filters);
       if ('PickSave' in op) return await this.pickSave(op.PickSave.suggested_name, op.PickSave.filters);
       if ('ReadFile' in op) return { Bytes: Array.from(await this.read(op.ReadFile.path)) };

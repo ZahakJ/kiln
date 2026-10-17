@@ -21,6 +21,9 @@ use crate::event::{Event, Progress, RecoveryEntry};
 use crate::exec::{CoreInfo, ExecResult, ExecValue, Outcome};
 use crate::geom::{Point, Rect, Size};
 use crate::host::{FileFilter, HostOp, HostReply, HostRequest, RecentFile, RequestId};
+use crate::print::{
+    PdfFile, PrintMargins, PrintOrientation, PrintPaper, PrintParity, PrintPreview, PrintSettings,
+};
 use crate::query::{CompatIssue, CompatOrigin, CompatSeverity, ParagraphText, Query, QueryResult};
 use crate::selection::{
     Caret, CellAddr, CellRange, Compass, Handle, HandleKind, SelKind, Selection, TextPos,
@@ -169,7 +172,51 @@ pub fn commands() -> Vec<Command> {
             number_format: Some("\"£\"#,##0".into()),
         }
         .into(),
+        SuiteCommand::PrintPdf {
+            settings: print_settings(),
+        }
+        .into(),
+        SuiteCommand::SavePdf {
+            path: None,
+            settings: PrintSettings::default(),
+        }
+        .into(),
+        SuiteCommand::SavePdf {
+            path: Some("/home/ana/Quarterly report.pdf".into()),
+            settings: print_settings(),
+        }
+        .into(),
     ]
+}
+
+fn print_settings() -> PrintSettings {
+    PrintSettings {
+        pages: "1-3, 5, 8-".into(),
+        parity: PrintParity::Odd,
+        copies: 300,
+        paper: Some(PrintPaper::A4),
+        scale: 0.75,
+        per_sheet: 4,
+        orientation: Some(PrintOrientation::Landscape),
+        margins: Some(PrintMargins::Narrow),
+        grayscale: true,
+        markup: false,
+        hidden_text: true,
+        tagged: true,
+        bookmarks: false,
+    }
+}
+
+fn print_preview() -> PrintPreview {
+    PrintPreview {
+        sheets: 12,
+        sheet: 1,
+        width_pt: 612.0,
+        height_pt: 792.0,
+        pages: vec![2, 3],
+        page_count: 300,
+        scene: crate::scene::samples::small_delta(),
+    }
 }
 
 fn text_pos(block: u64, offset: u32) -> TextPos {
@@ -372,7 +419,9 @@ samples! {
     Query => vec![Query::Documents, Query::Summary, Query::Paragraphs, Query::Selection,
         Query::Status, Query::A11y, Query::SelectedText,
         Query::CompatReport { format: None },
-        Query::CompatReport { format: Some(FileFormat::Docx) }];
+        Query::CompatReport { format: Some(FileFormat::Docx) },
+        Query::PrintPreview { settings: print_settings(), sheet: 1, scale: 1.5 },
+        Query::Pdf { settings: PrintSettings::default() }];
     CompatSeverity => vec![CompatSeverity::Loss, CompatSeverity::Change, CompatSeverity::Info];
     CompatOrigin => vec![CompatOrigin::Save, CompatOrigin::Open];
     CompatIssue => vec![compat_issue()];
@@ -399,6 +448,13 @@ samples! {
                 origin: CompatOrigin::Open,
             },
         ]),
+        QueryResult::PrintPreview(print_preview()),
+        QueryResult::Pdf(PdfFile {
+            name: "Quarterly report «Ünïcödé».pdf".into(),
+            bytes: b"%PDF-1.7".to_vec(),
+            pdf_ua: false,
+            ua_issues: vec!["a figure has no alt text".into()],
+        }),
     ];
     ErrorKind => vec![ErrorKind::NotFound, ErrorKind::Internal];
     ErrorInfo => vec![error()];
@@ -419,6 +475,8 @@ samples! {
         HostOp::ClipboardRead,
         HostOp::ClipboardWrite { text: "x".into(), html: Some("<b>x</b>".into()) },
         HostOp::OpenExternal { url: "https://zahakj.github.io/kiln/".into() },
+        HostOp::OpenFile { path: "/tmp/kiln-print/Report.pdf".into() },
+        HostOp::PrintPdf { name: "Report.pdf".into(), bytes: b"%PDF-1.7".to_vec() },
     ];
     HostRequest => vec![HostRequest { id: RequestId(300), op: HostOp::Recents }];
     HostReply => vec![
@@ -448,6 +506,8 @@ samples! {
         Event::Opened { summary: summary() },
         Event::Changed { summary: summary(), selection: selection(), status: status() },
         Event::Saved { summary: summary() },
+        Event::Exported { doc: DocId(7), path: Some("/home/ana/Report.pdf".into()) },
+        Event::Exported { doc: DocId(7), path: None },
         Event::Closed { doc: DocId(7) },
         Event::Frame { doc: DocId(7), delta: crate::scene::samples::small_delta() },
         Event::Progress(Progress { doc: None, task: "progress.save".into(), done: 1, total: 2 }),
@@ -473,6 +533,17 @@ fn core_info() -> CoreInfo {
         protocol: crate::PROTOCOL_VERSION,
         target: "wasm32".into(),
     }
+}
+
+// WP-67: printing.
+samples! {
+    PrintParity => vec![PrintParity::All, PrintParity::Odd, PrintParity::Even];
+    PrintPaper => vec![PrintPaper::Letter, PrintPaper::Legal, PrintPaper::A3, PrintPaper::A4, PrintPaper::A5];
+    PrintOrientation => vec![PrintOrientation::Portrait, PrintOrientation::Landscape];
+    PrintMargins => vec![PrintMargins::Normal, PrintMargins::Narrow, PrintMargins::Moderate, PrintMargins::Wide];
+    PrintSettings => vec![PrintSettings::default(), print_settings()];
+    PrintPreview => vec![print_preview()];
+    PdfFile => vec![PdfFile { name: "a.pdf".into(), bytes: vec![], pdf_ua: true, ua_issues: vec![] }];
 }
 
 // WP-73: every variant of the chart command arguments.

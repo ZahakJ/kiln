@@ -1,6 +1,6 @@
 [package]
 name = "kiln-io-pdf"
-description = "Writes the Scene of every page to PDF with krilla"
+description = "PDF export, print and print preview through krilla: real text, tags, bookmarks, labels"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -11,6 +11,23 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+kiln-scene.workspace = true
+kiln-doc.workspace = true
+kiln-doc-layout.workspace = true
+kiln-text = { workspace = true, default-features = false }
+rustc-hash.workspace = true
+# Variable fonts: normalised coordinates back to axis values for krilla.
+skrifa.workspace = true
+# PDF writing; `raster-images` for JPEG passthrough and PNG re-encoding.
+krilla = { workspace = true, default-features = false, features = ["raster-images"] }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+# Natively, krilla encodes images and subsets fonts on worker threads.
+krilla = { workspace = true, default-features = false, features = ["raster-images", "rayon"] }
+
+[dev-dependencies]
+kiln-io-docx.workspace = true
+kiln-raster.workspace = true
 
 [lints]
 workspace = true

@@ -96,6 +96,22 @@ pub enum HostOp {
         /// The URL.
         url: String,
     },
+    /// Open a local file in the system's default application (WP-67: the PDF to print, in the
+    /// system viewer and its print dialog). Reply: `Done`.
+    OpenFile {
+        /// The file.
+        path: String,
+    },
+    /// Print a PDF with the platform's print dialog (WP-67: the web build prints it from a
+    /// hidden frame). Reply: `Done`.
+    PrintPdf {
+        /// A name for the job.
+        name: String,
+        /// The PDF.
+        #[serde(with = "kiln_scene::bytes")]
+        #[ts(type = "Array<number>")]
+        bytes: Vec<u8>,
+    },
 }
 
 /// A request to the host.

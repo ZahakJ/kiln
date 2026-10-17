@@ -301,9 +301,29 @@ features with no OOXML counterpart are reported by the Compatibility Checker.
 - **JSON** (`kiln-io-csv`, WP-70): an array of objects becomes a table (keys in the order they
   first appear, typed values); a table saves as an array of objects.
 - **Markdown, plain text and HTML:** open in Kiln Write and export from it.
-- **PDF** (`kiln-io-pdf`, on `krilla`): export only, from the same Scene you
-  see on screen, with subset fonts, the document outline as bookmarks, page
-  labels and tagged structure.
+- **PDF**: export only — see the next section.
+
+## PDF (export and print) — `kiln-io-pdf`
+
+Kiln writes PDF 1.7 with `krilla` 0.8.2 from the same layout and Scene ops that
+paint the document on screen (WP-67; `crates/kiln-io-pdf/README.md`):
+
+- **Text is text**: glyphs from the layout with their exact positions, fonts embedded and
+  subset (CID, `Identity-H`), Unicode from the layout's clusters, so text selects, searches and
+  extracts (99.96 % of the feature corpus's words come back from `pdftotext`).
+- **Pictures**: JPEG embedded unchanged, PNG re-compressed losslessly, GIF/BMP from pixels.
+- **Tagged PDF**, PDF/UA-1 whenever the content allows it (otherwise plain tagged PDF and the
+  reasons — pictures without alt text, glyphs no font has): title, language, `H1`–`H6` from
+  outline levels, `P`, `Table`/`TR`/`TH`/`TD`, `Figure` with alt text, `Link` with annotations,
+  `TOC`/`TOCI`, `Note`; headers, footers, shading and rules are artifacts.
+- **Navigation and metadata**: bookmarks from headings, internal links to bookmarks, page labels
+  from the sections' page-number formats, XMP with title, authors, subject, keywords, language,
+  creator `Kiln Write` and producer `Kiln`.
+- **Options** (File ▸ Print, Export ▸ PDF, `kiln-cli convert in.docx out.pdf --help`): page
+  ranges (`1-3, 5, 8-`), odd/even, copies, scale to Letter/Legal/A3/A4/A5, zoom, 1–16 pages per
+  sheet, grayscale, markup, hidden text, orientation and margin overrides, tags and bookmarks.
+- Print hands the same PDF to the platform: the system PDF viewer on desktop (its print dialog),
+  a hidden frame on the web, `PrintManager` on Android (WP-89).
 
 ## Fonts
 

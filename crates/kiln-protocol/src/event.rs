@@ -61,6 +61,14 @@ pub enum Event {
         /// The summary after saving (path, format, `dirty: false`).
         summary: DocSummary,
     },
+    /// A PDF export finished (WP-67): written to `path`, or `None` when the save dialog was
+    /// cancelled.
+    Exported {
+        /// The document.
+        doc: DocId,
+        /// Where the PDF was written.
+        path: Option<String>,
+    },
     /// A document was closed.
     Closed {
         /// The document.
@@ -108,9 +116,10 @@ impl Event {
             Event::Opened { summary }
             | Event::Changed { summary, .. }
             | Event::Saved { summary } => Some(summary.doc),
-            Event::Closed { doc } | Event::Frame { doc, .. } | Event::Collab { doc, .. } => {
-                Some(*doc)
-            }
+            Event::Closed { doc }
+            | Event::Exported { doc, .. }
+            | Event::Frame { doc, .. }
+            | Event::Collab { doc, .. } => Some(*doc),
             Event::Progress(p) => p.doc,
             Event::Error { doc, .. } => *doc,
             Event::Recovery { .. } | Event::HostRequest(_) => None,

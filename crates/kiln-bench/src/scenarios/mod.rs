@@ -7,6 +7,8 @@
 //! [`harness`]: crate::harness
 
 mod ooxml_repack;
+#[path = "../benches/pdf.rs"]
+mod pdf; // WP-67: PDF export (B11)
 mod recalc;
 mod scratch_frame;
 mod text_layout;
@@ -100,6 +102,11 @@ pub fn all() -> Vec<Bench> {
             name: "xlsx-open",
             description: "Read a 1,000,000-cell .xlsx ready to paint; calc_ms: bind and calculate; full_ms: both (B7)",
             run: xlsx::open,
+        },
+        Bench {
+            name: "pdf-export-300p",
+            description: "Export the open 300-page .docx to tagged PDF: print layout + PDF writer; export_ms: the writer alone (B11)",
+            run: pdf::export_300p,
         },
     ]
 }

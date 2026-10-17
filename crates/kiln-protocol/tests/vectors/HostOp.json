@@ -65,6 +65,26 @@
       }
     },
     {
+      "OpenFile": {
+        "path": "/tmp/kiln-print/Report.pdf"
+      }
+    },
+    {
+      "PrintPdf": {
+        "name": "Report.pdf",
+        "bytes": [
+          37,
+          80,
+          68,
+          70,
+          45,
+          49,
+          46,
+          55
+        ]
+      }
+    },
+    {
       "ReadFile": {
         "path": ""
       }

@@ -355,6 +355,28 @@
       "availability": "Editable"
     },
     {
+      "id": "suite.file.print_pdf",
+      "label_key": "cmd.suite.file.print_pdf",
+      "keytip": null,
+      "group": "file",
+      "tier": "P0",
+      "apps": [
+        "Write"
+      ],
+      "availability": "Document"
+    },
+    {
+      "id": "suite.file.save_pdf",
+      "label_key": "cmd.suite.file.save_pdf",
+      "keytip": null,
+      "group": "file",
+      "tier": "P0",
+      "apps": [
+        "Write"
+      ],
+      "availability": "Document"
+    },
+    {
       "id": "write.edit.insert_text",
       "label_key": "cmd.write.edit.insert_text",
       "keytip": null,

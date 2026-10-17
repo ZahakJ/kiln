@@ -3,10 +3,12 @@ import type { A11yTree } from "./A11yTree";
 import type { CompatIssue } from "./CompatIssue";
 import type { DocSummary } from "./DocSummary";
 import type { ParagraphText } from "./ParagraphText";
+import type { PdfFile } from "./PdfFile";
+import type { PrintPreview } from "./PrintPreview";
 import type { Selection } from "./Selection";
 import type { StatusBar } from "./StatusBar";
 
 /**
  * The answer to a [`Query`], in the same variant.
  */
-export type QueryResult = { "Documents": Array<DocSummary> } | { "Summary": DocSummary } | { "Paragraphs": Array<ParagraphText> } | { "Selection": Selection } | { "Status": StatusBar } | { "A11y": A11yTree } | { "Text": string } | { "CompatReport": Array<CompatIssue> };
+export type QueryResult = { "Documents": Array<DocSummary> } | { "Summary": DocSummary } | { "Paragraphs": Array<ParagraphText> } | { "Selection": Selection } | { "Status": StatusBar } | { "A11y": A11yTree } | { "Text": string } | { "CompatReport": Array<CompatIssue> } | { "PrintPreview": PrintPreview } | { "Pdf": PdfFile };

@@ -8,6 +8,7 @@ import type { ChartLegendPosition } from "./ChartLegendPosition";
 import type { ChartMoveTarget } from "./ChartMoveTarget";
 import type { DocKind } from "./DocKind";
 import type { FileFormat } from "./FileFormat";
+import type { PrintSettings } from "./PrintSettings";
 import type { ViewMode } from "./ViewMode";
 
 /**
@@ -137,4 +138,16 @@ reversed: boolean | null,
 /**
  * Number format code (an empty string links to the source).
  */
-number_format: string | null, } };
+number_format: string | null, } } | { "PrintPdf": { 
+/**
+ * What to print.
+ */
+settings: PrintSettings, } } | { "SavePdf": { 
+/**
+ * The target path; `None` asks the host.
+ */
+path: string | null, 
+/**
+ * What to print.
+ */
+settings: PrintSettings, } };

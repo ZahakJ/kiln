@@ -31,6 +31,16 @@ export const fileCommands = section('File', {}, [
     description: 'Export to PDF, Markdown, HTML or another format.',
   }),
   c('suite.file.export_pdf', 'Export as PDF', 'FileText', { officeName: 'Create PDF/XPS Document' }),
+  // The core's print and PDF commands (WP-67) take the Print / Export panes' settings; the
+  // palette and Ctrl+P reach them through `suite.file.print` and `suite.file.export_pdf`.
+  c('suite.file.print_pdf', 'Print', 'Printer', {
+    description: 'Print the document with the chosen settings through the system print dialog.',
+    palette: false,
+  }),
+  c('suite.file.save_pdf', 'Save as PDF', 'FileText', {
+    description: 'Save the document as a PDF with the chosen settings.',
+    palette: false,
+  }),
   c('suite.file.close', 'Close', 'X', { description: 'Close the document.' }),
   c('ui.backstage.account', 'Account', 'CircleUserRound', { description: 'Theme, language and sign-in.' }),
   c('ui.options.open', 'Options', 'Settings', {

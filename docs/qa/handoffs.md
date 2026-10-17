@@ -859,3 +859,28 @@ WP-54 had to touch these files outside its owned paths; every change is additive
   `comments.threaded`, then the reader's `PptxWarning` codes with origin Open.
 - Fidelity: `cargo xtask fidelity --format pptx` scores 29/29 decks (19 feature + 10 external) at structural 1.000,
   text 1.000, visual ≥ 0.999, LibreOffice opens all, untouched parts byte-identical.
+
+## WP-67 → WP-71/WP-72 (Grid print), WP-80 (Deck print), WP-89 (Android print), WP-53/WP-63 (web fonts), WP-58 (chrome)
+
+- Printing an app = implementing `kiln_io_pdf::PrintablePages` (pages with sizes and labels, `DocInfo`, a
+  `StructTree`, the outline, images by `ImageId`, `paint(i, &mut dyn PageCanvas)` with Scene `DrawOp`s, `TextRun`s
+  for text and `Mark`s) and `DocModel::print` with `kiln_session::print::run(job, &printable)` — see
+  `crates/kiln-session/src/print/mod.rs` and Write's `apps/write/mod.rs::print`. Then add the app to `PRINTABLE`
+  in `apps/web/src/routes/app-frame/AppFrameRoute.tsx` and the `apps` mask of `suite.file.print_pdf` /
+  `suite.file.save_pdf` (now `AppMask::WRITE`). Grid: page setup → sheet pages (print area, titles, gridlines,
+  headings, scaling to N pages wide), `TableHeader` cells for print titles. Deck: slides, handouts (1/2/3/6 per
+  page: impose with your own sheet layout or paint several slides per page) and notes pages; parity row
+  `deck.files.pdf-export` stays `missing` until then.
+- WP-89 (Android): the session sends `HostOp::OpenFile { path }` (a PDF in `<temp>/kiln-print/`) on every native
+  target. On Android the host should hand that file to `PrintManager` (a `PrintDocumentAdapter` streaming the file)
+  instead of opening it.
+- WP-53/WP-63 (web fonts): the web core's font store has Carlito only (`apps/scratch/fonts.rs`). Text whose font
+  resolves to Caladea, Liberation or anything else gets no glyphs on the web — on screen and in print/PDF alike
+  (the fixtures' body text uses the theme's minor font; only the Calibri headings show). Either embed the other
+  bundled families in the wasm (B12 has ~0.8 MB of room) or make `kiln-text` fall back to an available family.
+- WP-58: `suite.file.print` (Ctrl+P) and `suite.file.export_pdf` are now chrome commands in `AppFrame` that open
+  Backstage on Print / Export (registered only when the app gives a Print page); they are UI catalog ids, not core
+  commands (the core's are `suite.file.print_pdf` and `suite.file.save_pdf`).
+- Poppler is the PDF oracle: `crates/kiln-io-pdf/tests/fixtures.rs` needs `pdfinfo`, `pdffonts`, `pdftotext` and
+  `pdftoppm` (CI installs `poppler-utils`).
+

@@ -52,4 +52,16 @@ html: string | null, } } | { "OpenExternal": {
 /**
  * The URL.
  */
-url: string, } };
+url: string, } } | { "OpenFile": { 
+/**
+ * The file.
+ */
+path: string, } } | { "PrintPdf": { 
+/**
+ * A name for the job.
+ */
+name: string, 
+/**
+ * The PDF.
+ */
+bytes: Array<number>, } };

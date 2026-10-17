@@ -7,7 +7,7 @@
 //! ```text
 //! kiln-cli inspect <file> [--xml <part>] [--docx|--pptx] [--json]  parts, relationships; --docx/--pptx: outline and counts
 //! kiln-cli repack <in> <out>                          passthrough round trip, identical parts
-//! kiln-cli convert <in.docx|.xlsx|.pptx> <out>          read and save as Kiln saves (Save As)
+//! kiln-cli convert <in.docx|.xlsx|.pptx> <out>          read and save as Kiln saves (Save As, PDF export)
 //! kiln-cli render <file> --png out/page-%03d.png      pages to PNG [--page N] [--dpi 96] [--dark]
 //! kiln-cli render --scratch <file.txt> --png <out>    one viewport of a scratch document
 //! kiln-cli control                                    JSON control channel over stdio
@@ -23,6 +23,7 @@ mod control;
 mod convert;
 mod convert_deck;
 mod convert_grid;
+mod convert_pdf;
 mod eval;
 mod fidelity;
 mod inspect;

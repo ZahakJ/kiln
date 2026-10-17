@@ -93,6 +93,19 @@ pub trait DocModel: Send + fmt::Debug {
         self.save(format)
     }
 
+    /// Prints: a preview sheet or the PDF (WP-67). Models that print implement it with
+    /// [`crate::print::run`] over their `PrintablePages`.
+    ///
+    /// # Errors
+    ///
+    /// `Unsupported` for models that do not print yet; `InvalidInput` for bad settings.
+    fn print(&self, job: &crate::print::PrintJob<'_>) -> Result<crate::print::PrintOutput> {
+        let _ = job;
+        Err(kiln_common::KilnError::Unsupported(
+            "printing this kind of document".into(),
+        ))
+    }
+
     /// The Compatibility Checker: what saving in `format` loses or changes, then what was lost
     /// or kept read-only on open (WP-65). Empty for models that save everything.
     fn compat_report(&self, format: FileFormat) -> Vec<CompatIssue> {

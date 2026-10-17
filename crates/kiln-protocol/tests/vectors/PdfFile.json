@@ -1,0 +1,20 @@
+{
+  "type": "PdfFile",
+  "format": {
+    "TYPENAME": "PdfFile"
+  },
+  "values": [
+    {
+      "name": "a.pdf",
+      "bytes": [],
+      "pdf_ua": true,
+      "ua_issues": []
+    },
+    {
+      "name": "",
+      "bytes": [],
+      "pdf_ua": false,
+      "ua_issues": []
+    }
+  ]
+}

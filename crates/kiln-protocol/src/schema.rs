@@ -73,6 +73,11 @@ pub fn visit_all(v: &mut impl Visitor) {
         commands::ChartBound,
         commands::ChartState, commands::ChartSeriesState, commands::ChartAxisState,
     );
+    // WP-67: printing and PDF export.
+    visit_types!(v;
+        print::PrintParity, print::PrintPaper, print::PrintOrientation, print::PrintMargins,
+        print::PrintSettings, print::PrintPreview, print::PdfFile,
+    );
 }
 
 /// The ts-rs configuration: 64-bit integers are JavaScript numbers (ids and revisions stay below

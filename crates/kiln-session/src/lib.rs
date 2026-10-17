@@ -20,6 +20,7 @@ pub mod apps;
 pub mod frame;
 mod host;
 mod model;
+pub mod print;
 mod session;
 pub mod undo;
 

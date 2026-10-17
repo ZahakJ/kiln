@@ -1368,6 +1368,20 @@
           }
         },
         "3": {
+          "Exported": {
+            "STRUCT": [
+              {
+                "doc": "U32"
+              },
+              {
+                "path": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "4": {
           "Closed": {
             "STRUCT": [
               {
@@ -1376,7 +1390,7 @@
             ]
           }
         },
-        "4": {
+        "5": {
           "Frame": {
             "STRUCT": [
               {
@@ -1390,14 +1404,14 @@
             ]
           }
         },
-        "5": {
+        "6": {
           "Progress": {
             "NEWTYPE": {
               "TYPENAME": "Progress"
             }
           }
         },
-        "6": {
+        "7": {
           "Recovery": {
             "STRUCT": [
               {
@@ -1410,7 +1424,7 @@
             ]
           }
         },
-        "7": {
+        "8": {
           "Collab": {
             "STRUCT": [
               {
@@ -1425,7 +1439,7 @@
             ]
           }
         },
-        "8": {
+        "9": {
           "Error": {
             "STRUCT": [
               {
@@ -1441,7 +1455,7 @@
             ]
           }
         },
-        "9": {
+        "10": {
           "HostRequest": {
             "NEWTYPE": {
               "TYPENAME": "HostRequest"
@@ -1801,6 +1815,27 @@
               }
             ]
           }
+        },
+        "10": {
+          "OpenFile": {
+            "STRUCT": [
+              {
+                "path": "STR"
+              }
+            ]
+          }
+        },
+        "11": {
+          "PrintPdf": {
+            "STRUCT": [
+              {
+                "name": "STR"
+              },
+              {
+                "bytes": "BYTES"
+              }
+            ]
+          }
         }
       }
     },
@@ -2075,6 +2110,24 @@
         }
       ]
     },
+    "PdfFile": {
+      "STRUCT": [
+        {
+          "name": "STR"
+        },
+        {
+          "bytes": "BYTES"
+        },
+        {
+          "pdf_ua": "BOOL"
+        },
+        {
+          "ua_issues": {
+            "SEQ": "STR"
+          }
+        }
+      ]
+    },
     "Point": {
       "STRUCT": [
         {
@@ -2092,6 +2145,150 @@
         },
         {
           "total": "U32"
+        }
+      ]
+    },
+    "PrintMargins": {
+      "ENUM": {
+        "0": {
+          "Normal": "UNIT"
+        },
+        "1": {
+          "Narrow": "UNIT"
+        },
+        "2": {
+          "Moderate": "UNIT"
+        },
+        "3": {
+          "Wide": "UNIT"
+        }
+      }
+    },
+    "PrintOrientation": {
+      "ENUM": {
+        "0": {
+          "Portrait": "UNIT"
+        },
+        "1": {
+          "Landscape": "UNIT"
+        }
+      }
+    },
+    "PrintPaper": {
+      "ENUM": {
+        "0": {
+          "Letter": "UNIT"
+        },
+        "1": {
+          "Legal": "UNIT"
+        },
+        "2": {
+          "A3": "UNIT"
+        },
+        "3": {
+          "A4": "UNIT"
+        },
+        "4": {
+          "A5": "UNIT"
+        }
+      }
+    },
+    "PrintParity": {
+      "ENUM": {
+        "0": {
+          "All": "UNIT"
+        },
+        "1": {
+          "Odd": "UNIT"
+        },
+        "2": {
+          "Even": "UNIT"
+        }
+      }
+    },
+    "PrintPreview": {
+      "STRUCT": [
+        {
+          "sheets": "U32"
+        },
+        {
+          "sheet": "U32"
+        },
+        {
+          "width_pt": "F32"
+        },
+        {
+          "height_pt": "F32"
+        },
+        {
+          "pages": {
+            "SEQ": "U32"
+          }
+        },
+        {
+          "page_count": "U32"
+        },
+        {
+          "scene": {
+            "TYPENAME": "SceneDelta"
+          }
+        }
+      ]
+    },
+    "PrintSettings": {
+      "STRUCT": [
+        {
+          "pages": "STR"
+        },
+        {
+          "parity": {
+            "TYPENAME": "PrintParity"
+          }
+        },
+        {
+          "copies": "U32"
+        },
+        {
+          "paper": {
+            "OPTION": {
+              "TYPENAME": "PrintPaper"
+            }
+          }
+        },
+        {
+          "scale": "F32"
+        },
+        {
+          "per_sheet": "U32"
+        },
+        {
+          "orientation": {
+            "OPTION": {
+              "TYPENAME": "PrintOrientation"
+            }
+          }
+        },
+        {
+          "margins": {
+            "OPTION": {
+              "TYPENAME": "PrintMargins"
+            }
+          }
+        },
+        {
+          "grayscale": "BOOL"
+        },
+        {
+          "markup": "BOOL"
+        },
+        {
+          "hidden_text": "BOOL"
+        },
+        {
+          "tagged": "BOOL"
+        },
+        {
+          "bookmarks": "BOOL"
         }
       ]
     },
@@ -2144,6 +2341,34 @@
                   "OPTION": {
                     "TYPENAME": "FileFormat"
                   }
+                }
+              }
+            ]
+          }
+        },
+        "8": {
+          "PrintPreview": {
+            "STRUCT": [
+              {
+                "settings": {
+                  "TYPENAME": "PrintSettings"
+                }
+              },
+              {
+                "sheet": "U32"
+              },
+              {
+                "scale": "F32"
+              }
+            ]
+          }
+        },
+        "9": {
+          "Pdf": {
+            "STRUCT": [
+              {
+                "settings": {
+                  "TYPENAME": "PrintSettings"
                 }
               }
             ]
@@ -2210,6 +2435,20 @@
               "SEQ": {
                 "TYPENAME": "CompatIssue"
               }
+            }
+          }
+        },
+        "8": {
+          "PrintPreview": {
+            "NEWTYPE": {
+              "TYPENAME": "PrintPreview"
+            }
+          }
+        },
+        "9": {
+          "Pdf": {
+            "NEWTYPE": {
+              "TYPENAME": "PdfFile"
             }
           }
         }
@@ -2866,6 +3105,33 @@
               {
                 "number_format": {
                   "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "26": {
+          "PrintPdf": {
+            "STRUCT": [
+              {
+                "settings": {
+                  "TYPENAME": "PrintSettings"
+                }
+              }
+            ]
+          }
+        },
+        "27": {
+          "SavePdf": {
+            "STRUCT": [
+              {
+                "path": {
+                  "OPTION": "STR"
+                }
+              },
+              {
+                "settings": {
+                  "TYPENAME": "PrintSettings"
                 }
               }
             ]

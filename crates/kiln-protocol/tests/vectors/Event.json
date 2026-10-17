@@ -141,6 +141,18 @@
       }
     },
     {
+      "Exported": {
+        "doc": 7,
+        "path": "/home/ana/Report.pdf"
+      }
+    },
+    {
+      "Exported": {
+        "doc": 7,
+        "path": null
+      }
+    },
+    {
       "Closed": {
         "doc": 7
       }

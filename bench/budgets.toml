@@ -75,7 +75,7 @@ id = "B11"
 scenario = "PDF export of the 300-page document"
 limit = 2000.0
 unit = "ms"
-pending = "WP-67: pdf-export"
+bench = "pdf-export-300p"
 
 [[budget]]
 id = "B14"

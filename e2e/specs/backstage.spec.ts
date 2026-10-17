@@ -30,6 +30,7 @@ test.describe('backstage', () => {
       'Info',
       'Save',
       'Save As',
+      'Print',
       'Export',
       'Close',
       'Account',

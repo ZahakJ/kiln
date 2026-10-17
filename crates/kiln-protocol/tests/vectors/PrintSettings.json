@@ -1,0 +1,53 @@
+{
+  "type": "PrintSettings",
+  "format": {
+    "TYPENAME": "PrintSettings"
+  },
+  "values": [
+    {
+      "pages": "",
+      "parity": "All",
+      "copies": 1,
+      "paper": null,
+      "scale": 1.0,
+      "per_sheet": 1,
+      "orientation": null,
+      "margins": null,
+      "grayscale": false,
+      "markup": true,
+      "hidden_text": false,
+      "tagged": true,
+      "bookmarks": true
+    },
+    {
+      "pages": "1-3, 5, 8-",
+      "parity": "Odd",
+      "copies": 300,
+      "paper": "A4",
+      "scale": 0.75,
+      "per_sheet": 4,
+      "orientation": "Landscape",
+      "margins": "Narrow",
+      "grayscale": true,
+      "markup": false,
+      "hidden_text": true,
+      "tagged": true,
+      "bookmarks": false
+    },
+    {
+      "pages": "",
+      "parity": "All",
+      "copies": 0,
+      "paper": null,
+      "scale": 0.0,
+      "per_sheet": 0,
+      "orientation": null,
+      "margins": null,
+      "grayscale": false,
+      "markup": false,
+      "hidden_text": false,
+      "tagged": false,
+      "bookmarks": false
+    }
+  ]
+}

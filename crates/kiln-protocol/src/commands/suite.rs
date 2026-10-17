@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
 use crate::app::{AppMask, DocKind, FileFormat};
+use crate::print::PrintSettings;
 use crate::viewport::ViewMode;
 
 /// Suite-wide commands.
@@ -149,6 +150,21 @@ pub enum SuiteCommand {
         /// Number format code (an empty string links to the source).
         number_format: Option<String>,
     },
+    // ── Print and PDF (WP-67).
+    /// Print: natively the PDF goes to a temporary file the system viewer opens (its print
+    /// dialog prints it); on the web the page prints it from a hidden frame.
+    PrintPdf {
+        /// What to print.
+        settings: PrintSettings,
+    },
+    /// Export ▸ PDF where the core writes files (desktop): the save dialog when `path` is
+    /// `None`, then the file; `Event::Exported` reports where (or the cancelled dialog).
+    SavePdf {
+        /// The target path; `None` asks the host.
+        path: Option<String>,
+        /// What to print.
+        settings: PrintSettings,
+    },
 }
 
 crate::command_table! {
@@ -256,6 +272,14 @@ crate::command_table! {
     Self::ChartFormatAxis { .. } => {
         id: "suite.chart.format_axis", keytip: None, group: "chart",
         tier: P0, apps: CHART_APPS, availability: Editable,
+    };
+    Self::PrintPdf { .. } => {
+        id: "suite.file.print_pdf", keytip: None, group: "file",
+        tier: P0, apps: AppMask::WRITE, availability: Document,
+    };
+    Self::SavePdf { .. } => {
+        id: "suite.file.save_pdf", keytip: None, group: "file",
+        tier: P0, apps: AppMask::WRITE, availability: Document,
     };
 }
 

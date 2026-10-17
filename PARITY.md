@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **12.9 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **13.3 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,16 +12,16 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 12.9 % | 782 | 1 | 42 | 97 | 642 | 20 |
+| **Overall** | 13.3 % | 782 | 1 | 44 | 97 | 640 | 20 |
 | Kiln Write | 7.1 % | 231 | 0 | 2 | 26 | 203 | 1 |
 | Kiln Grid | 19.1 % | 261 | 0 | 25 | 41 | 195 | 6 |
 | Kiln Deck | 14.1 % | 184 | 0 | 13 | 20 | 151 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
-| Suite | 14.5 % | 62 | 1 | 2 | 10 | 49 | 9 |
+| Suite | 18.4 % | 62 | 1 | 4 | 10 | 47 | 9 |
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 14.1 % | 462 | 0 | 36 | 58 | 368 | 0 |
+| critical | 14.5 % | 462 | 0 | 38 | 58 | 366 | 0 |
 | commonly-missed | 10.5 % | 224 | 1 | 4 | 37 | 182 | 0 |
 | niche | 3.1 % | 96 | 0 | 2 | 2 | 92 | 20 |
 
@@ -31,7 +31,7 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 | Kiln Grid | 21.0 % (143) | 15.7 % (83) | 7.1 % (35) |
 | Kiln Deck | 15.1 % (119) | 11.9 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
-| Suite | 19.4 % (31) | 6.9 % (29) | 0.0 % (2) |
+| Suite | 25.8 % (31) | 6.9 % (29) | 0.0 % (2) |
 
 ## Better than Office
 
@@ -219,6 +219,8 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `suite.files.ooxml` | Open and save .docx, .xlsx, .pptx | missing | partial |
 | `suite.files.byte-preserving` | Byte-preserving saves: every part not edited is byte-identical after save | missing | partial |
 | `suite.files.macros-preserve` | Macro-enabled files (.docm/.xlsm/.pptm): vbaProject.bin preserved, never run | missing | partial |
+| `suite.files.pdf-export` | Export PDF with fonts subset, outlines from headings and tagged PDF | missing | done |
+| `suite.files.print` | Print with preview (Ctrl+P): printer, pages, copies, orientation, scaling, margins | missing | done |
 | `suite.files.compatibility-checker` | Compatibility checker: features that will not survive .docx/.xlsx/.pptx | missing | partial |
 | `suite.themes.light-dark` | Light, dark and system themes | missing | done |
 | `suite.security.hostile-files` | Hostile files refused cleanly (zip bombs, billion laughs, deep nesting) | missing | partial |
@@ -1621,7 +1623,7 @@ Score 0.0 % over 44 rows in scope; 0 better, 0 done, 0 partial, 44 missing, 1 ou
 
 ## Suite
 
-Score 14.5 % over 62 rows in scope; 1 better, 2 done, 10 partial, 49 missing, 9 out of scope.
+Score 18.4 % over 62 rows in scope; 1 better, 4 done, 10 partial, 47 missing, 9 out of scope.
 
 ### Chrome
 
@@ -1657,8 +1659,8 @@ Score 14.5 % over 62 rows in scope; 1 better, 2 done, 10 partial, 49 missing, 9 
 | ◐ | Macro-enabled files (.docm/.xlsm/.pptm): vbaProject.bin preserved, never run | Office ▸ macro-enabled formats | critical | P0 | WP-65 | `suite.files.macros-preserve` |
 | ○ | ODF .odt/.ods/.odp import and export | Office ▸ OpenDocument | commonly-missed | P1 | WP-87 | `suite.files.odf` |
 | ○ | Native bundles (.kwrite/.kgrid/.kdeck) with history | — | commonly-missed | P0 | WP-83 | `suite.files.native-bundles` |
-| ○ | Export PDF with fonts subset, outlines from headings and tagged PDF | Office ▸ Export ▸ PDF | critical | P0 | WP-67 | `suite.files.pdf-export` |
-| ○ | Print with preview (Ctrl+P): printer, pages, copies, orientation, scaling, margins | Office ▸ File ▸ Print | critical | P0 | WP-67 | `suite.files.print` |
+| ● | Export PDF with fonts subset, outlines from headings and tagged PDF | Office ▸ Export ▸ PDF | critical | P0 | WP-67 | `suite.files.pdf-export` |
+| ● | Print with preview (Ctrl+P): printer, pages, copies, orientation, scaling, margins | Office ▸ File ▸ Print | critical | P0 | WP-67 | `suite.files.print` |
 | ○ | File associations and open-with on desktop and Android | Office ▸ file associations | critical | P0 | WP-88 | `suite.files.file-association` |
 | ◐ | Compatibility checker: features that will not survive .docx/.xlsx/.pptx | Office ▸ File ▸ Info ▸ Check for Issues | commonly-missed | P0 | WP-85 | `suite.files.compatibility-checker` |
 | ○ | Document properties (title, author, words, pages, created, modified) | Office ▸ File ▸ Info ▸ Properties | critical | P0 | WP-85 | `suite.files.properties` |

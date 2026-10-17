@@ -20,6 +20,7 @@ pub mod event;
 pub mod exec;
 pub mod geom;
 pub mod host;
+pub mod print;
 pub mod query;
 pub mod scene;
 pub mod selection;
@@ -43,6 +44,9 @@ pub use event::{Event, Progress, RecoveryEntry};
 pub use exec::{CoreInfo, ExecResult, ExecValue, Outcome};
 pub use host::{FileFilter, HostOp, HostReply, HostRequest, RecentFile, RequestId};
 pub use kiln_common::{DocId, ErrorKind, NodeId};
+pub use print::{
+    PdfFile, PrintMargins, PrintOrientation, PrintPaper, PrintParity, PrintPreview, PrintSettings,
+};
 pub use query::{CompatIssue, CompatOrigin, CompatSeverity, ParagraphText, Query, QueryResult};
 pub use scene::SceneDelta;
 pub use selection::{

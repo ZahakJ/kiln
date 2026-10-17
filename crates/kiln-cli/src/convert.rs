@@ -3,7 +3,7 @@
 //! extension names, the way Kiln saves it (File ▸ Save As).
 //!
 //! - Word documents: `.docx`, `.docm`, `.dotx` and `.dotm` in and out (a macro-enabled document
-//!   saved as `.docx` loses its macros); PDF export arrives with the PDF writer (WP-67). Every
+//!   saved as `.docx` loses its macros) and `.pdf` out ([`crate::convert_pdf`], WP-67). Every
 //!   part is written from the model (nothing is copied because it was not edited); parts the
 //!   model does not cover, media and an unchanged theme are carried over byte for byte. The
 //!   Compatibility Checker's findings for the save are printed after the summary.
@@ -28,7 +28,7 @@ use kiln_ooxml::opc::OpcPackage;
 use crate::CliError;
 
 /// Usage text.
-pub const USAGE: &str = "kiln-cli convert <in.docx|.xlsx|.pptx|.csv|.tsv|.json> <out.docx|.docm|.dotx|.dotm|.xlsx|.xlsm|.xltx|.xltm|.pptx|.pptm|.potx|.potm|.ppsx|.ppsm|.csv|.tsv|.json>";
+pub const USAGE: &str = "kiln-cli convert <in.docx|.xlsx|.pptx|.csv|.tsv|.json> <out.pdf|.docx|.docm|.dotx|.dotm|.xlsx|.xlsm|.xltx|.xltm|.pptx|.pptm|.potx|.potm|.ppsx|.ppsm|.csv|.tsv|.json>";
 
 /// Workbook formats `convert` reads and writes.
 fn grid_format(ext: &str) -> bool {
@@ -69,6 +69,13 @@ pub(crate) fn now_w3cdtf() -> String {
 ///
 /// Usage errors, unsupported formats, unreadable input, unwritable output.
 pub fn run(args: &[String]) -> Result<String, CliError> {
+    if let [i, o, rest @ ..] = args
+        && !i.starts_with('-')
+        && extension(Path::new(o)) == "pdf"
+        && word_kind(&extension(Path::new(i))).is_some()
+    {
+        return crate::convert_pdf::run(Path::new(i), Path::new(o), rest);
+    }
     let (input, output) = match args {
         [i, o] if !i.starts_with('-') && !o.starts_with('-') => {
             (PathBuf::from(i), PathBuf::from(o))
@@ -113,7 +120,7 @@ pub fn run(args: &[String]) -> Result<String, CliError> {
     }
     let Some(target) = word_kind(&out_ext) else {
         let hint = if out_ext == "pdf" {
-            " (PDF export arrives with the PDF writer)"
+            " (PDF export takes Word documents)"
         } else {
             ""
         };
@@ -246,7 +253,7 @@ mod tests {
         let _ = std::fs::remove_file(&out);
         assert!(run(&["a.docx".into()]).is_err());
         assert!(run(&["a.txt".into(), "b.docx".into()]).is_err());
-        let pdf = run(&[input.to_string_lossy().into_owned(), "x.pdf".into()]).unwrap_err();
-        assert!(pdf.to_string().contains("PDF"));
+        let pdf = run(&["a.xlsx".into(), "x.pdf".into()]).unwrap_err();
+        assert!(pdf.to_string().contains("pdf"), "{pdf}");
     }
 }

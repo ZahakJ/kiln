@@ -22,6 +22,14 @@ export {
   BackstageOpenPage,
   type FormatChoice,
 } from './backstage/pages.tsx';
+// WP-67: File ▸ Print, Export ▸ PDF and the print preview.
+export {
+  ExportPdfPane,
+  type ExportPdfPaneProps,
+  type PdfExportOutcome,
+} from './backstage/print/ExportPdfPane.tsx';
+export { type PrintDestination, PrintPane, type PrintPaneProps } from './backstage/print/PrintPane.tsx';
+export { DEFAULT_PRINT_SETTINGS, sheetLabel } from './backstage/print/settings.ts';
 export * from './charts/index.ts';
 export * from './chrome/index.ts';
 export { CommandMenuItems, isCommandEntry, type MenuEntry } from './contextmenu/CommandMenuItems.tsx';
@@ -38,6 +46,8 @@ export {
 export { CommandPalette, type CommandPaletteProps } from './palette/CommandPalette.tsx';
 export { type PaneSide, type TaskPane, TaskPaneHost, type TaskPaneHostProps } from './panes/TaskPaneHost.tsx';
 export * from './primitives/index.ts';
+export { PrintPreview, type PrintPreviewProps, sceneCssSize } from './print/PrintPreview.tsx';
+export { downloadPdf, isPdf, pdfFileName } from './print/printPdf.ts';
 export * from './ribbon/index.ts';
 export {
   StatusBar,

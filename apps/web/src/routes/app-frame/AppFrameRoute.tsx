@@ -22,6 +22,7 @@ import {
   type DocSummary,
   type FileFormat,
   KilnError,
+  type PrintSettings,
   type RecentFile,
   WebHost,
 } from '@kiln/protocol';
@@ -33,7 +34,11 @@ import {
   BackstageInfoPage,
   BackstageNewPage,
   BackstageOpenPage,
+  downloadPdf,
+  ExportPdfPane,
   type FormatChoice,
+  type PdfExportOutcome,
+  PrintPane,
   ribbonFromData,
   StripButton,
   useTheme,
@@ -76,9 +81,11 @@ const SAVE_FORMATS: Readonly<Record<EditorApp, readonly FormatChoice[]>> = {
 };
 
 const EXPORT_FORMATS: readonly FormatChoice[] = [
-  { format: 'Pdf', label: 'PDF', note: 'Exactly as it looks on screen and in print' },
   { format: 'Md', label: 'Markdown', note: 'Text and structure, for the web and wikis' },
 ];
+
+/** Apps whose documents print and export to PDF (Grid and Deck register theirs in their WPs). */
+const PRINTABLE: readonly EditorApp[] = ['write'];
 
 const EXTENSIONS: Partial<Record<FileFormat, string>> = {
   Docx: '.docx',
@@ -216,11 +223,74 @@ export function AppFrameRoute({ app, doc, prefs }: { app: EditorApp; doc: number
     }
   }, [client, summary]);
 
+  // File ▸ Print and Export ▸ PDF (WP-67): everything is rendered by the core.
+  const docId = summary?.doc ?? null;
+  const requestPreview = useCallback(
+    async (settings: PrintSettings, sheet: number, scale: number) => {
+      if (!client || docId === null) throw new Error('No document is open.');
+      try {
+        const r = await client.query(docId, { PrintPreview: { settings, sheet, scale } });
+        if (!('PrintPreview' in r)) throw new Error('The core did not return a preview.');
+        return r.PrintPreview;
+      } catch (error) {
+        throw new Error(KilnError.from(error).message);
+      }
+    },
+    [client, docId],
+  );
+  const printDocument = useCallback(
+    async (settings: PrintSettings) => {
+      if (!client || docId === null) throw new Error('No document is open.');
+      try {
+        await client.execute(docId, { Suite: { PrintPdf: { settings } } });
+      } catch (error) {
+        throw new Error(KilnError.from(error).message);
+      }
+    },
+    [client, docId],
+  );
+  const exportPdf = useCallback(
+    async (settings: PrintSettings): Promise<PdfExportOutcome | null> => {
+      if (!client || docId === null) throw new Error('No document is open.');
+      try {
+        const r = await client.query(docId, { Pdf: { settings } });
+        if (!('Pdf' in r)) throw new Error('The core did not return a PDF.');
+        const pdf = r.Pdf;
+        if (client.bridge === 'tauri') {
+          // The native core writes files itself, after the save dialog; `Exported` says where
+          // (or that the dialog was cancelled).
+          const exported = new Promise<string | null>((resolve, reject) => {
+            const stop = client.subscribe((event) => {
+              if ('Exported' in event && event.Exported.doc === docId) {
+                stop();
+                resolve(event.Exported.path);
+              } else if ('Error' in event && event.Error.doc === docId) {
+                stop();
+                reject(new Error(event.Error.error.message));
+              }
+            });
+          });
+          await client.execute(docId, { Suite: { SavePdf: { path: null, settings } } });
+          const path = await exported;
+          if (path === null) return null;
+          return { name: path, pdfUa: pdf.pdf_ua, uaIssues: pdf.ua_issues };
+        } else {
+          downloadPdf(pdf.bytes, pdf.name);
+        }
+        return { name: pdf.name, pdfUa: pdf.pdf_ua, uaIssues: pdf.ua_issues };
+      } catch (error) {
+        throw new Error(KilnError.from(error).message);
+      }
+    },
+    [client, docId],
+  );
+  const printable = PRINTABLE.includes(app) && docId !== null;
+
   const browse = () => {
     pendingOpen.current = true;
     execute('suite.file.open');
   };
-  const backstage: Record<string, ReactNode> = {
+  const backstage: Record<string, ReactNode | undefined> = {
     home: <BackstageOpenPage recent={recent} onOpenRecent={(f) => openRecent(f)} onBrowse={browse} />,
     new: (
       <BackstageNewPage
@@ -255,11 +325,25 @@ export function AppFrameRoute({ app, doc, prefs }: { app: EditorApp; doc: number
         onChoose={(format) => execute('suite.file.save_as', { format })}
       />
     ),
-    export: (
-      <BackstageFormatsPage
-        formats={EXPORT_FORMATS}
-        onChoose={(format) => execute('suite.file.save_as', { format })}
+    print: printable ? (
+      <PrintPane
+        requestPreview={requestPreview}
+        onPrint={printDocument}
+        onSavePdf={async (s) => {
+          await exportPdf(s);
+        }}
+        textOptions={app === 'write'}
       />
+    ) : undefined,
+    export: (
+      <>
+        {printable ? <ExportPdfPane onExport={exportPdf} textOptions={app === 'write'} /> : null}
+        <BackstageFormatsPage
+          formats={EXPORT_FORMATS}
+          intro={printable ? 'Other formats' : undefined}
+          onChoose={(format) => execute('suite.file.save_as', { format })}
+        />
+      </>
     ),
     account: (
       <BackstageAccountPage

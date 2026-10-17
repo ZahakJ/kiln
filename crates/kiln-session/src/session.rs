@@ -6,8 +6,9 @@ use std::collections::{BTreeMap, VecDeque};
 use kiln_common::{DocId, KilnError, Result};
 use kiln_protocol::{
     A11yTree, App, Availability, Command, CoreInfo, DocKind, DocSummary, Event, ExecResult,
-    ExecValue, FileFilter, FileFormat, HostOp, HostReply, HostRequest, OpenHint, Outcome, Query,
-    QueryResult, RequestId, SceneDelta, StatusBar, SuiteCommand, ViewMode, Viewport,
+    ExecValue, FileFilter, FileFormat, HostOp, HostReply, HostRequest, OpenHint, Outcome, PdfFile,
+    PrintSettings, Query, QueryResult, RequestId, SceneDelta, StatusBar, SuiteCommand, ViewMode,
+    Viewport,
 };
 
 use crate::frame::FrameState;
@@ -56,6 +57,15 @@ enum Pending {
     },
     /// A request whose reply only needs to be acknowledged (preferences, clipboard writes).
     Ignore,
+    /// Export ▸ PDF: save dialog → write the PDF (WP-67).
+    PdfPick {
+        doc: DocId,
+        settings: Box<PrintSettings>,
+    },
+    /// The PDF was written → `Event::Exported`.
+    PdfWrite { doc: DocId, path: String },
+    /// Print handed to the host: only a failure is reported.
+    Printed { doc: DocId },
 }
 
 /// The facade over the whole core: the only API the bridges use (PLAN.md §3.3).
@@ -438,6 +448,10 @@ impl Session {
                 }
             }
             SuiteCommand::SaveAs { path, format } => self.save_as(require(doc)?, path, format),
+            SuiteCommand::PrintPdf { settings } => self.print_pdf(require(doc)?, &settings),
+            SuiteCommand::SavePdf { path, settings } => {
+                self.save_pdf(require(doc)?, path, settings)
+            }
             SuiteCommand::Close => {
                 let id = require(doc)?;
                 self.docs.remove(&id);
@@ -618,6 +632,102 @@ impl Session {
         })
     }
 
+    // ----- print and PDF (WP-67) -----------------------------------------------------------------
+
+    /// The PDF of a document printed with `settings`.
+    fn pdf(&self, id: DocId, settings: &PrintSettings) -> Result<PdfFile> {
+        let d = self.doc(id)?;
+        let job = crate::print::PrintJob::Pdf {
+            settings,
+            title: &d.title,
+        };
+        match d.model.print(&job)? {
+            crate::print::PrintOutput::Pdf(mut f) => {
+                f.name = crate::print::pdf_name(&d.title);
+                Ok(f)
+            }
+            crate::print::PrintOutput::Preview(_) => {
+                Err(KilnError::Internal("a preview instead of a PDF".into()))
+            }
+        }
+    }
+
+    /// Print: natively a temporary PDF the system viewer opens (and prints from its dialog); on
+    /// the web the page prints the bytes from a hidden frame.
+    fn print_pdf(&mut self, id: DocId, settings: &PrintSettings) -> Result<ExecResult> {
+        let f = self.pdf(id, settings)?;
+        #[cfg(not(target_arch = "wasm32"))]
+        let op = HostOp::OpenFile {
+            path: crate::print::write_temp(&f)?,
+        };
+        #[cfg(target_arch = "wasm32")]
+        let op = HostOp::PrintPdf {
+            name: f.name,
+            bytes: f.bytes,
+        };
+        let outcome = self.request(op, Pending::Printed { doc: id });
+        Ok(ExecResult {
+            outcome,
+            summary: Some(self.summary(id)?),
+            value: ExecValue::None,
+        })
+    }
+
+    /// Export ▸ PDF to a path, or through the save dialog first.
+    fn save_pdf(
+        &mut self,
+        id: DocId,
+        path: Option<String>,
+        settings: PrintSettings,
+    ) -> Result<ExecResult> {
+        match path {
+            Some(path) => self.write_pdf(id, path, &settings),
+            None => {
+                let title = self.doc(id)?.title.clone();
+                let op = HostOp::PickSave {
+                    suggested_name: crate::print::pdf_name(&title),
+                    filters: vec![FileFilter {
+                        name: "PDF".into(),
+                        extensions: vec!["pdf".into()],
+                    }],
+                };
+                let outcome = self.request(
+                    op,
+                    Pending::PdfPick {
+                        doc: id,
+                        settings: Box::new(settings),
+                    },
+                );
+                Ok(ExecResult {
+                    outcome,
+                    summary: Some(self.summary(id)?),
+                    value: ExecValue::None,
+                })
+            }
+        }
+    }
+
+    fn write_pdf(
+        &mut self,
+        id: DocId,
+        path: String,
+        settings: &PrintSettings,
+    ) -> Result<ExecResult> {
+        let f = self.pdf(id, settings)?;
+        let outcome = self.request(
+            HostOp::WriteFile {
+                path: path.clone(),
+                bytes: f.bytes,
+            },
+            Pending::PdfWrite { doc: id, path },
+        );
+        Ok(ExecResult {
+            outcome,
+            summary: Some(self.summary(id)?),
+            value: ExecValue::None,
+        })
+    }
+
     // ----- host --------------------------------------------------------------------------------
 
     /// Sends `op` to the host; continues at once when it answers synchronously, otherwise emits
@@ -647,7 +757,11 @@ impl Session {
             .remove(&id)
             .ok_or_else(|| KilnError::not_found(format!("host request {}", id.0)))?;
         self.in_flight = match &pending {
-            Pending::SavePick { doc, .. } | Pending::SaveWrite { doc, .. } => Some(*doc),
+            Pending::SavePick { doc, .. }
+            | Pending::SaveWrite { doc, .. }
+            | Pending::PdfPick { doc, .. }
+            | Pending::PdfWrite { doc, .. }
+            | Pending::Printed { doc } => Some(*doc),
             _ => None,
         };
         self.continue_with(pending, reply);
@@ -692,12 +806,31 @@ impl Session {
 
     fn continue_with(&mut self, pending: Pending, reply: HostReply) {
         let doc = match &pending {
-            Pending::SavePick { doc, .. } | Pending::SaveWrite { doc, .. } => Some(*doc),
+            Pending::SavePick { doc, .. }
+            | Pending::SaveWrite { doc, .. }
+            | Pending::PdfPick { doc, .. }
+            | Pending::PdfWrite { doc, .. }
+            | Pending::Printed { doc } => Some(*doc),
             _ => None,
         };
         match (pending, reply) {
+            (Pending::PdfPick { doc, .. }, HostReply::Cancelled) => {
+                self.events.push_back(Event::Exported { doc, path: None });
+            }
             (_, HostReply::Cancelled) | (Pending::Ignore, _) => {}
             (_, HostReply::Failed(e)) => self.events.push_back(Event::Error { doc, error: e }),
+            (Pending::PdfPick { doc, settings }, HostReply::Path(path)) => {
+                if let Err(e) = self.write_pdf(doc, path, &settings) {
+                    self.fail(Some(doc), &e);
+                }
+            }
+            (Pending::PdfWrite { doc, path }, HostReply::Done) => {
+                self.events.push_back(Event::Exported {
+                    doc,
+                    path: Some(path),
+                });
+            }
+            (Pending::Printed { .. }, HostReply::Done) => {}
             (Pending::OpenPick, HostReply::Path(path)) => {
                 self.request(
                     HostOp::ReadFile { path: path.clone() },
@@ -779,6 +912,24 @@ impl Session {
             Query::Status => QueryResult::Status(Self::status_of(d)),
             Query::A11y => QueryResult::A11y(d.model.a11y(&d.title)),
             Query::SelectedText => QueryResult::Text(d.model.selected_text().unwrap_or_default()),
+            Query::PrintPreview {
+                settings,
+                sheet,
+                scale,
+            } => {
+                let job = crate::print::PrintJob::Preview {
+                    settings,
+                    sheet: *sheet,
+                    scale: *scale,
+                };
+                match d.model.print(&job)? {
+                    crate::print::PrintOutput::Preview(p) => QueryResult::PrintPreview(p),
+                    crate::print::PrintOutput::Pdf(_) => {
+                        return Err(KilnError::Internal("a PDF instead of a preview".into()));
+                    }
+                }
+            }
+            Query::Pdf { settings } => QueryResult::Pdf(self.pdf(id, settings)?),
             Query::CompatReport { format } => {
                 let format = format
                     .or(d.format.filter(|f| d.model.save_formats().contains(f)))

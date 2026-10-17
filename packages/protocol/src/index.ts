@@ -33,6 +33,7 @@ export {
   SCHEMA,
   shortestF32,
 } from './postcard';
+export { printPdfInFrame } from './print-frame';
 export { WasmWorkerClient, type WorkerLike } from './wasm-worker-client';
 export { serveRequest } from './worker-host';
 export type { PostTarget, WasmSession, WorkerMessage, WorkerMethods, WorkerRequest } from './worker-protocol';

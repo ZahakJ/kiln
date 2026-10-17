@@ -198,6 +198,57 @@
       ]
     },
     {
+      "PrintPreview": {
+        "sheets": 12,
+        "sheet": 1,
+        "width_pt": 612.0,
+        "height_pt": 792.0,
+        "pages": [
+          2,
+          3
+        ],
+        "page_count": 300,
+        "scene": {
+          "revision": 42,
+          "reset": false,
+          "scale": 2.0,
+          "extent": {
+            "x": 0.0,
+            "y": 0.0,
+            "w": 0.0,
+            "h": 0.0
+          },
+          "background": {
+            "Rgba": 0
+          },
+          "tiles": [],
+          "removed": [],
+          "atlas": [],
+          "images": [],
+          "overlay": null
+        }
+      }
+    },
+    {
+      "Pdf": {
+        "name": "Quarterly report «Ünïcödé».pdf",
+        "bytes": [
+          37,
+          80,
+          68,
+          70,
+          45,
+          49,
+          46,
+          55
+        ],
+        "pdf_ua": false,
+        "ua_issues": [
+          "a figure has no alt text"
+        ]
+      }
+    },
+    {
       "Documents": [
         {
           "doc": 0,

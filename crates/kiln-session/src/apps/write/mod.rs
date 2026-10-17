@@ -114,6 +114,8 @@ pub struct WriteDoc {
     original: Option<save::Original>,
     /// The parts the edits since opening touched.
     touched: TouchedParts,
+    /// The layout for print, kept between previews (WP-67).
+    print: crate::print::PrintCache,
 }
 
 impl WriteDoc {
@@ -135,6 +137,7 @@ impl WriteDoc {
             next_state: 1,
             original: None,
             touched: TouchedParts::new(),
+            print: crate::print::PrintCache::new(),
         }
     }
 
@@ -530,6 +533,22 @@ impl DocModel for WriteDoc {
 
     fn compat_report(&self, format: FileFormat) -> Vec<kiln_protocol::CompatIssue> {
         save::compat(&self.doc, self.original.as_ref(), &self.warnings, format)
+    }
+
+    fn print(&self, job: &crate::print::PrintJob<'_>) -> Result<crate::print::PrintOutput> {
+        let name = self
+            .file_name
+            .as_deref()
+            .map(|n| n.rsplit(['/', '\\']).next().unwrap_or(n).to_owned());
+        let title = match job {
+            crate::print::PrintJob::Pdf { title, .. } => (*title).to_owned(),
+            crate::print::PrintJob::Preview { .. } => name.as_deref().map_or_else(
+                || "Document".to_owned(),
+                |n| n.trim_end_matches(".docx").to_owned(),
+            ),
+        };
+        self.print
+            .print_write(&self.doc, self.state, name.as_deref(), &title, job)
     }
 }
 

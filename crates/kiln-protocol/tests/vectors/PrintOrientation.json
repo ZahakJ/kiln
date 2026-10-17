@@ -1,0 +1,11 @@
+{
+  "type": "PrintOrientation",
+  "format": {
+    "TYPENAME": "PrintOrientation"
+  },
+  "values": [
+    "Portrait",
+    "Landscape",
+    "Portrait"
+  ]
+}
