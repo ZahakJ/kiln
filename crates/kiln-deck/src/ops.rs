@@ -19,7 +19,7 @@ use crate::animation::{Effect, TriggerSequence};
 use crate::dml::serde_xml::xml;
 use crate::error::{DeckError, Result};
 use crate::geom::{ChildSpace, Transform};
-use crate::presentation::{Owner, Part, Presentation, shape_ids};
+use crate::presentation::{Owner, Part, Presentation, check_kind_tree, check_shapes, shape_ids};
 use crate::shape::{Placeholder, Shape, ShapeKind, ShapeProps};
 use crate::slide::{
     Background, ColorMapping, Comment, HeaderFooter, Layout, Master, Notes, Section, Slide,
@@ -520,6 +520,28 @@ fn invalid(m: impl Into<String>) -> DeckError {
     DeckError::InvalidOp(m.into())
 }
 
+/// Refuses shapes that loading would refuse (out-of-range transforms, broken tables, invalid
+/// text), so an applied transaction never leaves a presentation that cannot be reopened.
+fn check_new_shapes<'a>(shapes: impl IntoIterator<Item = &'a Shape>) -> Result<()> {
+    check_shapes(shapes).map_err(as_invalid)
+}
+
+fn as_invalid(e: DeckError) -> DeckError {
+    match e {
+        DeckError::Corrupt(m) => DeckError::InvalidOp(m),
+        e => e,
+    }
+}
+
+fn check_xfrm(x: Option<&Transform>) -> Result<()> {
+    if x.is_some_and(|x| !x.is_valid()) {
+        return Err(invalid(
+            "the position, size or rotation is outside the DrawingML range",
+        ));
+    }
+    Ok(())
+}
+
 fn ids_of_master(m: &Master) -> Vec<NodeId> {
     let mut out = vec![m.id];
     shape_ids(&m.shapes, &mut out);
@@ -593,16 +615,9 @@ impl Presentation {
                 }
             }
         }
-        if !self.sections.is_empty() {
-            let total: usize = self.sections.iter().map(|s| s.len).sum();
-            if total != self.slides.len() {
-                let e = invalid(format!(
-                    "sections hold {total} slides but there are {}",
-                    self.slides.len()
-                ));
-                rollback(self, inverses);
-                return Err(e);
-            }
+        if let Err(m) = self.check_sections() {
+            rollback(self, inverses);
+            return Err(invalid(m));
         }
         inverses.reverse();
         Ok(Transaction {
@@ -760,6 +775,12 @@ impl Presentation {
                 if master.layouts.is_empty() {
                     return Err(invalid("a master needs a layout"));
                 }
+                check_new_shapes(
+                    master
+                        .shapes
+                        .iter()
+                        .chain(master.layouts.iter().flat_map(|l| &l.shapes)),
+                )?;
                 let ids = ids_of_master(&master);
                 self.check_fresh(&ids, &[])?;
                 self.bump_ids(&ids);
@@ -827,6 +848,7 @@ impl Presentation {
                 if index > len {
                     return Err(range(index, len));
                 }
+                check_new_shapes(&layout.shapes)?;
                 let ids = ids_of_layout(&layout);
                 self.check_fresh(&ids, &[])?;
                 self.bump_ids(&ids);
@@ -973,6 +995,11 @@ impl Presentation {
                 if let Some(bad) = slide.timeline.shape_refs().find(|t| !on.contains(t)) {
                     return Err(invalid(format!("an effect targets missing shape {bad}")));
                 }
+                check_new_shapes(&slide.shapes)?;
+                if let Some(n) = &slide.notes {
+                    n.text.validate()?;
+                    check_new_shapes(&n.shapes)?;
+                }
                 let ids = ids_of_slide(&slide);
                 self.check_fresh(&ids, &[])?;
                 self.bump_ids(&ids);
@@ -1027,6 +1054,7 @@ impl Presentation {
             Op::SetNotes { slide, notes } => {
                 if let Some(n) = &notes {
                     n.text.validate()?;
+                    check_new_shapes(&n.shapes)?;
                     let mut ids = Vec::new();
                     shape_ids(&n.shapes, &mut ids);
                     let mut old = Vec::new();
@@ -1219,6 +1247,7 @@ impl Presentation {
                 if index > len {
                     return Err(range(index, len));
                 }
+                check_new_shapes(&shapes)?;
                 let mut ids = Vec::new();
                 shape_ids(&shapes, &mut ids);
                 self.check_fresh(&ids, &[])?;
@@ -1279,6 +1308,7 @@ impl Presentation {
                 }
             }
             Op::SetTransform { shape, xfrm } => {
+                check_xfrm(xfrm.as_ref())?;
                 let s = self.shape_mut(shape).ok_or(DeckError::UnknownNode(shape))?;
                 Op::SetTransform {
                     shape,
@@ -1312,6 +1342,7 @@ impl Presentation {
             }
             Op::SetShapeKind { shape, kind } => {
                 let s = self.shape(shape).ok_or(DeckError::UnknownNode(shape))?;
+                check_kind_tree(shape, &kind).map_err(as_invalid)?;
                 let old_ids = ids_of_kind(&s.kind);
                 let new_ids = ids_of_kind(&kind);
                 self.check_fresh(&new_ids, &old_ids)?;
@@ -1329,6 +1360,9 @@ impl Presentation {
                 }
             }
             Op::SetChildSpace { group, space } => {
+                if !space.is_valid() {
+                    return Err(invalid("the child space is outside the DrawingML range"));
+                }
                 let s = self.shape_mut(group).ok_or(DeckError::UnknownNode(group))?;
                 let ShapeKind::Group(g) = &mut s.kind else {
                     return Err(DeckError::WrongKind {
@@ -1402,5 +1436,7 @@ impl Presentation {
     }
 }
 
+#[cfg(test)]
+mod hostile_tests;
 #[cfg(test)]
 mod tests;

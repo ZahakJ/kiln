@@ -326,12 +326,12 @@ pub fn align(
     for (id, x) in xs {
         let b = x.bounds();
         let (dx, dy) = match how {
-            Align::Left => (reference.x - b.x, 0),
-            Align::Center => (reference.center().0 - b.center().0, 0),
-            Align::Right => (reference.right() - b.right(), 0),
-            Align::Top => (0, reference.y - b.y),
-            Align::Middle => (0, reference.center().1 - b.center().1),
-            Align::Bottom => (0, reference.bottom() - b.bottom()),
+            Align::Left => (reference.x.saturating_sub(b.x), 0),
+            Align::Center => (reference.center().0.saturating_sub(b.center().0), 0),
+            Align::Right => (reference.right().saturating_sub(b.right()), 0),
+            Align::Top => (0, reference.y.saturating_sub(b.y)),
+            Align::Middle => (0, reference.center().1.saturating_sub(b.center().1)),
+            Align::Bottom => (0, reference.bottom().saturating_sub(b.bottom())),
         };
         if dx != 0 || dy != 0 {
             ops.push(Op::SetTransform {
@@ -362,28 +362,34 @@ pub fn distribute(
     if n < 2 || (to == AlignTo::Selection && n < 3) {
         return Ok(Transaction::default());
     }
-    let axis = |r: &Rect| if horizontal { (r.x, r.cx) } else { (r.y, r.cy) };
+    // Positions and sizes in i128: a valid presentation keeps them within ±2.7e13 EMU, but the
+    // gap arithmetic multiplies by the shape count, and nothing here may overflow.
+    let axis = |r: &Rect| {
+        if horizontal {
+            (i128::from(r.x), i128::from(r.cx))
+        } else {
+            (i128::from(r.y), i128::from(r.cy))
+        }
+    };
     xs.sort_by_key(|(_, _, b)| axis(b).0);
-    let total: i64 = xs.iter().map(|(_, _, b)| axis(b).1).sum();
+    let total: i128 = xs.iter().map(|(_, _, b)| axis(b).1).sum();
     let (start, end) = match to {
         AlignTo::Slide => {
             let s = slide_rect(pres);
-            if horizontal { (0, s.cx) } else { (0, s.cy) }
+            (0, i128::from(if horizontal { s.cx } else { s.cy }))
         }
         AlignTo::Selection => {
-            let first = &xs[0].2;
-            let last = &xs[n - 1].2;
-            let (fp, _) = axis(first);
-            let (lp, ls) = axis(last);
+            let (fp, _) = axis(&xs[0].2);
+            let (lp, ls) = axis(&xs[n - 1].2);
             (fp, lp + ls)
         }
     };
-    let gaps = i64::try_from(n - 1).unwrap_or(1);
+    let gaps = i128::try_from(n - 1).unwrap_or(1).max(1);
     let space = end - start - total;
     let mut cursor = start;
     let mut ops = Vec::new();
     for (k, (id, x, b)) in xs.iter().enumerate() {
-        let k_i = i64::try_from(k).unwrap_or(0);
+        let k_i = i128::try_from(k).unwrap_or(0);
         // Spread the rounding remainder over the first gaps.
         let gap_before = if k == 0 {
             0
@@ -392,7 +398,7 @@ pub fn distribute(
         };
         cursor += gap_before;
         let (p, s) = axis(b);
-        let d = cursor - p;
+        let d = i64::try_from(cursor - p).unwrap_or(if cursor > p { i64::MAX } else { i64::MIN });
         cursor += s;
         if d != 0 {
             let n = if horizontal {

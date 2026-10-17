@@ -9,23 +9,7 @@ use kiln_ooxml::drawingml::fill::Fill;
 use super::*;
 use crate::edit::tests::{roundtrip, sample};
 use crate::presentation::Owner;
-use crate::shape::PlaceholderType;
-
-fn luminance(c: Rgba) -> f64 {
-    let lin = |v: f64| {
-        if v <= 0.039_28 {
-            v / 12.92
-        } else {
-            ((v + 0.055) / 1.055).powf(2.4)
-        }
-    };
-    0.2126 * lin(c.r) + 0.7152 * lin(c.g) + 0.0722 * lin(c.b)
-}
-
-fn contrast(a: Rgba, b: Rgba) -> f64 {
-    let (la, lb) = (luminance(a), luminance(b));
-    (la.max(lb) + 0.05) / (la.min(lb) + 0.05)
-}
+use crate::shape::{PlaceholderType, Shape};
 
 /// The colour a background shows on average (solid fills exactly, gradients by their stops).
 fn background_color(p: &Presentation, owner: Owner) -> Rgba {
@@ -49,6 +33,17 @@ fn background_color(p: &Presentation, owner: Owner) -> Rgba {
         Background::Theme { color: Some(c), .. } => resolve_color(c, &ctx),
         other => panic!("unexpected background {other:?}"),
     }
+}
+
+#[test]
+fn contrast_follows_wcag() {
+    let black = Rgba::rgb(0.0, 0.0, 0.0);
+    let white = Rgba::rgb(255.0, 255.0, 255.0);
+    assert!((contrast(black, white) - 21.0).abs() < 1e-9);
+    assert!((contrast(white, white) - 1.0).abs() < 1e-9);
+    // #767676 on white is the classic 4.54:1.
+    let grey = Rgba::rgb(118.0, 118.0, 118.0);
+    assert!((contrast(grey, white) - 4.54).abs() < 0.01);
 }
 
 #[test]
@@ -415,4 +410,142 @@ fn theme_files_report_their_problems() {
         Background::Theme { idx: 1002, .. }
     ));
     assert!(matches!(t.master.shapes[0].geometry, Geometry::Custom(_)));
+}
+
+/// The decorations drawn behind a slide's text: master shapes (when the slide shows them),
+/// then layout shapes, bottom to top. Placeholders are text, not decoration.
+fn decorations(p: &Presentation, slide: NodeId) -> Vec<&Shape> {
+    let s = p.slide(slide).unwrap();
+    let (master, layout) = p.layout(s.layout).unwrap();
+    let mut out: Vec<&Shape> = Vec::new();
+    if p.shows_master_shapes(slide) {
+        out.extend(master.shapes.iter().filter(|x| x.placeholder.is_none()));
+    }
+    out.extend(layout.shapes.iter().filter(|x| x.placeholder.is_none()));
+    out
+}
+
+/// Where a placeholder's text can go: its box inside the body insets.
+fn text_area(p: &Presentation, shape: NodeId) -> Rect {
+    let r = p.resolved_xfrm(shape).unwrap().rect();
+    let [l, t, rt, b] = p.resolved_body(shape).unwrap().insets;
+    Rect::new(r.x + l, r.y + t, r.cx - l - rt, r.cy - t - b)
+}
+
+/// One slide on every layout of a theme (variant).
+fn every_layout(t: &ThemeFile, variant: Option<usize>, size: SlideSize) -> Presentation {
+    let mut p = Presentation::with_theme(t, size, variant);
+    let layouts: Vec<NodeId> = p.masters[0].layouts.iter().map(|l| l.id).collect();
+    for l in layouts {
+        let slide = crate::edit::new_slide(&mut p, l);
+        p.slides.push(slide);
+    }
+    p
+}
+
+/// Hairlines, underlines and markers are drawn for one layout's title band; on any layout
+/// they show on, they must stay clear of every placeholder's text area (the Celadon section
+/// header once drew its rule through the subtitle).
+#[test]
+fn decorative_rules_never_cross_placeholder_text() {
+    for t in bundled() {
+        for size in [SlideSize::WIDESCREEN, SlideSize::STANDARD] {
+            let thin = size.cy / 50;
+            let p = every_layout(&t, None, size);
+            for s in &p.slides {
+                let kind = &p.layout(s.layout).unwrap().1.kind;
+                for d in decorations(&p, s.id) {
+                    let Some(b) = d.xfrm.map(|x| x.bounds()) else {
+                        continue;
+                    };
+                    if b.cx.min(b.cy) > thin {
+                        continue;
+                    }
+                    for ph in s.shapes.iter().filter(|x| x.placeholder.is_some()) {
+                        assert!(
+                            !b.intersects(&text_area(&p, ph.id)),
+                            "{} {kind:?}: {} crosses {}",
+                            t.id,
+                            d.name,
+                            ph.name
+                        );
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// The colour behind a point of a slide: the topmost filled decoration under it, else the
+/// background (translucent fills blended over what is below).
+fn color_behind(p: &Presentation, slide: NodeId, at: (i64, i64)) -> Rgba {
+    let owner = Owner::Slide(slide);
+    let ctx = p.color_context(owner).unwrap();
+    let mut c = background_color(p, owner);
+    for d in decorations(p, slide) {
+        let Some(b) = d.xfrm.map(|x| x.bounds()) else {
+            continue;
+        };
+        if !(b.x <= at.0 && at.0 < b.right() && b.y <= at.1 && at.1 < b.bottom()) {
+            continue;
+        }
+        let fill = match d.props().and_then(|x| x.fill.as_ref()) {
+            Some(Fill::Solid(f)) => resolve_color(f, &ctx),
+            Some(Fill::Gradient(g)) if !g.stops.is_empty() => {
+                // Gradient decorations are judged by their strongest stop.
+                g.stops.iter().map(|s| resolve_color(&s.color, &ctx)).fold(
+                    Rgba {
+                        a: 0.0,
+                        ..Rgba::rgb(0.0, 0.0, 0.0)
+                    },
+                    |a, x| if x.a > a.a { x } else { a },
+                )
+            }
+            _ => continue,
+        };
+        let a = fill.a;
+        c = Rgba::rgb(
+            fill.r * a + c.r * (1.0 - a),
+            fill.g * a + c.g * (1.0 - a),
+            fill.b * a + c.b * (1.0 - a),
+        );
+    }
+    c
+}
+
+/// Every placeholder on every layout, in every variant, reads against what is behind it:
+/// 4.5:1 for text under 24 pt, 3:1 for larger (WCAG AA). This covers the per-layout
+/// colours (subtitles on accent-filled section headers, titles on panels) that the master
+/// check does not.
+#[test]
+fn every_layout_keeps_its_text_readable() {
+    let mut failures = Vec::new();
+    for t in bundled() {
+        for variant in std::iter::once(None).chain((0..t.variants.len()).map(Some)) {
+            let p = every_layout(&t, variant, SlideSize::WIDESCREEN);
+            for s in &p.slides {
+                let kind = &p.layout(s.layout).unwrap().1.kind;
+                let ctx = p.color_context(Owner::Slide(s.id)).unwrap();
+                for ph in s.shapes.iter().filter(|x| x.placeholder.is_some()) {
+                    let style = p.level_style(ph.id, 0).unwrap();
+                    let Some(color) = style.run.color.as_ref() else {
+                        continue;
+                    };
+                    let fg = resolve_color(&crate::dml::color::doc_to_drawing_color(color), &ctx);
+                    let area = text_area(&p, ph.id);
+                    let bg = color_behind(&p, s.id, area.center());
+                    let ratio = contrast(fg, bg);
+                    let half_points = style.run.size.unwrap_or(0);
+                    let min = if half_points >= 48 { 3.0 } else { 4.5 };
+                    if ratio < min {
+                        failures.push(format!(
+                            "{} {variant:?} {kind:?} {}: {ratio:.2} < {min}",
+                            t.id, ph.name
+                        ));
+                    }
+                }
+            }
+        }
+    }
+    assert!(failures.is_empty(), "{failures:#?}");
 }

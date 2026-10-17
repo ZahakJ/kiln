@@ -198,6 +198,13 @@ GRID = dict(marginX=0.0625, marginTop=0.075, marginBottom=0.03, titleHeight=0.16
             footerHeight=0.05, gutter=0.03)
 
 
+def rule_free() -> dict:
+    """Layouts that hide the master's title rule: content and picture with caption put the
+    title in a side column and vertical title and text turns it on its side, so a rule drawn
+    for the top title band would cross their text."""
+    return {k: dict(hide=True) for k in ("objTx", "picTx", "vertTitleAndTx")}
+
+
 def theme_doc(t: dict) -> str:
     grid = {**GRID, **t.get("grid", {})}
     grid_xml = "<kd:grid" + "".join(f' {k}="{fmt(v)}"' for k, v in grid.items()) + "/>"
@@ -250,6 +257,9 @@ def with_accents(base: dict, *accents: str, **extra) -> dict:
 TX = scheme("tx1")
 TX_SOFT = scheme("tx1", 75000, 25000)
 TX_FAINT = scheme("tx1", 50000, 50000)
+# Celadon's secondary text sits on the pale bg2 arch and band, so it softens less than TX_SOFT
+# to keep 4.5:1 there.
+CELADON_SOFT = scheme("tx1", 80000, 20000)
 
 
 def kiln() -> dict:
@@ -277,13 +287,13 @@ def kiln() -> dict:
                    lst=title_style(size=60, color=scheme("lt1"), spc=-120, line_pct=88)),
                 ph("subTitle", rect=(0.0625, 0.65, 0.55, 0.14), body=body_pr(anchor="t"),
                    lst=lvl(1, algn="l", bullet_none=True,
-                           rpr=def_rpr(20, color=scheme("lt2", 85000)))),
+                           rpr=def_rpr(20, color=scheme("lt2")))),
             ]),
-            "secHead": dict(dark=True, hide=True, background=solid(scheme("accent1")), ph=[
+            "secHead": dict(dark="auto", hide=True, background=solid(scheme("accent1", 85000)), ph=[
                 ph("title", rect=(0.0625, 0.30, 0.80, 0.33), body=body_pr(anchor="b"),
-                   lst=title_style(size=48, color=scheme("lt1"), spc=-80)),
+                   lst=title_style(size=48, color=scheme("tx1"), spc=-80)),
                 ph("body", rect=(0.0625, 0.66, 0.70, 0.14),
-                   lst=lvl(1, bullet_none=True, rpr=def_rpr(20, color=scheme("lt1", 90000)))),
+                   lst=lvl(1, bullet_none=True, rpr=def_rpr(20, color=scheme("tx1")))),
             ]),
         },
         variants=[
@@ -317,6 +327,7 @@ def tenmoku() -> dict:
             shapes=[shape("Flame line", (0.0625, 0.245, 0.30, 0.004), flame)],
         ),
         layouts={
+            **rule_free(),
             "title": dict(hide=True, background=gradient(
                 [(0, srgb("5A2E17")), (35000, srgb("2C1A11")), (100000, srgb("170F0B"))],
                 path="circle", focus=(50000, 100000, 50000, 0)), shapes=[
@@ -362,12 +373,12 @@ def cobalt() -> dict:
             shapes=[shape("Spine", (0, 0, 0.012, 1), solid(scheme("accent1")))],
         ),
         layouts={
-            "title": dict(dark=True, hide=True, background=solid(scheme("accent1")), shapes=[
-                shape("Rule", (0.0625, 0.64, 0.10, 0.006), solid(scheme("lt1", alpha=None)))], ph=[
+            "title": dict(dark="auto", hide=True, background=solid(scheme("accent1")), shapes=[
+                shape("Rule", (0.0625, 0.64, 0.10, 0.006), solid(scheme("tx1")))], ph=[
                 ph("ctrTitle", rect=(0.0625, 0.24, 0.78, 0.38), body=body_pr(anchor="b"),
-                   lst=title_style(size=54, color=scheme("lt1"))),
+                   lst=title_style(size=54, color=scheme("tx1"))),
                 ph("subTitle", rect=(0.0625, 0.67, 0.70, 0.13),
-                   lst=lvl(1, algn="l", bullet_none=True, rpr=def_rpr(20, color=scheme("lt2")))),
+                   lst=lvl(1, algn="l", bullet_none=True, rpr=def_rpr(20, color=scheme("tx2")))),
             ]),
             "secHead": dict(background=solid(scheme("bg2")), ph=[
                 ph("title", body=body_pr(anchor="b"), lst=title_style(size=44, color=scheme("tx2"))),
@@ -377,8 +388,8 @@ def cobalt() -> dict:
             dict(name="Cobalt", colors=c),
             dict(name="Indigo", colors=with_accents(c, "4B3FB8", "F28C28", "1D8A60", "E3A126", "C2416B", "2AA3B8",
                                                     dk2="4B3FB8", lt2="ECEAFA")),
-            dict(name="Teal", colors=with_accents(c, "117A8B", "F07E4B", "6A8F2E", "E3A126", "7B5EA7", "2D4FB5",
-                                                  dk2="117A8B", lt2="E3F2F4")),
+            dict(name="Teal", colors=with_accents(c, "0F6F7F", "F07E4B", "6A8F2E", "E3A126", "7B5EA7", "2D4FB5",
+                                                  dk2="0F6F7F", lt2="E3F2F4")),
             dict(name="Midnight", dark=True, colors=with_accents(c, "7D9BF2", "F7A65A", "4FC08D", "F2C35C", "B39DE0",
                                                                  "5CC8DA", dk1="121A2E", lt1="EEF2FB", dk2="1E2946",
                                                                  lt2="A9B8E0")),
@@ -387,7 +398,7 @@ def cobalt() -> dict:
 
 
 def jade() -> dict:
-    c = colors("17302A", "F6FAF7", "1D8A60", "E2F2EA", "1D8A60", "0F6E8C", "E3A126", "D9622B",
+    c = colors("17302A", "F6FAF7", "177A55", "E2F2EA", "1D8A60", "0F6E8C", "E3A126", "D9622B",
                "6E8B3D", "8D6CAB", "0F6E8C", "8D6CAB")
     return dict(
         id="jade", name="Jade",
@@ -405,7 +416,7 @@ def jade() -> dict:
         layouts={
             "title": dict(hide=True, shapes=[shape("Panel", (0, 0, 0.42, 1), solid(scheme("accent1")))], ph=[
                 ph("ctrTitle", rect=(0.05, 0.20, 0.33, 0.46), body=body_pr(anchor="b"),
-                   lst=title_style(size=44, color=scheme("lt1"), bold=False)),
+                   lst=title_style(size=44, color=scheme("bg1"), bold=False)),
                 ph("subTitle", rect=(0.48, 0.42, 0.44, 0.20), body=body_pr(anchor="ctr"),
                    lst=lvl(1, algn="l", bullet_none=True, rpr=def_rpr(24, color=scheme("tx2")))),
             ]),
@@ -444,7 +455,8 @@ def saffron() -> dict:
             shapes=[shape("Underline", (0.0625, 0.255, 0.09, 0.009), solid(scheme("accent1")))],
         ),
         layouts={
-            "title": dict(hide=True, background=solid(scheme("accent1")), ph=[
+            **rule_free(),
+            "title": dict(dark="auto", hide=True, background=solid(scheme("accent1")), ph=[
                 ph("ctrTitle", rect=(0.0625, 0.18, 0.80, 0.44), body=body_pr(anchor="b"),
                    lst=title_style(size=64, color=TX, line_pct=85)),
                 ph("subTitle", rect=(0.0625, 0.66, 0.60, 0.14),
@@ -486,6 +498,7 @@ def celadon() -> dict:
             shapes=[shape("Hairline", (0.0625, 0.268, 0.875, 0.002), solid(scheme("accent1", alpha=60000)))],
         ),
         layouts={
+            **rule_free(),
             "title": dict(hide=True, shapes=[
                 shape("Arch", (0.27, 0.10, 0.46, 0.90), solid(scheme("bg2")), prst="round2SameRect",
                       adj="adj1=50000;adj2=0"),
@@ -494,11 +507,14 @@ def celadon() -> dict:
                 ph("ctrTitle", rect=(0.30, 0.30, 0.40, 0.30), body=body_pr(anchor="b"),
                    lst=title_style(size=44, color=scheme("tx2"), bold=False, algn="ctr")),
                 ph("subTitle", rect=(0.31, 0.63, 0.38, 0.14),
-                   lst=lvl(1, algn="ctr", bullet_none=True, rpr=def_rpr(18, color=TX_SOFT))),
+                   lst=lvl(1, algn="ctr", bullet_none=True, rpr=def_rpr(18, color=CELADON_SOFT))),
             ]),
             "secHead": dict(hide=True, background=solid(scheme("bg2")), shapes=[
-                shape("Sill", (0.0625, 0.70, 0.08, 0.006), solid(scheme("accent1")))], ph=[
-                ph("title", body=body_pr(anchor="b"), lst=title_style(size=44, color=scheme("tx2"), bold=False)),
+                shape("Sill", (0.0625, 0.655, 0.08, 0.006), solid(scheme("accent1")))], ph=[
+                ph("title", rect=(0.0625, 0.22, 0.85, 0.40), body=body_pr(anchor="b"),
+                   lst=title_style(size=44, color=scheme("tx2"), bold=False)),
+                ph("body", rect=(0.0625, 0.69, 0.75, 0.16), body=body_pr(anchor="t"),
+                   lst=lvl(1, bullet_none=True, rpr=def_rpr(20, color=CELADON_SOFT))),
             ]),
         },
         variants=[
@@ -572,27 +588,27 @@ def raku() -> dict:
                 [(0, scheme("accent1")), (60000, scheme("accent3")), (100000, scheme("accent2"))], angle=0))],
         ),
         layouts={
-            "title": dict(hide=True, background=gradient(
+            "title": dict(dark=True, hide=True, background=gradient(
                 [(0, srgb("4A2A16")), (45000, srgb("1C1612")), (100000, srgb("0D0D0D"))], angle=2700000), shapes=[
                 shape("Lustre", (0.0625, 0.66, 0.16, 0.006), solid(scheme("accent1")))], ph=[
                 ph("ctrTitle", rect=(0.0625, 0.24, 0.86, 0.40), body=body_pr(anchor="b"),
                    lst=title_style(size=54, color=TX, caps="all", spc=400, line_pct=95)),
                 ph("subTitle", rect=(0.0625, 0.69, 0.70, 0.12),
-                   lst=lvl(1, algn="l", bullet_none=True, rpr=def_rpr(18, color=scheme("accent2"), caps="all",
+                   lst=lvl(1, algn="l", bullet_none=True, rpr=def_rpr(18, color=scheme("accent2", 75000, 25000), caps="all",
                                                                         spc=200))),
             ]),
-            "secHead": dict(hide=True, background=solid(scheme("accent1")), dark=False, ph=[
+            "secHead": dict(hide=True, background=solid(scheme("accent1")), dark="auto", ph=[
                 ph("title", rect=(0.0625, 0.30, 0.86, 0.33), body=body_pr(anchor="b"),
-                   lst=title_style(size=44, color=scheme("dk1"), caps="all", spc=300)),
+                   lst=title_style(size=44, color=scheme("tx1"), caps="all", spc=300)),
                 ph("body", rect=(0.0625, 0.66, 0.70, 0.14),
-                   lst=lvl(1, bullet_none=True, rpr=def_rpr(18, color=scheme("dk1")))),
+                   lst=lvl(1, bullet_none=True, rpr=def_rpr(20, bold=True, color=scheme("tx1")))),
             ]),
         },
         variants=[
             dict(name="Copper", colors=c),
             dict(name="Turquoise", colors=with_accents(c, "2FA4A4", "C87533", "D4A537", "B5483A", "7FA35B", "8E7CC3")),
             dict(name="Gold", colors=with_accents(c, "D4A537", "2FA4A4", "C87533", "B5483A", "7FA35B", "8E7CC3")),
-            dict(name="Bone", dark=False, colors=with_accents(c, "A85A22", "1F7F80", "A8821E", "9A3428", "5E7D3E",
+            dict(name="Bone", dark=False, colors=with_accents(c, "9A4E1C", "1F7F80", "A8821E", "9A3428", "5E7D3E",
                                                               "6C5BA3", dk1="1A1816", lt1="EDE6DD", dk2="2A2826",
                                                               lt2="D8CFC2")),
         ],
@@ -616,6 +632,7 @@ def porcelain() -> dict:
             shapes=[shape("Rule", (0.0625, 0.268, 0.875, 0.0022), solid(scheme("tx2", alpha=35000)))],
         ),
         layouts={
+            **rule_free(),
             "title": dict(hide=True, shapes=[shape("Band", (0, 0.36, 0.022, 0.30), solid(scheme("accent1")))], ph=[
                 ph("ctrTitle", rect=(0.0625, 0.26, 0.82, 0.32), body=body_pr(anchor="b"),
                    lst=title_style(size=52, color=scheme("tx2"), bold=False)),
@@ -656,13 +673,13 @@ def slate() -> dict:
             shapes=[shape("Marker", (0.0405, 0.152, 0.0055, 0.10), solid(scheme("accent1")))],
         ),
         layouts={
-            "title": dict(hide=True, background=gradient(
+            "title": dict(dark=True, hide=True, background=gradient(
                 [(0, srgb("2E3B49")), (60000, srgb("1C232B")), (100000, srgb("141A20"))], angle=2700000), shapes=[
                 shape("Marker", (0.0625, 0.30, 0.006, 0.30), solid(scheme("accent1")))], ph=[
                 ph("ctrTitle", rect=(0.085, 0.26, 0.80, 0.34), body=body_pr(anchor="b"),
                    lst=title_style(size=54, color=TX)),
                 ph("subTitle", rect=(0.085, 0.62, 0.70, 0.12),
-                   lst=lvl(1, algn="l", bullet_none=True, rpr=def_rpr(20, color=scheme("accent1")))),
+                   lst=lvl(1, algn="l", bullet_none=True, rpr=def_rpr(20, color=scheme("accent1", 75000, 25000)))),
             ]),
             "secHead": dict(hide=True, shapes=[shape("Marker", (0.0405, 0.50, 0.0055, 0.16), solid(scheme("accent1")))], ph=[
                 ph("title", body=body_pr(anchor="b"), lst=title_style(size=48, color=TX)),
@@ -698,16 +715,16 @@ def terracotta() -> dict:
             ph=[ph("title", body=body_pr(anchor="b", autofit="shrink"))],
         ),
         layouts={
-            "title": dict(dark=True, hide=True, background=solid(scheme("accent1")), shapes=[
+            "title": dict(dark="auto", hide=True, background=solid(scheme("accent1", 80000)), shapes=[
                 shape("Window", (0.66, 0.16, 0.25, 0.84), solid(scheme("lt2", alpha=None)), prst="round2SameRect",
                       adj="adj1=50000;adj2=0"),
                 shape("Window glow", (0.70, 0.30, 0.17, 0.70), solid(scheme("accent3")), prst="round2SameRect",
                       adj="adj1=50000;adj2=0"),
             ], ph=[
                 ph("ctrTitle", rect=(0.0625, 0.22, 0.55, 0.42), body=body_pr(anchor="b"),
-                   lst=title_style(size=54, color=scheme("lt1"), line_pct=88)),
+                   lst=title_style(size=54, color=scheme("tx1"), line_pct=88)),
                 ph("subTitle", rect=(0.0625, 0.67, 0.52, 0.13),
-                   lst=lvl(1, algn="l", bullet_none=True, rpr=def_rpr(20, color=scheme("lt2")))),
+                   lst=lvl(1, algn="l", bullet_none=True, rpr=def_rpr(20, color=scheme("tx1")))),
             ]),
             "secHead": dict(background=solid(scheme("bg2")), ph=[
                 ph("title", body=body_pr(anchor="b"), lst=title_style(size=44, color=scheme("tx2"))),
@@ -719,7 +736,7 @@ def terracotta() -> dict:
                                                    dk2="5B6830")),
             dict(name="Ochre", colors=with_accents(c, "B87A1E", "B4462A", "7D8B4A", "2F6F6A", "8A5A44", "5E5A8C",
                                                    dk2="8C5C14")),
-            dict(name="Umber", dark=True, colors=with_accents(c, "E07856", "B4C27A", "E8B864", "6FB3AD", "C79A84",
+            dict(name="Umber", dark=True, colors=with_accents(c, "C85E3C", "B4C27A", "E8B864", "6FB3AD", "C79A84",
                                                               "A8A4D6", dk1="2A1A12", lt1="F6E9DD", dk2="3E2619",
                                                               lt2="E3C4AE")),
         ],
@@ -745,12 +762,13 @@ def ash() -> dict:
             ],
         ),
         layouts={
-            "title": dict(dark=True, hide=True, shapes=[
+            **rule_free(),
+            "title": dict(dark="auto", hide=True, shapes=[
                 shape("Glaze", (0, 0, 1, 0.64), solid(scheme("accent1"))),
                 shape("Foot", (0, 0.64, 1, 0.36), solid(scheme("lt1"))),
-            ], background=solid(scheme("dk1")), ph=[
+            ], background=solid(scheme("accent1")), ph=[
                 ph("ctrTitle", rect=(0.0625, 0.16, 0.80, 0.42), body=body_pr(anchor="b"),
-                   lst=title_style(size=54, color=scheme("lt1"), bold=False, line_pct=88)),
+                   lst=title_style(size=54, color=scheme("tx1"), bold=False, line_pct=88)),
                 ph("subTitle", rect=(0.0625, 0.70, 0.70, 0.14),
                    lst=lvl(1, algn="l", bullet_none=True, rpr=def_rpr(20, color=scheme("dk2")))),
             ]),

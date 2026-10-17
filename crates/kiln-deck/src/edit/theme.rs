@@ -86,7 +86,7 @@ pub fn apply_variant(
     if t != m.theme {
         ops.push(Op::SetTheme {
             master,
-            theme: Box::new(t),
+            theme: Box::new(t.clone()),
         });
     }
     if let Some(dark) = v.dark {
@@ -98,6 +98,17 @@ pub fn apply_variant(
         if map != m.color_map {
             ops.push(Op::SetColorMap {
                 owner: master,
+                map: Some(map),
+            });
+        }
+    }
+    // Layouts that pick their text tone from their background follow the new colours.
+    for l in &m.layouts {
+        if let Some(map) = theme.layout_color_map(&l.kind, &t)
+            && Some(&map) != l.color_map.as_ref()
+        {
+            ops.push(Op::SetColorMap {
+                owner: l.id,
                 map: Some(map),
             });
         }

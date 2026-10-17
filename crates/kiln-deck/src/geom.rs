@@ -12,6 +12,42 @@ pub const EMU_PER_INCH: i64 = 914_400;
 pub const ROT_PER_DEGREE: i32 = 60_000;
 /// A full turn in rotation units.
 pub const FULL_TURN: i32 = 360 * ROT_PER_DEGREE;
+/// The largest coordinate magnitude a shape may have: `ST_Coordinate` (ECMA-376 §20.1.10.16),
+/// ±27 273 042 316 900 EMU, also the largest extent (`ST_PositiveCoordinate`). Anything inside
+/// this range can be added, subtracted and halved in `i64` many times over without overflow.
+pub const MAX_COORD: i64 = 27_273_042_316_900;
+
+/// Clamps a coordinate into `-MAX_COORD..=MAX_COORD`.
+#[must_use]
+pub const fn clamp_coord(v: i64) -> i64 {
+    if v > MAX_COORD {
+        MAX_COORD
+    } else if v < -MAX_COORD {
+        -MAX_COORD
+    } else {
+        v
+    }
+}
+
+/// Clamps an extent into `0..=MAX_COORD`.
+#[must_use]
+pub const fn clamp_extent(v: i64) -> i64 {
+    if v > MAX_COORD {
+        MAX_COORD
+    } else if v < 0 {
+        0
+    } else {
+        v
+    }
+}
+
+const fn coord_ok(v: i64) -> bool {
+    -MAX_COORD <= v && v <= MAX_COORD
+}
+
+const fn extent_ok(v: i64) -> bool {
+    0 <= v && v <= MAX_COORD
+}
 
 /// An axis-aligned rectangle in EMU.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
@@ -53,7 +89,10 @@ impl Rect {
     /// The centre (rounded towards the top left).
     #[must_use]
     pub const fn center(&self) -> (i64, i64) {
-        (self.x + self.cx / 2, self.y + self.cy / 2)
+        (
+            self.x.saturating_add(self.cx / 2),
+            self.y.saturating_add(self.cy / 2),
+        )
     }
 
     /// The smallest rectangle containing both.
@@ -64,8 +103,8 @@ impl Rect {
         Rect::new(
             x,
             y,
-            self.right().max(other.right()) - x,
-            self.bottom().max(other.bottom()) - y,
+            self.right().max(other.right()).saturating_sub(x),
+            self.bottom().max(other.bottom()).saturating_sub(y),
         )
     }
 
@@ -127,6 +166,32 @@ impl Transform {
         self
     }
 
+    /// True when the offsets and extents are inside the DrawingML coordinate range
+    /// ([`MAX_COORD`]) and the rotation is normalised. Loading and every op refuse other
+    /// transforms, so geometry arithmetic on a valid presentation cannot overflow.
+    #[must_use]
+    pub const fn is_valid(&self) -> bool {
+        coord_ok(self.x)
+            && coord_ok(self.y)
+            && extent_ok(self.cx)
+            && extent_ok(self.cy)
+            && 0 <= self.rot
+            && self.rot < FULL_TURN
+    }
+
+    /// The same transform pulled into the valid range: offsets and extents clamped, the
+    /// rotation normalised. Edits that compute positions (nudges, scaling) end with this, so a
+    /// shape pushed past the edge of the coordinate space stops there.
+    #[must_use]
+    pub const fn clamped(mut self) -> Self {
+        self.x = clamp_coord(self.x);
+        self.y = clamp_coord(self.y);
+        self.cx = clamp_extent(self.cx);
+        self.cy = clamp_extent(self.cy);
+        self.rot = normalize_rotation(self.rot);
+        self
+    }
+
     /// The unrotated box.
     #[must_use]
     pub const fn rect(&self) -> Rect {
@@ -171,11 +236,11 @@ impl Transform {
         self
     }
 
-    /// Moves the shape by an offset.
+    /// Moves the shape by an offset, stopping at the edge of the coordinate range.
     #[must_use]
     pub const fn translated(mut self, dx: i64, dy: i64) -> Self {
-        self.x = self.x.saturating_add(dx);
-        self.y = self.y.saturating_add(dy);
+        self.x = clamp_coord(self.x.saturating_add(dx));
+        self.y = clamp_coord(self.y.saturating_add(dy));
         self
     }
 
@@ -211,6 +276,12 @@ pub struct ChildSpace {
 }
 
 impl ChildSpace {
+    /// True when the offset and extent are inside the DrawingML coordinate range.
+    #[must_use]
+    pub const fn is_valid(&self) -> bool {
+        coord_ok(self.x) && coord_ok(self.y) && extent_ok(self.cx) && extent_ok(self.cy)
+    }
+
     /// The identity space for a group whose box is `r` (children keep their coordinates).
     #[must_use]
     pub const fn identity(r: Rect) -> Self {
@@ -263,6 +334,7 @@ impl ChildSpace {
             flip_v,
         }
         .with_center(px, py)
+        .clamped()
     }
 }
 
@@ -291,7 +363,12 @@ pub fn round_emu(v: f64) -> i64 {
 fn rect_from_f(x0: f64, y0: f64, x1: f64, y1: f64) -> Rect {
     let x = round_emu(x0);
     let y = round_emu(y0);
-    Rect::new(x, y, round_emu(x1) - x, round_emu(y1) - y)
+    Rect::new(
+        x,
+        y,
+        round_emu(x1).saturating_sub(x),
+        round_emu(y1).saturating_sub(y),
+    )
 }
 
 #[cfg(test)]

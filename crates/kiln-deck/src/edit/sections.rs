@@ -52,9 +52,9 @@ pub fn add_section(pres: &mut Presentation, at: usize, name: &str) -> Result<Tra
     } else {
         // The section containing `at` (or the last one when adding at the end) is split.
         let k = pres.section_of_index(at).unwrap_or(sections.len() - 1);
-        let start_k: usize = sections[..k].iter().map(|s| s.len).sum();
+        let start_k = pres.section_start(k);
         // The new section takes the slides from `at` to the end of section k.
-        let tail = (start_k + sections[k].len).saturating_sub(at);
+        let tail = start_k.saturating_add(sections[k].len).saturating_sub(at);
         sections[k].len -= tail;
         sections.insert(k + 1, Section { len: tail, ..new });
     }
@@ -96,7 +96,7 @@ pub fn remove_section(
     let mut ops = Vec::new();
     if delete_slides {
         let start = pres.section_start(i);
-        for index in (start..start + removed.len).rev() {
+        for index in (start..start.saturating_add(removed.len)).rev() {
             ops.push(Op::RemoveSlide { index });
         }
     } else if let Some(prev) = i.checked_sub(1).and_then(|p| sections.get_mut(p)) {
@@ -128,15 +128,14 @@ pub fn move_section(pres: &mut Presentation, id: NodeId, delta: isize) -> Result
     }
     // Slide blocks per section, then the sections in their new order.
     let mut blocks: Vec<Vec<NodeId>> = Vec::new();
-    let mut start = 0;
+    let mut start: usize = 0;
     for s in &pres.sections {
-        blocks.push(
-            pres.slides[start..start + s.len]
-                .iter()
-                .map(|x| x.id)
-                .collect(),
-        );
-        start += s.len;
+        let end = start.saturating_add(s.len);
+        let block = pres.slides.get(start..end).ok_or_else(|| {
+            DeckError::InvalidOp("the sections do not partition the slides".into())
+        })?;
+        blocks.push(block.iter().map(|x| x.id).collect());
+        start = end;
     }
     let mut order_idx: Vec<usize> = (0..pres.sections.len()).collect();
     let moved = order_idx.remove(i);

@@ -18,7 +18,7 @@
 //!     <kd:ph type="title"><a:bodyPr anchor="b"/></kd:ph>
 //!     <kd:shape name="Rule" prst="rect" x="…" y="…" w="…" h="…"><a:solidFill>…</a:solidFill></kd:shape>
 //!   </kd:master>
-//!   <kd:layout type="title" dark="1" hideMaster="1">
+//!   <kd:layout type="title" dark="1" hideMaster="1">   (dark: 1, 0 or auto)
 //!     <kd:background>…</kd:background>
 //!     <kd:ph type="ctrTitle" x="…" y="…" w="…" h="…"><a:bodyPr …/><a:lstStyle>…</a:lstStyle></kd:ph>
 //!     <kd:shape …/>
@@ -41,12 +41,14 @@ pub use bundled::{BUNDLED, BundledTheme, bundled, bundled_theme};
 use kiln_common::NodeId;
 use kiln_doc::st::ThemeFontRef;
 use kiln_doc::{Indent, Paragraph, ParagraphProps, RunFonts, RunProps};
-use kiln_ooxml::drawingml::color::DrawingColor;
+use kiln_ooxml::drawingml::color::{ColorContext, DrawingColor, Rgba, resolve_color};
 use kiln_ooxml::drawingml::effects::{EffectList, parse_effect_list};
 use kiln_ooxml::drawingml::fill::{FILL_ELEMENTS, Fill, parse_fill};
 use kiln_ooxml::drawingml::geometry::parse_geometry;
 use kiln_ooxml::drawingml::line::{Line, parse_line};
-use kiln_ooxml::drawingml::theme::{ColorScheme, FontScheme, Theme, office_theme, parse_theme};
+use kiln_ooxml::drawingml::theme::{
+    ColorScheme, FontScheme, Theme, office_theme, parse_theme, theme_color_context,
+};
 use kiln_ooxml::xml::{XmlElement, parse_xml_str};
 use std::collections::BTreeMap;
 
@@ -159,13 +161,26 @@ pub struct MasterDef {
     pub shapes: Vec<DecorDef>,
 }
 
+/// How a layout maps its text colours (`kd:layout/@dark`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum LayoutTone {
+    /// Dark text on a light background (`dark="0"`).
+    Light,
+    /// Light text on a dark background (`dark="1"`).
+    Dark,
+    /// Whichever of the two reads better on the layout's background in the colours in use
+    /// (`dark="auto"`): an accent-filled title slide carries light text on a deep accent and
+    /// dark text when a dark variant lightens the accent.
+    Auto,
+}
+
 /// A layout definition (overrides of a standard layout).
 #[derive(Debug, Clone, PartialEq)]
 pub struct LayoutDef {
     /// Which layout.
     pub kind: LayoutKind,
-    /// Light text on a dark background (`Some`) or the master's mapping (`None`).
-    pub dark: Option<bool>,
+    /// Light or dark text (`Some`), or the master's mapping (`None`).
+    pub dark: Option<LayoutTone>,
     /// Hide the master's decoration.
     pub hide_master: bool,
     /// Background.
@@ -431,7 +446,17 @@ impl ThemeFile {
             }
             layouts.push(LayoutDef {
                 kind,
-                dark: l.attr_bool("dark"),
+                dark: if l.attr("dark").is_some_and(|v| v.trim() == "auto") {
+                    Some(LayoutTone::Auto)
+                } else {
+                    l.attr_bool("dark").map(|d| {
+                        if d {
+                            LayoutTone::Dark
+                        } else {
+                            LayoutTone::Light
+                        }
+                    })
+                },
                 hide_master: l.attr_bool("hideMaster").unwrap_or(false),
                 background: l.child("kd:background").map(parse_background).transpose()?,
                 placeholders: l
@@ -522,6 +547,30 @@ impl ThemeFile {
         self.layouts.iter().find(|l| &l.kind == kind)
     }
 
+    /// The colour mapping a layout of this theme gets in a theme's colours (`None`: the
+    /// master's). [`LayoutTone::Auto`] picks light text when the scheme's `lt1` contrasts more
+    /// with the layout background than `dk1` does.
+    #[must_use]
+    pub fn layout_color_map(&self, kind: &LayoutKind, theme: &Theme) -> Option<ColorMapping> {
+        let d = self.layout_def(kind)?;
+        let dark = match d.dark? {
+            LayoutTone::Light => false,
+            LayoutTone::Dark => true,
+            LayoutTone::Auto => {
+                let ctx = theme_color_context(theme, ColorMapping::default().to_ooxml(), None);
+                let bg = background_rgba(d.background.as_ref()?, &ctx)?;
+                let lt1 = resolve_color(&DrawingColor::scheme("lt1"), &ctx);
+                let dk1 = resolve_color(&DrawingColor::scheme("dk1"), &ctx);
+                contrast(lt1, bg) >= contrast(dk1, bg)
+            }
+        };
+        Some(if dark {
+            ColorMapping::dark()
+        } else {
+            ColorMapping::default()
+        })
+    }
+
     /// Builds the master (with its theme, styles, placeholders, decoration and the eleven
     /// standard layouts) for a slide size, allocating ids from `pres`.
     #[must_use]
@@ -585,12 +634,12 @@ impl ThemeFile {
             apply_overrides(&mut s, spec, &self.master.placeholders, size);
             shapes.push(s);
         }
-        let mut layouts = Vec::new();
-        for kind in LayoutKind::STANDARD {
-            layouts.push(self.build_layout(pres, &kind, &frame, size));
-        }
         let mut theme = self.variant_theme(variant);
         theme.name.clone_from(&self.theme.name);
+        let mut layouts = Vec::new();
+        for kind in LayoutKind::STANDARD {
+            layouts.push(self.build_layout(pres, &kind, &frame, size, &theme));
+        }
         Master {
             id: pres.alloc_id(),
             name: self.name.clone(),
@@ -624,6 +673,7 @@ impl ThemeFile {
         kind: &LayoutKind,
         frame: &Frame,
         size: &SlideSize,
+        theme: &Theme,
     ) -> Layout {
         let def = self.layout_def(kind);
         let mut layout = Layout::new(pres.alloc_id(), kind.clone());
@@ -634,13 +684,7 @@ impl ThemeFile {
                     .map(|s| decor_shape(pres.alloc_id(), s, size)),
             );
             layout.background.clone_from(&d.background);
-            layout.color_map = d.dark.map(|dark| {
-                if dark {
-                    ColorMapping::dark()
-                } else {
-                    ColorMapping::default()
-                }
-            });
+            layout.color_map = self.layout_color_map(kind, theme);
             layout.show_master_shapes = !d.hide_master;
         }
         let overrides = def.map(|d| d.placeholders.as_slice()).unwrap_or_default();
@@ -1078,3 +1122,42 @@ impl Default for Presentation {
 
 #[cfg(test)]
 mod tests;
+
+/// WCAG relative luminance of a resolved colour (channels 0–255).
+fn luminance(c: Rgba) -> f64 {
+    let lin = |v: f64| {
+        let v = (v / 255.0).clamp(0.0, 1.0);
+        if v <= 0.039_28 {
+            v / 12.92
+        } else {
+            ((v + 0.055) / 1.055).powf(2.4)
+        }
+    };
+    0.2126 * lin(c.r) + 0.7152 * lin(c.g) + 0.0722 * lin(c.b)
+}
+
+/// WCAG contrast ratio.
+fn contrast(a: Rgba, b: Rgba) -> f64 {
+    let (la, lb) = (luminance(a), luminance(b));
+    (la.max(lb) + 0.05) / (la.min(lb) + 0.05)
+}
+
+/// The colour a background shows on average: a solid fill exactly, a gradient by the mean of
+/// its stops. `None` for pictures, patterns and theme styles.
+fn background_rgba(bg: &Background, ctx: &ColorContext) -> Option<Rgba> {
+    let Background::Fill { fill, .. } = bg else {
+        return None;
+    };
+    match fill {
+        Fill::Solid(c) => Some(resolve_color(c, ctx)),
+        Fill::Gradient(g) if !g.stops.is_empty() => {
+            let n = g.stops.len() as f64;
+            let (r, gr, b) = g.stops.iter().fold((0.0, 0.0, 0.0), |a, s| {
+                let c = resolve_color(&s.color, ctx);
+                (a.0 + c.r, a.1 + c.g, a.2 + c.b)
+            });
+            Some(Rgba::rgb(r / n, gr / n, b / n))
+        }
+        _ => None,
+    }
+}

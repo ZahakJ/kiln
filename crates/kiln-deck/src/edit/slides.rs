@@ -743,6 +743,7 @@ fn scale_xfrm(x: &Transform, sx: f64, sy: f64, ox: f64, oy: f64) -> Transform {
         cy: round_emu(x.cy as f64 * sy),
         ..*x
     }
+    .clamped()
 }
 
 /// Slide Size: changes the size; masters and layouts stretch to the new size, slide content

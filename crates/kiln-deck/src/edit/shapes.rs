@@ -8,12 +8,12 @@ use kiln_common::NodeId;
 
 use super::tx;
 use crate::error::{DeckError, Result};
-use crate::geom::{Rect, Transform};
+use crate::geom::{Rect, Transform, clamp_coord};
 use crate::ops::{EditKind, Op, ShapeInfo, Transaction};
 use crate::presentation::{Owner, Presentation, shape_ids};
 use crate::shape::{
-    ChartRef, Connection, Connector, Crop, Geometry, Picture, Shape, ShapeKind, ShapeProps,
-    ShapeStyle, Table,
+    ChartRef, Connection, Connector, Crop, Geometry, MAX_TABLE_COLS, MAX_TABLE_ROWS, Picture,
+    Shape, ShapeKind, ShapeProps, ShapeStyle, Table,
 };
 
 /// Inserts shapes (built with ids from [`Presentation::alloc_id`]) into a slide, layout,
@@ -66,16 +66,25 @@ pub fn new_picture(pres: &mut Presentation, media: &str, rect: Rect) -> Shape {
     )
 }
 
-/// A table (Insert ▸ Table).
-#[must_use]
-pub fn new_table(pres: &mut Presentation, rows: usize, cols: usize, rect: Rect) -> Shape {
+/// A table (Insert ▸ Table) of 1 to [`MAX_TABLE_ROWS`] rows and 1 to [`MAX_TABLE_COLS`]
+/// columns, PowerPoint's limits.
+///
+/// # Errors
+/// [`DeckError::InvalidOp`] for zero or too many rows or columns.
+pub fn new_table(pres: &mut Presentation, rows: usize, cols: usize, rect: Rect) -> Result<Shape> {
+    if !(1..=MAX_TABLE_ROWS).contains(&rows) || !(1..=MAX_TABLE_COLS).contains(&cols) {
+        return Err(DeckError::InvalidOp(format!(
+            "a table has 1 to {MAX_TABLE_ROWS} rows and 1 to {MAX_TABLE_COLS} columns, not \
+             {rows} × {cols}"
+        )));
+    }
     let id = pres.alloc_id();
-    Shape::new(
+    Ok(Shape::new(
         id,
         format!("Table {}", id.0),
         Some(Transform::from_rect(rect)),
         ShapeKind::Table(Table::with_size(rows, cols, rect.cx, rect.cy)),
-    )
+    ))
 }
 
 /// A chart frame for a chart part already in the parts store.
@@ -103,12 +112,15 @@ pub fn new_connector(
     ends: (Option<Connection>, Option<Connection>),
 ) -> Shape {
     let id = pres.alloc_id();
+    let from = (clamp_coord(from.0), clamp_coord(from.1));
+    let to = (clamp_coord(to.0), clamp_coord(to.1));
     let mut x = Transform::new(
         from.0.min(to.0),
         from.1.min(to.1),
         (to.0 - from.0).abs(),
         (to.1 - from.1).abs(),
-    );
+    )
+    .clamped();
     x.flip_h = to.0 < from.0;
     x.flip_v = to.1 < from.1;
     Shape::new(

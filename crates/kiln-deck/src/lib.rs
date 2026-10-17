@@ -53,15 +53,15 @@ pub use animation::{
     AnimationEffect, Effect, EffectClass, EffectStart, EffectTarget, Timeline, TriggerSequence,
 };
 pub use error::{DeckError, Result};
-pub use geom::{ChildSpace, Rect, Transform};
+pub use geom::{ChildSpace, MAX_COORD, Rect, Transform};
 pub use inherit::{Chain, ResolvedParagraph, TextStyleKind};
 pub use kiln_common::NodeId;
 pub use ops::{EditKind, Op, TextTarget, Transaction};
 pub use presentation::{Owner, Part, Presentation, ShapePath};
 pub use shape::{
-    AutoShape, CellProps, ChartRef, Connection, Connector, Crop, Geometry, Group, Media, MediaKind,
-    MediaSource, Picture, Placeholder, PlaceholderType, Shape, ShapeKind, ShapeProps, ShapeStyle,
-    Table, TableCell, TableRow,
+    AutoShape, CellProps, ChartRef, Connection, Connector, Crop, Geometry, Group, MAX_TABLE_COLS,
+    MAX_TABLE_ROWS, Media, MediaKind, MediaSource, Picture, Placeholder, PlaceholderType, Shape,
+    ShapeKind, ShapeProps, ShapeStyle, Table, TableCell, TableRow,
 };
 pub use slide::{
     Background, ColorMapping, Comment, CommentReply, HeaderFooter, Layout, LayoutKind, Master,

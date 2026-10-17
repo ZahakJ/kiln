@@ -223,7 +223,7 @@ pub fn set_paragraph_level(
     for id in paras {
         let p = body.paragraph(*id).ok_or(DeckError::UnknownNode(*id))?;
         let now = i32::try_from(TextBody::level_of(p)).unwrap_or(0);
-        let next = (now + delta).clamp(0, max);
+        let next = now.saturating_add(delta).clamp(0, max);
         if next != now {
             let mut props = p.props.clone();
             props.outline_level = u8::try_from(next).ok().filter(|l| *l > 0);

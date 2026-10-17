@@ -116,7 +116,8 @@ pub(crate) fn sample() -> Presentation {
             2,
             3,
             Rect::new(1_000_000, 4_000_000, 6_000_000, 1_200_000),
-        ),
+        )
+        .unwrap(),
     ];
     p.parts.insert(
         "ppt/media/image1.png".into(),

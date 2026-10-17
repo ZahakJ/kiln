@@ -5,10 +5,11 @@
 //! cargo run -p kiln-deck --example theme_gallery -- out/themes.html [fonts-dir]
 //! ```
 //!
-//! Each theme gets six sample slides (title, title and content, section header, two content,
-//! comparison and a colour swatch slide) built through the real model: placeholders resolve
-//! position, body properties and text styles through the layout and master exactly as the
-//! editor will. Slides are drawn with HTML/CSS (shapes clipped to their preset geometry), so a
+//! Each theme gets nine sample slides (title, title and content, section header, two content,
+//! comparison, a colour swatch slide, content with caption, picture with caption and vertical
+//! title and text), and each variant its title, content and section header slides, all built
+//! through the real model: placeholders resolve position, body properties and text styles
+//! through the layout and master exactly as the editor will. Slides are drawn with HTML/CSS (shapes clipped to their preset geometry), so a
 //! browser screenshot shows each design. Theme fonts map to the families Kiln bundles (the
 //! substitution table of `kiln-text`); `fonts-dir` may add the brand's Fraunces and Figtree.
 //! This is a design tool, not the slide renderer (`kiln-deck-layout`).
@@ -438,6 +439,42 @@ fn sample_deck(t: &themes::ThemeFile, variant: Option<usize>) -> Presentation {
         .collect();
     let tx = edit::insert_shapes(&mut p, s, shapes, None).expect("shapes");
     p.apply(tx).expect("apply");
+    // The layouts that move the title off the top band, where master rules must not cross
+    // the text.
+    let s = add(&mut p, LayoutKind::ContentCaption);
+    set(&mut p, s, T::Title, 0, "Glaze tests");
+    set(
+        &mut p,
+        s,
+        T::Body,
+        0,
+        "Twelve tiles from the last firing, left to right by temperature",
+    );
+    set(
+        &mut p,
+        s,
+        T::Object,
+        0,
+        "Celadon crawled at cone 10\nTenmoku broke beautifully on the rims\nShino needs a thicker coat",
+    );
+    let s = add(&mut p, LayoutKind::PictureCaption);
+    set(&mut p, s, T::Title, 0, "The new kiln shed");
+    set(
+        &mut p,
+        s,
+        T::Body,
+        0,
+        "Built by members over three weekends",
+    );
+    let s = add(&mut p, LayoutKind::VerticalTitleText);
+    set(&mut p, s, T::Title, 0, "Timetable");
+    set(
+        &mut p,
+        s,
+        T::Body,
+        0,
+        "Friday: load and candle\nSaturday: climb to temperature\nSunday: cool and unload",
+    );
     p
 }
 
@@ -494,9 +531,16 @@ fn main() {
         html.push_str("</div><div class=row style=\"margin-top:10px\">");
         for v in 0..t.variants.len() {
             let pv = sample_deck(&t, Some(v));
-            let _ = write!(html, "<div><div>{}</div>", t.variants[v].name);
-            draw_slide(&mut html, &pv, pv.slides[1].id);
-            html.push_str("</div>");
+            let _ = write!(
+                html,
+                "<div><div>{}</div><div class=row>",
+                t.variants[v].name
+            );
+            // Title, content and section header: the layouts with their own colours.
+            for i in 0..3 {
+                draw_slide(&mut html, &pv, pv.slides[i].id);
+            }
+            html.push_str("</div></div>");
         }
         html.push_str("</div></section>");
     }

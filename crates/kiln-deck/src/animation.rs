@@ -436,7 +436,9 @@ impl Effect {
     /// Total time from its start point to its end, milliseconds.
     #[must_use]
     pub fn total_ms(&self) -> u64 {
-        u64::from(self.delay_ms) + u64::from(self.duration_ms) * u64::from(self.repeat.max(1))
+        u64::from(self.delay_ms).saturating_add(
+            u64::from(self.duration_ms).saturating_mul(u64::from(self.repeat.max(1))),
+        )
     }
 }
 
@@ -508,8 +510,8 @@ impl Timeline {
                 EffectStart::WithPrevious => {}
                 EffectStart::AfterPrevious => group_start = click_end,
             }
-            let start = group_start + u64::from(e.delay_ms);
-            let end = group_start + e.total_ms();
+            let start = group_start.saturating_add(u64::from(e.delay_ms));
+            let end = group_start.saturating_add(e.total_ms());
             click_end = click_end.max(end);
             out.push(Scheduled {
                 index,

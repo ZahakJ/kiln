@@ -486,13 +486,19 @@ pub struct Table {
     pub rtl: bool,
 }
 
+/// The most rows Insert ▸ Table makes (PowerPoint's limit).
+pub const MAX_TABLE_ROWS: usize = 75;
+/// The most columns Insert ▸ Table makes (PowerPoint's limit).
+pub const MAX_TABLE_COLS: usize = 75;
+
 impl Table {
     /// A table of empty cells with even column widths and row heights filling a box, with a
-    /// header row and banded rows (PowerPoint's Insert ▸ Table).
+    /// header row and banded rows (PowerPoint's Insert ▸ Table). Rows and columns are clamped
+    /// to 1 ..= [`MAX_TABLE_ROWS`] and 1 ..= [`MAX_TABLE_COLS`].
     #[must_use]
     pub fn with_size(rows: usize, cols: usize, width: i64, height: i64) -> Self {
-        let rows = rows.max(1);
-        let cols = cols.max(1);
+        let rows = rows.clamp(1, MAX_TABLE_ROWS);
+        let cols = cols.clamp(1, MAX_TABLE_COLS);
         let w = width / i64::try_from(cols).unwrap_or(i64::MAX).max(1);
         let h = height / i64::try_from(rows).unwrap_or(i64::MAX).max(1);
         Self {

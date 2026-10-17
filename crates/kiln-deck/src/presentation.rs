@@ -10,6 +10,7 @@ use kiln_ooxml::drawingml::theme::Theme;
 use serde::{Deserialize, Serialize};
 
 use crate::error::{DeckError, Result};
+use crate::geom::MAX_COORD;
 use crate::shape::{Shape, ShapeKind};
 use crate::slide::{Layout, Master, NotesMaster, Section, Slide, SlideSize};
 use crate::text::{ListStyle, TextBody};
@@ -375,12 +376,13 @@ impl Presentation {
     /// Every slide index with the section it is in.
     #[must_use]
     pub fn section_of_index(&self, index: usize) -> Option<usize> {
-        let mut start = 0;
+        let mut start: usize = 0;
         for (i, s) in self.sections.iter().enumerate() {
-            if index < start + s.len {
+            let end = start.saturating_add(s.len);
+            if index < end {
                 return Some(i);
             }
-            start += s.len;
+            start = end;
         }
         None
     }
@@ -388,7 +390,32 @@ impl Presentation {
     /// The first slide index of a section.
     #[must_use]
     pub fn section_start(&self, section: usize) -> usize {
-        self.sections.iter().take(section).map(|s| s.len).sum()
+        self.sections
+            .iter()
+            .take(section)
+            .fold(0, |a: usize, s| a.saturating_add(s.len))
+    }
+
+    /// Checks that the sections are empty or partition the slides exactly. Lengths come from
+    /// files and the control channel, so the sum is checked: each length is bounded by the
+    /// slide count and the total may not overflow.
+    pub(crate) fn check_sections(&self) -> std::result::Result<(), String> {
+        if self.sections.is_empty() {
+            return Ok(());
+        }
+        let n = self.slides.len();
+        let total = self.sections.iter().try_fold(0usize, |a, s| {
+            if s.len > n {
+                None
+            } else {
+                a.checked_add(s.len)
+            }
+        });
+        match total {
+            Some(t) if t == n => Ok(()),
+            Some(t) => Err(format!("sections hold {t} slides but there are {n}")),
+            None => Err(format!("a section holds more than the {n} slides")),
+        }
     }
 
     // -------------------------------------------------------------- validation
@@ -468,51 +495,92 @@ impl Presentation {
                 n.text.validate()?;
             }
         }
-        if !self.sections.is_empty() {
-            let total: usize = self.sections.iter().map(|s| s.len).sum();
-            if total != self.slides.len() {
-                return corrupt(format!(
-                    "sections hold {total} slides but there are {}",
-                    self.slides.len()
-                ));
-            }
-        }
-        let mut result = Ok(());
-        let mut check = |s: &Shape| {
-            if result.is_err() {
-                return;
-            }
-            result = check_shape(s);
-        };
+        self.check_sections().map_err(DeckError::Corrupt)?;
         for owner in self.owners() {
-            for s in self.owner_shapes(owner).into_iter().flatten() {
-                s.walk(&mut check);
+            check_shapes(self.owner_shapes(owner).into_iter().flatten())?;
+        }
+        for s in &self.slides {
+            if let Some(n) = &s.notes {
+                check_shapes(&n.shapes)?;
             }
         }
-        result
+        Ok(())
     }
 }
 
+/// Checks shapes and their descendants (see [`check_shape`]).
+///
+/// # Errors
+/// [`DeckError::Corrupt`] naming the first bad shape.
+pub(crate) fn check_shapes<'a>(shapes: impl IntoIterator<Item = &'a Shape>) -> Result<()> {
+    for s in shapes {
+        let mut result = Ok(());
+        s.walk(&mut |x| {
+            if result.is_ok() {
+                result = check_shape(x);
+            }
+        });
+        result?;
+    }
+    Ok(())
+}
+
+/// Checks one shape (not its children): a transform inside the DrawingML coordinate range, and
+/// its kind (see [`check_kind`]).
 fn check_shape(s: &Shape) -> Result<()> {
+    if s.xfrm.is_some_and(|x| !x.is_valid()) {
+        return Err(DeckError::Corrupt(format!(
+            "shape {} has a position, size or rotation outside the DrawingML range",
+            s.id
+        )));
+    }
+    check_kind(s.id, &s.kind)
+}
+
+/// Checks a shape kind and, for a group, its children.
+///
+/// # Errors
+/// [`DeckError::Corrupt`] naming the first problem.
+pub(crate) fn check_kind_tree(id: NodeId, kind: &ShapeKind) -> Result<()> {
+    check_kind(id, kind)?;
+    match kind {
+        ShapeKind::Group(g) => check_shapes(&g.children),
+        _ => Ok(()),
+    }
+}
+
+/// Checks a shape kind (not a group's children): a group child space inside the coordinate
+/// range, a consistent table, valid text bodies.
+fn check_kind(id: NodeId, kind: &ShapeKind) -> Result<()> {
     let corrupt = |m: String| Err(DeckError::Corrupt(m));
     let mut texts: Vec<&TextBody> = Vec::new();
-    match &s.kind {
+    match kind {
+        ShapeKind::Group(g) if !g.child_space.is_valid() => {
+            return corrupt(format!(
+                "group {id} has a child space outside the DrawingML range"
+            ));
+        }
         ShapeKind::Geometry(a) => texts.extend(a.text.as_ref()),
         ShapeKind::Table(t) => {
             if t.grid.is_empty() || t.rows.is_empty() {
-                return corrupt(format!("table {} is empty", s.id));
+                return corrupt(format!("table {id} is empty"));
+            }
+            let size_ok = |v: i64| (0..=MAX_COORD).contains(&v);
+            if !t.grid.iter().all(|w| size_ok(*w)) || !t.rows.iter().all(|r| size_ok(r.height)) {
+                return corrupt(format!(
+                    "table {id} has a column width or row height outside the DrawingML range"
+                ));
             }
             for r in &t.rows {
                 if r.cells.len() != t.grid.len() {
                     return corrupt(format!(
-                        "table {} has a row of {} cells for {} columns",
-                        s.id,
+                        "table {id} has a row of {} cells for {} columns",
                         r.cells.len(),
                         t.grid.len()
                     ));
                 }
                 if r.cells.iter().any(|c| c.grid_span == 0 || c.row_span == 0) {
-                    return corrupt(format!("table {} has a cell spanning nothing", s.id));
+                    return corrupt(format!("table {id} has a cell spanning nothing"));
                 }
                 texts.extend(r.cells.iter().map(|c| &c.text));
             }
