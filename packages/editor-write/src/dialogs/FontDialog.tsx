@@ -1,7 +1,7 @@
 /** The Font dialog (Ctrl+D, Ctrl+Shift+F, Home ▸ Font ↘): Font and Advanced tabs. */
 import type { FontFormat, UnderlineKind } from '@kiln/protocol';
 import { Combobox, NumberInput, Select, Tabs, TabsContent, TabsList, TabsTrigger } from '@kiln/ui-kit';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { WriteEditorModel } from '../model.ts';
 import { Check, Field, Grid, Section, WriteDialogFrame } from './common.tsx';
 
@@ -52,6 +52,25 @@ export function FontDialog({ model, tab }: { model: WriteEditorModel; tab?: stri
   const [scale, setScale] = useState(100);
   const [position, setPosition] = useState(0);
   const [kern, setKern] = useState(false);
+  // Word previews the selected text (its first line), or the font's name when nothing is selected.
+  const [sample, setSample] = useState('');
+  useEffect(() => {
+    let live = true;
+    model.client.query(model.doc, 'SelectedText').then(
+      (r) => {
+        if (!live || typeof r !== 'object' || r === null || !('Text' in r)) return;
+        const line =
+          String(r.Text)
+            .split(/[\r\n\v\u2028\u2029]/, 1)[0]
+            ?.trim() ?? '';
+        setSample(Array.from(line).slice(0, 60).join(''));
+      },
+      () => undefined,
+    );
+    return () => {
+      live = false;
+    };
+  }, [model]);
   const sizeNum = Number(size);
   const valid = Number.isFinite(sizeNum) && sizeNum >= 1 && sizeNum <= 1638 && family.trim() !== '';
 
@@ -90,7 +109,8 @@ export function FontDialog({ model, tab }: { model: WriteEditorModel; tab?: stri
     }));
   const previewStyle = {
     fontFamily: `"${family}", var(--kiln-font-doc)`,
-    fontSize: `${Math.min(36, Math.max(8, sizeNum || 11))}px`,
+    // At its size on a 100 % page (points to CSS pixels), within what the box can show.
+    fontSize: `${Math.min(48, Math.max(10, (sizeNum || 11) * (4 / 3)))}px`,
     fontWeight: style.includes('b') ? 700 : 400,
     fontStyle: style.includes('i') ? 'italic' : 'normal',
     textDecoration:
@@ -98,7 +118,9 @@ export function FontDialog({ model, tab }: { model: WriteEditorModel; tab?: stri
       'none',
     textTransform: fx.all_caps ? ('uppercase' as const) : ('none' as const),
     fontVariant: fx.small_caps ? 'small-caps' : 'normal',
-    color: autoColor ? undefined : color,
+    // Automatic is the page's ink (dark on the light page, light on the dark page), like the
+    // document itself; an explicit colour is shown as chosen.
+    color: autoColor ? 'var(--kiln-page-ink)' : color,
     letterSpacing: `${spacing}pt`,
   };
 
@@ -245,8 +267,8 @@ export function FontDialog({ model, tab }: { model: WriteEditorModel; tab?: stri
         </TabsContent>
       </Tabs>
       <Section title="Preview">
-        <div className="kiln-write-preview">
-          <span style={previewStyle}>{family || 'Font'}</span>
+        <div className="kiln-write-preview" data-testid="write-font-preview">
+          <span style={previewStyle}>{sample || family || 'Font'}</span>
         </div>
       </Section>
     </WriteDialogFrame>

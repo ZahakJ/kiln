@@ -491,10 +491,16 @@ export class SurfaceController {
           if (this.raf) cancelAnimationFrame(this.raf);
           this.raf = 0;
           this.composite();
-          // Typing latency (B5) is measured to here (e2e/specs/write.spec.ts observes the mark;
-          // only the latest is kept, so long sessions do not accumulate entries).
-          performance.clearMarks('kiln:input-paint');
-          performance.mark('kiln:input-paint');
+          // Typing latency (B5, PLAN.md §3.9: PerformanceObserver + rAF) is measured to the next
+          // animation frame, the one that presents this composite (e2e/specs/write.spec.ts observes
+          // the marks; only the latest of each is kept, so long sessions do not accumulate them).
+          // `kiln:input-composite` is the end of the work, for tracing where the time goes.
+          performance.clearMarks('kiln:input-composite');
+          performance.mark('kiln:input-composite');
+          requestAnimationFrame(() => {
+            performance.clearMarks('kiln:input-paint');
+            performance.mark('kiln:input-paint');
+          });
         } else {
           this.scheduleComposite();
         }

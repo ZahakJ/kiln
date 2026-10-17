@@ -18,6 +18,21 @@ import { expectNoSeriousA11yViolations } from '../../packages/testing/src/playwr
 const repo = (p: string) => fileURLToPath(new URL(`../../${p}`, import.meta.url));
 const shot = (name: string) => repo(`e2e/screenshots/write/${name}`);
 
+/**
+ * The B5 exception row of docs/qa/perf.md ("| B5 typing latency … | <status> |"), if any: its
+ * allowance on this machine and on CI runners (×1.5, PLAN.md §3.9) and its approval status.
+ */
+function b5Exception(): { local: number; ci: number; status: string } | null {
+  const doc = readFileSync(repo('docs/qa/perf.md'), 'utf8');
+  const row = doc.split('\n').find((l) => /^\|\s*B5 typing latency/.test(l));
+  if (!row) return null;
+  const cells = row.split('|').map((c) => c.trim());
+  const allowance = /p95 < (\d+(?:\.\d+)?) ms/.exec(cells[3] ?? '');
+  if (!allowance?.[1]) return null;
+  const local = Number(allowance[1]);
+  return { local, ci: local * 1.5, status: (cells[5] ?? '').split(/\s/)[0] || 'unknown' };
+}
+
 interface WriteHandle {
   doc: number;
   client: {
@@ -418,6 +433,13 @@ test.describe('Kiln Write editor', () => {
     );
     await run(page, 'suite.view.zoom', { zoom: 1 });
     await expect(page.getByText('100%')).toBeVisible();
+    // Phones keep their width for the page: no rulers on the compact layout, back on a wide one.
+    await expect(page.getByTestId('write-ruler')).toBeVisible();
+    await page.setViewportSize({ width: 412, height: 915 });
+    await expect(page.getByTestId('write-ruler')).toHaveCount(0);
+    await expect(page.getByTestId('write-ruler-vertical')).toHaveCount(0);
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await expect(page.getByTestId('write-ruler')).toBeVisible();
   });
 
   test('undo and redo: typing groups by word, formatting is its own step', async ({ page }) => {
@@ -563,6 +585,112 @@ test.describe('documents, screenshots and accessibility', () => {
     await page.screenshot({ path: shot('editor-dark-desktop.png') });
     await expectNoSeriousA11yViolations(page);
   });
+
+  test('dialogs, menus and pickers in light and dark: axe, a readable Font preview, rulers in the theme', async ({
+    page,
+  }) => {
+    test.setTimeout(150_000);
+    await page.emulateMedia({ colorScheme: 'light' });
+    await openWrite(page);
+    await page.keyboard.type('Kiln sample text');
+    await page.keyboard.press('Control+a');
+    /** The most common colour of the horizontal ruler's top rows: the track drawn as paper. */
+    const rulerPaper = () =>
+      page.evaluate(() => {
+        const c = document.querySelector<HTMLCanvasElement>('[data-testid="write-ruler"]');
+        const ctx = c?.getContext('2d');
+        if (!c || !ctx) return -1;
+        const y = Math.round(5 * (c.height / c.clientHeight));
+        const data = ctx.getImageData(0, y, c.width, 1).data;
+        const count = new Map<number, number>();
+        for (let i = 0; i < data.length; i += 4) {
+          if ((data[i + 3] ?? 0) < 250) continue;
+          const k = ((data[i] ?? 0) << 16) | ((data[i + 1] ?? 0) << 8) | (data[i + 2] ?? 0);
+          count.set(k, (count.get(k) ?? 0) + 1);
+        }
+        const top = [...count.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? -1;
+        if (top < 0) return -1;
+        // Relative luminance (WCAG).
+        const ch = (v: number) => {
+          const x = v / 255;
+          return x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
+        };
+        return 0.2126 * ch((top >> 16) & 255) + 0.7152 * ch((top >> 8) & 255) + 0.0722 * ch(top & 255);
+      });
+    /** WCAG contrast of the Font preview's text against its box. */
+    const previewContrast = () =>
+      page.getByTestId('write-font-preview').evaluate((box) => {
+        const span = box.firstElementChild as HTMLElement;
+        const rgb = (css: string) => (css.match(/[\d.]+/g) ?? []).slice(0, 3).map(Number);
+        const lum = ([r = 0, g = 0, b = 0]: number[]) => {
+          const ch = (v: number) => {
+            const x = v / 255;
+            return x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
+          };
+          return 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b);
+        };
+        const a = lum(rgb(getComputedStyle(span).color));
+        const b = lum(rgb(getComputedStyle(box).backgroundColor));
+        return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+      });
+    for (const theme of ['light', 'dark'] as const) {
+      await page.emulateMedia({ colorScheme: theme });
+      await page.waitForTimeout(300);
+      // The rulers repaint in the theme they are switched to (not only on the first render).
+      const paper = await rulerPaper();
+      if (theme === 'light') expect(paper, 'light ruler paper').toBeGreaterThan(0.6);
+      else expect(paper, 'dark ruler paper').toBeLessThan(0.1);
+
+      await run(page, 'suite.format.font_dialog');
+      const font = page.getByRole('dialog', { name: 'Font' });
+      await expect(font).toBeVisible();
+      // Word previews the selected text; Automatic colour is the page's ink in either theme.
+      await expect(page.getByTestId('write-font-preview')).toHaveText('Kiln sample text');
+      expect(await previewContrast(), `${theme} Font preview contrast`).toBeGreaterThanOrEqual(4.5);
+      await page.screenshot({ path: shot(`font-dialog-${theme}-desktop.png`) });
+      await expectNoSeriousA11yViolations(page);
+      await page.keyboard.press('Escape');
+      await expect(font).toBeHidden();
+
+      await run(page, 'suite.layout.page_setup');
+      const setup = page.getByRole('dialog', { name: 'Page Setup' });
+      await expect(setup).toBeVisible();
+      await expectNoSeriousA11yViolations(page);
+      await page.keyboard.press('Escape');
+      await expect(setup).toBeHidden();
+
+      await page.getByTestId('kiln-input-proxy').focus();
+      await page.keyboard.press('Control+h');
+      const find = page.getByRole('dialog', { name: 'Find and Replace' });
+      await expect(find).toBeVisible();
+      await expectNoSeriousA11yViolations(page);
+      await page.keyboard.press('Escape');
+      await expect(find).toBeHidden();
+
+      const box = await page.getByTestId('kiln-surface').boundingBox();
+      if (!box) throw new Error('no surface');
+      await page.mouse.click(box.x + box.width / 2, box.y + 160, { button: 'right' });
+      await expect(page.getByRole('menu').first()).toBeVisible();
+      // Two findings in the shared ui-kit (WP-58's, handed off in docs/qa/handoffs.md, "WP-64 fix
+      // round 1"): menu shortcuts and group labels in --kiln-faint read below 4.5:1, and the mini
+      // toolbar's 16 px split arrows sit 2 px apart (target size). Everything else is checked.
+      await expectNoSeriousA11yViolations(page, {
+        exclude: ['.kiln-menu__shortcut', '.kiln-menu__group-label', '.kiln-minitoolbar__bar'],
+      });
+      await page.keyboard.press('Escape');
+      await expect(page.getByRole('menu')).toHaveCount(0);
+
+      await page.getByRole('tab', { name: 'Insert' }).click();
+      await page.locator('[data-command="suite.insert.table"]').first().click();
+      await expect(page.getByTestId('write-table-grid')).toBeVisible();
+      await expectNoSeriousA11yViolations(page);
+      await page.keyboard.press('Escape');
+      await expect(page.getByTestId('write-table-grid')).toBeHidden();
+      await page.getByRole('tab', { name: 'Home' }).click();
+      await page.getByTestId('kiln-input-proxy').focus();
+      await page.keyboard.press('Control+a');
+    }
+  });
 });
 
 const MIME: Record<string, string> = {
@@ -636,7 +764,7 @@ test.describe('performance (production build)', () => {
     if (outDir) rmSync(outDir, { recursive: true, force: true });
   });
 
-  test('B5: keystroke to paint on the 300-page document (budget p95 < 16 ms)', async ({ page }) => {
+  test('B5: keystroke to presented frame on the 300-page document (budget p95 < 16 ms)', async ({ page }) => {
     test.setTimeout(240_000);
     await page.goto(`${base}/#/write`);
     await expect(page.getByText(/^Page 1 of 1$/)).toBeVisible({ timeout: 45_000 });
@@ -658,17 +786,22 @@ test.describe('performance (production build)', () => {
     await page.keyboard.press('End');
     // Let the background pagination of the 300 pages settle before measuring.
     await page.waitForTimeout(2500);
-    // Keystroke (the key event's timestamp) to the end of the composite that draws its result
-    // into the page (the surface marks it `kiln:input-paint`; the browser shows it at the next
-    // vsync).
+    // Keystroke (the key event's timestamp) to the animation frame that presents its result
+    // (PLAN.md §3.9: PerformanceObserver + rAF). The surface marks the end of the composite that
+    // draws the keystroke's frame (`kiln:input-composite`) and the next animation frame
+    // (`kiln:input-paint`); each key is paired with the first composite after it and the first
+    // frame after that composite, so a frame requested for an earlier key never counts.
     await page.evaluate(() => {
-      const w = window as unknown as { __b5: { down: number[]; paint: number[] } };
-      w.__b5 = { down: [], paint: [] };
+      const w = window as unknown as { __b5: { down: number[]; composite: number[]; paint: number[] } };
+      w.__b5 = { down: [], composite: [], paint: [] };
       document
         .querySelector('[data-testid="kiln-input-proxy"]')
         ?.addEventListener('keydown', (e) => w.__b5.down.push(e.timeStamp), true);
       new PerformanceObserver((list) => {
-        for (const m of list.getEntries()) if (m.name === 'kiln:input-paint') w.__b5.paint.push(m.startTime);
+        for (const m of list.getEntries()) {
+          if (m.name === 'kiln:input-composite') w.__b5.composite.push(m.startTime);
+          else if (m.name === 'kiln:input-paint') w.__b5.paint.push(m.startTime);
+        }
       }).observe({ type: 'mark' });
     });
     const text = ' the quick brown fox jumps over the lazy dog while the kiln cools down slowly';
@@ -677,28 +810,52 @@ test.describe('performance (production build)', () => {
       await page.waitForTimeout(70);
     }
     await page.waitForTimeout(500);
-    const latencies = await page.evaluate(() => {
-      const { down, paint } = (window as unknown as { __b5: { down: number[]; paint: number[] } }).__b5;
+    const pairs = await page.evaluate(() => {
+      const { down, composite, paint } = (
+        window as unknown as { __b5: { down: number[]; composite: number[]; paint: number[] } }
+      ).__b5;
       return down.map((t) => {
-        const p = paint.find((x) => x >= t);
-        return p === undefined ? Number.POSITIVE_INFINITY : p - t;
+        const c = composite.find((x) => x >= t);
+        const p = c === undefined ? undefined : paint.find((x) => x >= c);
+        return {
+          work: c === undefined ? Number.POSITIVE_INFINITY : c - t,
+          paint: p === undefined ? Number.POSITIVE_INFINITY : p - t,
+        };
       });
     });
-    const sorted = [...latencies].sort((a, b) => a - b);
-    const p95 = sorted[Math.ceil(sorted.length * 0.95) - 1] ?? Number.POSITIVE_INFINITY;
-    const p50 = sorted[Math.floor(sorted.length / 2)] ?? Number.POSITIVE_INFINITY;
-    const summary = `n=${sorted.length} p50=${p50.toFixed(1)} ms p95=${p95.toFixed(1)} ms`;
+    const pct = (xs: number[], q: number) => {
+      const sorted = [...xs].sort((x, y) => x - y);
+      return sorted[Math.max(0, Math.ceil(sorted.length * q) - 1)] ?? Number.POSITIVE_INFINITY;
+    };
+    const latencies = pairs.map((x) => x.paint);
+    const work = pairs.map((x) => x.work);
+    const p95 = pct(latencies, 0.95);
+    const p50 = pct(latencies, 0.5);
+    const summary =
+      `n=${latencies.length} keystroke→frame p50=${p50.toFixed(1)} ms p95=${p95.toFixed(1)} ms; ` +
+      `keystroke→composite p50=${pct(work, 0.5).toFixed(1)} ms p95=${pct(work, 0.95).toFixed(1)} ms`;
     test.info().annotations.push({ type: 'B5', description: summary });
-    console.log(`B5 keystroke→paint on doc-300p (production build): ${summary}`);
-    expect(sorted.length).toBe(text.length);
-    // The budget is 16 ms (PLAN.md §3.9). It is not met yet: the exception proposed in
-    // docs/qa/perf.md ("B5 typing latency") holds the line at 40 ms on the development machine and
-    // 1.5 × that on CI runners (§3.9's CI tolerance) until the painter moves into the worker.
-    const limit = process.env.CI ? 60 : 40;
+    console.log(`B5 on doc-300p (production build): ${summary}`);
+    expect(latencies.length).toBe(text.length);
+    // The budget is 16 ms (PLAN.md §3.9) and is asserted here. While docs/qa/perf.md lists a B5
+    // exception, the run is held to that exception's allowance instead and says so loudly; removing
+    // the row (the gate rejects it, or the budget is met) brings the 16 ms assertion back by itself.
+    const BUDGET = 16;
+    const exception = b5Exception();
+    const met = p95 < BUDGET;
+    const limit = met || !exception ? BUDGET : process.env.CI ? exception.ci : exception.local;
     test.info().annotations.push({
       type: 'B5 budget',
-      description: p95 < 16 ? 'met (< 16 ms)' : `over budget; under the ${limit} ms exception`,
+      description: met
+        ? `met: p95 ${p95.toFixed(1)} ms < ${BUDGET} ms`
+        : exception
+          ? `NOT MET: p95 ${p95.toFixed(1)} ms ≥ ${BUDGET} ms; held to the ${exception.status} exception in docs/qa/perf.md (< ${limit} ms)`
+          : `NOT MET: p95 ${p95.toFixed(1)} ms ≥ ${BUDGET} ms and docs/qa/perf.md lists no exception`,
     });
-    expect(p95, `B5 p95 ${p95.toFixed(1)} ms (budget 16 ms, exception ${limit} ms)`).toBeLessThan(limit);
+    if (!met)
+      console.warn(`B5 NOT MET: p95 ${p95.toFixed(1)} ms ≥ ${BUDGET} ms (limit applied: ${limit} ms)`);
+    expect(p95, `B5 p95 ${p95.toFixed(1)} ms (budget ${BUDGET} ms, limit applied ${limit} ms)`).toBeLessThan(
+      limit,
+    );
   });
 });

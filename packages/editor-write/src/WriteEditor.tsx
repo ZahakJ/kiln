@@ -18,7 +18,7 @@ import {
 } from '@kiln/ui-kit';
 import { X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useWrite } from './hooks.ts';
+import { useMediaQuery, useWrite } from './hooks.ts';
 import type { WriteEditorModel } from './model.ts';
 import { NavigationPane } from './panes/NavigationPane.tsx';
 import { StylesPane } from './panes/StylesPane.tsx';
@@ -213,7 +213,9 @@ export function WriteEditor({ model, title, theme, ribbon }: WriteEditorProps) {
   const size = useSize(area);
   const wantMini = useRef(false);
   const miniItems = useMemo(() => miniToolbarItems(ribbon), [ribbon]);
-  const rulers = showRuler && viewMode === 'PrintLayout';
+  // Phones keep the page's width for the page: no rulers on compact layouts (as Word mobile).
+  const compact = useMediaQuery('(max-width: 639px)');
+  const rulers = showRuler && viewMode === 'PrintLayout' && !compact;
 
   const onController = useCallback(
     (c: SurfaceController | null) => {

@@ -564,6 +564,11 @@
 .kiln-write-section {
   margin: 0 0 14px;
 }
+/* A tab's first section sits clear of the tab strip. */
+[role="tabpanel"] > .kiln-write-section:first-child,
+[role="tabpanel"] > .kiln-write-grid:first-child {
+  margin-top: 16px;
+}
 .kiln-write-section__title {
   margin: 0 0 8px;
   font-size: var(--kiln-text-xs);
@@ -614,8 +619,16 @@
   border: 1px solid var(--kiln-line);
   border-radius: 10px;
   background: var(--kiln-page);
-  color: #1c1917;
+  /* Automatic text: the page's ink in either theme (the surface paints it from the same role). */
+  --kiln-page-ink: var(--kiln-fg);
+  color: var(--kiln-page-ink);
   overflow: hidden;
+}
+.kiln-write-preview > span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .kiln-write-tabs-list {
   list-style: none;
