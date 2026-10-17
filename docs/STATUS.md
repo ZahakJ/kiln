@@ -192,5 +192,6 @@ restart from the files on `wip/paused-2026-10-17` (check that branch out, or
 copy its changes into the working tree, before resuming). In a Claude Code session in this
 repository, asking to "resume the Kiln build" is enough; the orchestrator
 reads this file, `git log` and `docs/qa/handoffs.md` to work out the list.
+Everything needed is in [tools/orchestrator](../tools/orchestrator/README.md): the workflow script, `resume-args.json` and step-by-step resume instructions for a new session or account.
 Uncommitted files left by an interrupted package stay in the working tree and
 the next agent for that package continues from them.

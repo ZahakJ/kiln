@@ -1,0 +1,552 @@
+{
+ "completed": [
+  "WP-50",
+  "WP-51",
+  "WP-52",
+  "WP-53",
+  "WP-54",
+  "WP-55",
+  "WP-56",
+  "WP-57",
+  "WP-58",
+  "WP-59",
+  "WP-60",
+  "WP-61",
+  "WP-62",
+  "WP-63",
+  "WP-64",
+  "WP-65",
+  "WP-67",
+  "WP-69",
+  "WP-70",
+  "WP-73",
+  "WP-76",
+  "WP-77",
+  "WP-79"
+ ],
+ "wps": [
+  {
+   "id": "WP-50",
+   "t": "Rename to Kiln, Rust toolchain, Cargo workspace scaffold, CI update",
+   "d": [],
+   "g": false,
+   "h": true
+  },
+  {
+   "id": "WP-51",
+   "t": "Brand kit import: tokens, fonts, icons, banners, mockups",
+   "d": [
+    "WP-50",
+    "path:/home/muth/kiln-brand/final"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-52",
+   "t": "Protocol crate, session facade, wasm and Tauri bridges, typed TS client",
+   "d": [
+    "WP-50"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-53",
+   "t": "Text engine kiln-text: fonts, shaping, bidi, line breaking, glyph atlas",
+   "d": [
+    "WP-50"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-54",
+   "t": "Scene display list, raster painter, canvas painter, input proxy (IME), a11y shadow tree",
+   "d": [
+    "WP-52",
+    "WP-53"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-55",
+   "t": "OOXML core port: OPC, XML layer, DrawingML, presets, passthrough, deterministic writer",
+   "d": [
+    "WP-50"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-56",
+   "t": "Formula engine core port: parser, references, dependency graph, incremental parallel recalculation, number formats",
+   "d": [
+    "WP-50"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-57",
+   "t": "Formula function library port (≥ 484 functions), docs JSON, full conformance suite",
+   "d": [
+    "WP-56"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-58",
+   "t": "Chrome re-wire: commands over the generated catalog, ribbon/Backstage/status bar/palette to the brand mockups, Kiln Home, app frame",
+   "d": [
+    "WP-51",
+    "WP-52"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-59",
+   "t": "Parity tracker seed, competitor dossier, xtask parity",
+   "d": [
+    "WP-50"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-60",
+   "t": "kiln CLI, kiln-testing (oracles, fidelity scorer), fixture corpus move, kiln-bench harness and CI budgets",
+   "d": [
+    "WP-54",
+    "WP-55"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-61",
+   "t": "kiln-doc: Write document model port (styles, numbering, sections, fields, revisions, transactions, undo)",
+   "d": [
+    "WP-50"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-62",
+   "t": "DOCX reader (kiln-io-docx read)",
+   "d": [
+    "WP-55",
+    "WP-61"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-63",
+   "t": "Write layout engine kiln-doc-layout: pagination, tables, floats, headers/footers, footnotes, hit testing, Scene",
+   "d": [
+    "WP-53",
+    "WP-54",
+    "WP-61",
+    "WP-60"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-64",
+   "t": "Write editor: editing commands in Rust, ribbon wiring, panes, dialogs, rulers, e2e",
+   "d": [
+    "WP-58",
+    "WP-63"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-65",
+   "t": "DOCX writer and round-trip fidelity",
+   "d": [
+    "WP-62"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-66",
+   "t": "Write advanced features: comments, track changes, TOC, footnotes UI, floating objects UI, Format Painter, Markdown shortcuts, focus mode, spell check",
+   "d": [
+    "WP-64",
+    "WP-65"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-67",
+   "t": "PDF export and print (kiln-io-pdf via krilla), print preview",
+   "d": [
+    "WP-63",
+    "WP-60",
+    "WP-58"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-68",
+   "t": "Write integration gate: Office file loop, visual review, budgets, parity",
+   "d": [
+    "WP-64",
+    "WP-65",
+    "WP-66",
+    "WP-67"
+   ],
+   "g": true,
+   "h": false
+  },
+  {
+   "id": "WP-69",
+   "t": "kiln-sheet: workbook model port, sparse store, styles, command log, formula binding, parallel recalculation",
+   "d": [
+    "WP-56"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-70",
+   "t": "XLSX reader and writer, CSV/TSV/JSON import/export, round-trip fidelity",
+   "d": [
+    "WP-55",
+    "WP-69"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-71",
+   "t": "Grid surface and editor core: canvas tiles, selection, frozen panes, in-cell editing, formula bar, autocomplete, fill handle, clipboard, Home ribbon",
+   "d": [
+    "WP-58",
+    "WP-54",
+    "WP-69",
+    "WP-60"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-72",
+   "t": "Grid features: sort & filter, conditional formatting UI, validation, Format as Table, find/replace, comments, Page Layout/Formulas/Data ribbons, auditing, Formula Lab, sheet printing",
+   "d": [
+    "WP-71",
+    "WP-70",
+    "WP-67"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-73",
+   "t": "kiln-charts: chart model, layout and rendering, chart editing UI, OOXML chart read/write",
+   "d": [
+    "WP-54",
+    "WP-55",
+    "WP-69"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-74",
+   "t": "Grid analysis: pivot tables, sparklines, Goal Seek, Subtotal, Flash Fill, protection, themes",
+   "d": [
+    "WP-72",
+    "WP-73"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-75",
+   "t": "Grid integration gate",
+   "d": [
+    "WP-71",
+    "WP-72",
+    "WP-73",
+    "WP-74"
+   ],
+   "g": true,
+   "h": false
+  },
+  {
+   "id": "WP-76",
+   "t": "kiln-deck: presentation model, placeholder inheritance, themes, transitions, animation timeline",
+   "d": [
+    "WP-61",
+    "WP-55"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-77",
+   "t": "PPTX reader",
+   "d": [
+    "WP-76"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-78",
+   "t": "Deck stage and editor core: slide rendering, thumbnail rail, shapes and transforms, text in shapes, guides, Home/Insert/Design ribbons",
+   "d": [
+    "WP-58",
+    "WP-54",
+    "WP-76",
+    "WP-73",
+    "WP-60"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-79",
+   "t": "PPTX writer and round-trip fidelity",
+   "d": [
+    "WP-77"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-80",
+   "t": "Deck features: slide show, presenter view, transitions, animations, Animation Pane, media, equations, Design Ideas, exports",
+   "d": [
+    "WP-78",
+    "WP-79",
+    "WP-67"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-81",
+   "t": "Deck integration gate",
+   "d": [
+    "WP-78",
+    "WP-79",
+    "WP-80"
+   ],
+   "g": true,
+   "h": false
+  },
+  {
+   "id": "WP-82",
+   "t": "Collaboration and version history: Loro bindings, presence, kiln-collab-server, Version History pane",
+   "d": [
+    "WP-66",
+    "WP-80"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-83",
+   "t": "Storage: native bundles, autosave journal, recovery, recents, AutoSave to file, templates index",
+   "d": [
+    "WP-64",
+    "WP-71",
+    "WP-78"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-84",
+   "t": "Accessibility, i18n (en, de, ar), RTL, high-contrast theme, Key Tips completeness, Accessible text view, WCAG self-audit",
+   "d": [
+    "WP-68",
+    "WP-75",
+    "WP-81"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-85",
+   "t": "Templates, Home polish, onboarding tour, Options completeness, palette synonyms, Compatibility Checker, document properties",
+   "d": [
+    "WP-68",
+    "WP-75",
+    "WP-81",
+    "WP-83"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-86",
+   "t": "Kiln Notes: notebooks, sections, pages, tags, search, export",
+   "d": [
+    "WP-66",
+    "WP-83"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-87",
+   "t": "ODF import/export (odt, ods, odp)",
+   "d": [
+    "WP-65",
+    "WP-70",
+    "WP-79"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-88",
+   "t": "Tauri desktop shell: host, native menus, file associations, windows, updater config, Linux bundles, release workflow dispatch",
+   "d": [
+    "WP-83",
+    "WP-67",
+    "WP-68",
+    "WP-75",
+    "WP-81"
+   ],
+   "g": false,
+   "h": true
+  },
+  {
+   "id": "WP-89",
+   "t": "Tauri Android: NDK, project generation, intents, SAF, print hook, signing, APK build and verification",
+   "d": [
+    "WP-88"
+   ],
+   "g": false,
+   "h": true
+  },
+  {
+   "id": "WP-90",
+   "t": "Mobile UX adaptation: phone and tablet layouts to the kit's phone mockups, touch handles, keyboard docking",
+   "d": [
+    "WP-85",
+    "WP-86"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-91",
+   "t": "PWA, offline, threads shim, web deployment to GitHub Pages via Actions",
+   "d": [
+    "WP-85",
+    "WP-60"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-92",
+   "t": "Landing site and manual",
+   "d": [
+    "WP-51",
+    "WP-91",
+    "WP-90"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-93",
+   "t": "Fidelity corpus expansion, differential testing against LibreOffice, reader/writer hardening",
+   "d": [
+    "WP-87",
+    "WP-68",
+    "WP-75",
+    "WP-81"
+   ],
+   "g": false,
+   "h": true
+  },
+  {
+   "id": "WP-94",
+   "t": "Performance pass: all budgets enforced, profiling-driven optimisation, memory, wasm size, CI calibration",
+   "d": [
+    "WP-88",
+    "WP-91",
+    "WP-82",
+    "WP-84",
+    "WP-86",
+    "WP-90",
+    "WP-93"
+   ],
+   "g": false,
+   "h": true
+  },
+  {
+   "id": "WP-95",
+   "t": "Security hardening, fuzzing, supply chain",
+   "d": [
+    "WP-93",
+    "WP-88",
+    "WP-89"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-96",
+   "t": "Agent control channel and kiln CLI completeness: convert/render/inspect/eval/control/batch, protocol docs, skill file",
+   "d": [
+    "WP-68",
+    "WP-75",
+    "WP-81",
+    "WP-83",
+    "WP-87"
+   ],
+   "g": false,
+   "h": false
+  },
+  {
+   "id": "WP-97",
+   "t": "Integration gate: full suite verification, layout scan, visual baselines, thinness audit, DoD checklist, reference deletion",
+   "d": [
+    "WP-82",
+    "WP-83",
+    "WP-84",
+    "WP-85",
+    "WP-86",
+    "WP-87",
+    "WP-88",
+    "WP-89",
+    "WP-90",
+    "WP-91",
+    "WP-92",
+    "WP-93",
+    "WP-94",
+    "WP-95",
+    "WP-96"
+   ],
+   "g": true,
+   "h": true
+  },
+  {
+   "id": "WP-98",
+   "t": "Release v0.1.0: screenshots and demo, README and landing finalised, version bump, tag, release assets, Pages",
+   "d": [
+    "WP-97"
+   ],
+   "g": true,
+   "h": true
+  }
+ ]
+}
