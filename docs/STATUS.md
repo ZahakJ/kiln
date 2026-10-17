@@ -6,6 +6,10 @@ single place to pick the work up from; [PLAN.md](../PLAN.md) and
 [plan/work-packages.json](../plan/work-packages.json) hold the full task text
 and acceptance criteria of every work package (WP).
 
+**Continuing on another machine or account:** start with
+[tools/orchestrator/NEW-MACHINE.md](../tools/orchestrator/NEW-MACHINE.md) and
+[tools/orchestrator/CONTEXT.md](../tools/orchestrator/CONTEXT.md).
+
 ## How the work is done
 
 Kiln is built by an orchestrated set of AI agents (Claude Opus) working from

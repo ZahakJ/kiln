@@ -1,5 +1,8 @@
 # Orchestrator
 
+**New machine or account?** Follow [NEW-MACHINE.md](NEW-MACHINE.md); the owner's standing
+instructions are in [CONTEXT.md](CONTEXT.md).
+
 How the Kiln build is driven by Claude Code agents. Start with
 [docs/STATUS.md](../../docs/STATUS.md).
 

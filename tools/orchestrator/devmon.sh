@@ -1,7 +1,7 @@
 #!/bin/bash
 # Device health watch: prints a line only when something needs attention.
 # Auto-cleans stale Rust build output when disk gets low.
-SP=/tmp/claude-1000/-home-muth/d715ab71-9a3e-44c3-93cc-3ddf94f05d63/scratchpad
+SP=${KILN_SCRATCH:-$HOME/.cache/kiln-scratch}
 declare -A last
 say() { local now=$(date +%s); if (( now - ${last[$1]:-0} >= 600 )); then last[$1]=$now; echo "$(date +%H:%M) $2"; fi; }
 thr() { cat /sys/devices/system/cpu/cpu*/thermal_throttle/core_throttle_count 2>/dev/null | awk '{s+=$1} END{print s+0}'; }
