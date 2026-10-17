@@ -20,7 +20,7 @@ written to [docs/qa/handoffs.md](qa/handoffs.md); measured performance is in
 
 ## Progress: v0.1 (49 work packages)
 
-**23 done, 2 in progress, 24 to go.**
+**23 done, 4 paused mid-way (WP-66, WP-71, WP-78, WP-87), 22 not started.**
 
 ### Done
 
@@ -50,12 +50,24 @@ written to [docs/qa/handoffs.md](qa/handoffs.md); measured performance is in
 | WP-77 | PPTX reader |
 | WP-79 | PPTX writer and round-trip fidelity |
 
-### In progress when this was written
+### Paused (2026-10-17, ~11:30): interrupted by the usage limit
 
-| WP | What it delivers |
-|---|---|
-| WP-66 | Write advanced: comments, track changes, table of contents, footnotes |
-| WP-71 | Grid surface and editor core: canvas tiles, selection, frozen panes, editing (main work committed, in review) |
+The build is **paused**. These four packages were stopped mid-way; none has
+been reviewed. Their unfinished files were left in the working tree and are
+saved on the branch
+[`wip/paused-2026-10-17`](https://github.com/ZahakJ/kiln/tree/wip/paused-2026-10-17)
+(snapshot on top of `main` e975ab7; not for merging as is).
+
+| WP | What it delivers | State |
+|---|---|---|
+| WP-71 | Grid surface and editor core: canvas tiles, selection, frozen panes, editing, charts on sheets | Main work committed on `main` (39ebb31, 7a1b8f0, e975ab7); review not run |
+| WP-66 | Write advanced: comments, track changes, table of contents, footnotes | Uncommitted work in the WIP branch |
+| WP-78 | Deck stage and editor core | Just started; uncommitted work in the WIP branch |
+| WP-87 | ODF import and export | Uncommitted work in the WIP branch (`crates/kiln-io-odf`) |
+
+Leftover edits from the WP-64 fix round are on
+[`wip/wp64-leftovers`](https://github.com/ZahakJ/kiln/tree/wip/wp64-leftovers);
+compare them with b85d91d before reuse.
 
 ### Remaining
 
@@ -138,6 +150,19 @@ clones on the measured rows. VBA and Access are out of scope.
 
 ## Known issues to watch
 
+- **Web PDF export loses body text** (found by the WP-67 review). The web
+  core's font store has only Carlito, so text set in Caladea or Liberation
+  gets no glyphs: the PDF, the print preview and the web canvas show headings
+  only, while the export still reports a clean PDF/UA file. Fix in WP-53/WP-63
+  (bundle the metric-compatible fonts for the web core) and make WP-67 warn
+  when a run has no usable font.
+- The B5 e2e test reads its limit from a table row in `docs/qa/perf.md`; move
+  it into `bench/budgets.toml` so a document edit cannot loosen a gate.
+- WP-64 and WP-67 edited files owned by other packages (protocol, session,
+  surface, ui-kit); the owners should review those changes. The context menu
+  and mini toolbar still have serious axe findings (contrast, target size) in
+  the WP-58 ui-kit.
+
 - A Grid test (`apps::grid::command_tests::whole_sheet_commands_finish_at_once`
   in `kiln-session`) used over 5 GB of memory on 2026-10-17 and was killed by
   the kernel; whole-sheet commands probably materialise every cell. WP-71's
@@ -161,8 +186,10 @@ compiler-cache entries older than 12 hours, whenever free disk falls under
 ## How to resume
 
 The workflow script takes the list of finished packages and schedules the rest:
-re-run it with `args.completed` set to every WP marked done above (plus WP-66
-and WP-71 once their commits are on `main`). In a Claude Code session in this
+re-run it with `args.completed` set to the 23 WPs marked done above. WP-71
+then goes straight to review of its committed work; WP-66, WP-78 and WP-87
+restart from the files on `wip/paused-2026-10-17` (check that branch out, or
+copy its changes into the working tree, before resuming). In a Claude Code session in this
 repository, asking to "resume the Kiln build" is enough; the orchestrator
 reads this file, `git log` and `docs/qa/handoffs.md` to work out the list.
 Uncommitted files left by an interrupted package stay in the working tree and
