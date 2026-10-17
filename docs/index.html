@@ -111,6 +111,17 @@ section h2{max-width:22ch}
   background:var(--sunken);color:var(--ember-text)}
 .card .ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
 
+/* roadmap */
+.prog{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:30px}
+.meter{height:10px;border-radius:999px;background:var(--sunken);overflow:hidden;margin:10px 0 8px}
+.meter i{display:block;height:100%;border-radius:inherit;background:var(--ember)}
+.big{font:800 34px/1 var(--display);letter-spacing:-.02em}
+.steps{list-style:none;margin:30px 0 0;padding:0;display:grid;gap:10px}
+.steps li{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:baseline;padding:14px 18px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.steps b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ember-text)}
+.steps li.done b{color:var(--grid)}
+.steps span{color:var(--muted);font-size:15.5px}
+@media (max-width:600px){.steps li{grid-template-columns:1fr;gap:4px}}
 /* apps */
 .apps{display:grid;gap:18px;grid-template-columns:repeat(2,1fr);margin-top:30px}
 @media (max-width:820px){.apps{grid-template-columns:1fr}}
@@ -175,6 +186,7 @@ footer{border-top:1px solid var(--line);padding:40px 0 56px;color:var(--muted);f
     <a class="opt" href="#features">Features</a>
     <a class="opt" href="#apps">Apps</a>
     <a class="opt" href="#compared">Compared</a>
+    <a class="opt" href="#roadmap">Roadmap</a>
     <a href="manual/">Docs</a>
     <a href="https://github.com/ZahakJ/kiln">GitHub</a>
   </div>
@@ -304,6 +316,23 @@ footer{border-top:1px solid var(--line);padding:40px 0 56px;color:var(--muted);f
       <tr><td>Licence</td><td class="us">Open source, AGPL-3.0-or-later</td><td class="them">Proprietary</td></tr>
     </tbody>
   </table></div>
+</div></section>
+
+<section id="roadmap"><div class="wrap">
+  <h2>Roadmap</h2>
+  <p class="lede">Kiln is being built in the open, one reviewed work package at a time. There is no release yet; this is where it stands.</p>
+  <div class="prog">
+    <div class="card"><div class="big">23 / 49</div><div class="meter" role="img" aria-label="23 of 49 work packages done"><i style="width:47%"></i></div><p>v0.1 work packages done, 2 more in progress.</p></div>
+    <div class="card"><div class="big">240 / 686</div><div class="meter" role="img" aria-label="240 of 686 critical and commonly missed Office features done"><i style="width:35%"></i></div><p>Office features a switcher would miss, done or better (critical and commonly missed).</p></div>
+    <div class="card"><div class="big">484+</div><div class="meter" role="img" aria-label="Formula library complete"><i style="width:100%"></i></div><p>Excel functions, checked against 5,300 conformance cases.</p></div>
+  </div>
+  <ol class="steps">
+    <li class="done"><b>Done</b><span>Rust core: text shaping, layout, formula engine, charts, PDF export. Word, Excel and PowerPoint files open and save with round-trip tests. The Kiln interface, the Write editor and the Grid surface.</span></li>
+    <li><b>Next</b><span>Grid sorting, filters, conditional formatting and pivot tables; the Deck editor and slide shows; OpenDocument files; Kiln Notes; collaboration and version history.</span></li>
+    <li><b>Then</b><span>Desktop apps for Windows, macOS and Linux, the Android app and the web app; accessibility and translations; benchmarks against LibreOffice, ONLYOFFICE and the other open suites.</span></li>
+    <li><b>v0.1.0</b><span>The first release, with installers and screenshots. After it, parity rounds close the remaining gaps with Office, release by release.</span></li>
+  </ol>
+  <p class="muted" style="margin-top:22px">Details, decisions and the full list: <a href="https://github.com/ZahakJ/kiln/blob/main/docs/STATUS.md">docs/STATUS.md</a>.</p>
 </div></section>
 
 <section id="build"><div class="wrap">

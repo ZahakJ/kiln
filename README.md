@@ -18,21 +18,21 @@ that opens and saves Word, Excel and PowerPoint files faithfully, keeps the
 layout Office users know (ribbon, File menu, status bar, Office shortcuts) and
 runs on Linux, Windows, macOS, Android and in the browser.
 
-**Status.** Kiln is being rebuilt on a native Rust core; there is no release
-yet. What exists today:
+**Status.** Kiln is in active development on a native Rust core; there is no
+release yet (v0.1.0 is planned once all 49 work packages land). Working today:
 
-- the Cargo workspace with every core crate of the architecture (models,
-  layout, formulas, file formats, collaboration, storage, the session facade,
-  the WebAssembly bridge and the command line), each building, linted with
-  Clippy and tested in CI, but without its engine yet;
-- the Tauri 2 shell for desktop and Android, which opens the web build in a
-  window and measures its own start-up time;
-- the web app with a placeholder Kiln Home, and the user-interface building
-  blocks from the first prototype (ribbon, File menu, status bar, command
-  palette, Key Tips, dialogs and design tokens);
-- the test oracles for the port: 5,300 formula conformance cases, a corpus of
-  61 Word, Excel and PowerPoint fixtures, and the prototype's TypeScript
-  engines kept read-only in `reference/ts-core/`.
+- **Engines:** text shaping and line breaking, the Write layout engine with
+  pagination, tables and floats, a formula engine with 484+ Excel functions,
+  charts, and PDF export;
+- **Files:** Word, Excel and PowerPoint read and write with round-trip fidelity
+  tests, plus CSV, TSV and JSON;
+- **Apps:** the Kiln interface (ribbons, Backstage, Kiln Home), the Kiln Write
+  editor, and the Kiln Grid surface and editor core; the Deck and Notes
+  editors, collaboration, the desktop and Android apps come next.
+
+Progress, remaining work, decisions and how the build is run are in
+[docs/STATUS.md](docs/STATUS.md); feature parity with Office is tracked row by
+row in [parity/parity.json](parity/parity.json).
 
 The plan, the work packages and their order are in [PLAN.md](PLAN.md).
 
@@ -73,6 +73,7 @@ Android are built by the release workflow from a version tag
 
 | | |
 |---|---|
+| [STATUS.md](docs/STATUS.md) | Build progress, remaining work, decisions, how to resume |
 | [PLAN.md](PLAN.md) | The implementation plan: product, architecture, budgets, work packages |
 | [DESIGN.md](docs/DESIGN.md) | Architecture: crates, packages, runtime, threads, rendering |
 | [FORMATS.md](docs/FORMATS.md) | What each file-format crate covers and the fidelity targets |
