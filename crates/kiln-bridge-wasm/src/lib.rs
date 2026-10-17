@@ -43,6 +43,15 @@ pub fn version() -> String {
     VERSION.to_owned()
 }
 
+/// Gives the core a document font (the page fetches Carlito as a static asset and registers it
+/// before creating the session: the core embeds no font, budget B12). Returns `false` when it
+/// was already registered.
+#[wasm_bindgen(js_name = "registerFont")]
+#[must_use]
+pub fn register_font(bytes: &[u8]) -> bool {
+    kiln_session::register_font(bytes.to_vec())
+}
+
 /// Milliseconds since the Unix epoch.
 #[cfg(target_arch = "wasm32")]
 fn clock() -> u64 {

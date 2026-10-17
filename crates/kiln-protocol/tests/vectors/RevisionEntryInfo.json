@@ -1,0 +1,36 @@
+{
+  "type": "RevisionEntryInfo",
+  "format": {
+    "TYPENAME": "RevisionEntryInfo"
+  },
+  "values": [
+    {
+      "target": {
+        "kind": "Deleted",
+        "node": 4097,
+        "start": 3,
+        "end": 200
+      },
+      "author": "Ana",
+      "date": null,
+      "text": "«glaze» — 🔥",
+      "color": "C2410C",
+      "story": "Main Document",
+      "current": false
+    },
+    {
+      "target": {
+        "kind": "Inserted",
+        "node": 0,
+        "start": 0,
+        "end": 0
+      },
+      "author": "",
+      "date": null,
+      "text": "",
+      "color": "",
+      "story": "",
+      "current": false
+    }
+  ]
+}

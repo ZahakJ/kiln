@@ -26,6 +26,10 @@ fn rect(b: kiln_scene::Bounds) -> Rect {
 impl WriteDoc {
     /// Answers a Write query.
     pub(in crate::apps::write) fn write_query(&self, q: &WriteQuery) -> Result<WriteQueryResult> {
+        // WP-66: comments, revisions, cross-references, objects and spelling.
+        if let Some(answer) = self.feature_query(q) {
+            return answer;
+        }
         Ok(match q {
             WriteQuery::Format => WriteQueryResult::Format(Box::new(self.format_state()?)),
             WriteQuery::Rulers => WriteQueryResult::Rulers(self.rulers().map(Box::new)),
@@ -51,6 +55,17 @@ impl WriteDoc {
                     .into_iter()
                     .collect(),
             ),
+            // WP-66: answered by `features` above.
+            WriteQuery::Comments
+            | WriteQuery::Revisions
+            | WriteQuery::CrossRefTargets
+            | WriteQuery::Objects
+            | WriteQuery::SpellingAt { .. }
+            | WriteQuery::NextMisspelling { .. } => {
+                return Err(kiln_common::KilnError::Internal(format!(
+                    "{q:?} reached the editor's queries"
+                )));
+            }
             WriteQuery::CommandLog => WriteQueryResult::CommandLog(
                 self.editor
                     .log
@@ -270,6 +285,7 @@ impl WriteDoc {
                 .and_then(|c| c.val.rgb())
                 .map(hex),
             borders: pr.borders != kiln_doc::ParagraphBorders::default(),
+            features: self.feature_state(),
         })
     }
 

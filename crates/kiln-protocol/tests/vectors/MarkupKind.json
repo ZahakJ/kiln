@@ -1,0 +1,11 @@
+{
+  "type": "MarkupKind",
+  "format": {
+    "TYPENAME": "MarkupKind"
+  },
+  "values": [
+    "Comments",
+    "InsertionsDeletions",
+    "Comments"
+  ]
+}

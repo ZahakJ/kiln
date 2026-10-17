@@ -1,0 +1,22 @@
+{
+  "type": "AutoFormatOptions",
+  "format": {
+    "TYPENAME": "AutoFormatOptions"
+  },
+  "values": [
+    {
+      "markdown": true,
+      "smart_quotes": true,
+      "dashes": true,
+      "ellipsis": true,
+      "fractions": true
+    },
+    {
+      "markdown": false,
+      "smart_quotes": false,
+      "dashes": false,
+      "ellipsis": false,
+      "fractions": false
+    }
+  ]
+}

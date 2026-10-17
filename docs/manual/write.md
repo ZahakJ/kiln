@@ -5,11 +5,13 @@ Kiln Write is the word processor of Kiln. It opens and saves Word documents (`.d
 Word unchanged except for your edits. The ribbon, the shortcuts and the dialogs are where Word users
 expect them; the page is laid out by Kiln itself, the same on every computer, in print and in PDF.
 
-> **Status (WP-64).** Typing, formatting, styles, lists, tables, page setup, headers and footers,
+> **Status (WP-66).** Typing, formatting, styles, lists, tables, page setup, headers and footers,
 > breaks, links, bookmarks, symbols, dates, Find and Replace, Go To, the clipboard, rulers, the
-> Navigation and Styles panes and the dialogs below are in. Comments, Track Changes, spelling, the
-> Format Painter, the table of contents and footnotes from the ribbon arrive with WP-66; equations
-> are a later tier. Commands that are not in a build yet are hidden, never greyed out.
+> Navigation and Styles panes and the dialogs below are in, and so are comments, Track Changes,
+> spelling, the Format Painter and Markdown shortcuts ([Reviewing and writing](write-review.md)) and
+> tables of contents, notes, captions, cross-references, floating objects and cover pages
+> ([References, pictures and page furniture](write-layout.md)). Equations are a later tier. Commands
+> that are not in a build yet are hidden, never greyed out.
 
 ## The window
 
@@ -105,8 +107,9 @@ The ruler shows the indents and tab stops of the paragraph with the caret:
 Bullets and Numbering apply Word's lists; their menus offer other bullets and number styles, and
 Multilevel List the 1 / a / i list or legal numbering (1.1.1). Tab and Shift+Tab at the start of a
 list item change its level (Tab moves to the next cell in a table instead). A list continues the
-list just above it; right-click ▸ **Restart at 1** and **Continue Numbering** change that. Typed "1. " or "- " does not start a list in this version unless you turn
-the Markdown shortcuts on (WP-66).
+list just above it; right-click ▸ **Restart at 1** and **Continue Numbering** change that. Typing
+"1. " or "- " at the start of a paragraph starts a list (one of the [Markdown
+shortcuts](write-review.md#markdown-shortcuts-and-smart-typography), which you can turn off).
 
 ## Styles
 

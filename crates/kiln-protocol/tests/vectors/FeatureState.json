@@ -1,0 +1,118 @@
+{
+  "type": "FeatureState",
+  "format": {
+    "TYPENAME": "FeatureState"
+  },
+  "values": [
+    {
+      "tracking": false,
+      "author": "",
+      "markup": "Simple",
+      "show_comments": false,
+      "show_insertions": false,
+      "show_formatting": false,
+      "revisions": 0,
+      "comments": 0,
+      "open_comments": 0,
+      "comment": null,
+      "painter": null,
+      "copied_format": false,
+      "focus": false,
+      "word_goal": 0,
+      "autoformat": {
+        "markdown": true,
+        "smart_quotes": true,
+        "dashes": true,
+        "ellipsis": true,
+        "fractions": true
+      },
+      "spelling": false,
+      "dictionary": false,
+      "misspellings": 0,
+      "hyphenation": false,
+      "object": null,
+      "in_note": false,
+      "has_toc": false
+    },
+    {
+      "tracking": true,
+      "author": "Zoë",
+      "markup": "All",
+      "show_comments": true,
+      "show_insertions": true,
+      "show_formatting": false,
+      "revisions": 300,
+      "comments": 2,
+      "open_comments": 1,
+      "comment": 300,
+      "painter": false,
+      "copied_format": true,
+      "focus": true,
+      "word_goal": 70000,
+      "autoformat": {
+        "markdown": true,
+        "smart_quotes": true,
+        "dashes": true,
+        "ellipsis": true,
+        "fractions": true
+      },
+      "spelling": true,
+      "dictionary": true,
+      "misspellings": 1,
+      "hyphenation": true,
+      "object": {
+        "id": 1000000,
+        "name": "Picture «1»",
+        "kind": "Picture",
+        "wrap": "Square",
+        "para": 12,
+        "offset": 0,
+        "rect": {
+          "x": 880.5,
+          "y": 120.0,
+          "width": 240.0,
+          "height": 72.25
+        },
+        "width": 144.5,
+        "height": -0.0,
+        "rotation": 90.0,
+        "z": 251659264,
+        "alt_text": "Glaze tiles in the kiln — 🔥",
+        "decorative": false,
+        "selected": true
+      },
+      "in_note": false,
+      "has_toc": true
+    },
+    {
+      "tracking": false,
+      "author": "",
+      "markup": "Simple",
+      "show_comments": false,
+      "show_insertions": false,
+      "show_formatting": false,
+      "revisions": 0,
+      "comments": 0,
+      "open_comments": 0,
+      "comment": null,
+      "painter": null,
+      "copied_format": false,
+      "focus": false,
+      "word_goal": 0,
+      "autoformat": {
+        "markdown": false,
+        "smart_quotes": false,
+        "dashes": false,
+        "ellipsis": false,
+        "fractions": false
+      },
+      "spelling": false,
+      "dictionary": false,
+      "misspellings": 0,
+      "hyphenation": false,
+      "object": null,
+      "in_note": false,
+      "has_toc": false
+    }
+  ]
+}

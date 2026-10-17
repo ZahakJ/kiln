@@ -1,0 +1,13 @@
+{
+  "type": "RotateOp",
+  "format": {
+    "TYPENAME": "RotateOp"
+  },
+  "values": [
+    "Right90",
+    "Left90",
+    "Right90",
+    "Left90",
+    "FlipVertical"
+  ]
+}

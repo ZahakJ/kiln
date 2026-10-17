@@ -173,6 +173,25 @@
         }
       ]
     },
+    "AutoFormatOptions": {
+      "STRUCT": [
+        {
+          "markdown": "BOOL"
+        },
+        {
+          "smart_quotes": "BOOL"
+        },
+        {
+          "dashes": "BOOL"
+        },
+        {
+          "ellipsis": "BOOL"
+        },
+        {
+          "fractions": "BOOL"
+        }
+      ]
+    },
     "Availability": {
       "ENUM": {
         "0": {
@@ -242,6 +261,55 @@
         },
         {
           "h": "F32"
+        }
+      ]
+    },
+    "CalloutKind": {
+      "ENUM": {
+        "0": {
+          "Note": "UNIT"
+        },
+        "1": {
+          "Tip": "UNIT"
+        },
+        "2": {
+          "Warning": "UNIT"
+        },
+        "3": {
+          "Important": "UNIT"
+        }
+      }
+    },
+    "CaptionPosition": {
+      "ENUM": {
+        "0": {
+          "Below": "UNIT"
+        },
+        "1": {
+          "Above": "UNIT"
+        }
+      }
+    },
+    "CaptionSpec": {
+      "STRUCT": [
+        {
+          "label": "STR"
+        },
+        {
+          "text": "STR"
+        },
+        {
+          "position": {
+            "TYPENAME": "CaptionPosition"
+          }
+        },
+        {
+          "exclude_label": "BOOL"
+        },
+        {
+          "chapter_level": {
+            "OPTION": "U8"
+          }
         }
       ]
     },
@@ -387,6 +455,25 @@
         },
         "2": {
           "Bottom": "UNIT"
+        }
+      }
+    },
+    "ChangeScope": {
+      "ENUM": {
+        "0": {
+          "CurrentAndNext": "UNIT"
+        },
+        "1": {
+          "Current": "UNIT"
+        },
+        "2": {
+          "AllShown": "UNIT"
+        },
+        "3": {
+          "All": "UNIT"
+        },
+        "4": {
+          "AllAndStop": "UNIT"
         }
       }
     },
@@ -915,6 +1002,65 @@
         }
       ]
     },
+    "CommentInfo": {
+      "STRUCT": [
+        {
+          "id": "U64"
+        },
+        {
+          "parent": {
+            "OPTION": "U64"
+          }
+        },
+        {
+          "author": "STR"
+        },
+        {
+          "initials": "STR"
+        },
+        {
+          "date": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "text": "STR"
+        },
+        {
+          "resolved": "BOOL"
+        },
+        {
+          "anchor_text": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "color": "STR"
+        },
+        {
+          "page": {
+            "OPTION": "U32"
+          }
+        },
+        {
+          "balloon": {
+            "OPTION": {
+              "TYPENAME": "Rect"
+            }
+          }
+        },
+        {
+          "anchor": {
+            "OPTION": {
+              "TYPENAME": "Point"
+            }
+          }
+        },
+        {
+          "current": "BOOL"
+        }
+      ]
+    },
     "Compass": {
       "ENUM": {
         "0": {
@@ -1014,6 +1160,119 @@
           "target": "STR"
         }
       ]
+    },
+    "CoverDesign": {
+      "ENUM": {
+        "0": {
+          "Kiln": "UNIT"
+        },
+        "1": {
+          "Banded": "UNIT"
+        },
+        "2": {
+          "Ledger": "UNIT"
+        },
+        "3": {
+          "Classic": "UNIT"
+        },
+        "4": {
+          "Slab": "UNIT"
+        },
+        "5": {
+          "Quiet": "UNIT"
+        }
+      }
+    },
+    "CrossRefItem": {
+      "STRUCT": [
+        {
+          "target": {
+            "TYPENAME": "CrossRefTarget"
+          }
+        },
+        {
+          "label": "STR"
+        },
+        {
+          "category": "STR"
+        },
+        {
+          "level": "U8"
+        }
+      ]
+    },
+    "CrossRefShow": {
+      "ENUM": {
+        "0": {
+          "Text": "UNIT"
+        },
+        "1": {
+          "PageNumber": "UNIT"
+        },
+        "2": {
+          "Number": "UNIT"
+        },
+        "3": {
+          "AboveBelow": "UNIT"
+        }
+      }
+    },
+    "CrossRefSpec": {
+      "STRUCT": [
+        {
+          "target": {
+            "TYPENAME": "CrossRefTarget"
+          }
+        },
+        {
+          "show": {
+            "TYPENAME": "CrossRefShow"
+          }
+        },
+        {
+          "hyperlink": "BOOL"
+        }
+      ]
+    },
+    "CrossRefTarget": {
+      "ENUM": {
+        "0": {
+          "Heading": {
+            "STRUCT": [
+              {
+                "para": "U64"
+              }
+            ]
+          }
+        },
+        "1": {
+          "Bookmark": {
+            "STRUCT": [
+              {
+                "name": "STR"
+              }
+            ]
+          }
+        },
+        "2": {
+          "Caption": {
+            "STRUCT": [
+              {
+                "para": "U64"
+              }
+            ]
+          }
+        },
+        "3": {
+          "Note": {
+            "STRUCT": [
+              {
+                "note": "U64"
+              }
+            ]
+          }
+        }
+      }
     },
     "DocKind": {
       "ENUM": {
@@ -2117,6 +2376,88 @@
         }
       }
     },
+    "FeatureState": {
+      "STRUCT": [
+        {
+          "tracking": "BOOL"
+        },
+        {
+          "author": "STR"
+        },
+        {
+          "markup": {
+            "TYPENAME": "MarkupMode"
+          }
+        },
+        {
+          "show_comments": "BOOL"
+        },
+        {
+          "show_insertions": "BOOL"
+        },
+        {
+          "show_formatting": "BOOL"
+        },
+        {
+          "revisions": "U32"
+        },
+        {
+          "comments": "U32"
+        },
+        {
+          "open_comments": "U32"
+        },
+        {
+          "comment": {
+            "OPTION": "U64"
+          }
+        },
+        {
+          "painter": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "copied_format": "BOOL"
+        },
+        {
+          "focus": "BOOL"
+        },
+        {
+          "word_goal": "U32"
+        },
+        {
+          "autoformat": {
+            "TYPENAME": "AutoFormatOptions"
+          }
+        },
+        {
+          "spelling": "BOOL"
+        },
+        {
+          "dictionary": "BOOL"
+        },
+        {
+          "misspellings": "U32"
+        },
+        {
+          "hyphenation": "BOOL"
+        },
+        {
+          "object": {
+            "OPTION": {
+              "TYPENAME": "ObjectInfo"
+            }
+          }
+        },
+        {
+          "in_note": "BOOL"
+        },
+        {
+          "has_toc": "BOOL"
+        }
+      ]
+    },
     "FileFilter": {
       "STRUCT": [
         {
@@ -2536,6 +2877,11 @@
         },
         {
           "borders": "BOOL"
+        },
+        {
+          "features": {
+            "TYPENAME": "FeatureState"
+          }
         }
       ]
     },
@@ -3663,50 +4009,6 @@
               }
             ]
           }
-        },
-        "104": {
-          "SelectDrawing": {
-            "STRUCT": [
-              {
-                "index": {
-                  "OPTION": "U32"
-                }
-              }
-            ]
-          }
-        },
-        "105": {
-          "PlaceDrawing": {
-            "STRUCT": [
-              {
-                "index": "U32"
-              },
-              {
-                "x": "F32"
-              },
-              {
-                "y": "F32"
-              },
-              {
-                "width": "F32"
-              },
-              {
-                "height": "F32"
-              }
-            ]
-          }
-        },
-        "106": {
-          "DeleteDrawing": "UNIT"
-        },
-        "107": {
-          "Theme": {
-            "STRUCT": [
-              {
-                "dark": "BOOL"
-              }
-            ]
-          }
         }
       }
     },
@@ -3747,33 +4049,6 @@
           "Right": "UNIT"
         }
       }
-    },
-    "GridDrawing": {
-      "STRUCT": [
-        {
-          "index": "U32"
-        },
-        {
-          "name": "STR"
-        },
-        {
-          "x": "F32"
-        },
-        {
-          "y": "F32"
-        },
-        {
-          "width": "F32"
-        },
-        {
-          "height": "F32"
-        },
-        {
-          "chart": {
-            "TYPENAME": "ChartState"
-          }
-        }
-      ]
     },
     "GridEditor": {
       "STRUCT": [
@@ -4292,27 +4567,6 @@
         },
         "7": {
           "Corner": "UNIT"
-        },
-        "8": {
-          "Drawing": {
-            "STRUCT": [
-              {
-                "index": "U32"
-              }
-            ]
-          }
-        },
-        "9": {
-          "DrawingHandle": {
-            "STRUCT": [
-              {
-                "index": "U32"
-              },
-              {
-                "handle": "U8"
-              }
-            ]
-          }
         }
       }
     },
@@ -4519,9 +4773,6 @@
               }
             ]
           }
-        },
-        "7": {
-          "RecommendedCharts": "UNIT"
         }
       }
     },
@@ -4572,15 +4823,6 @@
             "NEWTYPE": {
               "SEQ": {
                 "TYPENAME": "GridFunctionInfo"
-              }
-            }
-          }
-        },
-        "7": {
-          "Charts": {
-            "NEWTYPE": {
-              "SEQ": {
-                "TYPENAME": "ChartKind"
               }
             }
           }
@@ -4722,13 +4964,6 @@
         {
           "names": {
             "SEQ": "STR"
-          }
-        },
-        {
-          "drawing": {
-            "OPTION": {
-              "TYPENAME": "GridDrawing"
-            }
           }
         }
       ]
@@ -5191,6 +5426,207 @@
         }
       }
     },
+    "MarkupKind": {
+      "ENUM": {
+        "0": {
+          "Comments": "UNIT"
+        },
+        "1": {
+          "InsertionsDeletions": "UNIT"
+        },
+        "2": {
+          "Formatting": "UNIT"
+        }
+      }
+    },
+    "MarkupMode": {
+      "ENUM": {
+        "0": {
+          "Simple": "UNIT"
+        },
+        "1": {
+          "All": "UNIT"
+        },
+        "2": {
+          "None": "UNIT"
+        },
+        "3": {
+          "Original": "UNIT"
+        }
+      }
+    },
+    "NoteOptionsSpec": {
+      "STRUCT": [
+        {
+          "endnotes": "BOOL"
+        },
+        {
+          "format": "STR"
+        },
+        {
+          "start": "U32"
+        },
+        {
+          "restart": "STR"
+        }
+      ]
+    },
+    "ObjectAlign": {
+      "ENUM": {
+        "0": {
+          "Left": "UNIT"
+        },
+        "1": {
+          "Center": "UNIT"
+        },
+        "2": {
+          "Right": "UNIT"
+        },
+        "3": {
+          "Top": "UNIT"
+        },
+        "4": {
+          "Middle": "UNIT"
+        },
+        "5": {
+          "Bottom": "UNIT"
+        }
+      }
+    },
+    "ObjectInfo": {
+      "STRUCT": [
+        {
+          "id": "U64"
+        },
+        {
+          "name": "STR"
+        },
+        {
+          "kind": "STR"
+        },
+        {
+          "wrap": {
+            "TYPENAME": "WrapMode"
+          }
+        },
+        {
+          "para": "U64"
+        },
+        {
+          "offset": "U32"
+        },
+        {
+          "rect": {
+            "OPTION": {
+              "TYPENAME": "Rect"
+            }
+          }
+        },
+        {
+          "width": "F32"
+        },
+        {
+          "height": "F32"
+        },
+        {
+          "rotation": "F32"
+        },
+        {
+          "z": "I64"
+        },
+        {
+          "alt_text": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "decorative": "BOOL"
+        },
+        {
+          "selected": "BOOL"
+        }
+      ]
+    },
+    "ObjectLayoutSpec": {
+      "STRUCT": [
+        {
+          "wrap": {
+            "OPTION": {
+              "TYPENAME": "WrapMode"
+            }
+          }
+        },
+        {
+          "x": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "x_from": {
+            "OPTION": {
+              "TYPENAME": "RelativeTo"
+            }
+          }
+        },
+        {
+          "y": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "y_from": {
+            "OPTION": {
+              "TYPENAME": "RelativeTo"
+            }
+          }
+        },
+        {
+          "width": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "height": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "rotation": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "distance": {
+            "OPTION": "F32"
+          }
+        },
+        {
+          "move_with_text": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "allow_overlap": {
+            "OPTION": "BOOL"
+          }
+        },
+        {
+          "name": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "alt_text": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "decorative": {
+            "OPTION": "BOOL"
+          }
+        }
+      ]
+    },
     "OpenHint": {
       "STRUCT": [
         {
@@ -5650,6 +6086,40 @@
         }
       ]
     },
+    "PositionPreset": {
+      "ENUM": {
+        "0": {
+          "InLine": "UNIT"
+        },
+        "1": {
+          "TopLeft": "UNIT"
+        },
+        "2": {
+          "TopCenter": "UNIT"
+        },
+        "3": {
+          "TopRight": "UNIT"
+        },
+        "4": {
+          "MiddleLeft": "UNIT"
+        },
+        "5": {
+          "MiddleCenter": "UNIT"
+        },
+        "6": {
+          "MiddleRight": "UNIT"
+        },
+        "7": {
+          "BottomLeft": "UNIT"
+        },
+        "8": {
+          "BottomCenter": "UNIT"
+        },
+        "9": {
+          "BottomRight": "UNIT"
+        }
+      }
+    },
     "PrintMargins": {
       "ENUM": {
         "0": {
@@ -5809,6 +6279,55 @@
         },
         {
           "total": "U32"
+        }
+      ]
+    },
+    "PropertiesEdit": {
+      "STRUCT": [
+        {
+          "title": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "subject": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "author": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "keywords": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "description": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "category": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "status": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "company": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "manager": {
+            "OPTION": "STR"
+          }
         }
       ]
     },
@@ -6035,6 +6554,159 @@
           "height": "F32"
         }
       ]
+    },
+    "RelativeTo": {
+      "ENUM": {
+        "0": {
+          "Page": "UNIT"
+        },
+        "1": {
+          "Margin": "UNIT"
+        },
+        "2": {
+          "ColumnOrParagraph": "UNIT"
+        }
+      }
+    },
+    "ReviewerInfo": {
+      "STRUCT": [
+        {
+          "name": "STR"
+        },
+        {
+          "color": "STR"
+        },
+        {
+          "changes": "U32"
+        }
+      ]
+    },
+    "RevisionEntryInfo": {
+      "STRUCT": [
+        {
+          "target": {
+            "TYPENAME": "RevisionRef"
+          }
+        },
+        {
+          "author": "STR"
+        },
+        {
+          "date": {
+            "OPTION": "STR"
+          }
+        },
+        {
+          "text": "STR"
+        },
+        {
+          "color": "STR"
+        },
+        {
+          "story": "STR"
+        },
+        {
+          "current": "BOOL"
+        }
+      ]
+    },
+    "RevisionKindInfo": {
+      "ENUM": {
+        "0": {
+          "Inserted": "UNIT"
+        },
+        "1": {
+          "Deleted": "UNIT"
+        },
+        "2": {
+          "MovedFrom": "UNIT"
+        },
+        "3": {
+          "MovedTo": "UNIT"
+        },
+        "4": {
+          "Formatted": "UNIT"
+        },
+        "5": {
+          "ParagraphFormatted": "UNIT"
+        },
+        "6": {
+          "ParagraphInserted": "UNIT"
+        },
+        "7": {
+          "ParagraphDeleted": "UNIT"
+        },
+        "8": {
+          "RowInserted": "UNIT"
+        },
+        "9": {
+          "RowDeleted": "UNIT"
+        }
+      }
+    },
+    "RevisionRef": {
+      "STRUCT": [
+        {
+          "kind": {
+            "TYPENAME": "RevisionKindInfo"
+          }
+        },
+        {
+          "node": "U64"
+        },
+        {
+          "start": "U32"
+        },
+        {
+          "end": "U32"
+        }
+      ]
+    },
+    "RevisionsInfo": {
+      "STRUCT": [
+        {
+          "entries": {
+            "SEQ": {
+              "TYPENAME": "RevisionEntryInfo"
+            }
+          }
+        },
+        {
+          "reviewers": {
+            "SEQ": {
+              "TYPENAME": "ReviewerInfo"
+            }
+          }
+        },
+        {
+          "insertions": "U32"
+        },
+        {
+          "deletions": "U32"
+        },
+        {
+          "formatting": "U32"
+        },
+        {
+          "comments": "U32"
+        }
+      ]
+    },
+    "RotateOp": {
+      "ENUM": {
+        "0": {
+          "Right90": "UNIT"
+        },
+        "1": {
+          "Left90": "UNIT"
+        },
+        "2": {
+          "FlipVertical": "UNIT"
+        },
+        "3": {
+          "FlipHorizontal": "UNIT"
+        }
+      }
     },
     "RulerInfo": {
       "STRUCT": [
@@ -6380,6 +7052,32 @@
         },
         {
           "height": "F32"
+        }
+      ]
+    },
+    "SpellingHit": {
+      "STRUCT": [
+        {
+          "word": "STR"
+        },
+        {
+          "start": {
+            "TYPENAME": "TextPos"
+          }
+        },
+        {
+          "len": "U32"
+        },
+        {
+          "suggestions": {
+            "SEQ": "STR"
+          }
+        },
+        {
+          "context": "STR"
+        },
+        {
+          "context_offset": "U32"
         }
       ]
     },
@@ -7160,6 +7858,32 @@
         }
       ]
     },
+    "TocSpec": {
+      "STRUCT": [
+        {
+          "levels": "U8"
+        },
+        {
+          "hyperlinks": "BOOL"
+        },
+        {
+          "page_numbers": "BOOL"
+        },
+        {
+          "right_align": "BOOL"
+        },
+        {
+          "leader": {
+            "TYPENAME": "TabLeaderKind"
+          }
+        },
+        {
+          "title": {
+            "OPTION": "STR"
+          }
+        }
+      ]
+    },
     "UnderlineKind": {
       "ENUM": {
         "0": {
@@ -7278,6 +8002,31 @@
           "selection": "BOOL"
         }
       ]
+    },
+    "WrapMode": {
+      "ENUM": {
+        "0": {
+          "InLine": "UNIT"
+        },
+        "1": {
+          "Square": "UNIT"
+        },
+        "2": {
+          "Tight": "UNIT"
+        },
+        "3": {
+          "Through": "UNIT"
+        },
+        "4": {
+          "TopAndBottom": "UNIT"
+        },
+        "5": {
+          "Behind": "UNIT"
+        },
+        "6": {
+          "InFront": "UNIT"
+        }
+      }
     },
     "WriteCommand": {
       "ENUM": {
@@ -7886,6 +8635,554 @@
               }
             ]
           }
+        },
+        "77": {
+          "NewComment": {
+            "STRUCT": [
+              {
+                "text": "STR"
+              }
+            ]
+          }
+        },
+        "78": {
+          "ReplyComment": {
+            "STRUCT": [
+              {
+                "parent": "U64"
+              },
+              {
+                "text": "STR"
+              }
+            ]
+          }
+        },
+        "79": {
+          "EditComment": {
+            "STRUCT": [
+              {
+                "id": "U64"
+              },
+              {
+                "text": "STR"
+              }
+            ]
+          }
+        },
+        "80": {
+          "ResolveComment": {
+            "STRUCT": [
+              {
+                "id": "U64"
+              },
+              {
+                "resolved": "BOOL"
+              }
+            ]
+          }
+        },
+        "81": {
+          "DeleteComment": {
+            "STRUCT": [
+              {
+                "id": {
+                  "OPTION": "U64"
+                }
+              }
+            ]
+          }
+        },
+        "82": {
+          "DeleteAllComments": "UNIT"
+        },
+        "83": {
+          "SelectComment": {
+            "STRUCT": [
+              {
+                "id": "U64"
+              }
+            ]
+          }
+        },
+        "84": {
+          "TrackChanges": "UNIT"
+        },
+        "85": {
+          "SetReviewer": {
+            "STRUCT": [
+              {
+                "name": "STR"
+              }
+            ]
+          }
+        },
+        "86": {
+          "MarkupMode": {
+            "STRUCT": [
+              {
+                "mode": {
+                  "TYPENAME": "MarkupMode"
+                }
+              }
+            ]
+          }
+        },
+        "87": {
+          "ShowMarkup": {
+            "STRUCT": [
+              {
+                "kind": {
+                  "TYPENAME": "MarkupKind"
+                }
+              }
+            ]
+          }
+        },
+        "88": {
+          "AcceptChange": {
+            "STRUCT": [
+              {
+                "scope": {
+                  "TYPENAME": "ChangeScope"
+                }
+              }
+            ]
+          }
+        },
+        "89": {
+          "RejectChange": {
+            "STRUCT": [
+              {
+                "scope": {
+                  "TYPENAME": "ChangeScope"
+                }
+              }
+            ]
+          }
+        },
+        "90": {
+          "ResolveRevision": {
+            "STRUCT": [
+              {
+                "target": {
+                  "TYPENAME": "RevisionRef"
+                }
+              },
+              {
+                "accept": "BOOL"
+              }
+            ]
+          }
+        },
+        "91": {
+          "PreviousChange": "UNIT"
+        },
+        "92": {
+          "NextChange": "UNIT"
+        },
+        "93": {
+          "InsertToc": {
+            "STRUCT": [
+              {
+                "spec": {
+                  "TYPENAME": "TocSpec"
+                }
+              }
+            ]
+          }
+        },
+        "94": {
+          "InsertQuickToc": "UNIT"
+        },
+        "95": {
+          "RemoveToc": "UNIT"
+        },
+        "96": {
+          "UpdateToc": {
+            "STRUCT": [
+              {
+                "entire": "BOOL"
+              }
+            ]
+          }
+        },
+        "97": {
+          "AddText": {
+            "STRUCT": [
+              {
+                "level": "U8"
+              }
+            ]
+          }
+        },
+        "98": {
+          "InsertTableOfFigures": {
+            "STRUCT": [
+              {
+                "label": "STR"
+              }
+            ]
+          }
+        },
+        "99": {
+          "InsertFootnote": "UNIT"
+        },
+        "100": {
+          "InsertEndnote": "UNIT"
+        },
+        "101": {
+          "NextNote": {
+            "STRUCT": [
+              {
+                "backward": "BOOL"
+              }
+            ]
+          }
+        },
+        "102": {
+          "ShowNotes": "UNIT"
+        },
+        "103": {
+          "NoteOptions": {
+            "STRUCT": [
+              {
+                "spec": {
+                  "TYPENAME": "NoteOptionsSpec"
+                }
+              }
+            ]
+          }
+        },
+        "104": {
+          "ConvertNotes": {
+            "STRUCT": [
+              {
+                "to_endnotes": "BOOL"
+              }
+            ]
+          }
+        },
+        "105": {
+          "InsertCaption": {
+            "STRUCT": [
+              {
+                "spec": {
+                  "TYPENAME": "CaptionSpec"
+                }
+              }
+            ]
+          }
+        },
+        "106": {
+          "InsertCrossReference": {
+            "STRUCT": [
+              {
+                "spec": {
+                  "TYPENAME": "CrossRefSpec"
+                }
+              }
+            ]
+          }
+        },
+        "107": {
+          "FollowLink": "UNIT"
+        },
+        "108": {
+          "SelectObject": {
+            "STRUCT": [
+              {
+                "id": "U64"
+              }
+            ]
+          }
+        },
+        "109": {
+          "ObjectPosition": {
+            "STRUCT": [
+              {
+                "preset": {
+                  "TYPENAME": "PositionPreset"
+                }
+              }
+            ]
+          }
+        },
+        "110": {
+          "ObjectWrap": {
+            "STRUCT": [
+              {
+                "wrap": {
+                  "TYPENAME": "WrapMode"
+                }
+              }
+            ]
+          }
+        },
+        "111": {
+          "ObjectTransform": {
+            "STRUCT": [
+              {
+                "id": "U64"
+              },
+              {
+                "rect": {
+                  "TYPENAME": "Rect"
+                }
+              }
+            ]
+          }
+        },
+        "112": {
+          "ObjectLayout": {
+            "STRUCT": [
+              {
+                "id": {
+                  "OPTION": "U64"
+                }
+              },
+              {
+                "spec": {
+                  "TYPENAME": "ObjectLayoutSpec"
+                }
+              }
+            ]
+          }
+        },
+        "113": {
+          "ObjectOrder": {
+            "STRUCT": [
+              {
+                "order": {
+                  "TYPENAME": "ZOrder"
+                }
+              }
+            ]
+          }
+        },
+        "114": {
+          "ObjectRotate": {
+            "STRUCT": [
+              {
+                "op": {
+                  "TYPENAME": "RotateOp"
+                }
+              }
+            ]
+          }
+        },
+        "115": {
+          "ObjectAlign": {
+            "STRUCT": [
+              {
+                "align": {
+                  "TYPENAME": "ObjectAlign"
+                }
+              }
+            ]
+          }
+        },
+        "116": {
+          "InsertTextBox": {
+            "STRUCT": [
+              {
+                "text": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "117": {
+          "InsertShape": {
+            "STRUCT": [
+              {
+                "preset": "STR"
+              },
+              {
+                "text": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "118": {
+          "FormatPainter": {
+            "STRUCT": [
+              {
+                "sticky": "BOOL"
+              }
+            ]
+          }
+        },
+        "119": {
+          "CopyFormat": "UNIT"
+        },
+        "120": {
+          "PasteFormat": "UNIT"
+        },
+        "121": {
+          "CancelPainter": "UNIT"
+        },
+        "122": {
+          "SetAutoFormat": {
+            "STRUCT": [
+              {
+                "options": {
+                  "TYPENAME": "AutoFormatOptions"
+                }
+              }
+            ]
+          }
+        },
+        "123": {
+          "PasteMarkdown": {
+            "STRUCT": [
+              {
+                "text": "STR"
+              }
+            ]
+          }
+        },
+        "124": {
+          "FocusMode": "UNIT"
+        },
+        "125": {
+          "WordGoal": {
+            "STRUCT": [
+              {
+                "words": "U32"
+              }
+            ]
+          }
+        },
+        "126": {
+          "Hyphenation": "UNIT"
+        },
+        "127": {
+          "InsertCodeBlock": {
+            "STRUCT": [
+              {
+                "language": {
+                  "OPTION": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "128": {
+          "InsertCallout": {
+            "STRUCT": [
+              {
+                "kind": {
+                  "TYPENAME": "CalloutKind"
+                }
+              }
+            ]
+          }
+        },
+        "129": {
+          "InsertCoverPage": {
+            "STRUCT": [
+              {
+                "design": {
+                  "TYPENAME": "CoverDesign"
+                }
+              }
+            ]
+          }
+        },
+        "130": {
+          "SetProperties": {
+            "STRUCT": [
+              {
+                "props": {
+                  "TYPENAME": "PropertiesEdit"
+                }
+              }
+            ]
+          }
+        },
+        "131": {
+          "SpellCheck": {
+            "STRUCT": [
+              {
+                "on": "BOOL"
+              }
+            ]
+          }
+        },
+        "132": {
+          "SetUserDictionary": {
+            "STRUCT": [
+              {
+                "words": {
+                  "SEQ": "STR"
+                }
+              }
+            ]
+          }
+        },
+        "133": {
+          "SpellAddWord": {
+            "STRUCT": [
+              {
+                "word": "STR"
+              }
+            ]
+          }
+        },
+        "134": {
+          "SpellIgnoreAll": {
+            "STRUCT": [
+              {
+                "word": "STR"
+              }
+            ]
+          }
+        },
+        "135": {
+          "SpellIgnore": {
+            "STRUCT": [
+              {
+                "pos": {
+                  "TYPENAME": "TextPos"
+                }
+              }
+            ]
+          }
+        },
+        "136": {
+          "SpellReplace": {
+            "STRUCT": [
+              {
+                "pos": {
+                  "TYPENAME": "TextPos"
+                }
+              },
+              {
+                "with": "STR"
+              },
+              {
+                "all": "BOOL"
+              }
+            ]
+          }
+        },
+        "137": {
+          "SpellNext": "UNIT"
+        },
+        "138": {
+          "SpellDictionary": {
+            "STRUCT": [
+              {
+                "aff": "STR"
+              },
+              {
+                "dic": "STR"
+              }
+            ]
+          }
         }
       }
     },
@@ -7940,6 +9237,42 @@
         },
         "11": {
           "CommandLog": "UNIT"
+        },
+        "12": {
+          "Comments": "UNIT"
+        },
+        "13": {
+          "Revisions": "UNIT"
+        },
+        "14": {
+          "CrossRefTargets": "UNIT"
+        },
+        "15": {
+          "Objects": "UNIT"
+        },
+        "16": {
+          "SpellingAt": {
+            "STRUCT": [
+              {
+                "pos": {
+                  "TYPENAME": "TextPos"
+                }
+              }
+            ]
+          }
+        },
+        "17": {
+          "NextMisspelling": {
+            "STRUCT": [
+              {
+                "from": {
+                  "OPTION": {
+                    "TYPENAME": "TextPos"
+                  }
+                }
+              }
+            ]
+          }
         }
       }
     },
@@ -8038,6 +9371,65 @@
               }
             }
           }
+        },
+        "12": {
+          "Comments": {
+            "NEWTYPE": {
+              "SEQ": {
+                "TYPENAME": "CommentInfo"
+              }
+            }
+          }
+        },
+        "13": {
+          "Revisions": {
+            "NEWTYPE": {
+              "TYPENAME": "RevisionsInfo"
+            }
+          }
+        },
+        "14": {
+          "CrossRefTargets": {
+            "NEWTYPE": {
+              "SEQ": {
+                "TYPENAME": "CrossRefItem"
+              }
+            }
+          }
+        },
+        "15": {
+          "Objects": {
+            "NEWTYPE": {
+              "SEQ": {
+                "TYPENAME": "ObjectInfo"
+              }
+            }
+          }
+        },
+        "16": {
+          "Spelling": {
+            "NEWTYPE": {
+              "OPTION": {
+                "TYPENAME": "SpellingHit"
+              }
+            }
+          }
+        }
+      }
+    },
+    "ZOrder": {
+      "ENUM": {
+        "0": {
+          "Forward": "UNIT"
+        },
+        "1": {
+          "ToFront": "UNIT"
+        },
+        "2": {
+          "Backward": "UNIT"
+        },
+        "3": {
+          "ToBack": "UNIT"
         }
       }
     }

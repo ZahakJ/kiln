@@ -91,7 +91,37 @@
         }
       ],
       "shading": null,
-      "borders": false
+      "borders": false,
+      "features": {
+        "tracking": false,
+        "author": "",
+        "markup": "Simple",
+        "show_comments": false,
+        "show_insertions": false,
+        "show_formatting": false,
+        "revisions": 0,
+        "comments": 0,
+        "open_comments": 0,
+        "comment": null,
+        "painter": null,
+        "copied_format": false,
+        "focus": false,
+        "word_goal": 0,
+        "autoformat": {
+          "markdown": true,
+          "smart_quotes": true,
+          "dashes": true,
+          "ellipsis": true,
+          "fractions": true
+        },
+        "spelling": false,
+        "dictionary": false,
+        "misspellings": 0,
+        "hyphenation": false,
+        "object": null,
+        "in_note": false,
+        "has_toc": false
+      }
     },
     {
       "font": "",
@@ -148,7 +178,37 @@
       "can_repeat": false,
       "tabs": [],
       "shading": null,
-      "borders": false
+      "borders": false,
+      "features": {
+        "tracking": false,
+        "author": "",
+        "markup": "Simple",
+        "show_comments": false,
+        "show_insertions": false,
+        "show_formatting": false,
+        "revisions": 0,
+        "comments": 0,
+        "open_comments": 0,
+        "comment": null,
+        "painter": null,
+        "copied_format": false,
+        "focus": false,
+        "word_goal": 0,
+        "autoformat": {
+          "markdown": true,
+          "smart_quotes": true,
+          "dashes": true,
+          "ellipsis": true,
+          "fractions": true
+        },
+        "spelling": false,
+        "dictionary": false,
+        "misspellings": 0,
+        "hyphenation": false,
+        "object": null,
+        "in_note": false,
+        "has_toc": false
+      }
     },
     {
       "font": "",
@@ -205,7 +265,37 @@
       "can_repeat": false,
       "tabs": [],
       "shading": null,
-      "borders": false
+      "borders": false,
+      "features": {
+        "tracking": false,
+        "author": "",
+        "markup": "Simple",
+        "show_comments": false,
+        "show_insertions": false,
+        "show_formatting": false,
+        "revisions": 0,
+        "comments": 0,
+        "open_comments": 0,
+        "comment": null,
+        "painter": null,
+        "copied_format": false,
+        "focus": false,
+        "word_goal": 0,
+        "autoformat": {
+          "markdown": false,
+          "smart_quotes": false,
+          "dashes": false,
+          "ellipsis": false,
+          "fractions": false
+        },
+        "spelling": false,
+        "dictionary": false,
+        "misspellings": 0,
+        "hyphenation": false,
+        "object": null,
+        "in_note": false,
+        "has_toc": false
+      }
     }
   ]
 }

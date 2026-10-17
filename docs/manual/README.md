@@ -18,6 +18,8 @@ page in the browser; on GitHub the same files read as they are.
 ## The applications
 
 - [Kiln Write](write.md): documents
+  - [Reviewing and writing](write-review.md): comments, Track Changes, spelling, the Format Painter, Markdown shortcuts, focus mode, word goals
+  - [References, pictures and page furniture](write-layout.md): tables of contents, notes, captions and cross-references, floating objects, cover pages, code blocks and callouts
 - [Kiln Grid](grid.md): spreadsheets
 - [Kiln Deck](deck.md): presentations
 - [Kiln Notes](notes.md): notebooks

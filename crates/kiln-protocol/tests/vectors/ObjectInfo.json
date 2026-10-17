@@ -1,0 +1,61 @@
+{
+  "type": "ObjectInfo",
+  "format": {
+    "TYPENAME": "ObjectInfo"
+  },
+  "values": [
+    {
+      "id": 1000000,
+      "name": "Picture «1»",
+      "kind": "Picture",
+      "wrap": "Square",
+      "para": 12,
+      "offset": 0,
+      "rect": {
+        "x": 880.5,
+        "y": 120.0,
+        "width": 240.0,
+        "height": 72.25
+      },
+      "width": 144.5,
+      "height": -0.0,
+      "rotation": 90.0,
+      "z": 251659264,
+      "alt_text": "Glaze tiles in the kiln — 🔥",
+      "decorative": false,
+      "selected": true
+    },
+    {
+      "id": 1000000,
+      "name": "Picture «1»",
+      "kind": "Picture",
+      "wrap": "Square",
+      "para": 12,
+      "offset": 0,
+      "rect": null,
+      "width": 144.5,
+      "height": -0.0,
+      "rotation": 90.0,
+      "z": 251659264,
+      "alt_text": null,
+      "decorative": false,
+      "selected": true
+    },
+    {
+      "id": 0,
+      "name": "",
+      "kind": "",
+      "wrap": "InLine",
+      "para": 0,
+      "offset": 0,
+      "rect": null,
+      "width": 0.0,
+      "height": 0.0,
+      "rotation": 0.0,
+      "z": 0,
+      "alt_text": null,
+      "decorative": false,
+      "selected": false
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 //! Kiln Write commands. WP-52 declares the editing commands of the scratch document; the Write work
 //! packages (WP-63 onwards) own this file and append the rest of the ribbon.
 
+use kiln_common::NodeId;
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
@@ -9,6 +10,15 @@ use crate::app::AppMask;
 use crate::commands::edit::{BorderPreset, ClipboardData, TextAlign, TextSeparator};
 use crate::geom::{Point, Rect};
 use crate::selection::TextPos;
+
+pub mod features;
+
+use features::{
+    AutoFormatOptions, CalloutKind, CaptionSpec, ChangeScope, CommentInfo, CoverDesign,
+    CrossRefItem, CrossRefSpec, FeatureState, MarkupKind, MarkupMode, NoteOptionsSpec, ObjectAlign,
+    ObjectInfo, ObjectLayoutSpec, PositionPreset, PropertiesEdit, RevisionRef, RevisionsInfo,
+    RotateOp, SpellingHit, TocSpec, WrapMode, ZOrder,
+};
 
 /// How [`WriteCommand::MoveCaret`] moves the caret.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, TS)]
@@ -385,6 +395,301 @@ pub enum WriteCommand {
         /// Where.
         target: GoToTarget,
     },
+    // ── WP-66: comments ─────────────────────────────────────────────────────────────────────
+    /// New Comment (Ctrl+Alt+M) on the selection, or on the word at the caret.
+    NewComment {
+        /// The comment's text (line feeds separate paragraphs).
+        text: String,
+    },
+    /// Reply to a comment thread.
+    ReplyComment {
+        /// The comment replied to.
+        parent: NodeId,
+        /// The reply.
+        text: String,
+    },
+    /// Edit a comment's text.
+    EditComment {
+        /// The comment.
+        id: NodeId,
+        /// The new text.
+        text: String,
+    },
+    /// Resolve or reopen a thread.
+    ResolveComment {
+        /// A comment of the thread.
+        id: NodeId,
+        /// Resolved.
+        resolved: bool,
+    },
+    /// Delete a comment with its replies (the comment at the caret when `None`).
+    DeleteComment {
+        /// The comment.
+        id: Option<NodeId>,
+    },
+    /// Delete All Comments in Document.
+    DeleteAllComments,
+    /// Select a comment's text (a click on its balloon or in the Comments pane).
+    SelectComment {
+        /// The comment.
+        id: NodeId,
+    },
+    // ── WP-66: track changes ────────────────────────────────────────────────────────────────
+    /// Track Changes on/off (Ctrl+Shift+E).
+    TrackChanges,
+    /// The reviewer's name for new comments and tracked changes (Options ▸ User name).
+    SetReviewer {
+        /// The name.
+        name: String,
+    },
+    /// Display for Review.
+    MarkupMode {
+        /// The mode.
+        mode: MarkupMode,
+    },
+    /// Show Markup: toggles one kind of markup.
+    ShowMarkup {
+        /// The kind.
+        kind: MarkupKind,
+    },
+    /// Accept changes.
+    AcceptChange {
+        /// Which.
+        scope: ChangeScope,
+    },
+    /// Reject changes.
+    RejectChange {
+        /// Which.
+        scope: ChangeScope,
+    },
+    /// Accept or reject one change (the Reviewing pane).
+    ResolveRevision {
+        /// The change.
+        target: RevisionRef,
+        /// Accept (otherwise reject).
+        accept: bool,
+    },
+    /// Previous Change: selects the tracked change or comment before the selection.
+    PreviousChange,
+    /// Next Change.
+    NextChange,
+    // ── WP-66: references ───────────────────────────────────────────────────────────────────
+    /// Table of Contents (gallery or Custom Table of Contents dialog) at the caret, replacing an
+    /// existing one.
+    InsertToc {
+        /// The table's options.
+        spec: Box<TocSpec>,
+    },
+    /// Insert ▸ Table of Contents: one click, Kiln's defaults.
+    InsertQuickToc,
+    /// Remove Table of Contents.
+    RemoveToc,
+    /// Update Table: page numbers only, or the entire table.
+    UpdateToc {
+        /// Rebuild the entries (otherwise only page numbers).
+        entire: bool,
+    },
+    /// Add Text: the TOC level (outline level) of the selected paragraphs; 0 = Do Not Show.
+    AddText {
+        /// Level 0–9.
+        level: u8,
+    },
+    /// Insert Table of Figures for a caption label.
+    InsertTableOfFigures {
+        /// `Figure`, `Table`, `Equation` or a custom label.
+        label: String,
+    },
+    /// Insert Footnote (Ctrl+Alt+F).
+    InsertFootnote,
+    /// Insert Endnote (Ctrl+Alt+D).
+    InsertEndnote,
+    /// Next (or previous) footnote or endnote reference.
+    NextNote {
+        /// Search backwards.
+        backward: bool,
+    },
+    /// Show Notes: from a reference to its note, or from a note back to its reference.
+    ShowNotes,
+    /// The Footnote and Endnote dialog's numbering.
+    NoteOptions {
+        /// The options.
+        spec: Box<NoteOptionsSpec>,
+    },
+    /// Convert all footnotes to endnotes (or back).
+    ConvertNotes {
+        /// To endnotes (otherwise to footnotes).
+        to_endnotes: bool,
+    },
+    /// Insert Caption.
+    InsertCaption {
+        /// The caption.
+        spec: Box<CaptionSpec>,
+    },
+    /// Insert Cross-reference.
+    InsertCrossReference {
+        /// The reference.
+        spec: Box<CrossRefSpec>,
+    },
+    /// Follow the hyperlink at the caret (Ctrl+click): a link into the document — a table of
+    /// contents entry, a cross-reference — selects its target. Web links are the host's to open.
+    FollowLink,
+    // ── WP-66: objects ──────────────────────────────────────────────────────────────────────
+    /// Select a picture, shape or text box (a click on it, the Selection pane).
+    SelectObject {
+        /// The drawing.
+        id: NodeId,
+    },
+    /// Position ▾ preset for the selected object.
+    ObjectPosition {
+        /// The preset.
+        preset: PositionPreset,
+    },
+    /// Wrap Text ▾ for the selected object.
+    ObjectWrap {
+        /// The wrapping.
+        wrap: WrapMode,
+    },
+    /// Move or resize an object by dragging it or its handles: its new rectangle in document
+    /// coordinates (a floating object is positioned relative to its page).
+    ObjectTransform {
+        /// The drawing.
+        id: NodeId,
+        /// The new rectangle.
+        rect: Rect,
+    },
+    /// The Layout dialog (More Layout Options) for an object (the selected one when `None`).
+    ObjectLayout {
+        /// The drawing.
+        id: Option<NodeId>,
+        /// The changes.
+        spec: Box<ObjectLayoutSpec>,
+    },
+    /// Bring Forward / Send Backward.
+    ObjectOrder {
+        /// Which way.
+        order: ZOrder,
+    },
+    /// Rotate ▾.
+    ObjectRotate {
+        /// The rotation or flip.
+        op: RotateOp,
+    },
+    /// Align ▾ (relative to the margins).
+    ObjectAlign {
+        /// The alignment.
+        align: ObjectAlign,
+    },
+    /// Insert ▸ Text Box: a floating text box near the caret.
+    InsertTextBox {
+        /// Its first text.
+        text: Option<String>,
+    },
+    /// Insert ▸ Shapes: a floating DrawingML preset shape that can hold text.
+    InsertShape {
+        /// The preset (`rect`, `roundRect`, `ellipse`, `rightArrow`, …).
+        preset: String,
+        /// Text in the shape.
+        text: Option<String>,
+    },
+    // ── WP-66: Format Painter ───────────────────────────────────────────────────────────────
+    /// Format Painter: picks up the selection's formatting; `sticky` (double-click) keeps it on
+    /// until Esc. Again while armed: off.
+    FormatPainter {
+        /// Keep painting.
+        sticky: bool,
+    },
+    /// Copy Formatting (Ctrl+Shift+C).
+    CopyFormat,
+    /// Paste Formatting (Ctrl+Shift+V), and what Format Painter applies after a selection.
+    PasteFormat,
+    /// Esc while Format Painter is armed.
+    CancelPainter,
+    // ── WP-66: editing options and smart editing ────────────────────────────────────────────
+    /// Options ▸ Proofing ▸ AutoFormat As You Type.
+    SetAutoFormat {
+        /// The options.
+        options: AutoFormatOptions,
+    },
+    /// Paste Markdown: headings, lists, emphasis, code, quotes, rules and tables become styled
+    /// content.
+    PasteMarkdown {
+        /// The Markdown text.
+        text: String,
+    },
+    /// Focus mode on/off.
+    FocusMode,
+    /// The word-count goal shown in the status bar (0 removes it); saved with the document.
+    WordGoal {
+        /// Words.
+        words: u32,
+    },
+    /// Layout ▸ Hyphenation ▸ Automatic (toggle).
+    Hyphenation,
+    /// Insert ▸ Code Block: a monospace block with syntax colouring.
+    InsertCodeBlock {
+        /// The language (`rust`, `python`, `js`, …); plain when `None` or unknown.
+        language: Option<String>,
+    },
+    /// Insert ▸ Callout.
+    InsertCallout {
+        /// The kind.
+        kind: CalloutKind,
+    },
+    /// Insert ▸ Cover Page (replaces an existing Kiln cover page).
+    InsertCoverPage {
+        /// The design.
+        design: CoverDesign,
+    },
+    /// File ▸ Info ▸ Properties.
+    SetProperties {
+        /// The changes.
+        props: Box<PropertiesEdit>,
+    },
+    // ── WP-66: spelling ─────────────────────────────────────────────────────────────────────
+    /// Check spelling as you type.
+    SpellCheck {
+        /// On.
+        on: bool,
+    },
+    /// The user's dictionary (from the user's preferences, sent when an editor opens).
+    SetUserDictionary {
+        /// The words.
+        words: Vec<String>,
+    },
+    /// Add to Dictionary.
+    SpellAddWord {
+        /// The word.
+        word: String,
+    },
+    /// Ignore All (for the session).
+    SpellIgnoreAll {
+        /// The word.
+        word: String,
+    },
+    /// Ignore this occurrence.
+    SpellIgnore {
+        /// Where the word starts.
+        pos: TextPos,
+    },
+    /// Change (or Change All) a misspelled word to a suggestion.
+    SpellReplace {
+        /// Where the word starts.
+        pos: TextPos,
+        /// The correction.
+        with: String,
+        /// Every occurrence of the word.
+        all: bool,
+    },
+    /// F7: selects the next misspelled word after the selection.
+    SpellNext,
+    /// The en-US dictionary's files for the web core, which does not carry them (budget B12);
+    /// native cores have it built in and ignore this.
+    SpellDictionary {
+        /// The Hunspell affix file.
+        aff: String,
+        /// The Hunspell word list.
+        dic: String,
+    },
 }
 
 /// Where a new section starts (Layout ▸ Breaks).
@@ -734,6 +1039,24 @@ pub enum WriteQuery {
     Bookmarks,
     /// The commands the Write model has executed, oldest first (diagnostics, e2e).
     CommandLog,
+    /// Comments with their balloons (the Comments pane and All Markup).
+    Comments,
+    /// Tracked changes (the Reviewing pane).
+    Revisions,
+    /// The targets of the Cross-reference dialog.
+    CrossRefTargets,
+    /// Pictures, shapes and text boxes (the Selection pane).
+    Objects,
+    /// The misspelled word at a position (the context menu).
+    SpellingAt {
+        /// The position.
+        pos: TextPos,
+    },
+    /// The next misspelled word after a position (the Spelling pane, F7).
+    NextMisspelling {
+        /// Start here (the selection's end when `None`).
+        from: Option<TextPos>,
+    },
 }
 
 /// The answer to a [`WriteQuery`], in the same variant.
@@ -763,6 +1086,16 @@ pub enum WriteQueryResult {
     Bookmarks(Vec<String>),
     /// Command log.
     CommandLog(Vec<CommandLogEntry>),
+    /// Comments in document order (replies after their comment).
+    Comments(Vec<CommentInfo>),
+    /// Tracked changes.
+    Revisions(Box<RevisionsInfo>),
+    /// Cross-reference targets.
+    CrossRefTargets(Vec<CrossRefItem>),
+    /// Objects in z-order, front first.
+    Objects(Vec<ObjectInfo>),
+    /// A misspelled word (`None`: the word there is spelled correctly).
+    Spelling(Option<Box<SpellingHit>>),
 }
 
 /// The selection's formatting. Character values are those of the selection's first character
@@ -859,6 +1192,9 @@ pub struct FormatState {
     pub shading: Option<String>,
     /// The paragraph has borders.
     pub borders: bool,
+    /// Review and feature state (WP-66): tracking, markup, Format Painter, focus mode, the
+    /// selected object, spelling.
+    pub features: FeatureState,
 }
 
 /// The list of the caret's paragraph.
@@ -1476,6 +1812,255 @@ crate::command_table! {
         id: "write.find.go_to", keytip: None, group: "find",
         tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Document,
     };
+    // WP-66: Write advanced features.
+    Self::NewComment { .. } => {
+        id: "write.comment.new", keytip: None, group: "comment",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::ReplyComment { .. } => {
+        id: "write.comment.reply", keytip: None, group: "comment",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::EditComment { .. } => {
+        id: "write.comment.edit", keytip: None, group: "comment",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::ResolveComment { .. } => {
+        id: "write.comment.resolve", keytip: None, group: "comment",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::DeleteComment { .. } => {
+        id: "write.comment.delete", keytip: None, group: "comment",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::DeleteAllComments => {
+        id: "write.comment.delete_all", keytip: None, group: "comment",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::SelectComment { .. } => {
+        id: "write.comment.select", keytip: None, group: "comment",
+        tier: P0, apps: AppMask::WRITE, availability: Document,
+    };
+    Self::TrackChanges => {
+        id: "write.review.track_changes", keytip: None, group: "review",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::SetReviewer { .. } => {
+        id: "write.review.set_reviewer", keytip: None, group: "review",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Document,
+    };
+    Self::MarkupMode { .. } => {
+        id: "write.review.markup_mode", keytip: None, group: "review",
+        tier: P0, apps: AppMask::WRITE, availability: Document,
+    };
+    Self::ShowMarkup { .. } => {
+        id: "write.review.show_markup", keytip: None, group: "review",
+        tier: P0, apps: AppMask::WRITE, availability: Document,
+    };
+    Self::AcceptChange { .. } => {
+        id: "write.review.accept", keytip: None, group: "review",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::RejectChange { .. } => {
+        id: "write.review.reject", keytip: None, group: "review",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::ResolveRevision { .. } => {
+        id: "write.review.resolve", keytip: None, group: "review",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::PreviousChange => {
+        id: "write.review.previous_change", keytip: None, group: "review",
+        tier: P0, apps: AppMask::WRITE, availability: Document,
+    };
+    Self::NextChange => {
+        id: "write.review.next_change", keytip: None, group: "review",
+        tier: P0, apps: AppMask::WRITE, availability: Document,
+    };
+    Self::InsertToc { .. } => {
+        id: "write.references.table_of_contents", keytip: None, group: "references",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::InsertQuickToc => {
+        id: "write.insert.table_of_contents_quick", keytip: None, group: "insert",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::RemoveToc => {
+        id: "write.references.remove_toc", keytip: None, group: "references",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::UpdateToc { .. } => {
+        id: "write.references.update_table", keytip: None, group: "references",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::AddText { .. } => {
+        id: "write.references.add_text", keytip: None, group: "references",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::InsertTableOfFigures { .. } => {
+        id: "write.references.table_of_figures", keytip: None, group: "references",
+        tier: P1, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::InsertFootnote => {
+        id: "write.references.insert_footnote", keytip: None, group: "references",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::InsertEndnote => {
+        id: "write.references.insert_endnote", keytip: None, group: "references",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::NextNote { .. } => {
+        id: "write.references.next_footnote", keytip: None, group: "references",
+        tier: P0, apps: AppMask::WRITE, availability: Document,
+    };
+    Self::ShowNotes => {
+        id: "write.references.show_notes", keytip: None, group: "references",
+        tier: P0, apps: AppMask::WRITE, availability: Document,
+    };
+    Self::NoteOptions { .. } => {
+        id: "write.references.note_options", keytip: None, group: "references",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::ConvertNotes { .. } => {
+        id: "write.references.convert_notes", keytip: None, group: "references",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::InsertCaption { .. } => {
+        id: "write.references.insert_caption", keytip: None, group: "references",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::InsertCrossReference { .. } => {
+        id: "write.insert.cross_reference", keytip: None, group: "insert",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::FollowLink => {
+        id: "write.insert.follow_link", keytip: None, group: "insert",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Document,
+    };
+    Self::SelectObject { .. } => {
+        id: "write.arrange.select", keytip: None, group: "arrange",
+        tier: P0, apps: AppMask::WRITE, availability: Document,
+    };
+    Self::ObjectPosition { .. } => {
+        id: "write.arrange.position", keytip: None, group: "arrange",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::ObjectWrap { .. } => {
+        id: "write.arrange.wrap_text", keytip: None, group: "arrange",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::ObjectTransform { .. } => {
+        id: "write.arrange.transform", keytip: None, group: "arrange",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::ObjectLayout { .. } => {
+        id: "write.arrange.layout", keytip: None, group: "arrange",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::ObjectOrder { .. } => {
+        id: "write.arrange.order", keytip: None, group: "arrange",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::ObjectRotate { .. } => {
+        id: "write.arrange.rotate", keytip: None, group: "arrange",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::ObjectAlign { .. } => {
+        id: "write.arrange.align", keytip: None, group: "arrange",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::InsertTextBox { .. } => {
+        id: "write.insert.text_box", keytip: None, group: "insert",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::InsertShape { .. } => {
+        id: "write.insert.shape", keytip: None, group: "insert",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::FormatPainter { .. } => {
+        id: "write.format.painter", keytip: None, group: "format",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Editable,
+    };
+    Self::CopyFormat => {
+        id: "write.format.copy_format", keytip: None, group: "format",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Document,
+    };
+    Self::PasteFormat => {
+        id: "write.format.paste_format", keytip: None, group: "format",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Editable,
+    };
+    Self::CancelPainter => {
+        id: "write.format.cancel_painter", keytip: None, group: "format",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Document,
+    };
+    Self::SetAutoFormat { .. } => {
+        id: "write.options.autoformat", keytip: None, group: "options",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Document,
+    };
+    Self::PasteMarkdown { .. } => {
+        id: "write.insert.paste_markdown", keytip: None, group: "insert",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Editable,
+    };
+    Self::FocusMode => {
+        id: "write.view.focus_mode", keytip: None, group: "view",
+        tier: P0, apps: AppMask::WRITE, availability: Document,
+    };
+    Self::WordGoal { .. } => {
+        id: "write.view.word_goal", keytip: None, group: "view",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::Hyphenation => {
+        id: "write.layout.hyphenation", keytip: None, group: "layout",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::InsertCodeBlock { .. } => {
+        id: "write.insert.code_block", keytip: None, group: "insert",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Editable,
+    };
+    Self::InsertCallout { .. } => {
+        id: "write.insert.callout", keytip: None, group: "insert",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Editable,
+    };
+    Self::InsertCoverPage { .. } => {
+        id: "write.insert.cover_page", keytip: None, group: "insert",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::SetProperties { .. } => {
+        id: "write.file.properties", keytip: None, group: "file",
+        tier: P0, apps: AppMask::WRITE, availability: Editable,
+    };
+    Self::SpellCheck { .. } => {
+        id: "write.spell.check_as_you_type", keytip: None, group: "spell",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Document,
+    };
+    Self::SetUserDictionary { .. } => {
+        id: "write.spell.user_dictionary", keytip: None, group: "spell",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Document,
+    };
+    Self::SpellAddWord { .. } => {
+        id: "write.spell.add_word", keytip: None, group: "spell",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Document,
+    };
+    Self::SpellIgnoreAll { .. } => {
+        id: "write.spell.ignore_all", keytip: None, group: "spell",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Document,
+    };
+    Self::SpellIgnore { .. } => {
+        id: "write.spell.ignore", keytip: None, group: "spell",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Document,
+    };
+    Self::SpellReplace { .. } => {
+        id: "write.spell.replace", keytip: None, group: "spell",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Editable,
+    };
+    Self::SpellNext => {
+        id: "write.spell.next", keytip: None, group: "spell",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Document,
+    };
+    Self::SpellDictionary { .. } => {
+        id: "write.spell.load_dictionary", keytip: None, group: "spell",
+        tier: P0, apps: AppMask::WRITE.union(AppMask::NOTES), availability: Document,
+    };
 }
 
 // ── Samples and schema registration (WP-64) ──────────────────────────────────────────────────
@@ -1814,6 +2399,8 @@ pub(crate) mod samples {
             },
         ];
         out.extend(write.into_iter().map(Command::Write));
+        // WP-66: the advanced features.
+        out.extend(super::features::samples::commands());
         out
     }
 
@@ -1892,6 +2479,12 @@ pub(crate) mod samples {
                 WriteQuery::PageSetup,
                 WriteQuery::Bookmarks,
                 WriteQuery::CommandLog,
+                WriteQuery::Comments,
+                WriteQuery::Revisions,
+                WriteQuery::CrossRefTargets,
+                WriteQuery::Objects,
+                WriteQuery::SpellingAt { pos: pos(9, 4) },
+                WriteQuery::NextMisspelling { from: None },
             ]
         }
     }
@@ -1985,6 +2578,11 @@ pub(crate) mod samples {
                     id: "suite.format.bold".into(),
                     outcome: "applied".into(),
                 }]),
+                WriteQueryResult::Comments(Vec::new()),
+                WriteQueryResult::Revisions(Box::default()),
+                WriteQueryResult::CrossRefTargets(Vec::new()),
+                WriteQueryResult::Objects(Vec::new()),
+                WriteQueryResult::Spelling(None),
             ]
         }
     }
@@ -2065,5 +2663,7 @@ pub(crate) mod samples {
             HeadingInfo, PagesInfo, FindResults, FindHit, WordCountInfo, DocPropertiesInfo,
             CommandLogEntry,
         );
+        // WP-66: the advanced features' arguments and answers.
+        super::features::samples::visit(v);
     }
 }

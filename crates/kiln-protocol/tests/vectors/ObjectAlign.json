@@ -1,0 +1,14 @@
+{
+  "type": "ObjectAlign",
+  "format": {
+    "TYPENAME": "ObjectAlign"
+  },
+  "values": [
+    "Left",
+    "Bottom",
+    "Left",
+    "Center",
+    "Right",
+    "Top"
+  ]
+}

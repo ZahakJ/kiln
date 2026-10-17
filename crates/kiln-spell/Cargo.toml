@@ -11,6 +11,8 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+spellbook.workspace = true
+unicode-segmentation.workspace = true
 
 [lints]
 workspace = true

@@ -32,6 +32,28 @@ import {
   viewMode,
   zoomMenu,
 } from './ribbon-shared.ts';
+import {
+  ACCEPT_MENU,
+  ADD_TEXT_MENU,
+  ALIGN_MENU,
+  BACKWARD_MENU,
+  CALLOUT_MENU,
+  CODE_MENU,
+  COVER_MENU,
+  FORWARD_MENU,
+  MARKUP_MENU,
+  NEXT_NOTE_MENU,
+  POSITION_MENU,
+  REJECT_MENU,
+  ROTATE_MENU,
+  SHAPES_MENU,
+  SHOW_MARKUP_MENU,
+  TOC_MENU,
+  UPDATE_TOC_MENU,
+  WRAP_MENU,
+  WRITE_FEATURE_CHECKED,
+  WRITE_FEATURE_VALUES,
+} from './write-features.ts';
 
 const W = { apps: WRITE };
 
@@ -664,6 +686,8 @@ export const WRITE_CORE_STATE: {
     'write.header_footer.different_first_page': (c) => fmt(c)?.header_footer?.different_first,
     'write.header_footer.different_odd_even': (c) => fmt(c)?.header_footer?.different_odd_even,
     'write.header_footer.link_to_previous': (c) => fmt(c)?.header_footer?.linked,
+    // WP-66: Track Changes, Focus, Hyphenation.
+    ...WRITE_FEATURE_CHECKED,
   },
   values: {
     'suite.format.font_family': (c) => fmt(c)?.font,
@@ -682,6 +706,8 @@ export const WRITE_CORE_STATE: {
     'write.layout.indent_right': (c) => (fmt(c) ? cm(fmt(c)?.indent_right ?? 0) : undefined),
     'write.layout.spacing_before': (c) => fmt(c)?.space_before,
     'write.layout.spacing_after': (c) => fmt(c)?.space_after,
+    // WP-66: Display for Review.
+    ...WRITE_FEATURE_VALUES,
   },
 };
 
@@ -745,7 +771,7 @@ export const writeRibbon: RibbonData = {
           'kiln',
           'Kiln',
           [
-            rbutton('write.view.focus_mode', { size: 'large', keyTip: 'FM' }),
+            rtoggle('write.view.focus_mode', { size: 'large', keyTip: 'FM' }),
             rbutton('suite.help.assistant', {
               size: 'large',
               label: 'Rewrite',
@@ -763,7 +789,7 @@ export const writeRibbon: RibbonData = {
       'Insert',
       [
         rgroup('pages', 'Pages', [
-          rbutton('write.insert.cover_page', { size: 'medium', keyTip: 'V' }),
+          rdropdown('write.insert.cover_page', COVER_MENU, { size: 'medium', keyTip: 'V' }),
           rbutton('write.insert.blank_page', { size: 'medium', keyTip: 'NP' }),
           rbutton('write.insert.page_break', { size: 'medium', keyTip: 'B' }),
         ]),
@@ -783,7 +809,7 @@ export const writeRibbon: RibbonData = {
             size: 'large',
             keyTip: 'P',
           }),
-          rbutton('suite.insert.shapes', { size: 'medium', keyTip: 'SH' }),
+          rdropdown('suite.insert.shapes', SHAPES_MENU, { size: 'medium', keyTip: 'SH' }),
           rbutton('suite.insert.icons', { size: 'medium', keyTip: 'Y1' }),
           rbutton('suite.chart.insert', { size: 'medium', keyTip: 'C' }),
           rbutton('suite.insert.screenshot', { size: 'medium', keyTip: 'SC' }),
@@ -791,7 +817,12 @@ export const writeRibbon: RibbonData = {
         rgroup('links', 'Links', [
           rbutton('suite.insert.link', { size: 'large', keyTip: 'I' }),
           rbutton('ui.write.bookmark', { size: 'medium', keyTip: 'K', label: 'Bookmark', icon: 'Bookmark' }),
-          rbutton('write.insert.cross_reference', { size: 'medium', keyTip: 'RF' }),
+          rbutton('ui.write.cross_reference_dialog', {
+            size: 'medium',
+            keyTip: 'RF',
+            label: 'Cross-reference',
+            icon: 'CrossReference',
+          }),
         ]),
         rgroup('comments', 'Comments', [
           rbutton('suite.review.new_comment', { size: 'large', label: 'Comment', keyTip: 'L' }),
@@ -823,8 +854,8 @@ export const writeRibbon: RibbonData = {
         ]),
         rgroup('smart', 'Smart', [
           rbutton('write.insert.table_of_contents_quick', { size: 'medium', keyTip: 'ZT' }),
-          rbutton('write.insert.callout', { size: 'medium', keyTip: 'ZC' }),
-          rbutton('suite.insert.code_block', { size: 'medium', keyTip: 'ZK' }),
+          rdropdown('write.insert.callout', CALLOUT_MENU, { size: 'medium', keyTip: 'ZC' }),
+          rsplit('suite.insert.code_block', CODE_MENU, { size: 'medium', keyTip: 'ZK' }),
         ]),
       ],
       { keyTip: 'N' },
@@ -880,7 +911,7 @@ export const writeRibbon: RibbonData = {
             ),
             rdropdown('suite.layout.breaks', BREAKS_MENU, { size: 'medium', keyTip: 'B' }),
             rbutton('write.layout.line_numbers', { size: 'medium', keyTip: 'LN', tier: 'P2' }),
-            rbutton('write.layout.hyphenation', { size: 'medium', keyTip: 'H' }),
+            rtoggle('write.layout.hyphenation', { size: 'medium', keyTip: 'H' }),
           ],
           { launcher: { command: 'suite.layout.page_setup' }, icon: 'PageSize' },
         ),
@@ -924,14 +955,14 @@ export const writeRibbon: RibbonData = {
           { rows: 2, launcher: { command: 'suite.format.paragraph_dialog' }, icon: 'Pilcrow' },
         ),
         rgroup('arrange', 'Arrange', [
-          rbutton('suite.arrange.position', { size: 'large', keyTip: 'PO' }),
-          rbutton('suite.arrange.wrap_text', { size: 'large', keyTip: 'TW' }),
-          rbutton('suite.arrange.bring_forward', { size: 'medium', keyTip: 'AF' }),
-          rbutton('suite.arrange.send_backward', { size: 'medium', keyTip: 'AE' }),
-          rbutton('suite.arrange.selection_pane', { size: 'medium', keyTip: 'AP' }),
-          rbutton('suite.arrange.align', { size: 'small', keyTip: 'AA' }),
+          rdropdown('suite.arrange.position', POSITION_MENU, { size: 'large', keyTip: 'PO' }),
+          rdropdown('suite.arrange.wrap_text', WRAP_MENU, { size: 'large', keyTip: 'TW' }),
+          rsplit('suite.arrange.bring_forward', FORWARD_MENU, { size: 'medium', keyTip: 'AF' }),
+          rsplit('suite.arrange.send_backward', BACKWARD_MENU, { size: 'medium', keyTip: 'AE' }),
+          rtoggle('suite.arrange.selection_pane', { size: 'medium', keyTip: 'AP' }),
+          rdropdown('suite.arrange.align', ALIGN_MENU, { size: 'small', keyTip: 'AA' }),
           rbutton('suite.arrange.group', { size: 'small', keyTip: 'G' }),
-          rbutton('suite.arrange.rotate', { size: 'small', keyTip: 'AY' }),
+          rdropdown('suite.arrange.rotate', ROTATE_MENU, { size: 'small', keyTip: 'AY' }),
         ]),
       ],
       { keyTip: 'P' },
@@ -941,16 +972,21 @@ export const writeRibbon: RibbonData = {
       'References',
       [
         rgroup('toc', 'Table of Contents', [
-          rbutton('write.references.table_of_contents', { size: 'large', keyTip: 'T' }),
-          rbutton('write.references.add_text', { size: 'medium', keyTip: 'A' }),
-          rbutton('write.references.update_table', { size: 'medium', keyTip: 'U' }),
+          rdropdown('write.references.table_of_contents', TOC_MENU, { size: 'large', keyTip: 'T' }),
+          rdropdown('write.references.add_text', ADD_TEXT_MENU, { size: 'medium', keyTip: 'A' }),
+          rdropdown('write.references.update_table', UPDATE_TOC_MENU, { size: 'medium', keyTip: 'U' }),
         ]),
-        rgroup('footnotes', 'Footnotes', [
-          rbutton('write.references.insert_footnote', { size: 'large', keyTip: 'F' }),
-          rbutton('write.references.insert_endnote', { size: 'medium', keyTip: 'E' }),
-          rbutton('write.references.next_footnote', { size: 'medium', keyTip: 'O' }),
-          rbutton('write.references.show_notes', { size: 'medium', keyTip: 'H' }),
-        ]),
+        rgroup(
+          'footnotes',
+          'Footnotes',
+          [
+            rbutton('write.references.insert_footnote', { size: 'large', keyTip: 'F' }),
+            rbutton('write.references.insert_endnote', { size: 'medium', keyTip: 'E' }),
+            rsplit('write.references.next_footnote', NEXT_NOTE_MENU, { size: 'medium', keyTip: 'O' }),
+            rbutton('write.references.show_notes', { size: 'medium', keyTip: 'H' }),
+          ],
+          { launcher: { command: 'ui.write.footnote_dialog' } },
+        ),
         rgroup(
           'citations',
           'Citations & Bibliography',
@@ -962,9 +998,19 @@ export const writeRibbon: RibbonData = {
           { tier: 'P2' },
         ),
         rgroup('captions', 'Captions', [
-          rbutton('write.references.insert_caption', { size: 'large', keyTip: 'P' }),
+          rbutton('ui.write.caption_dialog', {
+            size: 'large',
+            keyTip: 'P',
+            label: 'Insert Caption',
+            icon: 'InsertCaption',
+          }),
           rbutton('write.references.table_of_figures', { size: 'medium', keyTip: 'G', tier: 'P1' }),
-          rbutton('write.insert.cross_reference', { size: 'medium', keyTip: 'RF' }),
+          rbutton('ui.write.cross_reference_dialog', {
+            size: 'medium',
+            keyTip: 'RF',
+            label: 'Cross-reference',
+            icon: 'CrossReference',
+          }),
         ]),
         rgroup('index', 'Index', [rbutton('write.references.mark_entry', { size: 'large', keyTip: 'N' })], {
           tier: 'P2',
@@ -991,15 +1037,17 @@ export const writeRibbon: RibbonData = {
           rbutton('suite.review.previous_comment', { size: 'medium', keyTip: 'V' }),
           rbutton('suite.review.next_comment', { size: 'medium', keyTip: 'N' }),
           rtoggle('suite.review.show_comments', { size: 'medium', keyTip: 'K' }),
+          rtoggle('ui.write.comments_pane', { size: 'medium', keyTip: 'CP', label: 'Comments Pane' }),
         ]),
         rgroup('tracking', 'Tracking', [
           rtoggle('write.review.track_changes', { size: 'large', keyTip: 'G' }),
-          rbutton('write.review.show_markup', { size: 'medium', keyTip: 'TM' }),
-          rbutton('write.review.reviewing_pane', { size: 'medium', keyTip: 'TP' }),
+          rdropdown('write.review.markup_mode', MARKUP_MENU, { size: 'medium', keyTip: 'TD' }),
+          rdropdown('write.review.show_markup', SHOW_MARKUP_MENU, { size: 'medium', keyTip: 'TM' }),
+          rtoggle('write.review.reviewing_pane', { size: 'medium', keyTip: 'TP' }),
         ]),
         rgroup('changes', 'Changes', [
-          rbutton('write.review.accept', { size: 'large', keyTip: 'A2' }),
-          rbutton('write.review.reject', { size: 'medium', keyTip: 'J' }),
+          rsplit('write.review.accept', ACCEPT_MENU, { size: 'large', keyTip: 'A2' }),
+          rsplit('write.review.reject', REJECT_MENU, { size: 'medium', keyTip: 'J' }),
           rbutton('write.review.previous_change', { size: 'medium', keyTip: 'F' }),
           rbutton('write.review.next_change', { size: 'medium', keyTip: 'H' }),
         ]),
@@ -1033,7 +1081,8 @@ export const writeRibbon: RibbonData = {
           viewMode('Draft', 'Draft', 'DraftView', 'E', 'medium'),
         ]),
         rgroup('immersive', 'Immersive', [
-          rbutton('write.view.focus_mode', { size: 'large', keyTip: 'O' }),
+          rtoggle('write.view.focus_mode', { size: 'large', keyTip: 'O' }),
+          rbutton('ui.write.word_goal_dialog', { size: 'large', label: 'Word Goal', keyTip: 'WG' }),
           rbutton('suite.view.immersive_reader', { size: 'large', keyTip: 'IR', tier: 'P2' }),
         ]),
         rgroup('pageMovement', 'Page Movement', [

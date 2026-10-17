@@ -1,6 +1,6 @@
 [package]
 name = "kiln-io-odf"
-description = "Imports and exports OpenDocument text, spreadsheets and presentations ("
+description = "Imports and exports OpenDocument text, spreadsheets and presentations (.odt, .ods, .odp)"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -11,6 +11,21 @@ publish.workspace = true
 
 [dependencies]
 kiln-common.workspace = true
+# Text documents: the Write model.
+kiln-doc.workspace = true
+# Spreadsheets: the Grid model and the formula engine's parser (of: formulas are translated
+# token by token to Excel syntax and back).
+kiln-sheet = { workspace = true, default-features = false }
+kiln-formula = { workspace = true, default-features = false }
+# Presentations: the Deck model (DrawingML fills and lines come from kiln-ooxml).
+kiln-deck.workspace = true
+# The XML parser (no DTDs, no external entities, depth limits) and DrawingML value types.
+kiln-ooxml.workspace = true
+zip = { workspace = true, features = ["deflate-flate2-zlib-rs"] }
+thiserror.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
 
 [lints]
 workspace = true

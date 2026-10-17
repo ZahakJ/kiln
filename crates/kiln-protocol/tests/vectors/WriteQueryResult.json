@@ -92,7 +92,37 @@
           }
         ],
         "shading": null,
-        "borders": false
+        "borders": false,
+        "features": {
+          "tracking": false,
+          "author": "",
+          "markup": "Simple",
+          "show_comments": false,
+          "show_insertions": false,
+          "show_formatting": false,
+          "revisions": 0,
+          "comments": 0,
+          "open_comments": 0,
+          "comment": null,
+          "painter": null,
+          "copied_format": false,
+          "focus": false,
+          "word_goal": 0,
+          "autoformat": {
+            "markdown": true,
+            "smart_quotes": true,
+            "dashes": true,
+            "ellipsis": true,
+            "fractions": true
+          },
+          "spelling": false,
+          "dictionary": false,
+          "misspellings": 0,
+          "hyphenation": false,
+          "object": null,
+          "in_note": false,
+          "has_toc": false
+        }
       }
     },
     {
@@ -281,6 +311,28 @@
       ]
     },
     {
+      "Comments": []
+    },
+    {
+      "Revisions": {
+        "entries": [],
+        "reviewers": [],
+        "insertions": 0,
+        "deletions": 0,
+        "formatting": 0,
+        "comments": 0
+      }
+    },
+    {
+      "CrossRefTargets": []
+    },
+    {
+      "Objects": []
+    },
+    {
+      "Spelling": null
+    },
+    {
       "Format": {
         "font": "",
         "size": 0.0,
@@ -336,7 +388,293 @@
         "can_repeat": false,
         "tabs": [],
         "shading": "",
-        "borders": false
+        "borders": false,
+        "features": {
+          "tracking": false,
+          "author": "",
+          "markup": "Simple",
+          "show_comments": false,
+          "show_insertions": false,
+          "show_formatting": false,
+          "revisions": 0,
+          "comments": 0,
+          "open_comments": 0,
+          "comment": 0,
+          "painter": false,
+          "copied_format": false,
+          "focus": false,
+          "word_goal": 0,
+          "autoformat": {
+            "markdown": false,
+            "smart_quotes": false,
+            "dashes": false,
+            "ellipsis": false,
+            "fractions": false
+          },
+          "spelling": false,
+          "dictionary": false,
+          "misspellings": 0,
+          "hyphenation": false,
+          "object": {
+            "id": 0,
+            "name": "",
+            "kind": "",
+            "wrap": "InLine",
+            "para": 0,
+            "offset": 0,
+            "rect": null,
+            "width": 0.0,
+            "height": 0.0,
+            "rotation": 0.0,
+            "z": 0,
+            "alt_text": null,
+            "decorative": false,
+            "selected": false
+          },
+          "in_note": false,
+          "has_toc": false
+        }
+      }
+    },
+    {
+      "Rulers": {
+        "page": 0,
+        "page_rect": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.0,
+          "height": 0.0
+        },
+        "text_rect": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.0,
+          "height": 0.0
+        },
+        "columns": [],
+        "indent_left": 0.0,
+        "indent_right": 0.0,
+        "first_line": 0.0,
+        "tabs": [],
+        "default_tab": 0.0,
+        "margin_top": 0.0,
+        "margin_bottom": 0.0
+      }
+    },
+    {
+      "Styles": [
+        {
+          "id": "",
+          "name": "",
+          "kind": "Paragraph",
+          "quick": false,
+          "hidden": false,
+          "priority": 0,
+          "based_on": null,
+          "next": null,
+          "font": "",
+          "size": 0.0,
+          "bold": false,
+          "italic": false,
+          "color": null,
+          "current": false,
+          "in_use": false
+        }
+      ]
+    },
+    {
+      "Headings": [
+        {
+          "para": 0,
+          "level": 0,
+          "text": "",
+          "page": null,
+          "current": false
+        }
+      ]
+    },
+    {
+      "Pages": {
+        "count": 0,
+        "complete": false,
+        "current": 0,
+        "rects": [],
+        "extent": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.0,
+          "height": 0.0
+        }
+      }
+    },
+    {
+      "FindAll": {
+        "hits": [],
+        "total": 0,
+        "error": ""
+      }
+    },
+    {
+      "WordCount": {
+        "pages": 0,
+        "words": 0,
+        "characters": 0,
+        "characters_with_spaces": 0,
+        "paragraphs": 0,
+        "lines": 0,
+        "selection": false
+      }
+    },
+    {
+      "Properties": {
+        "title": null,
+        "subject": "",
+        "author": null,
+        "keywords": "",
+        "description": "",
+        "last_modified_by": "",
+        "created": null,
+        "modified": "",
+        "revision": "",
+        "application": "",
+        "pages": 0,
+        "words": 0,
+        "characters": 0,
+        "paragraphs": 0
+      }
+    },
+    {
+      "Clipboard": {
+        "text": "",
+        "html": null,
+        "kiln": null
+      }
+    },
+    {
+      "PageSetup": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "gutter": null,
+        "header": null,
+        "footer": null,
+        "width": null,
+        "height": null,
+        "landscape": null,
+        "columns": null,
+        "column_space": null,
+        "vertical_align": null
+      }
+    },
+    {
+      "Bookmarks": [
+        ""
+      ]
+    },
+    {
+      "CommandLog": [
+        {
+          "id": "",
+          "outcome": ""
+        }
+      ]
+    },
+    {
+      "Comments": [
+        {
+          "id": 0,
+          "parent": null,
+          "author": "",
+          "initials": "",
+          "date": null,
+          "text": "",
+          "resolved": false,
+          "anchor_text": null,
+          "color": "",
+          "page": null,
+          "balloon": null,
+          "anchor": null,
+          "current": false
+        }
+      ]
+    },
+    {
+      "Revisions": {
+        "entries": [
+          {
+            "target": {
+              "kind": "Inserted",
+              "node": 0,
+              "start": 0,
+              "end": 0
+            },
+            "author": "",
+            "date": "",
+            "text": "",
+            "color": "",
+            "story": "",
+            "current": false
+          }
+        ],
+        "reviewers": [
+          {
+            "name": "",
+            "color": "",
+            "changes": 0
+          }
+        ],
+        "insertions": 0,
+        "deletions": 0,
+        "formatting": 0,
+        "comments": 0
+      }
+    },
+    {
+      "CrossRefTargets": [
+        {
+          "target": {
+            "Heading": {
+              "para": 0
+            }
+          },
+          "label": "",
+          "category": "",
+          "level": 0
+        }
+      ]
+    },
+    {
+      "Objects": [
+        {
+          "id": 0,
+          "name": "",
+          "kind": "",
+          "wrap": "InLine",
+          "para": 0,
+          "offset": 0,
+          "rect": null,
+          "width": 0.0,
+          "height": 0.0,
+          "rotation": 0.0,
+          "z": 0,
+          "alt_text": null,
+          "decorative": false,
+          "selected": false
+        }
+      ]
+    },
+    {
+      "Spelling": {
+        "word": "",
+        "start": {
+          "block": 0,
+          "offset": 0
+        },
+        "len": 0,
+        "suggestions": [],
+        "context": "",
+        "context_offset": 0
       }
     }
   ]

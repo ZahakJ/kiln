@@ -1,0 +1,12 @@
+{
+  "type": "CalloutKind",
+  "format": {
+    "TYPENAME": "CalloutKind"
+  },
+  "values": [
+    "Note",
+    "Tip",
+    "Important",
+    "Note"
+  ]
+}

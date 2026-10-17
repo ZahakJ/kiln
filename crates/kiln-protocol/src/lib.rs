@@ -10,6 +10,8 @@
 //! Encodings: small messages (commands, results, events, queries) are JSON; frames and other bulk
 //! payloads are `postcard`.
 #![forbid(unsafe_code)]
+// `command_table!` recurses once per command of a table; Kiln Write has more than 128 (WP-66).
+#![recursion_limit = "512"]
 #![warn(missing_docs)]
 
 pub mod a11y;

@@ -1032,3 +1032,53 @@ WP-54 had to touch these files outside its owned paths; every change is additive
 - For WP-73 (chart chrome), seen in the visual review: the Format pane's axis labels ("Minimum", "Maximum") are cut
   at 320 px; the near-black swatch of the series colours is invisible on the dark pane; in dark mode the treemap and
   sunburst labels are white on light tiles; a bubble chart made from four numeric columns shows one series.
+
+## WP-66 → WP-52 (protocol, session, bridge), WP-63 (layout), WP-64 (Write editor), WP-58 (commands, chrome), WP-53 (text), WP-91 (web, PWA), WP-94 (performance), WP-83 (storage), WP-84 (languages)
+
+- Outside WP-66's paths, for the owners to acknowledge (additive unless noted):
+  - `crates/kiln-protocol` (WP-52): `commands/write/features.rs` (new: the feature types and samples),
+    `commands/write.rs` (the WP-66 `WriteCommand` variants and ids, `WriteQuery::{Comments, Revisions,
+    CrossRefTargets, Objects, SpellingAt, NextMisspelling}`, `FormatState.features`), `commands/mod.rs`
+    (`write_features` export), `lib.rs` (`#![recursion_limit = "512"]`: `command_table!` grew past 128).
+    Generated TS and vectors regenerated.
+  - `crates/kiln-doc-layout` (WP-63): `cx.rs` — `Options.review: ReviewDisplay { original, revisions,
+    comments, balloons }` (in the cache key); `source.rs` — Original shows deletions as plain text, hides
+    insertions and lays runs out with the formatting before a `FormatChange`; hidden insertions/deletions
+    for the Show Markup filters; the comment highlight also without markup when balloons show; `engine.rs` —
+    balloons are placed when `review.balloons` asks for them; `annotations/` is WP-66's (balloons, change
+    bars, connectors, squiggles, `paragraph_range_rects`, a per-paragraph rect pass that never walks the
+    document: `geometry::selection_rects` does, via `paragraphs_between`, and cost 550 ms per frame for a
+    page of squiggles in `doc-300p`).
+  - `crates/kiln-session` (WP-52/WP-64): `Cargo.toml` (`kiln-spell`); `lib.rs` (`register_font`);
+    `apps/scratch/fonts.rs` — **the web core embeds no font any more**: the page registers Carlito at boot
+    (B12: WP-66 took the core from 4,438 to 4,683 KB gzipped, over the 4,500 KB budget; without the
+    embedded font it is 4,415 KB). Natively nothing changes (the bundled set plus registered fonts).
+    `apps/write/mod.rs` (the `features` field, the overlay hook, the review display before layout, Ctrl+Z
+    and Ctrl+Y over grouped steps: `undo_step`/`redo_step`), `editing.rs` (`apply` records tracked changes
+    when Track Changes is on), `commands/mod.rs` (routing to `features`, `after_typing` for AutoFormat,
+    `batch_apply` under Track Changes, `note_edit` bumps the cache generation), `commands/query.rs`.
+  - `crates/kiln-bridge-wasm` (WP-52): `registerFont(bytes)`. `apps/web/src/worker.ts` (WP-52/WP-91)
+    fetches `assets/fonts/carlito/Carlito-Regular.ttf` (Vite `?url`) while the core loads and registers it
+    before creating the session. **WP-91**: precache it with the wasm artefacts.
+  - `packages/commands` (WP-58): `catalog/write-features.ts` (new), `catalog/index.ts`, `catalog/write.ts`
+    (Review, References, Insert, Layout ▸ Arrange and View wiring), `core/build.ts` (`WRITE_FEATURE_BUILDERS`).
+  - `packages/ui-kit` (WP-58): `chrome/options.ts` + `OptionsDialog.tsx` (Proofing ▸ AutoFormat as you
+    type: Markdown shortcuts, smart quotes, dashes, ellipsis, fractions), `primitives/primitives.css`
+    (`.kiln-select__content` above dialogs: a Select inside a dialog opened under the overlay),
+    `backstage/pages.tsx` (`onEditProperties` on File ▸ Info). `apps/web/.../AppFrameRoute.tsx` passes it
+    for Write.
+  - `packages/editor-write` (WP-64): `WriteEditor.tsx` (feature layer, panes, dialogs, spelling and Paste
+    as Markdown in the context menu), `WriteStatusBar.tsx`, `index.ts`, `editor.test.tsx`.
+- Known limits, for the owners named:
+  - WP-63: a footnote too long for its page does not continue on the next page (row
+    `write.references.footnotes.insert-footnote` stays partial). Original mode does not rejoin a paragraph
+    mark that was inserted.
+  - WP-83: the user dictionary is a device preference in `localStorage` (`kiln.spell.user`) until
+    kiln-storage preferences reach the web; it is sent to the core when an editor opens.
+  - WP-84: only en-US has a dictionary; other languages are left unchecked, never flagged.
+  - WP-94: `sccache` served a stale `kiln-protocol` rlib to a `wasm-release` build here after another
+    checkout of the same sources was built with the same wrapper (`RUSTC_WRAPPER= cargo xtask wasm
+    --release` fixed it). B5 on `doc-300p`: WP-66's per-keystroke work is cached per document generation
+    (revisions, the TOC) and per paragraph (spelling).
+  - Tracked typing is one undo step per keystroke (Word groups it by word); the Selection pane cannot hide
+    objects yet; Align works against the margins only.

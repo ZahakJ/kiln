@@ -11,12 +11,15 @@ import {
   type WorkerMessage,
   type WorkerRequest,
 } from '@kiln/protocol';
+import carlitoUrl from '../../../assets/fonts/carlito/Carlito-Regular.ttf?url';
 
 /** The module wasm-bindgen generates (`--target web`). */
 interface BridgeModule {
   default: () => Promise<unknown>;
   KilnSession: new () => WasmSession;
   version: () => string;
+  /** Gives the core a document font (it embeds none, budget B12). */
+  registerFont: (bytes: Uint8Array) => boolean;
 }
 
 /** The worker global scope, typed narrowly so this file compiles against the DOM library. */
@@ -66,9 +69,14 @@ async function boot(): Promise<void> {
     drain();
     return;
   }
+  // The core's document font is a static asset, fetched while the core loads.
+  const font = fetch(carlitoUrl).then((r) =>
+    r.ok ? r.arrayBuffer() : Promise.reject(new Error(`the document font: HTTP ${r.status}`)),
+  );
   try {
     const bridge = await load();
     await bridge.default();
+    bridge.registerFont(new Uint8Array(await font));
     session = new bridge.KilnSession();
     post({ type: 'ready', version: bridge.version() });
   } catch (error) {

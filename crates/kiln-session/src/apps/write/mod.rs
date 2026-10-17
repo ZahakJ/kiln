@@ -22,6 +22,7 @@
 
 mod commands;
 mod editing;
+mod features;
 mod save;
 #[cfg(test)]
 mod tests;
@@ -120,6 +121,8 @@ pub struct WriteDoc {
     print: crate::print::PrintCache,
     /// The editor's state (WP-64): formatting marks, pending formatting, the command log.
     editor: commands::EditorState,
+    /// Comments, track changes, references, objects, spelling (WP-66).
+    features: features::Features,
 }
 
 impl WriteDoc {
@@ -143,6 +146,7 @@ impl WriteDoc {
             touched: TouchedParts::new(),
             print: crate::print::PrintCache::new(),
             editor: commands::EditorState::default(),
+            features: features::Features::default(),
         }
     }
 
@@ -169,9 +173,17 @@ impl WriteDoc {
         let doc = &self.doc;
         let file = self.file_name.clone();
         let now = view::date_time(self.editor.now_ms.unwrap_or(0));
+        // WP-66: the review display (markup modes) decides the layout's options.
+        let (markup, review) = self.review_options();
         let v = self
             .view
             .get_or_insert_with(|| Box::new(WriteView::new(doc, file, now)));
+        let mut o = v.layout.options().clone();
+        if o.markup != markup || o.review != review {
+            o.markup = markup;
+            o.review = review;
+            v.layout.set_options(o);
+        }
         v.sync(doc, true);
         v
     }
@@ -205,6 +217,8 @@ impl WriteDoc {
         if self.editor.show_marks {
             ops.extend(commands::marks::marks(v, &self.doc));
         }
+        // WP-66: change bars, balloon connectors and spelling squiggles under the selection.
+        ops.extend(self.feature_overlay());
         ops.extend(v.overlay(&self.doc, self.anchor, self.head, comp));
         ops
     }
@@ -237,6 +251,48 @@ impl WriteDoc {
         }
         out
     }
+
+    /// One step of the undo history.
+    fn undo_step(&mut self) -> bool {
+        match self.history.undo(&mut self.doc) {
+            Ok(Some(tx)) => {
+                self.touched.record(&self.doc, &tx);
+                self.note_edit(&tx);
+                if let Some(r) = tx.selection_after {
+                    self.anchor = r.anchor;
+                    self.head = r.head;
+                }
+                if let Some(s) = self.states.pop() {
+                    self.undone.push(s);
+                }
+                self.state = self.states.last().copied().unwrap_or(0);
+                true
+            }
+            _ => false,
+        }
+    }
+
+    /// One step of the redo history.
+    fn redo_step(&mut self) -> bool {
+        match self.history.redo(&mut self.doc) {
+            Ok(Some(tx)) => {
+                self.touched.record(&self.doc, &tx);
+                self.note_edit(&tx);
+                if let Some(r) = tx.selection_after {
+                    self.anchor = r.anchor;
+                    self.head = r.head;
+                }
+                let s = self.undone.pop().unwrap_or_else(|| {
+                    self.next_state += 1;
+                    self.next_state
+                });
+                self.states.push(s);
+                self.state = s;
+                true
+            }
+            _ => false,
+        }
+    }
 }
 
 fn rect(b: Bounds) -> Rect {
@@ -253,6 +309,8 @@ impl FrameSource for WriteDoc {
                 now,
             )));
         }
+        // WP-66: the review display (markup modes) decides the layout's options.
+        self.sync_review_display();
         // The overlay needs the layout of this frame: prepare twice is wasteful, so lay out
         // first, then build the overlay and the scene.
         if let Some(v) = &mut self.view {
@@ -325,44 +383,29 @@ impl DocModel for WriteDoc {
 
     fn undo(&mut self) -> bool {
         self.end_composition();
-        match self.history.undo(&mut self.doc) {
-            Ok(Some(tx)) => {
-                self.touched.record(&self.doc, &tx);
-                self.note_edit(&tx);
-                if let Some(r) = tx.selection_after {
-                    self.anchor = r.anchor;
-                    self.head = r.head;
-                }
-                if let Some(s) = self.states.pop() {
-                    self.undone.push(s);
-                }
-                self.state = self.states.last().copied().unwrap_or(0);
-                true
+        // WP-66: an AutoFormat made of several steps (`# ` → Heading 1) undoes as one.
+        let steps = self.grouped_undo_steps();
+        let mut done = false;
+        for _ in 0..steps {
+            if !self.undo_step() {
+                break;
             }
-            _ => false,
+            done = true;
         }
+        done
     }
 
     fn redo(&mut self) -> bool {
         self.end_composition();
-        match self.history.redo(&mut self.doc) {
-            Ok(Some(tx)) => {
-                self.touched.record(&self.doc, &tx);
-                self.note_edit(&tx);
-                if let Some(r) = tx.selection_after {
-                    self.anchor = r.anchor;
-                    self.head = r.head;
-                }
-                let s = self.undone.pop().unwrap_or_else(|| {
-                    self.next_state += 1;
-                    self.next_state
-                });
-                self.states.push(s);
-                self.state = s;
-                true
+        let steps = self.grouped_redo_steps();
+        let mut done = false;
+        for _ in 0..steps {
+            if !self.redo_step() {
+                break;
             }
-            _ => false,
+            done = true;
         }
+        done
     }
 
     fn can_undo(&self) -> bool {

@@ -5,7 +5,13 @@
  * the parts and falls back to its own while the app is not Write or no document is shown yet.
  */
 import type { CommandRegistry } from '@kiln/commands';
-import { useWriteEditorModel, WriteEditor, WriteStatusBar, withTablePicker } from '@kiln/editor-write';
+import {
+  useWriteEditorModel,
+  WriteCommentsButton,
+  WriteEditor,
+  WriteStatusBar,
+  withTablePicker,
+} from '@kiln/editor-write';
 import type { DocSummary, KilnClient } from '@kiln/protocol';
 import { type RibbonSpec, useTheme } from '@kiln/ui-kit';
 import { type ReactNode, useEffect, useMemo } from 'react';
@@ -23,6 +29,8 @@ export interface WriteParts {
   statusBar: ReactNode;
   /** Write's ribbon with the editor's own controls. */
   ribbon: RibbonSpec | undefined;
+  /** The tab strip's Comments button with the open-comment count (WP-66). */
+  comments: ReactNode;
 }
 
 export function useWriteParts(
@@ -63,6 +71,7 @@ export function useWriteParts(
             surface: (
               <WriteEditor model={model} title={title} theme={dark ? 'dark' : 'light'} ribbon={ribbon} />
             ),
+            comments: <WriteCommentsButton model={model} />,
             statusBar: (
               <WriteStatusBar
                 model={model}

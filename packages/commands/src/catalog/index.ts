@@ -19,6 +19,7 @@ import { DESCRIPTIONS } from './descriptions.ts';
 import { gridCommands, gridRibbon } from './grid.ts';
 import { notesCommands, notesRibbon } from './notes.ts';
 import { writeCommands, writeCoreCommands, writeRibbon } from './write.ts';
+import { writeFeatureCommands } from './write-features.ts';
 
 export { c, type DeclOptions, section } from './define.ts';
 
@@ -45,6 +46,7 @@ export const COMMAND_CATALOG: readonly CommandDeclaration[] = Object.freeze(
     ...navigationCommands,
     ...writeCommands,
     ...writeCoreCommands,
+    ...writeFeatureCommands,
     ...gridCommands,
     ...deckCommands,
     ...notesCommands,

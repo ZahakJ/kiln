@@ -12,11 +12,13 @@ import type { CommandRegistry } from '@kiln/commands';
 import type { DocId, KilnClient } from '@kiln/protocol';
 import { useEffect, useState } from 'react';
 import { registerWriteUi } from './commands.ts';
+import { registerWriteFeatures } from './features/commands.ts';
 import { WriteEditorModel } from './model.ts';
 
 export const PACKAGE_NAME = '@kiln/editor-write' as const;
 
 export { DIALOG_COMMANDS, fitZoom, registerWriteUi } from './commands.ts';
+export * from './features/index.ts';
 export { useWrite } from './hooks.ts';
 export {
   contextsOf,
@@ -29,7 +31,12 @@ export {
   type WriteUiState,
   writeResult,
 } from './model.ts';
+export { CommentsPane } from './panes/CommentsPane.tsx';
+export { FeaturePanes } from './panes/FeaturePanes.tsx';
 export { NavigationPane } from './panes/NavigationPane.tsx';
+export { ReviewingPane } from './panes/ReviewingPane.tsx';
+export { SelectionPane } from './panes/SelectionPane.tsx';
+export { SpellingPane } from './panes/SpellingPane.tsx';
 export { StylesPane } from './panes/StylesPane.tsx';
 export { HorizontalRuler, RULER_SIZE, VerticalRuler } from './Rulers.tsx';
 export { TableGridPicker, withTablePicker } from './TableGridPicker.tsx';
@@ -55,8 +62,11 @@ export function useWriteEditorModel(
     }
     const m = new WriteEditorModel({ client, doc, registry });
     const ui = registerWriteUi(m);
+    // WP-66: comments, track changes, references, objects, Format Painter, spelling.
+    const features = registerWriteFeatures(m);
     setModel(m);
     return () => {
+      features.dispose();
       ui.dispose();
       m.dispose();
       setModel(null);

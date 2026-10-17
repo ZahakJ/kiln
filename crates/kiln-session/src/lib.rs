@@ -35,6 +35,13 @@ pub use host::{DeferredHost, Host};
 pub use model::{AppFactory, Change, DocModel};
 pub use session::Session;
 
+/// Gives the layout a document font at run time (TrueType or OpenType bytes): the web core
+/// embeds none and the page registers Carlito before the first document opens (budget B12).
+/// Returns `false` when the font was already registered.
+pub fn register_font(bytes: Vec<u8>) -> bool {
+    apps::scratch::fonts::register(bytes)
+}
+
 /// The version of this crate. Every Kiln crate shares the suite version (`[workspace.package]`).
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 

@@ -68,6 +68,30 @@ const FORMAT: FormatState = {
   tabs: [],
   shading: null,
   borders: false,
+  features: {
+    tracking: false,
+    author: 'Author',
+    markup: 'Simple',
+    show_comments: true,
+    show_insertions: true,
+    show_formatting: true,
+    revisions: 0,
+    comments: 0,
+    open_comments: 0,
+    comment: null,
+    painter: null,
+    copied_format: false,
+    focus: false,
+    word_goal: 0,
+    autoformat: { markdown: true, smart_quotes: true, dashes: true, ellipsis: true, fractions: true },
+    spelling: true,
+    dictionary: true,
+    misspellings: 0,
+    hyphenation: false,
+    object: null,
+    in_note: false,
+    has_toc: false,
+  },
 };
 
 const STATUS: StatusBar = {
@@ -237,7 +261,8 @@ describe('contexts and helpers', () => {
   it('lists the status bar items of Word, characters hidden by default', () => {
     const open = vi.fn();
     const items = writeStatusItems(STATUS, false, open);
-    expect(items.map((i) => i.id)).toEqual(['page', 'words', 'chars', 'language', 'track']);
+    // Track Changes, the word goal, proofing and Focus are the features' items (WP-66).
+    expect(items.map((i) => i.id)).toEqual(['page', 'words', 'chars', 'language']);
     expect(items[0]?.content).toBe('Page 2 of 12');
     expect(items[1]?.content).toBe(`${(1284).toLocaleString()} words`);
     expect(items.find((i) => i.id === 'chars')?.defaultHidden).toBe(true);

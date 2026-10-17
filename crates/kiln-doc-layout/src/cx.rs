@@ -26,6 +26,8 @@ pub struct Options {
     pub scale: f32,
     /// Show tracked changes as markup (insertions underlined, deletions struck through).
     pub markup: bool,
+    /// Display for Review beyond `markup` (Original, Show Markup; WP-66).
+    pub review: ReviewDisplay,
     /// The clock for DATE and TIME fields.
     pub now: Option<kiln_doc::fields::FieldDateTime>,
     /// The file name for FILENAME fields.
@@ -37,8 +39,36 @@ impl Default for Options {
         Self {
             scale: 1.0,
             markup: true,
+            review: ReviewDisplay::default(),
             now: None,
             file_name: None,
+        }
+    }
+}
+
+/// How tracked changes and comments show besides [`Options::markup`] (Review ▸ Display for
+/// Review and Show Markup, WP-66).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct ReviewDisplay {
+    /// Original: the text before the tracked changes (insertions hidden, deletions shown plain,
+    /// formatting changes shown with the formatting before them).
+    pub original: bool,
+    /// With markup: insertions and deletions in the author's colour (Show Markup ▸ Insertions
+    /// and Deletions). Off, the final text shows.
+    pub revisions: bool,
+    /// With markup: comment highlights and balloons (Show Markup ▸ Comments).
+    pub comments: bool,
+    /// Comment highlights and balloons without the revision markup (Simple Markup).
+    pub balloons: bool,
+}
+
+impl Default for ReviewDisplay {
+    fn default() -> Self {
+        Self {
+            original: false,
+            revisions: true,
+            comments: true,
+            balloons: false,
         }
     }
 }
@@ -169,6 +199,7 @@ impl Cx<'_> {
                 scale: self.options.scale,
                 width,
                 markup: self.options.markup,
+                review: self.options.review,
             },
             &mut self.caches.styles,
             para,
@@ -190,6 +221,7 @@ impl Cx<'_> {
             table.map(|t| (&t.table_style_id, &t.conditions)),
             self.options.scale.to_bits(),
             self.options.markup,
+            self.options.review,
         ));
         if let Some(c) = self.caches.paras.get(&para.id)
             && c.key == key
@@ -397,8 +429,11 @@ pub fn decorations(
         y1 += bottom.map_or(0.0, |r| r.space + r.width);
     }
     if let Some(c) = f.shading {
+        // An opaque fill reaches a little into the next line's, so the antialiased edges of
+        // two lines' fills do not leave a pale seam between them (WP-66, shaded cover bands).
+        let overlap = if !last && c & 0xFF == 0xFF { 0.75 } else { 0.0 };
         out.push(Item::Fill {
-            rect: kiln_scene::Bounds::new(x0, y0, x1 - x0, y1 - y0),
+            rect: kiln_scene::Bounds::new(x0, y0, x1 - x0, y1 - y0 + overlap),
             color: c,
         });
     }

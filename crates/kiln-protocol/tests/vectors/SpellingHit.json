@@ -1,0 +1,33 @@
+{
+  "type": "SpellingHit",
+  "format": {
+    "TYPENAME": "SpellingHit"
+  },
+  "values": [
+    {
+      "word": "teh",
+      "start": {
+        "block": 70000,
+        "offset": 300
+      },
+      "len": 3,
+      "suggestions": [
+        "the",
+        "ten"
+      ],
+      "context": "Fire teh kiln — «slowly».",
+      "context_offset": 5
+    },
+    {
+      "word": "",
+      "start": {
+        "block": 0,
+        "offset": 0
+      },
+      "len": 0,
+      "suggestions": [],
+      "context": "",
+      "context_offset": 0
+    }
+  ]
+}

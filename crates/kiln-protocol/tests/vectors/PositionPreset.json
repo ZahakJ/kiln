@@ -1,0 +1,21 @@
+{
+  "type": "PositionPreset",
+  "format": {
+    "TYPENAME": "PositionPreset"
+  },
+  "values": [
+    "InLine",
+    "TopLeft",
+    "MiddleRight",
+    "InLine",
+    "TopLeft",
+    "TopCenter",
+    "TopRight",
+    "MiddleLeft",
+    "MiddleCenter",
+    "MiddleRight",
+    "BottomLeft",
+    "BottomCenter",
+    "BottomRight"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "ChangeScope",
+  "format": {
+    "TYPENAME": "ChangeScope"
+  },
+  "values": [
+    "Current",
+    "All",
+    "CurrentAndNext",
+    "Current",
+    "AllShown"
+  ]
+}

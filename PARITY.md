@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **38.3 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **43.7 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,23 +12,23 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 38.3 % | 782 | 2 | 210 | 81 | 489 | 20 |
-| Kiln Write | 56.3 % | 231 | 0 | 99 | 18 | 114 | 1 |
-| Kiln Grid | 50.4 % | 261 | 1 | 94 | 33 | 133 | 6 |
+| **Overall** | 43.7 % | 782 | 9 | 232 | 96 | 445 | 20 |
+| Kiln Write | 76.9 % | 231 | 8 | 133 | 20 | 70 | 1 |
+| Kiln Grid | 47.9 % | 261 | 0 | 82 | 46 | 133 | 6 |
 | Kiln Deck | 14.1 % | 184 | 0 | 13 | 20 | 151 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
 | Suite | 18.4 % | 62 | 1 | 4 | 10 | 47 | 9 |
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 47.5 % | 462 | 0 | 195 | 49 | 218 | 0 |
-| commonly-missed | 13.4 % | 224 | 2 | 13 | 30 | 179 | 0 |
+| critical | 53.7 % | 462 | 0 | 221 | 54 | 187 | 0 |
+| commonly-missed | 17.0 % | 224 | 9 | 9 | 40 | 166 | 0 |
 | niche | 3.1 % | 96 | 0 | 2 | 2 | 92 | 20 |
 
 | App | Critical | Commonly-missed | Niche |
 |---|---:|---:|---:|
-| Kiln Write | 71.2 % (146) | 6.0 % (58) | 1.9 % (27) |
-| Kiln Grid | 62.6 % (143) | 23.5 % (83) | 7.1 % (35) |
+| Kiln Write | 92.5 % (146) | 26.7 % (58) | 1.9 % (27) |
+| Kiln Grid | 60.8 % (143) | 18.7 % (83) | 7.1 % (35) |
 | Kiln Deck | 15.1 % (119) | 11.9 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
 | Suite | 25.8 % (31) | 6.9 % (29) | 0.0 % (2) |
@@ -39,20 +39,20 @@ Rows that exist to be better than Office (no Office equivalent, `office: "—"`)
 
 | | Feature | App | Priority | Why it is better |
 |---|---|---|---|---|
-| ○ | Focus mode: distraction-free page with the ribbon hidden | Kiln Write | P0 | a calmer focus mode with typewriter scrolling and a paragraph dim, reachable from the ribbon and the palette |
-| ○ | Paste a Markdown table as a styled table | Kiln Write | P0 | Markdown and CSV tables pasted from chat tools and editors become real tables |
+| ★ | Focus mode: distraction-free page with the ribbon hidden | Kiln Write | P0 | Better than Word: the chrome fades instead of disappearing (hover brings it back), lines away from the caret dim and typewriter scrolling keeps the line centred; Esc or the status bar leaves (WP-66). |
+| ★ | Paste a Markdown table as a styled table | Kiln Write | P0 | Better than Word, which pastes Markdown as plain text: GitHub pipe tables (and the rest) paste as Word tables in the Table Grid style (WP-66). |
 | ○ | Stock images hook (configurable provider; no network by default) | Kiln Write | P1 | provider is user-configured and nothing is fetched unless enabled |
-| ○ | One-click table of contents from headings | Kiln Write | P0 | one click, kept current on save without a manual update |
-| ○ | Callout blocks (note, tip, warning) that export as shaded paragraphs in .docx | Kiln Write | P0 | semantic callouts that degrade to plain Word formatting |
-| ○ | Code blocks with syntax highlighting and a monospace style | Kiln Write | P0 | syntax-highlighted code that stays highlighted in the saved .docx |
+| ★ | One-click table of contents from headings | Kiln Write | P0 | Better than Word's gallery round trip: one click inserts a linked contents table from Heading 1–3 at the caret (WP-66). |
+| ★ | Callout blocks (note, tip, warning) that export as shaded paragraphs in .docx | Kiln Write | P0 | Better than Word, which has no callouts: Note, Tip, Warning and Important blocks that are shaded, bordered paragraphs, so Word shows them the same (WP-66). |
+| ★ | Code blocks with syntax highlighting and a monospace style | Kiln Write | P0 | Better than Word, which has no code blocks: a monospace style with keyword, string, comment and number highlighting; ``` and Enter starts one (WP-66). |
 | ○ | Version history pane: automatic snapshots on save, named versions, diff view, restore | Kiln Write | P0 | version history works for local files with no cloud account and shows a word-level diff |
-| ○ | Markdown shortcuts while typing (#, -, 1., **bold**, `code`, ---, >) | Kiln Write | P0 | Markdown habits produce real Word styles and lists |
-| ○ | Smart paste: Markdown text becomes headings, lists, emphasis and code | Kiln Write | P0 | pasting Markdown from chat tools gives formatted text, not asterisks |
-| ○ | Word-count goal in the status bar with progress | Kiln Write | P0 | a writing target with progress, no add-in |
+| ★ | Markdown shortcuts while typing (#, -, 1., **bold**, `code`, ---, >) | Kiln Write | P0 | Better than Word's AutoFormat: #–######, -, 1., >, ---, ``` and **bold**, *italic*, `code`, ~~strike~~ as you type, undone in one step (WP-66). |
+| ★ | Smart paste: Markdown text becomes headings, lists, emphasis and code | Kiln Write | P0 | Better than Word, which pastes Markdown as text: headings, lists, emphasis, links, code and tables become Word formatting (WP-66). |
+| ★ | Word-count goal in the status bar with progress | Kiln Write | P0 | Better than Word, which has no goals: a goal saved with the document and an ember progress bar in the status bar (WP-66). |
 | ○ | Document outline health: skipped heading levels and empty headings flagged | Kiln Write | P1 | structural checks that also improve accessibility |
 | ○ | Export to Markdown and HTML | Kiln Write | P0 | clean Markdown and semantic HTML export built in |
 | ○ | Command palette in the ribbon (Ctrl+Shift+P / Alt+Q) with Office synonyms | Kiln Grid | P0 | fuzzy search over every command with Excel's names as synonyms and shortcuts shown |
-| ★ | Recommended Charts from the selection's shape | Kiln Grid | P0 | suggestions computed locally from the data shape, previewed live Engine done in WP-73 (kiln-charts: model, layout, rendering, OOXML read/write, SuiteCommand::Chart* editing; ui-kit chart chrome); app wiring and its e2e come with the app surface (Grid WP-71, Deck WP-78). Hosted on Grid sheets in WP-71: inserted from the selection, drawn in the sheet's tiles, selected, moved, resized, edited with Chart Design, Format and the Format pane, undone, and saved to .xlsx. |
+| ◐ | Recommended Charts from the selection's shape | Kiln Grid | P0 | suggestions computed locally from the data shape, previewed live Engine done in WP-73 (kiln-charts: model, layout, rendering, OOXML read/write, SuiteCommand::Chart* editing; ui-kit chart chrome); app wiring and its e2e come with the app surface (Grid WP-71, Deck WP-78). |
 | ○ | Formula Lab: formula explainer pane with AST tree and step values | Kiln Grid | P0 | the whole evaluation tree with intermediate values, not one step at a time |
 | ◐ | From JSON (array of objects to a table) | Kiln Grid | P0 | Partial: kiln-io-csv (WP-70) reads an array of objects into a table (keys in first-seen order, typed values) through kiln-cli convert and the session; the Data ▸ From JSON command is WP-72 |
 | ○ | Version history with cell-level diff | Kiln Grid | P1 | cell-level diff of local files with no cloud account |
@@ -88,6 +88,8 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `write.home.clipboard.paste-special` | Paste Special dialog (Ctrl+Alt+V): formatted text, unformatted, HTML, picture | missing | partial |
 | `write.home.clipboard.cut-copy` | Cut and copy (Ctrl+X / Ctrl+C) producing rich, HTML and plain text | missing | done |
 | `write.home.clipboard.html-paste` | Paste from browsers and other apps: sanitised HTML mapped to styles, lists and tables | missing | done |
+| `write.home.clipboard.format-painter` | Format Painter (single click, and double-click to keep painting) | missing | done |
+| `write.home.clipboard.copy-paste-formatting` | Copy and paste formatting by keyboard (Ctrl+Shift+C / Ctrl+Shift+V) | missing | done |
 | `write.home.font.family` | Font family box with previews, recent fonts and theme fonts | missing | done |
 | `write.home.font.size` | Font size box with presets and typed half-point sizes | missing | done |
 | `write.home.font.grow-shrink` | Grow and shrink font (Ctrl+] / Ctrl+[ and Ctrl+Shift+> / <) | missing | done |
@@ -128,15 +130,20 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `write.home.editing.select` | Select All, Select Objects, Select Text with Similar Formatting | missing | done |
 | `write.home.editing.undo-redo` | Undo and redo with history (Ctrl+Z / Ctrl+Y), word-sized undo steps | missing | done |
 | `write.home.editing.repeat` | Repeat last action (F4) | missing | done |
+| `write.home.focus.focus-mode` | Focus mode: distraction-free page with the ribbon hidden | missing | better |
+| `write.insert.pages.cover-page` | Cover page gallery | missing | done |
 | `write.insert.pages.blank-page` | Insert a blank page | missing | done |
 | `write.insert.pages.page-break` | Page break (Ctrl+Enter) | missing | done |
 | `write.insert.tables.grid-picker` | Insert a table from the grid picker | missing | done |
 | `write.insert.tables.dialog` | Insert Table dialog: columns, rows, AutoFit behaviour | missing | done |
 | `write.insert.tables.text-to-table` | Convert text to table and table to text | missing | done |
+| `write.insert.tables.paste-markdown` | Paste a Markdown table as a styled table | missing | better |
 | `write.insert.illustrations.pictures` | Insert pictures from this device (PNG, JPEG, GIF, SVG, WebP), inline by default | missing | done |
 | `write.insert.illustrations.chart` | Insert a chart (Grid chart engine with embedded data sheet) | missing | partial |
 | `write.insert.links.link` | Insert and edit hyperlinks (Ctrl+K), Ctrl+click to follow | missing | done |
 | `write.insert.links.bookmark` | Bookmarks: add, go to, delete | missing | done |
+| `write.insert.links.cross-reference` | Cross-references to headings, bookmarks, figures, tables, footnotes (REF fields) | missing | done |
+| `write.insert.comments.comment` | Insert a comment on the selection (Ctrl+Alt+M) | missing | done |
 | `write.insert.header-footer.header` | Header gallery and edit header | missing | done |
 | `write.insert.header-footer.footer` | Footer gallery and edit footer | missing | done |
 | `write.insert.header-footer.page-number` | Page number gallery (top, bottom, margins, current position) and Format Page Numbers | missing | done |
@@ -144,6 +151,9 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `write.insert.text.drop-cap` | Drop cap (dropped and in margin) | missing | done |
 | `write.insert.text.date-time` | Insert date and time with formats and update automatically (Alt+Shift+D / Alt+Shift+T) | missing | done |
 | `write.insert.symbols.symbol` | Symbol gallery and Symbol dialog with recent symbols and character codes (Alt+X) | missing | partial |
+| `write.insert.smart.quick-toc` | One-click table of contents from headings | missing | better |
+| `write.insert.smart.callout` | Callout blocks (note, tip, warning) that export as shaded paragraphs in .docx | missing | better |
+| `write.insert.smart.code-block` | Code blocks with syntax highlighting and a monospace style | missing | better |
 | `write.layout.page-setup.margins` | Margins presets and custom margins, mirrored and gutter | missing | done |
 | `write.layout.page-setup.orientation` | Portrait and landscape per section | missing | done |
 | `write.layout.page-setup.size` | Paper sizes (Letter, A4, Legal, A3, A5, custom) | missing | done |
@@ -153,9 +163,36 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `write.layout.page-setup.dialog` | Page Setup dialog: margins, paper, layout (section start, headers different, vertical alignment) | missing | done |
 | `write.layout.paragraph.indent` | Indent left and right spinners | missing | done |
 | `write.layout.paragraph.spacing` | Spacing before and after spinners | missing | done |
+| `write.layout.arrange.position` | Position presets for floating objects and More Layout Options | missing | done |
+| `write.layout.arrange.wrap-text` | Wrap Text: in line, square, tight, through, top and bottom, behind, in front | missing | done |
+| `write.layout.arrange.bring-forward` | Bring forward and bring to front | missing | done |
+| `write.layout.arrange.send-backward` | Send backward and send to back | missing | done |
+| `write.layout.arrange.selection-pane` | Selection pane: list, rename, hide and reorder objects | missing | partial |
+| `write.layout.arrange.align` | Align and distribute objects relative to page, margin or each other | missing | partial |
+| `write.layout.arrange.rotate` | Rotate and flip objects | missing | done |
+| `write.references.toc.insert` | Table of contents from heading styles: levels, tab leaders, clickable entries | missing | done |
+| `write.references.toc.add-text` | Add Text: set the TOC level of a paragraph | missing | done |
+| `write.references.toc.update` | Update table (page numbers only or entire table) | missing | done |
+| `write.references.footnotes.insert-footnote` | Insert footnote (Ctrl+Alt+F) with continuation across pages | missing | partial |
+| `write.references.footnotes.insert-endnote` | Insert endnote (Ctrl+Alt+D) | missing | done |
+| `write.references.footnotes.next` | Next and previous footnote | missing | done |
+| `write.references.footnotes.show-notes` | Show notes and the footnote/endnote options dialog (number format, restart, convert) | missing | done |
+| `write.references.captions.insert` | Insert caption (Figure, Table, Equation; SEQ fields with chapter numbering) | missing | done |
+| `write.references.captions.table-of-figures` | Table of figures | missing | done |
+| `write.review.proofing.spelling` | Spelling check as you type (squiggles, suggestions, ignore, add to dictionary) and Spelling pane (F7) | missing | done |
 | `write.review.proofing.word-count` | Word Count dialog (pages, words, characters with/without spaces, paragraphs, lines; include notes) | missing | done |
-| `write.review.comments.new` | New comment with author, time and threaded replies | missing | partial |
-| `write.review.tracking.track-changes` | Track Changes on/off (Ctrl+Shift+E) recording insertions, deletions, formatting and moves | missing | partial |
+| `write.review.comments.new` | New comment with author, time and threaded replies | missing | done |
+| `write.review.comments.delete` | Delete comment, delete all comments | missing | done |
+| `write.review.comments.navigate` | Previous and next comment | missing | done |
+| `write.review.comments.show` | Show comments (contextual balloons or list) and the comments pane | missing | done |
+| `write.review.comments.resolve` | Resolve and reopen comment threads | missing | done |
+| `write.review.tracking.track-changes` | Track Changes on/off (Ctrl+Shift+E) recording insertions, deletions, formatting and moves | missing | done |
+| `write.review.tracking.display-mode` | Markup display: Simple Markup, All Markup, No Markup, Original | missing | done |
+| `write.review.tracking.show-markup` | Show Markup filter (comments, insertions and deletions, formatting, specific people, balloons) | missing | partial |
+| `write.review.tracking.reviewing-pane` | Reviewing pane (vertical) listing every revision with author and summary | missing | done |
+| `write.review.changes.accept` | Accept this change, all shown, all changes, and accept and move to next | missing | done |
+| `write.review.changes.reject` | Reject this change, all shown, all changes, and reject and move to next | missing | done |
+| `write.review.changes.navigate` | Previous and next change | missing | done |
 | `write.view.views.read-mode` | Read Mode: columns, page turning, zoomed objects | missing | partial |
 | `write.view.views.print-layout` | Print Layout with page shadows, margins and header/footer areas | missing | partial |
 | `write.view.views.web-layout` | Web Layout (reflowed to the window width) | missing | partial |
@@ -182,12 +219,19 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `write.table-layout.repeat-header` | Repeat header rows on each page | missing | done |
 | `write.table-layout.convert-to-text` | Convert table to text | missing | done |
 | `write.table-layout.nested-tables` | Nested tables (displayed and edited) | missing | partial |
+| `write.picture-format.alt-text` | Alt text and mark as decorative | missing | done |
+| `write.picture-format.size` | Size, rotate and lock aspect ratio with handles and the Layout dialog | missing | done |
 | `write.header-footer.different-first` | Different first page | missing | done |
 | `write.header-footer.different-odd-even` | Different odd and even pages | missing | done |
 | `write.header-footer.link-previous` | Link to previous section | missing | done |
 | `write.header-footer.position` | Header and footer distance from edge | missing | partial |
 | `write.header-footer.navigate-close` | Go to header/footer, previous/next section, close (Esc, double-click body) | missing | done |
 | `write.editing.caret-movement` | Caret movement and selection by character, word, line, paragraph, page; Ctrl+Home/End; click, double and triple click | missing | done |
+| `write.editing.autoformat` | AutoFormat as you type: automatic bulleted and numbered lists, borders from ---, ordinals | missing | done |
+| `write.editing.smart-typography` | Smart quotes, en/em dashes, ellipsis, fractions (toggleable) | missing | done |
+| `write.editing.markdown-shortcuts` | Markdown shortcuts while typing (#, -, 1., **bold**, `code`, ---, >) | missing | better |
+| `write.editing.smart-paste-markdown` | Smart paste: Markdown text becomes headings, lists, emphasis and code | missing | better |
+| `write.editing.word-count-goal` | Word-count goal in the status bar with progress | missing | better |
 | `write.editing.mini-toolbar` | Mini toolbar on selection and right-click (font, size, bold, italic, highlight, colour, styles) | missing | done |
 | `write.editing.context-menu` | Context menus for text, tables, pictures, links, misspellings and comments | missing | done |
 | `write.editing.move-paragraph` | Move paragraph up/down (Alt+Shift+Up/Down) | missing | done |
@@ -236,19 +280,19 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `grid.home.editing.fill-handle` | Fill handle: copy, series, linear trend, dates, weekdays, months, custom lists; Auto Fill options | missing | partial |
 | `grid.home.editing.clear` | Clear all, formats, contents, comments and notes, hyperlinks | missing | done |
 | `grid.home.editing.go-to` | Go To (F5 / Ctrl+G) and Name Box navigation | missing | done |
-| `grid.insert.charts.column` | Clustered, stacked and 100 % column charts | missing | done |
-| `grid.insert.charts.bar` | Clustered, stacked and 100 % bar charts | missing | done |
-| `grid.insert.charts.line` | Line charts with markers, stacked line | missing | done |
-| `grid.insert.charts.area` | Area, stacked and 100 % area charts | missing | done |
-| `grid.insert.charts.pie` | Pie charts with exploded slices and data labels | missing | done |
-| `grid.insert.charts.doughnut` | Doughnut charts | missing | done |
-| `grid.insert.charts.scatter` | Scatter (XY) charts with lines and markers | missing | done |
-| `grid.insert.charts.bubble` | Bubble charts | missing | done |
-| `grid.insert.charts.combo` | Combo charts with a secondary axis | missing | done |
-| `grid.insert.charts.treemap` | Treemap charts | missing | done |
-| `grid.insert.charts.sunburst` | Sunburst charts | missing | done |
-| `grid.insert.charts.radar` | Radar charts | missing | done |
-| `grid.insert.charts.recommended` | Recommended Charts from the selection's shape | missing | better |
+| `grid.insert.charts.column` | Clustered, stacked and 100 % column charts | missing | partial |
+| `grid.insert.charts.bar` | Clustered, stacked and 100 % bar charts | missing | partial |
+| `grid.insert.charts.line` | Line charts with markers, stacked line | missing | partial |
+| `grid.insert.charts.area` | Area, stacked and 100 % area charts | missing | partial |
+| `grid.insert.charts.pie` | Pie charts with exploded slices and data labels | missing | partial |
+| `grid.insert.charts.doughnut` | Doughnut charts | missing | partial |
+| `grid.insert.charts.scatter` | Scatter (XY) charts with lines and markers | missing | partial |
+| `grid.insert.charts.bubble` | Bubble charts | missing | partial |
+| `grid.insert.charts.combo` | Combo charts with a secondary axis | missing | partial |
+| `grid.insert.charts.treemap` | Treemap charts | missing | partial |
+| `grid.insert.charts.sunburst` | Sunburst charts | missing | partial |
+| `grid.insert.charts.radar` | Radar charts | missing | partial |
+| `grid.insert.charts.recommended` | Recommended Charts from the selection's shape | missing | partial |
 | `grid.formulas.library.function-count` | At least 484 Excel functions in v0.1 and all 520+ worksheet functions except cube, RTD and web services in the loop | missing | partial |
 | `grid.formulas.auditing.show-formulas` | Show formulas (Ctrl+`) | missing | done |
 | `grid.formulas.calculation.options` | Calculation options: automatic, automatic except tables, manual | missing | partial |
@@ -432,7 +476,7 @@ Out of scope:
 
 ## Kiln Write
 
-Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing, 1 out of scope.
+Score 76.9 % over 231 rows in scope; 8 better, 133 done, 20 partial, 70 missing, 1 out of scope.
 
 ### Home ▸ Clipboard
 
@@ -444,8 +488,8 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 | ◐ | Paste Special dialog (Ctrl+Alt+V): formatted text, unformatted, HTML, picture | Word ▸ Home ▸ Clipboard ▸ Paste ▸ Paste Special | critical | P0 | WP-64 | `write.home.clipboard.paste-special` |
 | ● | Cut and copy (Ctrl+X / Ctrl+C) producing rich, HTML and plain text | Word ▸ Home ▸ Clipboard ▸ Cut / Copy | critical | P0 | WP-64 | `write.home.clipboard.cut-copy` |
 | ● | Paste from browsers and other apps: sanitised HTML mapped to styles, lists and tables | Word ▸ paste from the web | critical | P0 | WP-64 | `write.home.clipboard.html-paste` |
-| ○ | Format Painter (single click, and double-click to keep painting) | Word ▸ Home ▸ Clipboard ▸ Format Painter | critical | P0 | WP-66 | `write.home.clipboard.format-painter` |
-| ○ | Copy and paste formatting by keyboard (Ctrl+Shift+C / Ctrl+Shift+V) | Word ▸ Ctrl+Shift+C / Ctrl+Shift+V | critical | P0 | WP-66 | `write.home.clipboard.copy-paste-formatting` |
+| ● | Format Painter (single click, and double-click to keep painting) | Word ▸ Home ▸ Clipboard ▸ Format Painter | critical | P0 | WP-66 | `write.home.clipboard.format-painter` |
+| ● | Copy and paste formatting by keyboard (Ctrl+Shift+C / Ctrl+Shift+V) | Word ▸ Ctrl+Shift+C / Ctrl+Shift+V | critical | P0 | WP-66 | `write.home.clipboard.copy-paste-formatting` |
 
 ### Home ▸ Font
 
@@ -514,13 +558,13 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Focus mode: distraction-free page with the ribbon hidden | — | commonly-missed | P0 | WP-66 | `write.home.focus.focus-mode` |
+| ★ | Focus mode: distraction-free page with the ribbon hidden | — | commonly-missed | P0 | WP-66 | `write.home.focus.focus-mode` |
 
 ### Insert ▸ Pages
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Cover page gallery | Word ▸ Insert ▸ Pages ▸ Cover Page | commonly-missed | P1 | WP-85 | `write.insert.pages.cover-page` |
+| ● | Cover page gallery | Word ▸ Insert ▸ Pages ▸ Cover Page | commonly-missed | P1 | WP-66 | `write.insert.pages.cover-page` |
 | ● | Insert a blank page | Word ▸ Insert ▸ Pages ▸ Blank Page | critical | P0 | WP-64 | `write.insert.pages.blank-page` |
 | ● | Page break (Ctrl+Enter) | Word ▸ Insert ▸ Pages ▸ Page Break | critical | P0 | WP-64 | `write.insert.pages.page-break` |
 
@@ -531,7 +575,7 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 | ● | Insert a table from the grid picker | Word ▸ Insert ▸ Tables ▸ Table | critical | P0 | WP-64 | `write.insert.tables.grid-picker` |
 | ● | Insert Table dialog: columns, rows, AutoFit behaviour | Word ▸ Insert ▸ Table ▸ Insert Table | critical | P0 | WP-64 | `write.insert.tables.dialog` |
 | ● | Convert text to table and table to text | Word ▸ Insert ▸ Table ▸ Convert Text to Table | critical | P0 | WP-64 | `write.insert.tables.text-to-table` |
-| ○ | Paste a Markdown table as a styled table | — | commonly-missed | P0 | WP-66 | `write.insert.tables.paste-markdown` |
+| ★ | Paste a Markdown table as a styled table | — | commonly-missed | P0 | WP-66 | `write.insert.tables.paste-markdown` |
 | ○ | Quick Tables gallery (calendars, tabular lists) | Word ▸ Insert ▸ Table ▸ Quick Tables | niche | P2 | WP-64 | `write.insert.tables.quick-tables` |
 
 ### Insert ▸ Illustrations
@@ -552,13 +596,13 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 |---|---|---|---|---|---|---|
 | ● | Insert and edit hyperlinks (Ctrl+K), Ctrl+click to follow | Word ▸ Insert ▸ Links ▸ Link | critical | P0 | WP-64 | `write.insert.links.link` |
 | ● | Bookmarks: add, go to, delete | Word ▸ Insert ▸ Links ▸ Bookmark | critical | P0 | WP-66 | `write.insert.links.bookmark` |
-| ○ | Cross-references to headings, bookmarks, figures, tables, footnotes (REF fields) | Word ▸ Insert ▸ Links ▸ Cross-reference | critical | P0 | WP-66 | `write.insert.links.cross-reference` |
+| ● | Cross-references to headings, bookmarks, figures, tables, footnotes (REF fields) | Word ▸ Insert ▸ Links ▸ Cross-reference | critical | P0 | WP-66 | `write.insert.links.cross-reference` |
 
 ### Insert ▸ Comments
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Insert a comment on the selection (Ctrl+Alt+M) | Word ▸ Insert ▸ Comments ▸ Comment | critical | P0 | WP-66 | `write.insert.comments.comment` |
+| ● | Insert a comment on the selection (Ctrl+Alt+M) | Word ▸ Insert ▸ Comments ▸ Comment | critical | P0 | WP-66 | `write.insert.comments.comment` |
 
 ### Insert ▸ Header & Footer
 
@@ -592,9 +636,9 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | One-click table of contents from headings | — | commonly-missed | P0 | WP-66 | `write.insert.smart.quick-toc` |
-| ○ | Callout blocks (note, tip, warning) that export as shaded paragraphs in .docx | — | commonly-missed | P0 | WP-66 | `write.insert.smart.callout` |
-| ○ | Code blocks with syntax highlighting and a monospace style | — | commonly-missed | P0 | WP-66 | `write.insert.smart.code-block` |
+| ★ | One-click table of contents from headings | — | commonly-missed | P0 | WP-66 | `write.insert.smart.quick-toc` |
+| ★ | Callout blocks (note, tip, warning) that export as shaded paragraphs in .docx | — | commonly-missed | P0 | WP-66 | `write.insert.smart.callout` |
+| ★ | Code blocks with syntax highlighting and a monospace style | — | commonly-missed | P0 | WP-66 | `write.insert.smart.code-block` |
 
 ### Layout ▸ Page Setup
 
@@ -620,14 +664,14 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Position presets for floating objects and More Layout Options | Word ▸ Layout ▸ Arrange ▸ Position | critical | P0 | WP-66 | `write.layout.arrange.position` |
-| ○ | Wrap Text: in line, square, tight, through, top and bottom, behind, in front | Word ▸ Layout ▸ Arrange ▸ Wrap Text | critical | P0 | WP-66 | `write.layout.arrange.wrap-text` |
-| ○ | Bring forward and bring to front | Word ▸ Layout ▸ Arrange ▸ Bring Forward | critical | P0 | WP-66 | `write.layout.arrange.bring-forward` |
-| ○ | Send backward and send to back | Word ▸ Layout ▸ Arrange ▸ Send Backward | critical | P0 | WP-66 | `write.layout.arrange.send-backward` |
-| ○ | Selection pane: list, rename, hide and reorder objects | Word ▸ Layout ▸ Arrange ▸ Selection Pane | commonly-missed | P0 | WP-66 | `write.layout.arrange.selection-pane` |
-| ○ | Align and distribute objects relative to page, margin or each other | Word ▸ Layout ▸ Arrange ▸ Align | commonly-missed | P0 | WP-66 | `write.layout.arrange.align` |
+| ● | Position presets for floating objects and More Layout Options | Word ▸ Layout ▸ Arrange ▸ Position | critical | P0 | WP-66 | `write.layout.arrange.position` |
+| ● | Wrap Text: in line, square, tight, through, top and bottom, behind, in front | Word ▸ Layout ▸ Arrange ▸ Wrap Text | critical | P0 | WP-66 | `write.layout.arrange.wrap-text` |
+| ● | Bring forward and bring to front | Word ▸ Layout ▸ Arrange ▸ Bring Forward | critical | P0 | WP-66 | `write.layout.arrange.bring-forward` |
+| ● | Send backward and send to back | Word ▸ Layout ▸ Arrange ▸ Send Backward | critical | P0 | WP-66 | `write.layout.arrange.send-backward` |
+| ◐ | Selection pane: list, rename, hide and reorder objects | Word ▸ Layout ▸ Arrange ▸ Selection Pane | commonly-missed | P0 | WP-66 | `write.layout.arrange.selection-pane` |
+| ◐ | Align and distribute objects relative to page, margin or each other | Word ▸ Layout ▸ Arrange ▸ Align | commonly-missed | P0 | WP-66 | `write.layout.arrange.align` |
 | ○ | Group and ungroup objects | Word ▸ Layout ▸ Arrange ▸ Group | commonly-missed | P0 | WP-66 | `write.layout.arrange.group` |
-| ○ | Rotate and flip objects | Word ▸ Layout ▸ Arrange ▸ Rotate | commonly-missed | P0 | WP-66 | `write.layout.arrange.rotate` |
+| ● | Rotate and flip objects | Word ▸ Layout ▸ Arrange ▸ Rotate | commonly-missed | P0 | WP-66 | `write.layout.arrange.rotate` |
 
 ### Design
 
@@ -642,18 +686,18 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Table of contents from heading styles: levels, tab leaders, clickable entries | Word ▸ References ▸ Table of Contents | critical | P0 | WP-66 | `write.references.toc.insert` |
-| ○ | Add Text: set the TOC level of a paragraph | Word ▸ References ▸ Table of Contents ▸ Add Text | critical | P0 | WP-66 | `write.references.toc.add-text` |
-| ○ | Update table (page numbers only or entire table) | Word ▸ References ▸ Table of Contents ▸ Update Table | critical | P0 | WP-66 | `write.references.toc.update` |
+| ● | Table of contents from heading styles: levels, tab leaders, clickable entries | Word ▸ References ▸ Table of Contents | critical | P0 | WP-66 | `write.references.toc.insert` |
+| ● | Add Text: set the TOC level of a paragraph | Word ▸ References ▸ Table of Contents ▸ Add Text | critical | P0 | WP-66 | `write.references.toc.add-text` |
+| ● | Update table (page numbers only or entire table) | Word ▸ References ▸ Table of Contents ▸ Update Table | critical | P0 | WP-66 | `write.references.toc.update` |
 
 ### References ▸ Footnotes
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Insert footnote (Ctrl+Alt+F) with continuation across pages | Word ▸ References ▸ Footnotes ▸ Insert Footnote | critical | P0 | WP-66 | `write.references.footnotes.insert-footnote` |
-| ○ | Insert endnote (Ctrl+Alt+D) | Word ▸ References ▸ Footnotes ▸ Insert Endnote | critical | P0 | WP-66 | `write.references.footnotes.insert-endnote` |
-| ○ | Next and previous footnote | Word ▸ References ▸ Footnotes ▸ Next Footnote | critical | P0 | WP-66 | `write.references.footnotes.next` |
-| ○ | Show notes and the footnote/endnote options dialog (number format, restart, convert) | Word ▸ References ▸ Footnotes ▸ Show Notes | critical | P0 | WP-66 | `write.references.footnotes.show-notes` |
+| ◐ | Insert footnote (Ctrl+Alt+F) with continuation across pages | Word ▸ References ▸ Footnotes ▸ Insert Footnote | critical | P0 | WP-66 | `write.references.footnotes.insert-footnote` |
+| ● | Insert endnote (Ctrl+Alt+D) | Word ▸ References ▸ Footnotes ▸ Insert Endnote | critical | P0 | WP-66 | `write.references.footnotes.insert-endnote` |
+| ● | Next and previous footnote | Word ▸ References ▸ Footnotes ▸ Next Footnote | critical | P0 | WP-66 | `write.references.footnotes.next` |
+| ● | Show notes and the footnote/endnote options dialog (number format, restart, convert) | Word ▸ References ▸ Footnotes ▸ Show Notes | critical | P0 | WP-66 | `write.references.footnotes.show-notes` |
 
 ### References ▸ Citations & Bibliography
 
@@ -668,8 +712,8 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Insert caption (Figure, Table, Equation; SEQ fields with chapter numbering) | Word ▸ References ▸ Captions ▸ Insert Caption | critical | P0 | WP-66 | `write.references.captions.insert` |
-| ○ | Table of figures | Word ▸ References ▸ Captions ▸ Insert Table of Figures | commonly-missed | P1 | WP-66 | `write.references.captions.table-of-figures` |
+| ● | Insert caption (Figure, Table, Equation; SEQ fields with chapter numbering) | Word ▸ References ▸ Captions ▸ Insert Caption | critical | P0 | WP-66 | `write.references.captions.insert` |
+| ● | Table of figures | Word ▸ References ▸ Captions ▸ Insert Table of Figures | commonly-missed | P1 | WP-66 | `write.references.captions.table-of-figures` |
 
 ### References ▸ Index
 
@@ -681,7 +725,7 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Spelling check as you type (squiggles, suggestions, ignore, add to dictionary) and Spelling pane (F7) | Word ▸ Review ▸ Proofing ▸ Spelling & Grammar | critical | P0 | WP-64 | `write.review.proofing.spelling` |
+| ● | Spelling check as you type (squiggles, suggestions, ignore, add to dictionary) and Spelling pane (F7) | Word ▸ Review ▸ Proofing ▸ Spelling & Grammar | critical | P0 | WP-66 | `write.review.proofing.spelling` |
 | ○ | Grammar checking | Word ▸ Review ▸ Editor (grammar) | commonly-missed | P1 | — | `write.review.proofing.grammar` |
 | ○ | Thesaurus (Shift+F7) | Word ▸ Review ▸ Proofing ▸ Thesaurus | niche | P2 | WP-64 | `write.review.proofing.thesaurus` |
 | ● | Word Count dialog (pages, words, characters with/without spaces, paragraphs, lines; include notes) | Word ▸ Review ▸ Proofing ▸ Word Count | critical | P0 | WP-64 | `write.review.proofing.word-count` |
@@ -697,30 +741,30 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ◐ | New comment with author, time and threaded replies | Word ▸ Review ▸ Comments ▸ New Comment | critical | P0 | WP-66 | `write.review.comments.new` |
-| ○ | Delete comment, delete all comments | Word ▸ Review ▸ Comments ▸ Delete | critical | P0 | WP-66 | `write.review.comments.delete` |
-| ○ | Previous and next comment | Word ▸ Review ▸ Comments ▸ Previous / Next | critical | P0 | WP-66 | `write.review.comments.navigate` |
-| ○ | Show comments (contextual balloons or list) and the comments pane | Word ▸ Review ▸ Comments ▸ Show Comments | critical | P0 | WP-66 | `write.review.comments.show` |
-| ○ | Resolve and reopen comment threads | Word ▸ comment ▸ Resolve | critical | P0 | WP-66 | `write.review.comments.resolve` |
+| ● | New comment with author, time and threaded replies | Word ▸ Review ▸ Comments ▸ New Comment | critical | P0 | WP-66 | `write.review.comments.new` |
+| ● | Delete comment, delete all comments | Word ▸ Review ▸ Comments ▸ Delete | critical | P0 | WP-66 | `write.review.comments.delete` |
+| ● | Previous and next comment | Word ▸ Review ▸ Comments ▸ Previous / Next | critical | P0 | WP-66 | `write.review.comments.navigate` |
+| ● | Show comments (contextual balloons or list) and the comments pane | Word ▸ Review ▸ Comments ▸ Show Comments | critical | P0 | WP-66 | `write.review.comments.show` |
+| ● | Resolve and reopen comment threads | Word ▸ comment ▸ Resolve | critical | P0 | WP-66 | `write.review.comments.resolve` |
 | ○ | @mentions in comments with notifications in a collaboration session | Word ▸ comments ▸ @mention | commonly-missed | P1 | WP-82 | `write.review.comments.mentions` |
 
 ### Review ▸ Tracking
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ◐ | Track Changes on/off (Ctrl+Shift+E) recording insertions, deletions, formatting and moves | Word ▸ Review ▸ Tracking ▸ Track Changes | critical | P0 | WP-66 | `write.review.tracking.track-changes` |
-| ○ | Markup display: Simple Markup, All Markup, No Markup, Original | Word ▸ Review ▸ Tracking ▸ Display for Review | critical | P0 | WP-66 | `write.review.tracking.display-mode` |
-| ○ | Show Markup filter (comments, insertions and deletions, formatting, specific people, balloons) | Word ▸ Review ▸ Tracking ▸ Show Markup | critical | P0 | WP-66 | `write.review.tracking.show-markup` |
-| ○ | Reviewing pane (vertical) listing every revision with author and summary | Word ▸ Review ▸ Tracking ▸ Reviewing Pane | critical | P0 | WP-66 | `write.review.tracking.reviewing-pane` |
+| ● | Track Changes on/off (Ctrl+Shift+E) recording insertions, deletions, formatting and moves | Word ▸ Review ▸ Tracking ▸ Track Changes | critical | P0 | WP-66 | `write.review.tracking.track-changes` |
+| ● | Markup display: Simple Markup, All Markup, No Markup, Original | Word ▸ Review ▸ Tracking ▸ Display for Review | critical | P0 | WP-66 | `write.review.tracking.display-mode` |
+| ◐ | Show Markup filter (comments, insertions and deletions, formatting, specific people, balloons) | Word ▸ Review ▸ Tracking ▸ Show Markup | critical | P0 | WP-66 | `write.review.tracking.show-markup` |
+| ● | Reviewing pane (vertical) listing every revision with author and summary | Word ▸ Review ▸ Tracking ▸ Reviewing Pane | critical | P0 | WP-66 | `write.review.tracking.reviewing-pane` |
 | ○ | Lock tracking with a password | Word ▸ Review ▸ Track Changes ▸ Lock Tracking | niche | P2 | WP-64 | `write.review.tracking.lock` |
 
 ### Review ▸ Changes
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Accept this change, all shown, all changes, and accept and move to next | Word ▸ Review ▸ Changes ▸ Accept | critical | P0 | WP-66 | `write.review.changes.accept` |
-| ○ | Reject this change, all shown, all changes, and reject and move to next | Word ▸ Review ▸ Changes ▸ Reject | critical | P0 | WP-66 | `write.review.changes.reject` |
-| ○ | Previous and next change | Word ▸ Review ▸ Changes ▸ Previous / Next | critical | P0 | WP-66 | `write.review.changes.navigate` |
+| ● | Accept this change, all shown, all changes, and accept and move to next | Word ▸ Review ▸ Changes ▸ Accept | critical | P0 | WP-66 | `write.review.changes.accept` |
+| ● | Reject this change, all shown, all changes, and reject and move to next | Word ▸ Review ▸ Changes ▸ Reject | critical | P0 | WP-66 | `write.review.changes.reject` |
+| ● | Previous and next change | Word ▸ Review ▸ Changes ▸ Previous / Next | critical | P0 | WP-66 | `write.review.changes.navigate` |
 
 ### Review ▸ Compare
 
@@ -832,8 +876,8 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 | ○ | Corrections and colour (brightness, contrast, recolour, transparency) | Word ▸ Picture Format ▸ Adjust | commonly-missed | P1 | WP-66 | `write.picture-format.corrections` |
 | ○ | Crop, crop to shape and aspect ratio | Word ▸ Picture Format ▸ Size ▸ Crop | critical | P0 | WP-66 | `write.picture-format.crop` |
 | ○ | Picture styles: border, shadow, rounded | Word ▸ Picture Format ▸ Picture Styles | commonly-missed | P1 | WP-66 | `write.picture-format.styles` |
-| ○ | Alt text and mark as decorative | Word ▸ Picture Format ▸ Accessibility ▸ Alt Text | critical | P0 | WP-66 | `write.picture-format.alt-text` |
-| ○ | Size, rotate and lock aspect ratio with handles and the Layout dialog | Word ▸ Picture Format ▸ Size | critical | P0 | WP-66 | `write.picture-format.size` |
+| ● | Alt text and mark as decorative | Word ▸ Picture Format ▸ Accessibility ▸ Alt Text | critical | P0 | WP-66 | `write.picture-format.alt-text` |
+| ● | Size, rotate and lock aspect ratio with handles and the Layout dialog | Word ▸ Picture Format ▸ Size | critical | P0 | WP-66 | `write.picture-format.size` |
 | ○ | Reset picture and change picture | Word ▸ Picture Format ▸ Reset Picture | commonly-missed | P1 | WP-66 | `write.picture-format.reset` |
 | ○ | Compress pictures | Word ▸ Picture Format ▸ Compress Pictures | niche | P2 | WP-64 | `write.picture-format.compress` |
 
@@ -861,11 +905,11 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 |---|---|---|---|---|---|---|
 | ● | Caret movement and selection by character, word, line, paragraph, page; Ctrl+Home/End; click, double and triple click | Word ▸ keyboard navigation | critical | P0 | WP-64 | `write.editing.caret-movement` |
 | ○ | AutoCorrect: common typos, capitalise first letter, replace as you type list | Word ▸ File ▸ Options ▸ Proofing ▸ AutoCorrect Options | critical | P0 | WP-64 | `write.editing.autocorrect` |
-| ○ | AutoFormat as you type: automatic bulleted and numbered lists, borders from ---, ordinals | Word ▸ AutoCorrect ▸ AutoFormat As You Type | critical | P0 | WP-66 | `write.editing.autoformat` |
-| ○ | Smart quotes, en/em dashes, ellipsis, fractions (toggleable) | Word ▸ AutoFormat As You Type ▸ smart quotes | critical | P0 | WP-66 | `write.editing.smart-typography` |
-| ○ | Markdown shortcuts while typing (#, -, 1., **bold**, `code`, ---, >) | — | commonly-missed | P0 | WP-66 | `write.editing.markdown-shortcuts` |
-| ○ | Smart paste: Markdown text becomes headings, lists, emphasis and code | — | commonly-missed | P0 | WP-66 | `write.editing.smart-paste-markdown` |
-| ○ | Word-count goal in the status bar with progress | — | commonly-missed | P0 | WP-66 | `write.editing.word-count-goal` |
+| ● | AutoFormat as you type: automatic bulleted and numbered lists, borders from ---, ordinals | Word ▸ AutoCorrect ▸ AutoFormat As You Type | critical | P0 | WP-66 | `write.editing.autoformat` |
+| ● | Smart quotes, en/em dashes, ellipsis, fractions (toggleable) | Word ▸ AutoFormat As You Type ▸ smart quotes | critical | P0 | WP-66 | `write.editing.smart-typography` |
+| ★ | Markdown shortcuts while typing (#, -, 1., **bold**, `code`, ---, >) | — | commonly-missed | P0 | WP-66 | `write.editing.markdown-shortcuts` |
+| ★ | Smart paste: Markdown text becomes headings, lists, emphasis and code | — | commonly-missed | P0 | WP-66 | `write.editing.smart-paste-markdown` |
+| ★ | Word-count goal in the status bar with progress | — | commonly-missed | P0 | WP-66 | `write.editing.word-count-goal` |
 | ○ | Document outline health: skipped heading levels and empty headings flagged | — | commonly-missed | P1 | WP-66 | `write.editing.outline-health` |
 | ● | Mini toolbar on selection and right-click (font, size, bold, italic, highlight, colour, styles) | Word ▸ mini toolbar | critical | P0 | WP-58 | `write.editing.mini-toolbar` |
 | ● | Context menus for text, tables, pictures, links, misspellings and comments | Word ▸ right-click menus | critical | P0 | WP-58 | `write.editing.context-menu` |
@@ -903,7 +947,7 @@ Score 56.3 % over 231 rows in scope; 0 better, 99 done, 18 partial, 114 missing,
 
 ## Kiln Grid
 
-Score 50.4 % over 261 rows in scope; 1 better, 94 done, 33 partial, 133 missing, 6 out of scope.
+Score 47.9 % over 261 rows in scope; 0 better, 82 done, 46 partial, 133 missing, 6 out of scope.
 
 ### Home ▸ Clipboard
 
@@ -1016,18 +1060,18 @@ Score 50.4 % over 261 rows in scope; 1 better, 94 done, 33 partial, 133 missing,
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ● | Clustered, stacked and 100 % column charts | Excel ▸ Insert ▸ Charts ▸ Column | critical | P0 | WP-73 | `grid.insert.charts.column` |
-| ● | Clustered, stacked and 100 % bar charts | Excel ▸ Insert ▸ Charts ▸ Bar | critical | P0 | WP-73 | `grid.insert.charts.bar` |
-| ● | Line charts with markers, stacked line | Excel ▸ Insert ▸ Charts ▸ Line | critical | P0 | WP-73 | `grid.insert.charts.line` |
-| ● | Area, stacked and 100 % area charts | Excel ▸ Insert ▸ Charts ▸ Area | commonly-missed | P0 | WP-73 | `grid.insert.charts.area` |
-| ● | Pie charts with exploded slices and data labels | Excel ▸ Insert ▸ Charts ▸ Pie | critical | P0 | WP-73 | `grid.insert.charts.pie` |
-| ● | Doughnut charts | Excel ▸ Insert ▸ Charts ▸ Doughnut | commonly-missed | P0 | WP-73 | `grid.insert.charts.doughnut` |
-| ● | Scatter (XY) charts with lines and markers | Excel ▸ Insert ▸ Charts ▸ Scatter | critical | P0 | WP-73 | `grid.insert.charts.scatter` |
-| ● | Bubble charts | Excel ▸ Insert ▸ Charts ▸ Bubble | commonly-missed | P0 | WP-73 | `grid.insert.charts.bubble` |
-| ● | Combo charts with a secondary axis | Excel ▸ Insert ▸ Charts ▸ Combo | commonly-missed | P0 | WP-73 | `grid.insert.charts.combo` |
-| ● | Treemap charts | Excel ▸ Insert ▸ Charts ▸ Treemap | commonly-missed | P0 | WP-73 | `grid.insert.charts.treemap` |
-| ● | Sunburst charts | Excel ▸ Insert ▸ Charts ▸ Sunburst | commonly-missed | P0 | WP-73 | `grid.insert.charts.sunburst` |
-| ● | Radar charts | Excel ▸ Insert ▸ Charts ▸ Radar | commonly-missed | P0 | WP-73 | `grid.insert.charts.radar` |
+| ◐ | Clustered, stacked and 100 % column charts | Excel ▸ Insert ▸ Charts ▸ Column | critical | P0 | WP-73 | `grid.insert.charts.column` |
+| ◐ | Clustered, stacked and 100 % bar charts | Excel ▸ Insert ▸ Charts ▸ Bar | critical | P0 | WP-73 | `grid.insert.charts.bar` |
+| ◐ | Line charts with markers, stacked line | Excel ▸ Insert ▸ Charts ▸ Line | critical | P0 | WP-73 | `grid.insert.charts.line` |
+| ◐ | Area, stacked and 100 % area charts | Excel ▸ Insert ▸ Charts ▸ Area | commonly-missed | P0 | WP-73 | `grid.insert.charts.area` |
+| ◐ | Pie charts with exploded slices and data labels | Excel ▸ Insert ▸ Charts ▸ Pie | critical | P0 | WP-73 | `grid.insert.charts.pie` |
+| ◐ | Doughnut charts | Excel ▸ Insert ▸ Charts ▸ Doughnut | commonly-missed | P0 | WP-73 | `grid.insert.charts.doughnut` |
+| ◐ | Scatter (XY) charts with lines and markers | Excel ▸ Insert ▸ Charts ▸ Scatter | critical | P0 | WP-73 | `grid.insert.charts.scatter` |
+| ◐ | Bubble charts | Excel ▸ Insert ▸ Charts ▸ Bubble | commonly-missed | P0 | WP-73 | `grid.insert.charts.bubble` |
+| ◐ | Combo charts with a secondary axis | Excel ▸ Insert ▸ Charts ▸ Combo | commonly-missed | P0 | WP-73 | `grid.insert.charts.combo` |
+| ◐ | Treemap charts | Excel ▸ Insert ▸ Charts ▸ Treemap | commonly-missed | P0 | WP-73 | `grid.insert.charts.treemap` |
+| ◐ | Sunburst charts | Excel ▸ Insert ▸ Charts ▸ Sunburst | commonly-missed | P0 | WP-73 | `grid.insert.charts.sunburst` |
+| ◐ | Radar charts | Excel ▸ Insert ▸ Charts ▸ Radar | commonly-missed | P0 | WP-73 | `grid.insert.charts.radar` |
 | ○ | Histogram and Pareto charts | Excel ▸ Insert ▸ Charts ▸ Histogram | commonly-missed | P1 | WP-73 | `grid.insert.charts.histogram` |
 | ○ | Box and whisker charts | Excel ▸ Insert ▸ Charts ▸ Box & Whisker | commonly-missed | P1 | WP-73 | `grid.insert.charts.box-whisker` |
 | ○ | Waterfall charts | Excel ▸ Insert ▸ Charts ▸ Waterfall | commonly-missed | P1 | WP-73 | `grid.insert.charts.waterfall` |
@@ -1035,7 +1079,7 @@ Score 50.4 % over 261 rows in scope; 1 better, 94 done, 33 partial, 133 missing,
 | ○ | Stock (high-low-close, open-high-low-close) charts | Excel ▸ Insert ▸ Charts ▸ Stock | niche | P2 | WP-73 | `grid.insert.charts.stock` |
 | ○ | Surface and contour charts (drawn as 2-D heat maps) | Excel ▸ Insert ▸ Charts ▸ Surface | niche | P2 | WP-73 | `grid.insert.charts.surface` |
 | – | Filled map charts | Excel ▸ Insert ▸ Charts ▸ Map | niche | out | — | `grid.insert.charts.map` |
-| ★ | Recommended Charts from the selection's shape | — | commonly-missed | P0 | WP-73 | `grid.insert.charts.recommended` |
+| ◐ | Recommended Charts from the selection's shape | — | commonly-missed | P0 | WP-73 | `grid.insert.charts.recommended` |
 
 ### Insert ▸ Sparklines
 

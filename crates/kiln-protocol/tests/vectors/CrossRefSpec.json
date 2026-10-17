@@ -1,0 +1,26 @@
+{
+  "type": "CrossRefSpec",
+  "format": {
+    "TYPENAME": "CrossRefSpec"
+  },
+  "values": [
+    {
+      "target": {
+        "Heading": {
+          "para": 9
+        }
+      },
+      "show": "Number",
+      "hyperlink": false
+    },
+    {
+      "target": {
+        "Heading": {
+          "para": 0
+        }
+      },
+      "show": "Text",
+      "hyperlink": false
+    }
+  ]
+}

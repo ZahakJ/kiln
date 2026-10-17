@@ -346,6 +346,9 @@ export function AppFrameRoute({ app, doc, prefs }: { app: EditorApp; doc: number
         compat={compat}
         compatError={compatError}
         onCheckCompat={summary ? () => void checkCompat() : undefined}
+        onEditProperties={
+          app === 'write' && summary ? () => execute('ui.write.properties_dialog') : undefined
+        }
       />
     ),
     saveAs: (
@@ -423,7 +426,9 @@ export function AppFrameRoute({ app, doc, prefs }: { app: EditorApp; doc: number
         }}
         backstage={backstage}
         onBackstagePageChange={() => void loadBackstageData()}
-        ribbonTrailing={<StripButton command="suite.review.show_comments" label="Comments" />}
+        ribbonTrailing={
+          writeEditor?.comments ?? <StripButton command="suite.review.show_comments" label="Comments" />
+        }
         statusBar={
           editor?.statusBar ??
           (frameCore ? <FrameStatusBar app={app} core={frameCore} execute={execute} /> : null)

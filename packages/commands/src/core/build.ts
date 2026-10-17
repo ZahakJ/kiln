@@ -47,6 +47,7 @@ import type {
   ViewMode,
 } from '@kiln/protocol';
 import { GRID_BUILDERS } from '../catalog/grid.ts';
+import { WRITE_FEATURE_BUILDERS } from '../catalog/write-features.ts';
 import type { AppId } from '../types.ts';
 
 /** What a builder may use besides the arguments. */
@@ -552,6 +553,8 @@ export const CORE_BUILDERS: Readonly<Record<string, CoreBuilder>> = Object.freez
     write({ ReplaceAll: { query: query(a), replacement: req(a, 'replacement', isString, 'a replacement') } }),
   'write.find.go_to': (a) =>
     write({ GoTo: { target: req(a, 'target', isObject<GoToTarget>, 'a Go To target') } }),
+  // Kiln Write's advanced features (WP-66): built in their catalog module.
+  ...WRITE_FEATURE_BUILDERS,
   // Grid (WP-71): built in its catalog module.
   ...GRID_BUILDERS,
 } satisfies Record<string, CoreBuilder>);

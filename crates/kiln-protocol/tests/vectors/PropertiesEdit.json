@@ -1,0 +1,41 @@
+{
+  "type": "PropertiesEdit",
+  "format": {
+    "TYPENAME": "PropertiesEdit"
+  },
+  "values": [
+    {
+      "title": null,
+      "subject": null,
+      "author": null,
+      "keywords": null,
+      "description": null,
+      "category": null,
+      "status": null,
+      "company": null,
+      "manager": null
+    },
+    {
+      "title": null,
+      "subject": "",
+      "author": "Zoë",
+      "keywords": null,
+      "description": null,
+      "category": null,
+      "status": null,
+      "company": null,
+      "manager": null
+    },
+    {
+      "title": null,
+      "subject": null,
+      "author": null,
+      "keywords": null,
+      "description": "",
+      "category": "",
+      "status": "",
+      "company": "",
+      "manager": ""
+    }
+  ]
+}

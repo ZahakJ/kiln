@@ -1,0 +1,15 @@
+{
+  "type": "CoverDesign",
+  "format": {
+    "TYPENAME": "CoverDesign"
+  },
+  "values": [
+    "Kiln",
+    "Banded",
+    "Quiet",
+    "Kiln",
+    "Banded",
+    "Ledger",
+    "Classic"
+  ]
+}

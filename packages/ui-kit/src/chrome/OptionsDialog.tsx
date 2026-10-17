@@ -246,6 +246,33 @@ export function OptionsDialog({
                 onChange={(v) => patch({ proofing: { autoCorrect: v } })}
               />
             </Section>
+            <Section title="AutoFormat as you type">
+              <Check
+                label="Markdown shortcuts (# headings, - lists, **bold**, `code`, --- rules, > quotes)"
+                checked={value.proofing.markdownShortcuts}
+                onChange={(v) => patch({ proofing: { markdownShortcuts: v } })}
+              />
+              <Check
+                label="“Straight quotes” with “smart quotes”"
+                checked={value.proofing.smartQuotes}
+                onChange={(v) => patch({ proofing: { smartQuotes: v } })}
+              />
+              <Check
+                label="Hyphens (--) with dash (—)"
+                checked={value.proofing.smartDashes}
+                onChange={(v) => patch({ proofing: { smartDashes: v } })}
+              />
+              <Check
+                label="Three dots (...) with an ellipsis (…)"
+                checked={value.proofing.smartEllipsis}
+                onChange={(v) => patch({ proofing: { smartEllipsis: v } })}
+              />
+              <Check
+                label="Fractions (1/2) with fraction characters (½)"
+                checked={value.proofing.smartFractions}
+                onChange={(v) => patch({ proofing: { smartFractions: v } })}
+              />
+            </Section>
           </>
         );
       case 'save':

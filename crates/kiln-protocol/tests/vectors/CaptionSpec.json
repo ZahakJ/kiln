@@ -1,0 +1,22 @@
+{
+  "type": "CaptionSpec",
+  "format": {
+    "TYPENAME": "CaptionSpec"
+  },
+  "values": [
+    {
+      "label": "Figure",
+      "text": "",
+      "position": "Below",
+      "exclude_label": true,
+      "chapter_level": null
+    },
+    {
+      "label": "",
+      "text": "",
+      "position": "Below",
+      "exclude_label": false,
+      "chapter_level": null
+    }
+  ]
+}

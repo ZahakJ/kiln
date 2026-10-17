@@ -1,11 +1,12 @@
 /**
  * Write's status bar (PLAN.md §1.3): Page x of y (Go To), word count (Word Count dialog),
- * language, Track Changes (its state arrives with WP-66), the view buttons and the zoom slider
- * with Page Width / One Page / Multiple Pages. Every figure is the core's.
+ * language, the word-count goal, proofing and Track Changes (WP-66), Focus, the view buttons and
+ * the zoom slider with Page Width / One Page / Multiple Pages. Every figure is the core's.
  */
 import type { StatusBar as CoreStatus, ViewMode } from '@kiln/protocol';
 import { StatusBar, type StatusBarItem, type StatusBarView } from '@kiln/ui-kit';
 import { useMemo } from 'react';
+import { featureStatusItems } from './features/status.tsx';
 import { useWrite } from './hooks.ts';
 import type { WriteEditorModel } from './model.ts';
 
@@ -48,8 +49,6 @@ export function writeStatusItems(
     defaultHidden: true,
   });
   out.push({ id: 'language', label: 'Language', content: status?.language ?? 'English (United States)' });
-  // Track Changes ships with WP-66; the item shows the document's state (off until then).
-  out.push({ id: 'track', label: 'Track Changes', content: 'Track Changes: Off', defaultHidden: true });
   if (readOnly) out.push({ id: 'readonly', label: 'Read-only', content: 'Read-only' });
   return out;
 }
@@ -70,11 +69,15 @@ export function WriteStatusBar({
     return st ? `${st.page?.current}/${st.page?.total}|${st.words}|${st.language}|${st.view}|${st.zoom}` : '';
   });
   const status = useMemo(() => model.state.status, [model, key]);
+  // WP-66: goal, proofing, Track Changes and Focus follow the document's feature state.
+  const features = useWrite(model, (s) => s.format?.features ?? null);
   const open = (d: 'find' | 'wordCount', tab?: string) => model.openDialog(d, tab);
   const view = status?.view ?? 'PrintLayout';
+  const extra = featureStatusItems(model, features, status?.words ?? null);
   return (
     <StatusBar
-      left={writeStatusItems(status, readOnly, open)}
+      left={[...writeStatusItems(status, readOnly, open), ...extra.left]}
+      right={extra.right}
       storageKey="kiln.statusbar.write"
       views={{
         value: VIEWS.some((v) => v.id === view) ? view : 'PrintLayout',

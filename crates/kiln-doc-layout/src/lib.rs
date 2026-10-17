@@ -42,6 +42,7 @@
 #![warn(missing_docs)]
 
 pub mod a11y;
+pub mod annotations;
 pub mod cx;
 pub mod drawing;
 pub mod engine;

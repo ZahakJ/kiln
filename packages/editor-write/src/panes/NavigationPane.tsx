@@ -7,6 +7,7 @@ import type { FindHit, HeadingInfo } from '@kiln/protocol';
 import { Button, Icon, Tabs, TabsContent, TabsList, TabsTrigger } from '@kiln/ui-kit';
 import { ChevronDown, ChevronRight, ChevronUp, Search, X } from 'lucide-react';
 import { type KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { goalPercent } from '../features/status.tsx';
 import { useWrite } from '../hooks.ts';
 import type { NavTab, WriteEditorModel } from '../model.ts';
 
@@ -153,12 +154,59 @@ function Results({
   );
 }
 
-/** Word count and reading time (the mockup's card at the foot of the pane). */
+/** Word count and reading time (the mockup's card at the foot of the pane); with a word-count
+ * goal (WP-66), the goal's progress, the words to go and the open comments. */
 function Facts({ model }: { model: WriteEditorModel }) {
   const status = useWrite(model, (s) => s.status);
+  const goal = useWrite(model, (s) => s.format?.features.word_goal ?? 0);
+  const open = useWrite(model, (s) => s.format?.features.open_comments ?? 0);
   const n = status?.words ?? 0;
   const pages = status?.page?.total ?? 1;
   const minutes = Math.max(1, Math.round(n / 230));
+  if (goal > 0) {
+    const pct = goalPercent(n, goal);
+    const left = Math.max(0, goal - n);
+    return (
+      <section className="kiln-write-nav__facts kiln-write-nav__facts--goal" aria-label="Word goal">
+        <div className="kiln-write-nav__goal-head">
+          <button
+            type="button"
+            className="kiln-write-nav__goal-title"
+            onClick={() => void model.run('ui.write.word_goal_dialog')}
+            title="Set the word goal"
+          >
+            <span className="kiln-goal__flame" aria-hidden="true" />
+            Word goal
+          </button>
+          <span className="kiln-write-nav__goal-count">
+            {fmt(n)} / {fmt(goal)}
+          </span>
+        </div>
+        <span
+          className="kiln-write-nav__goal-meter"
+          role="progressbar"
+          aria-label="Word goal"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={pct}
+        >
+          <span className="kiln-goal__fill" style={{ width: `${pct}%` }} />
+        </span>
+        <p className="kiln-write-nav__goal-note">
+          {left > 0 ? `${fmt(left)} ${left === 1 ? 'word' : 'words'} to go. ` : 'Goal reached. '}
+          About {minutes} {minutes === 1 ? 'minute' : 'minutes'} to read.
+        </p>
+        <div>
+          <strong className="kiln-write-nav__fact">{fmt(n)}</strong>
+          <span>words</span>
+        </div>
+        <div>
+          <strong className="kiln-write-nav__fact">{fmt(open)}</strong>
+          <span>open {open === 1 ? 'comment' : 'comments'}</span>
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="kiln-write-nav__facts" aria-label="Document facts">
       <div>

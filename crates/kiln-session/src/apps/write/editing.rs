@@ -163,6 +163,10 @@ impl WriteDoc {
         if tx.is_empty() {
             return Ok(());
         }
+        // WP-66: while Track Changes is on, the edit is recorded as tracked changes.
+        if self.tracking_applies(&tx) {
+            return self.apply_tracked(tx);
+        }
         let after = tx.selection_after;
         let before_len = self.history.undo_len();
         self.history

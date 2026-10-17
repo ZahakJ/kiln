@@ -20,6 +20,8 @@ kiln-io-pdf.workspace = true
 kiln-ooxml.workspace = true
 kiln-protocol.workspace = true
 kiln-scene.workspace = true
+# Spelling as you type in Kiln Write (WP-66).
+kiln-spell.workspace = true
 # Grid workbooks (WP-70): the model and its file formats; no rayon or ICU data on the web
 # (native builds turn the parallel recalculation on below).
 kiln-sheet = { workspace = true, default-features = false }
@@ -31,7 +33,7 @@ kiln-formula = { workspace = true, default-features = false }
 # Charts on Grid sheets (WP-73's model, editor and renderer) and their DrawingML theme.
 kiln-charts.workspace = true
 # Layout of the scratch document. The web core gets no default features (no system fonts, no
-# hyphenation dictionaries) and embeds Carlito itself (apps/scratch/fonts.rs).
+# hyphenation dictionaries, no embedded font: the page registers Carlito, apps/scratch/fonts.rs).
 kiln-text = { path = "../kiln-text", default-features = false }
 rustc-hash.workspace = true
 unicode-segmentation.workspace = true

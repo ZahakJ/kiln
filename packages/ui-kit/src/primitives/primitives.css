@@ -755,6 +755,8 @@ button.kiln-menu__item:hover {
   color: var(--kiln-faint);
 }
 .kiln-select__content {
+  /* Above dialogs: a list opened from a dialog's field must not open under its overlay. */
+  z-index: var(--kiln-z-popover);
   min-width: var(--radix-select-trigger-width);
   max-height: min(360px, var(--radix-select-content-available-height));
   padding: 0;

@@ -24,6 +24,16 @@ export interface OfficeOptions {
     ignoreWordsWithNumbers: boolean;
     ignoreInternetAddresses: boolean;
     autoCorrect: boolean;
+    /** Markdown shortcuts as you type (`# `, `- `, `**bold**`…; Kiln Write, WP-66). */
+    markdownShortcuts: boolean;
+    /** "Straight quotes" with “smart quotes”. */
+    smartQuotes: boolean;
+    /** Hyphens (--) with dashes (—). */
+    smartDashes: boolean;
+    /** `...` with an ellipsis (…). */
+    smartEllipsis: boolean;
+    /** Fractions (1/2) with fraction characters (½). */
+    smartFractions: boolean;
   };
   save: {
     /** AutoSave on by default for files that support it. */
@@ -57,6 +67,11 @@ export const DEFAULT_OPTIONS: OfficeOptions = {
     ignoreWordsWithNumbers: true,
     ignoreInternetAddresses: true,
     autoCorrect: true,
+    markdownShortcuts: true,
+    smartQuotes: true,
+    smartDashes: true,
+    smartEllipsis: true,
+    smartFractions: true,
   },
   save: {
     autoSave: true,

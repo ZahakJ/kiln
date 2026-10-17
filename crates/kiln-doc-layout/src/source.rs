@@ -325,6 +325,8 @@ pub struct BuildCx<'a> {
     pub width: f32,
     /// Show tracked changes (insertions underlined, deletions struck through).
     pub markup: bool,
+    /// Original, Show Markup (WP-66).
+    pub review: crate::cx::ReviewDisplay,
 }
 
 /// The display of a run segment.
@@ -353,7 +355,7 @@ const AUTHOR_COLORS: [Rgba; 6] = [
     0x00_83_8F_FF,
 ];
 
-fn author_color(author: &str) -> Rgba {
+pub(crate) fn author_color(author: &str) -> Rgba {
     let h = hash_of(&author);
     #[allow(clippy::cast_possible_truncation)]
     let i = (h % AUTHOR_COLORS.len() as u64) as usize;
@@ -597,35 +599,56 @@ pub fn build(cx: BuildCx<'_>, cache: &mut StyleCache, para: &Paragraph) -> ParaS
             // Revisions and comments covering this char.
             let mut revision = Revision::None;
             let mut commented = false;
+            // Hidden by the review display: deletions in the final text, insertions in Original.
+            let mut gone = false;
+            let mut before: Option<&RunProps> = None;
+            let marked = cx.markup && cx.review.revisions && !cx.review.original;
             for m in marks.iter().filter(|m| m.start <= off && off < m.end) {
                 match &m.mark {
-                    Mark::Insertion(i) | Mark::MoveTo(i) if cx.markup => {
-                        revision = Revision::Inserted(author_color(&i.author));
+                    Mark::Insertion(i) | Mark::MoveTo(i) => {
+                        if cx.review.original {
+                            gone = true;
+                        } else if marked {
+                            revision = Revision::Inserted(author_color(&i.author));
+                        }
                     }
                     Mark::Deletion(i) | Mark::MoveFrom(i) => {
-                        revision = if cx.markup {
-                            Revision::Deleted(author_color(&i.author))
-                        } else {
-                            Revision::Deleted(0)
-                        };
+                        if marked {
+                            revision = Revision::Deleted(author_color(&i.author));
+                        } else if !cx.review.original {
+                            gone = true;
+                        }
                     }
-                    Mark::Comment(_) => commented = true,
+                    Mark::FormatChange { before: b, .. } if cx.review.original => {
+                        before = Some(b);
+                    }
+                    Mark::Comment(_) => commented = cx.review.comments,
                     _ => {}
                 }
             }
+            let original_run;
+            let run = match before {
+                Some(props) => {
+                    original_run =
+                        b.cache
+                            .run(cx.doc, para, props, cx.table, RunTarget::Text);
+                    &original_run
+                }
+                None => &run,
+            };
             let byte = b.text.len();
             if ch == OBJECT_CHAR && obj_index < objects.len() {
                 let object = &objects[obj_index];
                 obj_index += 1;
-                if !cx.markup && matches!(revision, Revision::Deleted(_)) {
+                if gone {
                     b.seg(off, 1, byte, false);
                     continue;
                 }
-                object_text(&mut b, &run, revision, object, off);
+                object_text(&mut b, run, revision, object, off);
                 b.seg(off, 1, byte, false);
                 continue;
             }
-            if run.hidden || (!cx.markup && matches!(revision, Revision::Deleted(_))) {
+            if run.hidden || gone {
                 b.seg(off, 1, byte, false);
                 continue;
             }
@@ -664,7 +687,7 @@ pub fn build(cx: BuildCx<'_>, cache: &mut StyleCache, para: &Paragraph) -> ParaS
                         &cx.doc.settings.color_scheme_mapping,
                     )
                 })
-                .or(if commented && cx.markup {
+                .or(if commented && (cx.markup || cx.review.balloons) {
                     Some(COMMENT_FILL)
                 } else {
                     None
@@ -914,6 +937,7 @@ mod tests {
                 scale: 1.0,
                 width: 600.0,
                 markup: true,
+                review: crate::cx::ReviewDisplay::default(),
             },
             &mut cache,
             p,

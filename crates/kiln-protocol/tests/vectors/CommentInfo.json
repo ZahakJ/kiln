@@ -1,0 +1,61 @@
+{
+  "type": "CommentInfo",
+  "format": {
+    "TYPENAME": "CommentInfo"
+  },
+  "values": [
+    {
+      "id": 300,
+      "parent": null,
+      "author": "Zoë Ångström",
+      "initials": "ZÅ",
+      "date": "2026-10-17T09:30:00Z",
+      "text": "Check the cone «10» temperature.\nSecond line",
+      "resolved": false,
+      "anchor_text": "cone 10",
+      "color": "3159C6",
+      "page": 2,
+      "balloon": {
+        "x": 880.5,
+        "y": 120.0,
+        "width": 240.0,
+        "height": 72.25
+      },
+      "anchor": {
+        "x": 96.0,
+        "y": 1500.5
+      },
+      "current": true
+    },
+    {
+      "id": 300,
+      "parent": 300,
+      "author": "Zoë Ångström",
+      "initials": "ZÅ",
+      "date": null,
+      "text": "Check the cone «10» temperature.\nSecond line",
+      "resolved": false,
+      "anchor_text": null,
+      "color": "3159C6",
+      "page": null,
+      "balloon": null,
+      "anchor": null,
+      "current": false
+    },
+    {
+      "id": 0,
+      "parent": null,
+      "author": "",
+      "initials": "",
+      "date": null,
+      "text": "",
+      "resolved": false,
+      "anchor_text": null,
+      "color": "",
+      "page": null,
+      "balloon": null,
+      "anchor": null,
+      "current": false
+    }
+  ]
+}

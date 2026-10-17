@@ -1235,6 +1235,462 @@
       }
     },
     {
+      "Write": {
+        "NewComment": {
+          "text": "Is «cone 10» right? 🔥"
+        }
+      }
+    },
+    {
+      "Write": {
+        "ReplyComment": {
+          "parent": 300,
+          "text": "Yes."
+        }
+      }
+    },
+    {
+      "Write": {
+        "EditComment": {
+          "id": 300,
+          "text": ""
+        }
+      }
+    },
+    {
+      "Write": {
+        "ResolveComment": {
+          "id": 300,
+          "resolved": true
+        }
+      }
+    },
+    {
+      "Write": {
+        "DeleteComment": {
+          "id": 70000
+        }
+      }
+    },
+    {
+      "Write": "DeleteAllComments"
+    },
+    {
+      "Write": {
+        "SelectComment": {
+          "id": 300
+        }
+      }
+    },
+    {
+      "Write": "TrackChanges"
+    },
+    {
+      "Write": {
+        "SetReviewer": {
+          "name": "Zoë Ångström"
+        }
+      }
+    },
+    {
+      "Write": {
+        "MarkupMode": {
+          "mode": "Original"
+        }
+      }
+    },
+    {
+      "Write": {
+        "ShowMarkup": {
+          "kind": "Formatting"
+        }
+      }
+    },
+    {
+      "Write": {
+        "AcceptChange": {
+          "scope": "AllAndStop"
+        }
+      }
+    },
+    {
+      "Write": {
+        "RejectChange": {
+          "scope": "CurrentAndNext"
+        }
+      }
+    },
+    {
+      "Write": {
+        "ResolveRevision": {
+          "target": {
+            "kind": "Deleted",
+            "node": 4097,
+            "start": 3,
+            "end": 200
+          },
+          "accept": false
+        }
+      }
+    },
+    {
+      "Write": "PreviousChange"
+    },
+    {
+      "Write": "NextChange"
+    },
+    {
+      "Write": {
+        "InsertToc": {
+          "spec": {
+            "levels": 9,
+            "hyperlinks": false,
+            "page_numbers": true,
+            "right_align": false,
+            "leader": "Underscore",
+            "title": null
+          }
+        }
+      }
+    },
+    {
+      "Write": "InsertQuickToc"
+    },
+    {
+      "Write": "RemoveToc"
+    },
+    {
+      "Write": {
+        "UpdateToc": {
+          "entire": true
+        }
+      }
+    },
+    {
+      "Write": {
+        "AddText": {
+          "level": 2
+        }
+      }
+    },
+    {
+      "Write": {
+        "InsertTableOfFigures": {
+          "label": "Figure"
+        }
+      }
+    },
+    {
+      "Write": "InsertFootnote"
+    },
+    {
+      "Write": "InsertEndnote"
+    },
+    {
+      "Write": {
+        "NextNote": {
+          "backward": true
+        }
+      }
+    },
+    {
+      "Write": "ShowNotes"
+    },
+    {
+      "Write": {
+        "NoteOptions": {
+          "spec": {
+            "endnotes": true,
+            "format": "lowerRoman",
+            "start": 3,
+            "restart": "eachSect"
+          }
+        }
+      }
+    },
+    {
+      "Write": {
+        "ConvertNotes": {
+          "to_endnotes": false
+        }
+      }
+    },
+    {
+      "Write": {
+        "InsertCaption": {
+          "spec": {
+            "label": "Tableau",
+            "text": ": Glaze «tests»",
+            "position": "Above",
+            "exclude_label": false,
+            "chapter_level": 1
+          }
+        }
+      }
+    },
+    {
+      "Write": {
+        "InsertCrossReference": {
+          "spec": {
+            "target": {
+              "Bookmark": {
+                "name": "_Ref123"
+              }
+            },
+            "show": "AboveBelow",
+            "hyperlink": true
+          }
+        }
+      }
+    },
+    {
+      "Write": "FollowLink"
+    },
+    {
+      "Write": {
+        "SelectObject": {
+          "id": 1000000
+        }
+      }
+    },
+    {
+      "Write": {
+        "ObjectPosition": {
+          "preset": "BottomCenter"
+        }
+      }
+    },
+    {
+      "Write": {
+        "ObjectWrap": {
+          "wrap": "TopAndBottom"
+        }
+      }
+    },
+    {
+      "Write": {
+        "ObjectTransform": {
+          "id": 1000000,
+          "rect": {
+            "x": 880.5,
+            "y": 120.0,
+            "width": 240.0,
+            "height": 72.25
+          }
+        }
+      }
+    },
+    {
+      "Write": {
+        "ObjectLayout": {
+          "id": null,
+          "spec": {
+            "wrap": "Behind",
+            "x": -12.5,
+            "x_from": "Margin",
+            "y": null,
+            "y_from": null,
+            "width": null,
+            "height": null,
+            "rotation": 359.5,
+            "distance": null,
+            "move_with_text": null,
+            "allow_overlap": null,
+            "name": "Logo «kiln»",
+            "alt_text": null,
+            "decorative": null
+          }
+        }
+      }
+    },
+    {
+      "Write": {
+        "ObjectOrder": {
+          "order": "ToBack"
+        }
+      }
+    },
+    {
+      "Write": {
+        "ObjectRotate": {
+          "op": "FlipHorizontal"
+        }
+      }
+    },
+    {
+      "Write": {
+        "ObjectAlign": {
+          "align": "Middle"
+        }
+      }
+    },
+    {
+      "Write": {
+        "InsertTextBox": {
+          "text": "Pull quote"
+        }
+      }
+    },
+    {
+      "Write": {
+        "InsertShape": {
+          "preset": "roundRect",
+          "text": null
+        }
+      }
+    },
+    {
+      "Write": {
+        "FormatPainter": {
+          "sticky": true
+        }
+      }
+    },
+    {
+      "Write": "CopyFormat"
+    },
+    {
+      "Write": "PasteFormat"
+    },
+    {
+      "Write": "CancelPainter"
+    },
+    {
+      "Write": {
+        "SetAutoFormat": {
+          "options": {
+            "markdown": false,
+            "smart_quotes": true,
+            "dashes": false,
+            "ellipsis": true,
+            "fractions": false
+          }
+        }
+      }
+    },
+    {
+      "Write": {
+        "PasteMarkdown": {
+          "text": "# Kiln\n\n- **glaze**\n- `cone`\n\n| a | b |\n|---|---|\n| 1 | 2 |"
+        }
+      }
+    },
+    {
+      "Write": "FocusMode"
+    },
+    {
+      "Write": {
+        "WordGoal": {
+          "words": 1500
+        }
+      }
+    },
+    {
+      "Write": "Hyphenation"
+    },
+    {
+      "Write": {
+        "InsertCodeBlock": {
+          "language": "rust"
+        }
+      }
+    },
+    {
+      "Write": {
+        "InsertCallout": {
+          "kind": "Warning"
+        }
+      }
+    },
+    {
+      "Write": {
+        "InsertCoverPage": {
+          "design": "Slab"
+        }
+      }
+    },
+    {
+      "Write": {
+        "SetProperties": {
+          "props": {
+            "title": "Firing «log»",
+            "subject": null,
+            "author": null,
+            "keywords": "",
+            "description": null,
+            "category": null,
+            "status": null,
+            "company": null,
+            "manager": null
+          }
+        }
+      }
+    },
+    {
+      "Write": {
+        "SpellCheck": {
+          "on": false
+        }
+      }
+    },
+    {
+      "Write": {
+        "SetUserDictionary": {
+          "words": [
+            "Kiln",
+            "Zoë"
+          ]
+        }
+      }
+    },
+    {
+      "Write": {
+        "SpellAddWord": {
+          "word": "glazeware"
+        }
+      }
+    },
+    {
+      "Write": {
+        "SpellIgnoreAll": {
+          "word": "teh"
+        }
+      }
+    },
+    {
+      "Write": {
+        "SpellIgnore": {
+          "pos": {
+            "block": 70000,
+            "offset": 300
+          }
+        }
+      }
+    },
+    {
+      "Write": {
+        "SpellReplace": {
+          "pos": {
+            "block": 70000,
+            "offset": 300
+          },
+          "with": "the",
+          "all": true
+        }
+      }
+    },
+    {
+      "Write": "SpellNext"
+    },
+    {
+      "Write": {
+        "SpellDictionary": {
+          "aff": "SET UTF-8\nTRY esianrtolcdugmphbyfvkwz",
+          "dic": "2\nkiln/S\nglaze/DSG"
+        }
+      }
+    },
+    {
       "Grid": {
         "Move": {
           "dir": "Down",
@@ -1850,34 +2306,6 @@
             "html": "<table><tr><td>1</td></tr></table>",
             "kiln": null
           }
-        }
-      }
-    },
-    {
-      "Grid": {
-        "SelectDrawing": {
-          "index": 0
-        }
-      }
-    },
-    {
-      "Grid": {
-        "PlaceDrawing": {
-          "index": 0,
-          "x": 200.0,
-          "y": 40.0,
-          "width": 480.0,
-          "height": 288.0
-        }
-      }
-    },
-    {
-      "Grid": "DeleteDrawing"
-    },
-    {
-      "Grid": {
-        "Theme": {
-          "dark": true
         }
       }
     }

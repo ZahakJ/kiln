@@ -1,0 +1,18 @@
+{
+  "type": "ReviewerInfo",
+  "format": {
+    "TYPENAME": "ReviewerInfo"
+  },
+  "values": [
+    {
+      "name": "Ana",
+      "color": "3159C6",
+      "changes": 300
+    },
+    {
+      "name": "",
+      "color": "",
+      "changes": 0
+    }
+  ]
+}

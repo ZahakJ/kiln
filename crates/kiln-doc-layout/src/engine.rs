@@ -951,7 +951,10 @@ impl DocLayout {
     /// Comment balloons: one per comment, at the height of its anchor, stacked so they do not
     /// overlap, in the markup area right of the page.
     fn place_balloons(&mut self, doc: &Document) {
-        if doc.comments.is_empty() || !self.options.markup {
+        if doc.comments.is_empty()
+            || !(self.options.markup || self.options.review.balloons)
+            || !self.options.review.comments
+        {
             return;
         }
         // Anchor points: the start of each comment's range.

@@ -47,6 +47,8 @@ pub use suite::{
 };
 #[cfg(any(test, feature = "schema"))]
 pub(crate) use write::samples as write_samples;
+// WP-66: the arguments and answers of Kiln Write's advanced features.
+pub use write::features as write_features;
 pub use write::{
     CaretMotion, CommandLogEntry, DocPropertiesInfo, DropCapPlacement, FindHit, FindQuery,
     FindResults, FontFormat, FormatState, GoToTarget, HeaderFooterState, HeadingInfo, ListState,

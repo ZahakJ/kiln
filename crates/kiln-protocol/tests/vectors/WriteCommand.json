@@ -413,6 +413,338 @@
       }
     },
     {
+      "NewComment": {
+        "text": "Is «cone 10» right? 🔥"
+      }
+    },
+    {
+      "ReplyComment": {
+        "parent": 300,
+        "text": "Yes."
+      }
+    },
+    {
+      "EditComment": {
+        "id": 300,
+        "text": ""
+      }
+    },
+    {
+      "ResolveComment": {
+        "id": 300,
+        "resolved": true
+      }
+    },
+    {
+      "DeleteComment": {
+        "id": 70000
+      }
+    },
+    "DeleteAllComments",
+    {
+      "SelectComment": {
+        "id": 300
+      }
+    },
+    "TrackChanges",
+    {
+      "SetReviewer": {
+        "name": "Zoë Ångström"
+      }
+    },
+    {
+      "MarkupMode": {
+        "mode": "Original"
+      }
+    },
+    {
+      "ShowMarkup": {
+        "kind": "Formatting"
+      }
+    },
+    {
+      "AcceptChange": {
+        "scope": "AllAndStop"
+      }
+    },
+    {
+      "RejectChange": {
+        "scope": "CurrentAndNext"
+      }
+    },
+    {
+      "ResolveRevision": {
+        "target": {
+          "kind": "Deleted",
+          "node": 4097,
+          "start": 3,
+          "end": 200
+        },
+        "accept": false
+      }
+    },
+    "PreviousChange",
+    "NextChange",
+    {
+      "InsertToc": {
+        "spec": {
+          "levels": 9,
+          "hyperlinks": false,
+          "page_numbers": true,
+          "right_align": false,
+          "leader": "Underscore",
+          "title": null
+        }
+      }
+    },
+    "InsertQuickToc",
+    "RemoveToc",
+    {
+      "UpdateToc": {
+        "entire": true
+      }
+    },
+    {
+      "AddText": {
+        "level": 2
+      }
+    },
+    {
+      "InsertTableOfFigures": {
+        "label": "Figure"
+      }
+    },
+    "InsertFootnote",
+    "InsertEndnote",
+    {
+      "NextNote": {
+        "backward": true
+      }
+    },
+    "ShowNotes",
+    {
+      "NoteOptions": {
+        "spec": {
+          "endnotes": true,
+          "format": "lowerRoman",
+          "start": 3,
+          "restart": "eachSect"
+        }
+      }
+    },
+    {
+      "ConvertNotes": {
+        "to_endnotes": false
+      }
+    },
+    {
+      "InsertCaption": {
+        "spec": {
+          "label": "Tableau",
+          "text": ": Glaze «tests»",
+          "position": "Above",
+          "exclude_label": false,
+          "chapter_level": 1
+        }
+      }
+    },
+    {
+      "InsertCrossReference": {
+        "spec": {
+          "target": {
+            "Bookmark": {
+              "name": "_Ref123"
+            }
+          },
+          "show": "AboveBelow",
+          "hyperlink": true
+        }
+      }
+    },
+    "FollowLink",
+    {
+      "SelectObject": {
+        "id": 1000000
+      }
+    },
+    {
+      "ObjectPosition": {
+        "preset": "BottomCenter"
+      }
+    },
+    {
+      "ObjectWrap": {
+        "wrap": "TopAndBottom"
+      }
+    },
+    {
+      "ObjectTransform": {
+        "id": 1000000,
+        "rect": {
+          "x": 880.5,
+          "y": 120.0,
+          "width": 240.0,
+          "height": 72.25
+        }
+      }
+    },
+    {
+      "ObjectLayout": {
+        "id": null,
+        "spec": {
+          "wrap": "Behind",
+          "x": -12.5,
+          "x_from": "Margin",
+          "y": null,
+          "y_from": null,
+          "width": null,
+          "height": null,
+          "rotation": 359.5,
+          "distance": null,
+          "move_with_text": null,
+          "allow_overlap": null,
+          "name": "Logo «kiln»",
+          "alt_text": null,
+          "decorative": null
+        }
+      }
+    },
+    {
+      "ObjectOrder": {
+        "order": "ToBack"
+      }
+    },
+    {
+      "ObjectRotate": {
+        "op": "FlipHorizontal"
+      }
+    },
+    {
+      "ObjectAlign": {
+        "align": "Middle"
+      }
+    },
+    {
+      "InsertTextBox": {
+        "text": "Pull quote"
+      }
+    },
+    {
+      "InsertShape": {
+        "preset": "roundRect",
+        "text": null
+      }
+    },
+    {
+      "FormatPainter": {
+        "sticky": true
+      }
+    },
+    "CopyFormat",
+    "PasteFormat",
+    "CancelPainter",
+    {
+      "SetAutoFormat": {
+        "options": {
+          "markdown": false,
+          "smart_quotes": true,
+          "dashes": false,
+          "ellipsis": true,
+          "fractions": false
+        }
+      }
+    },
+    {
+      "PasteMarkdown": {
+        "text": "# Kiln\n\n- **glaze**\n- `cone`\n\n| a | b |\n|---|---|\n| 1 | 2 |"
+      }
+    },
+    "FocusMode",
+    {
+      "WordGoal": {
+        "words": 1500
+      }
+    },
+    "Hyphenation",
+    {
+      "InsertCodeBlock": {
+        "language": "rust"
+      }
+    },
+    {
+      "InsertCallout": {
+        "kind": "Warning"
+      }
+    },
+    {
+      "InsertCoverPage": {
+        "design": "Slab"
+      }
+    },
+    {
+      "SetProperties": {
+        "props": {
+          "title": "Firing «log»",
+          "subject": null,
+          "author": null,
+          "keywords": "",
+          "description": null,
+          "category": null,
+          "status": null,
+          "company": null,
+          "manager": null
+        }
+      }
+    },
+    {
+      "SpellCheck": {
+        "on": false
+      }
+    },
+    {
+      "SetUserDictionary": {
+        "words": [
+          "Kiln",
+          "Zoë"
+        ]
+      }
+    },
+    {
+      "SpellAddWord": {
+        "word": "glazeware"
+      }
+    },
+    {
+      "SpellIgnoreAll": {
+        "word": "teh"
+      }
+    },
+    {
+      "SpellIgnore": {
+        "pos": {
+          "block": 70000,
+          "offset": 300
+        }
+      }
+    },
+    {
+      "SpellReplace": {
+        "pos": {
+          "block": 70000,
+          "offset": 300
+        },
+        "with": "the",
+        "all": true
+      }
+    },
+    "SpellNext",
+    {
+      "SpellDictionary": {
+        "aff": "SET UTF-8\nTRY esianrtolcdugmphbyfvkwz",
+        "dic": "2\nkiln/S\nglaze/DSG"
+      }
+    },
+    {
       "InsertText": {
         "text": ""
       }
@@ -762,6 +1094,274 @@
       "TableCellSize": {
         "width": 0.0,
         "height": 0.0
+      }
+    },
+    {
+      "FindNext": {
+        "query": {
+          "text": "",
+          "match_case": false,
+          "whole_word": false,
+          "wildcards": false,
+          "regex": false
+        },
+        "backward": false
+      }
+    },
+    {
+      "Replace": {
+        "query": {
+          "text": "",
+          "match_case": false,
+          "whole_word": false,
+          "wildcards": false,
+          "regex": false
+        },
+        "replacement": ""
+      }
+    },
+    {
+      "ReplaceAll": {
+        "query": {
+          "text": "",
+          "match_case": false,
+          "whole_word": false,
+          "wildcards": false,
+          "regex": false
+        },
+        "replacement": ""
+      }
+    },
+    {
+      "GoTo": {
+        "target": {
+          "Section": {
+            "number": 0
+          }
+        }
+      }
+    },
+    {
+      "NewComment": {
+        "text": ""
+      }
+    },
+    {
+      "ReplyComment": {
+        "parent": 0,
+        "text": ""
+      }
+    },
+    {
+      "EditComment": {
+        "id": 0,
+        "text": ""
+      }
+    },
+    {
+      "ResolveComment": {
+        "id": 0,
+        "resolved": false
+      }
+    },
+    {
+      "DeleteComment": {
+        "id": 0
+      }
+    },
+    "DeleteAllComments",
+    {
+      "SelectComment": {
+        "id": 0
+      }
+    },
+    "TrackChanges",
+    {
+      "SetReviewer": {
+        "name": ""
+      }
+    },
+    {
+      "MarkupMode": {
+        "mode": "Simple"
+      }
+    },
+    {
+      "ShowMarkup": {
+        "kind": "Comments"
+      }
+    },
+    {
+      "AcceptChange": {
+        "scope": "Current"
+      }
+    },
+    {
+      "RejectChange": {
+        "scope": "CurrentAndNext"
+      }
+    },
+    {
+      "ResolveRevision": {
+        "target": {
+          "kind": "Inserted",
+          "node": 0,
+          "start": 0,
+          "end": 0
+        },
+        "accept": false
+      }
+    },
+    "PreviousChange",
+    "NextChange",
+    {
+      "InsertToc": {
+        "spec": {
+          "levels": 0,
+          "hyperlinks": false,
+          "page_numbers": false,
+          "right_align": false,
+          "leader": "None",
+          "title": ""
+        }
+      }
+    },
+    "InsertQuickToc",
+    "RemoveToc",
+    {
+      "UpdateToc": {
+        "entire": false
+      }
+    },
+    {
+      "AddText": {
+        "level": 0
+      }
+    },
+    {
+      "InsertTableOfFigures": {
+        "label": ""
+      }
+    },
+    "InsertFootnote",
+    "InsertEndnote",
+    {
+      "NextNote": {
+        "backward": false
+      }
+    },
+    "ShowNotes",
+    {
+      "NoteOptions": {
+        "spec": {
+          "endnotes": false,
+          "format": "",
+          "start": 0,
+          "restart": ""
+        }
+      }
+    },
+    {
+      "ConvertNotes": {
+        "to_endnotes": false
+      }
+    },
+    {
+      "InsertCaption": {
+        "spec": {
+          "label": "",
+          "text": "",
+          "position": "Below",
+          "exclude_label": false,
+          "chapter_level": null
+        }
+      }
+    },
+    {
+      "InsertCrossReference": {
+        "spec": {
+          "target": {
+            "Heading": {
+              "para": 0
+            }
+          },
+          "show": "Text",
+          "hyperlink": false
+        }
+      }
+    },
+    "FollowLink",
+    {
+      "SelectObject": {
+        "id": 0
+      }
+    },
+    {
+      "ObjectPosition": {
+        "preset": "InLine"
+      }
+    },
+    {
+      "ObjectWrap": {
+        "wrap": "InLine"
+      }
+    },
+    {
+      "ObjectTransform": {
+        "id": 0,
+        "rect": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.0,
+          "height": 0.0
+        }
+      }
+    },
+    {
+      "ObjectLayout": {
+        "id": 0,
+        "spec": {
+          "wrap": null,
+          "x": null,
+          "x_from": null,
+          "y": null,
+          "y_from": null,
+          "width": null,
+          "height": null,
+          "rotation": null,
+          "distance": null,
+          "move_with_text": null,
+          "allow_overlap": null,
+          "name": null,
+          "alt_text": null,
+          "decorative": null
+        }
+      }
+    },
+    {
+      "ObjectOrder": {
+        "order": "Forward"
+      }
+    },
+    {
+      "ObjectRotate": {
+        "op": "Right90"
+      }
+    },
+    {
+      "ObjectAlign": {
+        "align": "Left"
+      }
+    },
+    {
+      "InsertTextBox": {
+        "text": ""
+      }
+    },
+    {
+      "InsertShape": {
+        "preset": "",
+        "text": ""
       }
     }
   ]

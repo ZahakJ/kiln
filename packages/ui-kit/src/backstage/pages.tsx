@@ -6,7 +6,7 @@
  */
 import type { AppId } from '@kiln/commands';
 import type { CompatIssue, DocSummary, FileFormat, RecentFile, StatusBar } from '@kiln/protocol';
-import { FolderOpen, History, RefreshCw, ShieldAlert, ShieldCheck } from 'lucide-react';
+import { FolderOpen, History, PencilLine, RefreshCw, ShieldAlert, ShieldCheck } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { AppMark } from '../chrome/AppMark.tsx';
 import { Icon } from '../icons/Icon.tsx';
@@ -119,6 +119,7 @@ export function BackstageInfoPage({
   compatError,
   onCheckCompat,
   onVersionHistory,
+  onEditProperties,
 }: {
   summary: DocSummary | null;
   status: StatusBar | null;
@@ -128,6 +129,8 @@ export function BackstageInfoPage({
   compatError?: string | null;
   onCheckCompat?: () => void;
   onVersionHistory?: () => void;
+  /** Opens the app's Properties dialog (title, subject, author…), when it has one. */
+  onEditProperties?: () => void;
 }) {
   if (!summary) {
     return <p className="kiln-bs-muted">No document is open in this window.</p>;
@@ -182,6 +185,11 @@ export function BackstageInfoPage({
           {status?.slide ? <Fact label="Slides">{n(status.slide.total)}</Fact> : null}
           <Fact label="Editing">{summary.read_only ? 'Read-only' : 'Editable'}</Fact>
         </dl>
+        {onEditProperties ? (
+          <Button icon={<Icon icon={PencilLine} size={15} />} onClick={onEditProperties}>
+            Edit Properties
+          </Button>
+        ) : null}
         {onVersionHistory ? (
           <Button icon={<Icon icon={History} size={15} />} onClick={onVersionHistory}>
             Version History

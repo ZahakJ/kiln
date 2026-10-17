@@ -6,6 +6,7 @@
  * text input sees them (Esc is the window's `ui.edit.cancel`, `commands.ts`).
  */
 
+import type { SpellingHit } from '@kiln/protocol';
 import { Surface, type SurfaceController } from '@kiln/surface';
 import type { RibbonItem, RibbonLeafItem, RibbonSpec } from '@kiln/ui-kit';
 import {
@@ -18,8 +19,15 @@ import {
 } from '@kiln/ui-kit';
 import { X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useStore } from 'zustand';
+import { FeatureDialogs } from './features/dialogs.tsx';
+import { WriteFeatureLayer } from './features/Layer.tsx';
+import { PASTE_MARKDOWN_ENTRY, spellingEntries } from './features/menu.ts';
+import { featuresOf } from './features/model.ts';
+import './features/features.css';
 import { useMediaQuery, useWrite } from './hooks.ts';
 import type { WriteEditorModel } from './model.ts';
+import { FeaturePanes } from './panes/FeaturePanes.tsx';
 import { NavigationPane } from './panes/NavigationPane.tsx';
 import { StylesPane } from './panes/StylesPane.tsx';
 import { HorizontalRuler, RULER_SIZE, VerticalRuler } from './Rulers.tsx';
@@ -74,13 +82,23 @@ const PASTE_OPTIONS: MenuEntry[] = [
   { command: 'suite.edit.paste_text_only', label: 'Keep Text Only' },
 ];
 
-/** The context menu: clipboard, paste options, Font…, Paragraph…, Link…, and the table items in a table. */
-export function contextMenuEntries(inTable: boolean, link: string | null, inList = false): MenuEntry[] {
+/**
+ * The context menu: spelling suggestions over a misspelled word (WP-66), clipboard, paste options,
+ * Font…, Paragraph…, Link…, and the table items in a table.
+ */
+export function contextMenuEntries(
+  inTable: boolean,
+  link: string | null,
+  inList = false,
+  spelling: SpellingHit | null = null,
+): MenuEntry[] {
   const out: MenuEntry[] = [
+    ...spellingEntries(spelling),
     { command: 'suite.edit.cut' },
     { command: 'suite.edit.copy' },
     { kind: 'heading', label: 'Paste Options' },
     ...PASTE_OPTIONS,
+    PASTE_MARKDOWN_ENTRY,
     { kind: 'separator' },
     { command: 'suite.format.font_dialog', label: 'Font…' },
     { command: 'suite.format.paragraph_dialog', label: 'Paragraph…' },
@@ -208,6 +226,8 @@ export function WriteEditor({ model, title, theme, ribbon }: WriteEditorProps) {
   const inTable = useWrite(model, (s) => !!s.format?.table);
   const inList = useWrite(model, (s) => !!s.format?.list);
   const link = useWrite(model, (s) => s.format?.link ?? null);
+  // WP-66: the misspelled word under the pointer heads the context menu.
+  const spellMenu = useStore(featuresOf(model).store, (s) => s.spellMenu);
   const [controller, setController] = useState<SurfaceController | null>(null);
   const area = useRef<HTMLDivElement>(null);
   const size = useSize(area);
@@ -321,7 +341,7 @@ export function WriteEditor({ model, title, theme, ribbon }: WriteEditorProps) {
           </>
         ) : null}
         <ContextMenu
-          entries={contextMenuEntries(inTable, link, inList)}
+          entries={contextMenuEntries(inTable, link, inList, spellMenu)}
           aria-label="Document"
           miniToolbar={
             miniItems.length > 0
@@ -337,6 +357,7 @@ export function WriteEditor({ model, title, theme, ribbon }: WriteEditorProps) {
           }
           onOpenChange={(open) => {
             if (open) dismissMini();
+            else featuresOf(model).set({ spellMenu: null });
           }}
         >
           <div
@@ -360,6 +381,8 @@ export function WriteEditor({ model, title, theme, ribbon }: WriteEditorProps) {
               onViewChange={(v) => model.set({ view: v })}
               onError={(err) => model.set({ notice: err instanceof Error ? err.message : String(err) })}
             />
+            {/* WP-66: comment balloons, the object frame, focus mode, Format Painter. */}
+            <WriteFeatureLayer model={model} controller={controller} />
           </div>
         </ContextMenu>
         {notice ? (
@@ -381,6 +404,8 @@ export function WriteEditor({ model, title, theme, ribbon }: WriteEditorProps) {
           <StylesPane model={model} />
         </Pane>
       ) : null}
+      {/* WP-66: the Comments, Reviewing, Selection and Spelling panes. */}
+      <FeaturePanes model={model} />
       <MiniToolbar anchor={controller ? mini : null} onDismiss={dismissMini} aria-label="Formatting">
         {miniItems.map((item) => (
           <RibbonItemView
@@ -392,6 +417,7 @@ export function WriteEditor({ model, title, theme, ribbon }: WriteEditorProps) {
         ))}
       </MiniToolbar>
       <WriteDialogs model={model} />
+      <FeatureDialogs model={model} />
     </div>
   );
 }

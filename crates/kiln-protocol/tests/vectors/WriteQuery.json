@@ -30,6 +30,68 @@
     "PageSetup",
     "Bookmarks",
     "CommandLog",
-    "Format"
+    "Comments",
+    "Revisions",
+    "CrossRefTargets",
+    "Objects",
+    {
+      "SpellingAt": {
+        "pos": {
+          "block": 9,
+          "offset": 4
+        }
+      }
+    },
+    {
+      "NextMisspelling": {
+        "from": null
+      }
+    },
+    "Format",
+    "Rulers",
+    "Styles",
+    "Headings",
+    "Pages",
+    {
+      "FindAll": {
+        "query": {
+          "text": "",
+          "match_case": false,
+          "whole_word": false,
+          "wildcards": false,
+          "regex": false
+        }
+      }
+    },
+    {
+      "WordCount": {
+        "include_notes": false
+      }
+    },
+    "Properties",
+    "Clipboard",
+    "PageSetup",
+    "Bookmarks",
+    "CommandLog",
+    "Comments",
+    "Revisions",
+    "CrossRefTargets",
+    "Objects",
+    {
+      "SpellingAt": {
+        "pos": {
+          "block": 0,
+          "offset": 0
+        }
+      }
+    },
+    {
+      "NextMisspelling": {
+        "from": {
+          "block": 0,
+          "offset": 0
+        }
+      }
+    }
   ]
 }

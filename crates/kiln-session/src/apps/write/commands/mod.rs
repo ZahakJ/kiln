@@ -125,6 +125,10 @@ fn repeatable(cmd: &Command) -> bool {
                 | EditCommand::PasteTextOnly { .. }
                 | EditCommand::PasteAs { .. }
         ),
+        // WP-66: views, navigation and one-off feature commands do not repeat.
+        Command::Write(w) if super::features::handles(w) && !super::features::repeatable(w) => {
+            false
+        }
         Command::Write(w) => !matches!(
             w,
             WriteCommand::MoveCaret { .. }
@@ -168,6 +172,19 @@ impl WriteDoc {
             Err(_) => "error",
         };
         self.editor.record(command.id(), outcome);
+        // WP-66: AutoFormat As You Type (Markdown shortcuts, smart typography) after typing.
+        let result = match (result, command) {
+            (
+                Ok(Change::Content),
+                Command::Write(
+                    WriteCommand::InsertText { text } | WriteCommand::CommitComposition { text },
+                ),
+            ) => {
+                self.after_typing(text);
+                Ok(Change::Content)
+            }
+            (r, _) => r,
+        };
         if matches!(result, Ok(Change::Content)) {
             if repeatable(command) {
                 self.editor.repeat = Some(command.clone());
@@ -212,6 +229,18 @@ impl WriteDoc {
     /// original text editing in `editing.rs`, the editor's commands in [`Self::run_editor`].
     fn run_write(&mut self, cmd: &WriteCommand) -> Result<Change> {
         match cmd {
+            // WP-66: comments, track changes, references, objects, spelling…
+            cmd if super::features::handles(cmd) => self.run_feature(cmd),
+            // A click on a picture, shape or text box selects it.
+            WriteCommand::SelectAt {
+                point,
+                extend: false,
+                unit: kiln_protocol::SelectUnit::Char,
+            } if self.editor.header_footer.is_none()
+                && self.object_at(point.x, point.y).is_some() =>
+            {
+                self.measure(|d| d.select_object_at(point.x, point.y))
+            }
             WriteCommand::InsertText { text } if text == "\n" || text == "\r\n" || text == "\r" => {
                 self.end_composition();
                 self.measure(|d| d.enter())
@@ -370,6 +399,11 @@ impl WriteDoc {
                 "{} reached the editor dispatcher",
                 cmd.meta().id
             ))),
+            // WP-66: handled by `features` before dispatch.
+            other => Err(KilnError::Internal(format!(
+                "{} reached the editor dispatcher",
+                other.meta().id
+            ))),
         }
     }
 
@@ -507,6 +541,13 @@ impl WriteDoc {
         if tx.is_empty() {
             return Ok(());
         }
+        // WP-66: while Track Changes is on, the edit is recorded as tracked changes.
+        if self.tracking_applies(&tx) {
+            let (forward, inverse) = self.apply_tracked_parts(tx)?;
+            b.forward.extend(forward.ops);
+            b.inverses.push(inverse);
+            return Ok(());
+        }
         let inverse = self.doc.apply(tx.clone()).map_err(doc_err)?;
         self.touched.record(&self.doc, &tx);
         self.note_edit(&tx);
@@ -542,6 +583,8 @@ impl WriteDoc {
 
     /// Tells the layout and the word counts what an applied transaction changed.
     pub(in crate::apps::write) fn note_edit(&mut self, tx: &Transaction) {
+        // WP-66: whole-document answers (revisions, the TOC) are cached per generation.
+        self.features.generation += 1;
         if let Some(v) = &mut self.view {
             v.note(tx);
         }

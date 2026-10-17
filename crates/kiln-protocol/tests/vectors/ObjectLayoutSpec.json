@@ -1,0 +1,56 @@
+{
+  "type": "ObjectLayoutSpec",
+  "format": {
+    "TYPENAME": "ObjectLayoutSpec"
+  },
+  "values": [
+    {
+      "wrap": null,
+      "x": null,
+      "x_from": null,
+      "y": null,
+      "y_from": null,
+      "width": null,
+      "height": null,
+      "rotation": null,
+      "distance": null,
+      "move_with_text": null,
+      "allow_overlap": null,
+      "name": null,
+      "alt_text": null,
+      "decorative": null
+    },
+    {
+      "wrap": null,
+      "x": null,
+      "x_from": null,
+      "y": 1440.75,
+      "y_from": "Page",
+      "width": 200.0,
+      "height": 100.0,
+      "rotation": null,
+      "distance": 9.0,
+      "move_with_text": false,
+      "allow_overlap": true,
+      "name": null,
+      "alt_text": "",
+      "decorative": true
+    },
+    {
+      "wrap": null,
+      "x": null,
+      "x_from": null,
+      "y": null,
+      "y_from": null,
+      "width": null,
+      "height": null,
+      "rotation": null,
+      "distance": null,
+      "move_with_text": null,
+      "allow_overlap": null,
+      "name": null,
+      "alt_text": null,
+      "decorative": null
+    }
+  ]
+}
