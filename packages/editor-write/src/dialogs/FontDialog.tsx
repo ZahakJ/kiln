@@ -90,7 +90,8 @@ export function FontDialog({ model, tab }: { model: WriteEditorModel; tab?: stri
     }));
   const previewStyle = {
     fontFamily: `"${family}", var(--kiln-font-doc)`,
-    fontSize: `${Math.min(36, Math.max(8, sizeNum || 11))}px`,
+    // Points as on the page at 100 % (1 pt = 4/3 px), kept within the box.
+    fontSize: `${Math.min(48, Math.max(10, ((sizeNum || 11) * 4) / 3))}px`,
     fontWeight: style.includes('b') ? 700 : 400,
     fontStyle: style.includes('i') ? 'italic' : 'normal',
     textDecoration:

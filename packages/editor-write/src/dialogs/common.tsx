@@ -147,7 +147,7 @@ export function WriteDialogFrame({
           )
         }
       >
-        {children}
+        <div className="kiln-write-dialog">{children}</div>
       </DialogContent>
     </Dialog>
   );

@@ -7,7 +7,7 @@
  */
 import type { RulerInfo, TabAlign, TabStopSpec } from '@kiln/protocol';
 import { type PointerEvent as ReactPointerEvent, useEffect, useRef, useState } from 'react';
-import { cssVar, PX_PER_PT, usesInches, useWrite } from './hooks.ts';
+import { cssVar, PX_PER_PT, usesInches, useThemeKey, useWrite } from './hooks.ts';
 import type { SurfaceView, WriteEditorModel } from './model.ts';
 
 export const RULER_SIZE = 22;
@@ -231,10 +231,13 @@ export function HorizontalRuler({ model, width }: { model: WriteEditorModel; wid
   const rulers = useWrite(model, (s) => s.rulers);
   const view = useWrite(model, (s) => s.view);
   const [drag, setDrag] = useState<Drag | null>(null);
+  // The colours are read from the brand tokens when drawing: repaint when the theme changes.
+  const theme = useThemeKey();
 
   useEffect(() => {
+    void theme;
     if (canvas.current) drawHorizontal(canvas.current, width, rulers, view, drag);
-  }, [width, rulers, view, drag]);
+  }, [width, rulers, view, drag, theme]);
 
   const docX = (e: ReactPointerEvent) => {
     const rect = canvas.current?.getBoundingClientRect();
@@ -359,9 +362,12 @@ export function VerticalRuler({ model, height }: { model: WriteEditorModel; heig
   const view = useWrite(model, (s) => s.view);
   const [drag, setDrag] = useState<Drag | null>(null);
 
+  const theme = useThemeKey();
+
   useEffect(() => {
+    void theme;
     if (canvas.current) drawVertical(canvas.current, height, rulers, view, drag);
-  }, [height, rulers, view, drag]);
+  }, [height, rulers, view, drag, theme]);
 
   const docY = (clientY: number) => {
     const rect = canvas.current?.getBoundingClientRect();

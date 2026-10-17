@@ -72,24 +72,40 @@ dependencies re-measures and records the new clean-build time here.
 Measured by `e2e/specs/write.spec.ts` ("B5: keystroke to paint on the 300-page document") on a
 production build (`vite build` with `VITE_KILN_RELEASE=1`, served statically) in headless Chromium:
 `fixtures/large/doc-300p.docx` opened through the file picker, the caret at the end of the first line,
-77 characters typed 70 ms apart; latency is the key event's timestamp to the end of the composite that
-draws the keystroke's frame into the page (the surface's `kiln:input-paint` mark; the browser shows it
-at the following vsync).
+77 characters typed 70 ms apart.
 
-| Date | WP | Machine | p50 | p95 | Notes |
-|---|---|---|---|---|---|
-| 2026-10-17 | WP-64 | development machine, 3 runs, `--workers=1` | 12.3–13.7 ms | 22.5–26.0 ms | before this WP's work: p50 ≈ 40 ms, p95 ≈ 60–180 ms |
+**Method (§3.9: PerformanceObserver + rAF), since the WP-64 fix round:** the latency is the key
+event's timestamp to the end of the first rendered frame that can contain the keystroke's drawing. A
+PerformanceObserver records the surface's `kiln:input-paint` mark (the composite that draws the
+keystroke's frame into the page has finished); a `requestAnimationFrame` loop notes when each frame's
+callback runs and posts a message from it, which runs after that frame's rendering; the first frame
+whose callback ran after the mark is the one that presents the edit. The time to the mark alone
+("keystroke → composite") is printed as a diagnostic. The first WP-64 numbers stopped at the mark,
+which left out the wait for the next frame (up to one vsync, 16.7 ms at 60 Hz) and understated the
+latency.
+
+| Date | WP | Machine | Metric | p50 | p95 | Notes |
+|---|---|---|---|---|---|---|
+| 2026-10-17 | WP-64 | development machine, 3 runs, `--workers=1` | keystroke → composite | 12.3–13.7 ms | 22.5–26.0 ms | before this WP's work: p50 ≈ 40 ms, p95 ≈ 60–180 ms |
+| 2026-10-17 | WP-64 review | development machine, 4 runs | keystroke → composite | 12.4–14.9 ms | 26.3–34.9 ms | independent reviewer; a fifth run failed |
+| 2026-10-17 | WP-64 fix 1 | development machine, 4 runs, another agent working (load 3–4.7) | keystroke → screen | 27.4–31.8 ms | 36.2–54.8 ms | keystroke → composite in the same runs: p50 14.4–19.0 ms, p95 24.7–38.2 ms |
 
 Where the time goes (traced): the core's work per key is ~1 ms natively and ~3 ms in the web core
 (execute ~1.5 ms, frame ~1–3 ms, after the layout and painting changes of WP-64), the frame's decode
 and composite ~2–4 ms on the main thread. The rest is waiting: Chrome renders a frame after the key
-event and delivers the worker's answer after it, so a keystroke usually waits for one vsync, and
-sometimes two when the answer lands just after a frame deadline. The budget needs the page to be
-painted where the core runs (an `OffscreenCanvas` painted in the worker), which removes the
-main-thread hop; that is WP-94's.
+event and delivers the worker's answer after it, so a keystroke usually waits for one vsync before its
+composite, and then for the next frame to show it.
+
+**The budget as §3.9 measures it sits at the vsync floor.** A key event arrives at a random point of
+the 16.7 ms frame interval, and its result can only appear at a frame boundary after the work is done,
+so even with no work at all the keystroke → screen p95 at 60 Hz is about 0.95 × 16.7 ≈ 15.9 ms; any
+work (the core's ~3 ms, the composite) puts the p95 above 16 ms. Painting in the worker
+(`OffscreenCanvas`, WP-94) removes the main-thread hop and the extra frame, which should bring the p95
+to roughly one frame plus the work (~20–25 ms), but not under 16 ms. The choice is the plan owner's;
+see the exception below.
 
 ## Exceptions
 
 | Budget | Proposed by | Allowance | Until | Status |
 |---|---|---|---|---|
-| B5 typing latency, p95 < 16 ms | WP-64 | p95 < 40 ms on the development machine, × 1.5 on CI runners (the e2e assertion) | the painter runs in the worker (WP-94) | proposed — for approval at the next gate (WP-68) |
+| B5 typing latency, p95 < 16 ms | WP-64 | p95 < 60 ms keystroke → screen on the development machine (the former 40 ms to the composite plus one frame), × 1.5 on CI runners (§3.9); the e2e assertion reads this row | the painter runs in the worker (WP-94); or B5 is redefined, since a keystroke → screen p95 under 16 ms is below the 60 Hz vsync floor (see "B5" above): e.g. "the edit is on screen in the first frame after the core's answer", or about one frame plus the work (≤ 25 ms) | proposed — for approval at the next gate (WP-68) |

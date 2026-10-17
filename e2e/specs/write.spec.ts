@@ -16,7 +16,41 @@ import { expect, type Page, test } from '@playwright/test';
 import { expectNoSeriousA11yViolations } from '../../packages/testing/src/playwright/a11y.ts';
 
 const repo = (p: string) => fileURLToPath(new URL(`../../${p}`, import.meta.url));
+
+/**
+ * The B5 exception recorded in docs/qa/perf.md ("## Exceptions" table: the row whose budget starts
+ * with "B5"), if it is proposed or approved: its allowance in ms (the first "p95 < N ms" of the
+ * Allowance column) and its status. `null` when there is no such row or it is rejected.
+ */
+function b5Exception(): { allowance: number; status: string } | null {
+  const doc = readFileSync(repo('docs/qa/perf.md'), 'utf8');
+  const row = doc.split('\n').find((l) => /^\|\s*B5\b/.test(l));
+  if (!row) return null;
+  const cells = row.split('|').map((c) => c.trim());
+  const allowance = Number(/p95 < (\d+(?:\.\d+)?) ms/.exec(cells[3] ?? '')?.[1]);
+  const status = (cells[5] ?? '').toLowerCase();
+  if (!Number.isFinite(allowance) || !/^(proposed|approved)/.test(status)) return null;
+  return { allowance, status: status.split(/\s/)[0] ?? status };
+}
 const shot = (name: string) => repo(`e2e/screenshots/write/${name}`);
+
+/** Mean relative luminance of the horizontal ruler's middle row (0 black … 1 white). */
+async function rulerLuminance(page: Page): Promise<number> {
+  return page.getByTestId('write-ruler').evaluate((el) => {
+    const c = el as HTMLCanvasElement;
+    const ctx = c.getContext('2d');
+    if (!ctx || c.width === 0) return Number.NaN;
+    const row = ctx.getImageData(0, Math.floor(c.height / 2), c.width, 1).data;
+    let sum = 0;
+    let n = 0;
+    for (let i = 0; i < row.length; i += 4) {
+      if ((row[i + 3] ?? 0) < 128) continue;
+      sum += (0.2126 * (row[i] ?? 0) + 0.7152 * (row[i + 1] ?? 0) + 0.0722 * (row[i + 2] ?? 0)) / 255;
+      n += 1;
+    }
+    return n ? sum / n : Number.NaN;
+  });
+}
 
 interface WriteHandle {
   doc: number;
@@ -563,6 +597,85 @@ test.describe('documents, screenshots and accessibility', () => {
     await page.screenshot({ path: shot('editor-dark-desktop.png') });
     await expectNoSeriousA11yViolations(page);
   });
+
+  test('theme switches repaint the rulers; dialogs, menus and the table picker read in both themes', async ({
+    page,
+  }) => {
+    test.setTimeout(120_000);
+    await openWrite(page);
+    await page.keyboard.type('Kiln Write in both themes.');
+    await page.keyboard.press('Shift+Home');
+    for (const scheme of ['light', 'dark'] as const) {
+      await page.emulateMedia({ colorScheme: scheme });
+      // The rulers draw from the brand tokens: after a theme change they repaint in the new theme
+      // (a light ruler on the dark UI was the bug).
+      await expect
+        .poll(
+          async () => {
+            const lum = await rulerLuminance(page);
+            return scheme === 'dark' ? lum < 0.3 : lum > 0.6;
+          },
+          { message: `the rulers repaint in the ${scheme} theme` },
+        )
+        .toBe(true);
+
+      // Font dialog: the preview reads (Automatic colour = the page's text colour) and axe passes.
+      await run(page, 'suite.format.font_dialog');
+      const font = page.getByTestId('write-font-dialog');
+      await expect(font).toBeVisible();
+      const ratio = await font.locator('.kiln-write-preview').evaluate((box) => {
+        const parse = (c: string) => (c.match(/[\d.]+/g) ?? []).slice(0, 3).map(Number);
+        const lin = (v: number) => {
+          const x = v / 255;
+          return x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
+        };
+        const lum = (c: number[]) =>
+          0.2126 * lin(c[0] ?? 0) + 0.7152 * lin(c[1] ?? 0) + 0.0722 * lin(c[2] ?? 0);
+        const span = box.querySelector('span') as HTMLElement;
+        const a = lum(parse(getComputedStyle(span).color));
+        const b = lum(parse(getComputedStyle(box).backgroundColor));
+        return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+      });
+      expect(ratio, `Font preview contrast (${scheme})`).toBeGreaterThanOrEqual(4.5);
+      await expectNoSeriousA11yViolations(page);
+      await page.keyboard.press('Escape');
+      await expect(font).toBeHidden();
+
+      await run(page, 'suite.layout.page_setup');
+      await expect(page.getByRole('dialog', { name: 'Page Setup' })).toBeVisible();
+      await expectNoSeriousA11yViolations(page);
+      await page.keyboard.press('Escape');
+
+      await page.getByTestId('kiln-input-proxy').focus();
+      await page.keyboard.press('Control+h');
+      await expect(page.getByRole('dialog', { name: 'Find and Replace' })).toBeVisible();
+      await expectNoSeriousA11yViolations(page);
+      await page.keyboard.press('Escape');
+
+      const box = await page.getByTestId('write-editor').boundingBox();
+      if (!box) throw new Error('no editor');
+      await page.mouse.click(box.x + box.width / 2, box.y + 160, { button: 'right' });
+      await expect(page.getByRole('menu').first()).toBeVisible();
+      // The menu's shortcut column and group labels (`--kiln-faint`) and the mini toolbar's small
+      // split buttons are ui-kit's (WP-58) and fail contrast and target size in every app: handed off
+      // in docs/qa/handoffs.md. Everything else in the menu and the toolbar is checked.
+      await expectNoSeriousA11yViolations(page, {
+        exclude: ['.kiln-menu__shortcut', '.kiln-menu__group-label', '.kiln-minitoolbar__bar'],
+      });
+      await expectNoSeriousA11yViolations(page, {
+        include: ['.kiln-minitoolbar__bar'],
+        disableRules: ['target-size'],
+      });
+      await page.keyboard.press('Escape');
+
+      await page.getByRole('tab', { name: 'Insert' }).click();
+      await page.locator('[data-command="suite.insert.table"]').first().click();
+      await expect(page.getByTestId('write-table-grid')).toBeVisible();
+      await expectNoSeriousA11yViolations(page);
+      await page.keyboard.press('Escape');
+      await page.getByRole('tab', { name: 'Home' }).click();
+    }
+  });
 });
 
 const MIME: Record<string, string> = {
@@ -658,18 +771,33 @@ test.describe('performance (production build)', () => {
     await page.keyboard.press('End');
     // Let the background pagination of the 300 pages settle before measuring.
     await page.waitForTimeout(2500);
-    // Keystroke (the key event's timestamp) to the end of the composite that draws its result
-    // into the page (the surface marks it `kiln:input-paint`; the browser shows it at the next
-    // vsync).
+    // B5 is keystroke to *screen* (PLAN.md §3.9: PerformanceObserver + rAF). For every key:
+    // the key event's timestamp, the surface's `kiln:input-paint` mark (the composite that draws
+    // the keystroke's frame has finished; observed through a PerformanceObserver) and the frame
+    // that presents it: a requestAnimationFrame loop runs for the whole measurement, and each
+    // frame notes when its callback ran and posts a message from it, which runs once that frame's
+    // rendering (paint and commit) is done. The latency is the key event to the end of the first
+    // frame whose callback ran after the mark (the first frame that can contain the drawing). The composite time alone is recorded as well, as a diagnostic of the work per key.
     await page.evaluate(() => {
-      const w = window as unknown as { __b5: { down: number[]; paint: number[] } };
-      w.__b5 = { down: [], paint: [] };
+      const w = window as unknown as {
+        __b5: { down: number[]; paint: number[]; presented: [number, number][]; stop: boolean };
+      };
+      w.__b5 = { down: [], paint: [], presented: [], stop: false };
       document
         .querySelector('[data-testid="kiln-input-proxy"]')
         ?.addEventListener('keydown', (e) => w.__b5.down.push(e.timeStamp), true);
       new PerformanceObserver((list) => {
         for (const m of list.getEntries()) if (m.name === 'kiln:input-paint') w.__b5.paint.push(m.startTime);
       }).observe({ type: 'mark' });
+      const channel = new MessageChannel();
+      channel.port1.onmessage = (e: MessageEvent<number>) =>
+        w.__b5.presented.push([e.data, performance.now()]);
+      const frame = () => {
+        if (w.__b5.stop) return;
+        channel.port2.postMessage(performance.now());
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
     });
     const text = ' the quick brown fox jumps over the lazy dog while the kiln cools down slowly';
     for (const ch of text) {
@@ -677,28 +805,55 @@ test.describe('performance (production build)', () => {
       await page.waitForTimeout(70);
     }
     await page.waitForTimeout(500);
-    const latencies = await page.evaluate(() => {
-      const { down, paint } = (window as unknown as { __b5: { down: number[]; paint: number[] } }).__b5;
-      return down.map((t) => {
-        const p = paint.find((x) => x >= t);
-        return p === undefined ? Number.POSITIVE_INFINITY : p - t;
+    const measured = await page.evaluate(() => {
+      const b5 = (
+        window as unknown as {
+          __b5: { down: number[]; paint: number[]; presented: [number, number][]; stop: boolean };
+        }
+      ).__b5;
+      b5.stop = true;
+      return b5.down.map((t) => {
+        const p = b5.paint.find((x) => x >= t);
+        const shown = p === undefined ? undefined : b5.presented.find(([start]) => start >= p)?.[1];
+        return {
+          composite: p === undefined ? Number.POSITIVE_INFINITY : p - t,
+          screen: shown === undefined ? Number.POSITIVE_INFINITY : shown - t,
+        };
       });
     });
-    const sorted = [...latencies].sort((a, b) => a - b);
-    const p95 = sorted[Math.ceil(sorted.length * 0.95) - 1] ?? Number.POSITIVE_INFINITY;
-    const p50 = sorted[Math.floor(sorted.length / 2)] ?? Number.POSITIVE_INFINITY;
-    const summary = `n=${sorted.length} p50=${p50.toFixed(1)} ms p95=${p95.toFixed(1)} ms`;
+    const pct = (xs: number[], q: number) => {
+      const sorted = [...xs].sort((a, b) => a - b);
+      return sorted[Math.max(0, Math.ceil(sorted.length * q) - 1)] ?? Number.POSITIVE_INFINITY;
+    };
+    const screen = measured.map((m) => m.screen);
+    const composite = measured.map((m) => m.composite);
+    const p95 = pct(screen, 0.95);
+    const p50 = pct(screen, 0.5);
+    const summary =
+      `n=${screen.length} keystroke→screen p50=${p50.toFixed(1)} ms p95=${p95.toFixed(1)} ms ` +
+      `(keystroke→composite p50=${pct(composite, 0.5).toFixed(1)} ms p95=${pct(composite, 0.95).toFixed(1)} ms)`;
     test.info().annotations.push({ type: 'B5', description: summary });
-    console.log(`B5 keystroke→paint on doc-300p (production build): ${summary}`);
-    expect(sorted.length).toBe(text.length);
-    // The budget is 16 ms (PLAN.md §3.9). It is not met yet: the exception proposed in
-    // docs/qa/perf.md ("B5 typing latency") holds the line at 40 ms on the development machine and
-    // 1.5 × that on CI runners (§3.9's CI tolerance) until the painter moves into the worker.
-    const limit = process.env.CI ? 60 : 40;
+    console.log(`B5 on doc-300p (production build): ${summary}`);
+    expect(screen.length).toBe(text.length);
+    // The budget is 16 ms (PLAN.md §3.9). While docs/qa/perf.md carries a B5 exception that is
+    // proposed or approved, the test holds the exception's allowance (§3.9: × 1.5 on CI runners)
+    // and says loudly that the budget itself is not met; once the exception is removed or marked
+    // rejected, the 16 ms budget is asserted. The allowance is read from the document, so the test
+    // and the recorded exception cannot drift apart.
+    const exception = b5Exception();
+    const tolerance = process.env.CI ? 1.5 : 1;
+    const limit = exception ? exception.allowance * tolerance : 16 * tolerance;
+    const met = p95 < 16 * tolerance;
     test.info().annotations.push({
       type: 'B5 budget',
-      description: p95 < 16 ? 'met (< 16 ms)' : `over budget; under the ${limit} ms exception`,
+      description: met
+        ? 'met (p95 < 16 ms)'
+        : `NOT MET (p95 ${p95.toFixed(1)} ms ≥ 16 ms); held to the ${exception?.status ?? 'missing'} exception's ${limit} ms`,
     });
-    expect(p95, `B5 p95 ${p95.toFixed(1)} ms (budget 16 ms, exception ${limit} ms)`).toBeLessThan(limit);
+    if (!met)
+      console.warn(
+        `B5 budget (16 ms) not met: p95 ${p95.toFixed(1)} ms; exception ${exception?.status ?? 'none'}`,
+      );
+    expect(p95, `B5 p95 ${p95.toFixed(1)} ms (budget 16 ms, assertion ${limit} ms)`).toBeLessThan(limit);
   });
 });

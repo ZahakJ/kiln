@@ -564,6 +564,10 @@
 .kiln-write-section {
   margin: 0 0 14px;
 }
+/* A tab's content starts clear of the tab strip (GENERAL, MARGINS, …). */
+.kiln-write-dialog [role="tabpanel"] > :first-child {
+  margin-top: 14px;
+}
 .kiln-write-section__title {
   margin: 0 0 8px;
   font-size: var(--kiln-text-xs);
@@ -614,7 +618,9 @@
   border: 1px solid var(--kiln-line);
   border-radius: 10px;
   background: var(--kiln-page);
-  color: #1c1917;
+  /* Automatic font colour: the page's text colour in the current theme (light text on the dark
+     page), as the document itself is painted. */
+  color: var(--kiln-fg);
   overflow: hidden;
 }
 .kiln-write-tabs-list {

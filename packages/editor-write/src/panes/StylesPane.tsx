@@ -46,7 +46,7 @@ export function StylesPane({ model }: { model: WriteEditorModel }) {
                         // The style's colour, mixed with the pane's text colour (write.css) so
                         // a light or dark document colour stays readable in both themes.
                         ...(s.color ? { '--style-color': `#${s.color}` } : {}),
-                        fontSize: `${Math.min(20, Math.max(11, s.size))}px`,
+                        fontSize: `${Math.min(20, Math.max(13, s.size))}px`,
                       }
                     : undefined
                 }
