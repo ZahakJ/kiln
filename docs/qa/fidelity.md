@@ -14,6 +14,7 @@ Lowest value of any file of the format (— = not measured).
 |---|---|---|---|---|---|---|---|---|---|---|
 | docx | kiln-io-docx | 31 | 31 | 1.000 | 1.000 | 0.916 | — | — | yes | yes |
 | xlsx | kiln-io-xlsx | 31 | 31 | 1.000 | 1.000 | 0.999 | 1.000 | 1.000 | yes | yes |
+| pptx | kiln-io-pptx | 29 | 29 | 1.000 | 1.000 | 0.999 | — | — | yes | yes |
 
 ## Files
 
@@ -73,7 +74,7 @@ Lowest value of any file of the format (— = not measured).
 | `xlsx/manual/minimal.xlsx` | pass | 1.000 | 1.000 | 0.999 | 1.000 | 1.000 | yes | yes |  |
 | `external/xlsx/poi-ExcelTables.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
 | `external/xlsx/poi-Formatting.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
-| `external/xlsx/poi-SampleSS.strict.xlsx` | pass | 1.000 | 1.000 | — | 1.000 | 1.000 | yes | yes | visual: the original does not convert: LibreOffice could not convert /home/muth/OfficeSuite/fixtures/external/xlsx/poi-SampleSS.strict.xlsx to pdf: convert /home/muth/OfficeSuite/fixtures/external/xlsx/poi-SampleSS.strict.xlsx as a Calc document -> /tmp/kiln-fidelity-1621311/external__xlsx__poi-SampleSS.strict.xlsx/in/poi-SampleSS.strict.pdf using filter : calc_pdf_Export |
+| `external/xlsx/poi-SampleSS.strict.xlsx` | pass | 1.000 | 1.000 | — | 1.000 | 1.000 | yes | yes | visual: the original does not convert: LibreOffice could not convert /home/muth/OfficeSuite/fixtures/external/xlsx/poi-SampleSS.strict.xlsx to pdf: convert /home/muth/OfficeSuite/fixtures/external/xlsx/poi-SampleSS.strict.xlsx as a Calc document -> /tmp/kiln-fidelity-2207971/external__xlsx__poi-SampleSS.strict.xlsx/in/poi-SampleSS.strict.pdf using filter : calc_pdf_Export |
 | `external/xlsx/poi-SampleSS.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
 | `external/xlsx/poi-Themes.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
 | `external/xlsx/poi-WithChart.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
@@ -81,6 +82,35 @@ Lowest value of any file of the format (— = not measured).
 | `external/xlsx/poi-comments.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
 | `external/xlsx/poi-shared_formulas.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
 | `external/xlsx/poi-styles.xlsx` | pass | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | yes | yes |  |
+| `pptx/features/animations.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/aspect-16x9.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/aspect-4x3.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/backgrounds.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/charts.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/connectors.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/groups.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/hyperlinks.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/many-slides.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/notes.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/pictures.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/placeholders.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/preset-shapes.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/sections.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/shape-styles.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/tables.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/text-formatting.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/theme-colors.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `pptx/features/transitions.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/pptx/poi-SampleShow.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/pptx/poi-SmartArt.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/pptx/poi-backgrounds.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/pptx/poi-bar-chart.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/pptx/poi-layouts.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/pptx/poi-pptx2svg.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/pptx/poi-sample.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/pptx/poi-shapes.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/pptx/poi-table_test.pptx` | pass | 1.000 | 1.000 | 1.000 | — | — | yes | yes |  |
+| `external/pptx/poi-with_japanese.pptx` | pass | 1.000 | 1.000 | 0.999 | — | — | yes | yes |  |
 
 ## OPC passthrough baseline
 

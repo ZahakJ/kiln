@@ -205,8 +205,9 @@ the data.
 
 ## PowerPoint presentations (`.pptx`, `.potx`, `.pptm`) — `kiln-io-pptx`
 
-Reading (WP-77) is in place: `.pptx`, `.pptm`, `.potx`, `.potm`, `.ppsx` and `.ppsm` files open into
-the Deck model (`kiln-cli inspect --pptx` shows what was read). Writing follows with WP-79.
+`.pptx`, `.pptm`, `.potx`, `.potm`, `.ppsx` and `.ppsm` files open into the Deck model (reader,
+WP-77; `kiln-cli inspect --pptx` shows what was read) and are saved back to any of those formats
+(writer, WP-79; `kiln-cli convert in.pptx out.pptx`). Details: `crates/kiln-io-pptx/README.md`.
 
 **Read into the model:** slide and notes size, `firstSlideNum`, the default text style; masters
 with their theme, colour map, background, title/body/other text styles and header/footer flags;
@@ -238,6 +239,24 @@ scene and bevel settings, custom shows, the photo album, extension lists, presen
 properties, table styles, thumbnails and printer settings. Diagnostics (`PptxWarning`, with
 stable codes) say what was approximated, what is kept without being editable and what was
 dropped; a malformed slide, layout or theme is reported and the rest of the file opens.
+
+**Saving:** every part Kiln models is written from the model in PowerPoint's element order —
+the presentation, masters with their themes, layouts, slides, notes pages and the notes master,
+legacy or threaded comments with their authors, document properties — keeping the part names,
+relationship ids, slide and layout ids and shape ids the file had, so the XML kept from reading
+(SmartArt and OLE frames, content for newer PowerPoint versions in `mc:AlternateContent`, ink,
+3-D settings, extension lists) goes back into place and still points at its parts. Everything
+else is copied byte for byte with its relationships. A transition is written back exactly as it
+was while you leave it alone (sounds and PowerPoint 2010+ options included), and so is a slide's
+animation timing while its effects and the shapes they animate are unchanged, so effects Kiln
+does not play yet (motion paths, media verbs, …) survive; edited timing is regenerated the way
+PowerPoint writes it, with the kept effects merged in. Newer transitions (Reveal, Flash, Morph)
+and exact durations are written inside `mc:AlternateContent` with a Fade fallback for older
+readers. Theme colours in text come back with Office's exact transform (`tint`, `shade`, …),
+not just their slot. Saves from an editing session copy every slide, layout, master and notes
+page you did not touch byte for byte. Saving a `.pptm` as `.pptx` removes the macros, and the
+Compatibility Checker says so, along with missing clips or pictures, transitions that need a
+newer PowerPoint, threaded comments and SmartArt (saved as it was read).
 
 ## Kiln Deck themes (`.kdeck-theme`) — `kiln-deck`
 
@@ -317,4 +336,4 @@ every output.
 |---|---|---|---|---|
 | `.docx` | 1.00 | ≥ 0.95 | ≥ 0.90 | |
 | `.xlsx` | | | | values 1.00, formulas 1.00, styles ≥ 0.97 |
-| `.pptx` | | ≥ 0.95 | ≥ 0.85 | |
+| `.pptx` | 1.00 | ≥ 0.95 | ≥ 0.85 | animations of unchanged slides byte-identical |

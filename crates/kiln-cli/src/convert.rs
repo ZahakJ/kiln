@@ -11,6 +11,9 @@
 //!   of objects) in; the same out. A workbook saved as `.xlsx` keeps every part the model does not
 //!   cover; saved as `.csv`, `.tsv` or `.json` it writes its active sheet as Excel does (cells as
 //!   displayed, Excel's quoting, UTF-8).
+//! - Presentations (WP-79): `.pptx`, `.pptm`, `.potx`, `.potm`, `.ppsx` and `.ppsm` in and out
+//!   (a macro-enabled presentation saved without macros loses them); see
+//!   [`crate::convert_deck`].
 
 use std::fmt::Write as _;
 use std::path::{Path, PathBuf};
@@ -25,7 +28,7 @@ use kiln_ooxml::opc::OpcPackage;
 use crate::CliError;
 
 /// Usage text.
-pub const USAGE: &str = "kiln-cli convert <in.docx|.xlsx|.csv|.tsv|.json> <out.docx|.docm|.dotx|.dotm|.xlsx|.xlsm|.xltx|.xltm|.csv|.tsv|.json>";
+pub const USAGE: &str = "kiln-cli convert <in.docx|.xlsx|.pptx|.csv|.tsv|.json> <out.docx|.docm|.dotx|.dotm|.xlsx|.xlsm|.xltx|.xltm|.pptx|.pptm|.potx|.potm|.ppsx|.ppsm|.csv|.tsv|.json>";
 
 /// Workbook formats `convert` reads and writes.
 fn grid_format(ext: &str) -> bool {
@@ -89,10 +92,21 @@ pub fn run(args: &[String]) -> Result<String, CliError> {
         }
         return crate::convert_grid::run(&input, &output, &in_ext, &out_ext);
     }
+    if crate::convert_deck::deck_kind(&in_ext).is_some() {
+        let Some(target) = crate::convert_deck::deck_kind(&out_ext) else {
+            return Err(CliError::usage(
+                format!(
+                    "cannot write a presentation as .{out_ext} (.pptx, .pptm, .potx, .potm, .ppsx, .ppsm)"
+                ),
+                USAGE,
+            ));
+        };
+        return crate::convert_deck::run(&input, &output, target);
+    }
     if word_kind(&in_ext).is_none() {
         return Err(CliError::usage(
             format!(
-                "cannot convert .{in_ext} files yet (Word documents: .docx, .docm, .dotx, .dotm; workbooks: .xlsx, .xlsm, .xltx, .xltm, .csv, .tsv, .json)"
+                "cannot convert .{in_ext} files yet (Word documents: .docx, .docm, .dotx, .dotm; workbooks: .xlsx, .xlsm, .xltx, .xltm, .csv, .tsv, .json; presentations: .pptx, .pptm, .potx, .potm, .ppsx, .ppsm)"
             ),
             USAGE,
         ));

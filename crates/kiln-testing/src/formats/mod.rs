@@ -29,6 +29,7 @@ pub fn registered() -> Vec<Box<dyn Roundtrip>> {
     vec![
         Box::new(docx::Docx), // WP-62/WP-65
         Box::new(xlsx::Xlsx), // WP-70
+        Box::new(pptx::Pptx), // WP-79
     ]
 }
 

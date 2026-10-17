@@ -817,3 +817,43 @@ WP-54 had to touch these files outside its owned paths; every change is additive
 - WP-58: `apps/web/src/App.test.tsx`, `e2e/specs/smoke.spec.ts` and `packages/ui-kit/stories/Chrome.tsx` were edited
   outside WP-58's owned paths in 775ea9a (App.test.tsx follows the new routes; smoke.spec and the story follow the
   new frame); their owners may want to review them.
+
+## WP-79 → WP-78 (Deck app, save), WP-77/WP-93 (PPTX reader, corpus), WP-76 (Deck model), WP-60/WP-96 (CLI, testing), WP-85 (Backstage)
+
+- Edits outside WP-79's paths, for the owners to acknowledge (all additive): `crates/kiln-io-pptx/src/lib.rs`
+  (WP-77: `pub mod write;` and the writer's re-exports), `crates/kiln-io-pptx/README.md` (writing sections),
+  `crates/kiln-testing/src/formats/pptx.rs` (WP-77/WP-60: `roundtrip` is now read → `rewrite_pptx`, plus a test)
+  and the `Box::new(pptx::Pptx)` line in `formats/mod.rs`; `crates/kiln-cli` (WP-60/WP-96): `src/convert_deck.rs`,
+  the presentation branch and usage in `src/convert.rs`, `mod convert_deck;` and the usage line in `main.rs`, and
+  the `convert` section of `docs/manual/cli.md`.
+- For WP-78 (Deck app, File ▸ Save / Save As): there is no Deck app in the session yet, so the task's "register
+  SaveAs/Save for .pptx" is yours to wire. Keep the bytes and the `PptxRead` side data the way the Write app keeps
+  its `Original` (`crates/kiln-session/src/apps/write/save.rs`), record every applied transaction (undo and redo
+  included) into a `kiln_io_pptx::TouchedParts` (`touched.record(&pres, &tx)` after applying), and save with
+  `write_pptx(&pres, Some(&WriteSource { .., package: Some(&OpcPackage::open(&bytes)?) }), &WriteOptions { kind,
+  now: Some(w3cdtf), preserve: Some(&touched), .. })`. New presentations save with `write_pptx(&pres, None, ..)`.
+  The Compatibility Checker list is `kiln_io_pptx::compat_report(&pres, CompatOptions { target, source:
+  Some(read.kind), extras: Some(&read.extras), warnings: &read.warnings })` (same shape as the docx one).
+  `PptxWritten::issues` are things the save could not write (a picture whose image is gone, …): show them.
+- For WP-77/WP-93 (reader): (1) an internal hyperlink whose target is not a part (`Target="#_ftn1"`, seen in
+  `external/pptx/poi-with_japanese.pptx`) is read as the part name it resolves to (`/ppt/slides`); the writer puts
+  the original target back when it has the original package, but the model should hold `#_ftn1` itself
+  (`read/context.rs::link`). (2) `PptxExtras::shape_xml` mixes `p:nvPr` children (`p:custDataLst`, `p:extLst`)
+  and `p:spPr` children (`a:scene3d`, `a:sp3d`, `a:extLst`) in one list; the writer tells them apart by prefix
+  (`p:` → nvPr, everything else → spPr), which holds for every file Office writes — separate fields would make
+  it explicit. (3) A slide-root `p:extLst` and a `p:cSld/p:extLst` both land in `owner_xml`; with only one the
+  writer puts it at the root (where PowerPoint keeps `p14:creationId` and the modern comment link). (4) The comment
+  part names, the comment ids, the modern authors' GUIDs and `userId`/`providerId`, and reply authors' initials are
+  not kept: comments are always written anew (new GUIDs derived from the model ids, `providerId="None"`).
+  (5) `p:pic` blip extensions (an SVG beside its PNG fallback, `a14:imgProps`) and `p:cNvPicPr` locks are not
+  kept: pictures save with their raster image only.
+- For WP-76 (Deck model): a run colour that is a theme colour with a transform other than lumMod/lumOff (Office's
+  subtitle `tint 75000`, `satMod`, …) keeps only its slot and the cached RGB in `DocColor`. The writer finds the
+  `tint`/`shade`/`lumMod`/`lumMod+lumOff` that reproduces the cached rendering (exact for Office's own colours) and
+  falls back to that RGB, so nothing renders differently — but an edited theme would not recolour such text. A
+  `DrawingColor` beside `DocColor` in the deck's run properties would keep it exactly.
+- For WP-85 (Backstage ▸ Info) and WP-80 (show): `compat_report` codes are `macros.removed`, `image.missing`,
+  `media.missing`, `chart.missing`, `smartArt.kept`, `transition.morph`, `transition.p14`, `animation.dropped`,
+  `comments.threaded`, then the reader's `PptxWarning` codes with origin Open.
+- Fidelity: `cargo xtask fidelity --format pptx` scores 29/29 decks (19 feature + 10 external) at structural 1.000,
+  text 1.000, visual ≥ 0.999, LibreOffice opens all, untouched parts byte-identical.

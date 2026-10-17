@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **12.5 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **12.9 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,16 +12,16 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 12.5 % | 782 | 1 | 40 | 95 | 646 | 20 |
+| **Overall** | 12.9 % | 782 | 1 | 42 | 97 | 642 | 20 |
 | Kiln Write | 7.1 % | 231 | 0 | 2 | 26 | 203 | 1 |
 | Kiln Grid | 19.1 % | 261 | 0 | 25 | 41 | 195 | 6 |
-| Kiln Deck | 12.5 % | 184 | 0 | 11 | 19 | 154 | 3 |
+| Kiln Deck | 14.1 % | 184 | 0 | 13 | 20 | 151 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
-| Suite | 13.5 % | 62 | 1 | 2 | 9 | 50 | 9 |
+| Suite | 14.5 % | 62 | 1 | 2 | 10 | 49 | 9 |
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 13.4 % | 462 | 0 | 34 | 56 | 372 | 0 |
+| critical | 14.1 % | 462 | 0 | 36 | 58 | 368 | 0 |
 | commonly-missed | 10.5 % | 224 | 1 | 4 | 37 | 182 | 0 |
 | niche | 3.1 % | 96 | 0 | 2 | 2 | 92 | 20 |
 
@@ -29,9 +29,9 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 |---|---:|---:|---:|
 | Kiln Write | 7.5 % (146) | 6.0 % (58) | 1.9 % (27) |
 | Kiln Grid | 21.0 % (143) | 15.7 % (83) | 7.1 % (35) |
-| Kiln Deck | 13.0 % (119) | 11.9 % (42) | 0.0 % (23) |
+| Kiln Deck | 15.1 % (119) | 11.9 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
-| Suite | 17.7 % (31) | 6.9 % (29) | 0.0 % (2) |
+| Suite | 19.4 % (31) | 6.9 % (29) | 0.0 % (2) |
 
 ## Better than Office
 
@@ -67,7 +67,7 @@ Rows that exist to be better than Office (no Office equivalent, `office: "—"`)
 | ○ | Export a page to Markdown | Kiln Notes | P0 | Markdown export for notes |
 | ★ | Command palette (Ctrl+Shift+P / Alt+Q) with fuzzy search, recent commands and Office synonyms | Suite | P0 | Fuzzy search over every command with Office names and everyday synonyms, shortcuts and recent commands; Office's Tell me has no synonyms or shortcuts. |
 | ○ | Shortcut cheat sheet (Ctrl+/) and remappable keyboard page | Suite | P0 | every binding listed and remappable in one place |
-| ◐ | Byte-preserving saves: every part not edited is byte-identical after save | Suite | P0 | saving never rewrites what you did not touch (GenOffice's bar, §2A.1). Partial: the package layer repacks every feature fixture byte-identically part by part (WP-55); saves from the apps arrive with the writers (WP-65, WP-70, WP-79) |
+| ◐ | Byte-preserving saves: every part not edited is byte-identical after save | Suite | P0 | saving never rewrites what you did not touch (GenOffice's bar, §2A.1). Partial: the package layer repacks every feature fixture byte-identically part by part (WP-55); saves from the apps arrive with the writers (WP-65, WP-70, WP-79); .pptx (WP-79): untouched parts byte-identical on every corpus deck, and session saves with TouchedParts copy untouched slides, layouts, masters and notes pages |
 | ○ | Native bundles (.kwrite/.kgrid/.kdeck) with history | Suite | P0 | native files carry their own version history |
 | ○ | Version history: snapshots on save, named versions, restore | Suite | P0 | works for local files, no OneDrive or SharePoint |
 | ○ | Linux desktop (AppImage, deb) | Suite | P0 | Microsoft 365 has no Linux desktop app |
@@ -180,6 +180,8 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `deck.insert.illustrations.chart` | Insert chart with an embedded data sheet | missing | partial |
 | `deck.design.themes` | Themes gallery (12 bundled themes, OOXML theme compatible) | missing | partial |
 | `deck.design.variants` | Variants: colours, fonts, effects, background styles | missing | partial |
+| `deck.transitions.preserve-unknown` | Transitions without a Kiln renderer are preserved in the file and fall back to Fade in the show | missing | done |
+| `deck.animations.preserve-unknown` | Animations without a Kiln renderer are preserved in the file | missing | done |
 | `deck.layouts.title` | Layout: Title Slide, with placeholder inheritance from the master | missing | done |
 | `deck.layouts.title-content` | Layout: Title and Content, with placeholder inheritance from the master | missing | done |
 | `deck.layouts.section-header` | Layout: Section Header, with placeholder inheritance from the master | missing | done |
@@ -205,6 +207,7 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `deck.charts.sunburst` | Sunburst charts on slides (rendered and edited through kiln-charts) | missing | partial |
 | `deck.charts.radar` | Radar charts on slides (rendered and edited through kiln-charts) | missing | partial |
 | `deck.files.pptx-open` | Open .pptx with masters, layouts, themes, shapes, pictures, tables, charts, transitions, animations and notes | missing | partial |
+| `deck.files.pptx-save` | Save .pptx that PowerPoint opens without repair; untouched parts byte-identical | missing | partial |
 | `deck.files.ppsx` | Open .ppsx/.potx and start the show directly | missing | partial |
 | `suite.chrome.ribbon` | Ribbon with tabs, groups, labels, dialog launchers; Classic and Simplified modes; collapse (Ctrl+F1) | missing | partial |
 | `suite.chrome.key-tips` | Key Tips (Alt / F10) with Office letters | missing | done |
@@ -213,6 +216,7 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `suite.chrome.command-palette` | Command palette (Ctrl+Shift+P / Alt+Q) with fuzzy search, recent commands and Office synonyms | missing | better |
 | `suite.chrome.shortcuts` | Every shortcut of the §1.7 table works in each app | missing | partial |
 | `suite.home.start-screen` | Start screen: blank documents, featured templates, recent, pinned, search | missing | partial |
+| `suite.files.ooxml` | Open and save .docx, .xlsx, .pptx | missing | partial |
 | `suite.files.byte-preserving` | Byte-preserving saves: every part not edited is byte-identical after save | missing | partial |
 | `suite.files.macros-preserve` | Macro-enabled files (.docm/.xlsm/.pptm): vbaProject.bin preserved, never run | missing | partial |
 | `suite.files.compatibility-checker` | Compatibility checker: features that will not survive .docx/.xlsx/.pptx | missing | partial |
@@ -1232,7 +1236,7 @@ Score 19.1 % over 261 rows in scope; 0 better, 25 done, 41 partial, 195 missing,
 
 ## Kiln Deck
 
-Score 12.5 % over 184 rows in scope; 0 better, 11 done, 19 partial, 154 missing, 3 out of scope.
+Score 14.1 % over 184 rows in scope; 0 better, 13 done, 20 partial, 151 missing, 3 out of scope.
 
 ### Home ▸ Clipboard
 
@@ -1359,7 +1363,7 @@ Score 12.5 % over 184 rows in scope; 0 better, 11 done, 19 partial, 154 missing,
 | ○ | Apply to all slides | PowerPoint ▸ Transitions ▸ Timing ▸ Apply To All | critical | P0 | WP-80 | `deck.transitions.apply-to-all` |
 | ○ | Advance slide on click and/or after a time | PowerPoint ▸ Transitions ▸ Timing ▸ Advance Slide | critical | P0 | WP-80 | `deck.transitions.advance` |
 | ○ | Transition sound | PowerPoint ▸ Transitions ▸ Timing ▸ Sound | niche | P2 | WP-78 | `deck.transitions.sound` |
-| ○ | Transitions without a Kiln renderer are preserved in the file and fall back to Fade in the show | PowerPoint ▸ other transitions | critical | P0 | WP-79 | `deck.transitions.preserve-unknown` |
+| ● | Transitions without a Kiln renderer are preserved in the file and fall back to Fade in the show | PowerPoint ▸ other transitions | critical | P0 | WP-79 | `deck.transitions.preserve-unknown` |
 
 ### Animations
 
@@ -1390,7 +1394,7 @@ Score 12.5 % over 184 rows in scope; 0 better, 11 done, 19 partial, 154 missing,
 | ○ | Animation triggers | PowerPoint ▸ Animations ▸ Trigger | niche | P2 | WP-78 | `deck.animations.trigger` |
 | ○ | Animation Painter | PowerPoint ▸ Animations ▸ Animation Painter | commonly-missed | P0 | WP-80 | `deck.animations.painter` |
 | ○ | Start on click / with previous / after previous, duration, delay, reorder | PowerPoint ▸ Animations ▸ Timing | critical | P0 | WP-80 | `deck.animations.timing` |
-| ○ | Animations without a Kiln renderer are preserved in the file | PowerPoint ▸ other effects | critical | P0 | WP-79 | `deck.animations.preserve-unknown` |
+| ● | Animations without a Kiln renderer are preserved in the file | PowerPoint ▸ other effects | critical | P0 | WP-79 | `deck.animations.preserve-unknown` |
 
 ### Slide Show
 
@@ -1523,7 +1527,7 @@ Score 12.5 % over 184 rows in scope; 0 better, 11 done, 19 partial, 154 missing,
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
 | ◐ | Open .pptx with masters, layouts, themes, shapes, pictures, tables, charts, transitions, animations and notes | PowerPoint ▸ Open .pptx | critical | P0 | WP-77 | `deck.files.pptx-open` |
-| ○ | Save .pptx that PowerPoint opens without repair; untouched parts byte-identical | PowerPoint ▸ Save .pptx | critical | P0 | WP-79 | `deck.files.pptx-save` |
+| ◐ | Save .pptx that PowerPoint opens without repair; untouched parts byte-identical | PowerPoint ▸ Save .pptx | critical | P0 | WP-79 | `deck.files.pptx-save` |
 | ○ | Export slides as PNG | PowerPoint ▸ Export ▸ PNG | commonly-missed | P0 | WP-79 | `deck.files.png-export` |
 | ○ | Export to PDF with notes or handouts | PowerPoint ▸ Export ▸ PDF | critical | P0 | WP-67 | `deck.files.pdf-export` |
 | ○ | Open legacy .ppt files (import through conversion) | PowerPoint ▸ PowerPoint 97–2003 | niche | P2 | — | `deck.files.ppt-legacy` |
@@ -1617,7 +1621,7 @@ Score 0.0 % over 44 rows in scope; 0 better, 0 done, 0 partial, 44 missing, 1 ou
 
 ## Suite
 
-Score 13.5 % over 62 rows in scope; 1 better, 2 done, 9 partial, 50 missing, 9 out of scope.
+Score 14.5 % over 62 rows in scope; 1 better, 2 done, 10 partial, 49 missing, 9 out of scope.
 
 ### Chrome
 
@@ -1648,7 +1652,7 @@ Score 13.5 % over 62 rows in scope; 1 better, 2 done, 9 partial, 50 missing, 9 o
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Open and save .docx, .xlsx, .pptx | Office ▸ native formats | critical | P0 | WP-65 | `suite.files.ooxml` |
+| ◐ | Open and save .docx, .xlsx, .pptx | Office ▸ native formats | critical | P0 | WP-65 | `suite.files.ooxml` |
 | ◐ | Byte-preserving saves: every part not edited is byte-identical after save | — | commonly-missed | P0 | WP-65 | `suite.files.byte-preserving` |
 | ◐ | Macro-enabled files (.docm/.xlsm/.pptm): vbaProject.bin preserved, never run | Office ▸ macro-enabled formats | critical | P0 | WP-65 | `suite.files.macros-preserve` |
 | ○ | ODF .odt/.ods/.odp import and export | Office ▸ OpenDocument | commonly-missed | P1 | WP-87 | `suite.files.odf` |

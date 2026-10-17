@@ -13,6 +13,7 @@ kiln-cli inspect talk.pptx --pptx                 # masters, layouts, slides wit
 kiln-cli repack book.xlsx /tmp/book.xlsx          # open and save without edits
 kiln-cli convert report.docx copy.docx            # read and save as Kiln Write saves
 kiln-cli convert book.xlsx book.csv               # workbooks, CSV, TSV and JSON too
+kiln-cli convert talk.pptx talk.potx              # presentations and templates
 kiln-cli render notes.txt --png out/page-%03d.png --dpi 150
 kiln-cli eval '=SUM(1,2,3)/4'                     # 1.5
 kiln-cli control < requests.jsonl                 # JSON requests in, JSON responses out
@@ -26,7 +27,7 @@ command is one); `kiln-cli help` prints the summary and exits 0. Output piped in
 early (`kiln-cli inspect a.docx --xml /word/document.xml | head`) ends quietly.
 
 What works today: `inspect`, `repack` and `fidelity` handle any `.docx`, `.xlsx` or `.pptx` package;
-`convert` reads and writes Word documents (WP-65) and workbooks, CSV, TSV and JSON (WP-70);
+`convert` reads and writes Word documents (WP-65), workbooks, CSV, TSV and JSON (WP-70) and presentations (WP-79);
 `render` and `control` open the document kinds whose app is in the build: the plain-text scratch document
 (`.txt`, `.md`) and, since the Word reader (WP-62), `.docx`, `.dotx` and `.docm` — which `control` opens and
 queries today and `render` paints once the Write layout lands (WP-63). Excel and PowerPoint files join as their
@@ -81,6 +82,7 @@ out byte for byte.
 ```text
 kiln-cli convert <in.docx> <out.docx|.docm|.dotx|.dotm>
 kiln-cli convert <in.xlsx|.xlsm|.xltx|.xltm|.csv|.tsv|.json> <out.xlsx|.xlsm|.xltx|.xltm|.csv|.tsv|.json>
+kiln-cli convert <in.pptx|.pptm|.potx|.potm|.ppsx|.ppsm> <out.pptx|.pptm|.potx|.potm|.ppsx|.ppsm>
 ```
 
 Reads a document and saves it in the format the output's extension names, exactly as Kiln saves it (File ▸
@@ -98,10 +100,17 @@ and says so when the workbook has more sheets; saved as `.json` it writes the sh
 used range) as an array of objects. CSV and TSV input is read with its encoding and delimiter detected and
 each field recognised as Excel's cell entry does; JSON input is an array of objects (or of arrays).
 
+Presentations (WP-79): masters, layouts, slides, notes, comments and properties are written from the model;
+SmartArt, OLE objects, ink, content for newer PowerPoint versions, media, charts and everything else Kiln does
+not model are carried over, and transitions and animation timing come back exactly as they were (effects Kiln does
+not play included). Macros go only into `.pptm`, `.potm` and `.ppsm`.
+
 ```sh
 kiln-cli convert fixtures/docx/features/tracked-changes.docx /tmp/t.docx
 soffice --headless --convert-to pdf --outdir /tmp /tmp/t.docx    # LibreOffice opens the result
 kiln-cli convert fixtures/xlsx/features/formulas.xlsx /tmp/f.csv  # the values LibreOffice's csv has
+kiln-cli convert fixtures/pptx/features/animations.pptx /tmp/a.pptx
+soffice --headless --convert-to pdf --outdir /tmp /tmp/a.pptx    # LibreOffice opens it too
 ```
 ## render
 
