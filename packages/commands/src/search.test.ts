@@ -30,14 +30,14 @@ describe('fuzzy search', () => {
   it('finds Office terms through titles, Office names and synonyms', () => {
     const cmds = withSynonyms();
     const top = (q: string) => searchCommands(cmds, q, { limit: 3 }).map((m) => m.command.id);
-    expect(top('Merge & Center')[0]).toBe('grid.mergeCenter');
-    expect(top('Freeze Panes')[0]).toBe('grid.freezePanes');
-    expect(top('Track Changes')[0]).toBe('review.trackChanges');
-    expect(top('Format Painter')[0]).toBe('edit.formatPainter');
-    expect(top('tell me')).toContain('view.commandPalette');
-    expect(top('strikeout')[0]).toBe('format.strikethrough');
+    expect(top('Merge & Center')[0]).toBe('grid.alignment.merge_center');
+    expect(top('Freeze Panes')[0]).toBe('grid.view.freeze_panes');
+    expect(top('Track Changes')[0]).toBe('write.review.track_changes');
+    expect(top('Format Painter')[0]).toBe('suite.edit.format_painter');
+    expect(top('tell me')).toContain('ui.palette.open');
+    expect(top('strikeout')[0]).toBe('suite.format.strikethrough');
     const hit = searchCommands(cmds, 'smartart')[0];
-    expect(hit?.command.id).toBe('deck.convertToDiagram');
+    expect(hit?.command.id).toBe('deck.paragraph.convert_to_diagram');
     expect(hit?.matchedOn).not.toBe('title');
   });
 
@@ -54,7 +54,7 @@ describe('RecentCommands', () => {
   it('keeps the newest first, de-duplicated, limited and persisted locally', () => {
     const storage = new MemoryStorage();
     const r = new RecentCommands({ storage, limit: 3 });
-    for (const id of ['a.one', 'a.two', 'a.one', 'a.three', 'a.four', 'view.commandPalette']) r.record(id);
+    for (const id of ['a.one', 'a.two', 'a.one', 'a.three', 'a.four', 'ui.palette.open']) r.record(id);
     expect(r.list()).toEqual(['a.four', 'a.three', 'a.one']);
     expect(new RecentCommands({ storage, limit: 3 }).list()).toEqual(['a.four', 'a.three', 'a.one']);
     r.remove('a.three');

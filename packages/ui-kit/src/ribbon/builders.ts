@@ -2,7 +2,7 @@
  * Terse builders for ribbon specs, so app ribbons read like PLAN.md §1.4:
  *
  *   tab('home', 'Home', [
- *     group('clipboard', 'Clipboard', [split('edit.paste', pasteMenu, { size: 'large' }), button('edit.cut'), …]),
+ *     group('clipboard', 'Clipboard', [split('suite.edit.paste', pasteMenu, { size: 'large' }), button('suite.edit.cut'), …]),
  *   ], { keyTip: 'H' })
  */
 import type { AppId } from '@kiln/commands';

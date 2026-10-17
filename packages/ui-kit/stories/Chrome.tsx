@@ -83,11 +83,11 @@ const BLOCK_FOR: Record<string, string> = {
 
 const pasteMenu: MenuEntry[] = [
   { kind: 'heading', label: 'Paste Options' },
-  item('edit.pasteKeepSource'),
-  item('edit.pasteMergeFormatting'),
-  item('edit.pasteTextOnly'),
+  item('suite.edit.paste_keep_source'),
+  item('suite.edit.paste_merge_formatting'),
+  item('suite.edit.paste_text_only'),
   separator(),
-  item('edit.pasteSpecial'),
+  item('suite.edit.paste_special'),
 ];
 
 /** The demo ribbon: Write's Home tab in full, plus Insert, Layout, Review, View and a contextual set. */
@@ -97,10 +97,10 @@ export const demoRibbon: RibbonSpec = ribbon('write', [
     'Home',
     [
       group('clipboard', 'Clipboard', [
-        split('edit.paste', pasteMenu, { size: 'large' }),
-        button('edit.cut', { size: 'medium' }),
-        button('edit.copy', { size: 'medium' }),
-        button('edit.formatPainter', { size: 'medium' }),
+        split('suite.edit.paste', pasteMenu, { size: 'large' }),
+        button('suite.edit.cut', { size: 'medium' }),
+        button('suite.edit.copy', { size: 'medium' }),
+        button('suite.edit.format_painter', { size: 'medium' }),
       ]),
       group(
         'font',
@@ -108,99 +108,109 @@ export const demoRibbon: RibbonSpec = ribbon('write', [
         [
           row(
             combobox(
-              'format.fontFamily',
+              'suite.format.font_family',
               FONTS.map((f) => ({ value: f, style: { fontFamily: f } })),
               { width: 132 },
             ),
             combobox(
-              'format.fontSize',
+              'suite.format.font_size',
               SIZES.map((s) => ({ value: s })),
               { width: 56 },
             ),
-            button('format.growFont'),
-            button('format.shrinkFont'),
+            button('suite.format.grow_font'),
+            button('suite.format.shrink_font'),
             dropdown(
-              'format.changeCase',
+              'suite.format.change_case',
               [
-                item('format.changeCase', { label: 'Sentence case.' }),
-                item('format.changeCase', { label: 'lowercase' }),
-                item('format.changeCase', { label: 'UPPERCASE' }),
+                item('suite.format.change_case', { label: 'Sentence case.' }),
+                item('suite.format.change_case', { label: 'lowercase' }),
+                item('suite.format.change_case', { label: 'UPPERCASE' }),
               ],
               { size: 'small' },
             ),
-            button('format.clearFormatting'),
+            button('suite.format.clear_formatting'),
           ),
           row(
-            toggle('format.bold'),
-            toggle('format.italic'),
-            split('format.underline', [item('format.underline'), item('format.doubleUnderline')], {
-              size: 'small',
-            }),
-            toggle('format.strikethrough'),
-            toggle('format.subscript'),
-            toggle('format.superscript'),
-            color('format.highlight', { defaultColor: '#FFE066', allowNone: true }),
-            color('format.fontColor', { defaultColor: '#C8352B', allowAuto: true }),
+            toggle('suite.format.bold'),
+            toggle('suite.format.italic'),
+            split(
+              'suite.format.underline',
+              [item('suite.format.underline'), item('suite.format.double_underline')],
+              {
+                size: 'small',
+              },
+            ),
+            toggle('suite.format.strikethrough'),
+            toggle('suite.format.subscript'),
+            toggle('suite.format.superscript'),
+            color('suite.format.highlight', { defaultColor: '#FFE066', allowNone: true }),
+            color('suite.format.font_color', { defaultColor: '#C8352B', allowAuto: true }),
           ),
         ],
-        { rows: 2, launcher: { command: 'format.fontDialog' }, icon: 'Type' },
+        { rows: 2, launcher: { command: 'suite.format.font_dialog' }, icon: 'Type' },
       ),
       group(
         'paragraph',
         'Paragraph',
         [
           row(
-            split('format.bullets', [item('format.bullets'), item('format.numbering')], { size: 'small' }),
-            split('format.numbering', [item('format.numbering')], { size: 'small' }),
-            button('format.multilevelList'),
-            button('format.outdent'),
-            button('format.indent'),
-            button('write.sort'),
-            toggle('view.showFormattingMarks'),
+            split('suite.format.bullets', [item('suite.format.bullets'), item('suite.format.numbering')], {
+              size: 'small',
+            }),
+            split('suite.format.numbering', [item('suite.format.numbering')], { size: 'small' }),
+            button('suite.format.multilevel_list'),
+            button('suite.format.outdent'),
+            button('suite.format.indent'),
+            button('write.paragraph.sort'),
+            toggle('write.paragraph.show_marks'),
           ),
           row(
-            toggle('format.alignLeft'),
-            toggle('format.alignCenter'),
-            toggle('format.alignRight'),
-            toggle('format.justify'),
+            toggle('suite.format.align_left'),
+            toggle('suite.format.align_center'),
+            toggle('suite.format.align_right'),
+            toggle('suite.format.justify'),
             dropdown(
-              'format.lineSpacing',
+              'suite.format.line_spacing',
               [
-                item('format.lineSpacing', { label: '1.0', args: { lineSpacing: 1 } }),
-                item('format.lineSpacing', { label: '1.15', args: { lineSpacing: 1.15 } }),
-                item('format.lineSpacing', { label: '1.5', args: { lineSpacing: 1.5 } }),
-                item('format.lineSpacing', { label: '2.0', args: { lineSpacing: 2 } }),
+                item('suite.format.line_spacing', { label: '1.0', args: { lineSpacing: 1 } }),
+                item('suite.format.line_spacing', { label: '1.15', args: { lineSpacing: 1.15 } }),
+                item('suite.format.line_spacing', { label: '1.5', args: { lineSpacing: 1.5 } }),
+                item('suite.format.line_spacing', { label: '2.0', args: { lineSpacing: 2 } }),
               ],
               { size: 'small' },
             ),
-            button('format.shading'),
-            button('format.borders'),
+            button('write.paragraph.shading'),
+            button('write.paragraph.borders'),
           ),
         ],
-        { rows: 2, launcher: { command: 'format.paragraphDialog' }, icon: 'Pilcrow' },
+        { rows: 2, launcher: { command: 'suite.format.paragraph_dialog' }, icon: 'Pilcrow' },
       ),
       group(
         'styles',
         'Styles',
         [
-          gallery('write.styles', STYLE_ITEMS, {
+          gallery('write.styles.apply', STYLE_ITEMS, {
             columns: 5,
             itemWidth: 84,
             itemHeight: 62,
-            footer: [item('format.clearFormatting'), item('write.stylesPane')],
+            footer: [item('suite.format.clear_formatting'), item('write.styles.pane')],
           }),
         ],
-        { launcher: { command: 'write.stylesPane' }, icon: 'StylesPane', priority: 2 },
+        { launcher: { command: 'write.styles.pane' }, icon: 'StylesPane', priority: 2 },
       ),
       group(
         'editing',
         'Editing',
         [
-          split('edit.find', [item('edit.find'), item('edit.goTo')], { size: 'medium' }),
-          button('edit.replace', { size: 'medium' }),
-          dropdown('edit.select', [item('edit.selectAll'), item('arrange.selectionPane')], {
-            size: 'medium',
-          }),
+          split('suite.edit.find', [item('suite.edit.find'), item('suite.edit.go_to')], { size: 'medium' }),
+          button('suite.edit.replace', { size: 'medium' }),
+          dropdown(
+            'suite.edit.select',
+            [item('suite.edit.select_all'), item('suite.arrange.selection_pane')],
+            {
+              size: 'medium',
+            },
+          ),
         ],
         { priority: 1 },
       ),
@@ -208,8 +218,8 @@ export const demoRibbon: RibbonSpec = ribbon('write', [
         'focus',
         'Focus',
         [
-          button('view.focusMode', { size: 'large' }),
-          button('view.commandPalette', { size: 'large', label: 'Command Palette' }),
+          button('write.view.focus_mode', { size: 'large' }),
+          button('ui.palette.open', { size: 'large', label: 'Command Palette' }),
         ],
         { priority: 0 },
       ),
@@ -221,48 +231,52 @@ export const demoRibbon: RibbonSpec = ribbon('write', [
     'Insert',
     [
       group('pages', 'Pages', [
-        button('write.coverPage', { size: 'medium' }),
-        button('write.blankPage', { size: 'medium' }),
-        button('write.pageBreak', { size: 'medium' }),
+        button('write.insert.cover_page', { size: 'medium' }),
+        button('write.insert.blank_page', { size: 'medium' }),
+        button('write.insert.page_break', { size: 'medium' }),
       ]),
       group('tables', 'Tables', [
         dropdown(
-          'insert.table',
+          'suite.insert.table',
           [
-            item('insert.table', { label: 'Insert Table…' }),
-            item('write.convertTextToTable'),
-            item('write.pasteMarkdownTable'),
+            item('suite.insert.table', { label: 'Insert Table…' }),
+            item('write.insert.convert_text_to_table'),
+            item('write.insert.paste_markdown_table'),
           ],
           { size: 'large' },
         ),
       ]),
       group('illustrations', 'Illustrations', [
-        dropdown('insert.pictures', [item('insert.pictures', { label: 'This Device…' })], { size: 'large' }),
-        button('insert.shapes', { size: 'medium' }),
-        button('insert.icons', { size: 'medium' }),
-        button('insert.chart', { size: 'medium' }),
+        dropdown('suite.insert.pictures', [item('suite.insert.pictures', { label: 'This Device…' })], {
+          size: 'large',
+        }),
+        button('suite.insert.shapes', { size: 'medium' }),
+        button('suite.insert.icons', { size: 'medium' }),
+        button('suite.chart.insert', { size: 'medium' }),
       ]),
       group('links', 'Links', [
-        button('insert.link', { size: 'large' }),
-        button('write.bookmark', { size: 'medium' }),
-        button('write.crossReference', { size: 'medium' }),
+        button('suite.insert.link', { size: 'large' }),
+        button('write.insert.bookmark', { size: 'medium' }),
+        button('write.insert.cross_reference', { size: 'medium' }),
       ]),
-      group('comments', 'Comments', [button('review.newComment', { size: 'large', label: 'Comment' })]),
+      group('comments', 'Comments', [
+        button('suite.review.new_comment', { size: 'large', label: 'Comment' }),
+      ]),
       group('headerFooter', 'Header & Footer', [
-        button('write.header', { size: 'medium' }),
-        button('write.footer', { size: 'medium' }),
-        button('write.pageNumber', { size: 'medium' }),
+        button('write.insert.header', { size: 'medium' }),
+        button('write.insert.footer', { size: 'medium' }),
+        button('write.insert.page_number', { size: 'medium' }),
       ]),
       group('text', 'Text', [
-        button('insert.textBox', { size: 'large' }),
-        button('write.quickParts', { size: 'small' }),
-        button('insert.wordArt', { size: 'small' }),
-        button('write.dropCap', { size: 'small' }),
-        button('insert.dateTime', { size: 'small' }),
+        button('suite.insert.text_box', { size: 'large' }),
+        button('write.insert.quick_parts', { size: 'small' }),
+        button('suite.insert.word_art', { size: 'small' }),
+        button('write.insert.drop_cap', { size: 'small' }),
+        button('suite.insert.date_time', { size: 'small' }),
       ]),
       group('symbols', 'Symbols', [
-        button('insert.equation', { size: 'medium' }),
-        button('insert.symbol', { size: 'medium' }),
+        button('suite.insert.equation', { size: 'medium' }),
+        button('suite.insert.symbol', { size: 'medium' }),
       ]),
     ],
     { keyTip: 'N' },
@@ -276,60 +290,72 @@ export const demoRibbon: RibbonSpec = ribbon('write', [
         'Page Setup',
         [
           dropdown(
-            'layout.margins',
+            'suite.layout.margins',
             [
               submenu('Margins', [
-                item('layout.margins', { label: 'Normal' }),
-                item('layout.margins', { label: 'Narrow' }),
-                item('layout.margins', { label: 'Wide' }),
+                item('suite.layout.margins', { label: 'Normal' }),
+                item('suite.layout.margins', { label: 'Narrow' }),
+                item('suite.layout.margins', { label: 'Wide' }),
               ]),
             ],
             { size: 'large' },
           ),
           dropdown(
-            'layout.orientation',
+            'suite.layout.orientation',
             [
-              item('layout.orientation', { label: 'Portrait' }),
-              item('layout.orientation', { label: 'Landscape' }),
+              item('suite.layout.orientation', { label: 'Portrait' }),
+              item('suite.layout.orientation', { label: 'Landscape' }),
             ],
             { size: 'large' },
           ),
           dropdown(
-            'layout.size',
-            [item('layout.size', { label: 'Letter' }), item('layout.size', { label: 'A4' })],
+            'suite.layout.size',
+            [item('suite.layout.size', { label: 'Letter' }), item('suite.layout.size', { label: 'A4' })],
             { size: 'large' },
           ),
           dropdown(
-            'layout.columns',
-            [item('layout.columns', { label: 'One' }), item('layout.columns', { label: 'Two' })],
+            'write.layout.columns',
+            [item('write.layout.columns', { label: 'One' }), item('write.layout.columns', { label: 'Two' })],
             { size: 'large' },
           ),
-          button('layout.breaks', { size: 'medium' }),
-          button('layout.lineNumbers', { size: 'medium' }),
-          button('layout.hyphenation', { size: 'medium' }),
+          button('suite.layout.breaks', { size: 'medium' }),
+          button('write.layout.line_numbers', { size: 'medium' }),
+          button('write.layout.hyphenation', { size: 'medium' }),
         ],
-        { launcher: { command: 'layout.pageSetup' } },
+        { launcher: { command: 'suite.layout.page_setup' } },
       ),
       group(
         'paragraph',
         'Paragraph',
         [
-          numberInput('layout.indentLeft', { unit: 'cm', size: 'medium', min: 0, max: 50 }),
-          numberInput('layout.indentRight', { unit: 'cm', size: 'medium', min: 0, max: 50 }),
-          numberInput('layout.spacingBefore', { unit: 'pt', size: 'medium', min: 0, max: 1584, step: 6 }),
-          numberInput('layout.spacingAfter', { unit: 'pt', size: 'medium', min: 0, max: 1584, step: 6 }),
+          numberInput('write.layout.indent_left', { unit: 'cm', size: 'medium', min: 0, max: 50 }),
+          numberInput('write.layout.indent_right', { unit: 'cm', size: 'medium', min: 0, max: 50 }),
+          numberInput('write.layout.spacing_before', {
+            unit: 'pt',
+            size: 'medium',
+            min: 0,
+            max: 1584,
+            step: 6,
+          }),
+          numberInput('write.layout.spacing_after', {
+            unit: 'pt',
+            size: 'medium',
+            min: 0,
+            max: 1584,
+            step: 6,
+          }),
         ],
         { rows: 2 },
       ),
       group('arrange', 'Arrange', [
-        button('arrange.position', { size: 'large' }),
-        button('arrange.wrapText', { size: 'large' }),
-        button('arrange.bringForward', { size: 'medium' }),
-        button('arrange.sendBackward', { size: 'medium' }),
-        button('arrange.selectionPane', { size: 'medium' }),
-        button('arrange.align', { size: 'small' }),
-        button('arrange.group', { size: 'small' }),
-        button('arrange.rotate', { size: 'small' }),
+        button('suite.arrange.position', { size: 'large' }),
+        button('suite.arrange.wrap_text', { size: 'large' }),
+        button('suite.arrange.bring_forward', { size: 'medium' }),
+        button('suite.arrange.send_backward', { size: 'medium' }),
+        button('suite.arrange.selection_pane', { size: 'medium' }),
+        button('suite.arrange.align', { size: 'small' }),
+        button('suite.arrange.group', { size: 'small' }),
+        button('suite.arrange.rotate', { size: 'small' }),
       ]),
     ],
     { keyTip: 'P' },
@@ -339,28 +365,28 @@ export const demoRibbon: RibbonSpec = ribbon('write', [
     'Review',
     [
       group('proofing', 'Proofing', [
-        button('review.spelling', { size: 'large' }),
-        button('review.thesaurus', { size: 'medium' }),
-        button('review.wordCount', { size: 'medium' }),
+        button('suite.review.spelling', { size: 'large' }),
+        button('suite.review.thesaurus', { size: 'medium' }),
+        button('suite.review.word_count', { size: 'medium' }),
       ]),
       group('comments', 'Comments', [
-        button('review.newComment', { size: 'large' }),
-        button('review.deleteComment', { size: 'medium' }),
-        button('review.previousComment', { size: 'medium' }),
-        button('review.nextComment', { size: 'medium' }),
+        button('suite.review.new_comment', { size: 'large' }),
+        button('suite.review.delete_comment', { size: 'medium' }),
+        button('suite.review.previous_comment', { size: 'medium' }),
+        button('suite.review.next_comment', { size: 'medium' }),
       ]),
       group('tracking', 'Tracking', [
-        toggle('review.trackChanges', { size: 'large' }),
-        button('review.showMarkup', { size: 'medium' }),
-        button('review.reviewingPane', { size: 'medium' }),
+        toggle('write.review.track_changes', { size: 'large' }),
+        button('write.review.show_markup', { size: 'medium' }),
+        button('write.review.reviewing_pane', { size: 'medium' }),
       ]),
       group('changes', 'Changes', [
-        button('review.acceptChange', { size: 'large' }),
-        button('review.rejectChange', { size: 'large' }),
-        button('review.previousChange', { size: 'medium' }),
-        button('review.nextChange', { size: 'medium' }),
+        button('write.review.accept', { size: 'large' }),
+        button('write.review.reject', { size: 'large' }),
+        button('write.review.previous_change', { size: 'medium' }),
+        button('write.review.next_change', { size: 'medium' }),
       ]),
-      group('history', 'History', [button('file.versionHistory', { size: 'large' })]),
+      group('history', 'History', [button('suite.file.version_history', { size: 'large' })]),
     ],
     { keyTip: 'R' },
   ),
@@ -369,32 +395,53 @@ export const demoRibbon: RibbonSpec = ribbon('write', [
     'View',
     [
       group('views', 'Views', [
-        button('view.readMode', { size: 'large' }),
-        button('view.printLayout', { size: 'large' }),
-        button('view.webLayout', { size: 'large' }),
+        toggle('suite.view.mode', {
+          id: 'view.read',
+          args: { mode: 'ReadMode' },
+          checkedValue: 'ReadMode',
+          label: 'Read Mode',
+          icon: 'ReadMode',
+          size: 'large',
+        }),
+        toggle('suite.view.mode', {
+          id: 'view.print',
+          args: { mode: 'PrintLayout' },
+          checkedValue: 'PrintLayout',
+          label: 'Print Layout',
+          icon: 'PrintLayout',
+          size: 'large',
+        }),
+        toggle('suite.view.mode', {
+          id: 'view.web',
+          args: { mode: 'WebLayout' },
+          checkedValue: 'WebLayout',
+          label: 'Web Layout',
+          icon: 'WebLayout',
+          size: 'large',
+        }),
       ]),
-      group('immersive', 'Immersive', [button('view.focusMode', { size: 'large' })]),
+      group('immersive', 'Immersive', [button('write.view.focus_mode', { size: 'large' })]),
       group('show', 'Show', [
-        toggle('view.ruler', { size: 'medium' }),
-        toggle('view.gridlines', { size: 'medium' }),
-        toggle('view.navigationPane', { size: 'medium' }),
+        toggle('suite.view.ruler', { size: 'medium' }),
+        toggle('suite.view.gridlines', { size: 'medium' }),
+        toggle('suite.view.navigation_pane', { size: 'medium' }),
       ]),
       group('zoom', 'Zoom', [
-        button('view.zoom', { size: 'large' }),
-        button('view.zoom100', { size: 'large' }),
-        button('view.onePage', { size: 'medium' }),
-        button('view.multiplePages', { size: 'medium' }),
-        button('view.pageWidth', { size: 'medium' }),
+        button('suite.view.zoom', { size: 'large' }),
+        button('suite.view.zoom_100', { size: 'large' }),
+        button('suite.view.one_page', { size: 'medium' }),
+        button('suite.view.multiple_pages', { size: 'medium' }),
+        button('suite.view.page_width', { size: 'medium' }),
       ]),
       group('ribbon', 'Ribbon', [
-        toggle('view.ribbonClassic', { size: 'medium' }),
-        toggle('view.ribbonSimplified', { size: 'medium' }),
-        toggle('view.toggleRibbon', { size: 'medium' }),
+        toggle('ui.ribbon.classic', { size: 'medium' }),
+        toggle('ui.ribbon.simplified', { size: 'medium' }),
+        toggle('ui.ribbon.collapse', { size: 'medium' }),
       ]),
       group('theme', 'Theme', [
-        toggle('view.themeLight', { size: 'medium' }),
-        toggle('view.themeDark', { size: 'medium' }),
-        toggle('view.themeSystem', { size: 'medium' }),
+        toggle('ui.theme.light', { size: 'medium' }),
+        toggle('ui.theme.dark', { size: 'medium' }),
+        toggle('ui.theme.system', { size: 'medium' }),
       ]),
     ],
     { keyTip: 'W' },
@@ -404,11 +451,11 @@ export const demoRibbon: RibbonSpec = ribbon('write', [
     'Table Design',
     [
       group('styleOptions', 'Table Style Options', [
-        toggle('view.gridlines', { size: 'medium', label: 'Header Row' }),
+        toggle('suite.view.gridlines', { size: 'medium', label: 'Header Row' }),
       ]),
       group('tableStyles', 'Table Styles', [
-        button('format.shading', { size: 'large' }),
-        button('format.borders', { size: 'large' }),
+        button('write.paragraph.shading', { size: 'large' }),
+        button('write.paragraph.borders', { size: 'large' }),
       ]),
     ],
     { contextual: { set: 'table', label: 'Table Tools' }, when: (ctx) => ctx.inTable === true, keyTip: 'JT' },
@@ -418,13 +465,17 @@ export const demoRibbon: RibbonSpec = ribbon('write', [
     'Layout',
     [
       group('rowsCols', 'Rows & Columns', [
-        button('grid.insertCells', { size: 'large', label: 'Insert Above' }),
-        button('grid.deleteCells', { size: 'large', label: 'Delete' }),
+        button('grid.cells.insert_cells', { size: 'large', label: 'Insert Above' }),
+        button('grid.cells.delete_cells', { size: 'large', label: 'Delete' }),
       ]),
     ],
     { contextual: { set: 'table', label: 'Table Tools' }, when: (ctx) => ctx.inTable === true, keyTip: 'JL' },
   ),
 ]);
+
+/** The demo's views as the core's `ViewMode` values (`suite.view.mode`). */
+const VIEW_OF: Record<string, string> = { ReadMode: 'read', PrintLayout: 'print', WebLayout: 'web' };
+const MODE_OF: Record<string, string> = { read: 'ReadMode', print: 'PrintLayout', web: 'WebLayout' };
 
 /** Live editing state of the demo page. */
 function exec(command: string, value?: string) {
@@ -449,100 +500,100 @@ function demoCommands(env: {
   ruler: { get: () => boolean; set: (v: boolean) => void };
 }): CommandDefinition<never>[] {
   const defs: CommandDefinition<unknown>[] = [
-    { id: 'format.bold', title: 'Bold', run: () => exec('bold'), isChecked: () => queryState('bold') },
+    { id: 'suite.format.bold', title: 'Bold', run: () => exec('bold'), isChecked: () => queryState('bold') },
     {
-      id: 'format.italic',
+      id: 'suite.format.italic',
       title: 'Italic',
       run: () => exec('italic'),
       isChecked: () => queryState('italic'),
     },
     {
-      id: 'format.underline',
+      id: 'suite.format.underline',
       title: 'Underline',
       run: () => exec('underline'),
       isChecked: () => queryState('underline'),
     },
     {
-      id: 'format.strikethrough',
+      id: 'suite.format.strikethrough',
       title: 'Strikethrough',
       run: () => exec('strikeThrough'),
       isChecked: () => queryState('strikeThrough'),
     },
     {
-      id: 'format.subscript',
+      id: 'suite.format.subscript',
       title: 'Subscript',
       run: () => exec('subscript'),
       isChecked: () => queryState('subscript'),
     },
     {
-      id: 'format.superscript',
+      id: 'suite.format.superscript',
       title: 'Superscript',
       run: () => exec('superscript'),
       isChecked: () => queryState('superscript'),
     },
     {
-      id: 'format.alignLeft',
+      id: 'suite.format.align_left',
       title: 'Align Left',
       run: () => exec('justifyLeft'),
       isChecked: () => queryState('justifyLeft'),
     },
     {
-      id: 'format.alignCenter',
+      id: 'suite.format.align_center',
       title: 'Center',
       run: () => exec('justifyCenter'),
       isChecked: () => queryState('justifyCenter'),
     },
     {
-      id: 'format.alignRight',
+      id: 'suite.format.align_right',
       title: 'Align Right',
       run: () => exec('justifyRight'),
       isChecked: () => queryState('justifyRight'),
     },
     {
-      id: 'format.justify',
+      id: 'suite.format.justify',
       title: 'Justify',
       run: () => exec('justifyFull'),
       isChecked: () => queryState('justifyFull'),
     },
     {
-      id: 'format.bullets',
+      id: 'suite.format.bullets',
       title: 'Bullets',
       run: () => exec('insertUnorderedList'),
       isChecked: () => queryState('insertUnorderedList'),
     },
     {
-      id: 'format.numbering',
+      id: 'suite.format.numbering',
       title: 'Numbering',
       run: () => exec('insertOrderedList'),
       isChecked: () => queryState('insertOrderedList'),
     },
-    { id: 'format.indent', title: 'Increase Indent', run: () => exec('indent') },
-    { id: 'format.outdent', title: 'Decrease Indent', run: () => exec('outdent') },
-    { id: 'format.clearFormatting', title: 'Clear All Formatting', run: () => exec('removeFormat') },
-    { id: 'edit.undo', title: 'Undo', run: () => exec('undo') },
-    { id: 'edit.redo', title: 'Redo', run: () => exec('redo') },
-    { id: 'edit.cut', title: 'Cut', run: () => exec('cut') },
-    { id: 'edit.copy', title: 'Copy', run: () => exec('copy') },
+    { id: 'suite.format.indent', title: 'Increase Indent', run: () => exec('indent') },
+    { id: 'suite.format.outdent', title: 'Decrease Indent', run: () => exec('outdent') },
+    { id: 'suite.format.clear_formatting', title: 'Clear All Formatting', run: () => exec('removeFormat') },
+    { id: 'suite.edit.undo', title: 'Undo', run: () => exec('undo') },
+    { id: 'suite.edit.redo', title: 'Redo', run: () => exec('redo') },
+    { id: 'suite.edit.cut', title: 'Cut', run: () => exec('cut') },
+    { id: 'suite.edit.copy', title: 'Copy', run: () => exec('copy') },
     {
-      id: 'edit.paste',
+      id: 'suite.edit.paste',
       title: 'Paste',
       run: async () => exec('insertText', await navigator.clipboard.readText()),
     },
     {
-      id: 'format.fontFamily',
+      id: 'suite.format.font_family',
       title: 'Font',
       run: (_c, a) => exec('fontName', (a as { value: string }).value),
       value: () => (document.queryCommandValue('fontName') || 'Calibri').replace(/["']/g, '').split(',')[0],
     },
-    { id: 'format.fontSize', title: 'Font Size', run: () => {}, value: () => '11' },
+    { id: 'suite.format.font_size', title: 'Font Size', run: () => {}, value: () => '11' },
     {
-      id: 'format.highlight',
+      id: 'suite.format.highlight',
       title: 'Text Highlight Color',
       run: (_c, a) => exec('hiliteColor', colorOf(a)),
     },
-    { id: 'format.fontColor', title: 'Font Color', run: (_c, a) => exec('foreColor', colorOf(a)) },
+    { id: 'suite.format.font_color', title: 'Font Color', run: (_c, a) => exec('foreColor', colorOf(a)) },
     {
-      id: 'write.styles',
+      id: 'write.styles.apply',
       title: 'Styles',
       run: (_c, a) => exec('formatBlock', BLOCK_FOR[(a as { value: string }).value] ?? 'p'),
       value: () => {
@@ -550,53 +601,42 @@ function demoCommands(env: {
         return b === 'blockquote' ? 'quote' : b === 'div' ? 'p' : b;
       },
     },
-    { id: 'write.stylesPane', title: 'Styles Pane', run: () => env.openPane('styles') },
-    { id: 'edit.find', title: 'Find', run: () => env.openPane('navigation') },
+    { id: 'write.styles.pane', title: 'Styles Pane', run: () => env.openPane('styles') },
+    { id: 'suite.edit.find', title: 'Find', run: () => env.openPane('navigation') },
     {
-      id: 'view.navigationPane',
+      id: 'suite.view.navigation_pane',
       title: 'Navigation Pane',
       run: () => env.togglePane('navigation'),
       isChecked: () => false,
     },
-    { id: 'review.newComment', title: 'New Comment', run: () => env.openPane('comments') },
-    { id: 'format.fontDialog', title: 'Font…', run: () => env.openFontDialog() },
-    { id: 'view.zoom100', title: '100%', run: () => env.zoom.set(100) },
+    { id: 'suite.review.new_comment', title: 'New Comment', run: () => env.openPane('comments') },
+    { id: 'suite.format.font_dialog', title: 'Font…', run: () => env.openFontDialog() },
+    { id: 'suite.view.zoom_100', title: '100%', run: () => env.zoom.set(100) },
     {
-      id: 'view.printLayout',
-      title: 'Print Layout',
-      run: () => env.view.set('print'),
-      isChecked: () => env.view.get() === 'print',
+      id: 'suite.view.mode',
+      title: 'Change View',
+      run: (_ctx, args) =>
+        env.view.set(VIEW_OF[(args as { mode?: string } | undefined)?.mode ?? ''] ?? 'print'),
+      value: () => MODE_OF[env.view.get()],
     },
     {
-      id: 'view.webLayout',
-      title: 'Web Layout',
-      run: () => env.view.set('web'),
-      isChecked: () => env.view.get() === 'web',
-    },
-    {
-      id: 'view.readMode',
-      title: 'Read Mode',
-      run: () => env.view.set('read'),
-      isChecked: () => env.view.get() === 'read',
-    },
-    {
-      id: 'review.trackChanges',
+      id: 'write.review.track_changes',
       title: 'Track Changes',
       run: () => env.trackChanges.set(!env.trackChanges.get()),
       isChecked: () => env.trackChanges.get(),
     },
     {
-      id: 'view.ruler',
+      id: 'suite.view.ruler',
       title: 'Ruler',
       run: () => env.ruler.set(!env.ruler.get()),
       isChecked: () => env.ruler.get(),
     },
-    { id: 'file.save', title: 'Save', run: () => {} },
-    { id: 'file.share', title: 'Share', run: () => {} },
-    { id: 'layout.spacingBefore', title: 'Spacing Before', run: () => {}, value: () => 0 },
-    { id: 'layout.spacingAfter', title: 'Spacing After', run: () => {}, value: () => 8 },
-    { id: 'layout.indentLeft', title: 'Indent Left', run: () => {}, value: () => 0 },
-    { id: 'layout.indentRight', title: 'Indent Right', run: () => {}, value: () => 0 },
+    { id: 'suite.file.save', title: 'Save', run: () => {} },
+    { id: 'suite.file.share', title: 'Share', run: () => {} },
+    { id: 'write.layout.spacing_before', title: 'Spacing Before', run: () => {}, value: () => 0 },
+    { id: 'write.layout.spacing_after', title: 'Spacing After', run: () => {}, value: () => 8 },
+    { id: 'write.layout.indent_left', title: 'Indent Left', run: () => {}, value: () => 0 },
+    { id: 'write.layout.indent_right', title: 'Indent Right', run: () => {}, value: () => 0 },
   ];
   return defs as CommandDefinition<never>[];
 }
@@ -786,7 +826,7 @@ export function ChromeDemo() {
         type="button"
         className="kiln-btn kiln-btn--toolbar kiln-btn--icon-only cx-mini-btn"
         aria-label="Bold"
-        onClick={() => registry.execute('format.bold')}
+        onClick={() => registry.execute('suite.format.bold')}
       >
         <b>B</b>
       </button>
@@ -794,7 +834,7 @@ export function ChromeDemo() {
         type="button"
         className="kiln-btn kiln-btn--toolbar kiln-btn--icon-only cx-mini-btn"
         aria-label="Italic"
-        onClick={() => registry.execute('format.italic')}
+        onClick={() => registry.execute('suite.format.italic')}
       >
         <i>I</i>
       </button>
@@ -802,21 +842,21 @@ export function ChromeDemo() {
         type="button"
         className="kiln-btn kiln-btn--toolbar kiln-btn--icon-only cx-mini-btn"
         aria-label="Underline"
-        onClick={() => registry.execute('format.underline')}
+        onClick={() => registry.execute('suite.format.underline')}
       >
         <u>U</u>
       </button>
       <button
         type="button"
         className="kiln-btn kiln-btn--toolbar kiln-btn--sm"
-        onClick={() => registry.execute('format.highlight', { color: { type: 'rgb', hex: '#FFE066' } })}
+        onClick={() => registry.execute('suite.format.highlight', { color: { type: 'rgb', hex: '#FFE066' } })}
       >
         Highlight
       </button>
       <button
         type="button"
         className="kiln-btn kiln-btn--toolbar kiln-btn--sm"
-        onClick={() => registry.execute('review.newComment')}
+        onClick={() => registry.execute('suite.review.new_comment')}
       >
         Comment
       </button>
@@ -894,15 +934,15 @@ export function ChromeDemo() {
           {ruler && view === 'print' ? <div className="cx-ruler" aria-hidden="true" /> : null}
           <ContextMenu
             entries={[
-              item('edit.cut'),
-              item('edit.copy'),
-              item('edit.paste'),
+              item('suite.edit.cut'),
+              item('suite.edit.copy'),
+              item('suite.edit.paste'),
               separator(),
-              item('format.fontDialog'),
-              item('format.paragraphDialog'),
+              item('suite.format.font_dialog'),
+              item('suite.format.paragraph_dialog'),
               separator(),
-              item('insert.link'),
-              item('review.newComment'),
+              item('suite.insert.link'),
+              item('suite.review.new_comment'),
             ]}
             miniToolbar={miniToolbar}
           >

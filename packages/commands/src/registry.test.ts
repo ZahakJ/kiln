@@ -28,36 +28,36 @@ describe('CommandRegistry', () => {
   it('declared commands are pending no-ops until implemented, and come back when disposed', async () => {
     const reg = new CommandRegistry({ context: { app: 'grid' } });
     reg.declare({
-      id: 'grid.freezePanes',
+      id: 'grid.view.freeze_panes',
       title: 'Freeze Panes',
       officeName: 'Freeze Panes',
       icon: 'FreezePanes',
       synonyms: ['lock rows'],
     });
-    expect(reg.getState('grid.freezePanes')).toMatchObject({
+    expect(reg.getState('grid.view.freeze_panes')).toMatchObject({
       exists: true,
       pending: true,
       enabled: false,
       visible: true,
     });
-    expect((await reg.execute('grid.freezePanes')).status).toBe('pending');
+    expect((await reg.execute('grid.view.freeze_panes')).status).toBe('pending');
 
     const run = vi.fn();
     const d = reg.register({
-      id: 'grid.freezePanes',
+      id: 'grid.view.freeze_panes',
       title: 'Freeze Panes',
       run,
       synonyms: ['sticky header'],
     });
-    const meta = reg.meta('grid.freezePanes');
+    const meta = reg.meta('grid.view.freeze_panes');
     expect(meta).toMatchObject({ pending: false, icon: 'FreezePanes', officeName: 'Freeze Panes' });
     expect(meta?.synonyms).toEqual(['lock rows', 'sticky header']);
-    expect((await reg.execute('grid.freezePanes')).status).toBe('ran');
+    expect((await reg.execute('grid.view.freeze_panes')).status).toBe('ran');
 
     d.dispose();
-    expect(reg.getState('grid.freezePanes').pending).toBe(true);
+    expect(reg.getState('grid.view.freeze_panes').pending).toBe(true);
     d.dispose(); // idempotent
-    expect(reg.has('grid.freezePanes')).toBe(true);
+    expect(reg.has('grid.view.freeze_panes')).toBe(true);
   });
 
   it('reports unknown, disabled, hidden and failing commands without throwing', async () => {
@@ -65,7 +65,7 @@ describe('CommandRegistry', () => {
     const reg = new CommandRegistry({ context: { app: 'write', selection: false }, onError });
     reg.register({ id: 'a.disabled', title: 'D', run: () => {}, isEnabled: (c) => !!c.selection });
     reg.register({ id: 'a.hidden', title: 'H', run: () => {}, when: () => false });
-    reg.register({ id: 'a.gridOnly', title: 'G', run: () => {}, apps: ['grid'] });
+    reg.register({ id: 'a.grid_only', title: 'G', run: () => {}, apps: ['grid'] });
     reg.register({
       id: 'a.boom',
       title: 'B',
@@ -76,7 +76,7 @@ describe('CommandRegistry', () => {
     expect((await reg.execute('nope.nope')).status).toBe('unknown');
     expect((await reg.execute('a.disabled')).status).toBe('disabled');
     expect((await reg.execute('a.hidden')).status).toBe('hidden');
-    expect((await reg.execute('a.gridOnly')).status).toBe('hidden');
+    expect((await reg.execute('a.grid_only')).status).toBe('hidden');
     const failed = await reg.execute('a.boom');
     expect(failed.status).toBe('failed');
     expect(onError).toHaveBeenCalledWith('a.boom', expect.any(Error));
@@ -88,14 +88,14 @@ describe('CommandRegistry', () => {
     let bold = false;
     const reg = new CommandRegistry();
     reg.register({
-      id: 'format.bold',
+      id: 'suite.format.bold',
       title: 'Bold',
       run: () => {
         bold = !bold;
       },
       isChecked: () => bold,
     });
-    reg.register({ id: 'format.fontSize', title: 'Font Size', run: () => {}, value: () => 11 });
+    reg.register({ id: 'suite.format.font_size', title: 'Font Size', run: () => {}, value: () => 11 });
     reg.register({
       id: 'a.bad',
       title: 'Bad',
@@ -104,10 +104,10 @@ describe('CommandRegistry', () => {
         throw new Error('x');
       },
     });
-    expect(reg.getState('format.bold').checked).toBe(false);
+    expect(reg.getState('suite.format.bold').checked).toBe(false);
     bold = true;
-    expect(reg.getState('format.bold').checked).toBe(true);
-    expect(reg.getState('format.fontSize')).toMatchObject({ value: 11, checked: undefined });
+    expect(reg.getState('suite.format.bold').checked).toBe(true);
+    expect(reg.getState('suite.format.font_size')).toMatchObject({ value: 11, checked: undefined });
     expect(reg.getState('a.bad').enabled).toBe(true);
     expect(reg.getState('missing.cmd')).toMatchObject({ exists: false, visible: false });
   });
@@ -118,16 +118,16 @@ describe('CommandRegistry', () => {
     reg.subscribe((e) => events.push(e));
     const bold = vi.fn();
     const italic = vi.fn();
-    reg.subscribeTo('format.bold', bold);
-    const unsub = reg.subscribeTo('format.italic', italic);
-    reg.register({ id: 'format.bold', title: 'Bold', run: () => {} });
+    reg.subscribeTo('suite.format.bold', bold);
+    const unsub = reg.subscribeTo('suite.format.italic', italic);
+    reg.register({ id: 'suite.format.bold', title: 'Bold', run: () => {} });
     expect(bold).toHaveBeenCalledTimes(1);
     expect(italic).not.toHaveBeenCalled();
     reg.invalidate();
     expect(bold).toHaveBeenCalledTimes(2);
     expect(italic).toHaveBeenCalledTimes(1);
     unsub();
-    reg.invalidate(['format.italic']);
+    reg.invalidate(['suite.format.italic']);
     expect(italic).toHaveBeenCalledTimes(1);
 
     events.length = 0;
@@ -153,8 +153,8 @@ describe('CommandRegistry', () => {
   it('hides P1/P2 and pending commands in release builds', () => {
     const reg = new CommandRegistry({ tiers: RELEASE_TIERS, context: { app: 'grid' } });
     reg.declare([
-      { id: 'grid.goalSeek', title: 'Goal Seek', tier: 'P1' },
-      { id: 'grid.sort', title: 'Sort' },
+      { id: 'grid.data.goal_seek', title: 'Goal Seek', tier: 'P1' },
+      { id: 'grid.data.sort', title: 'Sort' },
     ]);
     reg.register({ id: 'grid.pivot', title: 'Pivot', tier: 'P1', run: () => {} });
     reg.register({ id: 'grid.filter', title: 'Filter', run: () => {} });
@@ -180,7 +180,7 @@ describe('CommandRegistry', () => {
       recent: new RecentCommands({ storage: new MemoryStorage() }),
     });
     expect(reg.size).toBe(COMMAND_CATALOG.length);
-    expect(reg.meta('grid.mergeCenter')?.synonyms).toContain('merge and center');
+    expect(reg.meta('grid.alignment.merge_center')?.synonyms).toContain('merge and center');
     expect(reg.context.app).toBe('grid');
   });
 });

@@ -5,6 +5,9 @@ import { describe, expect, it, vi } from 'vitest';
 import { createHarness, renderWithCommands } from '../chrome/test-helpers.tsx';
 import { CommandPalette } from './CommandPalette.tsx';
 
+// User-event flows open Radix overlays; on a loaded 4-CPU machine they need more than Vitest's 5 s.
+vi.setConfig({ testTimeout: 20_000 });
+
 function Host({ initial = true }: { initial?: boolean }) {
   const [open, setOpen] = useState(initial);
   return <CommandPalette open={open} onOpenChange={setOpen} />;
@@ -14,10 +17,15 @@ function setup(app: 'write' | 'grid' = 'grid') {
   const h = createHarness(app);
   const merge = vi.fn();
   const freeze = vi.fn();
-  h.registry.register({ id: 'grid.mergeCenter', title: 'Merge & Center', run: merge, apps: ['grid'] });
-  h.registry.register({ id: 'grid.freezePanes', title: 'Freeze Panes', run: freeze, apps: ['grid'] });
-  h.registry.register({ id: 'format.bold', title: 'Bold', run: () => {} });
-  h.registry.addSynonyms({ 'grid.freezePanes': ['lock rows', 'sticky header'] });
+  h.registry.register({
+    id: 'grid.alignment.merge_center',
+    title: 'Merge & Center',
+    run: merge,
+    apps: ['grid'],
+  });
+  h.registry.register({ id: 'grid.view.freeze_panes', title: 'Freeze Panes', run: freeze, apps: ['grid'] });
+  h.registry.register({ id: 'suite.format.bold', title: 'Bold', run: () => {} });
+  h.registry.addSynonyms({ 'grid.view.freeze_panes': ['lock rows', 'sticky header'] });
   const r = renderWithCommands(<Host />, h, app);
   return { ...r, merge, freeze };
 }
@@ -70,13 +78,18 @@ describe('CommandPalette', () => {
     await user.keyboard('{Enter}');
     await waitFor(() => expect(merge).toHaveBeenCalledOnce());
     expect(screen.queryByRole('dialog')).toBeNull();
-    expect(recent.list()).toEqual(['grid.mergeCenter']);
+    expect(recent.list()).toEqual(['grid.alignment.merge_center']);
   });
 
   it('shows Recent first when the query is empty', () => {
     const h = createHarness('grid');
-    h.registry.register({ id: 'grid.freezePanes', title: 'Freeze Panes', run: () => {}, apps: ['grid'] });
-    h.recent.record('grid.freezePanes');
+    h.registry.register({
+      id: 'grid.view.freeze_panes',
+      title: 'Freeze Panes',
+      run: () => {},
+      apps: ['grid'],
+    });
+    h.recent.record('grid.view.freeze_panes');
     renderWithCommands(<Host />, h, 'grid');
     const recentGroup = screen.getByRole('group', { name: 'Recent' });
     expect(within(recentGroup).getByRole('option')).toHaveTextContent('Freeze Panes');
@@ -88,7 +101,7 @@ describe('CommandPalette', () => {
     const spy = vi.spyOn(registry, 'execute');
     await user.type(screen.getByRole('combobox'), 'goal seek');
     const opt = options()[0];
-    expect(opt).toHaveTextContent('Coming soon');
+    expect(opt).toHaveTextContent('Not in this build');
     expect(opt).toHaveAttribute('aria-disabled', 'true');
     await user.keyboard('{Enter}');
     expect(spy).not.toHaveBeenCalled();

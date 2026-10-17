@@ -1,0 +1,40 @@
+{
+  "name": "@kiln/home",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Kiln Home: the start screen with the four app doors, recent, pinned and shared files, templates and search.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@kiln/commands": "workspace:*",
+    "@kiln/protocol": "workspace:*",
+    "@kiln/ui-kit": "workspace:*",
+    "lucide-react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@testing-library/dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "jsdom": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  }
+}

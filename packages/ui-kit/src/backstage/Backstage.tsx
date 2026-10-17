@@ -47,17 +47,17 @@ const TOP: NavEntry[] = [
   { kind: 'page', id: 'open', label: 'Open', icon: FolderOpen },
   { kind: 'divider' },
   { kind: 'page', id: 'info', label: 'Info', icon: Info },
-  { kind: 'action', id: 'save', label: 'Save', icon: Save, command: 'file.save' },
+  { kind: 'action', id: 'save', label: 'Save', icon: Save, command: 'suite.file.save' },
   { kind: 'page', id: 'saveAs', label: 'Save As', icon: SaveAll },
   { kind: 'page', id: 'saveCopy', label: 'Save a Copy', icon: SaveAll },
   { kind: 'page', id: 'print', label: 'Print', icon: Printer },
   { kind: 'page', id: 'share', label: 'Share', icon: Share2 },
   { kind: 'page', id: 'export', label: 'Export', icon: FileOutput },
-  { kind: 'action', id: 'close', label: 'Close', icon: X, command: 'file.close' },
+  { kind: 'action', id: 'close', label: 'Close', icon: X, command: 'suite.file.close' },
 ];
 const BOTTOM: NavEntry[] = [
   { kind: 'page', id: 'account', label: 'Account', icon: CircleUserRound },
-  { kind: 'action', id: 'options', label: 'Options', icon: Settings, command: 'file.options' },
+  { kind: 'action', id: 'options', label: 'Options', icon: Settings, command: 'ui.options.open' },
 ];
 
 export const BACKSTAGE_PAGE_TITLES: Readonly<Record<BackstagePageId, string>> = {
@@ -83,7 +83,7 @@ export interface BackstageProps {
   defaultPage?: BackstagePageId;
   onPageChange?: (page: BackstagePageId) => void;
   /**
-   * Save / Close / Options. Default: run `file.save` / `file.close` / `file.options` through the
+   * Save / Close / Options. Default: run `suite.file.save` / `suite.file.close` / `ui.options.open` through the
    * command registry (when inside a `CommandsProvider`), after closing the Backstage.
    */
   onAction?: (action: BackstageActionId) => void;

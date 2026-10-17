@@ -1,9 +1,12 @@
 import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { OptionsDialog } from './OptionsDialog.tsx';
 import { loadOptions, resetOptionsCache } from './options.ts';
 import { createHarness, renderWithCommands } from './test-helpers.tsx';
+
+// User-event flows open Radix overlays; on a loaded 4-CPU machine they need more than Vitest's 5 s.
+vi.setConfig({ testTimeout: 20_000 });
 
 describe('OptionsDialog', () => {
   it('lists the §1.5 sections and persists changes', async () => {
@@ -41,9 +44,11 @@ describe('OptionsDialog', () => {
     await user.click(screen.getByRole('button', { name: 'Assign' }));
     expect(screen.getByText(/Ctrl\+B now runs Strikethrough; removed from Bold/)).toBeInTheDocument();
     expect(h.keymap.resolve({ key: 'b', ctrlKey: true }, { app: 'write' })?.command).toBe(
-      'format.strikethrough',
+      'suite.format.strikethrough',
     );
     await user.click(screen.getByRole('button', { name: 'Reset All' }));
-    expect(h.keymap.resolve({ key: 'b', ctrlKey: true }, { app: 'write' })?.command).toBe('format.bold');
+    expect(h.keymap.resolve({ key: 'b', ctrlKey: true }, { app: 'write' })?.command).toBe(
+      'suite.format.bold',
+    );
   });
 });

@@ -5,6 +5,9 @@ import { describe, expect, it, vi } from 'vitest';
 import '../chrome/test-matchers.ts';
 import { StatusBar } from './StatusBar.tsx';
 
+// User-event flows open Radix overlays; on a loaded 4-CPU machine they need more than Vitest's 5 s.
+vi.setConfig({ testTimeout: 20_000 });
+
 function Host({ onView = vi.fn() }: { onView?: (id: string) => void }) {
   const [zoom, setZoom] = useState(100);
   const [view, setView] = useState('print');

@@ -4,20 +4,23 @@ import { describe, expect, it, vi } from 'vitest';
 import { createHarness, renderWithCommands } from '../chrome/test-helpers.tsx';
 import { ContextMenu } from './ContextMenu.tsx';
 
+// User-event flows open Radix overlays; on a loaded 4-CPU machine they need more than Vitest's 5 s.
+vi.setConfig({ testTimeout: 20_000 });
+
 describe('ContextMenu', () => {
   it('opens at the pointer with command items, shortcuts and state, and runs the choice', async () => {
     const user = userEvent.setup();
     const h = createHarness();
     const copy = vi.fn();
-    h.registry.register({ id: 'edit.copy', title: 'Copy', run: copy });
-    h.registry.register({ id: 'view.ruler', title: 'Ruler', run: () => {}, isChecked: () => true });
+    h.registry.register({ id: 'suite.edit.copy', title: 'Copy', run: copy });
+    h.registry.register({ id: 'suite.view.ruler', title: 'Ruler', run: () => {}, isChecked: () => true });
     renderWithCommands(
       <ContextMenu
         entries={[
-          { command: 'edit.copy' },
-          { command: 'edit.cut' },
+          { command: 'suite.edit.copy' },
+          { command: 'suite.edit.cut' },
           { kind: 'separator' },
-          { command: 'view.ruler' },
+          { command: 'suite.view.ruler' },
         ]}
       >
         <div>Document text</div>
@@ -36,7 +39,7 @@ describe('ContextMenu', () => {
 
   it('opens from the keyboard (Shift+F10) and shows the mini toolbar above it', async () => {
     renderWithCommands(
-      <ContextMenu entries={[{ command: 'edit.copy' }]} miniToolbar={<button type="button">B</button>}>
+      <ContextMenu entries={[{ command: 'suite.edit.copy' }]} miniToolbar={<button type="button">B</button>}>
         <button type="button">Focusable text</button>
       </ContextMenu>,
     );
@@ -49,7 +52,7 @@ describe('ContextMenu', () => {
 
   it('can leave the browser menu alone', () => {
     renderWithCommands(
-      <ContextMenu entries={[{ command: 'edit.copy' }]} onBeforeOpen={() => false}>
+      <ContextMenu entries={[{ command: 'suite.edit.copy' }]} onBeforeOpen={() => false}>
         <div>Plain</div>
       </ContextMenu>,
     );

@@ -14,7 +14,7 @@ export type MenuEntry =
       kind?: 'command';
       command: string;
       args?: unknown;
-      /** Overrides the command title ("Keep Text Only" for `edit.pasteTextOnly`). */
+      /** Overrides the command title ("Keep Text Only" for `suite.edit.paste_text_only`). */
       label?: string;
       icon?: string;
       description?: string;

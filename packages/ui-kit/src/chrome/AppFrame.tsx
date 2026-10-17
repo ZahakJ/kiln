@@ -1,24 +1,28 @@
-import type { AppId, CommandDefinition, CommandRegistry, Disposable, Keymap } from '@kiln/commands';
-import { ChevronDown, Redo2, Save, Search, Share2, Undo2 } from 'lucide-react';
+import type {
+  AppId,
+  CommandDefinition,
+  CommandRegistry,
+  Disposable,
+  ExecuteResult,
+  Keymap,
+} from '@kiln/commands';
+import { MessageSquare, Redo2, Save, Search, Share2, Undo2 } from 'lucide-react';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { Backstage, type BackstagePageId } from '../backstage/Backstage.tsx';
+import { Flame, Spark } from '../icons/brand/BrandMark.tsx';
 import { Icon } from '../icons/Icon.tsx';
 import { KeyTipsLayer } from '../keytips/KeyTipsLayer.tsx';
 import { CommandPalette } from '../palette/CommandPalette.tsx';
 import { cx } from '../primitives/cx.ts';
 import { Kbd } from '../primitives/Kbd.tsx';
+import { ariaKeyShortcuts } from '../primitives/shortcut.ts';
+import { ToastProvider, useToast } from '../primitives/Toast.tsx';
 import { Tooltip, TooltipProvider } from '../primitives/Tooltip.tsx';
 import { Ribbon, type RibbonLayoutPreference } from '../ribbon/Ribbon.tsx';
 import type { RibbonSpec } from '../ribbon/types.ts';
 import { useTheme } from '../theme/ThemeProvider.tsx';
-import { APP_NAMES, AppMark } from './AppMark.tsx';
-import {
-  CommandsProvider,
-  useCommandShortcut,
-  useCommandState,
-  useCommands,
-  useExecute,
-} from './CommandContext.tsx';
+import { APP_NAMES, APP_SHORT_NAMES, AppMark } from './AppMark.tsx';
+import { CommandsProvider, useCommandShortcut, useCommandState, useExecute } from './CommandContext.tsx';
 import { OptionsDialog, type OptionsExtraSection } from './OptionsDialog.tsx';
 import { useOfficeOptions } from './options.ts';
 import { ShortcutSheet } from './ShortcutSheet.tsx';
@@ -31,25 +35,40 @@ export interface AppFrameProps {
   keymap?: Keymap;
   /** Document title in the title bar (click to rename when `onRename` is set). */
   title: string;
+  /** File extension shown after the title, muted (`.docx`). */
+  extension?: string;
   onRename?: (title: string) => void;
-  /** Short save state after the title: "Saved", "Saving…", "Saved to this device". */
+  /** Save state in the title chip: "Saved", "Saving…", "Not saved yet". */
   saveStatus?: string;
-  /** The AutoSave switch. Omit to hide it. */
+  /** The AutoSave switch (the title chip). Omit to show the save state only. */
   autoSave?: { enabled: boolean; onChange: (enabled: boolean) => void; disabledReason?: string };
   ribbon?: RibbonSpec;
   defaultTab?: string;
-  /** Content of the File menu pages; the File tab appears when given. */
+  /** Classic / Simplified / automatic ribbon (controlled; default: File ▸ Options ▸ Display). */
+  ribbonLayout?: RibbonLayoutPreference;
+  onRibbonLayoutChange?: (layout: RibbonLayoutPreference) => void;
+  /** Tabs only (Ctrl+F1), controlled; default: remembered in this browser. */
+  ribbonCollapsed?: boolean;
+  onRibbonCollapsedChange?: (collapsed: boolean) => void;
+  /** Content of the File menu pages; the File button appears when given. */
   backstage?: Partial<Record<BackstagePageId, ReactNode>>;
+  /** Opens the File menu on this page (and reports page changes). */
+  backstagePage?: BackstagePageId;
+  onBackstagePageChange?: (page: BackstagePageId) => void;
   statusBar?: ReactNode;
   /** Navigation pane (left) and task panes (right): usually `TaskPaneHost`s. */
   leftPane?: ReactNode;
   rightPane?: ReactNode;
-  /** Collaborators' avatars. */
+  /** The signed-in user's avatar and collaborators. */
   presence?: ReactNode;
-  /** Desktop window controls (Electron frameless windows). */
+  /** Commands at the right of the tab strip, before Share (Comments, Editing mode, Present). */
+  ribbonTrailing?: ReactNode;
+  /** Desktop window controls (frameless windows). */
   windowControls?: ReactNode;
   /** App-specific sections for File ▸ Options. */
   optionsSections?: readonly OptionsExtraSection[];
+  /** Called after every command run from the chrome or a shortcut. */
+  onExecuted?: (result: ExecuteResult) => void;
   children?: ReactNode;
   className?: string;
 }
@@ -65,16 +84,19 @@ function readCollapsed(): boolean {
 }
 
 /**
- * The Office window (PLAN.md §1.3): title bar (mark, AutoSave, Save/Undo/Redo, title, Search/Tell-me,
- * presence, Share, window controls), the ribbon with File → Backstage, the document area with
- * optional side panes, and the status bar. Wires the global shortcuts, Key Tips, the command palette,
- * the shortcut cheat sheet and File ▸ Options, all through the command registry.
+ * The app window (PLAN.md §1.3, brand mockups `docs/design/mockups/<app>-*.png`): title bar (app
+ * tile and name, Save/Undo/Redo, the document title with its save chip, Search/Tell me, presence,
+ * window controls), the tab strip with the File button and Share, the ribbon slab, the document
+ * area with optional side panes, and the status bar. Wires the global shortcuts, Key Tips, the
+ * command palette, the shortcut cheat sheet and File ▸ Options, all through the command registry.
  */
 export function AppFrame(props: AppFrameProps) {
   return (
     <CommandsProvider registry={props.registry} keymap={props.keymap} app={props.app}>
       <TooltipProvider>
-        <AppFrameInner {...props} />
+        <ToastProvider>
+          <AppFrameInner {...props} />
+        </ToastProvider>
       </TooltipProvider>
     </CommandsProvider>
   );
@@ -85,42 +107,66 @@ function AppFrameInner({
   registry,
   keymap,
   title,
+  extension,
   onRename,
   saveStatus,
   autoSave,
   ribbon,
   defaultTab,
+  ribbonLayout: ribbonLayoutProp,
+  onRibbonLayoutChange,
+  ribbonCollapsed,
+  onRibbonCollapsedChange,
   backstage,
+  backstagePage,
+  onBackstagePageChange,
   statusBar,
   leftPane,
   rightPane,
   presence,
+  ribbonTrailing,
   windowControls,
   optionsSections,
+  onExecuted,
   children,
   className,
 }: AppFrameProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [backstageOpen, setBackstageOpen] = useState(false);
+  const [page, setPage] = useState<BackstagePageId | undefined>(backstagePage);
   const [optionsOpen, setOptionsOpen] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [keyTips, setKeyTips] = useState<{ on: boolean; keys?: string }>({ on: false });
-  const [collapsed, setCollapsedState] = useState(readCollapsed);
+  const [collapsedState, setCollapsedState] = useState(readCollapsed);
   const [options, updateOptions] = useOfficeOptions();
   const theme = useTheme();
+  const { toast } = useToast();
   const appName = APP_NAMES[app];
 
+  const collapsed = ribbonCollapsed ?? collapsedState;
   const setCollapsed = (c: boolean) => {
+    if (onRibbonCollapsedChange) onRibbonCollapsedChange(c);
+    if (ribbonCollapsed !== undefined) return;
     setCollapsedState(c);
     try {
       localStorage.setItem(COLLAPSE_KEY, c ? '1' : '0');
     } catch {
-      // ignore
+      // Private mode: the choice lasts for this window only.
     }
   };
-  const ribbonLayout = options.display.ribbonLayout as RibbonLayoutPreference;
-  const setRibbonLayout = (l: RibbonLayoutPreference) => updateOptions({ display: { ribbonLayout: l } });
+  const ribbonLayout = ribbonLayoutProp ?? (options.display.ribbonLayout as RibbonLayoutPreference);
+  const setRibbonLayout = (l: RibbonLayoutPreference) => {
+    if (onRibbonLayoutChange) onRibbonLayoutChange(l);
+    if (ribbonLayoutProp === undefined) updateOptions({ display: { ribbonLayout: l } });
+  };
+  const openBackstage = (p?: BackstagePageId) => {
+    if (p) {
+      setPage(p);
+      onBackstagePageChange?.(p);
+    }
+    setBackstageOpen(true);
+  };
 
   useEffect(() => {
     registry.setContext({ app });
@@ -133,62 +179,128 @@ function AppFrameInner({
     else delete root.dataset.iconStyle;
   }, [options.general.classicLook]);
 
+  // A planned command (development builds only show them) says so instead of doing nothing.
+  const executed = useRef(onExecuted);
+  executed.current = onExecuted;
+  useEffect(
+    () =>
+      registry.subscribe((e) => {
+        if (e.type !== 'executed') return;
+        executed.current?.(e.result);
+        if (e.result.status === 'pending') {
+          const meta = registry.meta(e.id);
+          toast({
+            id: 'kiln-planned',
+            title: `${meta?.title ?? e.id} is not in this build yet`,
+            description: 'The core does not implement this command yet; release builds hide it.',
+            tone: 'info',
+            duration: 3500,
+          });
+        } else if (e.result.status === 'failed') {
+          const err = e.result.error as { message?: string } | undefined;
+          toast({
+            id: 'kiln-failed',
+            title: `${registry.meta(e.id)?.title ?? e.id} did not work`,
+            description: err?.message ?? String(e.result.error),
+            tone: 'danger',
+            duration: 6000,
+          });
+        }
+      }),
+    [registry, toast],
+  );
+
   // Chrome commands, registered unless the app implements them itself.
-  const live = useRef({ collapsed, ribbonLayout, theme, backstage });
-  live.current = { collapsed, ribbonLayout, theme, backstage };
+  const live = useRef({
+    collapsed,
+    ribbonLayout,
+    theme,
+    backstage,
+    openBackstage,
+    setCollapsed,
+    setRibbonLayout,
+  });
+  live.current = { collapsed, ribbonLayout, theme, backstage, openBackstage, setCollapsed, setRibbonLayout };
   useEffect(() => {
+    const hasBackstage = () => !!live.current.backstage;
     const defs: CommandDefinition<never>[] = [
-      { id: 'view.commandPalette', title: 'Command Palette', run: () => setPaletteOpen((o) => !o) },
-      { id: 'view.keyTips', title: 'Key Tips', run: () => setKeyTips((k) => ({ on: !k.on })) },
-      { id: 'view.shortcuts', title: 'Keyboard Shortcuts', run: () => setSheetOpen(true) },
+      { id: 'ui.palette.open', title: 'Command Palette', run: () => setPaletteOpen((o) => !o) },
+      { id: 'ui.keytips.show', title: 'Key Tips', run: () => setKeyTips((k) => ({ on: !k.on })) },
+      { id: 'ui.shortcuts.show', title: 'Keyboard Shortcuts', run: () => setSheetOpen(true) },
       {
-        id: 'view.toggleRibbon',
+        id: 'ui.ribbon.collapse',
         title: 'Collapse the Ribbon',
-        run: () => setCollapsed(!live.current.collapsed),
+        run: () => live.current.setCollapsed(!live.current.collapsed),
         isChecked: () => live.current.collapsed,
         when: () => !!ribbon,
       },
       {
-        id: 'view.ribbonClassic',
+        id: 'ui.ribbon.classic',
         title: 'Classic Ribbon',
-        run: () => setRibbonLayout('classic'),
+        run: () => live.current.setRibbonLayout('classic'),
         isChecked: () => live.current.ribbonLayout === 'classic',
         when: () => !!ribbon,
       },
       {
-        id: 'view.ribbonSimplified',
+        id: 'ui.ribbon.simplified',
         title: 'Simplified Ribbon',
-        run: () => setRibbonLayout('simplified'),
+        run: () => live.current.setRibbonLayout('simplified'),
         isChecked: () => live.current.ribbonLayout === 'simplified',
         when: () => !!ribbon,
       },
+      { id: 'ui.backstage.open', title: 'File', run: () => live.current.openBackstage(), when: hasBackstage },
       {
-        id: 'file.backstage',
-        title: 'File',
-        run: () => setBackstageOpen(true),
-        when: () => !!live.current.backstage,
+        id: 'ui.backstage.home',
+        title: 'Home',
+        run: () => live.current.openBackstage('home'),
+        when: hasBackstage,
       },
-      { id: 'file.options', title: 'Options', run: () => setOptionsOpen(true) },
       {
-        id: 'view.themeLight',
+        id: 'ui.backstage.info',
+        title: 'Info',
+        run: () => live.current.openBackstage('info'),
+        when: hasBackstage,
+      },
+      {
+        id: 'ui.backstage.account',
+        title: 'Account',
+        run: () => live.current.openBackstage('account'),
+        when: hasBackstage,
+      },
+      { id: 'ui.options.open', title: 'Options', run: () => setOptionsOpen(true) },
+      {
+        id: 'ui.macros.explain',
+        title: 'Macros',
+        run: () =>
+          toast({
+            id: 'kiln-macros',
+            title: 'Kiln never runs macros',
+            description:
+              'Macros in .docm, .xlsm and .pptm files are kept exactly as they are, so the file is not damaged, but they do not run (PLAN.md §9).',
+            tone: 'info',
+            duration: 8000,
+          }),
+      },
+      {
+        id: 'ui.theme.light',
         title: 'Light Theme',
         run: () => live.current.theme.setPreference('light'),
         isChecked: () => live.current.theme.preference === 'light',
       },
       {
-        id: 'view.themeDark',
+        id: 'ui.theme.dark',
         title: 'Dark Theme',
         run: () => live.current.theme.setPreference('dark'),
         isChecked: () => live.current.theme.preference === 'dark',
       },
       {
-        id: 'view.themeSystem',
+        id: 'ui.theme.system',
         title: 'Use System Theme',
         run: () => live.current.theme.setPreference('system'),
         isChecked: () => live.current.theme.preference === 'system',
       },
       {
-        id: 'view.themeHighContrast',
+        id: 'ui.theme.high_contrast',
         title: 'High Contrast Theme',
         run: () => live.current.theme.setPreference('hc'),
         isChecked: () => live.current.theme.preference === 'hc',
@@ -205,27 +317,34 @@ function AppFrameInner({
     return () => {
       for (const d of disposables) d.dispose();
     };
-  }, [registry, !!ribbon]);
+  }, [registry, !!ribbon, toast]);
 
   // Toggle states shown in the ribbon and palette follow the frame's state.
   useEffect(() => {
     registry.invalidate([
-      'view.toggleRibbon',
-      'view.ribbonClassic',
-      'view.ribbonSimplified',
-      'view.themeLight',
-      'view.themeDark',
-      'view.themeSystem',
-      'view.themeHighContrast',
+      'ui.ribbon.collapse',
+      'ui.ribbon.classic',
+      'ui.ribbon.simplified',
+      'ui.theme.light',
+      'ui.theme.dark',
+      'ui.theme.system',
+      'ui.theme.high_contrast',
     ]);
   }, [registry, collapsed, ribbonLayout, theme.preference]);
 
   useGlobalShortcuts({
     registry,
     keymap,
-    enabled: !paletteOpen && !optionsOpen,
+    enabled: !paletteOpen && !optionsOpen && !backstageOpen,
     onAltLetter: ribbon ? (letter) => setKeyTips({ on: true, keys: letter }) : undefined,
   });
+
+  const shareAndTrailing = (
+    <>
+      {ribbonTrailing}
+      <ShareButton />
+    </>
+  );
 
   return (
     <div
@@ -235,19 +354,23 @@ function AppFrameInner({
     >
       <header className="kiln-titlebar">
         <div className="kiln-titlebar__start">
-          <AppMark size={22} label={appName} />
-          {autoSave ? <AutoSaveSwitch {...autoSave} /> : null}
-          <TitleBarCommand command="file.save" icon={Save} label="Save" keyTip="3" />
-          <TitleBarCommand command="edit.undo" icon={Undo2} label="Undo" keyTip="1" />
-          <TitleBarCommand command="edit.redo" icon={Redo2} label="Redo" keyTip="2" />
-          <DocumentTitle title={title} appName={appName} onRename={onRename} saveStatus={saveStatus} />
+          <span className="kiln-titlebar__brand">
+            <AppMark app={app} size={20} label={appName} />
+            <span className="kiln-titlebar__appname" aria-hidden="true">
+              {APP_SHORT_NAMES[app]}
+            </span>
+          </span>
+          <TitleBarCommand command="suite.file.save" icon={Save} label="Save" keyTip="3" />
+          <TitleBarCommand command="suite.edit.undo" icon={Undo2} label="Undo" keyTip="1" />
+          <TitleBarCommand command="suite.edit.redo" icon={Redo2} label="Redo" keyTip="2" />
         </div>
         <div className="kiln-titlebar__center">
-          <SearchBox onOpen={() => setPaletteOpen(true)} />
+          <DocumentTitle title={title} extension={extension} appName={appName} onRename={onRename} />
+          <SaveChip status={saveStatus} autoSave={autoSave} />
         </div>
         <div className="kiln-titlebar__end">
+          <SearchBox onOpen={() => setPaletteOpen(true)} />
           {presence ? <div className="kiln-titlebar__presence">{presence}</div> : null}
-          <ShareButton />
           {windowControls ? <div className="kiln-titlebar__window">{windowControls}</div> : null}
         </div>
       </header>
@@ -259,7 +382,14 @@ function AppFrameInner({
           onLayoutChange={setRibbonLayout}
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
-          onFileClick={backstage ? () => setBackstageOpen(true) : undefined}
+          onFileClick={backstage ? () => openBackstage() : undefined}
+          fileButton={
+            <>
+              <Spark size={13} />
+              <span>File</span>
+            </>
+          }
+          trailing={shareAndTrailing}
         />
       ) : null}
       <div className="kiln-appframe__body">
@@ -275,6 +405,11 @@ function AppFrameInner({
           open={backstageOpen}
           onOpenChange={setBackstageOpen}
           pages={backstage}
+          page={page}
+          onPageChange={(p) => {
+            setPage(p);
+            onBackstagePageChange?.(p);
+          }}
           appName={appName}
           documentTitle={title}
           autoSave={autoSave?.enabled}
@@ -319,18 +454,38 @@ function TitleBarCommand({
         type="button"
         className="kiln-titlebar__btn"
         aria-label={label}
+        aria-keyshortcuts={shortcut ? ariaShortcut(shortcut) : undefined}
         aria-disabled={!state.enabled || undefined}
         data-keytip={keyTip}
         data-keytip-level="root"
+        data-command={command}
         onClick={() => state.enabled && execute(command)}
       >
-        <Icon icon={icon} size={16} />
+        <Icon icon={icon} size={17} />
       </button>
     </Tooltip>
   );
 }
 
-function AutoSaveSwitch({ enabled, onChange, disabledReason }: NonNullable<AppFrameProps['autoSave']>) {
+/** `Mod+Shift+S` → `Control+Shift+S` (the aria-keyshortcuts form). */
+export function ariaShortcut(shortcut: string): string {
+  return ariaKeyShortcuts(shortcut);
+}
+
+/**
+ * The chip after the title (mockup: flame + "Saved to Studio"). With `autoSave` it is the AutoSave
+ * switch: the flame glows while AutoSave is on.
+ */
+function SaveChip({ status, autoSave }: { status?: string; autoSave?: AppFrameProps['autoSave'] }) {
+  if (!autoSave) {
+    return status ? (
+      <span className="kiln-chip kiln-titlebar__chip" data-testid="save-status">
+        <Flame size={13} />
+        <span>{status}</span>
+      </span>
+    ) : null;
+  }
+  const { enabled, onChange, disabledReason } = autoSave;
   return (
     <Tooltip
       content={disabledReason ?? (enabled ? 'AutoSave is on' : 'AutoSave is off')}
@@ -340,17 +495,15 @@ function AutoSaveSwitch({ enabled, onChange, disabledReason }: NonNullable<AppFr
         type="button"
         role="switch"
         aria-checked={enabled}
+        aria-label="AutoSave"
         aria-disabled={!!disabledReason || undefined}
-        className="kiln-autosave"
+        className="kiln-chip kiln-titlebar__chip kiln-autosave"
+        data-on={enabled || undefined}
+        data-testid="save-status"
         onClick={() => !disabledReason && onChange(!enabled)}
       >
-        <span className="kiln-autosave__label">AutoSave</span>
-        <span className="kiln-autosave__track" aria-hidden="true">
-          <span className="kiln-autosave__thumb" />
-        </span>
-        <span className="kiln-autosave__state" aria-hidden="true">
-          {enabled ? 'On' : 'Off'}
-        </span>
+        <Flame size={13} className="kiln-autosave__flame" />
+        <span>{status ?? (enabled ? 'AutoSave on' : 'AutoSave off')}</span>
       </button>
     </Tooltip>
   );
@@ -358,14 +511,14 @@ function AutoSaveSwitch({ enabled, onChange, disabledReason }: NonNullable<AppFr
 
 function DocumentTitle({
   title,
+  extension,
   appName,
   onRename,
-  saveStatus,
 }: {
   title: string;
+  extension?: string;
   appName: string;
   onRename?: (t: string) => void;
-  saveStatus?: string;
 }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(title);
@@ -394,6 +547,7 @@ function DocumentTitle({
           if (e.key === 'Enter') commit();
           else if (e.key === 'Escape') {
             e.preventDefault();
+            e.stopPropagation();
             setDraft(title);
             setEditing(false);
           }
@@ -404,8 +558,7 @@ function DocumentTitle({
   const content = (
     <>
       <span className="kiln-titlebar__title-text">{title}</span>
-      {saveStatus ? <span className="kiln-titlebar__status"> · {saveStatus}</span> : null}
-      {onRename ? <Icon icon={ChevronDown} size={12} className="kiln-titlebar__title-chevron" /> : null}
+      {extension ? <span className="kiln-titlebar__ext">{extension}</span> : null}
     </>
   );
   return onRename ? (
@@ -413,6 +566,7 @@ function DocumentTitle({
       <button
         type="button"
         className="kiln-titlebar__title"
+        data-testid="document-title"
         onClick={() => {
           setDraft(title);
           setEditing(true);
@@ -422,12 +576,14 @@ function DocumentTitle({
       </button>
     </Tooltip>
   ) : (
-    <span className="kiln-titlebar__title">{content}</span>
+    <span className="kiln-titlebar__title" data-testid="document-title">
+      {content}
+    </span>
   );
 }
 
 function SearchBox({ onOpen }: { onOpen: () => void }) {
-  const shortcut = useCommandShortcut('view.commandPalette');
+  const shortcut = useCommandShortcut('ui.palette.open');
   return (
     <button
       type="button"
@@ -435,34 +591,64 @@ function SearchBox({ onOpen }: { onOpen: () => void }) {
       onClick={onOpen}
       data-keytip="Q"
       data-keytip-level="root"
-      aria-label="Search commands"
+      aria-keyshortcuts={shortcut ? ariaShortcut(shortcut) : undefined}
       aria-haspopup="dialog"
     >
       <Icon icon={Search} size={15} />
-      <span className="kiln-searchbox__text">Search</span>
+      <span className="kiln-searchbox__text">
+        Search<span className="kiln-visually-hidden"> commands</span>
+      </span>
       {shortcut ? <Kbd shortcut={shortcut} variant="inline" className="kiln-searchbox__kbd" /> : null}
     </button>
   );
 }
 
 function ShareButton() {
-  const state = useCommandState('file.share');
+  const state = useCommandState('suite.file.share');
   const execute = useExecute();
-  const { registry } = useCommands();
-  if (!state.visible || !registry.has('file.share') || state.pending) return null;
+  if (!state.visible) return null;
   return (
     <button
       type="button"
-      className="kiln-btn kiln-btn--primary kiln-btn--sm kiln-titlebar__share"
+      className="kiln-appframe__share"
       data-keytip="ZS"
       data-keytip-level="root"
+      data-command="suite.file.share"
       aria-disabled={!state.enabled || undefined}
-      onClick={() => state.enabled && execute('file.share')}
+      onClick={() => state.enabled && execute('suite.file.share')}
     >
-      <span className="kiln-btn__icon">
-        <Icon icon={Share2} size={14} />
-      </span>
-      <span className="kiln-btn__label">Share</span>
+      <Icon icon={Share2} size={15} />
+      <span>Share</span>
+    </button>
+  );
+}
+
+/** A tab-strip command button in the mockups' outline style (Comments, Record, Follow). */
+export function StripButton({
+  command,
+  label,
+  icon = MessageSquare,
+  badge,
+}: {
+  command: string;
+  label: string;
+  icon?: typeof Save;
+  badge?: ReactNode;
+}) {
+  const state = useCommandState(command);
+  const execute = useExecute();
+  if (!state.visible) return null;
+  return (
+    <button
+      type="button"
+      className="kiln-appframe__strip-btn"
+      data-command={command}
+      aria-disabled={!state.enabled || undefined}
+      onClick={() => state.enabled && execute(command)}
+    >
+      <Icon icon={icon} size={15} />
+      <span>{label}</span>
+      {badge !== undefined ? <span className="kiln-appframe__badge">{badge}</span> : null}
     </button>
   );
 }

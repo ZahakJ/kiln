@@ -14,8 +14,8 @@ describe('validateRibbonSpec', () => {
           group(
             'clipboard',
             'Clipboard',
-            [split('edit.paste', [item('edit.pasteTextOnly')]), button('edit.cut')],
-            { launcher: { command: 'format.fontDialog' } },
+            [split('suite.edit.paste', [item('suite.edit.paste_text_only')]), button('suite.edit.cut')],
+            { launcher: { command: 'suite.format.font_dialog' } },
           ),
         ],
         { keyTip: 'H' },
@@ -34,9 +34,9 @@ describe('validateRibbonSpec', () => {
         [
           group('g', 'G', [
             button('nope.command'),
-            button('format.bold', { icon: 'NoSuchIcon' }),
-            button('format.bold'),
-            button('edit.copy', { keyTip: '!!' }),
+            button('suite.format.bold', { icon: 'NoSuchIcon' }),
+            button('suite.format.bold'),
+            button('suite.edit.copy', { keyTip: '!!' }),
           ]),
           group('g', 'Again', [
             dropdown(undefined, [submenu('More', [item('also.missing')])], { label: 'More' }),
@@ -51,7 +51,7 @@ describe('validateRibbonSpec', () => {
       expect.arrayContaining([
         expect.stringContaining('unknown command "nope.command"'),
         expect.stringContaining('unknown icon "NoSuchIcon"'),
-        expect.stringContaining('duplicate item id "format.bold"'),
+        expect.stringContaining('duplicate item id "suite.format.bold"'),
         expect.stringContaining('invalid Key Tip "!!"'),
         expect.stringContaining('duplicate group id "g"'),
         expect.stringContaining('unknown command "also.missing"'),

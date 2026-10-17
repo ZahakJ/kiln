@@ -1,5 +1,5 @@
-export { AppFrame, type AppFrameProps } from './AppFrame.tsx';
-export { APP_NAMES, AppMark } from './AppMark.tsx';
+export { AppFrame, type AppFrameProps, ariaShortcut, StripButton } from './AppFrame.tsx';
+export { APP_NAMES, APP_SHORT_NAMES, AppMark, brandAppOf } from './AppMark.tsx';
 export {
   type CommandsContextValue,
   CommandsProvider,

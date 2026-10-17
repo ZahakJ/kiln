@@ -51,6 +51,8 @@ export interface RibbonProps {
   onCollapsedChange?: (collapsed: boolean) => void;
   /** The File tab opens the Backstage. Omit to hide the File tab. */
   onFileClick?: () => void;
+  /** Content of the File button (default: the word "File"). */
+  fileButton?: ReactNode;
   /** Content at the right end of the tab strip (Comments, Editing mode…). */
   trailing?: ReactNode;
   className?: string;
@@ -91,6 +93,7 @@ export function Ribbon({
   collapsed = false,
   onCollapsedChange,
   onFileClick,
+  fileButton,
   trailing,
   className,
 }: RibbonProps) {
@@ -233,7 +236,7 @@ export function Ribbon({
         onDoubleClick={() => onCollapsedChange?.(!collapsed)}
         onKeyDown={(e) => onTabKeyDown(e, t.id)}
       >
-        {t.label}
+        <span className="kiln-ribbon__tab-label">{t.label}</span>
       </button>
     );
   };
@@ -260,8 +263,9 @@ export function Ribbon({
             data-keytip="F"
             data-keytip-level="root"
             aria-haspopup="dialog"
+            aria-label="File"
           >
-            File
+            {fileButton ?? 'File'}
           </button>
         ) : null}
         <div className="kiln-ribbon__tablist" role="tablist" aria-label="Ribbon tabs">
@@ -558,6 +562,7 @@ function ClassicGroup({
     // biome-ignore lint/a11y/useSemanticElements: a WAI-ARIA group of ribbon commands, not a form fieldset
     <div
       className={cx('kiln-ribbon__group', `kiln-ribbon__group--rows-${group.rows ?? 3}`)}
+      data-group={group.id}
       role="group"
       aria-label={group.label}
       data-ribbon-group={inPopover ? undefined : group.id}

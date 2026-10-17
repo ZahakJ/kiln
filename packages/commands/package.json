@@ -2,7 +2,7 @@
   "name": "@kiln/commands",
   "version": "0.1.0",
   "private": true,
-  "description": "The command registry every app registers into.",
+  "description": "The command system: a registry over the core's generated catalog, keymaps, ribbon definitions, Key Tips, synonyms and search.",
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "exports": {
@@ -12,12 +12,17 @@
   "scripts": {
     "lint": "biome check .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "shortcuts:doc": "node scripts/shortcuts-doc.ts",
+    "shortcuts:check": "node scripts/shortcuts-doc.ts --check"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@types/node": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
+  },
+  "dependencies": {
+    "@kiln/protocol": "workspace:*"
   }
 }

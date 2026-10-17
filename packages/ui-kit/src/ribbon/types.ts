@@ -37,11 +37,15 @@ export interface RibbonButtonItem extends ItemBase {
   args?: unknown;
 }
 
-/** Two-state command (Bold, Ruler); pressed state comes from the command's `isChecked`. */
+/**
+ * Two-state command (Bold, Ruler); pressed state comes from the command's `isChecked`, or, with
+ * `checkedValue`, from the command's value (one view of `suite.view.mode`).
+ */
 export interface RibbonToggleItem extends ItemBase {
   kind: 'toggle';
   command: string;
   args?: unknown;
+  checkedValue?: unknown;
 }
 
 /** Main part runs `command`; the arrow opens `menu` (Paste ▾, Bullets ▾). */
@@ -80,6 +84,8 @@ export interface RibbonComboboxItem extends ItemBase {
   command: string;
   options: readonly ComboboxOption[];
   width?: number;
+  /** Shown dimmed while the core reports no value ("Font", "Size"). */
+  placeholder?: string;
   allowCustomValue?: boolean;
   /** Validate typed text; return null to reject. */
   parse?: (text: string) => string | null;

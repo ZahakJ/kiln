@@ -766,3 +766,40 @@ WP-54 had to touch these files outside its owned paths; every change is additive
 - For WP-80 (show): `PptxKind::Show`/`MacroEnabledShow` (`read.kind`) is how `.ppsx`/`.ppsm` say "start the show".
 - For WP-93 (corpus): new decks under `fixtures/pptx/**` need an oracle dump
   (`python3 -I tools/make-fixtures.py --dump-pptx`); `tests/read_oracle.rs` fails on a deck without one.
+
+## WP-58 → WP-64/WP-71/WP-78/WP-86 (app editors), WP-52 (protocol), WP-83 (storage), WP-85 (Home polish), WP-90/WP-91/WP-97
+
+- Edits outside WP-58's paths, all consequences of the re-wire: `e2e/specs/smoke.spec.ts` (WP-50) now finds the app
+  doors instead of the old Hub's `h3` headings and expects the brand kit's dark background `rgb(23, 17, 14)` (the
+  Hub's provisional `#15171C` was retired with `apps/web/src/index.css`, as WP-51 asked); `packages/ui-kit/stories/Chrome.tsx`
+  (WP-51) uses the renamed command ids and `suite.view.mode` for its view buttons; the curated Lucide set
+  (`packages/ui-kit/src/chrome/lucideIcons.ts`) gained the icons the new declarations name. `apps/web/src/Hub.tsx` and
+  its test are no longer routed (Home replaced them) and can go with WP-97's cleanup. `apps/web/package.json` was not
+  changed: the web app reaches `@kiln/home`, `@kiln/ui-kit` and `@kiln/commands` through the Vite aliases and
+  tsconfig paths, and imports the tokens' CSS by relative path; WP-91 may prefer workspace dependencies.
+- Command ids are now `<scope>.<group>.<name>` in snake case, the form of `catalog.json` (`suite.format.bold`,
+  `grid.alignment.merge_center`, `ui.palette.open`). An id is a core command (in `catalog.json`), a `ui.*` chrome
+  action, or a reservation in `packages/commands/src/catalog/<app>.ts` for a command the core does not implement
+  yet. **When an app WP adds a command to `crates/kiln-protocol/src/commands/<app>.rs`, use the reserved id**, add its
+  builder to `CORE_BUILDERS` (`packages/commands/src/core/build.ts`; a unit test fails until the builder and the
+  catalog agree) and regenerate the protocol: `connectCore` then registers it, the ribbon item and its shortcuts run it
+  through `KilnClient.execute`, and release builds start showing it. Its enabled state comes from the command's
+  `Availability` and `Event::Changed`; checked/value state for toggles (Bold pressed, the current font) needs the
+  core to report it — `CORE_VALUES` in `core/connect.ts` maps `suite.view.mode`/`suite.view.zoom` to the
+  `StatusBar` today, and WP-64/WP-71 should add selection formatting to `Event::Changed` (or a `Query`) and map it there.
+- Contextual tabs (Table Design/Layout, Picture Format, Shape Format, Header & Footer) show while
+  `registry.context.contexts` contains `table`, `picture`, `shape` or `header_footer`; the editors set it from the
+  core's selection. Chart Design/Format stay WP-73's `chartTabs` (pass them as `ribbonFromData(data, chartTabs(...))`).
+- The surface slot is `apps/web/src/routes/app-frame/surface.tsx`: the editors replace `SurfaceSlot` with
+  `@kiln/surface` for their document. Deck and Notes frames say "cannot be created in this build yet" until
+  `crates/kiln-session/src/apps/mod.rs` registers their apps; Home's `CREATABLE` (`apps/web/src/routes/home/index.tsx`)
+  lists the apps whose doors create documents.
+- For WP-52 (protocol): there is no `Query::Recents`; Home and File ▸ Open read recents through the host
+  (`HostOp::Recents`, empty on the web until WP-83). The e2e "command log" is the frame's `CommandLog` of everything
+  sent to `KilnClient.execute` with its outcome (`window.__kiln.log()` in development builds), not a session API.
+- For WP-85: the Home templates strip ("Fresh from the kiln"), All templates, the tour and Import settings appear when
+  their props are given (`templates`, `onShowTemplates`, `onTour`, `onImportSettings` of `KilnHome`).
+- For WP-90 (mobile): the frame's phone layout is the Simplified ribbon in one row with More; the bottom toolbar and
+  ribbon sheet of §1.8 are yours. Home's phone layout follows `phone-*.png` (FAB New, bottom tab bar).
+- Kit gap: `--kiln-faint` text on `--kiln-panel` is 4.0:1, under WCAG AA; WP-58 uses `--kiln-muted` for every text
+  the mockups draw in faint (group labels, table headers, hints). Worth a line in `docs/design/kit-gaps.md` (WP-51).

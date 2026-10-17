@@ -1,5 +1,5 @@
 /**
- * Public entry point of @kiln/ui-kit: the Horizon UI primitives (PLAN.md §1.2, §3.10), icons
+ * Public entry point of @kiln/ui-kit: the UI primitives styled from the brand kit (PLAN.md §1.2), icons
  * (Lucide + Kiln Glyphs), theme bindings, and the Office chrome (PLAN.md §1.3–1.5): AppFrame,
  * Ribbon, Backstage, StatusBar, CommandPalette, task panes, mini toolbar, context menus, Key Tips and
  * the Options dialog, all driven by the @kiln/commands registry. Import
@@ -14,6 +14,14 @@ export {
   type BackstagePageId,
   type BackstageProps,
 } from './backstage/Backstage.tsx';
+export {
+  BackstageAccountPage,
+  BackstageFormatsPage,
+  BackstageInfoPage,
+  BackstageNewPage,
+  BackstageOpenPage,
+  type FormatChoice,
+} from './backstage/pages.tsx';
 export * from './charts/index.ts';
 export * from './chrome/index.ts';
 export { CommandMenuItems, isCommandEntry, type MenuEntry } from './contextmenu/CommandMenuItems.tsx';

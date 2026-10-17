@@ -4,7 +4,7 @@
 
 This page tracks the features people coming from Microsoft Office would miss, and the ones where Kiln aims to be better. Each row has a would-miss tier (critical, commonly-missed, niche), a delivery priority and a status; a row counts as done only when its named tests pass (`cargo xtask parity --verify`). The rules are in [PLAN.md §7](PLAN.md) and [parity/README.md](parity/README.md).
 
-Tracker updated 2026-10-16. Overall score **11.6 %** over 782 rows in scope (20 out of scope).
+Tracker updated 2026-10-16. Overall score **12.5 %** over 782 rows in scope (20 out of scope).
 
 Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – out of scope. Score = Σ tier weight × status weight ÷ Σ tier weight over rows in scope, with tier weights critical 3, commonly-missed 2, niche 0.5 and status weights missing 0, partial 0.5, done 1, better 1.
 
@@ -12,17 +12,17 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 
 | Scope | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Overall** | 11.6 % | 782 | 0 | 38 | 90 | 654 | 20 |
+| **Overall** | 12.5 % | 782 | 1 | 40 | 95 | 646 | 20 |
 | Kiln Write | 7.1 % | 231 | 0 | 2 | 26 | 203 | 1 |
 | Kiln Grid | 19.1 % | 261 | 0 | 25 | 41 | 195 | 6 |
 | Kiln Deck | 12.5 % | 184 | 0 | 11 | 19 | 154 | 3 |
 | Kiln Notes | 0.0 % | 44 | 0 | 0 | 0 | 44 | 1 |
-| Suite | 3.3 % | 62 | 0 | 0 | 4 | 58 | 9 |
+| Suite | 13.5 % | 62 | 1 | 2 | 9 | 50 | 9 |
 
 | Tier | Score | Rows | Better | Done | Partial | Missing | Out of scope |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| critical | 12.4 % | 462 | 0 | 32 | 51 | 379 | 0 |
-| commonly-missed | 10.0 % | 224 | 0 | 4 | 37 | 183 | 0 |
+| critical | 13.4 % | 462 | 0 | 34 | 56 | 372 | 0 |
+| commonly-missed | 10.5 % | 224 | 1 | 4 | 37 | 182 | 0 |
 | niche | 3.1 % | 96 | 0 | 2 | 2 | 92 | 20 |
 
 | App | Critical | Commonly-missed | Niche |
@@ -31,7 +31,7 @@ Legend: ★ better than Office · ● done · ◐ partial · ○ missing · – 
 | Kiln Grid | 21.0 % (143) | 15.7 % (83) | 7.1 % (35) |
 | Kiln Deck | 13.0 % (119) | 11.9 % (42) | 0.0 % (23) |
 | Kiln Notes | 0.0 % (23) | 0.0 % (12) | 0.0 % (9) |
-| Suite | 3.2 % (31) | 3.4 % (29) | 0.0 % (2) |
+| Suite | 17.7 % (31) | 6.9 % (29) | 0.0 % (2) |
 
 ## Better than Office
 
@@ -65,7 +65,7 @@ Rows that exist to be better than Office (no Office equivalent, `office: "—"`)
 | ○ | Version history with slide thumbnails per version | Kiln Deck | P0 | snapshots of local files with visual slide diffs, no cloud account |
 | ○ | Code block | Kiln Notes | P0 | OneNote has no code blocks at all |
 | ○ | Export a page to Markdown | Kiln Notes | P0 | Markdown export for notes |
-| ○ | Command palette (Ctrl+Shift+P / Alt+Q) with fuzzy search, recent commands and Office synonyms | Suite | P0 | every command with Office names as synonyms, fuzzy matched, shortcuts shown |
+| ★ | Command palette (Ctrl+Shift+P / Alt+Q) with fuzzy search, recent commands and Office synonyms | Suite | P0 | Fuzzy search over every command with Office names and everyday synonyms, shortcuts and recent commands; Office's Tell me has no synonyms or shortcuts. |
 | ○ | Shortcut cheat sheet (Ctrl+/) and remappable keyboard page | Suite | P0 | every binding listed and remappable in one place |
 | ◐ | Byte-preserving saves: every part not edited is byte-identical after save | Suite | P0 | saving never rewrites what you did not touch (GenOffice's bar, §2A.1). Partial: the package layer repacks every feature fixture byte-identically part by part (WP-55); saves from the apps arrive with the writers (WP-65, WP-70, WP-79) |
 | ○ | Native bundles (.kwrite/.kgrid/.kdeck) with history | Suite | P0 | native files carry their own version history |
@@ -206,9 +206,17 @@ No release has been tagged yet, so flips are counted from the seed, where every 
 | `deck.charts.radar` | Radar charts on slides (rendered and edited through kiln-charts) | missing | partial |
 | `deck.files.pptx-open` | Open .pptx with masters, layouts, themes, shapes, pictures, tables, charts, transitions, animations and notes | missing | partial |
 | `deck.files.ppsx` | Open .ppsx/.potx and start the show directly | missing | partial |
+| `suite.chrome.ribbon` | Ribbon with tabs, groups, labels, dialog launchers; Classic and Simplified modes; collapse (Ctrl+F1) | missing | partial |
+| `suite.chrome.key-tips` | Key Tips (Alt / F10) with Office letters | missing | done |
+| `suite.chrome.backstage` | Backstage (File) in Office order: Home, New, Open, Info, Save, Save As, Print, Share, Export, Close, Account, Options | missing | partial |
+| `suite.chrome.status-bar` | Status bar with counts, language, view buttons and zoom slider | missing | partial |
+| `suite.chrome.command-palette` | Command palette (Ctrl+Shift+P / Alt+Q) with fuzzy search, recent commands and Office synonyms | missing | better |
+| `suite.chrome.shortcuts` | Every shortcut of the §1.7 table works in each app | missing | partial |
+| `suite.home.start-screen` | Start screen: blank documents, featured templates, recent, pinned, search | missing | partial |
 | `suite.files.byte-preserving` | Byte-preserving saves: every part not edited is byte-identical after save | missing | partial |
 | `suite.files.macros-preserve` | Macro-enabled files (.docm/.xlsm/.pptm): vbaProject.bin preserved, never run | missing | partial |
 | `suite.files.compatibility-checker` | Compatibility checker: features that will not survive .docx/.xlsx/.pptx | missing | partial |
+| `suite.themes.light-dark` | Light, dark and system themes | missing | done |
 | `suite.security.hostile-files` | Hostile files refused cleanly (zip bombs, billion laughs, deep nesting) | missing | partial |
 
 ## Excel worksheet functions
@@ -1609,20 +1617,20 @@ Score 0.0 % over 44 rows in scope; 0 better, 0 done, 0 partial, 44 missing, 1 ou
 
 ## Suite
 
-Score 3.3 % over 62 rows in scope; 0 better, 0 done, 4 partial, 58 missing, 9 out of scope.
+Score 13.5 % over 62 rows in scope; 1 better, 2 done, 9 partial, 50 missing, 9 out of scope.
 
 ### Chrome
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Ribbon with tabs, groups, labels, dialog launchers; Classic and Simplified modes; collapse (Ctrl+F1) | Office ▸ ribbon | critical | P0 | WP-58 | `suite.chrome.ribbon` |
-| ○ | Key Tips (Alt / F10) with Office letters | Office ▸ Key Tips | critical | P0 | WP-58 | `suite.chrome.key-tips` |
-| ○ | Backstage (File) in Office order: Home, New, Open, Info, Save, Save As, Print, Share, Export, Close, Account, Options | Office ▸ File ▸ Backstage | critical | P0 | WP-58 | `suite.chrome.backstage` |
-| ○ | Status bar with counts, language, view buttons and zoom slider | Office ▸ status bar | critical | P0 | WP-58 | `suite.chrome.status-bar` |
+| ◐ | Ribbon with tabs, groups, labels, dialog launchers; Classic and Simplified modes; collapse (Ctrl+F1) | Office ▸ ribbon | critical | P0 | WP-58 | `suite.chrome.ribbon` |
+| ● | Key Tips (Alt / F10) with Office letters | Office ▸ Key Tips | critical | P0 | WP-58 | `suite.chrome.key-tips` |
+| ◐ | Backstage (File) in Office order: Home, New, Open, Info, Save, Save As, Print, Share, Export, Close, Account, Options | Office ▸ File ▸ Backstage | critical | P0 | WP-58 | `suite.chrome.backstage` |
+| ◐ | Status bar with counts, language, view buttons and zoom slider | Office ▸ status bar | critical | P0 | WP-58 | `suite.chrome.status-bar` |
 | ○ | Title bar with Undo/Redo/Save, rename, AutoSave indicator, search, pin commands | Office ▸ title bar / Quick Access Toolbar | critical | P0 | WP-58 | `suite.chrome.title-bar` |
-| ○ | Command palette (Ctrl+Shift+P / Alt+Q) with fuzzy search, recent commands and Office synonyms | — | commonly-missed | P0 | WP-58 | `suite.chrome.command-palette` |
+| ★ | Command palette (Ctrl+Shift+P / Alt+Q) with fuzzy search, recent commands and Office synonyms | — | commonly-missed | P0 | WP-58 | `suite.chrome.command-palette` |
 | ○ | Shortcut cheat sheet (Ctrl+/) and remappable keyboard page | — | commonly-missed | P0 | WP-58 | `suite.chrome.shortcut-cheat-sheet` |
-| ○ | Every shortcut of the §1.7 table works in each app | Office ▸ keyboard shortcuts | critical | P0 | WP-58 | `suite.chrome.shortcuts` |
+| ◐ | Every shortcut of the §1.7 table works in each app | Office ▸ keyboard shortcuts | critical | P0 | WP-58 | `suite.chrome.shortcuts` |
 | ○ | Options dialog: General, Display, Proofing, Save, Language, Advanced, Keyboard, Privacy | Office ▸ File ▸ Options | critical | P0 | WP-85 | `suite.chrome.options` |
 | ○ | Customise the ribbon | Office ▸ Options ▸ Customize Ribbon | niche | P2 | — | `suite.chrome.customise-ribbon` |
 | ○ | First-run tour (3 cards, skippable) and Office-name tooltips | Office ▸ (none) | commonly-missed | P0 | WP-85 | `suite.chrome.onboarding` |
@@ -1632,7 +1640,7 @@ Score 3.3 % over 62 rows in scope; 0 better, 0 done, 4 partial, 58 missing, 9 ou
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Start screen: blank documents, featured templates, recent, pinned, search | Office ▸ Home | critical | P0 | WP-85 | `suite.home.start-screen` |
+| ◐ | Start screen: blank documents, featured templates, recent, pinned, search | Office ▸ Home | critical | P0 | WP-85 | `suite.home.start-screen` |
 | ○ | Recent and pinned files across apps | Office ▸ Recent / Pinned | critical | P0 | WP-83 | `suite.home.recent-pinned` |
 | ○ | Shared with me (collaboration rooms) | Office ▸ Shared with Me | commonly-missed | P1 | WP-82 | `suite.home.shared-with-me` |
 
@@ -1674,7 +1682,7 @@ Score 3.3 % over 62 rows in scope; 0 better, 0 done, 4 partial, 58 missing, 9 ou
 
 | | Feature | Office | Tier | Priority | WP | Id |
 |---|---|---|---|---|---|---|
-| ○ | Light, dark and system themes | Office ▸ Office Theme | critical | P0 | WP-58 | `suite.themes.light-dark` |
+| ● | Light, dark and system themes | Office ▸ Office Theme | critical | P0 | WP-58 | `suite.themes.light-dark` |
 | ○ | High-contrast theme | Office ▸ high contrast | critical | P0 | WP-84 | `suite.themes.high-contrast` |
 | ○ | Full keyboard operation; 100 % of ribbon commands keyboard-reachable | Office ▸ keyboard access | critical | P0 | WP-84 | `suite.a11y.keyboard` |
 | ○ | axe-core: 0 serious/critical violations on every screen | Office ▸ accessibility | critical | P0 | WP-84 | `suite.a11y.axe` |

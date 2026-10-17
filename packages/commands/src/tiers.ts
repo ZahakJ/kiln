@@ -4,8 +4,9 @@
  * every command that is still only declared (`pending`).
  *
  * Configuration, read at build time (Vite `import.meta.env`) or run time (`process.env`):
- * - `KILN_TIERS` / `VITE_KILN_TIERS`: `P0,P1`, `all`. Default: all tiers in development,
- *   `P0` in release builds.
+ * - `KILN_TIERS` / `VITE_KILN_TIERS`: `P0,P1`, `all`. Default: `P0` (the tier v0.1 ships).
+ * - `KILN_PREVIEW_PLANNED` / `VITE_KILN_PREVIEW_PLANNED`: development builds show P0 commands the
+ *   core does not implement yet in their ribbon slots (default on; `0` hides them as release does).
  * - `KILN_RELEASE` / `VITE_KILN_RELEASE`: `1`/`true` forces a release build, `0`/`false`
  *   forces development. Default: release when Vite's `PROD` is true or `NODE_ENV=production`.
  */
@@ -18,6 +19,12 @@ export interface TierConfig {
   tiers: ReadonlySet<Tier>;
   /** Release build: pending (unimplemented) commands are hidden. */
   release: boolean;
+  /**
+   * Development builds only: show pending (planned) commands like implemented ones, so a ribbon can
+   * be reviewed against its mockup before the core implements every command. Running one reports
+   * `pending` (the frame says so in a toast). Ignored in release builds, which hide them.
+   */
+  previewPending?: boolean;
 }
 
 export type EnvLike = Record<string, string | boolean | undefined>;
@@ -66,13 +73,15 @@ export function resolveTierConfig(env: EnvLike = readEnv()): TierConfig {
     (env.VITE_KILN_TIERS as string | undefined) ?? (env.KILN_TIERS as string | undefined),
   );
   // P0 is always on: the core product is never gated away.
-  const tiers = listed ?? new Set<Tier>(release ? ['P0'] : TIERS);
+  // Every build shows the v0.1 tier unless asked for more (`VITE_KILN_TIERS=all` shows P1/P2 slots).
+  const tiers = listed ?? new Set<Tier>(['P0']);
   tiers.add('P0');
-  return { tiers, release };
+  const preview = truthy(env.VITE_KILN_PREVIEW_PLANNED ?? env.KILN_PREVIEW_PLANNED);
+  return { tiers, release, previewPending: !release && (preview ?? true) };
 }
 
 /** Development defaults: every tier visible, pending commands shown (flagged). */
-export const DEV_TIERS: TierConfig = { tiers: new Set(TIERS), release: false };
+export const DEV_TIERS: TierConfig = { tiers: new Set(TIERS), release: false, previewPending: false };
 /** Release defaults: P0 only, pending commands hidden. */
 export const RELEASE_TIERS: TierConfig = { tiers: new Set<Tier>(['P0']), release: true };
 

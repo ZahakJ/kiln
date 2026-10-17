@@ -1,6 +1,6 @@
 import type { KeyBinding } from '../keymap.ts';
 
-/** `bind('Mod+B', 'format.bold', 'Ctrl+B / I / U')` — the row is the first column of docs/SHORTCUTS.md. */
+/** `bind('Mod+B', 'suite.format.bold', 'Ctrl+B / I / U')` — the row is the first column of docs/SHORTCUTS.md. */
 export function bind(
   key: string,
   command: string,

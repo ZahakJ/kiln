@@ -9,10 +9,24 @@ describe('tiers', () => {
     expect(parseTierList(undefined)).toBeUndefined();
   });
 
-  it('shows everything in development and only P0 in release by default', () => {
-    expect(resolveTierConfig({})).toEqual({ tiers: new Set(['P0', 'P1', 'P2']), release: false });
-    expect(resolveTierConfig({ PROD: true })).toEqual({ tiers: new Set(['P0']), release: true });
+  it('shows P0 by default and previews planned commands in development only', () => {
+    expect(resolveTierConfig({ KILN_TIERS: 'all' }).tiers).toEqual(new Set(['P0', 'P1', 'P2']));
+    expect(resolveTierConfig({})).toEqual({
+      tiers: new Set(['P0']),
+      release: false,
+      previewPending: true,
+    });
+    expect(resolveTierConfig({ PROD: true })).toEqual({
+      tiers: new Set(['P0']),
+      release: true,
+      previewPending: false,
+    });
     expect(resolveTierConfig({ NODE_ENV: 'production' }).release).toBe(true);
+  });
+
+  it('previews planned commands only in development builds, unless turned off', () => {
+    expect(resolveTierConfig({ VITE_KILN_PREVIEW_PLANNED: '0' }).previewPending).toBe(false);
+    expect(resolveTierConfig({ PROD: true, VITE_KILN_PREVIEW_PLANNED: '1' }).previewPending).toBe(false);
   });
 
   it('lets the environment override tiers and release mode', () => {
@@ -29,6 +43,7 @@ describe('tiers', () => {
     expect(isTierEnabled('P2', release)).toBe(false);
     expect(isShippable({ tier: 'P0', pending: true }, release)).toBe(false);
     expect(isShippable({ tier: 'P0', pending: true }, dev)).toBe(true);
-    expect(isShippable({ tier: 'P1' }, dev)).toBe(true);
+    expect(isShippable({ tier: 'P1' }, dev)).toBe(false);
+    expect(isShippable({ tier: 'P1' }, resolveTierConfig({ KILN_TIERS: 'P0,P1' }))).toBe(true);
   });
 });

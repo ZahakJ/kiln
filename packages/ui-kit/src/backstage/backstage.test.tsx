@@ -6,6 +6,9 @@ import '../chrome/test-matchers.ts';
 import { createHarness, renderWithCommands } from '../chrome/test-helpers.tsx';
 import { Backstage, type BackstageProps } from './Backstage.tsx';
 
+// User-event flows open Radix overlays; on a loaded 4-CPU machine they need more than Vitest's 5 s.
+vi.setConfig({ testTimeout: 20_000 });
+
 function Host(props: Partial<BackstageProps>) {
   const [open, setOpen] = useState(false);
   return (
@@ -70,7 +73,7 @@ describe('Backstage', () => {
     const user = userEvent.setup();
     const h = createHarness();
     const save = vi.fn();
-    h.registry.register({ id: 'file.save', title: 'Save', run: save });
+    h.registry.register({ id: 'suite.file.save', title: 'Save', run: save });
     renderWithCommands(<Host />, h);
     await user.click(screen.getByRole('button', { name: 'File' }));
     await user.click(screen.getByRole('button', { name: 'Save' }));

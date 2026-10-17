@@ -36,7 +36,7 @@ export class RecentCommands {
 
   record(id: string): void {
     // Opening the palette itself is not interesting as a "recent" entry.
-    if (id === 'view.commandPalette') return;
+    if (id === 'ui.palette.open') return;
     this.#ids = [id, ...this.#ids.filter((x) => x !== id)].slice(0, this.#limit);
     writeJson(this.#storage, this.#key, this.#ids);
     for (const l of this.#listeners) l();

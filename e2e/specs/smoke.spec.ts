@@ -11,8 +11,9 @@ test.describe('smoke', () => {
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Kiln');
     await expect(page).toHaveTitle('Kiln');
     await expect(page.getByTestId('suite-version')).toHaveText(/^Version \d+\.\d+\.\d+/);
+    // Kiln Home (WP-58): one door per app, named after the product.
     for (const app of ['Kiln Write', 'Kiln Grid', 'Kiln Deck', 'Kiln Notes']) {
-      await expect(page.getByRole('heading', { level: 3, name: app })).toBeVisible();
+      await expect(page.locator('.kiln-door', { hasText: app })).toBeVisible();
     }
     await page.evaluate(() => document.fonts.ready);
     await page.screenshot({ path: shot('smoke/home-light-desktop.png'), fullPage: true });
@@ -24,7 +25,7 @@ test.describe('smoke', () => {
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Kiln');
     const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
-    expect(bg).toBe('rgb(21, 23, 28)');
+    expect(bg).toBe('rgb(23, 17, 14)'); // the brand kit's dark background (WP-51/WP-58)
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
     expect(overflow).toBe(false);
     await page.evaluate(() => document.fonts.ready);

@@ -26,7 +26,7 @@ export type CommandRun<Args = unknown> = (ctx: CommandContext, args: Args) => un
 
 /** Metadata shared by declarations (catalog) and implementations. */
 export interface CommandMeta {
-  /** Stable, dotted id: `format.bold`, `grid.freezePanes`. */
+  /** Stable, dotted id: `suite.format.bold`, `grid.view.freeze_panes`. */
   id: string;
   /** Title in Kiln's words, shown in menus, tooltips and the palette. */
   title: string;

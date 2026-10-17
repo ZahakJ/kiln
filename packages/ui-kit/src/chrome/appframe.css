@@ -1,4 +1,4 @@
-/* App window (PLAN.md §1.3): neutral title bar, ribbon, canvas, status bar. */
+/* App window (PLAN.md §1.3; brand mockups docs/design/mockups/<app>-*.png, kiln-ui.css). */
 
 .kiln-appframe {
   display: flex;
@@ -6,7 +6,7 @@
   height: 100%;
   min-height: 0;
   min-width: 0;
-  background: var(--kiln-bg-canvas);
+  background: var(--kiln-bg);
   color: var(--kiln-fg);
   font-family: var(--kiln-font-ui);
   font-size: var(--kiln-text-base);
@@ -14,8 +14,10 @@
 .kiln-appframe__body {
   display: flex;
   flex: 1;
+  gap: 10px;
   min-height: 0;
   min-width: 0;
+  padding: 10px 10px 0;
 }
 .kiln-appframe__canvas {
   position: relative;
@@ -23,19 +25,20 @@
   min-width: 0;
   min-height: 0;
   overflow: auto;
-  background: var(--kiln-bg-canvas);
+  background: var(--kiln-bg);
 }
 
 /* Title bar ------------------------------------------------------------------------------------- */
 
 .kiln-titlebar {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(200px, 440px) minmax(0, 1fr);
+  position: relative;
+  display: flex;
   align-items: center;
-  gap: 12px;
-  height: 44px;
-  padding: 0 8px 0 10px;
-  background: var(--kiln-bg-surface-2);
+  gap: 4px;
+  height: 46px;
+  flex: none;
+  padding: 0 8px 0 14px;
+  background: var(--kiln-bg);
   color: var(--kiln-fg);
   -webkit-app-region: drag;
   user-select: none;
@@ -51,19 +54,33 @@
   gap: 2px;
   min-width: 0;
 }
-.kiln-titlebar__start > .kiln-appmark {
-  flex: none;
-  margin-inline-end: 8px;
-  border-radius: 6px;
-}
 .kiln-titlebar__end {
-  justify-content: flex-end;
+  margin-inline-start: auto;
+  gap: 6px;
+}
+.kiln-titlebar__brand {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
+  margin-inline-end: 12px;
+}
+.kiln-titlebar__brand .kiln-appmark {
+  display: block;
+}
+.kiln-titlebar__appname {
+  font: 800 16px / 1 var(--kiln-font-display);
+  font-variation-settings: "SOFT" 40;
+  letter-spacing: -0.01em;
 }
 .kiln-titlebar__center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
   display: flex;
-  justify-content: center;
-  min-width: 0;
+  align-items: center;
+  gap: 10px;
+  max-width: 36%;
+  transform: translate(-50%, -50%);
 }
 .kiln-titlebar__btn {
   display: inline-flex;
@@ -73,38 +90,46 @@
   width: 30px;
   height: 30px;
   border: 0;
-  border-radius: var(--kiln-radius-control);
+  border-radius: 8px;
   background: transparent;
-  color: var(--kiln-fg);
+  color: var(--kiln-muted);
+  transition:
+    background-color var(--kiln-duration-fast) ease-out,
+    color var(--kiln-duration-fast) ease-out;
 }
 .kiln-titlebar__btn:hover {
   background: var(--kiln-bg-hover);
+  color: var(--kiln-fg);
 }
 .kiln-titlebar__btn[aria-disabled="true"] {
   color: var(--kiln-fg-disabled);
+  background: transparent;
 }
 .kiln-titlebar__btn:focus-visible,
 .kiln-titlebar__title:focus-visible,
 .kiln-searchbox:focus-visible,
-.kiln-autosave:focus-visible {
+.kiln-titlebar__chip:focus-visible,
+.kiln-appframe__share:focus-visible,
+.kiln-appframe__strip-btn:focus-visible {
   outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
-  outline-offset: -1px;
+  outline-offset: 1px;
 }
 .kiln-titlebar__title {
   display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  align-items: baseline;
+  gap: 6px;
   min-width: 0;
   max-width: 100%;
-  height: 30px;
-  margin-inline-start: 8px;
+  height: 28px;
   padding: 0 8px;
   border: 0;
-  border-radius: var(--kiln-radius-control);
+  border-radius: 8px;
   background: transparent;
   color: var(--kiln-fg);
   font: inherit;
-  font-weight: var(--kiln-weight-medium);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 28px;
 }
 button.kiln-titlebar__title:hover {
   background: var(--kiln-bg-hover);
@@ -114,34 +139,90 @@ button.kiln-titlebar__title:hover {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.kiln-titlebar__status {
+.kiln-titlebar__ext {
   flex: none;
-  color: var(--kiln-fg-muted);
-  font-weight: var(--kiln-weight-regular);
-  white-space: nowrap;
-}
-.kiln-titlebar__title-chevron {
-  flex: none;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
+  font-weight: 500;
 }
 .kiln-titlebar__title-input {
   width: 260px;
   height: 28px;
-  margin-inline-start: 8px;
   padding: 0 8px;
-  border: 1px solid var(--kiln-accent);
-  border-radius: var(--kiln-radius-control);
-  background: var(--kiln-bg-input);
+  border: 1px solid var(--app);
+  border-radius: 8px;
+  background: var(--kiln-raised);
   color: var(--kiln-fg);
   font: inherit;
+  font-weight: 600;
   outline: none;
+}
+
+/* The save chip (flame + state). As the AutoSave switch the flame glows while it is on. */
+.kiln-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px 0 8px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--kiln-sunken);
+  color: var(--kiln-muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+button.kiln-chip:hover {
+  color: var(--kiln-fg);
+  background: color-mix(in srgb, var(--kiln-sunken), var(--kiln-fg) 6%);
+}
+.kiln-autosave:not([data-on]) .kiln-autosave__flame {
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+.kiln-autosave[aria-disabled="true"] {
+  opacity: 0.65;
+}
+
+/* Search / Tell me: a sunken field that opens the command palette. */
+.kiln-searchbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 300px;
+  height: 32px;
+  padding: 0 6px 0 10px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--kiln-sunken);
+  color: var(--kiln-muted);
+  font: inherit;
+  font-size: 13px;
+  text-align: start;
+  transition: background-color var(--kiln-duration-fast) ease-out;
+}
+.kiln-searchbox:hover {
+  background: color-mix(in srgb, var(--kiln-sunken), var(--kiln-fg) 5%);
+  color: var(--kiln-muted);
+}
+.kiln-searchbox__text {
+  flex: 1;
+}
+.kiln-searchbox .kiln-searchbox__kbd {
+  flex: none;
+  padding: 3px 5px 2px;
+  border: 1px solid var(--kiln-line-strong);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: var(--kiln-raised);
+  color: var(--kiln-muted);
+  font: 600 11px / 1 var(--kiln-font-ui);
 }
 .kiln-titlebar__presence {
   display: flex;
   align-items: center;
-}
-.kiln-titlebar__share {
-  flex: none;
+  margin: 0 4px 0 8px;
 }
 .kiln-titlebar__window {
   display: flex;
@@ -149,109 +230,68 @@ button.kiln-titlebar__title:hover {
   margin-inline-end: -8px;
 }
 
-/* Search / Tell me: looks like a field, opens the command palette. */
-.kiln-searchbox {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  height: 30px;
-  padding: 0 10px;
-  border: 1px solid var(--kiln-border);
-  border-radius: var(--kiln-radius-control);
-  background: var(--kiln-bg-surface);
-  color: var(--kiln-fg-muted);
-  font: inherit;
-  text-align: start;
-  transition:
-    border-color var(--kiln-duration-fast) ease-out,
-    background-color var(--kiln-duration-fast) ease-out;
-}
-.kiln-searchbox:hover {
-  border-color: var(--kiln-border-strong);
-}
-.kiln-searchbox__text {
-  flex: 1;
-}
-.kiln-searchbox__kbd {
-  font-size: var(--kiln-text-xs);
-  color: var(--kiln-fg-muted);
-}
-
-/* AutoSave switch */
-.kiln-autosave {
+/* Tab-strip commands (Comments, Share): the mockups' outline and solid buttons. */
+.kiln-appframe__strip-btn,
+.kiln-appframe__share {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   height: 30px;
-  padding: 0 8px;
-  border: 0;
-  border-radius: var(--kiln-radius-control);
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.kiln-appframe__strip-btn {
   background: transparent;
   color: var(--kiln-fg);
-  font: inherit;
-  font-size: var(--kiln-text-sm);
 }
-.kiln-autosave:hover {
+.kiln-appframe__strip-btn:hover {
   background: var(--kiln-bg-hover);
 }
-.kiln-autosave__track {
-  position: relative;
-  width: 30px;
-  height: 16px;
-  border-radius: 8px;
-  border: 1px solid var(--kiln-border-strong);
-  background: var(--kiln-bg-surface);
-  transition: background-color var(--kiln-duration-fast) ease-out;
+.kiln-appframe__badge {
+  min-width: 18px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: var(--kiln-sunken);
+  color: var(--kiln-muted);
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
 }
-.kiln-autosave__thumb {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--kiln-fg-muted);
-  transition: transform var(--kiln-duration-menu) var(--kiln-ease-out);
+.kiln-appframe__share {
+  background: var(--app-solid);
+  color: var(--app-on-solid);
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.14);
 }
-.kiln-autosave[aria-checked="true"] .kiln-autosave__track {
-  background: var(--kiln-accent-strong);
-  border-color: var(--kiln-accent-strong);
+.kiln-appframe__share:hover {
+  background: var(--kiln-accent-hover);
 }
-.kiln-autosave[aria-checked="true"] .kiln-autosave__thumb {
-  transform: translateX(14px);
-  background: var(--kiln-on-accent);
-}
-.kiln-autosave__state {
-  min-width: 20px;
-  color: var(--kiln-fg-muted);
-}
-.kiln-autosave[aria-disabled="true"] {
-  opacity: 0.6;
+.kiln-appframe__share[aria-disabled="true"],
+.kiln-appframe__strip-btn[aria-disabled="true"] {
+  opacity: 0.55;
 }
 
 /* Classic Office look: a solid accent title bar (PLAN.md §1.9). */
 .kiln-appframe--classic .kiln-titlebar {
-  background: var(--kiln-accent-strong);
-  color: var(--kiln-on-accent);
+  background: var(--app-solid);
+  color: var(--app-on-solid);
 }
 .kiln-appframe--classic .kiln-titlebar__btn,
 .kiln-appframe--classic .kiln-titlebar__title,
-.kiln-appframe--classic .kiln-autosave {
-  color: var(--kiln-on-accent);
-}
-.kiln-appframe--classic .kiln-titlebar__status,
-.kiln-appframe--classic .kiln-autosave__state {
-  color: color-mix(in srgb, var(--kiln-on-accent) 75%, transparent);
+.kiln-appframe--classic .kiln-titlebar__ext {
+  color: var(--app-on-solid);
 }
 .kiln-appframe--classic .kiln-titlebar__btn:hover,
-.kiln-appframe--classic button.kiln-titlebar__title:hover,
-.kiln-appframe--classic .kiln-autosave:hover {
-  background: color-mix(in srgb, var(--kiln-on-accent) 16%, transparent);
+.kiln-appframe--classic button.kiln-titlebar__title:hover {
+  background: color-mix(in srgb, var(--app-on-solid) 16%, transparent);
 }
-.kiln-appframe--classic .kiln-searchbox {
-  border-color: transparent;
-  background: color-mix(in srgb, var(--kiln-on-accent) 88%, transparent);
+.kiln-appframe--classic .kiln-searchbox,
+.kiln-appframe--classic .kiln-chip {
+  background: color-mix(in srgb, var(--app-on-solid) 90%, transparent);
 }
 
 /* Cheat sheet */
@@ -298,30 +338,58 @@ button.kiln-titlebar__title:hover {
   flex: none;
 }
 
-@media (max-width: 639px) {
-  .kiln-titlebar {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 4px;
-    padding: 0 4px 0 8px;
+@media (max-width: 1023px) {
+  .kiln-searchbox {
+    width: 200px;
   }
   .kiln-titlebar__center {
-    order: 3;
-    grid-column: 2;
+    max-width: 30%;
   }
-  .kiln-titlebar__end {
+  .kiln-titlebar__chip span {
     display: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .kiln-titlebar {
+    padding: 0 6px 0 10px;
+  }
+  .kiln-titlebar__appname,
+  .kiln-titlebar__chip {
+    display: none;
+  }
+  .kiln-titlebar__brand {
+    margin-inline-end: 4px;
+  }
+  .kiln-titlebar__center {
+    position: static;
+    transform: none;
+    max-width: none;
+    flex: 1;
+    min-width: 0;
   }
   .kiln-searchbox {
     width: 34px;
     padding: 0;
     justify-content: center;
-    border-color: transparent;
     background: transparent;
   }
   .kiln-searchbox__text,
-  .kiln-searchbox__kbd,
-  .kiln-autosave,
-  .kiln-titlebar__status {
+  .kiln-searchbox .kiln-searchbox__kbd {
     display: none;
+  }
+  .kiln-titlebar__start .kiln-titlebar__btn[data-command="suite.file.save"] {
+    display: none;
+  }
+  .kiln-appframe__body {
+    padding: 6px 6px 0;
+  }
+  .kiln-appframe__strip-btn span:not(.kiln-appframe__badge),
+  .kiln-appframe__share span {
+    display: none;
+  }
+  .kiln-appframe__strip-btn,
+  .kiln-appframe__share {
+    padding: 0 8px;
   }
 }

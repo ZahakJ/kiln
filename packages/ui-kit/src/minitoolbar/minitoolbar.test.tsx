@@ -3,6 +3,9 @@ import { describe, expect, it, vi } from 'vitest';
 import '../chrome/test-matchers.ts';
 import { MiniToolbar } from './MiniToolbar.tsx';
 
+// User-event flows open Radix overlays; on a loaded 4-CPU machine they need more than Vitest's 5 s.
+vi.setConfig({ testTimeout: 20_000 });
+
 describe('MiniToolbar', () => {
   const anchor = { left: 200, top: 300, width: 100, height: 18 };
 

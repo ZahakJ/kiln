@@ -31,7 +31,7 @@ function LauncherIcon() {
 }
 
 export interface DialogLauncherProps {
-  /** Command that opens the dialog (`format.fontDialog`). */
+  /** Command that opens the dialog (`suite.format.font_dialog`). */
   command: string;
   /** Accessible name / tooltip; default the command title ("Font…"). */
   label?: string;

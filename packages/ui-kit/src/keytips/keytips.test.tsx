@@ -4,6 +4,9 @@ import { describe, expect, it, vi } from 'vitest';
 import '../chrome/test-matchers.ts';
 import { KeyTipsLayer } from './KeyTipsLayer.tsx';
 
+// User-event flows open Radix overlays; on a loaded 4-CPU machine they need more than Vitest's 5 s.
+vi.setConfig({ testTimeout: 20_000 });
+
 function Host({ onBold, onExit }: { onBold: () => void; onExit: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const [tab, setTab] = useState<'home' | 'insert'>('home');

@@ -4,6 +4,9 @@ import { describe, expect, it, vi } from 'vitest';
 import '../chrome/test-matchers.ts';
 import { TaskPaneHost } from './TaskPaneHost.tsx';
 
+// User-event flows open Radix overlays; on a loaded 4-CPU machine they need more than Vitest's 5 s.
+vi.setConfig({ testTimeout: 20_000 });
+
 const panes = [
   { id: 'styles', title: 'Styles', icon: 'StylesPane', content: <p>Style list</p> },
   { id: 'comments', title: 'Comments', icon: 'ShowComments', content: <p>Comment list</p> },

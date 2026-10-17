@@ -1,4 +1,5 @@
 import type { AppId } from '@kiln/commands';
+import { AppTile, type BrandApp } from '../icons/brand/BrandMark.tsx';
 
 export const APP_NAMES: Readonly<Record<AppId, string>> = {
   write: 'Kiln Write',
@@ -8,31 +9,24 @@ export const APP_NAMES: Readonly<Record<AppId, string>> = {
   hub: 'Kiln Home',
 };
 
+/** The short names the title bar shows next to the tile (mockups: "Write", "Grid"…). */
+export const APP_SHORT_NAMES: Readonly<Record<AppId, string>> = {
+  write: 'Write',
+  grid: 'Grid',
+  deck: 'Deck',
+  notes: 'Notes',
+  hub: 'Kiln',
+};
+
+/** The brand kit's name for an app's tile (Home is the suite tile). */
+export function brandAppOf(app: AppId): BrandApp {
+  return app === 'hub' ? 'home' : app;
+}
+
 /**
- * The Kiln mark (the "o" opening into a doorway) on a tile in the app's accent colour.
+ * The app's glazed tile from the brand kit (`<AppTile>` picks the drawing made for the size).
  * Decorative unless `label` is given.
  */
-export function AppMark({ size = 24, label }: { size?: number; label?: string }) {
-  return (
-    <svg
-      className="kiln-appmark"
-      width={size}
-      height={size}
-      viewBox="0 0 512 512"
-      role={label ? 'img' : undefined}
-      aria-label={label}
-      aria-hidden={label ? undefined : true}
-      focusable="false"
-    >
-      <rect width="512" height="512" rx="120" fill="var(--kiln-accent-strong)" />
-      <rect width="512" height="512" rx="120" fill="url(#kiln-appmark-sheen)" />
-      <defs>
-        <linearGradient id="kiln-appmark-sheen" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#ffffff" stopOpacity="0.18" />
-          <stop offset="0.55" stopColor="#ffffff" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <path d="M348 412.95A170 170 0 1 0 164 412.95V270A92 92 0 0 1 348 270Z" fill="#ffffff" />
-    </svg>
-  );
+export function AppMark({ app = 'hub', size = 24, label }: { app?: AppId; size?: number; label?: string }) {
+  return <AppTile app={brandAppOf(app)} size={size} label={label} className="kiln-appmark" />;
 }

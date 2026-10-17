@@ -27,7 +27,8 @@ export interface CommandRegistryOptions {
   onError?: (id: string, error: unknown) => void;
 }
 
-const ID_RE = /^[a-z][a-zA-Z0-9]*(\.[a-zA-Z0-9]+)+$/;
+/** `<scope>.<group>.<name>` in snake case, the form of `catalog.json` (`suite.file.save_as`). */
+const ID_RE = /^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+$/;
 
 const noop = () => undefined;
 
@@ -222,7 +223,8 @@ export class CommandRegistry {
       exists: true,
       pending: c.pending,
       visible,
-      enabled: visible && !c.pending && safeCall(c.isEnabled, ctx, true),
+      enabled:
+        visible && (!c.pending || this.#tiers.previewPending === true) && safeCall(c.isEnabled, ctx, true),
       checked: c.isChecked ? safeCall(c.isChecked, ctx, false) : undefined,
       value: c.value ? safeCall(c.value, ctx, undefined) : undefined,
     };
@@ -354,7 +356,7 @@ function safeCall<T>(fn: ((ctx: CommandContext) => T) | undefined, ctx: CommandC
 }
 
 function assertMeta(m: CommandMeta): void {
-  if (!ID_RE.test(m.id)) throw new Error(`Invalid command id "${m.id}" (expected e.g. "format.bold")`);
+  if (!ID_RE.test(m.id)) throw new Error(`Invalid command id "${m.id}" (expected e.g. "suite.format.bold")`);
   if (!m.title?.trim()) throw new Error(`Command "${m.id}" needs a title`);
 }
 

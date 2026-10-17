@@ -1,0 +1,80 @@
+/* The empty canvas of each app until its editor mounts (mockups: the page on the ember glow). */
+
+.kiln-slot {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100%;
+  padding: 24px 24px 48px;
+}
+.kiln-slot__page {
+  width: min(720px, 100%);
+  aspect-ratio: 210 / 297;
+  border-radius: 2px;
+  background: var(--kiln-page);
+  box-shadow: var(--kiln-shadow-page);
+}
+[data-theme="dark"] .kiln-slot__page {
+  box-shadow:
+    0 40px 120px -30px rgb(255 106 38 / 0.3),
+    0 0 0 1px rgb(255 255 255 / 0.04),
+    0 2px 12px rgb(0 0 0 / 0.5);
+}
+.kiln-slot--grid,
+.kiln-slot--deck {
+  padding: 0;
+  align-items: stretch;
+}
+.kiln-slot__sheet {
+  flex: 1;
+  border: 1px solid var(--kiln-line);
+  border-radius: 14px 14px 0 0;
+  background-color: var(--kiln-page);
+  background-image:
+    linear-gradient(var(--kiln-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--kiln-line) 1px, transparent 1px);
+  background-size: 100px 28px;
+  background-position: 46px 30px;
+}
+.kiln-slot--deck {
+  align-items: center;
+  padding: 24px;
+}
+.kiln-slot__slide {
+  width: min(880px, 100%);
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  background: var(--kiln-page);
+  box-shadow: var(--kiln-shadow-page);
+}
+.kiln-slot {
+  position: relative;
+}
+.kiln-slot[data-problem] > :not(.kiln-slot__problem) {
+  opacity: 0.55;
+}
+.kiln-slot__problem {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  max-width: 420px;
+  padding: 18px 22px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 14px;
+  background: var(--kiln-panel);
+  box-shadow: var(--kiln-shadow-2);
+  color: var(--kiln-muted);
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+.kiln-slot__problem p {
+  margin: 0;
+}
+.kiln-slot__problem a {
+  color: var(--kiln-ember-text);
+  font-weight: 600;
+}

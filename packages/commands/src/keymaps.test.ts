@@ -1,28 +1,23 @@
 /**
- * Conformance of the keymaps with docs/SHORTCUTS.md (PLAN.md §1.7): every row of the document's
- * tables maps, in each app that uses it, to declared command ids, with exactly the keys the row names.
+ * The §1.7 table is fully bound (PLAN.md §1.7): every row of `keymaps/table.ts` maps, in each app that
+ * uses it, to declared command ids with exactly the keys the row names, and docs/SHORTCUTS.md is the
+ * text generated from the table and the keymaps.
  */
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { isDeclared } from './catalog/index.ts';
 import type { KeyBinding } from './keymap.ts';
+import { shortcutsDocText } from './keymaps/doc.ts';
 import { commonKeymap, deckKeymap, gridKeymap, SLIDE_SHOW_ROW, writeKeymap } from './keymaps/index.ts';
+import { SHORTCUT_TABLE, SHORTCUT_TABLE_ROWS, SLIDE_SHOW_TABLE } from './keymaps/table.ts';
 import { chordId, parseShortcut } from './keys.ts';
 import { cellShortcuts, expandShortcutExpression, isNoneCell, parseShortcutDoc } from './shortcutsDoc.ts';
 
-const markdown = readFileSync(new URL('../../../docs/SHORTCUTS.md', import.meta.url), 'utf8');
-const doc = parseShortcutDoc(markdown);
 const APPS = { write: writeKeymap, grid: gridKeymap, deck: deckKeymap } as const;
 const id = (k: string) => chordId(parseShortcut(k, 'other'));
 
-describe('docs/SHORTCUTS.md parsing', () => {
-  it('finds both tables', () => {
-    expect(doc.rows.length).toBeGreaterThanOrEqual(55);
-    expect(doc.slideShow.length).toBe(7);
-    expect(doc.rows[0]?.shortcut).toBe('Ctrl+N / O / S / P / W');
-  });
-
-  it('expands shortcut expressions', () => {
+describe('shortcut expressions', () => {
+  it('expands the forms used by the table', () => {
     expect(expandShortcutExpression('Ctrl+N / O / S / P / W')).toEqual([
       'Ctrl+N',
       'Ctrl+O',
@@ -52,8 +47,15 @@ describe('docs/SHORTCUTS.md parsing', () => {
   });
 });
 
-describe('every shortcut row of docs/SHORTCUTS.md maps to declared command ids', () => {
-  for (const row of doc.rows) {
+describe('§1.7 table fully bound', () => {
+  it(`has all ${SHORTCUT_TABLE_ROWS} rows of the plan's table and the 7 slide-show keys`, () => {
+    expect(SHORTCUT_TABLE).toHaveLength(57);
+    expect(SHORTCUT_TABLE_ROWS).toBe(57);
+    expect(SLIDE_SHOW_TABLE).toHaveLength(7);
+    expect(new Set(SHORTCUT_TABLE.map((r) => r.shortcut)).size).toBe(SHORTCUT_TABLE.length);
+  });
+
+  for (const row of SHORTCUT_TABLE) {
     it(row.shortcut, () => {
       const expected = new Set(expandShortcutExpression(row.shortcut).map(id));
       const covered = new Set<string>();
@@ -77,7 +79,7 @@ describe('every shortcut row of docs/SHORTCUTS.md maps to declared command ids',
     });
   }
 
-  for (const row of doc.slideShow) {
+  for (const row of SLIDE_SHOW_TABLE) {
     it(`${SLIDE_SHOW_ROW}${row.key}`, () => {
       const bindings = deckKeymap.filter((b) => b.row === `${SLIDE_SHOW_ROW}${row.key}`);
       const expected = new Set(expandShortcutExpression(row.key).map(id));
@@ -89,13 +91,27 @@ describe('every shortcut row of docs/SHORTCUTS.md maps to declared command ids',
     });
   }
 
-  it('no binding points at a row that is not in the document', () => {
+  it('no binding points at a row that is not in the table', () => {
     const rows = new Set([
-      ...doc.rows.map((r) => r.shortcut),
-      ...doc.slideShow.map((r) => `${SLIDE_SHOW_ROW}${r.key}`),
+      ...SHORTCUT_TABLE.map((r) => r.shortcut),
+      ...SLIDE_SHOW_TABLE.map((r) => `${SLIDE_SHOW_ROW}${r.key}`),
     ]);
     for (const b of [...commonKeymap, ...writeKeymap, ...gridKeymap, ...deckKeymap]) {
       expect(rows.has(b.row ?? ''), `${b.key} → ${b.command}: row "${b.row}"`).toBe(true);
     }
+  });
+});
+
+describe('docs/SHORTCUTS.md', () => {
+  const committed = readFileSync(new URL('../../../docs/SHORTCUTS.md', import.meta.url), 'utf8');
+
+  it('is generated from the table and keymaps (run `pnpm --filter @kiln/commands shortcuts:doc`)', () => {
+    expect(committed).toBe(shortcutsDocText());
+  });
+
+  it('round-trips through the parser', () => {
+    const doc = parseShortcutDoc(committed);
+    expect(doc.rows).toEqual(SHORTCUT_TABLE.map((r) => ({ ...r })));
+    expect(doc.slideShow).toEqual(SLIDE_SHOW_TABLE.map((r) => ({ ...r })));
   });
 });

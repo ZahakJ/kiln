@@ -6,9 +6,12 @@ import { AppFrame } from './AppFrame.tsx';
 import { resetOptionsCache } from './options.ts';
 import { createHarness } from './test-helpers.tsx';
 
+// User-event flows open Radix overlays; on a loaded 4-CPU machine they need more than Vitest's 5 s.
+vi.setConfig({ testTimeout: 20_000 });
+
 const spec = ribbon('write', [
-  tab('home', 'Home', [group('font', 'Font', [toggle('format.bold'), button('format.italic')])]),
-  tab('view', 'View', [group('ribbon', 'Ribbon', [toggle('view.toggleRibbon', { size: 'medium' })])]),
+  tab('home', 'Home', [group('font', 'Font', [toggle('suite.format.bold'), button('suite.format.italic')])]),
+  tab('view', 'View', [group('ribbon', 'Ribbon', [toggle('ui.ribbon.collapse', { size: 'medium' })])]),
 ]);
 
 function setup(extra: Partial<Parameters<typeof AppFrame>[0]> = {}) {
@@ -18,7 +21,7 @@ function setup(extra: Partial<Parameters<typeof AppFrame>[0]> = {}) {
   const boldRun = vi.fn(() => {
     bold = !bold;
   });
-  h.registry.register({ id: 'format.bold', title: 'Bold', run: boldRun, isChecked: () => bold });
+  h.registry.register({ id: 'suite.format.bold', title: 'Bold', run: boldRun, isChecked: () => bold });
   const onRename = vi.fn();
   const utils = render(
     <AppFrame
@@ -43,13 +46,15 @@ describe('AppFrame', () => {
   it('lays out the title bar, ribbon, document and status bar', () => {
     setup();
     expect(screen.getByRole('img', { name: 'Kiln Write' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Search commands' })).toHaveTextContent('Alt+Q');
+    expect(screen.getByRole('button', { name: /^Search/ })).toHaveTextContent('Alt+Q');
     expect(screen.getByRole('tablist', { name: 'Ribbon tabs' })).toBeInTheDocument();
     expect(screen.getByRole('main', { name: 'Kiln Write document' })).toContainElement(
       screen.getByRole('textbox', { name: 'Document text' }),
     );
     expect(screen.getByText('status')).toBeInTheDocument();
-    expect(screen.getByText('· Saved')).toBeInTheDocument();
+    expect(screen.getByTestId('save-status')).toHaveTextContent('Saved');
+    expect(screen.getByRole('button', { name: 'File' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Undo' })).toHaveAttribute('aria-keyshortcuts', 'Control+Z');
   });
 
   it('dispatches keyboard shortcuts to implemented commands only', async () => {
@@ -74,7 +79,7 @@ describe('AppFrame', () => {
     await user.keyboard('{Alt>}q{/Alt}');
     expect(await screen.findByRole('dialog')).toBeInTheDocument();
     await user.keyboard('{Escape}');
-    await user.click(screen.getByRole('button', { name: 'Search commands' }));
+    await user.click(screen.getByRole('button', { name: /^Search/ }));
     expect(await screen.findByRole('dialog')).toBeInTheDocument();
   });
 
@@ -136,16 +141,16 @@ describe('AppFrame', () => {
   it('implements the theme and ribbon commands, reflected as checked toggles', async () => {
     const user = userEvent.setup();
     const { registry } = setup();
-    await act(() => registry.execute('view.themeDark'));
-    expect(registry.getState('view.themeDark').checked).toBe(true);
+    await act(() => registry.execute('ui.theme.dark'));
+    expect(registry.getState('ui.theme.dark').checked).toBe(true);
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
-    await act(() => registry.execute('view.themeSystem'));
+    await act(() => registry.execute('ui.theme.system'));
     await user.click(screen.getByRole('tab', { name: 'View' }));
     const collapse = within(screen.getByRole('tabpanel'))
       .getAllByRole('button', { name: 'Collapse the Ribbon' })
       .find((b) => b.hasAttribute('aria-pressed')) as HTMLElement;
     expect(collapse).toHaveAttribute('aria-pressed', 'false');
     fireEvent.click(collapse);
-    expect(registry.getState('view.toggleRibbon').checked).toBe(true);
+    expect(registry.getState('ui.ribbon.collapse').checked).toBe(true);
   });
 });

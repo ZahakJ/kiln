@@ -95,7 +95,7 @@ export function CommandPalette({ open, onOpenChange, placeholder, limit = 60 }: 
             <span className="kiln-palette__hint">{c.category}</span>
           ) : null}
         </span>
-        {state.pending ? <span className="kiln-palette__badge">Coming soon</span> : null}
+        {state.pending ? <span className="kiln-palette__badge">Not in this build</span> : null}
         {state.checked ? <span className="kiln-palette__badge kiln-palette__badge--on">On</span> : null}
         {shortcut ? <Kbd shortcut={shortcut} className="kiln-palette__kbd" /> : null}
       </Command.Item>

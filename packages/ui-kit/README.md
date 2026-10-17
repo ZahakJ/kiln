@@ -20,6 +20,11 @@ Office-familiar UI building blocks shared by every app, built on Radix, the bran
     contextual tab sets, groups that collapse (Classic) or overflow into "More" (Simplified), dialog
     launchers, ScreenTips with shortcut and Office name, Key Tips attributes, tablist + toolbar keyboard
     model. `validateRibbonSpec()` checks command ids and icons for tests.
+  - `ribbonFromData(RIBBONS[app])` renders the ribbon definitions of `@kiln/commands` (gallery
+    samples, font previews, contextual tabs shown while the core reports their context).
+  - Backstage pages that render what the core reports: `BackstageNewPage`, `BackstageOpenPage`,
+    `BackstageInfoPage` (Summary, Status, CompatReport), `BackstageFormatsPage` (Save As, Export),
+    `BackstageAccountPage`.
   - `Backstage` (Office-order navigation, pages are slots), `StatusBar` (customisable items, view
     switcher, zoom slider with a presets popover), `CommandPalette` (cmdk; fuzzy over titles, Office
     names and synonyms; Recent), `TaskPaneHost` (left/right docking, resizable, tabbed), `MiniToolbar` and

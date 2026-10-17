@@ -20,6 +20,7 @@ import { Gallery } from '../primitives/Gallery.tsx';
 import { Menu, MenuContent, MenuTrigger } from '../primitives/Menu.tsx';
 import { NumberInput } from '../primitives/NumberInput.tsx';
 import { SplitButton } from '../primitives/SplitButton.tsx';
+import { ariaKeyShortcuts } from '../primitives/shortcut.ts';
 import { Tooltip } from '../primitives/Tooltip.tsx';
 import type { RibbonItemSize, RibbonLayout, RibbonLeafItem } from './types.ts';
 
@@ -80,7 +81,7 @@ function useTip(command: string | undefined, label: string | undefined) {
   return { meta, state, shortcut, title, description: hasDescription ? description : undefined };
 }
 
-const ICON_SIZE: Record<RibbonItemSize, number> = { large: 32, medium: 20, small: 20 };
+const ICON_SIZE: Record<RibbonItemSize, number> = { large: 24, medium: 16, small: 17 };
 
 /** One ribbon control, bound to its command's state. Returns null when the command is hidden. */
 export function RibbonItemView({ item, size, layout, keyTip, keyTipLevel }: RibbonItemViewProps) {
@@ -103,7 +104,12 @@ export function RibbonItemView({ item, size, layout, keyTip, keyTipLevel }: Ribb
   switch (item.kind) {
     case 'button':
     case 'toggle': {
-      const pressed = item.kind === 'toggle' ? !!tip.state.checked : undefined;
+      const pressed =
+        item.kind !== 'toggle'
+          ? undefined
+          : item.checkedValue !== undefined
+            ? tip.state.value === item.checkedValue
+            : !!tip.state.checked;
       return (
         <Tooltip content={tip.title} shortcut={tip.shortcut} description={tip.description}>
           <button
@@ -117,6 +123,7 @@ export function RibbonItemView({ item, size, layout, keyTip, keyTipLevel }: Ribb
             )}
             aria-label={showLabel ? undefined : tip.title}
             aria-pressed={pressed}
+            aria-keyshortcuts={tip.shortcut ? ariaKeyShortcuts(tip.shortcut) : undefined}
             data-state={pressed === undefined ? undefined : pressed ? 'on' : 'off'}
             aria-disabled={!enabled || undefined}
             data-command={command}
@@ -228,6 +235,7 @@ export function RibbonItemView({ item, size, layout, keyTip, keyTipLevel }: Ribb
               parse={item.parse}
               disabled={!enabled}
               width={item.width ?? 120}
+              placeholder={item.placeholder}
               size="sm"
             />
           </span>

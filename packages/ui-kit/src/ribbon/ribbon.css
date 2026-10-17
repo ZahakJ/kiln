@@ -1,30 +1,31 @@
-/* Ribbon (PLAN.md §1.2–1.4): tab strip on surface-2, commands on surface, accent underline. */
+/* Ribbon (PLAN.md §1.2–1.4; mockups and kiln-ui.css): tab strip on the window background with the
+   File button and the arch-shaped active tab, commands on a rounded slab. */
 
 .kiln-ribbon {
   --ribbon-row-h: 26px;
-  --ribbon-body-h: 84px;
+  --ribbon-body-h: 82px;
   position: relative;
   display: flex;
   flex-direction: column;
+  flex: none;
   min-width: 0;
-  background: var(--kiln-bg-surface);
+  background: var(--kiln-bg);
   color: var(--kiln-fg);
   font-family: var(--kiln-font-ui);
   font-size: var(--kiln-text-base);
   z-index: var(--kiln-z-ribbon);
-  border-bottom: var(--kiln-border-width) solid var(--kiln-border);
 }
 
 /* Tab strip ------------------------------------------------------------------------------------ */
 
 .kiln-ribbon__strip {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: flex-end;
   gap: 2px;
-  min-height: 36px;
-  padding: 0 8px;
-  background: var(--kiln-bg-surface-2);
-  overflow: hidden;
+  height: 38px;
+  padding: 0 12px;
 }
 .kiln-ribbon__tablist {
   display: flex;
@@ -32,108 +33,150 @@
   gap: 2px;
   min-width: 0;
   flex: 1;
+  height: 100%;
   overflow-x: auto;
+  overflow-y: hidden;
   scrollbar-width: none;
 }
 .kiln-ribbon__tablist::-webkit-scrollbar {
   display: none;
 }
-.kiln-ribbon__file,
+.kiln-ribbon__file {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: none;
+  align-self: flex-end;
+  height: 30px;
+  margin: 0 8px 5px 0;
+  padding: 0 14px 0 11px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--app-solid);
+  color: var(--app-on-solid);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow:
+    inset 0 -2px 0 rgb(0 0 0 / 0.14),
+    0 1px 2px rgb(0 0 0 / 0.12);
+  transition: background-color var(--kiln-duration-fast) ease-out;
+}
+.kiln-ribbon__file:hover {
+  background: var(--kiln-accent-hover);
+}
 .kiln-ribbon__tab {
   position: relative;
   flex: none;
-  height: 32px;
-  padding: 0 12px;
+  height: 34px;
+  padding: 0 15px;
   border: 0;
-  border-radius: var(--kiln-radius-control) var(--kiln-radius-control) 0 0;
+  border-radius: 9px 9px 0 0;
   background: transparent;
-  color: var(--kiln-fg);
+  color: var(--kiln-muted);
   font: inherit;
-  font-size: var(--kiln-text-base);
+  font-size: 13px;
+  font-weight: 500;
   cursor: default;
   white-space: nowrap;
-  transition: background-color var(--kiln-duration-fast) ease-out;
+  transition:
+    color var(--kiln-duration-fast) ease-out,
+    background-color var(--kiln-duration-fast) ease-out;
 }
-.kiln-ribbon__tab:hover,
-.kiln-ribbon__file:hover {
-  background: var(--kiln-bg-hover);
-}
-.kiln-ribbon__tab.is-active {
-  font-weight: var(--kiln-weight-semibold);
+.kiln-ribbon__tab:hover {
   color: var(--kiln-fg);
 }
-/* The accent underline, Horizon's signature: a short rounded bar under the active tab. */
-.kiln-ribbon__tab::after {
+/* The active tab is the kiln's arch: a rounded doorway into the slab, with the app's ember dot. */
+.kiln-ribbon__tab.is-active {
+  height: 38px;
+  margin-bottom: -1px;
+  padding: 6px 22px 0;
+  border: 1px solid var(--kiln-line);
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0 / 26px 26px 0 0;
+  background: var(--kiln-panel);
+  color: var(--app-text);
+  font-weight: 700;
+}
+.kiln-ribbon__tab.is-active::after {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 2px;
-  width: 0;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--kiln-accent);
-  transform: translateX(-50%);
-  transition: width var(--kiln-duration-menu) var(--kiln-ease-out);
+  top: 6px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--app);
 }
-.kiln-ribbon__tab.is-active::after {
-  width: min(calc(100% - 20px), 40px);
-}
-.kiln-ribbon__file {
-  color: var(--kiln-accent-strong);
-  font-weight: var(--kiln-weight-semibold);
-  margin-inline-end: 4px;
+.kiln-ribbon--collapsed .kiln-ribbon__tab.is-active {
+  border-bottom: 1px solid var(--kiln-line);
+  margin-bottom: 0;
 }
 .kiln-ribbon__tab:focus-visible,
 .kiln-ribbon__file:focus-visible {
   outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
-  outline-offset: -2px;
+  outline-offset: 1px;
 }
 
-/* Contextual tab sets: the set's colour bar and label above its tabs. */
+/* Contextual tab sets: the set's label above its tabs, in the app's colour. */
 .kiln-ribbon__ctxset {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  margin-inline-start: 6px;
-  padding-top: 2px;
-  border-radius: var(--kiln-radius-control) var(--kiln-radius-control) 0 0;
-  background: color-mix(in srgb, var(--kiln-accent) 9%, transparent);
-  box-shadow: inset 0 3px 0 var(--kiln-accent);
+  justify-content: flex-end;
+  height: 100%;
+  margin-inline-start: 8px;
+  padding: 0 2px;
+  border-radius: 9px 9px 0 0;
+  background: color-mix(in srgb, var(--app) 9%, transparent);
+  box-shadow: inset 0 2px 0 var(--app);
 }
 .kiln-ribbon__ctxlabel {
-  padding: 3px 10px 0;
+  padding: 4px 10px 0;
   font-size: 10px;
-  font-weight: var(--kiln-weight-semibold);
-  letter-spacing: 0.02em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--kiln-accent-strong);
+  color: var(--app-text);
   white-space: nowrap;
   line-height: 1;
 }
 .kiln-ribbon__ctxtabs {
   display: flex;
+  align-items: flex-end;
 }
 .kiln-ribbon__ctxtabs .kiln-ribbon__tab {
   height: 26px;
-  color: var(--kiln-accent-strong);
+  color: var(--app-text);
+}
+.kiln-ribbon__ctxtabs .kiln-ribbon__tab.is-active {
+  height: 28px;
+  padding-top: 4px;
 }
 .kiln-ribbon__strip-end {
   display: flex;
   align-items: center;
-  gap: 4px;
-  align-self: center;
+  gap: 8px;
+  align-self: flex-end;
   flex: none;
+  padding-bottom: 5px;
+  padding-inline-start: 8px;
 }
 
-/* Panel ----------------------------------------------------------------------------------------- */
+/* Panel: the slab ------------------------------------------------------------------------------- */
 
 .kiln-ribbon__panel {
   position: relative;
   display: flex;
   min-width: 0;
-  padding: 4px 32px 2px 6px;
-  background: var(--kiln-bg-surface);
+  margin: 0 10px;
+  padding: 8px 34px 0 4px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 14px;
+  background: var(--kiln-panel);
+  box-shadow: var(--kiln-shadow-1);
   animation: kiln-ribbon-in var(--kiln-duration-menu) var(--kiln-ease-out);
 }
 @keyframes kiln-ribbon-in {
@@ -143,16 +186,15 @@
 }
 .kiln-ribbon__panel--floating {
   position: absolute;
-  top: 100%;
+  top: calc(100% - 2px);
   left: 0;
   right: 0;
-  border-bottom: var(--kiln-border-width) solid var(--kiln-border);
   box-shadow: var(--kiln-shadow-2);
   z-index: var(--kiln-z-popover);
 }
 .kiln-ribbon__collapse {
   position: absolute;
-  right: 6px;
+  right: 8px;
   bottom: 6px;
   display: inline-flex;
   align-items: center;
@@ -160,16 +202,16 @@
   width: 22px;
   height: 22px;
   border: 0;
-  border-radius: var(--kiln-radius-control);
+  border-radius: 6px;
   background: transparent;
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
 }
 .kiln-ribbon__collapse:hover {
   background: var(--kiln-bg-hover);
   color: var(--kiln-fg);
 }
 .kiln-ribbon__display {
-  color: var(--kiln-fg-muted);
+  color: var(--kiln-muted);
 }
 
 .kiln-ribbon__groups {
@@ -199,16 +241,16 @@
   display: flex;
   flex-direction: column;
   flex: none;
-  padding: 0 6px;
+  padding: 0 8px;
 }
 .kiln-ribbon__group + .kiln-ribbon__group::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 6px;
-  bottom: 6px;
+  top: 4px;
+  bottom: 22px;
   width: 1px;
-  background: var(--kiln-border);
+  background: var(--kiln-line);
 }
 .kiln-ribbon__group-body {
   display: flex;
@@ -244,9 +286,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 18px;
-  font-size: var(--kiln-text-xs);
-  color: var(--kiln-fg-muted);
+  height: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--kiln-muted);
   white-space: nowrap;
   padding: 0 14px;
 }
@@ -287,12 +330,37 @@
 }
 .kiln-ribbon__btn--large {
   min-height: calc(var(--ribbon-body-h) - 4px);
-  max-width: 72px;
+  min-width: 56px;
+  max-width: 76px;
   justify-content: flex-start;
-  padding-top: 6px;
+  gap: 4px;
+  padding: 2px 4px 0;
+  font-size: 12px;
+  font-weight: 500;
 }
-.kiln-ribbon__btn--large .kiln-btn__icon {
-  height: 34px;
+/* Big commands sit on a soft tile (mockups: Paste, New slide, Dictate). */
+.kiln-ribbon__btn--large .kiln-btn__icon,
+.kiln-ribbon__split--large .kiln-split__main .kiln-btn__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--kiln-sunken);
+  color: var(--kiln-fg);
+}
+.kiln-ribbon__btn--large:hover .kiln-btn__icon,
+.kiln-ribbon__split--large .kiln-split__main:hover .kiln-btn__icon {
+  background: color-mix(in srgb, var(--kiln-sunken), var(--kiln-fg) 7%);
+}
+.kiln-ribbon__btn--large.kiln-toggle[data-state="on"] .kiln-btn__icon,
+.kiln-ribbon__group[data-group="kiln"] .kiln-ribbon__btn--large .kiln-btn__icon {
+  background: var(--app-tint);
+  color: var(--app-text);
+}
+.kiln-ribbon__btn--large:hover,
+.kiln-ribbon__btn--large.kiln-toggle[data-state="on"] {
+  background: transparent;
 }
 .kiln-ribbon__btn--large .kiln-btn__label {
   display: -webkit-box;
@@ -489,4 +557,45 @@
     animation: none;
     transition: none;
   }
+}
+
+/* Gallery tiles from ribbon data: a typographic sample with the style's name under it (mockups). */
+.kiln-gallery-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  padding: 6px 8px 5px;
+  overflow: hidden;
+}
+.kiln-gallery-sample {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--kiln-fg);
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.kiln-gallery-sample[data-accent] {
+  color: var(--app-text);
+}
+.kiln-gallery-sample[data-muted] {
+  color: var(--kiln-muted);
+}
+.kiln-gallery-name {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--kiln-muted);
+  font-size: 10.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kiln-gallery-swatch {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.kiln-gallery-swatch > span {
+  flex: 1;
 }

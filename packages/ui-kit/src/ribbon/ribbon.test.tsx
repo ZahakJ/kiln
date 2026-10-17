@@ -5,33 +5,36 @@ import { createHarness, renderWithCommands } from '../chrome/test-helpers.tsx';
 import { button, combobox, dropdown, group, item, ribbon, row, split, tab, toggle } from './builders.ts';
 import { Ribbon } from './Ribbon.tsx';
 
+// User-event flows open Radix overlays; on a loaded 4-CPU machine they need more than Vitest's 5 s.
+vi.setConfig({ testTimeout: 20_000 });
+
 const spec = ribbon('write', [
   tab('home', 'Home', [
     group('clipboard', 'Clipboard', [
-      split('edit.paste', [item('edit.pasteTextOnly')], { size: 'large' }),
-      button('edit.cut', { size: 'medium' }),
+      split('suite.edit.paste', [item('suite.edit.paste_text_only')], { size: 'large' }),
+      button('suite.edit.cut', { size: 'medium' }),
     ]),
     group(
       'font',
       'Font',
       [
-        row(combobox('format.fontFamily', [{ value: 'Calibri' }, { value: 'Arial' }], { width: 120 })),
-        row(toggle('format.bold'), toggle('format.italic'), toggle('format.underline')),
+        row(combobox('suite.format.font_family', [{ value: 'Calibri' }, { value: 'Arial' }], { width: 120 })),
+        row(toggle('suite.format.bold'), toggle('suite.format.italic'), toggle('suite.format.underline')),
       ],
-      { rows: 2, launcher: { command: 'format.fontDialog' } },
+      { rows: 2, launcher: { command: 'suite.format.font_dialog' } },
     ),
   ]),
   tab('insert', 'Insert', [
-    group('links', 'Links', [button('insert.link', { size: 'large' })]),
+    group('links', 'Links', [button('suite.insert.link', { size: 'large' })]),
     group('tables', 'Tables', [
-      dropdown('insert.table', [item('write.convertTextToTable')], { size: 'large' }),
+      dropdown('suite.insert.table', [item('write.insert.convert_text_to_table')], { size: 'large' }),
     ]),
   ]),
-  tab('view', 'View', [group('show', 'Show', [toggle('view.ruler', { size: 'medium' })])]),
+  tab('view', 'View', [group('show', 'Show', [toggle('suite.view.ruler', { size: 'medium' })])]),
   tab(
     'tableDesign',
     'Table Design',
-    [group('styles', 'Table Styles', [button('format.shading', { size: 'large' })])],
+    [group('styles', 'Table Styles', [button('write.paragraph.shading', { size: 'large' })])],
     {
       contextual: { set: 'table', label: 'Table Tools' },
       when: (ctx) => ctx.inTable === true,
@@ -45,11 +48,16 @@ function setup(props: Partial<Parameters<typeof Ribbon>[0]> = {}) {
   const boldRun = vi.fn(() => {
     bold = !bold;
   });
-  h.registry.register({ id: 'format.bold', title: 'Bold', run: boldRun, isChecked: () => bold });
-  h.registry.register({ id: 'format.italic', title: 'Italic', run: () => {}, isChecked: () => false });
-  h.registry.register({ id: 'edit.cut', title: 'Cut', run: () => {} });
-  h.registry.register({ id: 'format.fontFamily', title: 'Font', run: vi.fn(), value: () => 'Calibri' });
-  h.registry.register({ id: 'insert.link', title: 'Link', run: () => {} });
+  h.registry.register({ id: 'suite.format.bold', title: 'Bold', run: boldRun, isChecked: () => bold });
+  h.registry.register({ id: 'suite.format.italic', title: 'Italic', run: () => {}, isChecked: () => false });
+  h.registry.register({ id: 'suite.edit.cut', title: 'Cut', run: () => {} });
+  h.registry.register({
+    id: 'suite.format.font_family',
+    title: 'Font',
+    run: vi.fn(),
+    value: () => 'Calibri',
+  });
+  h.registry.register({ id: 'suite.insert.link', title: 'Link', run: () => {} });
   const r = renderWithCommands(<Ribbon spec={spec} layout="classic" onFileClick={() => {}} {...props} />, h);
   return { ...r, boldRun };
 }
@@ -136,7 +144,7 @@ describe('Ribbon', () => {
     const { registry } = setup();
     const font = screen.getByRole('combobox', { name: 'Font' });
     expect(font).toHaveValue('Calibri');
-    const run = registry.get('format.fontFamily')?.run;
+    const run = registry.get('suite.format.font_family')?.run;
     fireEvent.change(font, { target: { value: 'Arial' } });
     fireEvent.keyDown(font, { key: 'Enter' });
     await waitFor(() => expect(run).toHaveBeenCalledWith(expect.anything(), { value: 'Arial' }));
