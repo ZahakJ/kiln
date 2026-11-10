@@ -168,7 +168,7 @@ tracing = "=0.1.44"
 getrandom = "=0.4.3"
 # Sheet and workbook protection passwords: SHA-512 as SpreadsheetML stores them, base64.
 sha2 = "=0.10.9"
-base64 = "=0.22.1"
+base64 = "=0.23.1"
 
 # --- Dev / test ---
 insta = "=1.49.0"
