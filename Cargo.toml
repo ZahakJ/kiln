@@ -134,7 +134,7 @@ tokio = "=1.53.3"
 axum = "=0.8.9"
 # The collaboration relay's WebSocket client in tests (the version axum's `ws` uses), and stream
 # splitting for its sockets.
-tokio-tungstenite = "=0.29.0"
+tokio-tungstenite = "=0.30.0"
 futures-util = { version = "=0.3.34", default-features = false }
 
 # --- Collaboration, storage, spell check ---
