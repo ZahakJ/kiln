@@ -8,12 +8,12 @@ readers are the part of the suite we most want reports about.
 
 | Version | Supported |
 |---|---|
-| Latest release | Yes |
+| `main`, and the web app at <https://zahakj.github.io/kiln/app/>, which is built from it | Yes |
 | Anything older | No |
 
-There is one maintained line. Fixes go into the next release; there are no
-backports. Check that you are on the latest release before reporting, and say
-which version and platform (desktop, Android or web) you tested.
+There is one maintained line. Fixes go into `main`, and the web app updates
+itself from there; there are no backports. Say which version (File ▸ Account)
+and platform (the web app and its browser, or the Linux build) you tested.
 
 ## How to report
 
@@ -37,8 +37,8 @@ Kiln is maintained in spare time. What that gets you:
   notification was missed and comment on the advisory.
 - An assessment within 30 days: a fix in progress, or the reasoning for why it
   is out of scope or already known.
-- The fix in the next release. We credit reporters in the release notes unless
-  you ask us not to.
+- The fix on `main` and in the web app. We credit reporters in the advisory and
+  the changelog unless you ask us not to.
 
 ## Scope
 

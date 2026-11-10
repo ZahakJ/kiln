@@ -42,8 +42,8 @@ pnpm dev          # the web app with hot reload on http://localhost:5173
 cargo nextest run -p kiln-formula   # iterate on one crate
 ```
 
-Every application is a route of the web app (`/write`, `/grid`, `/deck`,
-`/notes`; Kiln Home is `/`), so most interface work happens in a browser tab.
+Every application is a route of the web app (`/write`, `/grid`, `/deck`; Kiln
+Home is `/`), so most interface work happens in a browser tab.
 Engine work happens in the crates, tested from Rust and driven without a GUI
 through `kiln-cli`. The desktop and Android shells only add platform glue: file
 dialogs, menus, printing and intents.
@@ -96,7 +96,7 @@ reviewers check the rest.
 - TypeScript is strict. No `any` without a comment saying why.
 - Comments explain constraints and decisions, not what the next line does.
 - Every user-facing string goes through the i18n layer, uses the product
-  names (Kiln Write, Kiln Grid, Kiln Deck, Kiln Notes, Kiln Home) and British spelling, and keeps
+  names (Kiln Write, Kiln Grid, Kiln Deck, Kiln Home) and British spelling, and keeps
   Office's name for a command where Office has one.
 - New third-party dependencies are pinned once (Rust in `Cargo.toml`, npm in the
   `catalog:` of `pnpm-workspace.yaml`) and must pass `cargo deny check` and

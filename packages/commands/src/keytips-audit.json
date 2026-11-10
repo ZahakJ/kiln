@@ -1221,6 +1221,24 @@
           "command": "suite.arrange.rotate",
           "tip": "AY",
           "source": "office"
+        },
+        {
+          "label": "Shape Height",
+          "command": "ui.write.object_height",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Shape Width",
+          "command": "ui.write.object_width",
+          "tip": "W",
+          "source": "office"
+        },
+        {
+          "label": "More Layout Options…",
+          "command": "ui.write.layout_dialog",
+          "tip": "SS",
+          "source": "kiln"
         }
       ]
     }

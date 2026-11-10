@@ -3605,6 +3605,10 @@ test.describe('a11y', () => {
   test('Key Tips: unique, prefix-free letters on every tab and menu, Office letters kept, audit up to date', async ({
     page,
   }) => {
+    // Wide enough that no ribbon group folds into a single button: at a narrower width whether a
+    // group folds depends on how each machine's text rendering rounds the labels' widths, and the
+    // audit records the tips of what is shown.
+    await page.setViewportSize({ width: 1920, height: 1080 });
     const audit: Record<string, KeyTipsAuditTab[]> = {};
     const problems: string[] = [];
     for (const app of EDITORS) {

@@ -26,7 +26,7 @@ third-party software listed below, each under its own licence. This file is gene
 | arref | 0.1.0 | MIT |
 | async-broadcast | 0.7.2 | MIT OR Apache-2.0 |
 | async-channel | 2.5.0 | Apache-2.0 OR MIT |
-| async-executor | 1.14.0 | Apache-2.0 OR MIT |
+| async-executor | 1.14.1 | Apache-2.0 OR MIT |
 | async-io | 2.6.0 | Apache-2.0 OR MIT |
 | async-lock | 3.4.2 | Apache-2.0 OR MIT |
 | async-process | 2.5.0 | Apache-2.0 OR MIT |
@@ -526,7 +526,7 @@ third-party software listed below, each under its own licence. This file is gene
 | tauri-plugin-opener | 2.7.2 | Apache-2.0 OR MIT |
 | tauri-plugin-process | 2.4.0 | Apache-2.0 OR MIT |
 | tauri-plugin-single-instance | 2.5.5 | Apache-2.0 OR MIT |
-| tauri-plugin-updater | 2.14.0 | Apache-2.0 OR MIT |
+| tauri-plugin-updater | 2.14.1 | Apache-2.0 OR MIT |
 | tauri-plugin-window-state | 2.5.0 | Apache-2.0 OR MIT |
 | tauri-runtime | 2.12.2 | Apache-2.0 OR MIT |
 | tauri-runtime-wry | 2.12.2 | Apache-2.0 OR MIT |
@@ -678,7 +678,6 @@ third-party software listed below, each under its own licence. This file is gene
 | zerotrie | 0.2.5 | Unicode-3.0 |
 | zerovec | 0.11.8 | Unicode-3.0 |
 | zerovec-derive | 0.11.6 | Unicode-3.0 |
-| zip | 4.6.1 | MIT |
 | zip | 9.0.3 | MIT |
 | zlib-rs | 0.6.8 | Zlib |
 | zmij | 1.0.23 | MIT |
@@ -787,7 +786,7 @@ third-party software listed below, each under its own licence. This file is gene
 - Repository: https://github.com/smol-rs/async-channel
 - Licence files: [text 4](#rust-licence-text-4), [text 3](#rust-licence-text-3)
 
-### async-executor 1.14.0
+### async-executor 1.14.1
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/smol-rs/async-executor
@@ -3744,7 +3743,7 @@ third-party software listed below, each under its own licence. This file is gene
 - Repository: https://github.com/tauri-apps/plugins-workspace
 - Licence files: [text 291](#rust-licence-text-291), [text 16](#rust-licence-text-16), [text 292](#rust-licence-text-292)
 
-### tauri-plugin-updater 2.14.0
+### tauri-plugin-updater 2.14.1
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/plugins-workspace
@@ -4648,12 +4647,6 @@ third-party software listed below, each under its own licence. This file is gene
 - Repository: https://github.com/unicode-org/icu4x
 - Licence files: [text 147](#rust-licence-text-147)
 
-### zip 4.6.1
-
-- Licence: MIT
-- Repository: https://github.com/zip-rs/zip2.git
-- Licence files: [text 343](#rust-licence-text-343)
-
 ### zip 9.0.3
 
 - Licence: MIT
@@ -4664,7 +4657,7 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: Zlib
 - Repository: https://github.com/trifectatechfoundation/zlib-rs
-- Licence files: [text 344](#rust-licence-text-344)
+- Licence files: [text 343](#rust-licence-text-343)
 
 ### zmij 1.0.23
 
@@ -4676,13 +4669,13 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0 OR Zlib
 - Repository: https://github.com/etemesi254/zune-image
-- Licence files: [text 83](#rust-licence-text-83), [text 345](#rust-licence-text-345), [text 346](#rust-licence-text-346)
+- Licence files: [text 83](#rust-licence-text-83), [text 344](#rust-licence-text-344), [text 345](#rust-licence-text-345)
 
 ### zune-jpeg 0.5.15
 
 - Licence: MIT OR Apache-2.0 OR Zlib
 - Repository: https://github.com/etemesi254/zune-image/tree/dev/crates/zune-jpeg
-- Licence files: [text 83](#rust-licence-text-83), [text 345](#rust-licence-text-345), [text 346](#rust-licence-text-346)
+- Licence files: [text 83](#rust-licence-text-83), [text 344](#rust-licence-text-344), [text 345](#rust-licence-text-345)
 
 ### zvariant 5.15.0
 
@@ -26042,35 +26035,6 @@ DEALINGS IN THE SOFTWARE.
 ### Rust licence text 343
 
 ```text
-The MIT License (MIT)
-
-Copyright (c) 2014 Mathijs van de Nes
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-Some files in the "tests/data" subdirectory of this repository are under other
-licences; see files named LICENSE.*.txt for details.
-```
-
-### Rust licence text 344
-
-```text
 (C) 2024 Trifecta Tech Foundation 
 
 This software is provided 'as-is', without any express or implied
@@ -26092,7 +26056,7 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 ```
 
-### Rust licence text 345
+### Rust licence text 344
 
 ```text
 MIT License
@@ -26118,7 +26082,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 346
+### Rust licence text 345
 
 ```text
 zlib License

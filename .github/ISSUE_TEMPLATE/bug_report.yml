@@ -23,12 +23,10 @@ body:
     attributes:
       label: Platform
       options:
-        - Linux (AppImage)
-        - Linux (deb)
-        - Windows
-        - macOS
-        - Android
-        - Web browser / installed web app
+        - Web app in the browser
+        - Installed web app
+        - Linux desktop app, built from source
+        - Something else (say which under Version)
     validations:
       required: true
   - type: input

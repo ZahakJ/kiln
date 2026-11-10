@@ -8,7 +8,7 @@ covers the release workflow that builds every platform.
 ## What you need
 
 - Rust 1.99.1 (`rustup`; `rust-toolchain.toml` selects it) and `cargo-nextest`.
-- Node 24 and pnpm 10 (`corepack enable`).
+- Node 24 and pnpm, the version named in `package.json` (`corepack enable`).
 - The WebKitGTK and GTK development libraries, OpenSSL and the AppImage tools. On Debian and
   Ubuntu:
 
@@ -18,9 +18,10 @@ covers the release workflow that builds every platform.
   ```
 
   On Arch Linux: `pacman -S --needed webkit2gtk-4.1 gtk3 libayatana-appindicator librsvg xdotool openssl patchelf file`.
-- For the bundle checks, `dpkg` (`dpkg-deb`); for the desktop smoke test, `xvfb` and
-  WebKitWebDriver (`webkit2gtk-driver` on Debian and Ubuntu, `webkitgtk-6.0` on Arch Linux), and
-  `cargo install tauri-driver --version 2.1.0 --locked`.
+- For the bundle checks, `dpkg` (`dpkg-deb`); for the desktop smoke test, `xvfb`, python-xlib
+  and WebKitWebDriver (`xvfb python3-xlib webkitgtk-webdriver` on Ubuntu 26.04, with
+  `webkit2gtk-driver` in place of the last on older Debian and Ubuntu releases; `xorg-server-xvfb
+  python-xlib webkitgtk-6.0` on Arch Linux), and `cargo install tauri-driver --version 2.1.0 --locked`.
 
 ## The desktop app
 

@@ -335,6 +335,9 @@ menu's letters are unique, and none is the start of another.
 | Align (`suite.arrange.align`) | AA | Office |
 | Group | G | Office |
 | Rotate (`suite.arrange.rotate`) | AY | Office |
+| Shape Height (`ui.write.object_height`) | H | Office |
+| Shape Width (`ui.write.object_width`) | W | Office |
+| More Layout Options… (`ui.write.layout_dialog`) | SS | Kiln |
 
 ### Kiln Grid
 

@@ -149,6 +149,8 @@ export class SurfaceController {
   private revision = -1;
   private selectedText = '';
   private revealCaret = false;
+  /** The caret was beyond the document's extent when it was revealed (see `scrollCaretIntoView`). */
+  private revealOnExtent = false;
   private queue: Promise<unknown> = Promise.resolve();
   /** A command ran since the last frame: its frame is composited as soon as it arrives. */
   private typed = false;
@@ -371,6 +373,10 @@ export class SurfaceController {
         // document later, after the frame that was requested with it).
         if ((r as { outcome?: string } | undefined)?.outcome !== 'Applied')
           this.pipelined = Math.max(0, this.pipelined - 1);
+        // Its change event comes next: the caret it moves to is shown. Keys typed in a burst are
+        // all sent before the first change arrives, so one flag set when they were sent would
+        // follow only the first of them and leave the caret wherever the last one took it.
+        else if (reveal) this.revealCaret = true;
       },
       (e: unknown) => {
         this.pipelined = Math.max(0, this.pipelined - 1);
@@ -527,6 +533,10 @@ export class SurfaceController {
           }
           this.layoutSpacer();
           this.syncScroll();
+          if (this.revealOnExtent) {
+            this.revealOnExtent = false;
+            this.scrollCaretIntoView();
+          }
           // Centring depends on the extent: the viewport may have moved.
           if (!sameViewport(this.sentViewport, this.viewport())) this.frameWanted = true;
         }
@@ -747,7 +757,12 @@ export class SurfaceController {
     const bottom = top + this.cssH / this.zoom;
     if (caret.y - margin < top) scroller.scrollTop = Math.max(0, (caret.y - margin) * this.zoom);
     else if (caret.y + caret.height + margin > bottom) {
-      scroller.scrollTop = (caret.y + caret.height + margin) * this.zoom - this.cssH;
+      const want = (caret.y + caret.height + margin) * this.zoom - this.cssH;
+      scroller.scrollTop = want;
+      // The caret is on a page the document's extent does not reach yet (text has just flowed
+      // onto a new page, and the frame that adds the page is still on its way): the browser
+      // stops short. The caret is brought into view again when the extent grows (`pump`).
+      this.revealOnExtent = scroller.scrollTop < want - 1;
     }
     const left = this.scrollX;
     const right = left + this.cssW / this.zoom;

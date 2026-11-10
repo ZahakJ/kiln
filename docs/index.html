@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kiln — where work gets made</title>
-<meta name="description" content="Kiln is a free, open-source office suite. Kiln Write, Kiln Grid and Kiln Deck read and write Word, Excel and PowerPoint files directly, in the browser and on Linux.">
+<meta name="description" content="Kiln is a free, open-source office suite. Kiln Write, Kiln Grid and Kiln Deck open and save your Word, Excel and PowerPoint files. Free, open source and private: it runs in your browser and keeps your files on your device.">
 <link rel="canonical" href="https://zahakj.github.io/kiln/">
 <meta property="og:title" content="Kiln — where work gets made">
-<meta property="og:description" content="An office suite with a little fire in it. Free and open source. Reads and writes .docx, .xlsx and .pptx.">
+<meta property="og:description" content="A free, open-source office suite that opens and saves your .docx, .xlsx and .pptx, in your browser.">
 <meta property="og:image" content="https://zahakj.github.io/kiln/media/social-preview.png">
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="640">
@@ -177,37 +177,6 @@ kbd{font-size:12.5px;font-weight:600;line-height:1;background:var(--raised);bord
 .demo h3{font-size:26px}
 .demo p{color:var(--muted);margin:0}
 
-/* measured */
-#measured{background:#17110E;color:#F5EBDD;--muted:#B8A392;--line:#372A22;--line-strong:#4B3A2F;--panel:#201813;--ember-text:#F7976B;--ember:#F2804E;background-image:radial-gradient(1000px 500px at 80% -5%,rgba(255,106,38,.2),transparent 70%)}
-.panels{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px 26px 22px;min-width:0}
-.panel h3{font-size:22px}
-.panel .how{font-size:14.5px;color:var(--muted);margin:0 0 16px}
-.panel .how a{color:var(--ember-text)}
-.instr{width:100%;border-collapse:collapse;font-size:15px;font-variant-numeric:tabular-nums}
-.instr caption{caption-side:top;text-align:left;font-size:13px;color:var(--muted);padding-bottom:10px}
-.instr th,.instr td{text-align:left;padding:11px 10px 11px 0;border-bottom:1px solid var(--line);font-weight:500;white-space:nowrap}
-.instr thead th{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
-.instr tbody th{font-weight:650}
-.instr tr:last-child>*{border-bottom:0}
-.score{display:inline-block;min-width:54px;padding-bottom:5px;font-family:var(--mono);font-size:13.5px;background:linear-gradient(90deg,#FF6A26,#FFB547) 0 100%/var(--v) 2px no-repeat,linear-gradient(#372A22,#372A22) 0 100%/100% 2px no-repeat}
-.terms{margin:18px 0 0;display:grid;gap:7px;font-size:14px}
-.terms div{display:grid;grid-template-columns:128px 1fr;gap:10px}
-.terms dt{font-weight:650}.terms dd{margin:0;color:var(--muted)}
-.gauges{list-style:none;margin:0;padding:0;display:grid;gap:13px}
-.gauges li{display:grid;grid-template-columns:1fr auto;gap:2px 14px;font-size:14.5px}
-.g-num{font-family:var(--mono);font-weight:600;color:#FFB547;font-size:14px}
-.g-track{height:6px;border-radius:9px;background:#110C0A;overflow:hidden;align-self:center}
-.g-track i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#FF6A26,#FFB547)}
-.g-budget{font-size:12.5px;color:var(--muted);font-family:var(--mono)}
-.foot{margin:18px 0 0;font-size:14.5px;color:var(--muted);max-width:92ch}
-.foot a{color:var(--ember-text)}
-.big3 span span{font:inherit}
-.big3{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:0 0 20px}
-.big3 div{border:1px solid var(--line);border-radius:18px;padding:18px 22px;background:var(--panel)}
-.big3 b{display:block;font:800 clamp(28px,3vw,38px)/1.15 var(--display);color:#FFB547;font-variant-numeric:tabular-nums}
-.big3 span{font-size:14.5px;color:var(--muted)}
-
 /* compared */
 .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .compare{border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow-1)}
@@ -248,10 +217,43 @@ footer{border-top:1px solid var(--line);padding:44px 0 60px;color:var(--muted);f
 .flinks{display:flex;flex-wrap:wrap;gap:8px 22px;margin-bottom:16px}
 .flinks a{color:var(--fg)}
 
-@media (max-width:1100px){
-  .panels{grid-template-columns:minmax(0,1fr)}
-}
-@media (max-width:1100px){.big3{grid-template-columns:repeat(2,1fr)}}
+/* hero copy: product first */
+.hero{padding-top:58px}
+.intro{margin:0 0 48px;align-items:center}
+.cta .note{font-size:14px;color:var(--muted);margin:2px 0 0}
+.btn.big{min-height:54px;font-size:17px;border-radius:14px}
+.btn.big svg{width:20px;height:20px}
+
+/* your files */
+.files{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:52px;align-items:center}
+.ticks{margin:0;padding:0;list-style:none}
+.ticks li{position:relative;padding:12px 0 12px 30px;border-top:1px solid var(--line);color:var(--muted);font-size:16px}
+.ticks li:first-child{border-top:0}
+.ticks li b{color:var(--fg);font-weight:650}
+.ticks li::before{content:"";position:absolute;left:2px;top:19px;width:14px;height:8px;border-left:2.5px solid var(--ember-text);border-bottom:2.5px solid var(--ember-text);transform:rotate(-45deg)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px;padding:0;list-style:none}
+.chips li{font:700 14px/1 var(--ui);padding:9px 12px;border-radius:999px;background:var(--panel);border:1px solid var(--line-strong)}
+.chips .w{color:var(--write)}.chips .g{color:var(--grid)}.chips .d{color:var(--deck)}
+.files figure img{border-radius:14px;border:1px solid var(--line-strong);box-shadow:var(--shadow-page)}
+.files figcaption{font-size:14.5px;color:var(--muted);margin-top:12px}
+
+/* everywhere */
+#everywhere{background:var(--panel);border-block:1px solid var(--line)}
+.reach{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:48px;align-items:center;margin-bottom:56px}
+.phones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
+.phones figure{padding:5px;border-radius:28px;background:#120C09;box-shadow:0 0 0 1px #4B3A2F,0 28px 60px -20px rgba(30,10,0,.5)}
+.phones figure:nth-child(2){margin-top:36px}
+.phones img{border-radius:23px}
+.card .ic.w{color:var(--write)}.card .ic.g{color:var(--grid)}.card .ic.d{color:var(--deck)}
+
+.foot{margin:18px 0 0;font-size:14.5px;color:var(--muted);max-width:92ch}
+.card p a{color:var(--ember-text);font-weight:600}
+
+/* fired in the open */
+#open .banner{margin-bottom:48px}
+.hood h3{font-size:22px;margin-top:6px}
+.hood .links2{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+
 @media (max-width:980px){
   .links .opt{display:none}
   .links{margin-left:auto}
@@ -280,17 +282,26 @@ footer{border-top:1px solid var(--line);padding:44px 0 60px;color:var(--muted);f
   .stage .desk img{border-radius:8px}
   .phone{width:36%;right:-4px;bottom:-40px;padding:4px;border-radius:22px}.phone img{border-radius:18px}
   .strip{padding-top:150px}
-  .big3{grid-template-columns:minmax(0,1fr)}
   .dl{grid-template-columns:minmax(0,1fr)}
-  .panel{padding:20px 16px}
-  .instr th,.instr td{padding-right:6px;font-size:13.5px}
-  .instr thead th{font-size:10.5px;letter-spacing:.04em}
-  .score{min-width:42px;font-size:12.5px}
-  .terms div{grid-template-columns:minmax(0,1fr);gap:0}
   .duo{grid-template-columns:minmax(0,1fr)}
   .s-side{width:62%}
   .keys div{flex-wrap:wrap}
   .term pre{font-size:12.5px}
+}
+@media (max-width:980px){
+  .files,.reach{grid-template-columns:minmax(0,1fr);gap:32px}
+}
+@media (max-width:640px){
+  .hero{padding-top:30px}
+  .intro{margin-bottom:34px}
+  .phones{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:4px 16px 18px;scrollbar-width:none}
+  .phones::-webkit-scrollbar{display:none}
+  .phones figure{flex:0 0 62%;scroll-snap-align:center;padding:4px;border-radius:22px}
+  .phones img{border-radius:18px}
+  .phones figure:nth-child(2){margin-top:0}
+  #open .banner{margin-bottom:32px}
+  .card{padding:18px 18px 20px}
+  .card .ic{width:36px;height:42px;margin-bottom:10px}
 }
 </style>
 </head>
@@ -300,37 +311,33 @@ footer{border-top:1px solid var(--line);padding:44px 0 60px;color:var(--muted);f
 <nav class="nav" aria-label="Main"><div class="wrap">
   <a class="logo" href="./"><picture><source media="(prefers-color-scheme: dark)" srcset="media/lockup.svg"><img src="media/lockup-light.svg" alt="Kiln, home" width="101" height="30"></picture></a>
   <div class="links">
-    <a class="opt" href="#features">Features</a>
+    <a class="opt" href="#files">Compatibility</a>
     <a class="opt" href="#apps">Apps</a>
-    <a class="opt" href="#compared">Compared</a>
-    <a class="opt" href="manual/">Docs</a>
+    <a class="opt" href="#everywhere">Features</a>
+    <a class="opt" href="#download">Get Kiln</a>
+    <a class="opt" href="manual/">Manual</a>
     <a class="opt" href="https://github.com/ZahakJ/kiln">GitHub</a>
     <a class="btn primary small" href="app/">Open in browser</a>
   </div>
   <details class="menu"><summary aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></summary>
-    <div><a href="#features">Features</a><a href="#apps">Apps</a><a href="#measured">Measured</a><a href="#compared">Compared</a><a href="#download">Download</a><a href="manual/">Docs</a><a href="https://github.com/ZahakJ/kiln">GitHub</a></div>
+    <div><a href="#files">Compatibility</a><a href="#apps">Apps</a><a href="#everywhere">Features</a><a href="#compared">Compared</a><a href="#download">Get Kiln</a><a href="manual/">Manual</a><a href="https://github.com/ZahakJ/kiln">GitHub</a></div>
   </details>
 </div></nav>
 
 <main id="main">
 <header class="hero"><i class="ember"></i><i class="ember"></i><i class="ember"></i><i class="ember"></i><div class="wrap">
-  <picture class="banner">
-    <source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/banner-760.webp 760w, media/banner-1400.webp 1400w" sizes="(max-width: 1236px) 100vw, 1124px">
-    <source type="image/webp" srcset="media/banner-light-760.webp 760w, media/banner-light-1400.webp 1400w" sizes="(max-width: 1236px) 100vw, 1124px">
-    <img src="media/banner-light.png" alt="The Kiln banner: the kiln mark, the words Where work gets made, and the Write, Grid and Deck tiles." width="2000" height="600" fetchpriority="high">
-  </picture>
   <div class="intro">
     <div>
       <p class="eyebrow"><svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>Free and open source, no account</p>
-      <h1>An office suite that works directly in your Office files.</h1>
-      <p class="sub">Kiln Write, Kiln Grid and Kiln Deck read and write .docx, .xlsx and .pptx with no conversion
-        step, under a ribbon and shortcuts Office users know, on a Rust core that runs in your
-        browser and on Linux.</p>
+      <h1>The office suite for your Word, Excel and PowerPoint files.</h1>
+      <p class="sub">Write documents in Kiln Write, work out the numbers in Kiln Grid and present
+        with Kiln Deck. Kiln opens your .docx, .xlsx and .pptx as they are and saves them back the
+        same way. It runs in your browser with nothing to install, and your files stay on your device.</p>
     </div>
     <div class="cta">
-      <a class="btn primary" href="app/">Open in browser</a>
-      <div class="row"><a class="btn" href="#download">Get Kiln</a><a class="btn" href="manual/">Read the manual</a></div>
-      <p class="ver">Free software, AGPL-3.0-or-later.</p>
+      <a class="btn primary big" href="app/">Open Kiln in your browser</a>
+      <div class="row"><a class="btn" href="#apps">See the apps</a><a class="btn" href="#files">What it opens</a></div>
+      <p class="note">On Linux, also a desktop app you build from source.</p>
     </div>
   </div>
   <div class="stage">
@@ -339,98 +346,100 @@ footer{border-top:1px solid var(--line);padding:44px 0 60px;color:var(--muted);f
   </div>
 </div></header>
 
-<aside class="strip" aria-label="Kiln in numbers"><div class="wrap"><dl>
-  <div><dd><span data-stat="functions">505</span></dd><dt>worksheet functions in Kiln Grid, with Excel's names</dt></div>
-  <div><dd><span data-stat="templates">36</span></dd><dt>finished templates in Kiln Home</dt></div>
-  <div><dd><span data-stat="fidelity.passing">336</span></dd><dt>of <span data-stat="fidelity.files">336</span> test files pass the round trip: <span data-stat="fidelity.real">150</span> real-world files, <span data-stat="fidelity.generated">186</span> generated</dt></div>
-  <div><dd><span data-stat="parity.rows">576 of 740</span></dd><dt>rows done in <a href="https://github.com/ZahakJ/kiln/blob/main/PARITY.md">Kiln's own list</a> of Office features</dt></div>
+<aside class="strip" aria-label="Kiln at a glance"><div class="wrap"><dl>
+  <div><dd>Free</dd><dt>no account, no subscription, no paid tier</dt></div>
+  <div><dd><span data-stat="functions">505</span></dd><dt>worksheet functions in Kiln Grid, with Excel&#39;s names</dt></div>
+  <div><dd><span data-stat="templates">36</span></dd><dt>finished templates to start from</dt></div>
+  <div><dd><span data-stat="perf.web">2.76 s</span></dd><dt>to open a million-cell workbook in the browser</dt></div>
 </dl></div></aside>
 
-<section id="features"><div class="wrap">
-  <div class="head">
-    <p class="eyebrow"><svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>Features</p>
-    <h2>Everything you use Office for</h2>
-    <p class="lede">Writing, numbers and presenting, with the files you already have. Nothing has to be
-      converted first, and parts of a file Kiln does not model are copied back byte for byte.</p>
+<section id="files"><div class="wrap files">
+  <div>
+    <p class="eyebrow"><svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>Your files</p>
+    <h2>Your .docx, .xlsx and .pptx open as they are</h2>
+    <ul class="chips" aria-label="File types"><li class="w">.docx</li><li class="g">.xlsx</li><li class="d">.pptx</li><li>.csv</li><li>.md</li><li>PDF</li></ul>
+    <ul class="ticks">
+      <li><b>No import, no conversion.</b> Word, Excel and PowerPoint files open directly and save back in their own format.</li>
+      <li><b>What Kiln does not edit, it leaves alone.</b> Embedded objects, SmartArt and macros stay in the file through a save. Macros never run.</li>
+      <li><b>Line breaks where they were.</b> Kiln brings fonts with the same measurements as Calibri, Cambria, Arial, Times New Roman and Courier New.</li>
+      <li><b>Check before you send.</b> The Compatibility Checker lists anything the format cannot hold, and Inspect Document finds comments and hidden text.</li>
+      <li><b>PDF from every app,</b> and OpenDocument files in the Linux desktop app.</li>
+    </ul>
+    <p class="more"><a href="manual/?p=formats">File formats in the manual</a></p>
   </div>
-  <div class="cards">
-    <article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></div><h3>Opens and saves your files</h3><p><code>.docx</code>, <code>.xlsx</code> and <code>.pptx</code> directly, CSV, and PDF export. The Linux build adds OpenDocument. Macros stay in the file and do not run.</p></article>
-    <article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18M9 21V9"/><rect x="3" y="4" width="18" height="17" rx="2"/></svg></div><h3>The layout you know</h3><p>Ribbon, File menu, status bar, Key Tips on Alt and Office&#39;s common keyboard shortcuts, in a warmer design with light and dark themes.</p></article>
-    <article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div><h3>Find any command</h3><p>The command palette (Ctrl+Shift+P) searches the commands by their name here or by what Office calls them.</p></article>
-    <article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></div><h3>Version history</h3><p>Kiln Write and Kiln Deck documents keep their own history on your device: name a version, preview it, restore it.</p></article>
-    <article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg></div><h3>Collaboration you host</h3><p>Edit Kiln Write and Kiln Deck documents together, live, through a small relay you run yourself.</p></article>
-    <article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg></div><h3><span data-stat="languages">3</span> interface languages</h3><p>English, German and Arabic, with a mirrored right-to-left interface and right-to-left documents and sheets.</p></article>
-  </div>
+  <figure><img src="media/demo.gif" alt="A recording: a budget opens from an .xlsx, an edit moves its totals and chart, the command palette finds a command, and a presentation opens from a .pptx." width="880" height="550" loading="lazy" decoding="async"><figcaption>Recorded in Kiln: a budget opens from an .xlsx, a changed figure moves the totals and the chart, and a deck opens from a .pptx.</figcaption></figure>
 </div></section>
 
 <section id="apps"><div class="wrap">
   <div class="head">
-    <p class="eyebrow"><svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>Apps</p>
-    <h2>Three apps, one kiln</h2>
-    <p class="lede">Each app is a glazed tile in the shape of a kiln arch, and each burns its own colour.
-      All three open from Kiln Home. The pictures here are the built web app with sample documents,
-      in your colour scheme and in the other one.</p>
+    <p class="eyebrow"><svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>Three apps</p>
+    <h2>Documents, spreadsheets and presentations</h2>
+    <p class="lede">Kiln Write, Kiln Grid and Kiln Deck all open from Kiln Home, with your recent
+      files and the templates.</p>
   </div>
 </div>
 
 <section class="app write" aria-labelledby="h-write"><div class="wrap app-grid">
   <div class="app-copy">
     <header><img class="tile" src="media/tiles/write-48.svg" alt="" width="64" height="64" loading="lazy">
-      <div><h3 id="h-write">Kiln Write</h3><p class="for">Documents, for Word users</p></div></header>
-    <p class="app-lede">One layout engine of its own for the screen, print and PDF.</p>
-    <ul><li>Styles, sections, headers and footers, footnotes, tables of contents</li><li>Track Changes and threaded comments</li><li>Markdown shortcuts as you type, focus mode and word goals</li><li>PDF export and printing with a preview</li></ul>
+      <div><h3 id="h-write">Kiln Write</h3><p class="for">Documents, in place of Word</p></div></header>
+    <p class="app-lede">Reports, letters and newsletters, laid out the same on screen, on paper and in PDF.</p>
+    <ul><li>Styles, sections, columns, headers and footers, footnotes and tables of contents</li><li>Track Changes and threaded comments for reviewing with others</li><li>Version history: name a version, compare it with now, restore it</li><li>Focus mode, word-count goals and Markdown shortcuts as you type</li><li>Print with a preview, or export a PDF</li></ul>
     <p class="more"><a href="manual/?p=write">Kiln Write in the manual</a></p>
   </div>
   <div class="app-shots">
     <figure class="s-main"><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/write-newsletter-dark-640.webp 640w, media/screenshots/write-newsletter-dark-1100.webp 1100w, media/screenshots/write-newsletter-dark-1800.webp 1800w" sizes="(max-width: 980px) 100vw, 860px"><source type="image/webp" srcset="media/screenshots/write-newsletter-light-640.webp 640w, media/screenshots/write-newsletter-light-1100.webp 1100w, media/screenshots/write-newsletter-light-1800.webp 1800w" sizes="(max-width: 980px) 100vw, 860px"><img src="media/screenshots/write-newsletter-light.png" alt="A two-column community newsletter in Kiln Write." width="2880" height="1800" loading="lazy" decoding="async"></picture></figure>
-    <figure class="s-side"><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/write-report-light-640.webp 640w, media/screenshots/write-report-light-1100.webp 1100w, media/screenshots/write-report-light-1800.webp 1800w" sizes="(max-width: 980px) 70vw, 420px"><source type="image/webp" srcset="media/screenshots/write-report-dark-640.webp 640w, media/screenshots/write-report-dark-1100.webp 1100w, media/screenshots/write-report-dark-1800.webp 1800w" sizes="(max-width: 980px) 70vw, 420px"><img src="media/screenshots/write-report-dark.png" alt="An annual report in Kiln Write, in the other colour scheme." width="2880" height="1800" loading="lazy" decoding="async"></picture></figure>
+    <figure class="s-side"><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/write-report-dark-640.webp 640w, media/screenshots/write-report-dark-1100.webp 1100w, media/screenshots/write-report-dark-1800.webp 1800w" sizes="(max-width: 980px) 70vw, 420px"><source type="image/webp" srcset="media/screenshots/write-report-light-640.webp 640w, media/screenshots/write-report-light-1100.webp 1100w, media/screenshots/write-report-light-1800.webp 1800w" sizes="(max-width: 980px) 70vw, 420px"><img src="media/screenshots/write-report-light.png" alt="An annual report in Kiln Write." width="2880" height="1800" loading="lazy" decoding="async"></picture></figure>
+  
   </div>
 </div></section>
 
-<section class="app grid-app flip" aria-labelledby="h-grid-app flip"><div class="wrap app-grid">
+<section class="app grid-app flip" aria-labelledby="h-grid"><div class="wrap app-grid">
   <div class="app-copy">
     <header><img class="tile" src="media/tiles/grid-48.svg" alt="" width="64" height="64" loading="lazy">
-      <div><h3 id="h-grid-app flip">Kiln Grid</h3><p class="for">Spreadsheets, for Excel users</p></div></header>
-    <p class="app-lede">Formulas in Excel&#39;s syntax, with dynamic arrays and <code>LAMBDA</code>.</p>
-    <ul><li><span data-stat="functions">505</span> functions, with their arguments shown as you type</li><li>Charts, PivotTables, conditional formatting, sort and filter</li><li>Formula Lab: watch a formula evaluate step by step</li><li>A test sheet of 1,000,000 cells scrolls at 60 frames a second in Chromium</li></ul>
+      <div><h3 id="h-grid">Kiln Grid</h3><p class="for">Spreadsheets, in place of Excel</p></div></header>
+    <p class="app-lede">Excel formulas work as written, including dynamic arrays and <code>LAMBDA</code>.</p>
+    <ul><li><span data-stat="functions">505</span> functions, with their arguments shown as you type</li><li>Charts, PivotTables, conditional formatting, sort and filter</li><li>Formula Lab: watch a formula work out its answer step by step</li><li>Big sheets: a million-cell workbook opens in the browser in <span data-stat="perf.web">2.76 s</span></li></ul>
     <p class="more"><a href="manual/?p=grid">Kiln Grid in the manual</a></p>
   </div>
   <div class="app-shots">
     <figure class="s-main"><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/grid-budget-dark-640.webp 640w, media/screenshots/grid-budget-dark-1100.webp 1100w, media/screenshots/grid-budget-dark-1800.webp 1800w" sizes="(max-width: 980px) 100vw, 860px"><source type="image/webp" srcset="media/screenshots/grid-budget-light-640.webp 640w, media/screenshots/grid-budget-light-1100.webp 1100w, media/screenshots/grid-budget-light-1800.webp 1800w" sizes="(max-width: 980px) 100vw, 860px"><img src="media/screenshots/grid-budget-light.png" alt="A household budget in Kiln Grid with a bar chart and conditional formatting on the differences." width="2880" height="1800" loading="lazy" decoding="async"></picture></figure>
-    <figure class="s-side"><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/grid-expenses-light-640.webp 640w, media/screenshots/grid-expenses-light-1100.webp 1100w, media/screenshots/grid-expenses-light-1800.webp 1800w" sizes="(max-width: 980px) 70vw, 420px"><source type="image/webp" srcset="media/screenshots/grid-expenses-dark-640.webp 640w, media/screenshots/grid-expenses-dark-1100.webp 1100w, media/screenshots/grid-expenses-dark-1800.webp 1800w" sizes="(max-width: 980px) 70vw, 420px"><img src="media/screenshots/grid-expenses-dark.png" alt="An expense report in Kiln Grid with a summary table and a doughnut chart, in the other colour scheme." width="2880" height="1800" loading="lazy" decoding="async"></picture></figure>
+    <figure class="s-side"><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/grid-expenses-dark-640.webp 640w, media/screenshots/grid-expenses-dark-1100.webp 1100w, media/screenshots/grid-expenses-dark-1800.webp 1800w" sizes="(max-width: 980px) 70vw, 420px"><source type="image/webp" srcset="media/screenshots/grid-expenses-light-640.webp 640w, media/screenshots/grid-expenses-light-1100.webp 1100w, media/screenshots/grid-expenses-light-1800.webp 1800w" sizes="(max-width: 980px) 70vw, 420px"><img src="media/screenshots/grid-expenses-light.png" alt="An expense report in Kiln Grid with a summary table and a doughnut chart." width="2880" height="1800" loading="lazy" decoding="async"></picture></figure>
+  
   </div>
 </div></section>
 
 <section class="app deck" aria-labelledby="h-deck"><div class="wrap app-grid">
   <div class="app-copy">
     <header><img class="tile" src="media/tiles/deck-48.svg" alt="" width="64" height="64" loading="lazy">
-      <div><h3 id="h-deck">Kiln Deck</h3><p class="for">Presentations, for PowerPoint users</p></div></header>
-    <p class="app-lede">Masters, layouts and themes from the .pptx, and a slide show with Presenter View.</p>
-    <ul><li>Slide show and Presenter View, with notes, a timer and the next slide</li><li>Transitions, animations and the Animation Pane</li><li>Design Ideas and charts on slides</li><li>Handouts and notes pages in print and PDF</li></ul>
+      <div><h3 id="h-deck">Kiln Deck</h3><p class="for">Presentations, in place of PowerPoint</p></div></header>
+    <p class="app-lede">Your .pptx with its masters, layouts and themes, and a slide show with Presenter View.</p>
+    <ul><li>Presenter View: your notes, the next slide and a timer, while the audience sees the slide</li><li>Transitions, animations and the Animation Pane</li><li>Design Ideas suggests layouts for the slide you are on</li><li>Charts and tables on slides</li><li>Handouts and notes pages, printed or as PDF</li></ul>
     <p class="more"><a href="manual/?p=deck">Kiln Deck in the manual</a></p>
   </div>
   <div class="app-shots">
     <figure class="s-main"><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/deck-launch-dark-640.webp 640w, media/screenshots/deck-launch-dark-1100.webp 1100w, media/screenshots/deck-launch-dark-1800.webp 1800w" sizes="(max-width: 980px) 100vw, 860px"><source type="image/webp" srcset="media/screenshots/deck-launch-light-640.webp 640w, media/screenshots/deck-launch-light-1100.webp 1100w, media/screenshots/deck-launch-light-1800.webp 1800w" sizes="(max-width: 980px) 100vw, 860px"><img src="media/screenshots/deck-launch-light.png" alt="A product launch deck in Kiln Deck, showing the launch plan slide and the slide rail." width="2880" height="1800" loading="lazy" decoding="async"></picture></figure>
-    <figure class="s-side"><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/deck-presenter-light-640.webp 640w, media/screenshots/deck-presenter-light-1100.webp 1100w, media/screenshots/deck-presenter-light-1800.webp 1800w" sizes="(max-width: 980px) 70vw, 420px"><source type="image/webp" srcset="media/screenshots/deck-presenter-dark-640.webp 640w, media/screenshots/deck-presenter-dark-1100.webp 1100w, media/screenshots/deck-presenter-dark-1800.webp 1800w" sizes="(max-width: 980px) 70vw, 420px"><img src="media/screenshots/deck-presenter-dark.png" alt="Presenter View in Kiln Deck: the current slide, the next slide and the speaker notes." width="2880" height="1800" loading="lazy" decoding="async"></picture></figure>
+    <figure class="s-side"><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/deck-presenter-dark-640.webp 640w, media/screenshots/deck-presenter-dark-1100.webp 1100w, media/screenshots/deck-presenter-dark-1800.webp 1800w" sizes="(max-width: 980px) 70vw, 420px"><source type="image/webp" srcset="media/screenshots/deck-presenter-light-640.webp 640w, media/screenshots/deck-presenter-light-1100.webp 1100w, media/screenshots/deck-presenter-light-1800.webp 1800w" sizes="(max-width: 980px) 70vw, 420px"><img src="media/screenshots/deck-presenter-light.png" alt="Presenter View in Kiln Deck: the current slide, the next slide and the speaker notes." width="2880" height="1800" loading="lazy" decoding="async"></picture></figure>
+  
   </div>
 </div></section>
 </section>
 
-<section id="home"><div class="wrap">
+<section id="home" style="padding-top:0"><div class="wrap">
   <div class="head">
     <p class="eyebrow"><svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>Coming from Office</p>
-    <h2>Feels like home</h2>
-    <p class="lede">Office users will find the ribbon, the File menu and the common shortcuts where they
-      expect them. The warmth is Kiln&#39;s own.</p>
+    <h2>You already know where everything is</h2>
+    <p class="lede">The ribbon, the File menu, the status bar and the shortcuts are where Office
+      users look for them, in a light or a dark theme.</p>
   </div>
   <figure class="ribbon"><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/ribbon-dark-800.webp 800w, media/screenshots/ribbon-dark-1600.webp 1600w" sizes="(max-width: 1236px) 100vw, 1124px"><source type="image/webp" srcset="media/screenshots/ribbon-light-800.webp 800w, media/screenshots/ribbon-light-1600.webp 1600w" sizes="(max-width: 1236px) 100vw, 1124px"><img src="media/screenshots/ribbon-light.png" alt="The Kiln Write ribbon: the File button, Home, Insert, Layout, References, Review and View tabs, and the Clipboard, Font, Paragraph, Styles and Editing groups." width="2880" height="392" loading="lazy" decoding="async"></picture></figure>
   <div class="homegrid">
     <ul>
-      <li><b>The ribbon:</b> Home, Insert, Layout, References, Review and View in Kiln Write; Home, Insert, Page Layout, Formulas, Data, Review and View in Kiln Grid; Home, Insert, Design, Transitions, Animations, Slide Show, Review and View in Kiln Deck. Classic or simplified, and Ctrl+F1 collapses it.</li>
+      <li><b>The ribbon</b> with the tabs each Office app has, classic or simplified. Ctrl+F1 collapses it.</li>
       <li><b>The File menu:</b> recent files, templates, Info, Save As, Print with preview, Export and Options.</li>
       <li><b>The status bar,</b> with page and word counts in Kiln Write, sums and averages of the selection in Kiln Grid, and zoom.</li>
-      <li><b>Office&#39;s common shortcuts,</b> in a <a href="manual/?p=shortcuts">table of 59 rows</a>, and Key Tips on Alt. End-to-end tests send each row&#39;s keys to each app as a keydown event and check the command it reaches.</li>
-      <li><b>Office&#39;s words:</b> search the palette for &ldquo;Merge &amp; Center&rdquo; or &ldquo;Format Painter&rdquo; and you get the command.</li>
+      <li><b>Office&#39;s shortcuts</b> and Key Tips on Alt. <a href="manual/?p=shortcuts">Every shortcut</a> is in the manual.</li>
+      <li><b>Office&#39;s words:</b> search for &ldquo;Merge &amp; Center&rdquo; or &ldquo;Format Painter&rdquo; and the command palette finds it.</li>
     </ul>
     <div class="keys" role="group" aria-label="A few of the shortcuts">
       <div><span>Bold, italic, underline</span><kbd>Ctrl+B / I / U</kbd></div>
@@ -445,77 +454,41 @@ footer{border-top:1px solid var(--line);padding:44px 0 60px;color:var(--muted);f
   <div class="duo">
     <figure><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/home-dark-640.webp 640w, media/screenshots/home-dark-1100.webp 1100w, media/screenshots/home-dark-1800.webp 1800w" sizes="(max-width: 640px) 100vw, 560px"><source type="image/webp" srcset="media/screenshots/home-light-640.webp 640w, media/screenshots/home-light-1100.webp 1100w, media/screenshots/home-light-1800.webp 1800w" sizes="(max-width: 640px) 100vw, 560px"><img src="media/screenshots/home-light.png" alt="Kiln Home: a door for each app, the template gallery and recent files." width="2880" height="1800" loading="lazy" decoding="async"></picture><figcaption>Kiln Home: new documents, templates and your recent files.</figcaption></figure>
     <figure><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/palette-dark-640.webp 640w, media/screenshots/palette-dark-1100.webp 1100w, media/screenshots/palette-dark-1800.webp 1800w" sizes="(max-width: 640px) 100vw, 560px"><source type="image/webp" srcset="media/screenshots/palette-light-640.webp 640w, media/screenshots/palette-light-1100.webp 1100w, media/screenshots/palette-light-1800.webp 1800w" sizes="(max-width: 640px) 100vw, 560px"><img src="media/screenshots/palette-light.png" alt="The command palette over a workbook, with Merge and Center in its results." width="2880" height="1800" loading="lazy" decoding="async"></picture><figcaption>The palette finds a command by its name here or in Office.</figcaption></figure>
-  </div>
-  <div class="demo">
-    <figure><img src="media/demo.gif" alt="A recording: a budget opens, an edit moves its totals and chart, the command palette finds a command, and a presentation opens." width="880" height="550" loading="lazy" decoding="async"></figure>
-    <div><h3>A short recording</h3>
-      <p>Kiln Home, a workbook from an .xlsx, an edit that moves the totals and the chart, the
-        palette, and a deck from a .pptx. Recorded from the built web app.</p></div>
-  </div>
+  
 </div></section>
 
-<section id="measured"><div class="wrap">
-  <div class="head">
-    <p class="eyebrow"><svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>Measured, not claimed</p>
-    <h2>Numbers from the test runs</h2>
-    <p class="lede">These figures are written onto this page from the reports the tests produce.
-      Fidelity shows the worst file of each format, not the average. Nothing here is rendered
-      in Microsoft Office: the reference is LibreOffice.</p>
-  </div>
-  <div class="big3">
-    <div><b data-stat="perf.B3firstpagepainted">30.7 ms</b><span>300-page .docx to the first painted page, native core, <span data-stat="perf.machine">linux x86_64, 16 CPUs</span></span></div>
-    <div><b data-stat="perf.B8">224 ms</b><span>full recalculation of 1,000,000 formulas, native core, <span data-stat="perf.machine">linux x86_64, 16 CPUs</span></span></div>
-    <div><b data-stat="perf.B9">0.1 ms</b><span>recalculation after one edit among 100,000 formulas, native core, <span data-stat="perf.machine">linux x86_64, 16 CPUs</span></span></div>
-    <div><b data-stat="perf.web">2.76 s</b><span>opening the 1,000,000-cell sheet to first paint, web core, headless Chromium</span></div>
-  </div>
-  <div class="panels">
-    <div class="panel">
-      <h3>Round-trip fidelity</h3>
-      <p class="how"><span data-stat="fidelity.files">336</span> files, <span data-stat="fidelity.real">150</span> of them real-world files from the test data of Apache POI and LibreOffice and the others generated, are read, written back without edits and read again. A file passes when it meets its thresholds on the scores below and <span data-stat="fidelity.oracle">LibreOffice</span> opens the result. Structure counts facts in Kiln&#39;s own model before and after, so it cannot show what that model does not hold. Text compares what Kiln&#39;s reader finds in each file. Visual compares LibreOffice&#39;s renders of original and output at 60 dpi; nothing here renders in Office. 1.000 means no difference by that measure. <a href="https://github.com/ZahakJ/kiln/blob/main/docs/qa/fidelity.md">Every file&#39;s score</a></p>
-      <!-- site:fidelity -->
-<div class="tablewrap"><table class="instr"><caption>Round-trip fidelity by format, lowest score of any file</caption>
-<thead><tr><th scope="col">Format</th><th scope="col">Files</th><th scope="col">Structure</th><th scope="col">Text</th><th scope="col">Visual</th></tr></thead>
-<tbody>
-<tr><th scope="row">.docx</th><td>90/90</td><td><span class="score" style="--v:100.0%">1.000</span></td><td><span class="score" style="--v:100.0%">1.000</span></td><td><span class="score" style="--v:91.6%">0.916</span></td></tr>
-<tr><th scope="row">.xlsx</th><td>102/102</td><td><span class="score" style="--v:100.0%">1.000</span></td><td><span class="score" style="--v:100.0%">1.000</span></td><td><span class="score" style="--v:90.0%">0.900</span></td></tr>
-<tr><th scope="row">.pptx</th><td>81/81</td><td><span class="score" style="--v:100.0%">1.000</span></td><td><span class="score" style="--v:100.0%">1.000</span></td><td><span class="score" style="--v:99.9%">0.999</span></td></tr>
-<tr><th scope="row">ODF</th><td>63/63</td><td><span class="score" style="--v:97.9%">0.979</span></td><td><span class="score" style="--v:100.0%">1.000</span></td><td><span class="score" style="--v:81.2%">0.812</span></td></tr>
-</tbody></table></div>
-<!-- /site:fidelity -->
-      <dl class="terms">
-        <div><dt>Structure</dt><dd>the document&#39;s elements, read again after the round trip</dd></div>
-        <div><dt>Text</dt><dd>every word, in order</dd></div>
-        <div><dt>Visual</dt><dd>LibreOffice renders the pages before and after at 60 dpi, and the two are compared</dd></div>
-        <div><dt>Unmodelled parts</dt><dd>parts of an Office file Kiln does not model are copied back byte for byte</dd></div>
-      </dl>
+<section id="everywhere"><div class="wrap">
+  <div class="reach">
+    <div>
+      <p class="eyebrow"><svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>Wherever you work</p>
+      <h2>On your desk, on your phone, offline</h2>
+      <p class="lede">Kiln fits the screen it is on. On a phone it has a layout of its own: a
+        toolbar at the bottom for what you have selected, and the whole ribbon one tap away. With
+        a keyboard, the shortcuts work as on the desktop.</p>
+      <p class="more"><a href="manual/?p=mobile">Kiln on a phone or tablet</a></p>
     </div>
-    <div class="panel">
-      <h3>Speed against budget</h3>
-      <p class="how">The native core, 95th percentile, <span data-stat="perf.machine">linux x86_64, 16 CPUs</span>, <span data-stat="perf.date">2026-11-03</span>. The bars show the share of each budget used, on a root scale. <a href="https://github.com/ZahakJ/kiln/blob/main/docs/qa/perf.md">Method and every run</a></p>
-      <!-- site:perf -->
-<ul class="gauges">
-<li><span class="g-label">Open a 300-page .docx: first page painted</span><span class="g-num">30.7 ms</span><span class="g-track"><i style="width:28%"></i></span><span class="g-budget">budget 400 ms</span></li>
-<li><span class="g-label">Open a 300-page .docx: fully paginated</span><span class="g-num">76.2 ms</span><span class="g-track"><i style="width:23%"></i></span><span class="g-budget">budget 1.5 s</span></li>
-<li><span class="g-label">Open a 10 MB .xlsx: first paint</span><span class="g-num">258 ms</span><span class="g-track"><i style="width:46%"></i></span><span class="g-budget">budget 1.2 s</span></li>
-<li><span class="g-label">Open a 10 MB .xlsx: fully calculated</span><span class="g-num">565 ms</span><span class="g-track"><i style="width:48%"></i></span><span class="g-budget">budget 2.5 s</span></li>
-<li><span class="g-label">Recalculate 1,000,000 formulas</span><span class="g-num">224 ms</span><span class="g-track"><i style="width:33%"></i></span><span class="g-budget">budget 2.0 s</span></li>
-<li><span class="g-label">Recalculate after one edit, 100,000 formulas</span><span class="g-num">0.1 ms</span><span class="g-track"><i style="width:22%"></i></span><span class="g-budget">budget 2.0 ms</span></li>
-<li><span class="g-label">Open a 200-slide .pptx: first slide painted</span><span class="g-num">24.5 ms</span><span class="g-track"><i style="width:18%"></i></span><span class="g-budget">budget 800 ms</span></li>
-<li><span class="g-label">Export the 300-page document to PDF</span><span class="g-num">146 ms</span><span class="g-track"><i style="width:27%"></i></span><span class="g-budget">budget 2.0 s</span></li>
-<li><span class="g-label">Apply 1,000 collaborator edits</span><span class="g-num">24.9 ms</span><span class="g-track"><i style="width:71%"></i></span><span class="g-budget">budget 50.0 ms</span></li>
-</ul>
-<!-- /site:perf -->
+    <div class="phones">
+      <figure><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/phone-write-dark-260.webp 260w, media/screenshots/phone-write-dark-520.webp 520w" sizes="(max-width: 640px) 30vw, 260px"><source type="image/webp" srcset="media/screenshots/phone-write-light-260.webp 260w, media/screenshots/phone-write-light-520.webp 520w" sizes="(max-width: 640px) 30vw, 260px"><img src="media/screenshots/phone-write-light.png" alt="A proposal in Kiln Write on a phone, with the bottom toolbar." width="780" height="1688" loading="lazy" decoding="async"></picture></figure>
+      <figure><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/phone-grid-dark-260.webp 260w, media/screenshots/phone-grid-dark-520.webp 520w" sizes="(max-width: 640px) 30vw, 260px"><source type="image/webp" srcset="media/screenshots/phone-grid-light-260.webp 260w, media/screenshots/phone-grid-light-520.webp 520w" sizes="(max-width: 640px) 30vw, 260px"><img src="media/screenshots/phone-grid-light.png" alt="A household budget in Kiln Grid on a phone, with the formula bar and the sheet tabs." width="780" height="1688" loading="lazy" decoding="async"></picture></figure>
+      <figure><picture><source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/screenshots/phone-deck-dark-260.webp 260w, media/screenshots/phone-deck-dark-520.webp 520w" sizes="(max-width: 640px) 30vw, 260px"><source type="image/webp" srcset="media/screenshots/phone-deck-light-260.webp 260w, media/screenshots/phone-deck-light-520.webp 520w" sizes="(max-width: 640px) 30vw, 260px"><img src="media/screenshots/phone-deck-light.png" alt="A presentation in Kiln Deck on a phone." width="780" height="1688" loading="lazy" decoding="async"></picture></figure>
     </div>
   </div>
-  <p class="foot"><a href="https://github.com/ZahakJ/kiln/blob/main/PARITY.md">Kiln&#39;s own list</a> of what a switcher from Office would miss: <span data-stat="parity.rows">576 of 740</span> rows done. Its critical tier scores <span data-stat="parity.critical">97.8 %</span>, weighted, and each done row names its test.</p>
+  <div class="cards">
+    <article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><h3>Private</h3><p>Kiln lays out and saves your documents on your device, in the browser as on the desktop. There is no account and no telemetry.</p></article>
+    <article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></div><h3>Offline and installable</h3><p>After the first visit Kiln starts, opens and saves without a connection. Install it from Chrome or Edge for a window of its own and <b>Open with ▸ Kiln</b> in your file manager.</p></article>
+    <article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg></div><h3>Edit together</h3><p>Share a Kiln Write document or a Kiln Deck presentation and edit it together, live, with everyone&#39;s cursor in their colour. Changes pass through a small relay you run yourself, and edits made offline merge when you reconnect. <a href="manual/?p=collaboration">How to share</a></p></article>
+    <article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></div><h3>Version history</h3><p>Kiln Write documents and Kiln Deck presentations keep their versions on your device. Name one, preview it, restore it.</p></article>
+    <article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg></div><h3>Arabic, right to left</h3><p>The interface in English, German or Arabic. In Arabic it is mirrored, as Office is, and documents and sheets run from the right.</p></article>
+    <article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div><h3>Templates</h3><p><span data-stat="templates">36</span> finished documents, workbooks and decks with real content to start from. Grid templates calculate: change a figure and the totals and charts follow.</p></article>
+  </div>
 </div></section>
 
 <section id="compared"><div class="wrap">
   <div class="head">
     <p class="eyebrow"><svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>Compared</p>
     <h2>How Kiln sits among the others</h2>
-    <p class="lede">What each product says about itself, on its own pages. Kiln&#39;s column links
-      its manual.</p>
+    <p class="lede">Price, licence, file formats, platforms, offline use and macros, from each
+      product&#39;s own pages. Kiln&#39;s column links its manual.</p>
   </div>
   <!-- site:compare -->
 <div class="tablewrap compare" tabindex="0" role="region" aria-label="Comparison table"><table><caption>From each product's own pages, read on 2026-11-01. Every cell links its source.</caption>
@@ -534,9 +507,9 @@ footer{border-top:1px solid var(--line);padding:44px 0 60px;color:var(--muted);f
 <section id="download" style="background:var(--panel);border-block:1px solid var(--line)"><div class="wrap">
   <div class="head">
     <p class="eyebrow"><svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>Get Kiln</p>
-    <h2>Open it, or build it</h2>
-    <p class="lede">Kiln runs in the browser with nothing installed, and keeps working offline once
-      it has loaded. On Linux you can build the desktop app from source.</p>
+    <h2>Open it in your browser</h2>
+    <p class="lede">Kiln runs in the browser with nothing installed, on a computer, a tablet or a
+      phone. On Linux you can also build the desktop app from source.</p>
   </div>
   <div class="dl">
     <article class="plat web"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.9 9h-3.400a15 15 0 0 0-1.7-6.400A8 8 0 0 1 19.9 11zM12 4c1 1.3 2.2 3.8 2.5 7h-5C9.8 7.8 11 5.3 12 4zM9.2 4.600A15 15 0 0 0 7.5 11H4.100a8 8 0 0 1 5.1-6.400zM4.1 13h3.400c.2 2.4.8 4.7 1.7 6.400A8 8 0 0 1 4.1 13zm7.9 7c-1-1.3-2.2-3.8-2.5-7h5c-.3 3.2-1.5 5.7-2.5 7zm2.8-.6c.9-1.7 1.5-4 1.7-6.400h3.400a8 8 0 0 1-5.1 6.400z"/></svg><h3>Browser</h3><p>Installable, works offline, and nothing leaves the device unless you share it.</p><a class="btn primary" href="app/">Open in browser</a></article>
@@ -545,23 +518,32 @@ footer{border-top:1px solid var(--line);padding:44px 0 60px;color:var(--muted);f
     <article class="plat" hidden data-release-card><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5 10 4.500v7H3zM11 4.4 21 3v8.500H11zM3 12.500h7v7l-7-1zM11 12.500h10V21l-10-1.400z"/></svg><h3>Windows</h3><p>An installer for 64-bit Windows. <span data-version>v0.1.0</span>.</p><a class="btn" href="https://github.com/ZahakJ/kiln/releases" data-release-file="Kiln_VER_x64-setup.exe">Installer (.exe)</a></article>
     <article class="plat" hidden data-release-card><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.600c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.5 1.3-.1 1.8-.8 3.3-.8s2 .8 3.4.8 2.3-1.2 3.1-2.500c1-1.4 1.4-2.8 1.4-2.9-.1 0-2.7-1-2.7-4zM13.9 5c.7-.9 1.2-2 1-3.2-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.300z"/></svg><h3>macOS</h3><p>A disk image for Apple silicon or Intel. <span data-version>v0.1.0</span>.</p><a class="btn" href="https://github.com/ZahakJ/kiln/releases" data-release-file="Kiln_VER_aarch64.dmg">Disk image (.dmg)</a></article>
     <article class="plat" hidden data-release-card><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9h10v8a1 1 0 0 1-1 1h-1v3h-2v-3h-2v3H9v-3H8a1 1 0 0 1-1-1zM4.5 9.500a1 1 0 0 1 2 0v5a1 1 0 0 1-2 0zm13 0a1 1 0 0 1 2 0v5a1 1 0 0 1-2 0zM7.2 8a4.9 4.9 0 0 1 2.5-3.700l-.7-1.2.5-.3.8 1.300a5 5 0 0 1 3.4 0l.8-1.3.5.3-.7 1.200A4.9 4.9 0 0 1 16.8 8z"/></svg><h3>Android</h3><p>APKs for 64-bit and 32-bit ARM and for x86-64. <span data-version>v0.1.0</span>.</p><a class="btn" href="https://github.com/ZahakJ/kiln/releases" data-release-file="kiln-VER-arm64-v8a.apk">APK</a></article>
+  
   </div>
-  <p class="foot">The test suite covers Linux and the browser. <a href="manual/?p=install-desktop">Kiln on Linux</a> says what the build makes.</p>
+  <p class="foot"><a href="manual/?p=install-desktop">Kiln on Linux</a> says what the build makes and how it registers your document types.</p>
 </div></section>
 
-<section id="build"><div class="wrap hood">
-  <div>
-    <p class="eyebrow"><svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>Under the hood</p>
-    <h2>One Rust core, every window</h2>
-    <p class="lede">Documents are laid out in Rust and painted onto a canvas from a display list, and the
-      PDF comes from the same layout.</p>
-    <ul>
-      <li>The core runs natively in a Tauri shell, and as WebAssembly in a Web Worker in the browser.</li>
-      <li>The ribbon, dialogs and panes are a thin TypeScript layer with no business logic.</li>
-      <li><a href="manual/?p=cli">kiln-cli</a> converts, renders and inspects documents from a script.</li>
-    </ul>
-  </div>
-  <div class="term" role="group" aria-label="Terminal"><header aria-hidden="true"><i></i><i></i><i></i></header>
+<section id="open"><div class="wrap">
+  <picture class="banner">
+    <source media="(prefers-color-scheme: dark)" type="image/webp" srcset="media/banner-760.webp 760w, media/banner-1400.webp 1400w" sizes="(max-width: 1236px) 100vw, 1124px">
+    <source type="image/webp" srcset="media/banner-light-760.webp 760w, media/banner-light-1400.webp 1400w" sizes="(max-width: 1236px) 100vw, 1124px">
+    <img src="media/banner-light.png" alt="The Kiln banner: the kiln mark, the words Where work gets made, and the Write, Grid and Deck tiles." width="2000" height="600" decoding="async">
+  </picture>
+  <div class="hood">
+    <div>
+      <p class="eyebrow"><svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>Fired in the open</p>
+      <h2>Free software, built in public</h2>
+      <p class="lede">Kiln is under the GNU Affero General Public License, version 3 or later. The
+        source, the issue tracker and the discussions are on GitHub.</p>
+      <h3>How it is built</h3>
+      <ul>
+        <li>Everything that computes, from layout and formulas to the file formats and PDF, is one Rust core.</li>
+        <li>In the browser it runs as WebAssembly; on Linux it runs natively in a Tauri window.</li>
+        <li><a href="manual/?p=cli">kiln-cli</a> converts, renders and inspects documents from a script.</li>
+      </ul>
+      <div class="links2"><a class="btn" href="https://github.com/ZahakJ/kiln">Source on GitHub</a><a class="btn" href="https://github.com/ZahakJ/kiln/blob/main/CONTRIBUTING.md">Contributing</a></div>
+    </div>
+    <div class="term" role="group" aria-label="Terminal"><header aria-hidden="true"><i></i><i></i><i></i></header>
 <pre tabindex="0"><code><span class="c">$ git clone https://github.com/ZahakJ/kiln &amp;&amp; cd kiln</span>
 <span class="c">$ bash tools/setup-rust.sh &amp;&amp; bash tools/setup-node.sh</span>
 <span class="c">$ source ~/.profile</span>
@@ -571,15 +553,18 @@ footer{border-top:1px solid var(--line);padding:44px 0 60px;color:var(--muted);f
 
 <span class="c">$ cargo run -q -p kiln-cli -- convert \
     "e2e/fixtures/media/Annual report 2025.docx" report.pdf</span></code></pre></div>
+  </div>
 </div></section>
 </main>
 
 <footer><div class="wrap">
   <div class="flinks">
-    <a href="https://github.com/ZahakJ/kiln">GitHub</a>
+    <a href="app/">Open Kiln</a>
     <a href="manual/">Manual</a>
-    <a href="https://github.com/ZahakJ/kiln/blob/main/docs/DESIGN.md">Design</a>
+    <a href="manual/?p=faq">Questions</a>
     <a href="manual/?p=formats">File formats</a>
+    <a href="https://github.com/ZahakJ/kiln">GitHub</a>
+    <a href="https://github.com/ZahakJ/kiln/blob/main/docs/DESIGN.md">How it is built</a>
     <a href="https://github.com/ZahakJ/kiln/blob/main/SECURITY.md">Security</a>
     <a href="https://github.com/ZahakJ/kiln/blob/main/CONTRIBUTING.md">Contributing</a>
   </div>

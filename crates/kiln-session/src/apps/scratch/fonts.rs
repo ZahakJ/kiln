@@ -87,8 +87,18 @@ pub fn store() -> FontStore {
 mod tests {
     /// The desktop and Android store: Chinese, Japanese, Korean and emoji lay out with the
     /// platform's own fonts (fontconfig's here), with nothing missing.
+    ///
+    /// It needs a CJK font and an emoji font on the machine. Where either is missing it says so
+    /// and stops, unless `KILN_REQUIRE_SYSTEM_FONTS=1`, which CI sets after installing both: there
+    /// a missing font is a failure, so the test can never pass by skipping.
     #[test]
     fn the_native_store_lays_out_cjk_and_emoji_with_the_platforms_fonts() {
+        const EMOJI: &[&str] = &[
+            "Noto Color Emoji",
+            "Segoe UI Emoji",
+            "Apple Color Emoji",
+            "Noto Emoji",
+        ];
         let mut fonts = super::store();
         let found: Vec<String> = kiln_text::SYSTEM_FALLBACKS
             .iter()
@@ -96,9 +106,21 @@ mod tests {
             .map(|f| (*f).to_owned())
             .collect();
         println!("NATIVE fallbacks found: {found:?}");
-        // A machine with no CJK font at all (a bare build server) has nothing to fall back to.
-        if found.is_empty() {
-            println!("NATIVE: this machine has none of the platform fallback fonts");
+        let emoji = found.iter().any(|f| EMOJI.contains(&f.as_str()));
+        let cjk = found.iter().any(|f| !EMOJI.contains(&f.as_str()));
+        if !(emoji && cjk) {
+            let lacking = match (cjk, emoji) {
+                (false, false) => "a CJK font and an emoji font",
+                (false, true) => "a CJK font",
+                _ => "an emoji font",
+            };
+            assert!(
+                std::env::var_os("KILN_REQUIRE_SYSTEM_FONTS").is_none_or(|v| v != "1"),
+                "KILN_REQUIRE_SYSTEM_FONTS=1, but this machine lacks {lacking} \
+                 (found {found:?}); install them (Debian and Ubuntu: fonts-noto-cjk, \
+                 fonts-noto-color-emoji)"
+            );
+            println!("NATIVE: this machine lacks {lacking}; nothing to lay out with");
             return;
         }
         let mut engine = kiln_text::TextEngine::new(fonts);

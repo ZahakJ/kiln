@@ -31,4 +31,4 @@ Documents keep the font names they ask for. Kiln bundles metric-compatible faces
 
 ## How fidelity is measured
 
-The test suite runs a corpus of Word, Excel, PowerPoint and OpenDocument files through Kiln: real-world files from the test data of Apache POI and LibreOffice, and generated ones. Each file is read, written back without edits and read again, opened in LibreOffice, and scored on structure, text and pages rendered by LibreOffice at 60 dpi. Nothing here is rendered in Microsoft Office. The scores are on the [landing page](../index.html) and in [the report](../qa/fidelity.md).
+The test suite runs a corpus of Word, Excel, PowerPoint and OpenDocument files through Kiln: real-world files from the test data of Apache POI and LibreOffice, and generated ones. Each file is read, written back without edits and read again, opened in LibreOffice, and scored on structure, text and pages rendered by LibreOffice at 60 dpi. Nothing here is rendered in Microsoft Office. Every file's scores are in [the report](../qa/fidelity.md).

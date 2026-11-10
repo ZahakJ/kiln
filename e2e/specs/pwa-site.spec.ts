@@ -13,11 +13,18 @@ async function controlled(page: Page): Promise<boolean> {
 }
 
 test.describe('the site around the web app', () => {
-  test('the landing page carries the apps, the banner and its numbers', async ({ page, baseURL }) => {
+  test('the landing page carries the product, its apps and the banner', async ({ page, baseURL }) => {
     const response = await page.goto(site(baseURL, ''));
     expect(response?.status()).toBe(200);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Kiln Write' })).toBeVisible();
+    // The primary action is above the fold.
+    const open = page.getByRole('link', { name: 'Open Kiln in your browser' });
+    await expect(open).toHaveAttribute('href', 'app/');
+    await expect(open).toBeInViewport();
+    for (const app of ['Kiln Write', 'Kiln Grid', 'Kiln Deck'])
+      await expect(page.getByRole('heading', { name: app, exact: true })).toBeVisible();
+    // A product page: no test tallies, pass counts or budgets.
+    await expect(page.locator('main')).not.toContainText(/test files|rows done|budget \d|critical tier/i);
     const banner = page.locator('.banner img');
     await expect(banner).toBeVisible();
     expect(await banner.evaluate((i: HTMLImageElement) => i.naturalWidth)).toBeGreaterThan(0);
@@ -27,6 +34,7 @@ test.describe('the site around the web app', () => {
     expect(cells.length).toBeGreaterThan(30);
     expect(cells.filter((c) => c.trim() === '' || /tbd|n\/a/i.test(c))).toEqual([]);
     await expect(page.getByRole('link', { name: 'Open in browser' }).first()).toHaveAttribute('href', 'app/');
+    await expect(page.locator('[data-stat="templates"]').first()).toHaveText(/^\d+$/);
   });
 
   test('a phone width scrolls one way only, at 360 and 390 px', async ({ page, baseURL }) => {

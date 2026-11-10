@@ -61,6 +61,22 @@ rm -rf "$site/adr" "$site/qa" "$site/design" "$site"/*.md
 mkdir -p "$site/app"
 cp -r apps/web/dist-pages/. "$site/app/"
 
+# The sitemap (the landing page, the web app and every manual page) and robots.txt, for search
+# engines; the site lives at https://zahakj.github.io/kiln/.
+base="https://zahakj.github.io/kiln/"
+{
+  echo '<?xml version="1.0" encoding="UTF-8"?>'
+  echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+  for loc in "$base" "${base}app/" "${base}manual/"; do echo "  <url><loc>$loc</loc></url>"; done
+  for md in docs/manual/*.md; do
+    name="$(basename "$md" .md)"
+    case "$name" in index | README) continue ;; esac
+    echo "  <url><loc>${base}manual/?p=$name</loc></url>"
+  done
+  echo '</urlset>'
+} > "$site/sitemap.xml"
+printf 'User-agent: *\nAllow: /\nSitemap: %ssitemap.xml\n' "$base" > "$site/robots.txt"
+
 node tools/pages-check.mjs "$site"
 # Vite's manifest only served the check; source maps stay for debugging the deployed site.
 rm -rf "$site/app/.vite"

@@ -3,9 +3,7 @@
 # checks the budgets: chrome JS < 450 KB and each WebAssembly module < 4,500 KB gzipped).
 #
 # The deploy job needs the repository's Pages source set to GitHub Actions
-# (`gh api -X PUT repos/ZahakJ/kiln/pages -f build_type=workflow`). Until it is, it runs only when
-# the repository variable PAGES_WORKFLOW is '1', so a push before the switch does not fail;
-# docs/RELEASING.md ("GitHub Pages") says when to remove the condition.
+# (`gh api -X PUT repos/ZahakJ/kiln/pages -f build_type=workflow`; docs/RELEASING.md, "GitHub Pages").
 name: pages
 
 on:
@@ -37,7 +35,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # Every WebAssembly core from source (about 20 minutes on a cold cache).
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v7
 
@@ -55,6 +54,9 @@ jobs:
           toolchain: 1.99.1
           components: rust-src
           targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: kiln-pages
       - uses: taiki-e/install-action@v2
         with:
           tool: wasm-bindgen@0.2.129
@@ -75,7 +77,6 @@ jobs:
 
   deploy:
     needs: build
-    if: vars.PAGES_WORKFLOW == '1'
     runs-on: ubuntu-latest
     permissions:
       pages: write

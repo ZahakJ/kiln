@@ -1,7 +1,16 @@
-# Every push to main and every pull request: the Rust core (fmt, clippy, nextest,
-# cargo-deny, protocol, wasm, budgets, fidelity, parity), the web build (lint, typecheck, unit tests,
-# licences, Playwright) and the Tauri desktop shell: its unit tests, the startup probe and the
-# tauri-driver smoke test.
+# Every push to main and every pull request. The jobs run side by side where they can:
+#
+#   lint      rustfmt, Clippy (warnings denied), cargo-deny, the generated protocol and PARITY.md
+#   test      cargo-nextest over the workspace, with the CJK and emoji fonts the text tests lay out
+#   wasm      the WebAssembly cores (`cargo xtask wasm --release --ci`, with their size budget)
+#   measure   the performance budgets and the round-trip fidelity of the fixture corpus
+#   web       Biome, TypeScript, Vitest, the licence check, the web build and the Pages artefact
+#   e2e       Playwright in headless Chromium, split into shards, against that artefact
+#   desktop   the Tauri shell: its tests, the start-up probe and the tauri-driver smoke test
+#
+# The end-to-end suite runs one test at a time per shard (--workers=1), as it does locally: many
+# of its tests time a busy core or a frame rate, and two at once on a 4-CPU runner would measure
+# each other.
 name: ci
 
 on:
@@ -23,83 +32,134 @@ env:
   # sccache is the rustc wrapper in .cargo/config.toml; on CI it uses the GitHub Actions cache.
   SCCACHE_GHA_ENABLED: 'true'
   RUSTC_WRAPPER: sccache
+  # The Tauri shell's build dependencies on Linux, for every job that compiles kiln-desktop.
+  TAURI_APT: >-
+    libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev libxdo-dev
+    libssl-dev patchelf file
 
 jobs:
-  rust:
+  lint:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
-
-      # The toolchain, components and targets pinned in rust-toolchain.toml.
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: 1.99.1
-          components: rustfmt, clippy, rust-src
-          targets: wasm32-unknown-unknown
-
+          components: rustfmt, clippy
       - uses: Swatinem/rust-cache@v2
         with:
-          shared-key: kiln
-
+          shared-key: kiln-lint
       - uses: mozilla-actions/sccache-action@v0.0.11
-
       - name: Tauri Linux libraries
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev \
-            librsvg2-dev libxdo-dev libssl-dev patchelf file poppler-utils
-
+          sudo apt-get install -y $TAURI_APT
       - uses: taiki-e/install-action@v2
         with:
-          tool: cargo-nextest@0.9.148,cargo-deny@0.20.2,wasm-bindgen@0.2.129
+          tool: cargo-deny@0.20.2
+      - name: Format
+        run: cargo fmt --all --check
+      # Clippy builds every crate and every target, the desktop shell included.
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets -- -D warnings
+      - name: cargo-deny (licences, advisories, bans, sources)
+        run: cargo deny check
+      - name: Protocol is up to date
+        run: cargo xtask protocol --check
+      - name: Parity tracker
+        run: cargo xtask parity --check
 
-      # wasm-opt for `cargo xtask wasm --release` (pins binaryen version_133).
-      - name: binaryen
+  test:
+    runs-on: ubuntu-latest
+    # The journal replay of every catalog command runs about 10 minutes on 4 CPUs on its own.
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.1
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: kiln-test
+      - uses: mozilla-actions/sccache-action@v0.0.11
+      # poppler-utils: the PDF tests render pages with pdftoppm. The CJK and emoji fonts are the
+      # platform fallbacks the native text tests lay out with; KILN_REQUIRE_SYSTEM_FONTS makes a
+      # missing one a failure instead of a skipped test.
+      - name: Fonts and tools the tests use
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils fonts-noto-cjk fonts-noto-color-emoji
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest@0.9.148
+      - name: Tests
+        run: cargo nextest run --workspace --exclude kiln-desktop
+        env:
+          KILN_REQUIRE_SYSTEM_FONTS: '1'
+
+  wasm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      # rust-src for the Grid core's threads module, which rebuilds the standard library with
+      # atomics.
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.1
+          components: rust-src
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: kiln-wasm
+      - uses: mozilla-actions/sccache-action@v0.0.11
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-bindgen@0.2.129
+      - name: binaryen (wasm-opt, version_133)
         run: |
           curl -4 -LsSf https://github.com/WebAssembly/binaryen/releases/download/version_133/binaryen-version_133-x86_64-linux.tar.gz | tar xz -C "$RUNNER_TEMP"
           echo "$RUNNER_TEMP/binaryen-version_133/bin" >> "$GITHUB_PATH"
-
-      - name: Format
-        run: cargo fmt --all --check
-
-      - name: Clippy
-        run: cargo clippy --workspace --all-targets -- -D warnings
-
-      - name: Tests
-        run: cargo nextest run --workspace --exclude kiln-desktop
-
-      - name: Desktop shell compiles
-        run: cargo check -p kiln-desktop
-
-      - name: cargo-deny (licences, advisories, bans, sources)
-        run: cargo deny check
-
-      - name: Protocol is up to date
-        run: cargo xtask protocol --check
-
-      # wasm32 build + wasm-bindgen + wasm-opt, with the B12 size assertion; the web job tests it.
-      - name: WebAssembly core
+      # The cores, with the size budget (B12), and Grid's check cores for the recovery tests of the
+      # e2e job (`tools/check-site.sh`: every journal write is replayed onto a shadow workbook).
+      - name: WebAssembly cores
         run: cargo xtask wasm --release --ci
-
-      - name: Upload the WebAssembly core
-        uses: actions/upload-artifact@v7
+      - name: Grid check cores
+        run: |
+          cargo xtask wasm --release --journal-check --app grid --out-dir target/wasm-check
+          cargo xtask wasm --release --journal-check --app grid-threads --out-dir target/wasm-check
+      - uses: actions/upload-artifact@v7
         with:
           name: wasm-${{ github.run_id }}
           path: apps/web/src/wasm
           if-no-files-found: error
           retention-days: 3
+      - uses: actions/upload-artifact@v7
+        with:
+          name: wasm-check-${{ github.run_id }}
+          path: target/wasm-check
+          if-no-files-found: error
+          retention-days: 3
 
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.1
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: kiln-measure
+      - uses: mozilla-actions/sccache-action@v0.0.11
+      # The budgets scale with this machine's calibration and add the CI tolerance (x1.5).
       - name: Performance budgets
         run: cargo xtask budgets --ci
-
       - name: Fidelity
         run: cargo xtask fidelity --ci
-
-      - name: Parity tracker
-        run: cargo xtask parity --check
-
-      - name: Upload performance report
+      - name: Performance report
         if: always()
         uses: actions/upload-artifact@v7
         with:
@@ -109,113 +169,137 @@ jobs:
           retention-days: 14
 
   web:
-    needs: rust
+    needs: wasm
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v7
-
       # Installs the pnpm version named in package.json's packageManager field.
       - uses: pnpm/action-setup@v6
-
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: pnpm
-
       - name: Install
         run: pnpm install --frozen-lockfile
-
-      # The core built by the rust job; the Worker loads it and the bridge e2e tests need it.
-      - name: Download the WebAssembly core
-        uses: actions/download-artifact@v8
+      - uses: actions/download-artifact@v8
         with:
           name: wasm-${{ github.run_id }}
           path: apps/web/src/wasm
-
       - name: Lint
         run: pnpm lint
-
       - name: Typecheck
         run: pnpm typecheck
-
       - name: Unit tests with coverage
         run: pnpm test -- --coverage
-
       - name: Licence check
         run: pnpm licenses:check
-
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: 1.99.1
-
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: kiln-web
       - uses: mozilla-actions/sccache-action@v0.0.11
-
       - name: Third-party notices are up to date
         run: cargo xtask notices --check
-
       - name: Build
         run: pnpm build
-
-      # The GitHub Pages artefact (the web app under /kiln/app/ with its service worker): the pwa
-      # e2e tests run against it, served as Pages serves it (tools/pages-serve.mjs).
+      # The GitHub Pages artefact: the landing page, the manual and the web app under /kiln/app/
+      # with its service worker; it also checks the site's numbers and links. The e2e job runs the
+      # installable web app's tests against it.
       - name: GitHub Pages artefact
         run: bash tools/pages-build.sh
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pages-${{ github.run_id }}
+          path: target/pages/site
+          if-no-files-found: error
+          retention-days: 3
 
+  e2e:
+    needs: web
+    runs-on: ubuntu-latest
+    # The shards split the tests, not their time: the one with the keyboard walks of every catalog
+    # command (about 55 minutes of the suite on 4 CPUs) runs longest.
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v8
+        with:
+          name: wasm-${{ github.run_id }}
+          path: apps/web/src/wasm
+      - uses: actions/download-artifact@v8
+        with:
+          name: pages-${{ github.run_id }}
+          path: target/pages/site
+      - uses: actions/download-artifact@v8
+        with:
+          name: wasm-check-${{ github.run_id }}
+          path: target/wasm-check
+      # The check-core site from the artefact and the check cores, as tools/check-site.sh makes it.
+      - name: Grid check-core site
+        run: bash tools/check-site.sh --from-built
       # The browser build matches the Playwright version pinned in the e2e package.
       - name: Install Chromium for Playwright
         run: pnpm --filter @kiln/e2e exec playwright install --with-deps chromium
-
+      # Turbo would hold the output of a task until it ends (it groups logs on CI): the web build
+      # the suite needs runs first, then Playwright with its output streamed.
+      - name: Web build
+        run: pnpm --filter @kiln/web build
       - name: End-to-end tests
-        run: pnpm e2e
+        run: pnpm --filter @kiln/e2e e2e --workers=1 --shard=${{ matrix.shard }}/12
         env:
           # The runner has no LibreOffice: Grid's Office file loop is skipped (and says so) here;
           # it runs wherever LibreOffice is installed, and fails there if it cannot use it.
           KILN_E2E_NO_LIBREOFFICE: '1'
-
       # Screenshots are reviewed by people, so keep them whether or not the run passed.
       - name: Upload screenshots and report
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: e2e-${{ github.run_id }}
+          name: e2e-${{ github.run_id }}-${{ matrix.shard }}
           path: |
             e2e/screenshots
             e2e/playwright-report
           if-no-files-found: ignore
           retention-days: 14
 
-  desktop-smoke:
-    needs: rust
+  desktop:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v7
-
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: 1.99.1
-
       - uses: Swatinem/rust-cache@v2
         with:
-          shared-key: kiln
-
+          shared-key: kiln-desktop
       - uses: mozilla-actions/sccache-action@v0.0.11
-
-      # webkit2gtk-driver is WebKitWebDriver, which tauri-driver runs the app under.
+      # webkitgtk-webdriver is WebKitWebDriver, which tauri-driver runs the app under;
+      # python3-xlib closes a window the way a window manager would (e2e/tauri/smoke.ts).
       - name: Tauri Linux libraries, WebKitWebDriver and a virtual display
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev \
-            librsvg2-dev libxdo-dev libssl-dev patchelf file xvfb webkit2gtk-driver
-
+          sudo apt-get install -y $TAURI_APT xvfb webkitgtk-webdriver python3-xlib \
+            fonts-noto-cjk fonts-noto-color-emoji
       - uses: pnpm/action-setup@v6
-
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: pnpm
-
       # The shell embeds apps/desktop/dist (the web build without its WebAssembly cores, through
       # custom-protocol), so neither the probe nor the smoke test needs a dev server.
       - name: Build the web app and the desktop frontend
@@ -224,16 +308,15 @@ jobs:
           pnpm --filter @kiln/commands desktop:menu:check
           pnpm --filter @kiln/web build
           pnpm --filter @kiln/desktop frontend
-
       - name: Build the desktop shell
         run: cargo build -p kiln-desktop --features custom-protocol
-
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest@0.9.148
       - name: Desktop shell tests
         run: cargo nextest run -p kiln-desktop
-
-      # B1 (cold start < 700 ms) and B2 (idle memory, PSS over all processes, < 300 MB; amended
-      # 2026-10-30) are measured and reported here (`b1=`, `b2=`); the step does not fail
-      # on them on CI runners (1.5x tolerance).
+      # B1 (cold start) and B2 (idle memory, PSS over all processes) are measured and reported here
+      # (`b1=`, `b2=`) for the debug build; the release budgets are checked on release builds.
       - name: Startup probe
         run: |
           out="$(KILN_DATA_DIR="$RUNNER_TEMP/kiln-probe" timeout 120 xvfb-run -a target/debug/kiln --startup-probe)"
@@ -245,18 +328,15 @@ jobs:
             echo
             printf '%s\n' "$out" | sed 's/^/- /'
           } >> "$GITHUB_STEP_SUMMARY"
-
       # Open a .docx from the command line, type, save, check the file; Presenter View's second
       # window on the same core (e2e/tauri/smoke.ts).
       - name: Desktop smoke (tauri-driver)
         run: |
           cargo install tauri-driver --version 2.1.0 --locked
           KILN_BIN="$PWD/target/debug/kiln" xvfb-run -a pnpm --filter @kiln/e2e tauri-smoke
-
       - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: desktop-smoke-screenshots
           path: e2e/screenshots/tauri/
           if-no-files-found: ignore
-

@@ -151,9 +151,9 @@ dependencies = [
 
 [[package]]
 name = "async-executor"
-version = "1.14.0"
+version = "1.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c96bf972d85afc50bf5ab8fe2d54d1586b4e0b46c97c50a0c9e71e2f7bcd812a"
+checksum = "f426a31126c735126297bc5ea7a521263c9faff4f63ca415267ee625651c4f37"
 dependencies = [
  "async-task",
  "concurrent-queue",
@@ -3182,7 +3182,7 @@ dependencies = [
  "kurbo",
  "proptest",
  "thiserror 2.0.21",
- "zip 9.0.3",
+ "zip",
 ]
 
 [[package]]
@@ -3234,7 +3234,7 @@ dependencies = [
  "rustc-hash",
  "serde_json",
  "thiserror 2.0.21",
- "zip 9.0.3",
+ "zip",
 ]
 
 [[package]]
@@ -3248,7 +3248,7 @@ dependencies = [
  "proptest",
  "quick-xml",
  "thiserror 2.0.21",
- "zip 9.0.3",
+ "zip",
 ]
 
 [[package]]
@@ -3343,7 +3343,7 @@ dependencies = [
  "tokio",
  "tokio-tungstenite",
  "unicode-segmentation",
- "zip 9.0.3",
+ "zip",
 ]
 
 [[package]]
@@ -3402,7 +3402,7 @@ dependencies = [
  "postcard",
  "serde",
  "serde_json",
- "zip 9.0.3",
+ "zip",
 ]
 
 [[package]]
@@ -6397,11 +6397,11 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-updater"
-version = "2.14.0"
+version = "2.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7259989d4fe11b2bf51f7d671642249b1837c4ae2da1430dc713ae38f98ceeec"
+checksum = "d957abbcb3f9f6c76d22a3a0f012f30880640d0bccb5634d2b12a9937e4c872b"
 dependencies = [
- "base64 0.22.1",
+ "base64 0.23.1",
  "dirs",
  "flate2",
  "futures-util",
@@ -6425,7 +6425,7 @@ dependencies = [
  "tokio",
  "url",
  "windows-sys 0.61.2",
- "zip 4.6.1",
+ "zip",
 ]
 
 [[package]]
@@ -8141,18 +8141,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 3.0.9",
-]
-
-[[package]]
-name = "zip"
-version = "4.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "caa8cd6af31c3b31c6631b8f483848b91589021b28fffe50adada48d4f4d2ed1"
-dependencies = [
- "arbitrary",
- "crc32fast",
- "indexmap 2.14.2",
- "memchr",
 ]
 
 [[package]]

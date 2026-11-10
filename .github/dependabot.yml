@@ -1,7 +1,7 @@
-# Dependency updates, batched: one grouped pull request per ecosystem per week for minor and patch
-# versions. Major versions arrive one per pull request, because each is a migration to read. Versions
-# are pinned once: npm in the `catalog:` of pnpm-workspace.yaml, Rust in [workspace.dependencies] of
-# Cargo.toml. Security advisories bypass this schedule.
+# Dependency updates, batched: each ecosystem gets at most one pull request a week for minor and
+# patch versions and one for major versions, and no more than two open at a time, so every update
+# runs the whole of CI once. Versions are pinned once: npm in the `catalog:` of pnpm-workspace.yaml,
+# Rust in [workspace.dependencies] of Cargo.toml. Security updates are not held to this schedule.
 version: 2
 updates:
   - package-ecosystem: cargo
@@ -9,10 +9,12 @@ updates:
     schedule:
       interval: weekly
       day: monday
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 2
     groups:
       cargo-minor-and-patch:
         update-types: [minor, patch]
+      cargo-major:
+        update-types: [major]
     commit-message:
       prefix: build
       include: scope
@@ -22,10 +24,12 @@ updates:
     schedule:
       interval: weekly
       day: monday
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 2
     groups:
       npm-minor-and-patch:
         update-types: [minor, patch]
+      npm-major:
+        update-types: [major]
     commit-message:
       prefix: build
       include: scope
@@ -35,6 +39,7 @@ updates:
     schedule:
       interval: weekly
       day: monday
+    open-pull-requests-limit: 1
     groups:
       actions:
         patterns: ['*']
@@ -45,10 +50,10 @@ updates:
   - package-ecosystem: gradle
     directory: /apps/desktop/src-tauri/gen/android
     schedule:
-      interval: weekly
-      day: monday
+      interval: monthly
+    open-pull-requests-limit: 1
     groups:
-      gradle-minor-and-patch:
-        update-types: [minor, patch]
+      gradle:
+        patterns: ['*']
     commit-message:
       prefix: build

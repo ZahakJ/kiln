@@ -1,7 +1,7 @@
 ## What this changes
 
 <!-- One or two sentences, from the user's side. Which app: Kiln Write, Kiln Grid,
-     Kiln Deck, Kiln Notes, Kiln Home, or the shells? -->
+     Kiln Deck, Kiln Home, or the shells? -->
 
 ## Why
 
@@ -25,7 +25,7 @@
 - [ ] One concern. No unrelated refactor riding along.
 - [ ] `pnpm verify` passes; `pnpm e2e` passes if the UI changed.
 - [ ] Tests cover the change (unit, end-to-end, or a fixture for a reader or writer).
-- [ ] Reader or writer changed? `pnpm fidelity` scores did not drop.
+- [ ] Reader or writer changed? `cargo xtask fidelity` scores did not drop.
 - [ ] User-visible strings go through i18n and use the product names.
 - [ ] A line in `CHANGELOG.md` under `Unreleased` for anything a user would notice.
 - [ ] New dependency? Pinned in the catalog and `pnpm licenses:check` passes.
