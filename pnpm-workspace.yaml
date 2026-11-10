@@ -86,7 +86,7 @@ catalog:
   # DOCX reader: w:sym symbol-font characters → Unicode (BSD-2-Clause; also a mammoth dependency)
   dingbat-to-unicode: 1.0.2
   # Dev-only number-format oracle for conformance/numfmt (tools/gen-numfmt-cases.mjs; MIT)
-  numfmt: 3.2.6
+  numfmt: 4.1.2
   # Dev-only TSX parser for the hard-coded string guard of @kiln/i18n (MIT; the version Vite already uses)
   rolldown: 1.2.14
 

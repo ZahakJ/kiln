@@ -295,8 +295,8 @@ catalogs:
       specifier: 1.13.0
       version: 1.13.0
     numfmt:
-      specifier: 3.2.6
-      version: 3.2.6
+      specifier: 4.1.2
+      version: 4.1.2
     pixelmatch:
       specifier: 8.0.0
       version: 8.0.0
@@ -361,7 +361,7 @@ importers:
         version: 5.0.5(vitest@5.0.5)
       numfmt:
         specifier: 'catalog:'
-        version: 3.2.6
+        version: 4.1.2
       tsx:
         specifier: 'catalog:'
         version: 4.23.15
@@ -4325,8 +4325,8 @@ packages:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
 
-  numfmt@3.2.6:
-    resolution: {integrity: sha512-MXc2KP3j+2usdHTY5/ENUc2S+3BRF/cJqnR6RHeq6LBqKoIZOAQ62DQw974nnaZOencbfkmkTPyTmMnlkCpjzg==}
+  numfmt@4.1.2:
+    resolution: {integrity: sha512-3K7lWeRKIcxAuqvfQYt/2NGkSAz7zJ5JgGqL0mTEC4AyHYo+IVGWcWSNhZspPjCQvI1g5zBjEif1qiwsKdncBw==}
 
   object-inspect@1.13.4:
     resolution: {integrity: sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==}
@@ -8498,7 +8498,7 @@ snapshots:
 
   normalize-path@3.0.0: {}
 
-  numfmt@3.2.6: {}
+  numfmt@4.1.2: {}
 
   object-inspect@1.13.4: {}
 
