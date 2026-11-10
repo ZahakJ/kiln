@@ -4,8 +4,9 @@
 #   test      cargo-nextest over the workspace, with the CJK and emoji fonts the text tests lay out
 #   wasm      the WebAssembly cores (`cargo xtask wasm --release --ci`, with their size budget)
 #   measure   the performance budgets and the round-trip fidelity of the fixture corpus
-#   web       Biome, TypeScript, Vitest, the licence check, the web build and the Pages artefact
-#   e2e       Playwright in headless Chromium, split into shards, against that artefact
+#   web       Biome, TypeScript, Vitest, the licence check, the notices and the web build
+#   site      the GitHub Pages artefact (landing page, manual, installable web app) and its checks
+#   e2e       Playwright in headless Chromium, split into shards, with that artefact
 #   desktop   the Tauri shell: its tests, the start-up probe and the tauri-driver smoke test
 #
 # The end-to-end suite runs one test at a time per shard (--workers=1), as it does locally: many
@@ -205,9 +206,35 @@ jobs:
         run: cargo xtask notices --check
       - name: Build
         run: pnpm build
-      # The GitHub Pages artefact: the landing page, the manual and the web app under /kiln/app/
-      # with its service worker; it also checks the site's numbers and links. The e2e job runs the
-      # installable web app's tests against it.
+
+  # The GitHub Pages artefact: the landing page, the manual and the web app under /kiln/app/ with
+  # its service worker; it also checks the site's figures, links and budgets. The e2e job runs the
+  # installable web app's tests against it. Apart from the web job, so that a unit test there does
+  # not hide the end-to-end result.
+  site:
+    needs: wasm
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v8
+        with:
+          name: wasm-${{ github.run_id }}
+          path: apps/web/src/wasm
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.1
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: kiln-site
+      - uses: mozilla-actions/sccache-action@v0.0.11
       - name: GitHub Pages artefact
         run: bash tools/pages-build.sh
       - uses: actions/upload-artifact@v7
@@ -218,7 +245,7 @@ jobs:
           retention-days: 3
 
   e2e:
-    needs: web
+    needs: [wasm, site]
     runs-on: ubuntu-latest
     # The shards split the tests, not their time: the one with the keyboard walks of every catalog
     # command (about 55 minutes of the suite on 4 CPUs) runs longest.

@@ -65,11 +65,11 @@ describe('mammoth reader', () => {
     expect(t.html).toContain('Merged across three columns');
   });
 
-  it('reads every generated .docx', async () => {
-    for (const f of listFixtures('docx')) {
-      const r = await readDocxWithMammoth(loadFixture(fixtureLabel(f)));
-      expect(r.text.length, f).toBeGreaterThan(0);
-    }
+  // One test per file: the corpus as a single test ran 5 s here and 36 s on a CI runner under
+  // coverage, past the 30 s limit; each file alone stays far inside it.
+  it.each(listFixtures('docx').map((f) => [fixtureLabel(f)]))('reads the generated %s', async (label) => {
+    const r = await readDocxWithMammoth(loadFixture(label));
+    expect(r.text.length, label).toBeGreaterThan(0);
   });
 });
 

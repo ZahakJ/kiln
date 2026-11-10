@@ -37,6 +37,11 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
+  // A CI runner (4 shared vCPUs) runs these several times slower than a development machine, so
+  // a test and an expectation get three times the time there. Tests that set their own limit keep
+  // it, and the timed budgets (`@budget`) measure, they do not wait.
+  timeout: process.env.CI ? 90_000 : 30_000,
+  expect: { timeout: process.env.CI ? 15_000 : 5_000 },
   workers: 2,
   reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
   use: {

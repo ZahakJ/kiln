@@ -74,6 +74,9 @@ export default defineConfig(({ mode }) => {
       environment: 'jsdom',
       include: ['src/**/*.test.{ts,tsx}'],
       maxWorkers: 2,
+      // The storage tests wait on real timers and Web Locks: about 2 s at most here, several times
+      // that on a CI runner under coverage (vitest's default limit is 5 s).
+      testTimeout: 30_000,
     },
   };
 });
