@@ -51,7 +51,7 @@ catalog:
   workbox-window: 7.4.1
   # Data and i18n
   i18next: 26.4.6
-  react-i18next: 17.0.18
+  react-i18next: 18.0.0
   # ICU message format for i18next (MIT; intl-messageformat BSD-3-Clause)
   i18next-icu: 2.5.0
   intl-messageformat: 12.1.3
