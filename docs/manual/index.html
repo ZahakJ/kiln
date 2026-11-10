@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manual · Kiln</title>
+<meta name="description" content="The Kiln manual: Kiln Write, Kiln Grid and Kiln Deck, templates, collaboration, file formats, keyboard shortcuts and functions.">
+<link rel="canonical" href="https://zahakj.github.io/kiln/manual/">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F6EFE6">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#17110E">
+<link rel="icon" type="image/svg+xml" href="../media/favicon.svg">
+<link rel="preload" href="../assets/fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* The manual is the Markdown in this folder, rendered here by marked (MIT, docs/assets/marked.min.js).
+   Colours are the brand kit's tokens (brand/tokens.json). */
+@font-face{font-family:Figtree;src:url(../assets/fonts/figtree.woff2) format('woff2');font-weight:300 900;font-display:swap}
+@font-face{font-family:Fraunces;src:url(../assets/fonts/fraunces.woff2) format('woff2');font-weight:500 900;font-display:swap}
+:root{--bg:#F6EFE6;--panel:#FFFCF7;--raised:#FFF;--sunken:#EEE3D5;--line:#E4D6C4;--line-strong:#CDB8A0;--fg:#2B1C14;--muted:#6B5547;--ember:#C2481C;--accent:#B2431A;--tint:#FBE8DE;--glow:rgba(255,122,42,.14);
+  --display:'Fraunces','Iowan Old Style',Georgia,serif;--ui:'Figtree','Segoe UI Variable','Segoe UI',system-ui,-apple-system,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root{--bg:#17110E;--panel:#201813;--raised:#2A201A;--sunken:#110C0A;--line:#372A22;--line-strong:#4B3A2F;--fg:#F5EBDD;--muted:#B8A392;--ember:#F2804E;--accent:#F7976B;--tint:#36190E;--glow:rgba(255,106,38,.13)}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16.5px/1.65 var(--ui);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-underline-offset:.16em}
+:focus-visible{outline:2px solid var(--ember);outline-offset:2px;border-radius:4px}
+.skip{position:absolute;left:12px;top:-60px;z-index:30;background:var(--panel);padding:10px 14px;border-radius:10px;border:1px solid var(--line-strong)}
+.skip:focus{top:8px}
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:18px;height:60px;padding:0 24px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.logo{display:flex;align-items:center;gap:10px;color:var(--muted);font-weight:600;text-decoration:none;font-size:15px}
+.logo img{height:28px;width:auto;display:block}
+.top nav{margin-left:auto;display:flex;align-items:center;gap:20px;font-size:15px;font-weight:500}
+.top nav a{color:var(--muted);text-decoration:none;padding:6px 0}.top nav a:hover{color:var(--fg)}
+.top nav a.go{background:var(--ember);color:var(--panel);padding:8px 13px;border-radius:10px;font-weight:650;box-shadow:inset 0 -2px 0 rgba(0,0,0,.16)}
+.menu{display:none;font:inherit;font-size:14.5px;font-weight:600;border:1px solid var(--line-strong);background:var(--panel);color:var(--fg);border-radius:10px;min-height:44px;padding:0 13px;cursor:pointer}
+.layout{display:grid;grid-template-columns:292px minmax(0,1fr);max-width:1280px;margin:0 auto}
+aside{position:sticky;top:60px;align-self:start;max-height:calc(100vh - 60px);overflow:auto;padding:22px 16px 40px 24px;border-right:1px solid var(--line);font-size:14.5px;line-height:1.35}
+.find{width:100%;font:inherit;min-height:42px;padding:0 12px;border-radius:10px;border:1px solid var(--line-strong);background:var(--panel);color:var(--fg);margin-bottom:14px}
+.find::placeholder{color:var(--muted)}
+aside h2{font:800 11.5px/1 var(--ui);text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin:20px 0 6px}
+aside ul{list-style:none;margin:0;padding:0}
+aside li.sub a{padding-left:24px;color:var(--muted)}
+aside a{display:block;padding:7px 10px;border-radius:8px;color:var(--fg);text-decoration:none}
+aside a:hover{background:var(--sunken)}
+aside a[aria-current=page]{background:var(--tint);color:var(--accent);font-weight:650}
+.nores{color:var(--muted);padding:8px 10px}
+main{padding:40px 56px 84px;min-width:0;background:radial-gradient(900px 420px at 18% -60px,var(--glow),transparent 70%)}
+article{max-width:76ch;min-height:calc(100vh - 140px)}
+article h1,article h2,article h3{font-family:var(--display);font-variation-settings:'SOFT' 40,'WONK' 0;line-height:1.14;scroll-margin-top:76px}
+article h1{font-size:clamp(32px,4vw,44px);font-weight:800;letter-spacing:-.02em;margin:0 0 .55em}
+article h2{font-size:25px;font-weight:700;letter-spacing:-.01em;margin:1.9em 0 .5em;padding-top:.8em;border-top:1px solid var(--line)}
+article h3{font-size:19px;font-weight:700;margin:1.5em 0 .4em}
+article p,article ul,article ol{margin:0 0 1em}article li{margin:.25em 0;min-width:0}
+article li::marker{color:var(--accent)}
+article code{font:13.5px/1.5 var(--mono);background:var(--sunken);border-radius:5px;padding:.08em .35em;overflow-wrap:anywhere}
+article pre{max-width:100%;background:#110C0A;color:#F5EBDD;border:1px solid var(--line-strong);border-radius:12px;padding:14px 16px;overflow-x:auto}
+article pre code{background:none;padding:0;color:inherit;overflow-wrap:normal}
+article table{border-collapse:collapse;width:100%;margin:0 0 1.2em;font-size:15px;display:block;overflow-x:auto}
+article th,article td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+article th{font-size:11.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--accent);font-weight:800}
+article blockquote{margin:0 0 1em;padding:2px 16px;border-left:3px solid var(--ember);color:var(--muted)}
+article img{display:block;max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line-strong);box-shadow:0 14px 40px -14px rgba(60,30,10,.35)}
+.notice{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px;color:var(--muted)}
+.pager{display:flex;justify-content:space-between;gap:14px;margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-weight:600}
+.pager a{text-decoration:none;max-width:48%}.pager span{display:block;font-size:12px;color:var(--muted);font-weight:500}
+@media (max-width:900px){
+  .layout{display:block}
+  aside{display:none;position:static;max-height:none;border-right:0;border-bottom:1px solid var(--line);padding:14px 16px;font-size:15.5px}
+  aside a{padding:10px}
+  body.open aside{display:block}
+  .menu{display:inline-flex;align-items:center;margin-left:auto}
+  main{padding:26px 16px 64px}
+  .top{padding:0 16px;gap:10px}.top nav{margin-left:0}.top nav a.opt{display:none}
+  .logo span{display:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#page">Skip to the page</a>
+<header class="top">
+  <a class="logo" href="../"><picture><source media="(prefers-color-scheme: dark)" srcset="../media/lockup.svg"><img src="../media/lockup-light.svg" alt="Kiln, home" width="94" height="28"></picture><span>Manual</span></a>
+  <button class="menu" type="button" aria-expanded="false" aria-controls="toc">Contents</button>
+  <nav aria-label="Site"><a class="opt" href="../#download">Get Kiln</a><a class="opt" href="https://github.com/ZahakJ/kiln">GitHub</a><a class="go" href="../app/">Open Kiln</a></nav>
+</header>
+<div class="layout">
+  <aside aria-label="Manual contents">
+    <input class="find" type="search" placeholder="Find a page" aria-label="Find a page">
+    <div id="toc"></div>
+  </aside>
+  <main><article id="page" aria-live="polite"></article></main>
+</div>
+<script src="../assets/marked.min.js"></script>
+<script>
+"use strict";
+const REPO = "https://github.com/ZahakJ/kiln/blob/main/docs/";
+const page = document.getElementById("page"), toc = document.getElementById("toc"), menu = document.querySelector(".menu"), find = document.querySelector(".find");
+const slug = (t) => t.toLowerCase().trim().replace(/[^\p{L}\p{N}\s-]/gu, "").replace(/\s+/g, "-");
+const current = () => (new URLSearchParams(location.search).get("p") || "index").replace(/^\/+|\.md$/g, "");
+let order = [];
+
+/* Links and images in a page are relative to its folder. Manual pages stay in the viewer; the
+   site's pictures and pages are served beside it; other files in the repository open on GitHub. */
+const REPO_ROOT = "https://github.com/ZahakJ/kiln/blob/main/";
+function route(href, from, isImage) {
+  if (/^([a-z][a-z0-9+.-]*:|#|\/)/i.test(href)) return null;
+  const [path, hash] = href.split("#");
+  const parts = from.split("/").slice(0, -1);
+  let up = 0;
+  for (const seg of path.split("/")) {
+    if (seg === "..") parts.length ? parts.pop() : up++;
+    else if (seg && seg !== ".") parts.push(seg);
+  }
+  const target = parts.join("/"), frag = hash ? "#" + hash : "";
+  if (up === 1 && (isImage || target === "index.html")) return "../" + target + frag;
+  if (up === 1) return REPO + target + frag;
+  if (up >= 2) return REPO_ROOT + target + frag;
+  if (isImage || !target.endsWith(".md")) return target + frag;
+  return "?p=" + encodeURI(target.replace(/\.md$/, "")) + frag;
+}
+
+async function fetchMd(name) {
+  const res = await fetch(name + ".md", { cache: "no-cache" });
+  if (!res.ok) throw new Error(String(res.status));
+  return res.text();
+}
+
+function pager(name) {
+  const at = order.findIndex((p) => p.name === name);
+  if (at < 0) return;
+  const link = (p, word) => p ? `<a href="?p=${encodeURI(p.name)}"><span>${word}</span>${p.title}</a>` : "<i></i>";
+  page.insertAdjacentHTML("beforeend", `<nav class="pager" aria-label="Previous and next page">${link(order[at - 1], "Previous")}${link(order[at + 1], "Next")}</nav>`);
+}
+
+function render(md, name) {
+  page.innerHTML = marked.parse(md);
+  for (const h of page.querySelectorAll("h1,h2,h3,h4")) h.id ||= slug(h.textContent);
+  for (const a of page.querySelectorAll("a[href]")) {
+    const to = route(a.getAttribute("href"), name, false);
+    if (to) a.setAttribute("href", to);
+  }
+  for (const img of page.querySelectorAll("img[src]")) {
+    const to = route(img.getAttribute("src"), name, true);
+    if (to) img.setAttribute("src", to);
+    img.loading = "lazy";
+    /* A screenshot follows the reader's colour scheme, as on the landing page, at the size the
+       column needs, and holds its place while it loads. */
+    const src = img.getAttribute("src");
+    if (/\/screenshots\/[^/]+-light\.png$/.test(src)) {
+      img.width = 2880; img.height = 1800;
+      const stem = src.replace(/-light\.png$/, "");
+      const set = (scheme) => [640, 1100, 1800].map((w) => `${stem}-${scheme}-${w}.webp ${w}w`).join(", ");
+      const source = (scheme, media) => {
+        const el = document.createElement("source");
+        if (media) el.media = media;
+        el.type = "image/webp"; el.srcset = set(scheme); el.sizes = "(max-width: 900px) 100vw, 780px";
+        return el;
+      };
+      const pic = document.createElement("picture");
+      img.replaceWith(pic);
+      pic.append(source("dark", "(prefers-color-scheme: dark)"), source("light"), img);
+    }
+  }
+  const h1 = page.querySelector("h1");
+  document.title = (h1 ? h1.textContent + " · " : "") + "Kiln manual";
+  pager(name);
+}
+
+function markToc(name) {
+  for (const a of toc.querySelectorAll("a")) {
+    if (a.dataset.page === name) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
+  }
+}
+
+async function show(push) {
+  const name = current();
+  try {
+    render(await fetchMd(name), name);
+  } catch {
+    const safe = name.replace(/[<>&"]/g, "");
+    page.innerHTML = `<h1>Page not found</h1><div class="notice">There is no manual page called <code>${safe}</code>. The <a href="?p=README">contents</a> list every page.</div>`;
+    document.title = "Page not found · Kiln manual";
+  }
+  markToc(name);
+  if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView();
+  else if (push) scrollTo(0, 0);
+  document.body.classList.remove("open"); menu.setAttribute("aria-expanded", "false");
+}
+
+async function buildToc() {
+  const tokens = marked.lexer(await fetchMd("README"));
+  let html = "";
+  const item = (it, sub) => {
+    const link = it.tokens.flatMap((x) => x.tokens || []).find((x) => x.type === "link");
+    if (!link) return "";
+    const internal = !/^\.\.|:/.test(link.href);
+    const name = link.href.replace(/\.md$/, "");
+    if (internal) order.push({ name, title: link.text });
+    const href = internal ? `?p=${encodeURI(name)}` : route(link.href, "README", false);
+    const nested = it.tokens.filter((x) => x.type === "list").flatMap((l) => l.items.map((i) => item(i, true))).join("");
+    return `<li${sub ? ' class="sub"' : ""}><a href="${href}"${internal ? ` data-page="${name}"` : ""}>${link.text}</a></li>${nested}`;
+  };
+  for (const t of tokens) {
+    if (t.type === "heading" && t.depth === 2) html += `<h2>${t.text}</h2>`;
+    if (t.type === "list") html += "<ul>" + t.items.map((it) => item(it, false)).join("") + "</ul>";
+  }
+  toc.innerHTML = html + '<p class="nores" hidden>No page has that name.</p>';
+}
+
+find.addEventListener("input", () => {
+  const q = find.value.trim().toLowerCase();
+  let shown = 0;
+  for (const li of toc.querySelectorAll("li")) {
+    const hit = li.textContent.toLowerCase().includes(q);
+    li.hidden = !hit;
+    if (hit) shown++;
+  }
+  for (const h of toc.querySelectorAll("h2")) h.hidden = q !== "";
+  toc.querySelector(".nores").hidden = shown > 0;
+});
+
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("a[href^='?p=']");
+  if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+  e.preventDefault(); history.pushState(null, "", a.getAttribute("href")); show(true);
+});
+addEventListener("popstate", () => show(false));
+menu.addEventListener("click", () => menu.setAttribute("aria-expanded", String(document.body.classList.toggle("open"))));
+buildToc().catch(() => { toc.innerHTML = ""; }).finally(() => show(false));
+</script>
+</body>
+</html>

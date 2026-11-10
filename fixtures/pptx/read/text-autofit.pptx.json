@@ -1,0 +1,53 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Autofit and anchors"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 2",
+     "text": "Labore adipiscing sunt quis amet ad consectetur amet deserunt lorem cupidatat fugiat consectetur ex labore commodo dolor dolore in amet sint ea officia officia do lorem irure cupidatat tempor magna excepteur consequat dolore adipiscing nisi labore reprehenderit minim tempor consectetur laborum ut culpa in aute reprehenderit mollit aute elit proident laborum in ut tempor magna velit consectetur irure in pariatur id laboris fugiat ut ut incididunt minim deserunt est minim ut nisi nulla exercitation esse dolore dolor esse sunt cillum sunt est incididunt sed elit exercitation laborum sunt tempor est."
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 3",
+     "text": "Dolor cupidatat eu in cupidatat consequat adipiscing esse qui cillum nostrud id ullamco lorem sed lorem do nisi deserunt excepteur veniam aute aute in adipiscing dolor labore ullamco aliquip sint dolore esse consequat sunt laboris minim laborum ipsum minim enim esse exercitation sunt eiusmod dolor in laboris ex sed consectetur eu est non id tempor qui excepteur consectetur consequat laboris excepteur ut in incididunt culpa aliquip amet commodo quis proident nisi nisi dolor cupidatat aliquip sed consectetur ea proident dolor magna minim occaecat in esse magna minim in et consequat."
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 4",
+     "text": "Nulla et minim ut culpa nisi cupidatat est mollit dolore dolor dolor labore do sed ipsum veniam labore sint aute ex lorem et nulla nostrud adipiscing aliqua duis ad reprehenderit velit ex aliqua dolore lorem nulla consectetur in labore fugiat culpa incididunt aute magna sint cillum culpa laboris dolor tempor sit est enim elit do in proident enim id nisi irure in consequat elit nulla lorem duis consectetur in labore velit ut cillum pariatur qui sed magna et proident eiusmod nostrud tempor dolor dolore non sunt sit anim dolore ea."
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,29 @@
+{
+  "type": "VersionParagraph",
+  "format": {
+    "TYPENAME": "VersionParagraph"
+  },
+  "values": [
+    {
+      "change": "Same",
+      "spans": [
+        {
+          "change": "Same",
+          "text": "We load the "
+        },
+        {
+          "change": "Removed",
+          "text": "small"
+        },
+        {
+          "change": "Added",
+          "text": "big"
+        }
+      ]
+    },
+    {
+      "change": "Same",
+      "spans": []
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+---
+source: crates/kiln-doc-layout/tests/fixtures.rs
+expression: summary(&l)
+---
+pages: 5
+  1 [s1 #1] Section … et (520 words)
+  2 [s1 #2] reprehenderit … ut. (208 words)
+  3 [s2 #3] Section … in. (480 words)
+  4 [s2 #4 blank]  …  (0 words)
+  5 [s4 #5] Section … nisi. (87 words)

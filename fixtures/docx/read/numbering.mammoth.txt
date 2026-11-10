@@ -1,0 +1,100 @@
+Numbering and bullets
+
+bullet list
+
+bullet item 1
+
+bullet item 1.1
+
+bullet item 2
+
+bullet item 2.1
+
+bullet item 3
+
+bullet item 3.1
+
+bullet level 3
+
+decimal list
+
+decimal item 1
+
+decimal item 1.1
+
+decimal item 2
+
+decimal item 2.1
+
+decimal item 3
+
+decimal item 3.1
+
+decimal level 3
+
+lowerLetter list
+
+lowerLetter item 1
+
+lowerLetter item 1.1
+
+lowerLetter item 2
+
+lowerLetter item 2.1
+
+lowerLetter item 3
+
+lowerLetter item 3.1
+
+lowerLetter level 3
+
+upperRoman list
+
+upperRoman item 1
+
+upperRoman item 1.1
+
+upperRoman item 2
+
+upperRoman item 2.1
+
+upperRoman item 3
+
+upperRoman item 3.1
+
+upperRoman level 3
+
+legal list
+
+legal item 1
+
+legal item 1.1
+
+legal item 2
+
+legal item 2.1
+
+legal item 3
+
+legal item 3.1
+
+legal level 3
+
+Restarted numbering
+
+Continues the decimal list
+
+Restarts at one
+
+Then two
+
+Built-in list styles
+
+Paragraph in List Bullet
+
+Paragraph in List Bullet 2
+
+Paragraph in List Number
+
+Paragraph in List Number 2
+

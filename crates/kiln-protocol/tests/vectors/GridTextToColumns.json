@@ -1,0 +1,33 @@
+{
+  "type": "GridTextToColumns",
+  "format": {
+    "TYPENAME": "GridTextToColumns"
+  },
+  "values": [
+    {
+      "delimited": false,
+      "delimiters": "",
+      "consecutive": false,
+      "qualifier": "",
+      "widths": [
+        4,
+        10
+      ],
+      "text_columns": [
+        1
+      ],
+      "skip_columns": [
+        2
+      ]
+    },
+    {
+      "delimited": false,
+      "delimiters": "",
+      "consecutive": false,
+      "qualifier": "",
+      "widths": [],
+      "text_columns": [],
+      "skip_columns": []
+    }
+  ]
+}

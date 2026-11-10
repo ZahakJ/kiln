@@ -1,0 +1,18 @@
+formula,expected,type,notes
+=AND(Data!D1:D10),FALSE,boolean,LibreOffice 24.2 oracle
+=OR(Data!D1:D10),TRUE,boolean,LibreOffice 24.2 oracle
+"=XOR(TRUE,TRUE,FALSE)",FALSE,boolean,LibreOffice 24.2 oracle
+=XOR(Data!D1:D10),TRUE,boolean,LibreOffice 24.2 oracle
+"=AND(1>0,2>1,3>4)",FALSE,boolean,LibreOffice 24.2 oracle
+"=OR(0,0,0)",FALSE,boolean,LibreOffice 24.2 oracle
+=NOT(0),TRUE,boolean,LibreOffice 24.2 oracle
+"=NOT(""a"")",#VALUE!,error,LibreOffice 24.2 oracle
+"=IF(Data!E1>0,""pos"",""neg"")",neg,text,LibreOffice 24.2 oracle
+"=IF(0,1)",FALSE,boolean,LibreOffice 24.2 oracle
+"=IF(""x"",1,2)",#VALUE!,error,LibreOffice 24.2 oracle
+"=IFS(Data!A1>50,""big"",Data!A1>5,""mid"",TRUE,""small"")",mid,text,LibreOffice 24.2 oracle
+"=IFS(FALSE,1)",#N/A,error,LibreOffice 24.2 oracle
+"=SWITCH(Data!B2,""apple"",1,""banana"",2,3)",2,number,LibreOffice 24.2 oracle
+"=SWITCH(3,1,""a"",2,""b"")",#N/A,error,LibreOffice 24.2 oracle
+"=SWITCH(Data!A3,30,""thirty"",""other"")",thirty,text,LibreOffice 24.2 oracle
+"=IFERROR(SQRT(-1),0)",0,number,LibreOffice 24.2 oracle

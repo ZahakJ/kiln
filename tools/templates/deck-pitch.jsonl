@@ -1,0 +1,320 @@
+{"new":{"kind":"deck"}}
+{"execute":{"doc":1,"cmd":{"Deck":{"ApplyTheme":{"name":"Tenmoku"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Fieldwise"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Robotic harvesting for soft fruit · Seed round, March 2026"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Thank them for the time. One sentence: we build robots that pick strawberries and raspberries gently enough for supermarket shelves."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":96}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"The problem"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Up to 30 % of soft fruit is never picked"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Seasonal pickers are harder to find every year"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Labour is now 60 % of the cost of a punnet"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Growers are cutting the area they plant"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Lead with the grower's view: fruit rotting on the plant because nobody is there to pick it."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":108}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Our solution"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"A picking robot that works through the night"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Soft grippers and vision trained on 4 million berries"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Leased per hectare: no capital cost for growers"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Picks 1,200 punnets a shift"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Bruising under 2 %, below hand picking"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Runs in existing polytunnels"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Keep the demo video ready in case they ask to see the gripper."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":124}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Traction"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Revenue figures are signed lease contracts, not pilots."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"ChartInsert":{"kind":"ColumnClustered"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetChartData":{"cells":[["","Hectares under lease"],["2023","12"],["2024","48"],["2025","140"],["2026 (plan)","420"]]}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"ChartSetTitle":{"text":"Hectares under lease"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"ChartSetLegend":{"position":"Bottom"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetTransform":{"x":52.5,"y":150.0,"width":525.0,"height":345.0,"rotation":null,"lock_aspect":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":840,"y":200,"width":380,"height":70}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"£1.9m"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FF8A3D"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":840,"y":270,"width":380,"height":60}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"annual recurring revenue"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":840,"y":350,"width":380,"height":70}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"9 growers"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FF8A3D"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":840,"y":420,"width":380,"height":60}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"in Kent, Herefordshire and Angus"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":840,"y":500,"width":380,"height":70}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"94 %"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FF8A3D"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":840,"y":570,"width":380,"height":60}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"of fruit picked to grade"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":96}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Market"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"UK first, then the Netherlands and Spain, where the same polytunnel systems are used."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTable":{"rows":5,"cols":3}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Market"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Soft fruit area"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Annual picking cost"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"United Kingdom"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"11,000 ha"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"£410m"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Netherlands"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"6,500 ha"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"£260m"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Spain"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"14,000 ha"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"£520m"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Total"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"31,500 ha"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"£1.19bn"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":80,"y":470,"width":1120,"height":120}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Polytunnel soft fruit is our beachhead: the same tunnels, the same crops and the same labour shortage in all three countries."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":20}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":102}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"The ask"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"£6m seed round to reach 1,000 hectares by 2027"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Pause here. The next slide breaks the round down."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":115}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Use of funds"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Product · £3.1m"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Second-generation gripper"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Raspberry and blueberry models"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Field service tools"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Growth · £2.9m"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Fleet of 120 robots"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Sales team in the Netherlands"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Grower success programme"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Product spend ends once the second gripper is in production."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":89}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Thank you"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Maya Okafor, co-founder · maya@fieldwise.example · +44 20 7946 0811"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Leave this slide up during questions."}}}}}
+{"save":{"doc":1,"path":"target/templates-tmp/Pitch deck.kdeck","format":"KDeck"}}
+{"save":{"doc":1,"path":"assets/templates/deck/pitch.kdeck","format":"KDeck"}}

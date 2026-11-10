@@ -1,0 +1,68 @@
+/*
+ * Kiln Write on a touch screen: a selected picture, shape or text box gets 28 px
+ * handles a finger can take (each with a 44 px target) and the rotation handle above its top edge.
+ * A mouse keeps the desktop's small handles and no rotation handle.
+ */
+
+.kiln-object-frame__rotate {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .kiln-object-frame {
+    border-width: 2px;
+  }
+  .kiln-object-frame__handle {
+    width: 28px;
+    height: 28px;
+    margin: -14px 0 0 -14px;
+    border-width: 2px;
+    box-shadow:
+      0 2px 6px rgb(0 0 0 / 22%),
+      0 0 0 1px rgb(255 255 255 / 40%);
+  }
+  /* The finger's target: 44 × 44 around the 28 px handle. */
+  .kiln-object-frame__handle::before,
+  .kiln-object-frame__rotate::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+  }
+  .kiln-object-frame__rotate {
+    position: absolute;
+    left: 50%;
+    top: -52px;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    margin-left: -14px;
+    border: 2px solid var(--kiln-write-fill);
+    border-radius: 50%;
+    background: var(--kiln-raised);
+    color: var(--kiln-write-fill);
+    box-shadow: 0 2px 6px rgb(0 0 0 / 22%);
+    cursor: grab;
+    touch-action: none;
+  }
+  /* The stem from the top edge to the rotation handle. */
+  .kiln-object-frame__rotate::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: 2px;
+    height: 24px;
+    margin-left: -1px;
+    background: var(--kiln-write-fill);
+  }
+}
+
+/* The page zooms itself under two fingers (the surface's pinch): the browser does not zoom it.
+   The chrome around it keeps the browser's own zoom. */
+@media (pointer: coarse) {
+  .kiln-write__surface .kiln-surface-scroller {
+    touch-action: pan-x pan-y;
+  }
+}

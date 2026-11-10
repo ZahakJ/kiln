@@ -1,0 +1,499 @@
+[
+  {
+    "name": "CELL",
+    "category": "Information",
+    "summary": "Returns information about the formatting, location or contents of a cell (address, col, row, contents, type, filename).",
+    "syntax": "CELL(info_type, [reference])",
+    "args": [
+      {
+        "name": "info_type",
+        "description": "\"address\", \"col\", \"row\", \"contents\", \"type\" or \"filename\"."
+      },
+      {
+        "name": "reference",
+        "description": "The cell (default: the formula cell).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CELL(\"row\",C7)",
+        "result": "7"
+      },
+      {
+        "formula": "=CELL(\"address\",C7)",
+        "result": "\"$C$7\""
+      },
+      {
+        "formula": "=CELL(\"type\",C7)",
+        "result": "\"b\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ERROR.TYPE",
+    "category": "Information",
+    "summary": "Returns a number for an error value (1 #NULL!, 2 #DIV/0!, 3 #VALUE!, 4 #REF!, 5 #NAME?, 6 #NUM!, 7 #N/A …).",
+    "syntax": "ERROR.TYPE(error_val)",
+    "args": [
+      {
+        "name": "error_val",
+        "description": "The error to identify."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ERROR.TYPE(1/0)",
+        "result": "2"
+      },
+      {
+        "formula": "=ERROR.TYPE(NA())",
+        "result": "7"
+      },
+      {
+        "formula": "=ERROR.TYPE(1)",
+        "result": "#N/A"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FORMULATEXT",
+    "category": "Lookup & Reference",
+    "summary": "Returns the formula of a cell as text.",
+    "syntax": "FORMULATEXT(reference)",
+    "args": [
+      {
+        "name": "reference",
+        "description": "A cell."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FORMULATEXT(A1)",
+        "result": "#N/A"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "INFO",
+    "category": "Information",
+    "summary": "Returns information about the operating environment (numfile, recalc, release, system, osversion, origin).",
+    "syntax": "INFO(type_text)",
+    "args": [
+      {
+        "name": "type_text",
+        "description": "The kind of information."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=INFO(\"recalc\")",
+        "result": "\"Automatic\""
+      },
+      {
+        "formula": "=INFO(\"numfile\")",
+        "result": "1"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ISBLANK",
+    "category": "Information",
+    "summary": "Returns TRUE if the value is an empty cell.",
+    "syntax": "ISBLANK(value)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value to test."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISBLANK(A1)",
+        "result": "TRUE"
+      },
+      {
+        "formula": "=ISBLANK(\"\")",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ISERR",
+    "category": "Information",
+    "summary": "Returns TRUE if the value is any error except #N/A.",
+    "syntax": "ISERR(value)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value to test."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISERR(1/0)",
+        "result": "TRUE"
+      },
+      {
+        "formula": "=ISERR(NA())",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ISERROR",
+    "category": "Information",
+    "summary": "Returns TRUE if the value is any error.",
+    "syntax": "ISERROR(value)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value to test."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISERROR(NA())",
+        "result": "TRUE"
+      },
+      {
+        "formula": "=ISERROR(1)",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ISEVEN",
+    "category": "Information",
+    "summary": "Returns TRUE if the number is even.",
+    "syntax": "ISEVEN(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The value to test (truncated)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISEVEN(-1)",
+        "result": "FALSE"
+      },
+      {
+        "formula": "=ISEVEN(2.5)",
+        "result": "TRUE"
+      },
+      {
+        "formula": "=ISEVEN(5)",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ISFORMULA",
+    "category": "Information",
+    "summary": "Returns TRUE if the cell contains a formula.",
+    "syntax": "ISFORMULA(reference)",
+    "args": [
+      {
+        "name": "reference",
+        "description": "A cell."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISFORMULA(A1)",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "ISLOGICAL",
+    "category": "Information",
+    "summary": "Returns TRUE if the value is a logical value.",
+    "syntax": "ISLOGICAL(value)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value to test."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISLOGICAL(TRUE)",
+        "result": "TRUE"
+      },
+      {
+        "formula": "=ISLOGICAL(\"TRUE\")",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ISNA",
+    "category": "Information",
+    "summary": "Returns TRUE if the value is the #N/A error.",
+    "syntax": "ISNA(value)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value to test."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISNA(NA())",
+        "result": "TRUE"
+      },
+      {
+        "formula": "=ISNA(1/0)",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ISNONTEXT",
+    "category": "Information",
+    "summary": "Returns TRUE if the value is not text.",
+    "syntax": "ISNONTEXT(value)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value to test."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISNONTEXT(19)",
+        "result": "TRUE"
+      },
+      {
+        "formula": "=ISNONTEXT(\"Gold\")",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ISNUMBER",
+    "category": "Information",
+    "summary": "Returns TRUE if the value is a number.",
+    "syntax": "ISNUMBER(value)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value to test."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISNUMBER(4)",
+        "result": "TRUE"
+      },
+      {
+        "formula": "=ISNUMBER(\"4\")",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ISODD",
+    "category": "Information",
+    "summary": "Returns TRUE if the number is odd.",
+    "syntax": "ISODD(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The value to test (truncated)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISODD(-1)",
+        "result": "TRUE"
+      },
+      {
+        "formula": "=ISODD(2.5)",
+        "result": "FALSE"
+      },
+      {
+        "formula": "=ISODD(5)",
+        "result": "TRUE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ISREF",
+    "category": "Information",
+    "summary": "Returns TRUE if the value is a reference.",
+    "syntax": "ISREF(value)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value to test."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISREF(G8)",
+        "result": "TRUE"
+      },
+      {
+        "formula": "=ISREF(1)",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ISTEXT",
+    "category": "Information",
+    "summary": "Returns TRUE if the value is text.",
+    "syntax": "ISTEXT(value)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value to test."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISTEXT(\"Gold\")",
+        "result": "TRUE"
+      },
+      {
+        "formula": "=ISTEXT(1)",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "N",
+    "category": "Information",
+    "summary": "Returns a value converted to a number (text becomes 0, TRUE 1).",
+    "syntax": "N(value)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value to test."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=N(7)",
+        "result": "7"
+      },
+      {
+        "formula": "=N(\"Even\")",
+        "result": "0"
+      },
+      {
+        "formula": "=N(TRUE)",
+        "result": "1"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "NA",
+    "category": "Information",
+    "summary": "Returns the error value #N/A.",
+    "syntax": "NA()",
+    "args": [],
+    "examples": [
+      {
+        "formula": "=NA()",
+        "result": "#N/A"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SHEET",
+    "category": "Information",
+    "summary": "Returns the sheet number of a reference or sheet name.",
+    "syntax": "SHEET([value])",
+    "args": [
+      {
+        "name": "value",
+        "description": "A reference or a sheet name (default: this sheet).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SHEET()",
+        "result": "1"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "SHEETS",
+    "category": "Information",
+    "summary": "Returns the number of sheets in a reference (or in the workbook).",
+    "syntax": "SHEETS([reference])",
+    "args": [
+      {
+        "name": "reference",
+        "description": "A reference (default: the workbook).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SHEETS()",
+        "result": "1"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "TYPE",
+    "category": "Information",
+    "summary": "Returns a number for the data type of a value (1 number, 2 text, 4 logical, 16 error, 64 array, 128 lambda).",
+    "syntax": "TYPE(value)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value to test."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TYPE(2)",
+        "result": "1"
+      },
+      {
+        "formula": "=TYPE(\"a\")",
+        "result": "2"
+      },
+      {
+        "formula": "=TYPE(TRUE)",
+        "result": "4"
+      },
+      {
+        "formula": "=TYPE(1/0)",
+        "result": "16"
+      },
+      {
+        "formula": "=TYPE({1,2})",
+        "result": "64"
+      }
+    ],
+    "since": "2007"
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "type": "GridFunctionDoc",
+  "format": {
+    "TYPENAME": "GridFunctionDoc"
+  },
+  "values": [
+    {
+      "name": "PMT",
+      "category": "Financial",
+      "syntax": "PMT(rate, nper, pv, [fv], [type])",
+      "summary": "Returns the periodic payment for a loan.",
+      "args": [
+        {
+          "name": "rate",
+          "description": "The interest rate per period.",
+          "optional": false,
+          "repeat": false
+        }
+      ]
+    },
+    {
+      "name": "",
+      "category": "",
+      "syntax": "",
+      "summary": "",
+      "args": []
+    }
+  ]
+}

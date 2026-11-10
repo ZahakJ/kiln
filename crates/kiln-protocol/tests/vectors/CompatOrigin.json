@@ -1,0 +1,11 @@
+{
+  "type": "CompatOrigin",
+  "format": {
+    "TYPENAME": "CompatOrigin"
+  },
+  "values": [
+    "Save",
+    "Open",
+    "Save"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "type": "SelectionBlend",
+  "format": {
+    "TYPENAME": "SelectionBlend"
+  },
+  "values": [
+    "Darken",
+    "Lighten",
+    "Darken"
+  ]
+}

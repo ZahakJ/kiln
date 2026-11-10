@@ -1,0 +1,216 @@
+# Formula deviations
+
+This page lists where Kiln's formula engine knowingly behaves differently from Microsoft Excel, and
+where the LibreOffice oracle used by the conformance suite differs from Excel. The engine and its
+505-function library are Rust (`crates/kiln-formula`: the core, and the library in
+`src/functions/`), ported from the v1.0 TypeScript engine. The port keeps every name, arity, volatility and lazy or lifted
+argument of v1.0 (`tests/conformance_registry.rs` checks them against a snapshot of the v1.0
+registry) and reproduces the entries below; where the port changed a behaviour, the entry says so.
+Thirteen functions v1.0 lacked were added with the port: `AMORDEGRC`, `AMORLINC`, `ODDFPRICE`,
+`ODDFYIELD`, `ODDLPRICE`, `ODDLYIELD`, `EUROCONVERT`, `ASC`, `JIS`, `DBCS`, `BAHTTEXT`, `PHONETIC`
+and `PERCENTOF`; eight more came with the Grid gate: `GROUPBY`, `PIVOTBY`, `TRIMRANGE`,
+`GETPIVOTDATA`, `FORECAST.ETS`, `FORECAST.ETS.CONFINT`, `FORECAST.ETS.SEASONALITY` and
+`FORECAST.ETS.STAT` (see "GROUPBY, PIVOTBY and TRIMRANGE" and "FORECAST.ETS" below).
+The conformance suite lives in `conformance/` and runs with
+`cargo nextest run -p kiln-formula --test conformance` (`tests/conformance.rs`, 5,450 rows, 0
+failures):
+
+- `curated-*.csv` rows are Microsoft's documented examples (copied from the function documentation in
+  `crates/kiln-formula/docs/*.json`) and hand-written Excel behaviours and edge cases.
+  `curated-dynamic-arrays.csv` (190 rows) and `curated-lambda.csv` (89 rows) were added with the Rust
+  port: `SEQUENCE`, `FILTER`, `SORT`/`SORTBY`, `UNIQUE`, `TAKE`/`DROP`, `HSTACK`/`VSTACK`,
+  `TOCOL`/`TOROW`, `WRAPROWS`/`WRAPCOLS`, `EXPAND`, `CHOOSEROWS`/`CHOOSECOLS`, `XLOOKUP`/`XMATCH`
+  (including references returned by `XLOOKUP`), `TEXTSPLIT`/`TEXTBEFORE`/`TEXTAFTER`, array
+  broadcasting, and `LET`, `LAMBDA`, `MAP`, `REDUCE`, `SCAN`, `BYROW`, `BYCOL`, `MAKEARRAY`, closures,
+  currying and recursion by passing a lambda to itself. The rows for the thirteen added functions
+  are appended to `curated-financial.csv`, `curated-text.csv` and `curated-math.csv`.
+- `generated-additions.csv` (486 rows) holds LibreOffice 24.2 values for the added functions
+  (`AMORLINC`, `AMORDEGRC`, `ODDLPRICE`, `ODDLYIELD`, `EUROCONVERT`, `BAHTTEXT`, `ASC`, `JIS`),
+  computed by writing the formulas into a flat ODS file and converting it to CSV with
+  `tools/oracle-soffice.sh`; the 71 rows where LibreOffice is known to differ from Excel are in
+  `oracle-exclusions.csv` with their reasons (LibreOffice has no `ODDFPRICE`/`ODDFYIELD`; their rows
+  are Microsoft's examples and round trips through `ODDFYIELD`).
+- `generated-*.csv` rows were produced by a generator in the v1.0 TypeScript engine, which wrote the
+  formulas into an `.xlsx` with exceljs, lets LibreOffice 24.2 recalculate it headless
+  (`tools/oracle-soffice.sh … csv`), and records the values. Rows where LibreOffice is known to differ
+  from Excel are excluded through a deny-list; every
+  excluded row is listed with its reason in `conformance/oracle-exclusions.csv`.
+
+The runner compares numbers and date serials to 1e-9 relative (rows marked `rounded` — Microsoft's
+examples print rounded values — to their displayed precision), errors by name, and text and logicals
+exactly. **Skipped rows:** none. A row typed `skip` must have its formula quoted in this file;
+`tests/conformance.rs` fails otherwise. Every documented example in `crates/kiln-formula/docs/*.json`
+(890 of them) is evaluated by `tests/docs.rs` as well.
+
+## Implementation note
+
+`@formulajs/formulajs` was considered as the implementation base for scalar functions. Every function
+was instead implemented natively in the v1.0 engine: formulajs works with JavaScript
+`Date` objects (time-zone dependent, no Lotus 1900-02-29), its own error objects and its own text and
+logical coercion, so each function would have needed rewrapping or replacing anyway, and the conformance
+suite checks the native implementations directly. This also removes formulajs and its `jstat` and
+`bessel` dependencies from the shipped bundle.
+
+The Rust port keeps the native implementations. The gamma function and its logarithm come from
+`statrs`. The error functions, the normal distribution and the regularised incomplete beta and gamma
+functions behind every other distribution are Kiln's own (`src/functions/special.rs`), accurate to
+about 1e-13 relative or better at any parameter size:
+
+- `erf`/`erfc` use a positive-term series and Legendre's continued fraction with `e^(−x²)` formed
+  without rounding `x²` (`statrs` 0.19's are off by up to 1e-10 relative between 0.5 and 3).
+- Small and moderate shapes use the power series and continued fractions run to convergence (the
+  beta fraction in its even contraction, written in `λ = a − (a+b)x` and `1 − x` so that a tail
+  within an ulp of 1, as in `T.DIST(0.5,1E15,TRUE)`, keeps its digits).
+- Large shapes near the mean, where those need O(√a) terms (10⁸ at a = 10¹⁵), use Temme's uniform
+  asymptotic expansions (DLMF 8.12 and 8.18) with coefficients generated at run time; each
+  evaluation checks that its series and the asymptotic sum have converged and otherwise falls back
+  to the classic method.
+- The prefactors `xᵃe⁻ˣ/Γ(a)` and `xᵃyᵇ/B(a,b)` go through Stirling's series and `ln(1+u) − u`, so
+  terms of size a·ln x cancel exactly instead of in floating point.
+- A method that does not converge gives `#NUM!`, never a partial sum, and cumulative results are
+  clamped to [0, 1]. `tests/conformance_fuzz.rs` requires every cumulative distribution function
+  to return a probability or an error over 34,000 calls with shapes, degrees of freedom and trial
+  counts up to 10¹⁸.
+
+`curated-statistical.csv` checks 30 large-parameter values (`GAMMA.DIST(1E8,1E8,1,TRUE)`,
+`BINOM.DIST(5E14,1E15,0.5,TRUE)`, `T.DIST(0.5,1E15,TRUE)`, `GAMMA.INV(0.5,1E7,1)` …) against 50-digit
+references computed with mpmath independently of Kiln (quadrature of the density, both tails
+normalised by their sum, and Temme's expansion with DLMF's closed-form coefficients); the unit
+tests in `special.rs` add references, an exact binomial sum, agreement between the asymptotic and
+classic methods, and monotonicity and [0, 1] bounds over a grid of shapes from 10⁻³ to 10¹⁸. Before
+this, the series stopped silently after 10,000 terms and returned values such as 0.3414 for
+`GAMMA.DIST(1E8,1E8,1,TRUE)` (0.500013) or −81.38 for `BINOM.DIST(5E14,1E15,0.5,TRUE)`.
+`DOLLARDE` and `DOLLARFR` use `rust_decimal` where v1.0 used decimal.js.
+
+## Deviations from Excel
+
+These are behaviours where Kiln is known, or not verified, to match Excel.
+
+| Area | Kiln | Excel | Why |
+|---|---|---|---|
+| `HYPERLINK` | The cell value is the friendly name (or the link); the target is recorded on the formula cell and exposed by `Engine::hyperlink(sheet, row, col)`. | A cell showing a clickable link. | A separate "link" scalar type would ripple through every function's type checks; the grid reads the target from the engine instead. Nested uses (`=IF(x, HYPERLINK(…), "…")`) record the target only when the HYPERLINK branch is evaluated. |
+| `CELL` | Supports `address`, `col`, `row`, `contents`, `type` and `filename` (always `""`). Other info types return `#VALUE!`. Without a reference it describes the formula cell. Addresses on other sheets read `Sheet!$A$1` without a `[Book]` prefix. | Many more info types; without a reference it uses the last changed cell. | Kiln documents have no file path exposed to formulas, and formatting information lives outside the engine. |
+| `INFO` | `numfile` (sheets in the workbook), `recalc` ("Automatic"), `release` ("16.0"), `system` ("pcdos"), `osversion` ("Kiln"), `origin` ("$A:$A$1"); `directory` is `#N/A`. | Values of the running Excel. | Formulas must not leak information about the user's machine. |
+| `REGEXTEST`, `REGEXEXTRACT`, `REGEXREPLACE` | Perl/PCRE-style regular expressions (`fancy-regex`): classes, Unicode, named groups, look-ahead and look-behind, back-references, atomic groups and possessive quantifiers. A search that needs more than 1,000,000 backtracking steps is `#VALUE!`. Replacements take `$1`, `${1}`, `${name}` and `$$` (PCRE2) and also `$&`, `$<name>`, `` $` `` and `$'` (as v1.0 did). `REGEXEXTRACT` mode 1 returns a column. | PCRE2 with no step limit. | Common patterns behave the same; a few PCRE2-only constructs (`\K`, recursion `(?R)`, callouts, verbs such as `(*SKIP)`) are `#VALUE!`. The step limit keeps a catastrophic pattern from freezing recalculation. v1.0 used ECMAScript expressions, which lacked atomic groups and possessive quantifiers. |
+| `CHAR`, `CODE` | Windows-1252 on every platform. | Windows-1252 on Windows, Mac Roman on macOS. | One behaviour for every platform. |
+| `LENB`, `LEFTB`, `RIGHTB`, `MIDB`, `FINDB`, `SEARCHB`, `REPLACEB` | Count characters. | Count bytes when a double-byte language is the default editing language. | Matches Excel in single-byte locales. |
+| `TEXT`, `DOLLAR`, `FIXED`, `VALUE`, `DATEVALUE` | Number formats and text parsing use en-US conventions (`.` decimals, `,` thousands, `$`, month-first dates). | Follow the system locale. | Locale-aware formatting arrives with the i18n work; `NUMBERVALUE` already takes explicit separators. |
+| `DATEDIF(…, "MD")` | Days left after moving the start date forward by the whole months between the dates, clamped to the month end: `DATEDIF(DATE(2020,1,31),DATE(2020,3,1),"md")` is 1. | Microsoft warns that "MD" "may result in a negative number, a zero, or an inaccurate result". | A defined, non-negative answer. |
+| `BESSELK` (and to a lesser degree the other Bessel functions) | Integral representations evaluated with Gauss–Legendre quadrature, accurate to about 1e-14. | Polynomial approximations (about 1e-8 relative; Microsoft's `BESSELK(1.5,1)` example shows 0.277387804 where the exact value is 0.2773878004…). | Accuracy. Results agree with Excel to about 8 significant digits. |
+| `CONVERT` | Exact unit definitions (international pound and ounce, standard atmosphere, mechanical horsepower, IT BTU, short ton …). | Not verified for every unit. | LibreOffice uses legacy factors for six units (see below); Kiln uses the defining values. |
+| `ACCRINT` | Interest accrued from `issue` to `settlement` with `YEARFRAC(issue, settlement, basis)`; `first_interest` and `calc_method` are validated but do not change the result. | Sums coupon-period fractions, which differs slightly for odd first periods. | Excel's algorithm for irregular first periods is not documented. |
+| `INTRATE`, `RECEIVED`, `PRICEDISC`, `ACCRINTM` with basis 1 | Day count divided by the length of the settlement (or issue) year; `DISC` and `YIELDDISC` use `YEARFRAC`. | "B = number of days in a year, depending on the year basis". | Follows LibreOffice's Excel-compatible implementation; not verified against Excel for multi-year spans. |
+| `TBILLEQ` over 182 days | The bond-equivalent yield from the quadratic for a full coupon period. | Formula not documented for this range. | Standard money-market formula. |
+| `HOUR`, `MINUTE`, `SECOND` within half a second of midnight | Rounded to the nearest second without wrapping into the next day: `0.999999` is 23:59:59. | Not verified. | — |
+| `SUBTOTAL`, `AGGREGATE` (functions 1–13) | Also accept arrays (no hidden-row or nested-subtotal checks apply to them). | Require references. | Lenient; never changes a result Excel would compute. |
+| `LINEST`, `LOGEST`, `TREND`, `GROWTH` | Collinear predictors give `#NUM!`. | Removes redundant columns and reports a zero coefficient. | Not implemented yet. |
+| `INDIRECT`, references | References to other workbooks give `#REF!`. | Resolve open workbooks. | Kiln has no cross-workbook references. |
+| Circular references | Cells in a cycle show 0 and are flagged (`Engine::is_circular`, `circular_cells`), unless iterative calculation is on. A cycle between defined names (`X=Y+1`, `Y=X+1`) evaluates to `#NAME?` (the name-nesting limit) instead of being reported as circular. | Shows 0 and warns; reports name cycles as circular references. | The plan text mentioned a `#CIRCULAR` error; Kiln follows Excel instead. Name cycles are rare and still never hang. |
+| Number formats (`TEXT`, cell display) | `General` shows -0.0000001 and 0.000012345 in decimal. A negative number shown as zero keeps its sign (-0.4 in `0` is `-0`, as Excel shows it; the numfmt oracle and LibreOffice drop it, so `tools/gen-numfmt-cases.mjs` puts the sign back and `oracle-exclusions.csv` lists the LibreOffice row). | May show `-1E-07` / `1.2345E-05` (not verified). | General follows the numfmt oracle of v1.0; LibreOffice 24.2 agrees. |
+| `LET` names that are function names | `=LET(fact,LAMBDA(…),fact(fact,5))` calls the built-in `FACT`, so it is `#VALUE!` here. | Not verified. | A name followed by `(` resolves to a worksheet function first; name `LET` variables that are not function names (`fac`). The conformance rows do. |
+| Criteria longer than 255 characters | `#VALUE!` in `COUNTIF(S)`, `SUMIF(S)`, `AVERAGEIF(S)`, `MAXIFS`, `MINIFS`. | `#VALUE!`. | Matches Excel's documented limit (and keeps a 32,767-character wildcard from costing seconds). |
+| Distributions with very large parameters | Accurate to about 1e-13 for any shape, degrees of freedom or trial count Excel accepts (see the implementation note); a cumulative `HYPGEOM.DIST` that needs more than 10⁷ significant terms, or steps through whole numbers above 2⁵³, is `#NUM!`. Inverse distributions return the double nearest the quantile to about 1e-13 (the CDF of the result gives back p), `#NUM!` when the quantile exceeds the largest double, the smallest positive double or 0 when it underflows, and 1 for a beta quantile closer to 1 than the spacing of doubles there. | Not verified beyond about 10⁸. | Uniform asymptotic expansions where series would need billions of terms. |
+| Huge arguments | `MULTINOMIAL`, the Bessel functions and other functions with loops over an argument are computed in bounded time: they overflow to `#NUM!` (or underflow to 0) instead of iterating up to 10^308 times; dates beyond 9999-12-31 in the date, `YEARFRAC` and security functions are `#NUM!`. | Same results where Excel gives one. | `tests/conformance_fuzz.rs` calls every function with every arity and hostile arguments and requires an answer without a panic or a stall. v1.0 could hang on `MULTINOMIAL(1E+308)` and `BESSELJ(1,1E+15)`. |
+| Not implemented | `IMAGE`, `WEBSERVICE`, `FILTERXML`, `CUBE*`, `RTD`, `CALL`, `REGISTER.ID`, `STOCKHISTORY`, `TRANSLATE`, `DETECTLANGUAGE`, `COPILOT`, `FIELDVALUE`, `PY`. | Available. | They return `#NAME?`. External data, OLAP cubes, online services and Python are outside the v0.1 scope (the parity tracker lists each with its reason). `GROUPBY`, `PIVOTBY`, `TRIMRANGE`, `GETPIVOTDATA` and the `FORECAST.ETS` functions are implemented (see their sections below). |
+| `AMORDEGRC` | Lives (1/rate) strictly between 0 and 1, 1 and 2, 2 and 3, or 4 and 5 years are `#NUM!`; the coefficient is 1.5 for 3–4 years, 2 for 5–6 and 2.5 beyond; basis 2 is `#NUM!` for both French functions; a schedule that a million periods do not exhaust is `#NUM!`. | As documented by Microsoft (the #NUM! ranges and coefficients). | LibreOffice computes a value for those lives (excluded rows). |
+| `ODDFPRICE`, `ODDFYIELD`, `ODDLPRICE`, `ODDLYIELD` | Microsoft's formulas with quasi-coupon periods: a whole quasi period counts 1, a partial one its days over the period's normal length (actual days for basis 1, 365/frequency for basis 3, 360/frequency otherwise); for an odd long first period under the 30/360 bases the spans are counted in one piece, as Gnumeric does; `ODDFYIELD` solves `ODDFPRICE` by Newton's method with a bracketing fallback. A maturity off the regular schedule after the first coupon counts its last partial period as a whole coupon. | Microsoft's four examples are reproduced to every printed digit. Other odd-period conventions not verified. | LibreOffice prorates odd last periods with `YEARFRAC` over the whole span (60 excluded rows, mostly basis 1) and has no `ODDFPRICE`/`ODDFYIELD`. |
+| `EUROCONVERT` | The 14 currencies of Microsoft's table with its calculation precision (BEF, LUF, ESP, ITL, GRD 0 decimals; PTE 1; the others 2), plus CYP, MTL, SKK, EEK, LVL, LTL and HRK (2 decimals) that joined the euro later; triangulation rounds the intermediate euro amount. | Microsoft's table; the later currencies are not in Excel's Euro Currency Tools. | LibreOffice rounds escudos and drachmas to 2 decimals. |
+| `ASC`, `JIS`, `DBCS` | Code page 932 conventions: printable ASCII ↔ full-width forms except `'` `"` `` ` `` `\` ↔ `’` `”` `‘` `￥`; katakana ↔ half-width katakana with voiced kana as two half-width characters (`ガ` ↔ `ｶﾞ`, `ヴ` ↔ `ｳﾞ`); spaces, hiragana and kanji unchanged; `DBCS` is `JIS`. | Japanese Excel converts through code page 932 (not verified in Excel). | Follows LibreOffice's Excel-compatible transliterations, except that a half-width `ｳﾞ` combines into `ヴ` (LibreOffice leaves `ウ゛`). |
+| `PHONETIC` | Returns the text of its argument (the upper-left cell of a range; `#N/A` for several areas). | Returns the furigana stored with the cell. | Kiln documents store no phonetic guides yet; Excel shows the same text for cells typed without an input method. |
+| `BAHTTEXT` | Rounded to the satang as `ROUND` does; เอ็ด only after a tens digit, so 101 is หนึ่งร้อยหนึ่งบาทถ้วน. | Microsoft's example (1234) is reproduced; other readings not verified. | Matches LibreOffice's Excel-compatible implementation on 36 amounts. |
+
+The original requirement asks for `=IRR({-100,30,40,50})` "within 1e-7 of 0.0894". The internal rate
+of return of those cash flows is 0.0889633947 (the net present value at 8.94% is −0.084, not 0); that
+is what Kiln, Excel and LibreOffice return, and what the spot-check test asserts.
+
+## Where LibreOffice differs from Excel
+
+These groups of LibreOffice 24.2 results are excluded from the generated rows. Kiln follows Excel,
+and the curated rows (`Excel behaviour` notes) check Excel's answer for each group. Entries marked
+"(not verified)" state Excel's expected behaviour from its documentation and conventions but have not
+been re-checked in a copy of Excel for this suite.
+
+| Group | Rows | LibreOffice | Excel (and Kiln) |
+|---|---|---|---|
+| Logical values in ranges | 41 | Counts TRUE/FALSE as 1/0 in `SUM`, `AVERAGE`, `STDEV`, `CORREL` … and numeric criteria; `ISNUMBER(TRUE)` is TRUE, `TYPE(TRUE)` is 1. | Ignores logicals in ranges; `ISNUMBER(TRUE)` is FALSE, `TYPE(TRUE)` is 4. |
+| Logical values as text | 15 | `LEN(TRUE)` is 1, `TRUE&""` is "1". | "TRUE"/"FALSE". |
+| `PERCENTRANK`, `PERCENTRANK.INC`, `PERCENTRANK.EXC` | 36 | Rounds, and counts significant digits. | Truncates to decimal places (Microsoft's example: 0.555 for 5/9). |
+| `DURATION`, `MDURATION`, bases 1–3 | 24 | Times cash flows with `YEARFRAC`. | Times them by coupon periods; reproduces Microsoft's example 10.9191453. |
+| `BESSELK` | 16 | A&S polynomial approximation. | See the deviation above. |
+| `TEXT` formats | 14 | `TEXT(0,"0.###")` is "0", serial 0 is 1899-12-30, negative dates format, `hh:mm:ss` truncates. | "0.", 1900-01-00, `#VALUE!` (not verified), rounds to the second. |
+| `DOLLAR` negative amounts | 10 | "-$1,234.57". | "($1,234.57)" (Microsoft's example). |
+| Text functions | 7 | `CODE("")` is 0, `CODE("€")` is 226, `FIND("","abc")` is `#VALUE!`, `NUMBERVALUE("3.5%")` is `#VALUE!`. | `#VALUE!`, 128, 1 (start_num), 0.035. |
+| `WEEKNUM` of 31 December 2023, return types 1 and 12–17 | 7 | 1. | 53. |
+| `MODE`, `MODE.SNGL`, `AGGREGATE(13,…)` with no repeated value | 6 | `#VALUE!`. | `#N/A`. |
+| `CONVERT` units lbm, ozm, ton, atm, HP, BTU | 6 | Legacy factors (e.g. 0.453592309748811 kg per lbm). | Exact (0.45359237). |
+| Error values for invalid input (`COT(0)`, `CSC(0)`, `COTH(0)`, `CSCH(0)`, `ERROR.TYPE(SQRT(-1))`) | 5 | `#NUM!`, or `#N/A` for its internal error 502. | `#DIV/0!`, 6. |
+| Dates before 1 March 1900 | 5 | Proleptic Gregorian calendar; `DATE(108,1,2)` is `#VALUE!`. | Lotus 1-2-3 calendar with 1900-02-29; `DATE(108,1,2)` is 2008-01-02. |
+| `LARGE`, `SMALL` with k beyond the data | 4 | `#VALUE!`. | `#NUM!`. |
+| `HOUR`/`MINUTE`/`SECOND(0.999999)` | 3 | 23, 59, 0. | See the deviation above. |
+| `ENCODEURL` | 3 | Encodes "." and "~". | Leaves the unreserved characters `- _ . ~` (Microsoft's example). |
+| `MROUND` with mixed signs | 2 | Rounds. | `#NUM!` (documented). |
+| `PROB` with a column of values and a row of probabilities | 2 | `#N/A`. | Only the counts must match (not verified). |
+| T-bills (`TBILLPRICE`, `TBILLEQ` over 182 days) | 2 | 30/360 day count. | Actual days (not verified beyond Microsoft's examples). |
+| `DSTDEV`, `DVAR` with one matching record | 2 | `#NUM!`. | `#DIV/0!` (not verified). |
+| `SUMSQ(3,4,"5")` | 1 | `#VALUE!`. | 50 (numbers typed as text count, documented). |
+| `COUNTIF` wildcard on numbers | 1 | Matches numbers. | Wildcards only match text. |
+| `TYPE` of a formula cell | 1 | 8. | The type of the result. |
+| `AND(TRUE,1,"TRUE")` | 1 | `#VALUE!`. | TRUE (text logicals typed directly are converted; not verified). |
+| `IMSUM("1+i","1+j")` | 1 | "2+2i". | `#VALUE!` (mixed suffixes). |
+| `IFERROR`/`IFNA` of an empty cell | 2 | An empty result. | 0. |
+| `ODDLPRICE`, `ODDLYIELD` with an odd last period spanning several quasi-coupon periods, or basis 1 | 60 | Prorates with `YEARFRAC` over the whole span. | Quasi-coupon periods (see the deviation above). |
+| `AMORDEGRC` with a life between 2 and 3 years | 10 | A depreciation amount. | `#NUM!` (documented). |
+| `JIS("ｳﾞ")` | 1 | ウ゛. | ヴ (not verified). |
+
+Rows LibreOffice cannot answer at all are excluded automatically: functions it does not read from
+`.xlsx` files (93 rows, e.g. `XLOOKUP`, `LET`, `TEXTSPLIT`, `NETWORKDAYS.INTL`, `IMCOSH` and other
+`_xlfn.` functions in LibreOffice 24.2) and LibreOffice-only error codes such as `Err:502` (63 rows),
+which map to different Excel errors depending on the function. The curated rows cover those functions.
+
+## GROUPBY, PIVOTBY and TRIMRANGE
+
+The rows in `curated-lookup.csv` follow Microsoft's documentation of the arguments, and their expected
+values were derived from Microsoft's sample data (the orchard table of its database function
+examples: Tree, Height, Age, Yield, Profit); they were not produced by a copy of Excel. No Excel
+was available to check the layouts against, so these choices are Kiln's where the documentation is
+silent:
+
+- Outer labels repeat on every row (and every column of `PIVOTBY`); a subtotal row shows its outer
+  items and leaves the inner field columns empty; the grand total row is labelled `Total`.
+- Cells with no value (labels left out, an empty `PIVOTBY` intersection) hold empty text, so they
+  show nothing rather than 0.
+- Generated headers (`field_headers` 2) are `Row Field 1…`, `Column Field 1…` and `Value 1…`, and
+  `PIVOTBY` with several value columns adds a header row of their names.
+- The automatic `total_depth` gives a grand total and subtotals of every outer level; the default
+  sort is ascending by every field, and a `sort_order` that names only some fields keeps the other
+  levels in the order their items first appear.
+- `function` is one function or LAMBDA; an array of functions (`HSTACK(SUM,AVERAGE)`) is `#VALUE!`.
+- `TRIMRANGE` of a range with nothing in it is `#REF!`. The trim reference operators (`A1:.E10`,
+  `A1.:E10`, `A1.:.E10`) are not read yet; write `TRIMRANGE(A1:E10,…)`.
+- `GETPIVOTDATA` is volatile: it recalculates with every recalculation, so it follows a refreshed
+  report. Its fields left out must be the inner levels of their axis.
+
+## FORECAST.ETS
+
+The four functions fit the additive triple exponential smoothing model (AAA) the way LibreOffice's
+`ScETSForecastCalculation` does (sc/source/core/tool/interpr8.cxx): the season detection, the initial
+trend and seasonal indices, the nested interval-halving fit of alpha, beta and gamma (resolution
+0.001), month steps for dates on the same day of the month, and gap filling. Excel's own fitting is
+not published, so its parameters, and forecasts that depend on them, can differ. The 90
+`COM.MICROSOFT.FORECAST.ETS` oracle rows in `curated-statistical.csv` (seasons of 4, 12 and 6, a
+trend without season, monthly dates, gaps, a step of 3; every statistic type) agree with LibreOffice
+26.2 to 1e-9. Kiln differs from LibreOffice where LibreOffice is wrong:
+
+- Equal dates with `aggregation` 1 are averaged (LibreOffice keeps the first value).
+- A target before the end of the timeline is `#NUM!`, as Excel documents (LibreOffice interpolates).
+- Gaps in a monthly timeline are measured in months (LibreOffice reads month numbers as dates).
+- `FORECAST.ETS.CONFINT` is the analytic prediction interval of the additive model (Hyndman et al.,
+  *Forecasting with Exponential Smoothing*, 2008, class 1): `z · RMSE · √(1 + Σ c_j²)` with
+  `c_j = α + αγj + β(1 − α)` at whole seasons. LibreOffice simulates 1,000 random paths with only
+  positive deviations, which gives intervals about 20 % narrower that change on every recalculation;
+  it is not used as an oracle. One step ahead the interval is exactly `NORM.S.INV((1 + level)/2)`
+  times the RMSE, which two rows check.
+- Errors follow Excel's documentation: `#NUM!` for a target before the end, no constant step, more
+  than 30 % missing points, a seasonality above 8,760, `data_completion` other than 0 or 1,
+  `aggregation` outside 1 to 7 or a `statistic_type` outside 1 to 8; `#N/A` when the values and the
+  timeline differ in size; `#VALUE!` for text in either.

@@ -1,0 +1,12 @@
+{
+  "type": "DeckTextDirection",
+  "format": {
+    "TYPENAME": "DeckTextDirection"
+  },
+  "values": [
+    "Horizontal",
+    "Stacked",
+    "Horizontal",
+    "Rotate90"
+  ]
+}

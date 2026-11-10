@@ -1,0 +1,24 @@
+{
+  "type": "DeckMasterItem",
+  "format": {
+    "TYPENAME": "DeckMasterItem"
+  },
+  "values": [
+    {
+      "id": 2,
+      "name": "Kiln",
+      "master": true,
+      "preserved": true,
+      "used": 4,
+      "version": 7
+    },
+    {
+      "id": 0,
+      "name": "",
+      "master": false,
+      "preserved": false,
+      "used": 0,
+      "version": 0
+    }
+  ]
+}

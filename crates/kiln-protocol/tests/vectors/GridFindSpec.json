@@ -1,0 +1,24 @@
+{
+  "type": "GridFindSpec",
+  "format": {
+    "TYPENAME": "GridFindSpec"
+  },
+  "values": [
+    {
+      "text": "?ln",
+      "match_case": false,
+      "whole_cell": true,
+      "look_in": "Formulas",
+      "workbook": true,
+      "by_columns": true
+    },
+    {
+      "text": "",
+      "match_case": false,
+      "whole_cell": false,
+      "look_in": "Formulas",
+      "workbook": false,
+      "by_columns": false
+    }
+  ]
+}

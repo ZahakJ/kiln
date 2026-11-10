@@ -1,0 +1,16 @@
+{
+  "type": "AutoCorrectEntry",
+  "format": {
+    "TYPENAME": "AutoCorrectEntry"
+  },
+  "values": [
+    {
+      "from": "(c)",
+      "to": "©"
+    },
+    {
+      "from": "",
+      "to": ""
+    }
+  ]
+}

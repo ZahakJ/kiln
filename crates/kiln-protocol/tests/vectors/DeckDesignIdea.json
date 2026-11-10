@@ -1,0 +1,23 @@
+{
+  "type": "DeckDesignIdea",
+  "format": {
+    "TYPENAME": "DeckDesignIdea"
+  },
+  "values": [
+    {
+      "id": "band",
+      "label": "Title band",
+      "png": [
+        137,
+        80,
+        78,
+        71
+      ]
+    },
+    {
+      "id": "",
+      "label": "",
+      "png": []
+    }
+  ]
+}

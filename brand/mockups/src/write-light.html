@@ -1,0 +1,308 @@
+<!doctype html><html data-theme="light" data-app="write"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../tokens.css"><link rel="stylesheet" href="kiln-ui.css">
+<style>body{width:1440px;height:900px}
+.nav { width: 250px; flex: none; padding: 14px 12px; display: flex; flex-direction: column; gap: 12px; }
+.nav .h { display:flex; align-items:center; justify-content:space-between; font-weight:700; font-size:13px; padding: 0 4px; }
+.toc { display: flex; flex-direction: column; gap: 1px; margin-top: 2px; }
+.toc div { padding: 6px 10px; border-radius: 8px; font-size: 12.5px; color: var(--kiln-fg); white-space: nowrap; }
+.toc .l2 { padding-left: 24px; color: var(--kiln-muted); }
+.toc .on { background: var(--app-tint); color: var(--app-text); font-weight: 600; position: relative; }
+.toc .on::before { content:''; position:absolute; left:3px; top:7px; bottom:7px; width:3px; border-radius:2px; background: var(--app); }
+.rgoal { margin-top: auto; border: 1px solid var(--kiln-line); border-radius: 12px; padding: 12px; background: var(--kiln-raised); }
+.rgoal .t { display:flex; justify-content:space-between; font-size:12px; font-weight:600; }
+.rgoal .bar { height: 6px; border-radius: 3px; background: var(--kiln-sunken); margin: 9px 0 8px; overflow:hidden; }
+.rgoal .bar i { display:block; height:100%; width:86%; border-radius:3px; background: linear-gradient(90deg,#FF6A26,#FFB547); }
+.rgoal .stats { display:grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
+.rgoal .stats b { font: 700 17px/1.1 var(--kiln-font-display); font-variation-settings:'SOFT' 40; display:block; }
+.rgoal .stats span { font-size: 11px; color: var(--kiln-faint); }
+.canvas { flex: 1; position: relative; overflow: hidden; display:flex; flex-direction: column; align-items: center; }
+.ruler { width: 720px; height: 22px; margin: 2px 0 10px; border-radius: 6px; background: var(--kiln-panel); border: 1px solid var(--kiln-line); position: relative;
+  background-image: repeating-linear-gradient(90deg, var(--kiln-line-strong) 0 1px, transparent 1px 18px); background-size: 600px 6px; background-repeat: no-repeat; background-position: 60px 14px; }
+.ruler i { position:absolute; top: 3px; width: 10px; height: 9px; background: var(--app); clip-path: polygon(0 0,100% 0,100% 55%,50% 100%,0 55%); }
+.pg { width: 720px; flex: 1; background: var(--kiln-page); border-radius: 6px 6px 0 0; padding: 64px 76px 0; box-shadow: var(--kiln-shadow-page); position: relative; color: var(--kiln-fg); }
+.eyebrow { font: 700 11px/1 var(--kiln-font-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--kiln-ember-text); margin-bottom: 14px; }
+.pg h1 { font: 800 38px/1.08 var(--kiln-font-display); font-variation-settings: 'SOFT' 40, 'WONK' 0; letter-spacing: -.015em; margin-bottom: 14px; }
+.pg .lede { font: 400 17px/1.55 var(--kiln-font-display); font-variation-settings: 'SOFT' 60, 'opsz' 14; color: var(--kiln-muted); margin-bottom: 22px; }
+.pg h2 { font: 700 21px/1.2 var(--kiln-font-display); font-variation-settings: 'SOFT' 40; color: var(--kiln-write-text); margin: 4px 0 10px; }
+.pg p { font: 400 14.5px/1.65 var(--kiln-font-ui); margin-bottom: 12px; }
+.pg ul { margin: 0 0 14px 2px; list-style: none; }
+.pg li { font-size: 14.5px; line-height: 1.6; padding-left: 20px; position: relative; }
+.pg li::before { content:''; position:absolute; left: 3px; top: .55em; width: 7px; height: 8px; background: var(--app); border-radius: 4px 4px 1px 1px; }
+.sel { background: var(--kiln-selection); border-radius: 2px; box-shadow: 0 0 0 1px color-mix(in srgb, var(--kiln-ember) 25%, transparent); }
+.cmt-anchor { background: color-mix(in srgb, #E3A126 26%, transparent); border-bottom: 2px solid #E3A126; }
+table.t { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; border: 1px solid var(--kiln-line); border-radius: 10px; overflow: hidden; margin-top: 6px; }
+table.t th { text-align: left; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--kiln-muted); background: var(--kiln-write-tint); padding: 9px 12px; font-weight: 700; }
+table.t td { padding: 9px 12px; border-top: 1px solid var(--kiln-line); }
+table.t td.n, table.t th.n { text-align: right; font-variant-numeric: tabular-nums; }
+.sw { display:inline-block; width:10px; height:10px; border-radius: 5px 5px 2px 2px; margin-right: 7px; vertical-align: -1px; }
+.comments { width: 270px; flex: none; position: relative; }
+.cm { position: absolute; left: 0; right: 0; background: var(--kiln-panel); border: 1px solid var(--kiln-line); border-radius: 12px; padding: 12px; box-shadow: var(--kiln-shadow-2); font-size: 12.5px; }
+.cm.on { border-color: #E3A126; box-shadow: 0 0 0 2px color-mix(in srgb, #E3A126 25%, transparent), var(--kiln-shadow-2); }
+.cm .who { display: flex; align-items: center; gap: 8px; font-weight: 700; margin-bottom: 6px; }
+.cm .av { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 9.5px; font-weight: 800; color: #fff; }
+.cm .when { margin-left: auto; font-weight: 500; color: var(--kiln-faint); font-size: 11.5px; }
+.cm .acts { display:flex; gap: 6px; margin-top: 10px; }
+.cm .acts span { height: 26px; padding: 0 10px; border-radius: 7px; display:inline-flex; align-items:center; font-weight: 600; font-size: 12px; border: 1px solid var(--kiln-line-strong); }
+.cm .acts span.p { background: var(--app-solid); color: var(--app-on-solid); border-color: transparent; }
+.leader { position: absolute; height: 0; border-top: 1.5px dashed #E3A126; }
+</style></head><body><div class="app"><div class="tb">
+  <div class="brand"><img src="../../icons/svg/write-32.svg"><b>Write</b></div>
+  <div class="qa"><svg class="i " viewBox="0 0 24 24">
+      <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+      <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" />
+      <path d="M7 3v4a1 1 0 0 0 1 1h7" />
+    </svg></div><div class="qa"><svg class="i " viewBox="0 0 24 24">
+      <path d="M9 14 4 9l5-5" />
+      <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11" />
+    </svg></div><div class="qa"><svg class="i " viewBox="0 0 24 24">
+      <path d="m15 14 5-5-5-5" />
+      <path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13" />
+    </svg></div>
+  <div class="title">Autumn firing plan<span class="ext">.docx</span><span class="chip"><svg class="fl" viewBox="120 50 260 390" width="11" height="13"><path d="M236 428C178 414 132 370 128 306C124 240 162 200 180 156C190 130 190 108 178 84C177 78 183 75 188 78C246 116 274 164 272 224Z" fill="#D93D12"/><path d="M256 432C188 432 144 386 144 324C144 262 184 222 218 186C250 152 272 118 280 66C282 56 292 52 298 60C316 98 338 132 352 178C364 216 368 262 368 316C368 384 324 432 256 432Z" fill="#FF7A2E"/></svg>Saved to Studio</span></div>
+  <div class="search"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.3-4.3" />
+    </svg><span>Search</span><span class="kbd">Alt Q</span></div>
+  <div class="avatar">MA</div>
+  <div class="win"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+    </svg></div><div class="win"><svg class="i s14" viewBox="0 0 24 24">
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+    </svg></div><div class="win"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg></div>
+</div><div class="tabs"><div class="file"><svg class="sp" viewBox="0 0 24 24" width="14" height="14"><path d="M12,0.2 C13.98,7.04 16.96,10.02 20.73,12 C16.96,13.98 13.98,16.96 12,23.8 C10.02,16.96 7.04,13.98 3.27,12 C7.04,10.02 10.02,7.04 12,0.2 Z" fill="currentColor"/></svg>File</div><div class="tab on">Home</div><div class="tab">Insert</div><div class="tab">Layout</div><div class="tab">References</div><div class="tab">Review</div><div class="tab">View</div><div class="tab">Help</div><div class="right"><div class="btn ghost"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>Comments<span class="chip" style="height:18px;padding:0 6px">2</span></div><div class="btn"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+      <path d="m15 5 4 4" />
+    </svg>Editing<svg class="i s14" viewBox="0 0 24 24">
+      <path d="m6 9 6 6 6-6" />
+    </svg></div><div class="btn solid"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="18" cy="5" r="3" />
+      <circle cx="6" cy="12" r="3" />
+      <circle cx="18" cy="19" r="3" />
+      <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
+      <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
+    </svg>Share</div></div></div><div class="ribbon"><div class="grp"><div class="body"><div class="big"><div class="ic"><svg class="i s24" viewBox="0 0 24 24">
+      <path d="M15 2H9a1 1 0 0 0-1 1v2c0 .6.4 1 1 1h6c.6 0 1-.4 1-1V3c0-.6-.4-1-1-1Z" />
+      <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M16 4h2a2 2 0 0 1 2 2v2M11 14h10" />
+      <path d="m17 10 4 4-4 4" />
+    </svg></div>Paste</div><div class="col" style="gap:2px;padding-top:0"><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="6" cy="6" r="3" />
+      <path d="M8.12 8.12 12 12" />
+      <path d="M20 4 8.12 15.88" />
+      <circle cx="6" cy="18" r="3" />
+      <path d="M14.8 14.8 20 20" />
+    </svg>Cut</div><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+    </svg>Copy</div><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="m14.622 17.897-10.68-2.913" />
+      <path d="M18.376 2.622a1 1 0 1 1 3.002 3.002L17.36 9.643a.5.5 0 0 0 0 .707l.944.944a2.41 2.41 0 0 1 0 3.408l-.944.944a.5.5 0 0 1-.707 0L8.354 7.348a.5.5 0 0 1 0-.707l.944-.944a2.41 2.41 0 0 1 3.408 0l.944.944a.5.5 0 0 0 .707 0z" />
+      <path d="M9 8c-1.804 2.71-3.97 3.46-6.583 3.948a.507.507 0 0 0-.302.819l7.32 8.883a1 1 0 0 0 1.185.204C12.735 20.405 16 16.792 16 15" />
+    </svg>Format</div></div></div><div class="lbl">Clipboard</div></div><div class="grp"><div class="body"><div class="col"><div class="row" style="gap:4px"><div class="dd" style="width:150px"><span>Figtree</span><svg class="i s14" viewBox="0 0 24 24">
+      <path d="m6 9 6 6 6-6" />
+    </svg></div><div class="dd" style="width:54px"><span>11</span><svg class="i s14" viewBox="0 0 24 24">
+      <path d="m6 9 6 6 6-6" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M3.5 13h6" />
+      <path d="m2 16 4.5-9 4.5 9" />
+      <path d="M18 16V7" />
+      <path d="m14 11 4-4 4 4" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M3.5 13h6" />
+      <path d="m2 16 4.5-9 4.5 9" />
+      <path d="M18 7v9" />
+      <path d="m14 12 4 4 4-4" />
+    </svg></div></div>
+             <div class="row"><div class="ib on "><svg class="i " viewBox="0 0 24 24">
+      <path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <line x1="19" x2="10" y1="4" y2="4" />
+      <line x1="14" x2="5" y1="20" y2="20" />
+      <line x1="15" x2="9" y1="4" y2="20" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M6 4v6a6 6 0 0 0 12 0V4" />
+      <line x1="4" x2="20" y1="20" y2="20" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M16 4H9a3 3 0 0 0-2.83 4" />
+      <path d="M14 12a4 4 0 0 1 0 8H6" />
+      <line x1="4" x2="20" y1="12" y2="12" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="m4 5 8 8" />
+      <path d="m12 5-8 8" />
+      <path d="M20 19h-4c0-1.5.44-2 1.5-2.5S20 15.33 20 14c0-.47-.17-.93-.48-1.29a2.11 2.11 0 0 0-2.62-.44c-.42.24-.74.62-.9 1.07" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="m4 19 8-8" />
+      <path d="m12 19-8-8" />
+      <path d="M20 12h-4c0-1.5.442-2 1.5-2.5S20 8.334 20 7.002c0-.472-.17-.93-.484-1.29a2.105 2.105 0 0 0-2.617-.436c-.42.239-.738.614-.899 1.06" />
+    </svg></div>
+             <div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M4 20h16" />
+      <path d="m6 16 6-12 6 12" />
+      <path d="M8 12h8" />
+    </svg><i class="bar" style="background:#E05A27"></i></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="m9 11-6 6v3h9l3-3" />
+      <path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4" />
+    </svg><i class="bar" style="background:#F5B73F"></i></div></div></div></div><div class="lbl">Font</div></div><div class="grp"><div class="body"><div class="col"><div class="row"><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M3 12h.01" />
+      <path d="M3 18h.01" />
+      <path d="M3 6h.01" />
+      <path d="M8 12h13" />
+      <path d="M8 18h13" />
+      <path d="M8 6h13" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M10 12h11" />
+      <path d="M10 18h11" />
+      <path d="M10 6h11" />
+      <path d="M4 10h2" />
+      <path d="M4 6h1v4" />
+      <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M21 12H11" />
+      <path d="M21 18H11" />
+      <path d="M21 6H11" />
+      <path d="m7 8-4 4 4 4" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M21 12H11" />
+      <path d="M21 18H11" />
+      <path d="M21 6H11" />
+      <path d="m3 8 4 4-4 4" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M13 4v16" />
+      <path d="M17 4v16" />
+      <path d="M19 4H9.5a4.5 4.5 0 0 0 0 9H13" />
+    </svg></div></div>
+             <div class="row"><div class="ib on "><svg class="i " viewBox="0 0 24 24">
+      <path d="M15 12H3" />
+      <path d="M17 18H3" />
+      <path d="M21 6H3" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M17 12H7" />
+      <path d="M19 18H5" />
+      <path d="M21 6H3" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M21 12H9" />
+      <path d="M21 18H7" />
+      <path d="M21 6H3" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="M3 12h18" />
+      <path d="M3 18h18" />
+      <path d="M3 6h18" />
+    </svg></div><div class="ib "><svg class="i " viewBox="0 0 24 24">
+      <path d="m21 16-4 4-4-4" />
+      <path d="M17 20V4" />
+      <path d="m3 8 4-4 4 4" />
+      <path d="M7 4v16" />
+    </svg></div></div></div></div><div class="lbl">Paragraph</div></div><div class="grp"><div class="body"><div class="gal">
+             <div class="sty on"><div class="s" style="font-family:var(--kiln-font-ui)">Aa Bb</div><div class="n">Normal</div></div>
+             <div class="sty"><div class="s disp" style="font-weight:800">Aa Bb</div><div class="n">Title</div></div>
+             <div class="sty"><div class="s disp" style="font-weight:700;color:var(--kiln-write-text)">Aa Bb</div><div class="n">Heading 1</div></div>
+             <div class="sty"><div class="s" style="font-weight:700">Aa Bb</div><div class="n">Heading 2</div></div>
+             <div class="sty"><div class="s disp" style="font-style:italic;color:var(--kiln-muted)">“Aa”</div><div class="n">Quote</div></div>
+             <div class="galmore"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="m6 9 6 6 6-6" />
+    </svg></div></div></div><div class="lbl">Styles</div></div><div class="grp"><div class="body"><div class="col" style="gap:2px"><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M21 6H3" />
+      <path d="M10 12H3" />
+      <path d="M10 18H3" />
+      <circle cx="17" cy="15" r="3" />
+      <path d="m21 19-1.9-1.9" />
+    </svg>Find</div><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M14 4a2 2 0 0 1 2-2" />
+      <path d="M16 10a2 2 0 0 1-2-2" />
+      <path d="M20 2a2 2 0 0 1 2 2" />
+      <path d="M22 8a2 2 0 0 1-2 2" />
+      <path d="m3 7 3 3 3-3" />
+      <path d="M6 10V5a3 3 0 0 1 3-3h1" />
+      <rect x="2" y="14" width="8" height="8" rx="2" />
+    </svg>Replace</div><div class="sm"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z" />
+    </svg>Select</div></div></div><div class="lbl">Editing</div></div><div class="grp"><div class="body"><div class="big"><div class="ic app"><svg class="i s24" viewBox="0 0 24 24">
+      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+      <line x1="12" x2="12" y1="19" y2="22" />
+    </svg></div>Dictate</div></div><div class="lbl">Voice</div></div><div class="grp"><div class="body"><div class="big"><div class="ic"><svg class="i s24" viewBox="0 0 24 24">
+      <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+      <path d="M20 3v4" />
+      <path d="M22 5h-4" />
+      <path d="M4 17v2" />
+      <path d="M5 18H3" />
+    </svg></div>Rewrite</div></div><div class="lbl">Kiln</div></div></div><div class="work"><div class="nav pane">
+      <div class="h">Navigation<svg class="i s14" viewBox="0 0 24 24">
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg></div>
+      <div class="field"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.3-4.3" />
+    </svg>Search document</div>
+      <div class="seg"><span class="on">Headings</span><span>Pages</span><span>Results</span></div>
+      <div class="toc">
+        <div>The Autumn Firing</div><div class="on">What goes in the kiln</div><div class="l2">Loading order</div><div class="l2">Glaze tests</div>
+        <div>The schedule</div><div class="l2">Candling overnight</div><div class="l2">Body reduction</div><div>Unloading day</div><div>Who brings what</div>
+      </div>
+      <div class="rgoal"><div class="t"><span><svg class="fl" viewBox="120 50 260 390" width="10" height="12"><path d="M236 428C178 414 132 370 128 306C124 240 162 200 180 156C190 130 190 108 178 84C177 78 183 75 188 78C246 116 274 164 272 224Z" fill="#D93D12"/><path d="M256 432C188 432 144 386 144 324C144 262 184 222 218 186C250 152 272 118 280 66C282 56 292 52 298 60C316 98 338 132 352 178C364 216 368 262 368 316C368 384 324 432 256 432Z" fill="#FF7A2E"/></svg> Word goal</span><span class="tnum muted">1,284 / 1,500</span></div>
+        <div class="bar"><i></i></div><div class="faint" style="font-size:11.5px">216 words to go. About 6 minutes to read.</div>
+        <div class="stats"><div><b class="tnum">1,284</b><span>words</span></div><div><b class="tnum">2</b><span>open comments</span></div></div></div>
+    </div><div class="canvas"><div class="ruler"><i style="left:58px"></i><i style="left:652px"></i></div>
+      <div class="pg glowpage">
+        <div class="eyebrow">Studio Co-op · Draft 3 · for Saturday</div>
+        <h1>The Autumn Firing</h1>
+        <div class="lede">Twice a year we load the big catenary kiln together. This is the plan for October: what goes in, how hot we take it, and who stays up for the overnight shift.</div>
+        <h2>What goes in the kiln</h2>
+        <p>We have room for roughly <b>240 pieces</b> across six shelves. Stoneware takes the back of the chamber, where the flame path is longest. Porcelain and the test tiles sit up front so we can watch them through the spy hole. Please wax your feet before Friday, and <span class="cmt-anchor">label anything glazed with the new tenmoku</span> so we can track how it <span class="sel">breaks over the rims</span><span class="caret"></span>.</p>
+        <ul><li>Bisque by Wednesday, glaze by Thursday noon</li><li>Cones 9, 10 and 11 on every shelf</li></ul>
+        <table class="t"><tr><th>Shelf</th><th>Body</th><th>Glaze</th><th class="n">Cone</th></tr>
+          <tr><td>1 – 2</td><td>Stoneware</td><td><span class="sw" style="background:#3A2318;box-shadow:0 0 0 1px #8A5232"></span>Tenmoku</td><td class="n">10</td></tr>
+          <tr><td>3 – 4</td><td>Stoneware</td><td><span class="sw" style="background:#1D8A60"></span>Celadon</td><td class="n">10</td></tr>
+          <tr><td>5</td><td>Porcelain</td><td><span class="sw" style="background:#3159C6"></span>Cobalt slip</td><td class="n">9</td></tr></table>
+      </div></div><div class="comments">
+      <div class="leader" style="left:-76px;width:76px;top:404px"></div>
+      <div class="cm on" style="top:352px"><div class="who"><span class="av" style="background:#1D8A60">RO</span>Rana O.<span class="when">2 h</span></div>
+        Can we keep the tenmoku pieces off shelf 1? It ran last spring.
+        <div class="acts"><span class="p">Reply</span><span>Resolve</span></div></div>
+      <div class="cm" style="top:510px"><div class="who"><span class="av" style="background:#C2481C">JK</span>Jun K.<span class="when">Yesterday</span></div>
+        Added the cone 9 shelf for porcelain. <svg class="i s14" viewBox="0 0 24 24" style="vertical-align:-2px;color:var(--kiln-success)">
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+        <div class="acts"><span>Reply</span><span>Resolve</span></div></div>
+    </div></div><div class="sb"><div class="it">Page 1 of 4</div><div class="it tnum">1,284 words</div><div class="goal"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+    </svg><div class="m"><i></i></div><span class="tnum">86%</span></div><div class="it"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="m5 8 6 6" />
+      <path d="m4 14 6-6 2-3" />
+      <path d="M2 5h12" />
+      <path d="M7 2h1" />
+      <path d="m22 22-5-10-5 10" />
+      <path d="M14 18h6" />
+    </svg>English (UK)</div><div class="it ok"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>No issues</div><div class="it"><svg class="fl" viewBox="120 50 260 390" width="10" height="12"><path d="M236 428C178 414 132 370 128 306C124 240 162 200 180 156C190 130 190 108 178 84C177 78 183 75 188 78C246 116 274 164 272 224Z" fill="#D93D12"/><path d="M256 432C188 432 144 386 144 324C144 262 184 222 218 186C250 152 272 118 280 66C282 56 292 52 298 60C316 98 338 132 352 178C364 216 368 262 368 316C368 384 324 432 256 432Z" fill="#FF7A2E"/></svg><span>Autosave on</span></div><span class="sp"></span><div class="it"><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="3" />
+      <path d="M3 7V5a2 2 0 0 1 2-2h2" />
+      <path d="M17 3h2a2 2 0 0 1 2 2v2" />
+      <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
+      <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
+    </svg>Focus</div><div class="vm"><span><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M12 7v14" />
+      <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+    </svg></span><span class="on"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+      <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+      <path d="M10 9H8" />
+      <path d="M16 13H8" />
+      <path d="M16 17H8" />
+    </svg></span><span><svg class="i s14" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+      <path d="M2 12h20" />
+    </svg></span></div><div class="zoom"><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+    </svg><div class="track"><i></i></div><svg class="i s14" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+      <path d="M12 5v14" />
+    </svg><span class="tnum" style="width:36px">110%</span></div></div></div></body></html>

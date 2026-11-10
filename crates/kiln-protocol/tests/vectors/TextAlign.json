@@ -1,0 +1,11 @@
+{
+  "type": "TextAlign",
+  "format": {
+    "TYPENAME": "TextAlign"
+  },
+  "values": [
+    "Left",
+    "Justify",
+    "Left"
+  ]
+}

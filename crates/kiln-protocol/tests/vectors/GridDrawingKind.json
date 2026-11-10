@@ -1,0 +1,14 @@
+{
+  "type": "GridDrawingKind",
+  "format": {
+    "TYPENAME": "GridDrawingKind"
+  },
+  "values": [
+    "Picture",
+    "Shape",
+    "Chart",
+    "Picture",
+    "Shape",
+    "Line"
+  ]
+}

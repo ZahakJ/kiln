@@ -1,0 +1,35 @@
+/** Shortcuts that work the same in every app (docs/SHORTCUTS.md rows marked "same"). */
+import type { KeyBinding } from '../keymap.ts';
+import { bind } from './bind.ts';
+
+export const commonKeymap: readonly KeyBinding[] = [
+  bind('Mod+N', 'suite.file.new', 'Ctrl+N / O / S / P / W'),
+  bind('Mod+O', 'suite.file.open', 'Ctrl+N / O / S / P / W'),
+  bind('Mod+S', 'suite.file.save', 'Ctrl+N / O / S / P / W'),
+  bind('Mod+P', 'suite.file.print', 'Ctrl+N / O / S / P / W'),
+  bind('Mod+W', 'suite.file.close', 'Ctrl+N / O / S / P / W'),
+  bind('F12', 'suite.file.save_as', 'F12 or Ctrl+Shift+S'),
+  bind('Mod+Shift+S', 'suite.file.save_as', 'F12 or Ctrl+Shift+S'),
+  bind('Mod+Z', 'suite.edit.undo', 'Ctrl+Z / Ctrl+Y (also Ctrl+Shift+Z)'),
+  bind('Mod+Y', 'suite.edit.redo', 'Ctrl+Z / Ctrl+Y (also Ctrl+Shift+Z)'),
+  bind('Mod+Shift+Z', 'suite.edit.redo', 'Ctrl+Z / Ctrl+Y (also Ctrl+Shift+Z)'),
+  bind('Mod+X', 'suite.edit.cut', 'Ctrl+X / C / V, Ctrl+Alt+V'),
+  bind('Mod+C', 'suite.edit.copy', 'Ctrl+X / C / V, Ctrl+Alt+V'),
+  bind('Mod+V', 'suite.edit.paste', 'Ctrl+X / C / V, Ctrl+Alt+V'),
+  bind('Mod+Alt+V', 'suite.edit.paste_special', 'Ctrl+X / C / V, Ctrl+Alt+V'),
+  bind('Mod+F', 'suite.edit.find', 'Ctrl+F / Ctrl+H / Ctrl+G'),
+  bind('Mod+H', 'suite.edit.replace', 'Ctrl+F / Ctrl+H / Ctrl+G'),
+  bind('Mod+B', 'suite.format.bold', 'Ctrl+B / I / U'),
+  bind('Mod+I', 'suite.format.italic', 'Ctrl+B / I / U'),
+  bind('Mod+U', 'suite.format.underline', 'Ctrl+B / I / U'),
+  bind('Mod+K', 'suite.insert.link', 'Ctrl+K'),
+  bind('F7', 'suite.review.spelling', 'F7 / Shift+F7'),
+  bind('Mod+Alt+M', 'suite.review.new_comment', 'Ctrl+Alt+M'),
+  bind('Mod+F1', 'ui.ribbon.collapse', 'Ctrl+F1'),
+  bind('Alt', 'ui.keytips.show', 'Alt or F10', { onRelease: true }),
+  bind('F10', 'ui.keytips.show', 'Alt or F10'),
+  bind('Alt+Q', 'ui.palette.open', 'Alt+Q, Ctrl+Shift+P ★'),
+  bind('Mod+Shift+P', 'ui.palette.open', 'Alt+Q, Ctrl+Shift+P ★'),
+  bind('Mod+/', 'ui.shortcuts.show', 'Ctrl+/ ★'),
+  bind('Esc', 'ui.edit.cancel', 'Esc'),
+];

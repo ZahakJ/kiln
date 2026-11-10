@@ -1,0 +1,25 @@
+{
+  "type": "DeckOutlineSlide",
+  "format": {
+    "TYPENAME": "DeckOutlineSlide"
+  },
+  "values": [
+    {
+      "title": "Plans",
+      "lines": [
+        [
+          0,
+          "Clay"
+        ],
+        [
+          1,
+          "Glaze"
+        ]
+      ]
+    },
+    {
+      "title": "",
+      "lines": []
+    }
+  ]
+}

@@ -1,0 +1,418 @@
+{
+ "openpyxl": "3.1.5",
+ "sheets": [
+  {
+   "name": "Tables",
+   "cells": {
+    "A1": {
+     "s": "Region"
+    },
+    "B1": {
+     "s": "Product"
+    },
+    "C1": {
+     "s": "Units"
+    },
+    "D1": {
+     "s": "Price"
+    },
+    "E1": {
+     "s": "Total"
+    },
+    "G1": {
+     "s": "Total units"
+    },
+    "A2": {
+     "s": "East"
+    },
+    "B2": {
+     "s": "C"
+    },
+    "C2": {
+     "n": 46.0
+    },
+    "D2": {
+     "n": 16.11
+    },
+    "E2": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "G2": {
+     "f": "SUM(Sales[Units])"
+    },
+    "A3": {
+     "s": "North"
+    },
+    "B3": {
+     "s": "B"
+    },
+    "C3": {
+     "n": 32.0
+    },
+    "D3": {
+     "n": 13.33
+    },
+    "E3": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A4": {
+     "s": "South"
+    },
+    "B4": {
+     "s": "A"
+    },
+    "C4": {
+     "n": 48.0
+    },
+    "D4": {
+     "n": 9.91
+    },
+    "E4": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A5": {
+     "s": "South"
+    },
+    "B5": {
+     "s": "B"
+    },
+    "C5": {
+     "n": 70.0
+    },
+    "D5": {
+     "n": 2.94
+    },
+    "E5": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A6": {
+     "s": "South"
+    },
+    "B6": {
+     "s": "A"
+    },
+    "C6": {
+     "n": 94.0
+    },
+    "D6": {
+     "n": 5.12
+    },
+    "E6": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A7": {
+     "s": "East"
+    },
+    "B7": {
+     "s": "A"
+    },
+    "C7": {
+     "n": 99.0
+    },
+    "D7": {
+     "n": 8.4
+    },
+    "E7": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A8": {
+     "s": "North"
+    },
+    "B8": {
+     "s": "A"
+    },
+    "C8": {
+     "n": 80.0
+    },
+    "D8": {
+     "n": 12.73
+    },
+    "E8": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A9": {
+     "s": "South"
+    },
+    "B9": {
+     "s": "A"
+    },
+    "C9": {
+     "n": 1.0
+    },
+    "D9": {
+     "n": 19.47
+    },
+    "E9": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A10": {
+     "s": "North"
+    },
+    "B10": {
+     "s": "A"
+    },
+    "C10": {
+     "n": 28.0
+    },
+    "D10": {
+     "n": 19.24
+    },
+    "E10": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A11": {
+     "s": "South"
+    },
+    "B11": {
+     "s": "A"
+    },
+    "C11": {
+     "n": 38.0
+    },
+    "D11": {
+     "n": 6.96
+    },
+    "E11": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A12": {
+     "s": "South"
+    },
+    "B12": {
+     "s": "C"
+    },
+    "C12": {
+     "n": 87.0
+    },
+    "D12": {
+     "n": 12.89
+    },
+    "E12": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A13": {
+     "s": "South"
+    },
+    "B13": {
+     "s": "C"
+    },
+    "C13": {
+     "n": 26.0
+    },
+    "D13": {
+     "n": 19.36
+    },
+    "E13": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A14": {
+     "s": "West"
+    },
+    "B14": {
+     "s": "B"
+    },
+    "C14": {
+     "n": 3.0
+    },
+    "D14": {
+     "n": 7.86
+    },
+    "E14": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A15": {
+     "s": "South"
+    },
+    "B15": {
+     "s": "A"
+    },
+    "C15": {
+     "n": 34.0
+    },
+    "D15": {
+     "n": 2.24
+    },
+    "E15": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A16": {
+     "s": "East"
+    },
+    "B16": {
+     "s": "C"
+    },
+    "C16": {
+     "n": 76.0
+    },
+    "D16": {
+     "n": 1.06
+    },
+    "E16": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A17": {
+     "s": "East"
+    },
+    "B17": {
+     "s": "A"
+    },
+    "C17": {
+     "n": 40.0
+    },
+    "D17": {
+     "n": 7.75
+    },
+    "E17": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A18": {
+     "s": "East"
+    },
+    "B18": {
+     "s": "B"
+    },
+    "C18": {
+     "n": 90.0
+    },
+    "D18": {
+     "n": 7.0
+    },
+    "E18": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A19": {
+     "s": "West"
+    },
+    "B19": {
+     "s": "B"
+    },
+    "C19": {
+     "n": 91.0
+    },
+    "D19": {
+     "n": 4.35
+    },
+    "E19": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A20": {
+     "s": "East"
+    },
+    "B20": {
+     "s": "A"
+    },
+    "C20": {
+     "n": 96.0
+    },
+    "D20": {
+     "n": 7.8
+    },
+    "E20": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    },
+    "A21": {
+     "s": "West"
+    },
+    "B21": {
+     "s": "A"
+    },
+    "C21": {
+     "n": 71.0
+    },
+    "D21": {
+     "n": 15.97
+    },
+    "E21": {
+     "f": "Sales[[#This Row],[Units]]*Sales[[#This Row],[Price]]"
+    }
+   },
+   "merges": [],
+   "comments": [],
+   "tables": [
+    {
+     "name": "Sales",
+     "ref": "A1:E21"
+    }
+   ]
+  },
+  {
+   "name": "Second",
+   "cells": {
+    "A1": {
+     "s": "Name"
+    },
+    "B1": {
+     "s": "Score"
+    },
+    "A2": {
+     "s": "Person 1"
+    },
+    "B2": {
+     "n": 73.0
+    },
+    "A3": {
+     "s": "Person 2"
+    },
+    "B3": {
+     "n": 74.0
+    },
+    "A4": {
+     "s": "Person 3"
+    },
+    "B4": {
+     "n": 87.0
+    },
+    "A5": {
+     "s": "Person 4"
+    },
+    "B5": {
+     "n": 50.0
+    },
+    "A6": {
+     "s": "Person 5"
+    },
+    "B6": {
+     "n": 78.0
+    },
+    "A7": {
+     "s": "Person 6"
+    },
+    "B7": {
+     "n": 52.0
+    },
+    "A8": {
+     "s": "Person 7"
+    },
+    "B8": {
+     "n": 95.0
+    },
+    "A9": {
+     "s": "Person 8"
+    },
+    "B9": {
+     "n": 61.0
+    },
+    "A10": {
+     "s": "Person 9"
+    },
+    "B10": {
+     "n": 89.0
+    },
+    "A11": {
+     "s": "Person 10"
+    },
+    "B11": {
+     "n": 62.0
+    }
+   },
+   "merges": [],
+   "comments": [],
+   "tables": [
+    {
+     "name": "Scores",
+     "ref": "A1:B11"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,53 @@
+{
+  "type": "GridValidation",
+  "format": {
+    "TYPENAME": "GridValidation"
+  },
+  "values": [
+    {
+      "kind": "List",
+      "op": "Between",
+      "formula1": "Low,Medium,High",
+      "formula2": "",
+      "allow_blank": true,
+      "dropdown": true,
+      "show_input": true,
+      "input_title": "Priority",
+      "input": "Pick one",
+      "show_error": true,
+      "style": "Warning",
+      "error_title": "",
+      "error": ""
+    },
+    {
+      "kind": "Whole",
+      "op": "Between",
+      "formula1": "1",
+      "formula2": "10",
+      "allow_blank": false,
+      "dropdown": false,
+      "show_input": false,
+      "input_title": "",
+      "input": "",
+      "show_error": false,
+      "style": "Stop",
+      "error_title": "",
+      "error": ""
+    },
+    {
+      "kind": "Any",
+      "op": "Between",
+      "formula1": "",
+      "formula2": "",
+      "allow_blank": false,
+      "dropdown": false,
+      "show_input": false,
+      "input_title": "",
+      "input": "",
+      "show_error": false,
+      "style": "Stop",
+      "error_title": "",
+      "error": ""
+    }
+  ]
+}

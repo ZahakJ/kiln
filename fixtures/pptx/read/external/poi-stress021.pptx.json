@@ -1,0 +1,3360 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Shaelot",
+    "1_Shaelot",
+    "1_Title Slide"
+   ]
+  },
+  {
+   "layouts": [
+    "Title Slide",
+    "Shaelot",
+    "1_Shaelot"
+   ]
+  },
+  {
+   "layouts": [
+    "Title Slide",
+    "Shaelot",
+    "1_Shaelot",
+    "1_Title Slide"
+   ]
+  },
+  {
+   "layouts": [
+    "Title Slide",
+    "Shaelot",
+    "1_Shaelot",
+    "5_Title Slide"
+   ]
+  },
+  {
+   "layouts": [
+    "Title Slide",
+    "Shaelot",
+    "1_Shaelot",
+    "Title and Content"
+   ]
+  },
+  {
+   "layouts": [
+    "Title Slide",
+    "Shaelot",
+    "1_Shaelot"
+   ]
+  },
+  {
+   "layouts": [
+    "Title Slide",
+    "Shaelot",
+    "1_Shaelot"
+   ]
+  },
+  {
+   "layouts": [
+    "Title Slide",
+    "Shaelot",
+    "1_Shaelot",
+    "1_Title Slide"
+   ]
+  },
+  {
+   "layouts": [
+    "Title Slide",
+    "Shaelot",
+    "1_Shaelot"
+   ]
+  }
+ ],
+ "slide_count": 41,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "1_Title Slide",
+   "notes": "",
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 18",
+     "text": "נושאי השיעור"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "הכנה לבחינת הבגרות במעבדה"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 8",
+     "text": "מעבדה"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 17",
+     "text": "מבוא:\n מבנה הבחינה \n נושאי המעבדה הנפוצים \n בסיס הידע הנדרש\n סוגי השאלות במבחן\n\nחלק א'\nמרכיבי הניסוי: \n שאלת חקר\n סוג המדידה: כמותי/איכותי\n השערה \n בסיס ביולוגי להשערה\n משתנה בלתי תלוי\n משתנה תלוי \n דרך מדידת המשתנה התלוי"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 17",
+     "text": " גורמים קבועים \n בקרות\n חזרות\n\nתיאור והסבר תוצאות הניסוי:\n בניית טבלה המתארת את מערך הניסוי ותוצאותיו\n בחירת סוג הגרף הנכון ותיאור התוצאות בגרף\n תיאור מילולי של התוצאות\n הסבר התוצאות\n אקסטרפולציה ואינטרפולציה\n\n\nחלק ב'\n ניסוי איכותי וניסוי כמותי  "
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 7,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "מלבן 7",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 6",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 1",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 25",
+     "text": "מבנה הבחינה\nהבחינה נערכת בסוף כיתה י\"ב. \nהתלמידים מקבלים דף הוראות, ובו הם נדרשים, לבצע ניסוי מעבדה, שבדרך כלל כולל שני שלבים:\nשלב ראשון: ניסוי קטן מקדים שנועד להכרת שיטת המדידה.\nשלב שני*: הניסוי עצמו.  \nבמהלך ביצוע הניסויים ולאחריהם התלמידים נדרשים לענות על שאלות בכתב.\nהתשובות נשלחות לבדיקה במשרד החינוך, והציון בבחינה נקבע על פי התשובות. \n*בשלב השני, שליש מתלמידי הכיתה אינם עושים ניסוי \"רטוב\", אלא מתארים, מנתחים\n ומסבירים תוצאות ניסוי הניתנות להם אגב שימוש ב\"אקסל\" ליצירת טבלאות וגרפים. \nשאר התלמידים עושים ניסוי בפועל, מנתחים ומתארים את התוצאות בטבלאות וגרפים שהם יוצרים באופן ידני.\n\n\nהנושאים הנפוצים בבחינת המעבדה \nאנזימים והגורמים המשפיעים על פעולתם, דרכי מעבר חומרים דרך קרומים (דיפוזיה, אוסמוזה), נשימה תאית ופוטוסינתזה, החומרים המרכיבים את התאים.\n\n\nבסיס הידע הנדרש\nנושאי הליבה.\n\n "
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "מבנה בחינת הבגרות במעבדה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "2"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 7,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 25",
+     "text": "א. שאלות שקשורות למרכיבי הניסוי ולתוצאותיו\n    בשאלות אלו נעסוק במצגת זו.\nב.  שאלות ידע, הבנה ויישום בביולוגיה מן הסוגים הבאים:\n     שאלות ידע והבנה (ויותר מכך) כלליות בביולוגיה המתקשרות לנושא המעבדה.\n     שאלות \"רוחב\" חוצות נושאים. \n     שאלות המתייחסות לקשר שבין הרעיונות המרכזיים בביולוגיה לבין נושאי המעבדה. \n     בשאלות אלו נעסוק במצגת מיוחדת המוקדשת לנושא זה.     "
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "סוגי השאלות המופיעות בבחינת הבגרות במעבדה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "3"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "הבנת השאלות וזיהוי סוגי השאלות יכולים לסייע בהצלחה במבחן.\n                 אלו הן המטרות המודגשות במצגת זו."
+    },
+    {
+     "kind": "picture",
+     "name": "Picture 14"
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 2",
+     "text": "Montyred, Wikimedia commons<http://commons.wikimedia.org/wiki/File:Hua_Yi_Secondary_School_Chemistry_Laboratory.JPG> (CC BY-SA 3.0<http://creativecommons.org/licenses/by-sa/3.0/deed.en>)\n "
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 25",
+     "text": "בשאלות העוסקות במרכיבי הניסוי ובתוצאותיו נדרשות מיומנויות של זיהוי, \nהבנה וניסוח של מרכיבי הניסוי הבאים:\nשאלת חקר\nסוג המדידה: כמותי/איכותי\nהשערה \nבסיס ביולוגי להשערה\nמשתנה בלתי תלוי ודרך שינויו\nמשתנה תלוי \nדרך מדידת המשתנה התלוי\nגורמים קבועים \nבקרות\nחזרות\n\nומיומנויות של תיאור והסבר תוצאות הניסוי הבאות:\nבניית טבלה המתארת את מערך הניסוי ותוצאותיו\nבחירת סוג הגרף הנכון ותיאור התוצאות בגרף\nתיאור מילולי של התוצאות\nהסבר התוצאות\n\n\n"
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שאלות העוסקות במרכיבי הניסוי ובתוצאותיו"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "4"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 9,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 25",
+     "text": "על מנת ללמוד להבין ולזהות את סוגי השאלות השונים ניקח לדוגמה ניסוי העוסק באנזימים.\nשאלת החקר שאנו רוצים לבדוק היא:\nהאם יש קשר בין ריכוז המצע לבין קצב פעילות האנזים?\n\n\n"
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שאלה 1: תכנון ניסוי"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "5"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 9",
+     "text": "שאלה 1:\nתכננו ניסוי לבדיקת שאלת החקר.\nלרשותכם: מבחנות, תמיסת אנזים, תמיסת מצע.\nנניח שאנו רוצים לבדוק את קצב פירוק מי חמצן ע\"י האנזים קטלאז. \nמי חמצן מפורקים ע\"י האנזים למים ולחמצן. החמצן נפלט בתור בועות גז. \nאחת הדרכים למדידת קצב פעילות הקטלאז היא: \nמדידת גובה שכבת בועות החמצן שנוצרת במבחנה. "
+    },
+    {
+     "children": [
+      {
+       "kind": "picture",
+       "name": "Picture 3"
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 13",
+       "text": "מצע"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 6"
+    },
+    {
+     "children": [
+      {
+       "kind": "autoshape",
+       "name": "פחית 15",
+       "text": ""
+      },
+      {
+       "kind": "autoshape",
+       "name": "פחית 24",
+       "text": ""
+      },
+      {
+       "kind": "autoshape",
+       "name": "פחית 26",
+       "text": ""
+      },
+      {
+       "kind": "autoshape",
+       "name": "פחית 27",
+       "text": ""
+      },
+      {
+       "kind": "autoshape",
+       "name": "פחית 29",
+       "text": ""
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 2"
+    },
+    {
+     "children": [
+      {
+       "kind": "picture",
+       "name": "Picture 11"
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 4",
+       "text": "אנזים"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 7"
+    },
+    {
+     "children": [
+      {
+       "kind": "connector",
+       "name": "מחבר חץ ישר 34"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 32",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 33",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 78",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 65"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 76"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "6"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 9",
+     "text": "שאלה 1:\nתכננו ניסוי לבדיקת שאלת החקר.\nלרשותכם: מבחנות, תמיסת אנזים, תמיסת מצע."
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 12",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 13",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 15",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 16",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 19",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 20",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 22",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 23",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 25",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 26",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 28",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 29",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "kind": "autoshape",
+       "name": "חץ שמאלה 1",
+       "text": ""
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 2",
+       "text": "ריכוז מצע הולך וגדל"
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 30",
+       "text": "מבחנה \nללא מצע"
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 31",
+       "text": "ריכוז האנזים בכל המבחנות קבוע.\n גם כל שאר הגורמים קבועים. \n(נדון בגורמים הקבועים בהרחבה בהמשך)."
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 6"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "תשובה:\nנוסיף לסדרת מבחנות נפחים הולכם וגדלים של תמיסת מי חמצן,\nונשלים עם מים עד ליצירת נפח נוזלים קבוע בכל המבחנות. \nנוסיף לכל המבחנות  (פרט למבחנה אחת), נפח קבוע של תמיסת אנזים. \nשאר הגורמים קבועים."
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שאלה 2: זיהוי המשתנים – משתנה בלתי תלוי ומשתנה תלוי "
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "7"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 9",
+     "text": "שאלה 2:\nמהו המשתנה הבלתי תלוי, ומהו המשתנה התלוי בניסוי שתכננתם?"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 14",
+     "text": "המשתנה הבלתי תלוי הוא הגורם שעל פי ההשערה משפיע על המשתנה התלוי.\nהוא הגורם שנקבע על ידי מתכנן הניסוי, הרוצה לבדוק את השפעתו על המשתנה התלוי. הוא הגורם השונה בין המבחנות.\n\nהמשתנה התלוי הוא הגורם המושפע בניסוי. במהלך ביצוע הניסוי החוקר עוקב אחר השינוי בגורם זה. המשתנה התלוי הוא במקרים רבים קצב תהליך מסוים, או שיעור תופעה מסוימת.\n\n "
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 31",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 32",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 29",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 30",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 27",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 28",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 25",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 26",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 23",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 24",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 21",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 22",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "kind": "autoshape",
+       "name": "חץ שמאלה 16",
+       "text": ""
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 18",
+       "text": "ריכוז מצע הולך וגדל"
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 19",
+       "text": "מבחנה \nללא מצע"
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 20",
+       "text": "ריכוז האנזים בכל המבחנות קבוע.\n גם כל שאר הגורמים קבועים. \n(נדון בגורמים הקבועים בהרחבה בהמשך)."
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 7"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 7,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה + שאלה 3: דרך שינוי המשתנה הבלתי תלוי, ודרך מדידת המשתנה התלוי"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "8"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 9",
+     "text": "שאלה 2:"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "תשובה:\nהמשתנה הבלתי תלוי: ריכוז המצע.\nהמשתנה התלוי: קצב פעילות האנזים."
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 8",
+     "text": "שאלה 3:\nא. מהי דרך שינוי המשתנה הבלתי תלוי? כלומר איך תיצרו ריכוזי מצע שונים במבחנות?\nב. מהי דרך מדידת המשתנה התלוי, כלומר איך אפשר למדוד את קצב פעילות האנזים?"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 33",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 34",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 31",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 32",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 29",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 30",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 27",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 28",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 25",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 26",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 23",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 24",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "kind": "autoshape",
+       "name": "חץ שמאלה 19",
+       "text": ""
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 20",
+       "text": "ריכוז מצע הולך וגדל"
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 21",
+       "text": "מבחנה \nללא מצע"
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 22",
+       "text": "ריכוז האנזים בכל המבחנות קבוע.\n גם כל שאר הגורמים קבועים. \n(נדון בגורמים הקבועים בהרחבה בהמשך)."
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 10"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "9"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 9",
+     "text": "שאלה 3:"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "תשובה:\nא. אפשר ליצור ריכוזי מצע שונים ע\"י הוספת נפחים הולכים וגדולים של תמיסת מצע לסדרת מבחנות, והשלמה עם מים עד לנפח נוזלים קבוע.\nב. אפשר למדוד קצב פעילות האנזים ע\"י מדידת כמות המצע שפורק בפרק זמן מסוים \n(ע\"י מדידת כמות המצע ההתחלתית והסופית וחישוב ההפרש ביניהם, או מדידת כמות התוצר שנוצר בפרק זמן מסוים. במקרה של הניסוי שלנו, דרך מדידת המשתנה התלוי (שהוא קצב פעילות האנזים) היא: מדידת גובה שכבת בועות החמצן שנפלטו מכל אחת מן המבחנות בפרק זמן מסוים. "
+    },
+    {
+     "children": [
+      {
+       "kind": "textbox",
+       "name": "TextBox 8",
+       "text": "שימו        !!! \nתלמידים נוטים להתבלבל ולא להבחין בין המשתנה התלוי ובין אופן מדידתו.\nזכרו: המשתנה התלוי הוא במקרים רבים קצב התהליך או שיעור של תופעה מסוימת.\nלעתים ייתכנו כמה דרכים למדידת המשתנה התלוי. \nהדרך הנבחרת ע\"י מבצע הניסוי היא הדרך הזמינה לו והעומדת לרשותו.\nלדוגמה במקרה שלנו:\n\n"
+      },
+      {
+       "kind": "diagram",
+       "name": "דיאגרמה 1"
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 2",
+       "text": "אופן מדידת\nהמשתנה התלוי:"
+      },
+      {
+       "kind": "autoshape",
+       "name": "לב 2",
+       "text": ""
+      },
+      {
+       "kind": "autoshape",
+       "name": "הסבר מלבני מעוגל 4",
+       "text": ""
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 6"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שאלה 4: זיהוי המשתנה התלוי והבלתי תלוי בשאלת החקר"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "10"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 18",
+     "text": "שאלה 4:\nנחזור לשאלת החקר:\nהאם יש קשר בין ריכוז המצע לבין קצב פעילות האנזים?\n\nבשאלת החקר צריכים להופיע המשתנה הבלתי תלוי והמשתנה התלוי.\nסמנו בשאלת החקר את המשתנים האלה."
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "11"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 18",
+     "text": "שאלה 4:\nנחזור לשאלת החקר:\nהאם יש קשר בין ריכוז המצע לבין קצב פעילות האנזים?\n\nבשאלת החקר צריכים להופיע המשתנה הבלתי תלוי והמשתנה התלוי.\nסמנו בשאלת החקר את המשתנים האלה."
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "תשובה:\nהאם יש קשר בין ריכוז המצע לבין קצב פעילות האנזים?\n                     משתנה בלתי תלוי      משתנה תלוי"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "השערה ובסיס ביולוגי + שאלה 5 "
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "12"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "השערה \nלשאלת החקר ייתכנו בדרך כלל כמה הסברים אפשריים. הניסוי בודק את אחד ההסברים האלה. למעשה, ההשערה היא התוצאות הצפויות במקרה שההסבר נכון.\nההשערה צריכה להיות מבוססת על ידע מדעי, ולא לסתור ידע מדעי קיים.\nההשערה צריכה להיות מנוסחת בתור משפט ולא בתור שאלה (שימו     ! זו טעות נפוצה אצל תלמידים).\n\nבסיס ביולוגי\nהבסיס הביולוגי הוא ההנמקה לבחירת ההשערה. ההנמקה מבוססת על ידע ביולוגי.\n"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 8",
+     "text": "שאלה 5:\nא. מהי ההשערה שלכם לניסוי זה?\nב. בהשערה צריכים להופיע המשתנה הבלתי תלוי והמשתנה התלוי. סמנו אותם בהשערה   \n    שניסחתם.\nב. מהו הבסיס הביולוגי להשערתכם, כלומר על סמך איזה ידע מדעי שיערתם את ההשערה?\n"
+    },
+    {
+     "kind": "autoshape",
+     "name": "לב 7",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "13"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "השערה \nלשאלת החקר ייתכנו בדרך כלל כמה הסברים אפשריים. הניסוי בודק את אחד ההסברים האלה. למעשה, ההשערה היא התוצאות הצפויות במקרה שההסבר נכון.\nההשערה צריכה להיות מבוססת על ידע מדעי, ולא לסתור ידע מדעי קיים.\n"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "תשובה:\nא. ככל שריכוז המצע גדל (עד גבול מסוים), כך קצב פעילות האנזים גדל.*\n          משתנה בלתי תלוי                                משתנה תלוי\n\n*השערה המנוסחת בדרך זו: \"ככל ש.......כך.......\" מתאימה לניסוי שהמשתנה הבלתי תלוי בו כמותי. בניסויים איכותיים, או בניסויים כמותיים שבהם המשתנה הבלתי תלוי בדיד, תנוסח ההשערה בתור משפט חיובי קצר.\nנעסוק בניסויים  מסוגים אלו בחלק השני של המצגת.\n\nב. הבסיס הביולוגי: ככל שריכוז המצע גדל, כך יש התנגשויות אנזים־מצע רבות יותר, ולכן יעלה קצב הפעילות. מעל לריכוז מצע מסוים לא יעלה קצב הפעילות כי מולקולות האנזים פועלות בקצב מרבי.\n"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 8",
+     "text": "שאלה 5:\nא. מהי ההשערה שלכם לניסוי זה?\nב. בהשערה צריכים להופיע המשתנה הבלתי תלוי והמשתנה התלוי. סמנו אותם בהשערה   \n    שניסחתם.\nב. מהו הבסיס הביולוגי להשערתכם, כלומר על סמך איזה ידע מדעי שיערתם את ההשערה?\n"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "גורמים קבועים במערך הניסוי"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "14"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "גורמים קבועים\nכל הגורמים המהווים חלק מן הניסוי, ושידוע שהם משפיעים על התהליך הנבדק, חייבים \nלהיות זהים פרט למשתנה הבלתי תלוי.\nהסיבה לכך היא שאם יהיה יותר מגורם אחד שונה, לא יהיה אפשר לדעת איזה גורם \nהשפיע וגרם לתוצאות שהתקבלו בניסוי.\n\nהסבר חשיבות שמירה על הגורם הקבוע בניסוי\nיש להסביר באיזה אופן גורם מסוים זה משפיע על המשתנה התלוי, ולא להסתפק רק בהסבר הכללי שצוין למעלה.\n"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שאלה 6: גורמים קבועים"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "15"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 8",
+     "text": "שאלה 6:\nציינו מהם הגורמים שצריכים להישמר קבועים בניסוי שלנו ונמקו את תשובתכם."
+    },
+    {
+     "cells": [
+      [
+       "גורם קבוע",
+       "בהתבסס על סמך הידע המדעי שלכם הסבירו מדוע גורם זה צריך להישמר קבוע (זהה בכל המבחנות)."
+      ],
+      [
+       "\n",
+       "\n\n"
+      ],
+      [
+       "\n",
+       "\n\n"
+      ],
+      [
+       "\n",
+       "\n\n"
+      ],
+      [
+       "\n",
+       "\n\n"
+      ]
+     ],
+     "kind": "table",
+     "name": "טבלה 1"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "16"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 8",
+     "text": "שאלה 6:"
+    },
+    {
+     "cells": [
+      [
+       "גורם קבוע",
+       "בהתבסס על סמך הידע המדעי שלכם הסבירו מדוע גורם זה צריך להישמר קבוע."
+      ],
+      [
+       "הטמפרטורה",
+       "הטמפרטורה משפיעה על קצב הפעילות האנזימתית. ככל שהיא עולה (עד גבול מסוים*), קצב תנועת המולקולות עולה ויש התנגשויות אנזים־מצע רבות יותר. לכן הטמפרטורה בכל המבחנות צריכה להיות זהה. \n*בטמפרטורות גבוהות מאוד, האנזימים עוברים דנטורציה."
+      ],
+      [
+       "דרגת ה־pH",
+       "דרגת ה־pH משפיעה על המבנה המרחבי של האנזימים (חלבונים). המבנה המרחבי של האנזים קובע את מידת ההתאמה למצע, ולכן הוא משפיע על פעילות האנזים. ולכן דרגת ה־pH צריכה להיות זהה בכל המבחנות."
+      ],
+      [
+       "ריכוז האנזים",
+       "ככל שריכוז האנזים גדול יותר (עד גבול מסוים), כך יהיו התנגשויות אנזים־מצע רבות יותר, וקצב הפעילות יעלה. לכן ריכוז האנזים צריך להיות זהה בכל המבחנות."
+      ],
+      [
+       "זמן",
+       "ברור שככל שמשך הזמן ארוך יותר, כך תהיה הפעילות האנזימתית ארוכה יותר, ולכן משך זמן הפעילות צריך להיות זהה בכל המבחנות."
+      ]
+     ],
+     "kind": "table",
+     "name": "טבלה 1"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "בקרה (ביקורת)"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "17"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "נדון בשני סוגים עיקריים של בקרות:\n\nבקרה בלי הגורם המשפיע\nבקרה זו היא טיפול הזהה לשאר הטיפולים בניסוי, אך הושמט בו המשתנה הבלתי תלוי.\nלדוגמה, בניסוי שבו נבדקת השאלה אם במיצוי מגזר יש אנזים קטלאז המפרק מי חמצן, \nבקרה בלי הגורם המשפיע היא מבחנה המכילה מי חמצן ואינה מכילה מיצוי גזר (ומבחנת הניסוי מכילה מי חמצן ומיצוי מגזר).\nחשיבותה של בקרה זו היא שלילת הסבר חלופי לתוצאות הניסוי. לדוגמה: המצע מתפרק באופן ספונטני (\"מעצמו\") בלי קשר לפעילות האנזים.\n\nבקרה פנימית־השוואתית\nמערך ניסוי שבו הגורם המשפיע משתנה בהדרגה וכולל השוואה בין טיפולים שונים, הוא מערך שמתקיימת בו בקרה פנימית. הסיבה לכך היא שההבדל היחיד בין הטיפולים הוא הגורם המשפיע, ואילו שאר הגורמים האחרים קבועים, ולכן אפשר לייחס את ההבדל בתוצאות להשפעת הגורם המשפיע.\nבניסויים שבהם המשתנה הבלתי תלוי הוא טמפרטורה או דרגת ה־pH אין אפשרות לבצע בקרה בלי הגורם המשפיע. (אי אפשר לבצע טיפול \"בלי טמפרטורה\" או בלי pH).\n\n\n\n\n\n"
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 1",
+     "text": "* לעתים, מערך הניסוי כולל בקרות נוספות כגון בקרה לשינוי צבע או בקרות שבהן משמיטים אחד מן   \nהגורמים הקבועים. לא נעסוק בהן במצגת זו."
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שאלה 7: בקרות"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "18"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "\n\n\n\n\n\n\n"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 9",
+     "text": "שאלה 7:\nציינו מהן הבקרות במערך הניסוי שלנו והסבירו את חשיבותן."
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 16,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "19"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 9",
+     "text": "שאלה 7:\nציינו מהן הבקרות במערך הניסוי שלנו והסבירו את חשיבותן."
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "תשובה:"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "                   בקרה פנימית \nכל אחת מן המבחנות מכילה ריכוז מצע שונה.\nחשיבותה: מכיוון שההבדל היחידי בין \nהמבחנות הוא ריכוז המצע, אפשר לקבוע \nבביטחון שההבדל בין התוצאות במבחנות \nהשונות נובע מהשפעת ריכוז המצע.\n"
+    },
+    {
+     "kind": "autoshape",
+     "name": "סוגר מסולסל שמאלי 4",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 1",
+     "text": "בקרה בלי הגורם המשפיע:\nמבחנה עם אנזים בלי מצע.\nחשיבותה: \nשלילת האפשרות שמסיבה בלתי צפויה כלשהי, תמיסת האנזים הכילה מראש את תוצרי הפירוק, או שהיא הכילה את המצע.\nכלומר הבקרה מאפשרת לנו לקבוע בביטחון שהחומרים שנוצרים במבחנות האחרות הן תוצרי פירוק המצע שהוספנו למבחנות.\n"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 50",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 51",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 48",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 49",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 46",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 47",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 44",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 45",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 42",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 43",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 40",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 41",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "kind": "autoshape",
+       "name": "חץ שמאלה 36",
+       "text": ""
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 37",
+       "text": "ריכוז מצע הולך וגדל"
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 38",
+       "text": "מבחנה \nבלי מצע"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 29"
+    },
+    {
+     "kind": "connector",
+     "name": "מחבר חץ ישר 8"
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 34",
+     "text": "כדאי להוסיף עוד בקרה: מבחנה עם מצע בלי אנזים. חשיבותה: שלילת האפשרות שמי החמצן מתפרקים באופן ספונטני (\"מעצמם\") בלי קשר לפעילות האנזים."
+    },
+    {
+     "kind": "autoshape",
+     "name": "לב 35",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 7",
+     "text": "שימו       ! \nבתשובה על שאלה העוסקת בחשיבות הבקרה, כדאי להסביר מה הבקרה שוללת, וגם מה היא מאשרת ביחס לתוצאות המבחנות האחרות. "
+    },
+    {
+     "kind": "autoshape",
+     "name": "חץ מעוקל שמאלה 10",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "חץ מעוקל שמאלה 38",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 11",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 9,
+   "shapes": [
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "ככל שהניסוי מבוצע פעמים רבות יותר, מהימנותן של התוצאות גדלה.\nאפשר לבצע שני סוגי חזרות:\n\nא. ריבוי פריטים\n   באותו מערך הניסוי אפשר לעשות\n   כמה טיפולים מאותו הסוג. \n\n\n\nב. חזרות\nאפשר לחזור על כל הניסוי בנקודת זמן אחרת.\n\n\n\n\n\n\n\n\n\nבכל המקרים עושים ממוצע של התוצאות בכל החזרות על אותו הטיפול. \nחשיבות החזרות משני הסוגים היא: צמצום האפשרויות לטעות מקרית."
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "ריבוי פריטים וחזרות"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "20"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "kind": "autoshape",
+           "name": "פחית 31",
+           "text": ""
+          },
+          {
+           "kind": "autoshape",
+           "name": "פחית 32",
+           "text": ""
+          }
+         ],
+         "kind": "group",
+         "name": "קבוצה 2"
+        },
+        {
+         "children": [
+          {
+           "kind": "autoshape",
+           "name": "פחית 29",
+           "text": ""
+          },
+          {
+           "kind": "autoshape",
+           "name": "פחית 30",
+           "text": ""
+          }
+         ],
+         "kind": "group",
+         "name": "קבוצה 2"
+        },
+        {
+         "children": [
+          {
+           "kind": "autoshape",
+           "name": "פחית 27",
+           "text": ""
+          },
+          {
+           "kind": "autoshape",
+           "name": "פחית 28",
+           "text": ""
+          }
+         ],
+         "kind": "group",
+         "name": "קבוצה 2"
+        },
+        {
+         "children": [
+          {
+           "kind": "autoshape",
+           "name": "פחית 25",
+           "text": ""
+          },
+          {
+           "kind": "autoshape",
+           "name": "פחית 26",
+           "text": ""
+          }
+         ],
+         "kind": "group",
+         "name": "קבוצה 2"
+        },
+        {
+         "children": [
+          {
+           "kind": "autoshape",
+           "name": "פחית 23",
+           "text": ""
+          },
+          {
+           "kind": "autoshape",
+           "name": "פחית 24",
+           "text": ""
+          }
+         ],
+         "kind": "group",
+         "name": "קבוצה 2"
+        },
+        {
+         "children": [
+          {
+           "kind": "autoshape",
+           "name": "פחית 21",
+           "text": ""
+          },
+          {
+           "kind": "autoshape",
+           "name": "פחית 22",
+           "text": ""
+          }
+         ],
+         "kind": "group",
+         "name": "קבוצה 2"
+        },
+        {
+         "kind": "autoshape",
+         "name": "מלבן 18",
+         "text": "ריכוז מצע הולך וגדל"
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 9"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "kind": "autoshape",
+           "name": "פחית 75",
+           "text": ""
+          },
+          {
+           "kind": "autoshape",
+           "name": "פחית 76",
+           "text": ""
+          }
+         ],
+         "kind": "group",
+         "name": "קבוצה 2"
+        },
+        {
+         "children": [
+          {
+           "kind": "autoshape",
+           "name": "פחית 73",
+           "text": ""
+          },
+          {
+           "kind": "autoshape",
+           "name": "פחית 74",
+           "text": ""
+          }
+         ],
+         "kind": "group",
+         "name": "קבוצה 2"
+        },
+        {
+         "children": [
+          {
+           "kind": "autoshape",
+           "name": "פחית 71",
+           "text": ""
+          },
+          {
+           "kind": "autoshape",
+           "name": "פחית 72",
+           "text": ""
+          }
+         ],
+         "kind": "group",
+         "name": "קבוצה 2"
+        },
+        {
+         "children": [
+          {
+           "kind": "autoshape",
+           "name": "פחית 69",
+           "text": ""
+          },
+          {
+           "kind": "autoshape",
+           "name": "פחית 70",
+           "text": ""
+          }
+         ],
+         "kind": "group",
+         "name": "קבוצה 2"
+        },
+        {
+         "children": [
+          {
+           "kind": "autoshape",
+           "name": "פחית 67",
+           "text": ""
+          },
+          {
+           "kind": "autoshape",
+           "name": "פחית 68",
+           "text": ""
+          }
+         ],
+         "kind": "group",
+         "name": "קבוצה 2"
+        },
+        {
+         "children": [
+          {
+           "kind": "autoshape",
+           "name": "פחית 65",
+           "text": ""
+          },
+          {
+           "kind": "autoshape",
+           "name": "פחית 66",
+           "text": ""
+          }
+         ],
+         "kind": "group",
+         "name": "קבוצה 2"
+        },
+        {
+         "kind": "autoshape",
+         "name": "חץ שמאלה 62",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 55"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 1"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 97",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 98",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 95",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 96",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 93",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 94",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 91",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 92",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 89",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 90",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 87",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 88",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 77"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 119",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 120",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 117",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 118",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 115",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 116",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 113",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 114",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 111",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 112",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "פחית 109",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "פחית 110",
+         "text": ""
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 2"
+      },
+      {
+       "kind": "autoshape",
+       "name": "חץ שמאלה 106",
+       "text": ""
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 107",
+       "text": "ריכוז מצע הולך וגדל"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 99"
+    },
+    {
+     "kind": "autoshape",
+     "name": "חץ שמאלה 86",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 18",
+     "text": "ריכוז מצע הולך וגדל"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 13,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תיאור תוצאות הניסוי והסברן"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "21"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 14",
+     "text": "עד כה עסקנו במרכיבי הניסוי הבאים:\n  שאלת חקר\n  השערה\n  בסיס ביולוגי\n  משתנה בלתי תלוי ודרך שינויו\n  משתנה תלוי\n  דרך מדידת המשתנה התלוי\n  גורמים קבועים \n  בקרות\n  חזרות\n\n\nנניח שביצענו את הניסוי ויש בידינו תוצאות. כעת נעסוק במיומנויות הקשורות לתיאור התוצאות ולהסברן. המיומנויות הנדרשות הן:\nכתיבת טבלה לתיאור מהלך הניסוי ותוצאותיו\nבחירת סוג הגרף הנכון ותיאור התוצאות בגרף\nתיאור התוצאות\nהסבר התוצאות\n"
+    },
+    {
+     "children": [
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 26"
+      },
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 27"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 25"
+    },
+    {
+     "children": [
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 41"
+      },
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 42"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 25"
+    },
+    {
+     "children": [
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 44"
+      },
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 45"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 25"
+    },
+    {
+     "children": [
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 47"
+      },
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 48"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 25"
+    },
+    {
+     "children": [
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 50"
+      },
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 51"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 25"
+    },
+    {
+     "children": [
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 53"
+      },
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 54"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 25"
+    },
+    {
+     "children": [
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 56"
+      },
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 57"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 25"
+    },
+    {
+     "children": [
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 59"
+      },
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 60"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 25"
+    },
+    {
+     "children": [
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 62"
+      },
+      {
+       "kind": "connector",
+       "name": "מחבר ישר 63"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 25"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "בניית טבלה הכוללת את מערך הניסוי ותוצאותיו + שאלה 8"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "22"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 14",
+     "text": "לעתים קרובות בבחינה התלמידים נדרשים לבנות טבלה הכוללת את  מערך הניסוי ותוצאותיו. \nשימו לב לכללים הבאים:\nכותרת הטבלה: הטבלה צריכה להיות מלווה בכותרת מתאימה. כותרת הטבלה צריכה לכלול את המשתנה הבלתי תלוי ואת המשתנה התלוי או את דרך המדידה שלו.\nבידוד מרכיבי הניסוי בעמודות נפרדות: כל עמודה בטבלה מתארת גורם אחד בלבד בניסוי.\nציון יחידת המדידה בכותרת העמודות: יש להקפיד בכותרת כל אחת מן העמודות על ציון יחידת המדידה (0C, מ\"ל וכדומה).\nהכללת הגורמים הקבועים בטבלה או מתחתיה: אפשר לכלול את הגורמים הקבועים בטבלה. כל גורם בעמודה נפרדת, או לציין את רשימת הגורמים הקבועים במשפט \n    מתחת לטבלה.\n"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 7",
+     "text": "שאלה 8:\nבנו טבלה לתיאור מערך הניסוי שלנו ותוצאותיו. הקפידו על מתן כותרת מתאימה לטבלה."
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "תשובה:\nכותרת הטבלה: הקשר בין נפח מי החמצן (המצע) ובין גובה שכבת החמצן שנפלט (התוצר) "
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "23"
+    },
+    {
+     "cells": [
+      [
+       "מס' מבחנה",
+       "נפח מי החמצן (מ\"ל)",
+       "נפח תמיסת האנזים (מ\"ל)",
+       "נפח מים\nמ\"ל",
+       "נפח נוזלים סופי במבחנה",
+       "גובה שכבת בועות החמצן\n(בס\"מ)"
+      ],
+      [
+       "",
+       "",
+       "",
+       "",
+       "",
+       ""
+      ],
+      [
+       "",
+       "",
+       "",
+       "",
+       "",
+       ""
+      ],
+      [
+       "",
+       "",
+       "",
+       "",
+       "",
+       ""
+      ],
+      [
+       "",
+       "",
+       "",
+       "",
+       "",
+       ""
+      ],
+      [
+       "",
+       "",
+       "",
+       "",
+       "",
+       ""
+      ]
+     ],
+     "kind": "table",
+     "name": "טבלה 1"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "שאלה 8:\nבנו טבלה לתיאור מערך הניסוי שלנו ותוצאותיו. הקפידו על מתן כותרת מתאימה לטבלה."
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שאלה 9"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "24"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 7",
+     "text": "שאלה 9:\nבניסוי יש להוסיף מים בכל המבחנות עד לקבלת נפח סופי קבוע (12 מ\"ל). השלימו את נפח המים שיש להוסיף לכל אחת מהמבחנות, והסבירו מהי החשיבות של שמירת נפח נוזלים קבוע בכל המבחנות."
+    },
+    {
+     "cells": [
+      [
+       "מס' מבחנה",
+       "נפח מי החמצן (מ\"ל)",
+       "נפח תמיסת האנזים (מ\"ל)",
+       "נפח מים\nמ\"ל",
+       "נפח נוזלים סופי במבחנה",
+       "גובה שכבת בועות החמצן\n(בס\"מ)"
+      ],
+      [
+       "1",
+       "0",
+       "2",
+       "",
+       "12",
+       "0"
+      ],
+      [
+       "2",
+       "2",
+       "2",
+       "",
+       "12",
+       "0.5"
+      ],
+      [
+       "3",
+       "4",
+       "2",
+       "",
+       "12",
+       "1"
+      ],
+      [
+       "4",
+       "6",
+       "2",
+       "",
+       "12",
+       "1.3"
+      ],
+      [
+       "5",
+       "8",
+       "2",
+       "",
+       "12",
+       "1.5"
+      ]
+     ],
+     "kind": "table",
+     "name": "טבלה 1"
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 4",
+     "text": "*התוצאות נקבעו \n באופן שרירותי \n רק לצורך הלימוד."
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 7,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "תשובה:\n\n\n\n\n\n\n\n\n\n\n\n\n\nנפח הנוזלים הכולל משפיע על ריכוז המצע (ככל שהנפח גדול המצע מהול יותר, כלומר ריכוזו נמוך יותר). לכן, על מנת שריכוז המצע יהיה קבוע, יש להקפיד על נפח נוזלים קבוע במבחנה.\n"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה: חשיבות השמירה על גורמים קבועים בניסוי"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "25"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 7",
+     "text": "שאלה 9:\nבניסוי יש להוסיף מים בכל המבחנות עד לקבלת נפח סופי קבוע (12 מ\"ל). השלימו את נפח המים שיש להוסיף לכל אחת מהמבחנות, והסבירו מהי החשיבות של שמירת נפח נוזלים קבוע בכל המבחנות."
+    },
+    {
+     "cells": [
+      [
+       "מס' מבחנה",
+       "נפח מי החמצן (מ\"ל)",
+       "נפח תמיסת האנזים (מ\"ל)",
+       "נפח מים\nמ\"ל",
+       "נפח נוזלים סופי במבחנה",
+       "גובה שכבת בועות החמצן\n(בס\"מ)"
+      ],
+      [
+       "1",
+       "0",
+       "2",
+       "10",
+       "12",
+       "0"
+      ],
+      [
+       "2",
+       "2",
+       "2",
+       "8",
+       "12",
+       "0.5"
+      ],
+      [
+       "3",
+       "4",
+       "2",
+       "6",
+       "12",
+       "1"
+      ],
+      [
+       "4",
+       "6",
+       "2",
+       "4",
+       "12",
+       "1.3"
+      ],
+      [
+       "5",
+       "8",
+       "2",
+       "2",
+       "12",
+       "1.5"
+      ]
+     ],
+     "kind": "table",
+     "name": "טבלה 1"
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 4",
+     "text": "*התוצאות נקבעו \n באופן שרירותי \n רק לצורך הלימוד."
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שרטוט גרף המתאר את תוצאות הניסוי: בחירת סוג הגרף"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "26"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 14",
+     "text": "בחירת סוג הגרף (עקום או עמודות)\nסוג הגרף נקבע לפי המשתנה הבלתי תלוי (בהנחה שהמשתנה התלוי בניסוי רציף):\nעבור משתנה בלתי תלוי רציף: עקום. [ובלבד שיש די נתונים (מקובל: מינימום 3),\n ויש מגמה שעל פיה אפשר לשרטט את הגרף].\nעבור משתנה בלתי תלוי בדיד: עמודות.\n\nדוגמאות למשתנים רציפים: טמפרטורה, ריכוז אנזים, ריכוז מצע, זמן. \nהסבר \"לא פורמלי\": מהו משתנה רציף ומשתנה בדיד:\nמשתנה רציף: בכל מבחנות הניסוי ישנו אותו הגורם, לדוגמה, טמפרטורה, ורק הערך המספרי שלו משתנה. בין הערכים שנמדדו יכול להימצא ערך ביניים.\nמשתנה בדיד: הגורם עצמו שונה בין המבחנות. \nלדוגמה: ניסוי שבו נבדק קצב פעילות האנזים קטלאז, שמוצה מירקות שונים (עגבנייה, גזר, מלפפון) – המשותף בין המבחנות הוא שהמשתנה הבלתי תלוי הוא ירק, ואולם סוג הירק שונה.\n\n\n"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 7,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שרטוט גרף המתאר את תוצאות הניסוי: שרטוט הגרף"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "27"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 14",
+     "text": "הגדרת הצירים\nציר X מתאר את המשתנה הבלתי תלוי (הגורם שאת השפעתו אנו בודקים).\nציר Y מתאר את המשתנה התלוי (התוצאה). \nהקפידו על מתן כותרות לצירים בצירוף יחידת המדידה.\nהקפידו על קנה מידה אחיד בכל ציר. (בכל ציר בנפרד. שניהם אינם חייבים להיות באותו קנה המידה).\nשימו       לטעות נפוצה!!!\nבגרפים שהמשתנה הבלתי תלוי בהם רציף, תלמידים אינם מקפידים על קנה מידה אחיד \nבציר X וקובעים אותו על פי ערכי המשתנה הבלתי תלוי שהיה במבחנות הניסוי,\n או בציר Y, לפי התוצאות שהתקבלו במבחנות השונות.\nלדוגמה:\n\n\n\n\n\n\n\n\nכותרת הגרף\nהיא כמו כותרת הטבלה. היא צריכה לכלול את המשתנה הבלתי תלוי ואת המשתנה התלוי\n(או את דרך המדידה שלו).\n"
+    },
+    {
+     "kind": "autoshape",
+     "name": "לב 6",
+     "text": ""
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "kind": "connector",
+           "name": "מחבר חץ ישר 2"
+          },
+          {
+           "kind": "connector",
+           "name": "מחבר חץ ישר 8"
+          },
+          {
+           "kind": "autoshape",
+           "name": "מלבן 9",
+           "text": "5"
+          },
+          {
+           "kind": "autoshape",
+           "name": "מלבן 12",
+           "text": "12"
+          },
+          {
+           "kind": "autoshape",
+           "name": "מלבן 13",
+           "text": "25"
+          },
+          {
+           "kind": "autoshape",
+           "name": "מלבן 15",
+           "text": "ריכוז מצע\n(יחידות שרירותיות)"
+          },
+          {
+           "kind": "autoshape",
+           "name": "מלבן 16",
+           "text": "40"
+          }
+         ],
+         "kind": "group",
+         "name": "קבוצה 11"
+        },
+        {
+         "kind": "connector",
+         "name": "מחבר ישר 19"
+        },
+        {
+         "kind": "connector",
+         "name": "מחבר ישר 21"
+        },
+        {
+         "kind": "connector",
+         "name": "מחבר ישר 23"
+        },
+        {
+         "kind": "connector",
+         "name": "מחבר ישר 24"
+        },
+        {
+         "kind": "connector",
+         "name": "מחבר ישר 25"
+        },
+        {
+         "kind": "connector",
+         "name": "מחבר ישר 26"
+        },
+        {
+         "kind": "autoshape",
+         "name": "סוגר מסולסל שמאלי 27",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "מלבן 28",
+         "text": "הפרשים\nלא אחידים"
+        },
+        {
+         "kind": "autoshape",
+         "name": "מלבן 29",
+         "text": "5"
+        },
+        {
+         "kind": "autoshape",
+         "name": "מלבן 30",
+         "text": "7"
+        },
+        {
+         "kind": "autoshape",
+         "name": "סוגר מסולסל שמאלי 31",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "סוגר מסולסל שמאלי 32",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "סוגר מסולסל שמאלי 33",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "מלבן 35",
+         "text": "13"
+        },
+        {
+         "kind": "autoshape",
+         "name": "מלבן 36",
+         "text": "15"
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 37"
+      },
+      {
+       "kind": "autoshape",
+       "name": "כפל 39",
+       "text": ""
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 42",
+       "text": "לא נכון"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 43"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "kind": "connector",
+           "name": "מחבר חץ ישר 64"
+          },
+          {
+           "kind": "connector",
+           "name": "מחבר חץ ישר 65"
+          },
+          {
+           "kind": "autoshape",
+           "name": "מלבן 66",
+           "text": "10"
+          },
+          {
+           "kind": "autoshape",
+           "name": "מלבן 67",
+           "text": "20"
+          },
+          {
+           "kind": "autoshape",
+           "name": "מלבן 68",
+           "text": "30"
+          },
+          {
+           "kind": "autoshape",
+           "name": "מלבן 69",
+           "text": "ריכוז מצע\n(יחידות שרירותיות)"
+          },
+          {
+           "kind": "autoshape",
+           "name": "מלבן 70",
+           "text": "40"
+          }
+         ],
+         "kind": "group",
+         "name": "קבוצה 48"
+        },
+        {
+         "kind": "connector",
+         "name": "מחבר ישר 49"
+        },
+        {
+         "kind": "connector",
+         "name": "מחבר ישר 50"
+        },
+        {
+         "kind": "connector",
+         "name": "מחבר ישר 51"
+        },
+        {
+         "kind": "connector",
+         "name": "מחבר ישר 52"
+        },
+        {
+         "kind": "connector",
+         "name": "מחבר ישר 53"
+        },
+        {
+         "kind": "connector",
+         "name": "מחבר ישר 54"
+        },
+        {
+         "kind": "autoshape",
+         "name": "סוגר מסולסל שמאלי 55",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "מלבן 56",
+         "text": "הפרשים\nאחידים"
+        },
+        {
+         "kind": "autoshape",
+         "name": "מלבן 57",
+         "text": "10"
+        },
+        {
+         "kind": "autoshape",
+         "name": "מלבן 58",
+         "text": "10"
+        },
+        {
+         "kind": "autoshape",
+         "name": "סוגר מסולסל שמאלי 59",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "סוגר מסולסל שמאלי 60",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "סוגר מסולסל שמאלי 61",
+         "text": ""
+        },
+        {
+         "kind": "autoshape",
+         "name": "מלבן 62",
+         "text": "10"
+        },
+        {
+         "kind": "autoshape",
+         "name": "מלבן 63",
+         "text": "10"
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 45"
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 47",
+       "text": "נכון"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 44"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שאלה 10: תיאור התוצאות בגרף"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "28"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 7",
+     "text": "שאלה 10:\nא. מהו סוג הגרף המתאים לתיאור תוצאות הניסוי: עקום או עמודות? נמקו.\nב. שרטטו את הגרף.\n"
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 4",
+     "text": "*התוצאות נקבעו \n באופן שרירותי \n רק לצורך הלימוד."
+    },
+    {
+     "cells": [
+      [
+       "מס' מבחנה",
+       "נפח מי החמצן (מ\"ל)",
+       "נפח תמיסת האנזים (מ\"ל)",
+       "נפח מים\nמ\"ל",
+       "נפח נוזלים סופי במבחנה",
+       "גובה שכבת בועות החמצן\n(בס\"מ)"
+      ],
+      [
+       "1",
+       "0",
+       "2",
+       "10",
+       "12",
+       "0"
+      ],
+      [
+       "2",
+       "2",
+       "2",
+       "8",
+       "12",
+       "0.5"
+      ],
+      [
+       "3",
+       "4",
+       "2",
+       "6",
+       "12",
+       "1"
+      ],
+      [
+       "4",
+       "6",
+       "2",
+       "4",
+       "12",
+       "1.3"
+      ],
+      [
+       "5",
+       "8",
+       "2",
+       "2",
+       "12",
+       "1.5"
+      ]
+     ],
+     "kind": "table",
+     "name": "טבלה 8"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 7,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "תשובה:\nא. עקום. נימוק: המשתנה הבלתי תלוי – ריכוז המצע, הוא משתנה רציף."
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "29"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 7",
+     "text": "שאלה 10:\nא. מהו סוג הגרף המתאים לתיאור תוצאות הניסוי: עקום או עמודות? נמקו.\nב. שרטטו את הגרף."
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 8",
+     "text": "נכון יותר לחשב את ריכוז המצע בכל אחת מן המבחנות, ולהציב את ריכוז המצע בציר X ולא את נפח תמיסת המצע שהוספה למבחנה. \nבשלב זה נסתפק בהצבת נפח תמיסת המצע.\nבחישוב ריכוזים נעסוק במצגת מיוחדת העוסקת בסוגי החישובים הנדרשים בבחינת המעבדה. "
+    },
+    {
+     "kind": "chart",
+     "name": "תרשים 8"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שאלה 11: תיאור הגרף= תיאור התוצאות"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "30"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "שאלה 11:\nתארו את התוצאות/את הגרף.\nאו: מהו הקשר בין נפח תמיסת המצע ובין נפח החמצן שנפלט.\n"
+    },
+    {
+     "children": [
+      {
+       "kind": "autoshape",
+       "name": "לב 9",
+       "text": ""
+      },
+      {
+       "kind": "autoshape",
+       "name": "מלבן 10",
+       "text": "שימו       !!!\nיש לתאר את התוצאות באובייקטיביות, בלא הסברים.\nאם הגרף מורכב מכמה קטעים בעלי שיפועים שונים יש \n     לתאר כל קטע בנפרד ולציין את ערכי הקצה שלו.\nתיאור גרף טוב הוא כזה שאפשר לצייר על פיו את צורת \n    הגרף הכללית.\n"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 8"
+    },
+    {
+     "kind": "chart",
+     "name": "תרשים 11"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "31"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "שאלה 11:\nתארו את התוצאות/את הגרף.\nאו מהו הקשר בין נפח תמיסת המצע ובין נפח החמצן שנפלט.\n"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "תשובה:\nככל שנפח מי החמצן עולה מ־0 עד 8 מ\"ל, נפח החמצן שנפלט עולה מ־0 עד 1.5 מ\"ל."
+    },
+    {
+     "kind": "chart",
+     "name": "תרשים 9"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שאלה 12: הסבר התוצאות"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "32"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "שאלה 21:\nהסבירו את התוצאות שהתקבלו."
+    },
+    {
+     "kind": "chart",
+     "name": "תרשים 7"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "33"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "שאלה 12:\nהסבירו את התוצאות שהתקבלו."
+    },
+    {
+     "kind": "chart",
+     "name": "תרשים 7"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "תשובה:\nככל שנפח תמיסת מי החמצן שהוספה גדול יותר כך ריכוזם במבחנה גדול יותר. ככל שריכוז המצע (מי החמצן) עולה כך יש התנגשויות אנזים־מצע רבות יותר ולכן קצב הפירוק עולה."
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "אינטרפולציה ואקסטרפולציה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "34"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "כאשר מתקבלות תוצאות שמראות על קשר ברור בין המשתנה הבלתי תלוי ובין המשתנה התלוי, כפי שמצאנו בניסוי שלנו (ככל שהמשתנה הבלתי תלוי עולה כך המשתנה התלוי עולה), אנו יכולים לחבר בין הנקודות בגרף, ולהניח שזו הייתה מגמת התוצאות המתקבלת גם בנפחי תמיסת מצע שלא בדקנו.\nאפשר למצוא תוצאות משוערות שהיינו מקבלים אילו היו נכללות בניסוי גם מבחנות עם נפחי מצע שונים מאלו שנבדקו, ע\"י הורדת אנכים מנקודה מסוימת בגרף לציר X ולציר Y.\nפעולה זו נקראת אינטרפולציה.\nלעתים, כאשר יש מקום להניח שמגמת הגרף תימשך בלא שינוי גם מעל לתחום שנבדק, אפשר למצוא את התוצאות המשוערות בערכים הגבוהים מן הטווח שנבדק ע\"י הארכת הגרף באותה המגמה והורדת אנכים לצירים. פעולה זו נקראת אקסטרפולציה. במקרה שלנו, אי אפשר להניח בוודאות שמגמת הגרף תימשך בלא שינוי, כי בריכוזי מצע גבוהים מאוד צפוי שהגרף יתיישר, ולכן לא נכון לבצע אקסטרפולציה במקרה זה. "
+    },
+    {
+     "children": [
+      {
+       "kind": "chart",
+       "name": "תרשים 7"
+      },
+      {
+       "kind": "connector",
+       "name": "מחבר חץ ישר 31"
+      },
+      {
+       "kind": "connector",
+       "name": "מחבר חץ ישר 36"
+      },
+      {
+       "children": [
+        {
+         "kind": "autoshape",
+         "name": "מלבן 50",
+         "text": "אינטרפולציה"
+        },
+        {
+         "kind": "autoshape",
+         "name": "מלבן 51",
+         "text": "אם היינו בודקים נפח מצע של 3 מ\"ל סביר שנפח החמצן שנפלט היה 0.7 מ\"ל"
+        }
+       ],
+       "kind": "group",
+       "name": "קבוצה 49"
+      }
+     ],
+     "kind": "group",
+     "name": "קבוצה 52"
+    },
+    {
+     "kind": "connector",
+     "name": "מחבר חץ ישר 2"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שאלה 13: מדוע שיטת המדידה מתאימה למדידת המשתנה התלוי"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "35"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "שאלה 13:\nמדוע שיטת המדידה שנבחרה (מדידת גובה שכבת בועות החמצן) מתאימה לבדיקת קצב פעילות האנזים קטלאז?"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "36"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "שאלה 13:\nמדוע שיטת המדידה שנבחרה (מדידת גובה שכבת בועות החמצן) מתאימה לבדיקת קצב פעילות האנזים קטלאז?"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "תשובה:\nהאנזים קטלאז מפרק מי חמצן למים וחמצן. תוצר התהליך, החמצן,  נפלט בתור בועות גז. \nככל שקצב הפירוק גדול כך ייפלטו יותר בועות חמצן."
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שאלה 14: תכנון ניסוי שהמשתנה הבלתי תלוי בו בדיד"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "37"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "שאלה 14:\nמי חמצן נוצרים בתהליכים מטבוליים בתאי אורגניזמים רבים. מי החמצן הם חומר רעיל העלול להזיק לתאים, ולכן בתאים של אורגניזמים רבים מצוי האנזים קטלאז, המזרז פירוק מי חמצן. פעילות האנזים מונעת את הצטברות מי החמצן. \nידוע שגם בירקות שונים (עגבנייה, גזר, פלפל) יש אנזים קטלאז. ברצוננו להשוות את עצמת פעילות האנזים בירקות האלה. אפשר להכין מיצוי מירקות אלו ולהוסיף למיצוי מי חמצן.\nתכננו את מערך הניסוי בעזרת מילוי הטבלה הבאה:\n"
+    },
+    {
+     "cells": [
+      [
+       "המשתנה הבלתי תלוי",
+       "\n"
+      ],
+      [
+       "דרך שינוי המשתנה הבלתי תלוי",
+       "\n"
+      ],
+      [
+       "המשתנה התלוי",
+       "\n"
+      ],
+      [
+       "דרך מדידת המשתנה התלוי",
+       "\n"
+      ],
+      [
+       "הגורמים הקבועים בניסוי",
+       "\n"
+      ],
+      [
+       "הבקרות בניסוי",
+       "\n"
+      ],
+      [
+       "סוג הגרף המתאים לתיאור תוצאות הניסוי + נימוק",
+       ""
+      ]
+     ],
+     "kind": "table",
+     "name": "טבלה 8"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "תשובה:\n"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "38"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "שאלה 14:\nמי חמצן נוצרים בתהליכים מטבוליים בתאי אורגניזמים רבים. מי החמצן הם חומר רעיל העלול להזיק לתאים, ולכן בתאים של אורגניזמים רבים מצוי האנזים קטלאז, המזרז פירוק מי חמצן. פעילות האנזים מונעת את הצטברות מי החמצן. \nידוע שגם בירקות שונים (עגבנייה, גזר, פלפל) יש אנזים קטלאז. ברצוננו להשוות את עצמת פעילות האנזים בירקות האלה. אפשר להכין מיצוי מירקות אלו ולהוסיף למיצוי מי חמצן.\nתכננו את מערך הניסוי בעזרת מילוי הטבלה הבאה:\n"
+    },
+    {
+     "cells": [
+      [
+       "המשתנה הבלתי תלוי",
+       "סוג הירק (עגבנייה, מלפפון, פלפל)"
+      ],
+      [
+       "דרך שינוי המשתנה הבלתי תלוי",
+       "הכנת מיצוי מירקות אלו."
+      ],
+      [
+       "המשתנה התלוי",
+       "קצב פירוק מי חמצן ע\"י האנזים המצוי במיצוי."
+      ],
+      [
+       "דרך מדידת המשתנה התלוי",
+       "מדידת גובה שכבת בועות החמצן הנוצרת במבחנה."
+      ],
+      [
+       "הגורמים הקבועים בניסוי",
+       "ריכוז המיצוי (הנקבע על פי משקל רקמת הירק שממנה הוכן המיצוי, וכמות המים שהוספה לצורך הכנת המיצוי) נפח המיצוי שהוסף למבחנות, הטמפרטורה במהלך הניסוי, ה־pH במבחנות, משך התהליך, ריכוז ונפח תמיסת מי החמצן שהוספה למבחנות."
+      ],
+      [
+       "הבקרות בניסוי",
+       "בקרה פנימית (כל אחת מן המבחנות בהשוואה לאחרות), בקרה בלי הגורם הנבדק (מבחנה בלי מיצוי)."
+      ],
+      [
+       "סוג הגרף המתאים לתיאור תוצאות הניסוי + נימוק",
+       "עמודות. נימוק: המשתנה הבלתי תלוי (סוג הירק) הוא משתנה בדיד."
+      ]
+     ],
+     "kind": "table",
+     "name": "טבלה 1"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 10,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "ניסויים כמותיים וניסויים איכותיים"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "39"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "עד כה עסקנו בניסויים כמותיים."
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 1",
+     "text": "ניסויים שבהם\nהמשתנה הבלתי תלוי רציף,\nכמו הניסוי לבדיקת השפעת ריכוז המצע על קצב פעילות הקטלאז. "
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 2",
+     "text": "ניסויים שבהם המשתנה הבלתי תלוי בדיד,\nכמו הניסוי להשוואת קצב פעילות הקטלאז בירקות שונים."
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 4",
+     "text": "\nישנם גם ניסויים איכותיים.\nניסוי איכותי הוא ניסוי שבו מתארים את המשתנה התלוי.\nלדוגמה, ניסוי הבודק אם בתפוח אדמה יש אנזים (קטלאז) המפרק מי חמצן.\nהשאלה הבאה עוסקת בניסוי איכותי."
+    },
+    {
+     "kind": "autoshape",
+     "name": "מלבן 8",
+     "text": "ניסוי כמותי הוא ניסוי שבו מודדים את המשתנה התלוי.\nיש שני סוגים של ניסויים כמותיים, הנבדלים זה מזה בטיב המשתנה הבלתי תלוי:"
+    },
+    {
+     "kind": "autoshape",
+     "name": "חץ למטה 9",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "חץ למטה 11",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "שאלה 15: תכנון ניסוי איכותי"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "40"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "שאלה 15: \nכשמוסיפים למי חמצן חתיכת תפוח אדמה הם מתפרקים למים ולחמצן הנפלט בתור בועות גז. תכננו ניסוי לבדיקת השאלה: \"מה גורם לפירוק מי חמצן בנוכחות רקמת תפוח אדמה?\" בעזרת מילוי הטבלה."
+    },
+    {
+     "cells": [
+      [
+       "השערה",
+       "\n"
+      ],
+      [
+       "הבסיס הביולוגי להשערה",
+       "\n"
+      ],
+      [
+       "המשתנה הבלתי תלוי",
+       "\n"
+      ],
+      [
+       "דרך שינוי המשתנה הבלתי תלוי",
+       "\n"
+      ],
+      [
+       "המשתנה התלוי",
+       "\n"
+      ],
+      [
+       "דרך מדידת המשתנה התלוי",
+       "\n"
+      ],
+      [
+       "הגורמים הקבועים בניסוי",
+       "\n"
+      ],
+      [
+       "הבקרה בניסוי",
+       "\n"
+      ]
+     ],
+     "kind": "table",
+     "name": "טבלה 8"
+    }
+   ]
+  },
+  {
+   "layout": "1_Title Slide",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "תשובה:\n"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "כותרת 5",
+     "text": "תשובה"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 8",
+     "text": "41"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 6",
+     "text": "שאלה 15:"
+    },
+    {
+     "cells": [
+      [
+       "השערה",
+       "בתפוח האדמה יש אנזים המזרז פירוק מי חמצן.\n"
+      ],
+      [
+       "הבסיס הביולוגי להשערה",
+       "מי חמצן נוצרים בתהליכים מטבוליים בתאי אורגניזמים רבים.\nמי החמצן הם חומר רעיל העלול להזיק לתאים. ידוע שבתאי אורגניזמים רבים, כולל צמחים, מצוי האנזים קטלאז, המזרז פירוק \nמי חמצן. פעילות האנזים מונעת את הצטברות מי החמצן. "
+      ],
+      [
+       "המשתנה הבלתי תלוי",
+       "הירק (תפוח אדמה)."
+      ],
+      [
+       "דרך שינוי המשתנה הבלתי תלוי",
+       "הכנת מיצוי מתפוח אדמה."
+      ],
+      [
+       "המשתנה התלוי",
+       "פירוק מי חמצן."
+      ],
+      [
+       "דרך מדידת המשתנה התלוי",
+       "תצפית: אם נפלטות בועות חמצן."
+      ],
+      [
+       "הגורמים הקבועים בניסוי",
+       "הטמפרטורה במהלך הניסוי, ה־pH במבחנות, משך התהליך, \nריכוז ונפח תמיסת מי החמצן שהוספה למבחנות."
+      ],
+      [
+       "הבקרה בניסוי",
+       "בקרה בלי הגורם הנבדק (מבחנה בלי מיצוי, רק עם מי חמצן).\nבקרה נוספת: מי חמצן ורקמת תפוח אדמה שהורתחה."
+      ]
+     ],
+     "kind": "table",
+     "name": "טבלה 8"
+    }
+   ]
+  }
+ ]
+}

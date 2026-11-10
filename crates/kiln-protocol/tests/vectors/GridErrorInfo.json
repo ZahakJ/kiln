@@ -1,0 +1,26 @@
+{
+  "type": "GridErrorInfo",
+  "format": {
+    "TYPENAME": "GridErrorInfo"
+  },
+  "values": [
+    {
+      "row": 1,
+      "col": 1,
+      "cell": "B2",
+      "formula": "=1/0",
+      "error": "#DIV/0!",
+      "title": "Divide by Zero Error",
+      "help": "The formula divides by zero or an empty cell."
+    },
+    {
+      "row": 0,
+      "col": 0,
+      "cell": "",
+      "formula": "",
+      "error": "",
+      "title": "",
+      "help": ""
+    }
+  ]
+}

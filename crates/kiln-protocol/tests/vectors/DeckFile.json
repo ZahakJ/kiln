@@ -1,0 +1,21 @@
+{
+  "type": "DeckFile",
+  "format": {
+    "TYPENAME": "DeckFile"
+  },
+  "values": [
+    {
+      "name": "Slide1.png",
+      "mime": "image/png",
+      "bytes": [
+        137,
+        80
+      ]
+    },
+    {
+      "name": "",
+      "mime": "",
+      "bytes": []
+    }
+  ]
+}

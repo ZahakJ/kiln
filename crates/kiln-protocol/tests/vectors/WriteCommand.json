@@ -1,0 +1,1711 @@
+{
+  "type": "WriteCommand",
+  "format": {
+    "TYPENAME": "WriteCommand"
+  },
+  "values": [
+    {
+      "InsertText": {
+        "text": "Kiln\nWrite"
+      }
+    },
+    "DeleteBackward",
+    {
+      "MoveCaret": {
+        "motion": "WordBackward",
+        "extend": true
+      }
+    },
+    {
+      "SelectTo": {
+        "pos": {
+          "block": 300,
+          "offset": 70000
+        },
+        "extend": false
+      }
+    },
+    "DeleteForward",
+    "DeleteWordBackward",
+    "DeleteWordForward",
+    "SelectAll",
+    {
+      "SelectAt": {
+        "point": {
+          "x": 412.5,
+          "y": -3.25
+        },
+        "extend": true,
+        "unit": "Word"
+      }
+    },
+    {
+      "SetComposition": {
+        "text": "にほんご",
+        "caret": 2
+      }
+    },
+    {
+      "CommitComposition": {
+        "text": "日本語"
+      }
+    },
+    "CancelComposition",
+    {
+      "Tab": {
+        "back": true
+      }
+    },
+    "LineBreak",
+    "ShowMarks",
+    "ParagraphLeftToRight",
+    "ParagraphRightToLeft",
+    "ClearParagraphFormatting",
+    "ClearCharacterFormatting",
+    "MoveParagraphUp",
+    "MoveParagraphDown",
+    "Promote",
+    "Demote",
+    {
+      "ParagraphShading": {
+        "color": "FFF2CC"
+      }
+    },
+    {
+      "ParagraphBorders": {
+        "preset": "Bottom"
+      }
+    },
+    {
+      "SetParagraph": {
+        "format": {
+          "alignment": "Justify",
+          "indent_left": 36.0,
+          "indent_right": null,
+          "first_line": -18.0,
+          "space_before": null,
+          "space_after": 8.0,
+          "line_multiple": 1.08,
+          "line_exact": null,
+          "line_at_least": null,
+          "keep_next": true,
+          "keep_lines": null,
+          "widow_control": null,
+          "page_break_before": null,
+          "contextual_spacing": null,
+          "outline_level": 0,
+          "rtl": null
+        }
+      }
+    },
+    {
+      "SetFont": {
+        "format": {
+          "family": "Fraunces",
+          "size": 10.5,
+          "bold": true,
+          "italic": null,
+          "underline": "Wave",
+          "underline_none": false,
+          "underline_color": null,
+          "color": "3159C6",
+          "strike": null,
+          "double_strike": null,
+          "superscript": null,
+          "subscript": null,
+          "small_caps": null,
+          "all_caps": null,
+          "hidden": null,
+          "spacing": -0.5,
+          "scale": 120,
+          "position": null,
+          "kerning": null
+        }
+      }
+    },
+    {
+      "SetTabs": {
+        "tabs": [
+          {
+            "pos": 216.5,
+            "align": "Decimal",
+            "leader": "Dot"
+          },
+          {
+            "pos": 216.5,
+            "align": "Decimal",
+            "leader": "Dot"
+          }
+        ]
+      }
+    },
+    "SmallCaps",
+    {
+      "UnderlineStyle": {
+        "style": "Double"
+      }
+    },
+    {
+      "ApplyStyle": {
+        "style_id": "IntenseQuote"
+      }
+    },
+    "StyleNormal",
+    "StyleHeading1",
+    "StyleHeading2",
+    "StyleHeading3",
+    "StyleTitle",
+    {
+      "UpdateStyleFromSelection": {
+        "style_id": null
+      }
+    },
+    {
+      "NewStyleFromSelection": {
+        "name": "Pull Quote"
+      }
+    },
+    {
+      "ModifyStyle": {
+        "style_id": "Heading1",
+        "spec": {
+          "name": "Heading 1",
+          "based_on": "Normal",
+          "next": "Normal",
+          "font": {
+            "family": "Fraunces",
+            "size": 10.5,
+            "bold": true,
+            "italic": null,
+            "underline": "Wave",
+            "underline_none": false,
+            "underline_color": null,
+            "color": "3159C6",
+            "strike": null,
+            "double_strike": null,
+            "superscript": null,
+            "subscript": null,
+            "small_caps": null,
+            "all_caps": null,
+            "hidden": null,
+            "spacing": -0.5,
+            "scale": 120,
+            "position": null,
+            "kerning": null
+          },
+          "paragraph": {
+            "alignment": "Justify",
+            "indent_left": 36.0,
+            "indent_right": null,
+            "first_line": -18.0,
+            "space_before": null,
+            "space_after": 8.0,
+            "line_multiple": 1.08,
+            "line_exact": null,
+            "line_at_least": null,
+            "keep_next": true,
+            "keep_lines": null,
+            "widow_control": null,
+            "page_break_before": null,
+            "contextual_spacing": null,
+            "outline_level": 0,
+            "rtl": null
+          },
+          "quick": true
+        }
+      }
+    },
+    {
+      "ListLevel": {
+        "level": 8
+      }
+    },
+    "RestartNumbering",
+    "ContinueNumbering",
+    {
+      "SetNumberingValue": {
+        "value": 300
+      }
+    },
+    "PageBreak",
+    "ColumnBreak",
+    "BlankPage",
+    {
+      "SectionBreak": {
+        "kind": "OddPage"
+      }
+    },
+    {
+      "Columns": {
+        "count": 3
+      }
+    },
+    {
+      "IndentLeft": {
+        "cm": 1.27
+      }
+    },
+    {
+      "IndentRight": {
+        "cm": 0.0
+      }
+    },
+    {
+      "SpacingBefore": {
+        "pt": 12.0
+      }
+    },
+    {
+      "SpacingAfter": {
+        "pt": 6.0
+      }
+    },
+    {
+      "PageSetup": {
+        "setup": {
+          "top": 72.0,
+          "bottom": null,
+          "left": 90.0,
+          "right": null,
+          "gutter": null,
+          "header": null,
+          "footer": null,
+          "width": 595.3,
+          "height": 841.9,
+          "landscape": false,
+          "columns": 2,
+          "column_space": null,
+          "vertical_align": "Center"
+        }
+      }
+    },
+    "EditHeader",
+    "EditFooter",
+    "CloseHeaderFooter",
+    "DifferentFirstPage",
+    "DifferentOddEven",
+    "LinkToPrevious",
+    {
+      "PageNumber": {
+        "position": "BottomCenter"
+      }
+    },
+    {
+      "InsertLink": {
+        "url": "https://zahakj.github.io/kiln/",
+        "text": "Kiln",
+        "tooltip": null
+      }
+    },
+    "RemoveLink",
+    {
+      "InsertBookmark": {
+        "name": "Résumé_2"
+      }
+    },
+    {
+      "InsertDateTime": {
+        "format": "d MMMM yyyy",
+        "as_field": true
+      }
+    },
+    {
+      "InsertField": {
+        "code": "NUMPAGES \\* Arabic"
+      }
+    },
+    "UpdateFields",
+    {
+      "DropCap": {
+        "placement": "InMargin"
+      }
+    },
+    {
+      "InsertPicture": {
+        "name": "kiln.png",
+        "bytes": [
+          137,
+          80,
+          78,
+          71,
+          0,
+          255
+        ],
+        "floating": false
+      }
+    },
+    {
+      "InsertTable": {
+        "rows": 3,
+        "cols": 4,
+        "autofit": "Window"
+      }
+    },
+    {
+      "ConvertTextToTable": {
+        "separator": "Tabs"
+      }
+    },
+    {
+      "TableAutofit": {
+        "mode": "Contents"
+      }
+    },
+    {
+      "TableAlign": {
+        "align": "Center"
+      }
+    },
+    "TableSplit",
+    {
+      "TableSelect": {
+        "what": "Column"
+      }
+    },
+    {
+      "TableCellSize": {
+        "width": 120.5,
+        "height": null
+      }
+    },
+    {
+      "FindNext": {
+        "query": {
+          "text": "<(K)iln>",
+          "match_case": true,
+          "whole_word": false,
+          "wildcards": true,
+          "regex": false
+        },
+        "backward": true
+      }
+    },
+    {
+      "Replace": {
+        "query": {
+          "text": "<(K)iln>",
+          "match_case": true,
+          "whole_word": false,
+          "wildcards": true,
+          "regex": false
+        },
+        "replacement": "\\1ln"
+      }
+    },
+    {
+      "ReplaceAll": {
+        "query": {
+          "text": "",
+          "match_case": false,
+          "whole_word": false,
+          "wildcards": false,
+          "regex": false
+        },
+        "replacement": ""
+      }
+    },
+    {
+      "GoTo": {
+        "target": {
+          "Page": {
+            "number": -2,
+            "relative": true
+          }
+        }
+      }
+    },
+    {
+      "NewComment": {
+        "text": "Is «cone 10» right? 🔥"
+      }
+    },
+    {
+      "ReplyComment": {
+        "parent": 300,
+        "text": "Yes."
+      }
+    },
+    {
+      "EditComment": {
+        "id": 300,
+        "text": ""
+      }
+    },
+    {
+      "ResolveComment": {
+        "id": 300,
+        "resolved": true
+      }
+    },
+    {
+      "DeleteComment": {
+        "id": 70000
+      }
+    },
+    "DeleteAllComments",
+    {
+      "SelectComment": {
+        "id": 300
+      }
+    },
+    "TrackChanges",
+    {
+      "SetReviewer": {
+        "name": "Zoë Ångström"
+      }
+    },
+    {
+      "MarkupMode": {
+        "mode": "Original"
+      }
+    },
+    {
+      "ShowMarkup": {
+        "kind": "Formatting"
+      }
+    },
+    {
+      "ShowReviewer": {
+        "name": "Zoë",
+        "show": false
+      }
+    },
+    {
+      "ShowReviewer": {
+        "name": null,
+        "show": true
+      }
+    },
+    {
+      "AcceptChange": {
+        "scope": "AllAndStop"
+      }
+    },
+    {
+      "RejectChange": {
+        "scope": "CurrentAndNext"
+      }
+    },
+    {
+      "ResolveRevision": {
+        "target": {
+          "kind": "Deleted",
+          "node": 4097,
+          "start": 3,
+          "end": 200
+        },
+        "accept": false
+      }
+    },
+    "PreviousChange",
+    "NextChange",
+    {
+      "InsertToc": {
+        "spec": {
+          "levels": 9,
+          "hyperlinks": false,
+          "page_numbers": true,
+          "right_align": false,
+          "leader": "Underscore",
+          "title": null
+        }
+      }
+    },
+    "InsertQuickToc",
+    "RemoveToc",
+    {
+      "UpdateToc": {
+        "entire": true
+      }
+    },
+    {
+      "AddText": {
+        "level": 2
+      }
+    },
+    {
+      "InsertTableOfFigures": {
+        "label": "Figure"
+      }
+    },
+    "InsertFootnote",
+    "InsertEndnote",
+    {
+      "NextNote": {
+        "backward": true
+      }
+    },
+    "ShowNotes",
+    {
+      "NoteOptions": {
+        "spec": {
+          "endnotes": true,
+          "format": "lowerRoman",
+          "start": 3,
+          "restart": "eachSect"
+        }
+      }
+    },
+    {
+      "ConvertNotes": {
+        "to_endnotes": false
+      }
+    },
+    {
+      "InsertCaption": {
+        "spec": {
+          "label": "Tableau",
+          "text": ": Glaze «tests»",
+          "position": "Above",
+          "exclude_label": false,
+          "chapter_level": 1
+        }
+      }
+    },
+    {
+      "InsertCrossReference": {
+        "spec": {
+          "target": {
+            "Bookmark": {
+              "name": "_Ref123"
+            }
+          },
+          "show": "AboveBelow",
+          "hyperlink": true
+        }
+      }
+    },
+    "FollowLink",
+    {
+      "SelectObject": {
+        "id": 1000000,
+        "add": null
+      }
+    },
+    {
+      "SelectObject": {
+        "id": 7,
+        "add": true
+      }
+    },
+    {
+      "ObjectPosition": {
+        "preset": "BottomCenter"
+      }
+    },
+    {
+      "ObjectWrap": {
+        "wrap": "TopAndBottom"
+      }
+    },
+    {
+      "ObjectTransform": {
+        "id": 1000000,
+        "rect": {
+          "x": 880.5,
+          "y": 120.0,
+          "width": 240.0,
+          "height": 72.25
+        }
+      }
+    },
+    {
+      "ObjectLayout": {
+        "id": null,
+        "spec": {
+          "wrap": "Behind",
+          "x": -12.5,
+          "x_from": "Margin",
+          "y": null,
+          "y_from": null,
+          "width": null,
+          "height": null,
+          "rotation": 359.5,
+          "distance": null,
+          "move_with_text": null,
+          "allow_overlap": null,
+          "name": "Logo «kiln»",
+          "alt_text": null,
+          "decorative": null
+        }
+      }
+    },
+    {
+      "ObjectOrder": {
+        "order": "ToBack"
+      }
+    },
+    {
+      "ObjectRotate": {
+        "op": "FlipHorizontal"
+      }
+    },
+    {
+      "ObjectAlign": {
+        "align": "Middle",
+        "relative_to": null
+      }
+    },
+    {
+      "ObjectAlign": {
+        "align": "Right",
+        "relative_to": "Page"
+      }
+    },
+    {
+      "InsertTextBox": {
+        "text": "Pull quote",
+        "design": null,
+        "rect": null
+      }
+    },
+    {
+      "InsertTextBox": {
+        "text": null,
+        "design": "Sidebar",
+        "rect": {
+          "x": 880.5,
+          "y": 120.0,
+          "width": 240.0,
+          "height": 72.25
+        }
+      }
+    },
+    {
+      "InsertShape": {
+        "preset": "roundRect",
+        "text": null,
+        "rect": {
+          "x": 880.5,
+          "y": 120.0,
+          "width": 240.0,
+          "height": 72.25
+        }
+      }
+    },
+    {
+      "ResetPicture": {
+        "size": true
+      }
+    },
+    {
+      "ChangePicture": {
+        "name": "glaze «test».png",
+        "bytes": [
+          137,
+          80,
+          78,
+          71,
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "CropPicture": {
+        "crop": {
+          "left": 10.0,
+          "top": 0.5,
+          "right": 0.0,
+          "bottom": 33.25
+        }
+      }
+    },
+    {
+      "CropToAspect": {
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "ShapeFill": {
+        "color": "FFF2CC"
+      }
+    },
+    {
+      "ShapeFill": {
+        "color": null
+      }
+    },
+    {
+      "ShapeOutline": {
+        "color": null
+      }
+    },
+    {
+      "ShapeOutlineWeight": {
+        "points": 1.5
+      }
+    },
+    {
+      "ShapeTextLayout": {
+        "anchor": "Middle",
+        "margins": {
+          "left": 0.0,
+          "top": 1.5,
+          "right": 72.0,
+          "bottom": 0.25
+        }
+      }
+    },
+    {
+      "FormatPainter": {
+        "sticky": true
+      }
+    },
+    "CopyFormat",
+    "PasteFormat",
+    "CancelPainter",
+    {
+      "SetAutoFormat": {
+        "options": {
+          "markdown": false,
+          "smart_quotes": true,
+          "dashes": false,
+          "ellipsis": true,
+          "fractions": false,
+          "replace_text": false,
+          "capitalize_sentences": null,
+          "capitalize_days": true,
+          "two_initial_caps": true
+        }
+      }
+    },
+    {
+      "PasteMarkdown": {
+        "text": "# Kiln\n\n- **glaze**\n- `cone`\n\n| a | b |\n|---|---|\n| 1 | 2 |"
+      }
+    },
+    "FocusMode",
+    {
+      "WordGoal": {
+        "words": 1500
+      }
+    },
+    "Hyphenation",
+    {
+      "InsertCodeBlock": {
+        "language": "rust"
+      }
+    },
+    {
+      "InsertCallout": {
+        "kind": "Warning"
+      }
+    },
+    {
+      "InsertCoverPage": {
+        "design": "Slab"
+      }
+    },
+    {
+      "SetProperties": {
+        "props": {
+          "title": "Firing «log»",
+          "subject": null,
+          "author": null,
+          "keywords": "",
+          "description": null,
+          "category": null,
+          "status": null,
+          "company": null,
+          "manager": null,
+          "last_modified_by": null
+        }
+      }
+    },
+    {
+      "SpellCheck": {
+        "on": false
+      }
+    },
+    {
+      "SetUserDictionary": {
+        "words": [
+          "Kiln",
+          "Zoë"
+        ]
+      }
+    },
+    {
+      "SpellAddWord": {
+        "word": "glazeware"
+      }
+    },
+    {
+      "SpellIgnoreAll": {
+        "word": "teh"
+      }
+    },
+    {
+      "SpellIgnore": {
+        "pos": {
+          "block": 70000,
+          "offset": 300
+        }
+      }
+    },
+    {
+      "SpellReplace": {
+        "pos": {
+          "block": 70000,
+          "offset": 300
+        },
+        "with": "the",
+        "all": true
+      }
+    },
+    "SpellNext",
+    {
+      "SpellDictionary": {
+        "aff": "SET UTF-8\nTRY esianrtolcdugmphbyfvkwz",
+        "dic": "2\nkiln/S\nglaze/DSG"
+      }
+    },
+    {
+      "InsertSymbol": {
+        "font": "Wingdings",
+        "code": 61514
+      }
+    },
+    "ToggleUnicode",
+    {
+      "SetAutoCorrect": {
+        "entries": [
+          {
+            "from": "teh",
+            "to": "the"
+          }
+        ]
+      }
+    },
+    {
+      "PageMovement": {
+        "side_to_side": true
+      }
+    },
+    {
+      "SplitRegion": {
+        "region": {
+          "x": 0.0,
+          "y": 1200.0,
+          "width": 900.0,
+          "height": 400.0
+        }
+      }
+    },
+    {
+      "SplitRegion": {
+        "region": null
+      }
+    },
+    {
+      "ObjectVisible": {
+        "id": 12,
+        "visible": false
+      }
+    },
+    {
+      "ObjectVisible": {
+        "id": null,
+        "visible": true
+      }
+    },
+    {
+      "Balloons": {
+        "mode": "Revisions"
+      }
+    },
+    {
+      "MoveSelection": {
+        "to": {
+          "block": 3,
+          "offset": 7
+        },
+        "copy": true
+      }
+    },
+    {
+      "TableProperties": {
+        "spec": {
+          "width": {
+            "value": 100.0,
+            "percent": true
+          },
+          "alignment": "Center",
+          "indent": null,
+          "wrap_around": null,
+          "autofit": null,
+          "cell_margins": null,
+          "cell_spacing": null,
+          "row_height": {
+            "points": 18.0,
+            "exact": false
+          },
+          "row_can_break": null,
+          "row_header": null,
+          "column_width": null,
+          "cell_width": null,
+          "cell_v_align": "Center",
+          "cell_wrap": null,
+          "alt_title": "Prices «2026»",
+          "alt_description": null
+        }
+      }
+    },
+    {
+      "GroupObjects": {
+        "ungroup": false
+      }
+    },
+    {
+      "GroupObjects": {
+        "ungroup": true
+      }
+    },
+    {
+      "TextEncoding": {
+        "encoding": "windows-1251",
+        "reload": true
+      }
+    },
+    {
+      "ShapeStyle": {
+        "preset": {
+          "color": 1,
+          "level": "Moderate"
+        }
+      }
+    },
+    {
+      "ShapeGradient": {
+        "gradient": {
+          "from": "4472C4",
+          "to": "1F3864",
+          "angle": 90.0
+        }
+      }
+    },
+    {
+      "ShapeEffect": {
+        "effect": "Shadow"
+      }
+    },
+    {
+      "ShapeTextDirection": {
+        "direction": "Rotate270"
+      }
+    },
+    {
+      "CropToShape": {
+        "preset": "ellipse"
+      }
+    },
+    {
+      "PictureCorrections": {
+        "correction": {
+          "brightness": 20,
+          "contrast": -20
+        }
+      }
+    },
+    {
+      "SetLanguage": {
+        "lang": "fr-FR",
+        "no_proof": false
+      }
+    },
+    {
+      "InsertEquation": {
+        "linear": "e^(i\\pi) + 1 = 0"
+      }
+    },
+    {
+      "Sort": {
+        "spec": {
+          "kind": "Number",
+          "descending": true,
+          "column": 1,
+          "header": true,
+          "case_sensitive": false
+        }
+      }
+    },
+    {
+      "InsertText": {
+        "text": ""
+      }
+    },
+    "DeleteBackward",
+    {
+      "MoveCaret": {
+        "motion": "Backward",
+        "extend": false
+      }
+    },
+    {
+      "SelectTo": {
+        "pos": {
+          "block": 0,
+          "offset": 0
+        },
+        "extend": false
+      }
+    },
+    "DeleteForward",
+    "DeleteWordBackward",
+    "DeleteWordForward",
+    "SelectAll",
+    {
+      "SelectAt": {
+        "point": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "extend": false,
+        "unit": "Char"
+      }
+    },
+    {
+      "SetComposition": {
+        "text": "",
+        "caret": 0
+      }
+    },
+    {
+      "CommitComposition": {
+        "text": ""
+      }
+    },
+    "CancelComposition",
+    {
+      "Tab": {
+        "back": false
+      }
+    },
+    "LineBreak",
+    "ShowMarks",
+    "ParagraphLeftToRight",
+    "ParagraphRightToLeft",
+    "ClearParagraphFormatting",
+    "ClearCharacterFormatting",
+    "MoveParagraphUp",
+    "MoveParagraphDown",
+    "Promote",
+    "Demote",
+    {
+      "ParagraphShading": {
+        "color": ""
+      }
+    },
+    {
+      "ParagraphBorders": {
+        "preset": "None"
+      }
+    },
+    {
+      "SetParagraph": {
+        "format": {
+          "alignment": null,
+          "indent_left": null,
+          "indent_right": 0.0,
+          "first_line": null,
+          "space_before": 0.0,
+          "space_after": null,
+          "line_multiple": null,
+          "line_exact": 0.0,
+          "line_at_least": 0.0,
+          "keep_next": null,
+          "keep_lines": false,
+          "widow_control": false,
+          "page_break_before": false,
+          "contextual_spacing": false,
+          "outline_level": null,
+          "rtl": false
+        }
+      }
+    },
+    {
+      "SetFont": {
+        "format": {
+          "family": null,
+          "size": null,
+          "bold": null,
+          "italic": false,
+          "underline": null,
+          "underline_none": false,
+          "underline_color": "",
+          "color": null,
+          "strike": false,
+          "double_strike": false,
+          "superscript": false,
+          "subscript": false,
+          "small_caps": false,
+          "all_caps": false,
+          "hidden": false,
+          "spacing": null,
+          "scale": null,
+          "position": 0.0,
+          "kerning": 0.0
+        }
+      }
+    },
+    {
+      "SetTabs": {
+        "tabs": [
+          {
+            "pos": 0.0,
+            "align": "Left",
+            "leader": "None"
+          }
+        ]
+      }
+    },
+    "SmallCaps",
+    {
+      "UnderlineStyle": {
+        "style": "Single"
+      }
+    },
+    {
+      "ApplyStyle": {
+        "style_id": ""
+      }
+    },
+    "StyleNormal",
+    "StyleHeading1",
+    "StyleHeading2",
+    "StyleHeading3",
+    "StyleTitle",
+    {
+      "UpdateStyleFromSelection": {
+        "style_id": ""
+      }
+    },
+    {
+      "NewStyleFromSelection": {
+        "name": ""
+      }
+    },
+    {
+      "ModifyStyle": {
+        "style_id": "",
+        "spec": {
+          "name": null,
+          "based_on": null,
+          "next": null,
+          "font": {
+            "family": null,
+            "size": null,
+            "bold": null,
+            "italic": null,
+            "underline": null,
+            "underline_none": false,
+            "underline_color": null,
+            "color": null,
+            "strike": null,
+            "double_strike": null,
+            "superscript": null,
+            "subscript": null,
+            "small_caps": null,
+            "all_caps": null,
+            "hidden": null,
+            "spacing": null,
+            "scale": null,
+            "position": null,
+            "kerning": null
+          },
+          "paragraph": {
+            "alignment": null,
+            "indent_left": null,
+            "indent_right": null,
+            "first_line": null,
+            "space_before": null,
+            "space_after": null,
+            "line_multiple": null,
+            "line_exact": null,
+            "line_at_least": null,
+            "keep_next": null,
+            "keep_lines": null,
+            "widow_control": null,
+            "page_break_before": null,
+            "contextual_spacing": null,
+            "outline_level": null,
+            "rtl": null
+          },
+          "quick": null
+        }
+      }
+    },
+    {
+      "ListLevel": {
+        "level": 0
+      }
+    },
+    "RestartNumbering",
+    "ContinueNumbering",
+    {
+      "SetNumberingValue": {
+        "value": 0
+      }
+    },
+    "PageBreak",
+    "ColumnBreak",
+    "BlankPage",
+    {
+      "SectionBreak": {
+        "kind": "NextPage"
+      }
+    },
+    {
+      "Columns": {
+        "count": 0
+      }
+    },
+    {
+      "IndentLeft": {
+        "cm": 0.0
+      }
+    },
+    {
+      "IndentRight": {
+        "cm": 0.0
+      }
+    },
+    {
+      "SpacingBefore": {
+        "pt": 0.0
+      }
+    },
+    {
+      "SpacingAfter": {
+        "pt": 0.0
+      }
+    },
+    {
+      "PageSetup": {
+        "setup": {
+          "top": null,
+          "bottom": 0.0,
+          "left": null,
+          "right": 0.0,
+          "gutter": 0.0,
+          "header": 0.0,
+          "footer": 0.0,
+          "width": null,
+          "height": null,
+          "landscape": null,
+          "columns": null,
+          "column_space": 0.0,
+          "vertical_align": null
+        }
+      }
+    },
+    "EditHeader",
+    "EditFooter",
+    "CloseHeaderFooter",
+    "DifferentFirstPage",
+    "DifferentOddEven",
+    "LinkToPrevious",
+    {
+      "PageNumber": {
+        "position": "TopLeft"
+      }
+    },
+    {
+      "InsertLink": {
+        "url": "",
+        "text": "",
+        "tooltip": ""
+      }
+    },
+    "RemoveLink",
+    {
+      "InsertBookmark": {
+        "name": ""
+      }
+    },
+    {
+      "InsertDateTime": {
+        "format": "",
+        "as_field": false
+      }
+    },
+    {
+      "InsertField": {
+        "code": ""
+      }
+    },
+    "UpdateFields",
+    {
+      "DropCap": {
+        "placement": "Dropped"
+      }
+    },
+    {
+      "InsertPicture": {
+        "name": "",
+        "bytes": [
+          0
+        ],
+        "floating": false
+      }
+    },
+    {
+      "InsertTable": {
+        "rows": 0,
+        "cols": 0,
+        "autofit": "Fixed"
+      }
+    },
+    {
+      "ConvertTextToTable": {
+        "separator": "Paragraphs"
+      }
+    },
+    {
+      "TableAutofit": {
+        "mode": "Fixed"
+      }
+    },
+    {
+      "TableAlign": {
+        "align": "Left"
+      }
+    },
+    "TableSplit",
+    {
+      "TableSelect": {
+        "what": "Cell"
+      }
+    },
+    {
+      "TableCellSize": {
+        "width": 0.0,
+        "height": 0.0
+      }
+    },
+    {
+      "FindNext": {
+        "query": {
+          "text": "",
+          "match_case": false,
+          "whole_word": false,
+          "wildcards": false,
+          "regex": false
+        },
+        "backward": false
+      }
+    },
+    {
+      "Replace": {
+        "query": {
+          "text": "",
+          "match_case": false,
+          "whole_word": false,
+          "wildcards": false,
+          "regex": false
+        },
+        "replacement": ""
+      }
+    },
+    {
+      "ReplaceAll": {
+        "query": {
+          "text": "",
+          "match_case": false,
+          "whole_word": false,
+          "wildcards": false,
+          "regex": false
+        },
+        "replacement": ""
+      }
+    },
+    {
+      "GoTo": {
+        "target": {
+          "Section": {
+            "number": 0
+          }
+        }
+      }
+    },
+    {
+      "NewComment": {
+        "text": ""
+      }
+    },
+    {
+      "ReplyComment": {
+        "parent": 0,
+        "text": ""
+      }
+    },
+    {
+      "EditComment": {
+        "id": 0,
+        "text": ""
+      }
+    },
+    {
+      "ResolveComment": {
+        "id": 0,
+        "resolved": false
+      }
+    },
+    {
+      "DeleteComment": {
+        "id": 0
+      }
+    },
+    "DeleteAllComments",
+    {
+      "SelectComment": {
+        "id": 0
+      }
+    },
+    "TrackChanges",
+    {
+      "SetReviewer": {
+        "name": ""
+      }
+    },
+    {
+      "MarkupMode": {
+        "mode": "Simple"
+      }
+    },
+    {
+      "ShowMarkup": {
+        "kind": "Comments"
+      }
+    },
+    {
+      "ShowReviewer": {
+        "name": "",
+        "show": false
+      }
+    },
+    {
+      "AcceptChange": {
+        "scope": "Current"
+      }
+    },
+    {
+      "RejectChange": {
+        "scope": "CurrentAndNext"
+      }
+    },
+    {
+      "ResolveRevision": {
+        "target": {
+          "kind": "Inserted",
+          "node": 0,
+          "start": 0,
+          "end": 0
+        },
+        "accept": false
+      }
+    },
+    "PreviousChange",
+    "NextChange",
+    {
+      "InsertToc": {
+        "spec": {
+          "levels": 0,
+          "hyperlinks": false,
+          "page_numbers": false,
+          "right_align": false,
+          "leader": "None",
+          "title": ""
+        }
+      }
+    },
+    "InsertQuickToc",
+    "RemoveToc",
+    {
+      "UpdateToc": {
+        "entire": false
+      }
+    },
+    {
+      "AddText": {
+        "level": 0
+      }
+    },
+    {
+      "InsertTableOfFigures": {
+        "label": ""
+      }
+    },
+    "InsertFootnote",
+    "InsertEndnote",
+    {
+      "NextNote": {
+        "backward": false
+      }
+    },
+    "ShowNotes",
+    {
+      "NoteOptions": {
+        "spec": {
+          "endnotes": false,
+          "format": "",
+          "start": 0,
+          "restart": ""
+        }
+      }
+    },
+    {
+      "ConvertNotes": {
+        "to_endnotes": false
+      }
+    },
+    {
+      "InsertCaption": {
+        "spec": {
+          "label": "",
+          "text": "",
+          "position": "Below",
+          "exclude_label": false,
+          "chapter_level": null
+        }
+      }
+    },
+    {
+      "InsertCrossReference": {
+        "spec": {
+          "target": {
+            "Heading": {
+              "para": 0
+            }
+          },
+          "show": "Text",
+          "hyperlink": false
+        }
+      }
+    },
+    "FollowLink",
+    {
+      "SelectObject": {
+        "id": 0,
+        "add": false
+      }
+    },
+    {
+      "ObjectPosition": {
+        "preset": "InLine"
+      }
+    },
+    {
+      "ObjectWrap": {
+        "wrap": "InLine"
+      }
+    },
+    {
+      "ObjectTransform": {
+        "id": 0,
+        "rect": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.0,
+          "height": 0.0
+        }
+      }
+    },
+    {
+      "ObjectLayout": {
+        "id": 0,
+        "spec": {
+          "wrap": null,
+          "x": null,
+          "x_from": null,
+          "y": null,
+          "y_from": null,
+          "width": null,
+          "height": null,
+          "rotation": null,
+          "distance": null,
+          "move_with_text": null,
+          "allow_overlap": null,
+          "name": null,
+          "alt_text": null,
+          "decorative": null
+        }
+      }
+    },
+    {
+      "ObjectOrder": {
+        "order": "Forward"
+      }
+    },
+    {
+      "ObjectRotate": {
+        "op": "Right90"
+      }
+    },
+    {
+      "ObjectAlign": {
+        "align": "Left",
+        "relative_to": "Page"
+      }
+    },
+    {
+      "InsertTextBox": {
+        "text": "",
+        "design": "Simple",
+        "rect": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.0,
+          "height": 0.0
+        }
+      }
+    },
+    {
+      "InsertShape": {
+        "preset": "",
+        "text": "",
+        "rect": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.0,
+          "height": 0.0
+        }
+      }
+    },
+    {
+      "ResetPicture": {
+        "size": false
+      }
+    },
+    {
+      "ChangePicture": {
+        "name": "",
+        "bytes": [
+          0
+        ]
+      }
+    },
+    {
+      "CropPicture": {
+        "crop": {
+          "left": 0.0,
+          "top": 0.0,
+          "right": 0.0,
+          "bottom": 0.0
+        }
+      }
+    },
+    {
+      "ShapeFill": {
+        "color": ""
+      }
+    },
+    {
+      "ShapeOutline": {
+        "color": ""
+      }
+    }
+  ]
+}

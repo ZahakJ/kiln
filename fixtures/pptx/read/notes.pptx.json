@@ -1,0 +1,77 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 3,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title and Content",
+   "notes": "Speaker notes for slide 1. Ut labore voluptate in esse consequat nulla ea velit nisi exercitation esse in laboris dolor anim sint nisi sunt sint officia eiusmod in cillum non.",
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Slide with notes 1"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Exercitation ipsum id amet enim ut dolor elit aliqua dolore."
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": "Speaker notes for slide 2. Dolor duis est deserunt ut incididunt labore nulla adipiscing do in aute pariatur mollit nisi minim mollit esse eiusmod ut dolor dolor ad in fugiat.",
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Slide with notes 2"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "In proident pariatur sed officia dolor nostrud magna laborum minim."
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": "Speaker notes for slide 3. Eu ipsum ea tempor duis sed consectetur proident elit ex enim deserunt qui deserunt consectetur mollit elit culpa eiusmod in nisi proident ex eiusmod ipsum.",
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Slide with notes 3"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Culpa voluptate non do commodo culpa aliqua labore deserunt fugiat."
+    }
+   ]
+  }
+ ]
+}

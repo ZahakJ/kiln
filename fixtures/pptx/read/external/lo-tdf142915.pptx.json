@@ -1,0 +1,60 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Címdia",
+    "Cím és tartalom",
+    "Szakaszfejléc",
+    "2 tartalomrész",
+    "Összehasonlítás",
+    "Csak cím",
+    "Üres",
+    "Tartalomrész képaláírással",
+    "Kép képaláírással",
+    "Cím és függőleges szöveg",
+    "Függőleges cím és szöveg"
+   ]
+  }
+ ],
+ "slide_count": 2,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Cím és tartalom",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Cím 1",
+     "text": "1"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Tartalom helye 2",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "layout": "Cím és tartalom",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Cím 1",
+     "text": "2"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Tartalom helye 2",
+     "text": ""
+    }
+   ]
+  }
+ ]
+}

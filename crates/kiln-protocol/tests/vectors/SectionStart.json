@@ -1,0 +1,13 @@
+{
+  "type": "SectionStart",
+  "format": {
+    "TYPENAME": "SectionStart"
+  },
+  "values": [
+    "NextPage",
+    "Continuous",
+    "NextPage",
+    "Continuous",
+    "EvenPage"
+  ]
+}

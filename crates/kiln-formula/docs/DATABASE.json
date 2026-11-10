@@ -1,0 +1,339 @@
+[
+  {
+    "name": "DAVERAGE",
+    "category": "Database",
+    "summary": "Averages the values in a database column that match conditions.",
+    "syntax": "DAVERAGE(database, field, criteria)",
+    "args": [
+      {
+        "name": "database",
+        "description": "The range of cells, with field labels in the first row."
+      },
+      {
+        "name": "field",
+        "description": "The column label in quotes, or its position (1 is the first column)."
+      },
+      {
+        "name": "criteria",
+        "description": "A range with labels in the first row and conditions below."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DAVERAGE({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},\"Yield\",{\"Tree\",\"Height\";\"Apple\",\">10\"})",
+        "result": "12"
+      },
+      {
+        "formula": "=DAVERAGE({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},3,{\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45})",
+        "result": "13"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DCOUNT",
+    "category": "Database",
+    "summary": "Counts the numeric cells in a database column that match conditions.",
+    "syntax": "DCOUNT(database, [field], criteria)",
+    "args": [
+      {
+        "name": "database",
+        "description": "The range of cells, with field labels in the first row."
+      },
+      {
+        "name": "field",
+        "description": "The column label or position; if omitted, counts matching records.",
+        "optional": true
+      },
+      {
+        "name": "criteria",
+        "description": "A range with labels in the first row and conditions below."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DCOUNT({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},\"Age\",{\"Tree\",\"Height\",\"Height\";\"Apple\",\">10\",\"<16\"})",
+        "result": "1"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DCOUNTA",
+    "category": "Database",
+    "summary": "Counts the non-empty cells in a database column that match conditions.",
+    "syntax": "DCOUNTA(database, field, criteria)",
+    "args": [
+      {
+        "name": "database",
+        "description": "The range of cells, with field labels in the first row."
+      },
+      {
+        "name": "field",
+        "description": "The column label in quotes, or its position (1 is the first column)."
+      },
+      {
+        "name": "criteria",
+        "description": "A range with labels in the first row and conditions below."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DCOUNTA({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},\"Profit\",{\"Tree\",\"Height\",\"Height\";\"Apple\",\">10\",\"<16\"})",
+        "result": "1"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DGET",
+    "category": "Database",
+    "summary": "Extracts the single value from a database column that matches conditions.",
+    "syntax": "DGET(database, field, criteria)",
+    "args": [
+      {
+        "name": "database",
+        "description": "The range of cells, with field labels in the first row."
+      },
+      {
+        "name": "field",
+        "description": "The column label in quotes, or its position (1 is the first column)."
+      },
+      {
+        "name": "criteria",
+        "description": "A range with labels in the first row and conditions below."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DGET({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},\"Yield\",{\"Tree\",\"Height\";\"Apple\",\">10\";\"Pear\",\"\"})",
+        "result": "#NUM!"
+      },
+      {
+        "formula": "=DGET({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},\"Yield\",{\"Tree\",\"Height\";\"Cherry\",\">10\"})",
+        "result": "9"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DMAX",
+    "category": "Database",
+    "summary": "Returns the largest value in a database column that matches conditions.",
+    "syntax": "DMAX(database, field, criteria)",
+    "args": [
+      {
+        "name": "database",
+        "description": "The range of cells, with field labels in the first row."
+      },
+      {
+        "name": "field",
+        "description": "The column label in quotes, or its position (1 is the first column)."
+      },
+      {
+        "name": "criteria",
+        "description": "A range with labels in the first row and conditions below."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DMAX({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},\"Profit\",{\"Tree\",\"Height\";\"Apple\",\">10\";\"Pear\",\"\"})",
+        "result": "105"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DMIN",
+    "category": "Database",
+    "summary": "Returns the smallest value in a database column that matches conditions.",
+    "syntax": "DMIN(database, field, criteria)",
+    "args": [
+      {
+        "name": "database",
+        "description": "The range of cells, with field labels in the first row."
+      },
+      {
+        "name": "field",
+        "description": "The column label in quotes, or its position (1 is the first column)."
+      },
+      {
+        "name": "criteria",
+        "description": "A range with labels in the first row and conditions below."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DMIN({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},\"Profit\",{\"Tree\",\"Height\";\"Apple\",\">10\"})",
+        "result": "75"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DPRODUCT",
+    "category": "Database",
+    "summary": "Multiplies the values in a database column that match conditions.",
+    "syntax": "DPRODUCT(database, field, criteria)",
+    "args": [
+      {
+        "name": "database",
+        "description": "The range of cells, with field labels in the first row."
+      },
+      {
+        "name": "field",
+        "description": "The column label in quotes, or its position (1 is the first column)."
+      },
+      {
+        "name": "criteria",
+        "description": "A range with labels in the first row and conditions below."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DPRODUCT({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},\"Yield\",{\"Tree\",\"Height\";\"Apple\",\">10\";\"Pear\",\"\"})",
+        "result": "11200"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DSTDEV",
+    "category": "Database",
+    "summary": "Estimates the standard deviation of a sample from a database column that matches conditions.",
+    "syntax": "DSTDEV(database, field, criteria)",
+    "args": [
+      {
+        "name": "database",
+        "description": "The range of cells, with field labels in the first row."
+      },
+      {
+        "name": "field",
+        "description": "The column label in quotes, or its position (1 is the first column)."
+      },
+      {
+        "name": "criteria",
+        "description": "A range with labels in the first row and conditions below."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DSTDEV({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},\"Yield\",{\"Tree\",\"Height\";\"Apple\",\">10\";\"Pear\",\"\"})",
+        "result": "2.516611478"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DSTDEVP",
+    "category": "Database",
+    "summary": "Calculates the population standard deviation of a database column that matches conditions.",
+    "syntax": "DSTDEVP(database, field, criteria)",
+    "args": [
+      {
+        "name": "database",
+        "description": "The range of cells, with field labels in the first row."
+      },
+      {
+        "name": "field",
+        "description": "The column label in quotes, or its position (1 is the first column)."
+      },
+      {
+        "name": "criteria",
+        "description": "A range with labels in the first row and conditions below."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DSTDEVP({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},\"Yield\",{\"Tree\",\"Height\";\"Apple\",\">10\";\"Pear\",\"\"})",
+        "result": "2.179449472"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DSUM",
+    "category": "Database",
+    "summary": "Adds the values in a database column that match conditions.",
+    "syntax": "DSUM(database, field, criteria)",
+    "args": [
+      {
+        "name": "database",
+        "description": "The range of cells, with field labels in the first row."
+      },
+      {
+        "name": "field",
+        "description": "The column label in quotes, or its position (1 is the first column)."
+      },
+      {
+        "name": "criteria",
+        "description": "A range with labels in the first row and conditions below."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DSUM({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},\"Profit\",{\"Tree\";\"Apple\"})",
+        "result": "225"
+      },
+      {
+        "formula": "=DSUM({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},\"Profit\",{\"Tree\",\"Height\";\"Apple\",\">10\";\"Pear\",\"\"})",
+        "result": "352.8"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DVAR",
+    "category": "Database",
+    "summary": "Estimates the variance of a sample from a database column that matches conditions.",
+    "syntax": "DVAR(database, field, criteria)",
+    "args": [
+      {
+        "name": "database",
+        "description": "The range of cells, with field labels in the first row."
+      },
+      {
+        "name": "field",
+        "description": "The column label in quotes, or its position (1 is the first column)."
+      },
+      {
+        "name": "criteria",
+        "description": "A range with labels in the first row and conditions below."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DVAR({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},\"Yield\",{\"Tree\",\"Height\";\"Apple\",\">10\";\"Pear\",\"\"})",
+        "result": "6.333333333"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DVARP",
+    "category": "Database",
+    "summary": "Calculates the population variance of a database column that matches conditions.",
+    "syntax": "DVARP(database, field, criteria)",
+    "args": [
+      {
+        "name": "database",
+        "description": "The range of cells, with field labels in the first row."
+      },
+      {
+        "name": "field",
+        "description": "The column label in quotes, or its position (1 is the first column)."
+      },
+      {
+        "name": "criteria",
+        "description": "A range with labels in the first row and conditions below."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DVARP({\"Tree\",\"Height\",\"Age\",\"Yield\",\"Profit\";\"Apple\",18,20,14,105;\"Pear\",12,12,10,96;\"Cherry\",13,14,9,105;\"Apple\",14,15,10,75;\"Pear\",9,8,8,76.8;\"Apple\",8,9,6,45},\"Yield\",{\"Tree\",\"Height\";\"Apple\",\">10\";\"Pear\",\"\"})",
+        "result": "4.75"
+      }
+    ],
+    "since": "2007"
+  }
+]

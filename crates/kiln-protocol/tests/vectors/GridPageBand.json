@@ -1,0 +1,32 @@
+{
+  "type": "GridPageBand",
+  "format": {
+    "TYPENAME": "GridPageBand"
+  },
+  "values": [
+    {
+      "x": 67.2,
+      "y": 72.0,
+      "rows": [
+        {
+          "index": 0,
+          "at": 0.0,
+          "size": 20.0
+        }
+      ],
+      "cols": [
+        {
+          "index": 2,
+          "at": 0.0,
+          "size": 64.0
+        }
+      ]
+    },
+    {
+      "x": 0.0,
+      "y": 0.0,
+      "rows": [],
+      "cols": []
+    }
+  ]
+}

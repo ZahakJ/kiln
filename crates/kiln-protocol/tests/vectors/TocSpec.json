@@ -1,0 +1,24 @@
+{
+  "type": "TocSpec",
+  "format": {
+    "TYPENAME": "TocSpec"
+  },
+  "values": [
+    {
+      "levels": 3,
+      "hyperlinks": true,
+      "page_numbers": true,
+      "right_align": true,
+      "leader": "Dot",
+      "title": "Contents"
+    },
+    {
+      "levels": 0,
+      "hyperlinks": false,
+      "page_numbers": false,
+      "right_align": false,
+      "leader": "None",
+      "title": null
+    }
+  ]
+}

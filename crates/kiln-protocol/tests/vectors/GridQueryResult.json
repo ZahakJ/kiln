@@ -1,0 +1,1305 @@
+{
+  "type": "GridQueryResult",
+  "format": {
+    "TYPENAME": "GridQueryResult"
+  },
+  "values": [
+    {
+      "State": {
+        "sheets": [
+          {
+            "name": "Budget",
+            "color": "1D8A60",
+            "hidden": false,
+            "chart": false
+          },
+          {
+            "name": "Firings «Ü»",
+            "color": null,
+            "hidden": true,
+            "chart": true
+          }
+        ],
+        "active_sheet": 0,
+        "name_box": "G10",
+        "formula": "=SUM(G5:G9)",
+        "mode": "Edit",
+        "editor": {
+          "text": "=SUM(G5:G9)",
+          "start": 11,
+          "end": 11,
+          "refs": [
+            {
+              "start": 5,
+              "end": 10,
+              "color": "1D8A60"
+            }
+          ],
+          "completions": [
+            {
+              "label": "SUMIFS",
+              "kind": "Function",
+              "detail": "Adds the cells that meet several criteria.",
+              "syntax": "SUMIFS(sum_range, criteria_range1, criteria1, …)"
+            }
+          ],
+          "completion_index": 0,
+          "inline_completion": "na",
+          "hint": {
+            "function": "XLOOKUP",
+            "syntax": "XLOOKUP(lookup_value, lookup_array, return_array, …)",
+            "summary": "Looks up a value.",
+            "args": [
+              {
+                "name": "lookup_value",
+                "description": "What to find.",
+                "optional": false
+              }
+            ],
+            "current": 0,
+            "since": "365"
+          },
+          "rect": {
+            "x": 320.5,
+            "y": 250.0,
+            "width": 92.0,
+            "height": 28.0
+          },
+          "caret": {
+            "x": 400.0,
+            "y": 254.0,
+            "width": 1.5,
+            "height": 18.0
+          },
+          "pick_list": [
+            "apple",
+            "cherry"
+          ],
+          "formula_bar": false
+        },
+        "format": {
+          "font_family": "Calibri",
+          "font_size": 11.0,
+          "bold": true,
+          "italic": false,
+          "underline": false,
+          "strike": false,
+          "font_color": "C00000",
+          "fill_color": null,
+          "h_align": "Right",
+          "v_align": "Bottom",
+          "wrap": false,
+          "merged": false,
+          "indent": 1,
+          "rotation": 45,
+          "number_format": "#,##0.00 \"£\"",
+          "number_format_name": "Custom"
+        },
+        "layout": {
+          "header_w": 44.0,
+          "header_h": 24.0,
+          "freeze_rows": 1,
+          "freeze_cols": 0,
+          "frozen_h": 20.0,
+          "frozen_w": 0.0,
+          "content_w": 1048576.0,
+          "content_h": 20971520.0,
+          "sheet_zoom": 1.25,
+          "split": false,
+          "rtl": false
+        },
+        "gridlines": true,
+        "headings": true,
+        "show_formulas": false,
+        "reveal": {
+          "seq": 7,
+          "x": 0.0,
+          "y": 1200.5
+        },
+        "copy_marked": true,
+        "multi": false,
+        "whole_rows": false,
+        "whole_columns": true,
+        "stats": {
+          "average": "£1,590.00",
+          "count": 5,
+          "numerical_count": 5,
+          "min": "£380.00",
+          "max": null,
+          "sum": "£7,950.00"
+        },
+        "names": [
+          "SalesTax",
+          "Q1_Total"
+        ],
+        "drawing": {
+          "index": 0,
+          "name": "Chart 1",
+          "x": 1008.5,
+          "y": 550.0,
+          "width": 400.0,
+          "height": 268.0,
+          "kind": "Chart",
+          "chart": {
+            "kind": null,
+            "style": null,
+            "color_set": 7,
+            "color_sets": [],
+            "title": null,
+            "legend": null,
+            "data_labels": null,
+            "elements": [],
+            "data_range": "",
+            "series": [],
+            "categories": [],
+            "has_cells": false,
+            "axes": [],
+            "blanks": "Gap",
+            "show_hidden": false,
+            "categories_range": "",
+            "chart_area": {
+              "fill": null,
+              "no_fill": false,
+              "line": null,
+              "no_line": false,
+              "line_width": 0.0,
+              "shadow": false,
+              "rounded": false
+            },
+            "plot_area": {
+              "fill": null,
+              "no_fill": false,
+              "line": null,
+              "no_line": false,
+              "line_width": 0.0,
+              "shadow": false,
+              "rounded": false
+            }
+          },
+          "object": null
+        },
+        "features": {
+          "filter": false,
+          "filtered": false,
+          "table": null,
+          "link": null,
+          "note": false,
+          "comment": false,
+          "any_comments": false,
+          "cards": [],
+          "prompt": null,
+          "alert": null,
+          "dropdown": false,
+          "calc": null,
+          "calc_pending": false,
+          "iterative": [
+            false,
+            0,
+            0.0
+          ],
+          "date1904": false,
+          "circular": [],
+          "arrows": false,
+          "circles": false,
+          "pages": 0,
+          "print_gridlines": false,
+          "print_headings": false,
+          "landscape": false,
+          "print_area": false,
+          "outline_symbols": false,
+          "lab": false,
+          "watches": [],
+          "message": null,
+          "cell_rect": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "analysis": {
+          "pivot": {
+            "name": "PivotTable1",
+            "source": "Sales!$A$1:$G$401",
+            "range": {
+              "r0": 0,
+              "c0": 0,
+              "r1": 12,
+              "c1": 3
+            },
+            "fields": [
+              {
+                "name": "Region",
+                "numeric": false,
+                "area": "Rows",
+                "values": 0,
+                "filtered": true,
+                "settings": {
+                  "caption": "Area",
+                  "subtotals": {
+                    "Custom": [
+                      "Max"
+                    ]
+                  },
+                  "sort": "Descending",
+                  "sort_by_value": 0,
+                  "hidden": [
+                    "(blank)"
+                  ],
+                  "label_filter": {
+                    "op": "BeginsWith",
+                    "value": "E",
+                    "value2": ""
+                  },
+                  "value_filter": {
+                    "value": 0,
+                    "top": [
+                      10,
+                      false
+                    ],
+                    "op": "GreaterThan",
+                    "a": 0.0,
+                    "b": 0.0
+                  }
+                }
+              }
+            ],
+            "rows": [
+              0,
+              -1
+            ],
+            "cols": [
+              1
+            ],
+            "pages": [
+              [
+                2,
+                "Q1"
+              ]
+            ],
+            "values": [
+              {
+                "field": 4,
+                "name": "Sum of Units",
+                "function": "Sum",
+                "show_as": "PercentOfParentRow",
+                "base_field": 0,
+                "base_item": "(previous)",
+                "num_fmt": "0.0%"
+              }
+            ],
+            "options": {
+              "layout": "Tabular",
+              "subtotals": "Bottom",
+              "row_totals": true,
+              "col_totals": false,
+              "repeat_labels": true,
+              "blank_rows": false,
+              "empty_text": "0",
+              "style": "PivotStyleMedium9",
+              "row_headers": true,
+              "col_headers": true,
+              "row_stripes": true,
+              "col_stripes": false
+            },
+            "active_field": 0,
+            "active_value": null,
+            "on_value": true
+          },
+          "sparkline": {
+            "options": {
+              "kind": "Column",
+              "high": true,
+              "low": false,
+              "first": false,
+              "last": true,
+              "negative": true,
+              "markers": false,
+              "show_axis": true,
+              "line_weight": 0.75,
+              "empty": "Span",
+              "show_hidden": false,
+              "min": "Group",
+              "max": {
+                "Custom": 100.0
+              },
+              "right_to_left": false,
+              "colors": [
+                "376092",
+                "D00000"
+              ]
+            },
+            "data": "A2:E9",
+            "location": "F2:F9",
+            "count": 8
+          },
+          "goal_seek": {
+            "cell": "B5",
+            "found": true,
+            "target": "100",
+            "current": "100"
+          },
+          "flash": [
+            {
+              "row": 2,
+              "col": 3,
+              "text": "Ana",
+              "rect": [
+                120.0,
+                40.0,
+                64.0,
+                20.0
+              ]
+            }
+          ],
+          "flash_count": 9,
+          "sheet_protected": true,
+          "sheet_password": true,
+          "permissions": {
+            "select_locked": true,
+            "select_unlocked": true,
+            "format_cells": false,
+            "format_columns": false,
+            "format_rows": false,
+            "insert_columns": false,
+            "insert_rows": false,
+            "insert_hyperlinks": false,
+            "delete_columns": false,
+            "delete_rows": false,
+            "sort": true,
+            "auto_filter": false,
+            "pivot_tables": false,
+            "edit_objects": false,
+            "edit_scenarios": false
+          },
+          "workbook_protected": false,
+          "workbook_password": false,
+          "locked": true,
+          "alert": "The cell or chart you're trying to change is on a protected sheet.",
+          "alert_seq": 3,
+          "theme": "Kiln",
+          "placeholder": [
+            "PivotTable1",
+            [
+              44.0,
+              64.0,
+              192.0,
+              360.0
+            ]
+          ]
+        },
+        "home": {
+          "pen": {
+            "mode": "Grid",
+            "style": "Dashed",
+            "color": "C8352B"
+          },
+          "auto_fill": {
+            "x": 320.0,
+            "y": 188.5,
+            "choices": [
+              {
+                "Fill": "Copy"
+              },
+              {
+                "Fill": "Series"
+              },
+              "FlashFill"
+            ],
+            "current": {
+              "Fill": "Series"
+            }
+          },
+          "pen_preview": {
+            "r0": 1,
+            "c0": 1,
+            "r1": 4,
+            "c1": 3
+          },
+          "series_columns": true
+        },
+        "surface": {
+          "select_mode": "Add",
+          "drag": {
+            "target": "D4:E9",
+            "occupied": true,
+            "copy": false,
+            "insert": "Rows"
+          },
+          "error": {
+            "rule": "ErrorValue",
+            "error": "#DIV/0!",
+            "title": "Divide by Zero Error",
+            "help": "The formula or function divides by zero or by an empty cell."
+          }
+        }
+      }
+    },
+    {
+      "Lists": [
+        [
+          "Low",
+          "High"
+        ]
+      ]
+    },
+    {
+      "Hit": {
+        "RowHeader": {
+          "row": 9
+        }
+      }
+    },
+    {
+      "FormatCells": {
+        "number_format": "0.00%",
+        "category": "Percentage",
+        "sample": "12.50%",
+        "format": {
+          "font_family": "Calibri",
+          "font_size": 11.0,
+          "bold": true,
+          "italic": false,
+          "underline": false,
+          "strike": false,
+          "font_color": "C00000",
+          "fill_color": null,
+          "h_align": "Right",
+          "v_align": "Bottom",
+          "wrap": false,
+          "merged": false,
+          "indent": 1,
+          "rotation": 45,
+          "number_format": "#,##0.00 \"£\"",
+          "number_format_name": "Custom"
+        },
+        "underline": "doubleAccounting",
+        "superscript": false,
+        "subscript": true,
+        "pattern": "lightGrid",
+        "pattern_color": "A5A5A5",
+        "shrink": true,
+        "border_left": {
+          "style": "MediumDashDot",
+          "color": "1D8A60"
+        },
+        "border_right": null,
+        "border_top": null,
+        "border_bottom": {
+          "style": "MediumDashDot",
+          "color": "1D8A60"
+        },
+        "border_diagonal_up": null,
+        "border_diagonal_down": {
+          "style": "MediumDashDot",
+          "color": "1D8A60"
+        },
+        "locked": true,
+        "hidden": false,
+        "fonts": [
+          "Calibri",
+          "Figtree"
+        ],
+        "custom_codes": [
+          "0.0\" kg\""
+        ]
+      }
+    },
+    {
+      "Preview": "1,234.50"
+    },
+    {
+      "Hint": {
+        "function": "XLOOKUP",
+        "syntax": "XLOOKUP(lookup_value, lookup_array, return_array, …)",
+        "summary": "Looks up a value.",
+        "args": [
+          {
+            "name": "lookup_value",
+            "description": "What to find.",
+            "optional": false
+          }
+        ],
+        "current": 0,
+        "since": "365"
+      }
+    },
+    {
+      "Hint": null
+    },
+    {
+      "Zoom": 1.5
+    },
+    {
+      "Functions": []
+    },
+    {
+      "Charts": [
+        "ColumnClustered",
+        "Line"
+      ]
+    },
+    {
+      "Rules": [
+        {
+          "id": 0,
+          "applies_to": "$C$2:$C$20",
+          "kind": {
+            "DataBar": {
+              "min": {
+                "kind": "Automatic",
+                "value": "",
+                "gte": true
+              },
+              "max": {
+                "kind": "Percent",
+                "value": "90",
+                "gte": true
+              },
+              "color": "638EC6",
+              "gradient": true,
+              "show_value": true,
+              "negative_color": "FF0000",
+              "border_color": null
+            }
+          },
+          "style": null,
+          "stop_if_true": false
+        }
+      ]
+    },
+    {
+      "Validation": {
+        "kind": "List",
+        "op": "Between",
+        "formula1": "Low,Medium,High",
+        "formula2": "",
+        "allow_blank": true,
+        "dropdown": true,
+        "show_input": true,
+        "input_title": "Priority",
+        "input": "Pick one",
+        "show_error": true,
+        "style": "Warning",
+        "error_title": "",
+        "error": ""
+      }
+    },
+    {
+      "Validation": null
+    },
+    {
+      "TableStyles": []
+    },
+    {
+      "CellStyles": []
+    },
+    {
+      "Found": []
+    },
+    {
+      "Comments": []
+    },
+    {
+      "PageSetup": {
+        "landscape": true,
+        "paper": 9,
+        "margins": {
+          "left": 0.7,
+          "right": 0.7,
+          "top": 0.75,
+          "bottom": 0.75,
+          "header": 0.3,
+          "footer": 0.3
+        },
+        "scale": 100,
+        "fit": true,
+        "fit_width": 1,
+        "fit_height": 0,
+        "gridlines": false,
+        "headings": false,
+        "center_h": true,
+        "center_v": false,
+        "header": "&L&D&C&A&RPage &P of &N",
+        "footer": "",
+        "first_page": null,
+        "over_then_down": false,
+        "black_and_white": false,
+        "print_area": "$A$1:$F$40",
+        "title_rows": "$1:$1",
+        "title_cols": "",
+        "pages": 3,
+        "row_breaks": [
+          20
+        ],
+        "col_breaks": [],
+        "header_preview": [
+          "18/10/2026",
+          "Budget",
+          "Page 1 of 3"
+        ],
+        "footer_preview": [
+          "",
+          "",
+          ""
+        ]
+      }
+    },
+    {
+      "Names": []
+    },
+    {
+      "Trace": {
+        "cell": "Sheet1!$B$1",
+        "formula": "=IF(SUM(A1:A3)>5,\"x\",\"y\")",
+        "value": "\"x\"",
+        "root": {
+          "kind": "call",
+          "label": "SUM",
+          "text": "SUM(A1:A3)",
+          "start": 4,
+          "end": 14,
+          "value": "6",
+          "evaluated": true,
+          "reference": null,
+          "summary": "Adds its arguments.",
+          "children": [
+            {
+              "kind": "reference",
+              "label": "A1:A3",
+              "text": "A1:A3",
+              "start": 8,
+              "end": 13,
+              "value": "{1;2;3}",
+              "evaluated": true,
+              "reference": "A1:A3",
+              "summary": null,
+              "children": []
+            }
+          ]
+        },
+        "steps": [
+          {
+            "text": "=IF(SUM(A1:A3)>5,\"x\",\"y\")",
+            "start": 8,
+            "end": 13,
+            "value": "{1;2;3}"
+          }
+        ],
+        "message": null
+      }
+    },
+    {
+      "Errors": []
+    },
+    {
+      "Spelling": null
+    },
+    {
+      "Export": {
+        "name": "Budget.json",
+        "mime": "application/json",
+        "bytes": [
+          91,
+          93
+        ]
+      }
+    },
+    {
+      "FunctionDoc": {
+        "name": "PMT",
+        "category": "Financial",
+        "syntax": "PMT(rate, nper, pv, [fv], [type])",
+        "summary": "Returns the periodic payment for a loan.",
+        "args": [
+          {
+            "name": "rate",
+            "description": "The interest rate per period.",
+            "optional": false,
+            "repeat": false
+          }
+        ]
+      }
+    },
+    {
+      "Evaluated": "£1,590.00"
+    },
+    {
+      "Items": [
+        {
+          "text": "East",
+          "checked": true,
+          "date": null
+        }
+      ]
+    },
+    {
+      "Themes": []
+    },
+    {
+      "PageMap": {
+        "width": 816.0,
+        "height": 1056.0,
+        "bands": [
+          {
+            "x": 67.2,
+            "y": 72.0,
+            "rows": [
+              {
+                "index": 0,
+                "at": 0.0,
+                "size": 20.0
+              }
+            ],
+            "cols": [
+              {
+                "index": 2,
+                "at": 0.0,
+                "size": 64.0
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "PageMap": null
+    },
+    {
+      "DataRange": {
+        "range": {
+          "r0": 3,
+          "c0": 0,
+          "r1": 9,
+          "c1": 7
+        },
+        "headers": [
+          "Item"
+        ],
+        "header": true
+      }
+    },
+    {
+      "FilterMenu": {
+        "row": 0,
+        "col": 0,
+        "header": "Item",
+        "kind": "Number",
+        "items": [],
+        "blanks": null,
+        "filter": {
+          "Values": {
+            "values": [
+              "1"
+            ],
+            "blanks": true
+          }
+        },
+        "fill_colors": [],
+        "font_colors": [],
+        "sorted": null,
+        "truncated": true
+      }
+    },
+    {
+      "ImportPreview": {
+        "rows": [],
+        "total_rows": 0,
+        "total_cols": 0,
+        "encoding": "windows-1252",
+        "delimiter": "\t",
+        "warnings": [
+          "Row 3 has 20,000 columns"
+        ]
+      }
+    },
+    {
+      "State": {
+        "sheets": [],
+        "active_sheet": 0,
+        "name_box": "",
+        "formula": "",
+        "mode": "Ready",
+        "editor": null,
+        "format": {
+          "font_family": "",
+          "font_size": 0.0,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strike": false,
+          "font_color": null,
+          "fill_color": null,
+          "h_align": "General",
+          "v_align": "Top",
+          "wrap": false,
+          "merged": false,
+          "indent": 0,
+          "rotation": 0,
+          "number_format": "",
+          "number_format_name": ""
+        },
+        "layout": {
+          "header_w": 0.0,
+          "header_h": 0.0,
+          "freeze_rows": 0,
+          "freeze_cols": 0,
+          "frozen_h": 0.0,
+          "frozen_w": 0.0,
+          "content_w": 0.0,
+          "content_h": 0.0,
+          "sheet_zoom": 0.0,
+          "split": false,
+          "rtl": false
+        },
+        "gridlines": false,
+        "headings": false,
+        "show_formulas": false,
+        "reveal": null,
+        "copy_marked": false,
+        "multi": false,
+        "whole_rows": false,
+        "whole_columns": false,
+        "stats": null,
+        "names": [],
+        "drawing": null,
+        "features": {
+          "filter": false,
+          "filtered": false,
+          "table": null,
+          "link": null,
+          "note": false,
+          "comment": false,
+          "any_comments": false,
+          "cards": [],
+          "prompt": null,
+          "alert": null,
+          "dropdown": false,
+          "calc": null,
+          "calc_pending": false,
+          "iterative": [
+            false,
+            0,
+            0.0
+          ],
+          "date1904": false,
+          "circular": [],
+          "arrows": false,
+          "circles": false,
+          "pages": 0,
+          "print_gridlines": false,
+          "print_headings": false,
+          "landscape": false,
+          "print_area": false,
+          "outline_symbols": false,
+          "lab": false,
+          "watches": [],
+          "message": null,
+          "cell_rect": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "analysis": {
+          "pivot": null,
+          "sparkline": null,
+          "goal_seek": null,
+          "flash": [],
+          "flash_count": 0,
+          "sheet_protected": false,
+          "sheet_password": false,
+          "permissions": {
+            "select_locked": false,
+            "select_unlocked": false,
+            "format_cells": false,
+            "format_columns": false,
+            "format_rows": false,
+            "insert_columns": false,
+            "insert_rows": false,
+            "insert_hyperlinks": false,
+            "delete_columns": false,
+            "delete_rows": false,
+            "sort": false,
+            "auto_filter": false,
+            "pivot_tables": false,
+            "edit_objects": false,
+            "edit_scenarios": false
+          },
+          "workbook_protected": false,
+          "workbook_password": false,
+          "locked": false,
+          "alert": null,
+          "alert_seq": 0,
+          "theme": "",
+          "placeholder": null
+        },
+        "home": {
+          "pen": null,
+          "auto_fill": null,
+          "pen_preview": null,
+          "series_columns": false
+        },
+        "surface": {
+          "select_mode": "Normal",
+          "drag": null,
+          "error": null
+        }
+      }
+    },
+    {
+      "Lists": [
+        [
+          ""
+        ]
+      ]
+    },
+    {
+      "Hit": "None"
+    },
+    {
+      "FormatCells": {
+        "number_format": "",
+        "category": "",
+        "sample": "",
+        "format": {
+          "font_family": "",
+          "font_size": 0.0,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strike": false,
+          "font_color": null,
+          "fill_color": null,
+          "h_align": "General",
+          "v_align": "Top",
+          "wrap": false,
+          "merged": false,
+          "indent": 0,
+          "rotation": 0,
+          "number_format": "",
+          "number_format_name": ""
+        },
+        "underline": "",
+        "superscript": false,
+        "subscript": false,
+        "pattern": "",
+        "pattern_color": null,
+        "shrink": false,
+        "border_left": null,
+        "border_right": null,
+        "border_top": null,
+        "border_bottom": null,
+        "border_diagonal_up": null,
+        "border_diagonal_down": null,
+        "locked": false,
+        "hidden": false,
+        "fonts": [],
+        "custom_codes": []
+      }
+    },
+    {
+      "Preview": ""
+    },
+    {
+      "Hint": {
+        "function": "",
+        "syntax": "",
+        "summary": "",
+        "args": [],
+        "current": 0,
+        "since": ""
+      }
+    },
+    {
+      "Zoom": 0.0
+    },
+    {
+      "Functions": [
+        {
+          "name": "",
+          "category": "",
+          "syntax": "",
+          "summary": ""
+        }
+      ]
+    },
+    {
+      "Charts": [
+        "ColumnClustered"
+      ]
+    },
+    {
+      "FilterMenu": {
+        "row": 0,
+        "col": 0,
+        "header": "",
+        "kind": "Text",
+        "items": [
+          {
+            "text": "",
+            "checked": false,
+            "date": ""
+          }
+        ],
+        "blanks": false,
+        "filter": null,
+        "fill_colors": [
+          ""
+        ],
+        "font_colors": [
+          ""
+        ],
+        "sorted": false,
+        "truncated": false
+      }
+    },
+    {
+      "Rules": [
+        {
+          "id": 0,
+          "applies_to": "",
+          "kind": {
+            "CellValue": {
+              "op": "Between",
+              "values": [
+                ""
+              ]
+            }
+          },
+          "style": null,
+          "stop_if_true": false
+        }
+      ]
+    },
+    {
+      "Validation": {
+        "kind": "Any",
+        "op": "Between",
+        "formula1": "",
+        "formula2": "",
+        "allow_blank": false,
+        "dropdown": false,
+        "show_input": false,
+        "input_title": "",
+        "input": "",
+        "show_error": false,
+        "style": "Stop",
+        "error_title": "",
+        "error": ""
+      }
+    },
+    {
+      "TableStyles": [
+        {
+          "name": "",
+          "family": "",
+          "header": null,
+          "header_text": null,
+          "band": null,
+          "line": null
+        }
+      ]
+    },
+    {
+      "CellStyles": [
+        {
+          "name": "",
+          "group": "",
+          "fill": null,
+          "color": null,
+          "bold": false,
+          "border": null
+        }
+      ]
+    },
+    {
+      "Found": [
+        {
+          "sheet": 0,
+          "sheet_name": "",
+          "row": 0,
+          "col": 0,
+          "cell": "",
+          "value": "",
+          "formula": null
+        }
+      ]
+    },
+    {
+      "Comments": [
+        {
+          "id": "",
+          "sheet": 0,
+          "row": 0,
+          "col": 0,
+          "cell": "",
+          "author": "",
+          "date": "",
+          "text": "",
+          "parent": null,
+          "done": false,
+          "note": false,
+          "visible": false
+        }
+      ]
+    },
+    {
+      "PageSetup": {
+        "landscape": false,
+        "paper": 0,
+        "margins": {
+          "left": 0.0,
+          "right": 0.0,
+          "top": 0.0,
+          "bottom": 0.0,
+          "header": 0.0,
+          "footer": 0.0
+        },
+        "scale": 0,
+        "fit": false,
+        "fit_width": 0,
+        "fit_height": 0,
+        "gridlines": false,
+        "headings": false,
+        "center_h": false,
+        "center_v": false,
+        "header": "",
+        "footer": "",
+        "first_page": 0,
+        "over_then_down": false,
+        "black_and_white": false,
+        "print_area": "",
+        "title_rows": "",
+        "title_cols": "",
+        "pages": 0,
+        "row_breaks": [],
+        "col_breaks": [
+          0
+        ],
+        "header_preview": [
+          "",
+          "",
+          ""
+        ],
+        "footer_preview": [
+          "",
+          "",
+          ""
+        ]
+      }
+    },
+    {
+      "Names": [
+        {
+          "name": "",
+          "refers_to": "",
+          "scope": null,
+          "comment": "",
+          "value": "",
+          "table": false
+        }
+      ]
+    },
+    {
+      "Trace": {
+        "cell": "",
+        "formula": "",
+        "value": "",
+        "root": null,
+        "steps": [],
+        "message": ""
+      }
+    },
+    {
+      "Errors": [
+        {
+          "row": 0,
+          "col": 0,
+          "cell": "",
+          "formula": "",
+          "error": "",
+          "title": "",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "ImportPreview": {
+        "rows": [
+          [
+            ""
+          ]
+        ],
+        "total_rows": 0,
+        "total_cols": 0,
+        "encoding": "",
+        "delimiter": "",
+        "warnings": []
+      }
+    },
+    {
+      "Spelling": {
+        "sheet": 0,
+        "row": 0,
+        "col": 0,
+        "word": "",
+        "offset": 0,
+        "text": "",
+        "suggestions": []
+      }
+    },
+    {
+      "DataRange": {
+        "range": {
+          "r0": 0,
+          "c0": 0,
+          "r1": 0,
+          "c1": 0
+        },
+        "headers": [],
+        "header": false
+      }
+    },
+    {
+      "Export": {
+        "name": "",
+        "mime": "",
+        "bytes": []
+      }
+    },
+    {
+      "FunctionDoc": {
+        "name": "",
+        "category": "",
+        "syntax": "",
+        "summary": "",
+        "args": []
+      }
+    },
+    {
+      "Evaluated": ""
+    },
+    {
+      "Items": [
+        {
+          "text": "",
+          "checked": false,
+          "date": null
+        }
+      ]
+    },
+    {
+      "Themes": [
+        {
+          "id": "",
+          "name": "",
+          "colors": [],
+          "major_font": "",
+          "minor_font": ""
+        }
+      ]
+    }
+  ]
+}

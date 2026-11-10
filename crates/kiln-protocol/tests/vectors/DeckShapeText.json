@@ -1,0 +1,21 @@
+{
+  "type": "DeckShapeText",
+  "format": {
+    "TYPENAME": "DeckShapeText"
+  },
+  "values": [
+    {
+      "name": "Title 1",
+      "kind": "shape",
+      "lines": [
+        "Firing schedule",
+        "Autumn"
+      ]
+    },
+    {
+      "name": "",
+      "kind": "",
+      "lines": []
+    }
+  ]
+}

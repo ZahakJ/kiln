@@ -1,0 +1,18 @@
+{
+  "type": "DeckReuseSlide",
+  "format": {
+    "TYPENAME": "DeckReuseSlide"
+  },
+  "values": [
+    {
+      "index": 3,
+      "title": "Glazes",
+      "png": []
+    },
+    {
+      "index": 0,
+      "title": "",
+      "png": []
+    }
+  ]
+}

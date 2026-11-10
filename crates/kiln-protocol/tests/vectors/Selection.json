@@ -1,0 +1,79 @@
+{
+  "type": "Selection",
+  "format": {
+    "TYPENAME": "Selection"
+  },
+  "values": [
+    {
+      "kind": "None",
+      "rects": [],
+      "caret": null,
+      "handles": []
+    },
+    {
+      "kind": {
+        "Text": {
+          "anchor": {
+            "block": 1,
+            "offset": 0
+          },
+          "head": {
+            "block": 2,
+            "offset": 5
+          }
+        }
+      },
+      "rects": [
+        {
+          "x": -12.5,
+          "y": 96.0,
+          "width": 0.75,
+          "height": 18.0
+        },
+        {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 1000000.0,
+          "height": 0.0034
+        }
+      ],
+      "caret": {
+        "rect": {
+          "x": -12.5,
+          "y": 96.0,
+          "width": 0.75,
+          "height": 18.0
+        },
+        "rtl": true
+      },
+      "handles": [
+        {
+          "kind": "SelectionStart",
+          "rect": {
+            "x": -12.5,
+            "y": 96.0,
+            "width": 0.75,
+            "height": 18.0
+          }
+        },
+        {
+          "kind": {
+            "Resize": "SW"
+          },
+          "rect": {
+            "x": -12.5,
+            "y": 96.0,
+            "width": 0.75,
+            "height": 18.0
+          }
+        }
+      ]
+    },
+    {
+      "kind": "None",
+      "rects": [],
+      "caret": null,
+      "handles": []
+    }
+  ]
+}

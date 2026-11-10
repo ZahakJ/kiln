@@ -1,0 +1,48 @@
+{
+  "type": "OpenHint",
+  "format": {
+    "TYPENAME": "OpenHint"
+  },
+  "values": [
+    {
+      "name": null,
+      "path": null,
+      "format": null,
+      "read_only": false,
+      "kind": null,
+      "template": false
+    },
+    {
+      "name": "Report.docx",
+      "path": "/r/Report.docx",
+      "format": "Docx",
+      "read_only": true,
+      "kind": null,
+      "template": false
+    },
+    {
+      "name": "notes.txt",
+      "path": null,
+      "format": null,
+      "read_only": false,
+      "kind": "Scratch",
+      "template": false
+    },
+    {
+      "name": "Letter.kwrite",
+      "path": null,
+      "format": null,
+      "read_only": false,
+      "kind": null,
+      "template": true
+    },
+    {
+      "name": null,
+      "path": null,
+      "format": null,
+      "read_only": false,
+      "kind": null,
+      "template": false
+    }
+  ]
+}

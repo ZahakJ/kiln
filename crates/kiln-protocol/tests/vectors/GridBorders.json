@@ -1,0 +1,22 @@
+{
+  "type": "GridBorders",
+  "format": {
+    "TYPENAME": "GridBorders"
+  },
+  "values": [
+    "All",
+    "BottomDouble",
+    "All",
+    "Outside",
+    "ThickBox",
+    "Inside",
+    "Top",
+    "Bottom",
+    "Left",
+    "Right",
+    "BottomDouble",
+    "BottomThick",
+    "TopBottom",
+    "None"
+  ]
+}

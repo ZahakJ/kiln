@@ -1,0 +1,32 @@
+{
+  "type": "FileFormat",
+  "format": {
+    "TYPENAME": "FileFormat"
+  },
+  "values": [
+    "Txt",
+    "Md",
+    "Docx",
+    "Dotx",
+    "Docm",
+    "Dotm",
+    "Html",
+    "Odt",
+    "Xlsx",
+    "Xltx",
+    "Xlsm",
+    "Csv",
+    "Ods",
+    "Pptx",
+    "Potx",
+    "Pptm",
+    "Ppsx",
+    "Odp",
+    "Pdf",
+    "KWrite",
+    "KGrid",
+    "KDeck",
+    "Txt",
+    "Md"
+  ]
+}

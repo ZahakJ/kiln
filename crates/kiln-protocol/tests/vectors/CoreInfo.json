@@ -1,0 +1,18 @@
+{
+  "type": "CoreInfo",
+  "format": {
+    "TYPENAME": "CoreInfo"
+  },
+  "values": [
+    {
+      "version": "0.1.0",
+      "protocol": 1,
+      "target": "wasm32"
+    },
+    {
+      "version": "",
+      "protocol": 0,
+      "target": ""
+    }
+  ]
+}

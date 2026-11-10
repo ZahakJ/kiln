@@ -1,0 +1,11 @@
+{
+  "type": "CaptionPosition",
+  "format": {
+    "TYPENAME": "CaptionPosition"
+  },
+  "values": [
+    "Below",
+    "Above",
+    "Below"
+  ]
+}

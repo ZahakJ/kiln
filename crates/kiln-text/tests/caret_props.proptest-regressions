@@ -1,0 +1,8 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc c1ea81b60f4ea7960b851ab59b3306b473b7c6362fda3220aee2f8dee1237482 # shrinks to words = ["א", "0"], rtl = false, width = 80.0
+cc 540e093c9e2b5083bede40dc07fa6d195664e8b9577670351e780590943eb7d2 # shrinks to text = " aMka UsPM\t", width = 273.2037, align = Start, fam = "Arial", size = 39.96214, indent = 35.21504, first = 0.0

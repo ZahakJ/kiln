@@ -1,0 +1,13 @@
+{
+  "type": "A11yRevisionDisplay",
+  "format": {
+    "TYPENAME": "A11yRevisionDisplay"
+  },
+  "values": [
+    "Marked",
+    "Hidden",
+    "Marked",
+    "Plain",
+    "Hidden"
+  ]
+}

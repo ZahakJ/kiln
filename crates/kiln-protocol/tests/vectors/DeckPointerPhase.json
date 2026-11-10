@@ -1,0 +1,13 @@
+{
+  "type": "DeckPointerPhase",
+  "format": {
+    "TYPENAME": "DeckPointerPhase"
+  },
+  "values": [
+    "Down",
+    "Leave",
+    "Down",
+    "Move",
+    "Up"
+  ]
+}

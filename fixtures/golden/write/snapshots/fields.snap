@@ -1,0 +1,6 @@
+---
+source: crates/kiln-doc-layout/tests/fixtures.rs
+expression: summary(&l)
+---
+pages: 1
+  1 [s1 #1] Fields … Fixtures (104 words)

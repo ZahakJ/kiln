@@ -1,0 +1,205 @@
+# Performance budgets, asserted by `kiln-bench assert` through `cargo xtask budgets`.
+#
+# A change that lands a benchmark replaces the
+# `pending` line of its row with `bench = "<name>"` (and `metric` when it is not p95).
+#
+# Each row has exactly one of: `bench` (a benchmark of `kiln-bench list`, read at `metric`:
+# p50, p95, mean, min, max, rss or an extra figure; p95 for ms, rss for MB by default), `pending`
+# (the release that adds the benchmark) or `manual` (measured elsewhere). Time limits are
+# multiplied by the machine factor (calibration time / calibration_reference_ms, between 1 and
+# max_machine_factor) and, with --ci, by ci_tolerance; MB limits are not scaled.
+
+version = 1
+ci_tolerance = 1.5
+# `kiln-bench calibrate` on the reference machine (4 CPUs, 7.5 GB), release build.
+calibration_reference_ms = 101.4
+max_machine_factor = 3.0
+
+[[budget]]
+id = "B3"
+part = "first page painted"
+scenario = "Open a 300-page .docx (mixed text, tables, images) to the first painted page"
+limit = 400.0
+unit = "ms"
+bench = "write-open-300p"
+
+[[budget]]
+id = "B3"
+part = "fully paginated"
+scenario = "Open a 300-page .docx (mixed text, tables, images) until fully paginated"
+limit = 1500.0
+unit = "ms"
+bench = "write-open-300p"
+metric = "full_ms"
+
+[[budget]]
+id = "B7"
+part = "first paint"
+scenario = "Open a 10 MB .xlsx with 500k populated cells to the first paint"
+limit = 1200.0
+unit = "ms"
+bench = "xlsx-open"
+
+[[budget]]
+id = "B7"
+part = "full calc"
+scenario = "Open a 10 MB .xlsx with 500k populated cells, fully calculated"
+limit = 2500.0
+unit = "ms"
+bench = "xlsx-open"
+metric = "full_ms"
+
+[[budget]]
+id = "B8"
+scenario = "Full recalculation of 1M formula cells (arithmetic, IF, AND, SUM ranges; 4 threads)"
+limit = 2000.0
+unit = "ms"
+bench = "recalc-full"
+
+[[budget]]
+id = "B9"
+scenario = "Incremental recalculation after one edit in a 100k-formula workbook"
+limit = 2.0
+unit = "ms"
+bench = "recalc-incremental"
+
+[[budget]]
+id = "B10"
+scenario = "Open a 200-slide .pptx to the first painted slide"
+limit = 800.0
+unit = "ms"
+bench = "deck-open-200"
+
+[[budget]]
+id = "B11"
+scenario = "PDF export of the 300-page document"
+limit = 2000.0
+unit = "ms"
+bench = "pdf-export-300p"
+
+[[budget]]
+id = "B14"
+scenario = "Collaboration: apply 1,000 remote operations"
+limit = 50.0
+unit = "ms"
+bench = "collab-apply-1000"
+
+[[budget]]
+id = "B15"
+part = "clean build"
+scenario = "Clean build of the whole workspace (dev profile, this machine, warm sccache)"
+limit = 360000.0
+unit = "ms"
+manual = "B15 table below"
+
+[[budget]]
+id = "B15"
+part = "CI pipeline"
+scenario = "CI full pipeline (ci.yml)"
+limit = 1500000.0
+unit = "ms"
+manual = "duration of the ci.yml run"
+
+[[budget]]
+id = "text-layout-1000"
+scenario = "Lay out 1,000 mixed paragraphs at 600 px, warm caches (kiln-text)"
+limit = 60.0
+unit = "ms"
+bench = "text-layout-1000"
+group = "component"
+
+[[budget]]
+id = "scratch-frame-production"
+scenario = "Produce the frame after a scroll jump in a 60-page document (kiln-session)"
+limit = 16.0
+unit = "ms"
+bench = "scratch-frame-production"
+group = "component"
+
+[[budget]]
+id = "ooxml-repack-large"
+scenario = "Open, inflate every part and save a 1M-cell .xlsx package (kiln-ooxml)"
+limit = 300.0
+unit = "ms"
+bench = "ooxml-repack-large"
+group = "component"
+
+[[budget]]
+id = "write-frame"
+scenario = "One frame after jumping within the open 300-page .docx"
+limit = 16.7
+unit = "ms"
+bench = "write-frame"
+group = "component"
+
+[[budget]]
+id = "grid-open"
+scenario = "Open the 1M-cell .xlsx in a session (read, bind, calculate) to its first painted frame (B7 for twice its 500k cells)"
+limit = 2400.0
+unit = "ms"
+bench = "grid-open"
+group = "component"
+
+[[budget]]
+id = "grid-frame"
+scenario = "One Grid frame after jumping within the 1M-cell sheet at DPR 2 (kiln-sheet-layout; B6 core side)"
+limit = 16.7
+unit = "ms"
+bench = "grid-frame"
+group = "component"
+
+[[budget]]
+id = "grid-cf-100k"
+scenario = "A colour scale, a data bar and a duplicate-values rule on C2:C100000 of the 1M-cell sheet and the frame that paints them, with their undo"
+limit = 400
+unit = "ms"
+bench = "grid-cf-100k"
+group = "component"
+
+[[budget]]
+id = "grid-pivot-100k"
+scenario = "A PivotTable over the 100,000 rows of the 1M-cell sheet on a new sheet: create, a row, a column and a value field, Refresh, and the undo of the five steps"
+limit = 1500
+unit = "ms"
+bench = "grid-pivot-100k"
+group = "component"
+
+[[budget]]
+id = "grid-scroll"
+scenario = "One Grid frame per animation frame while scrolling the 1M-cell sheet at 2,000 px/s (B6 core side)"
+limit = 16.7
+unit = "ms"
+bench = "grid-scroll"
+group = "component"
+
+[[budget]]
+id = "B6"
+part = "Grid scroll frame interval"
+scenario = "Frame interval p95 while scrolling the 1M-cell sheet at 2,000 px/s in the production web build: one 60 Hz frame (16.7 ms) plus 1 ms of timer jitter"
+limit = 17.7
+unit = "ms"
+manual = "e2e/specs/grid.spec.ts (grid budgets) reads this row; × ci_tolerance on CI"
+
+[[budget]]
+id = "B6"
+part = "Grid surface work"
+scenario = "The Grid surface's work per animation frame (composite and prefetched tile steps, kiln:grid-frame) p95 while scrolling the 1M-cell sheet in the production web build"
+limit = 16.7
+unit = "ms"
+manual = "e2e/specs/grid.spec.ts (grid budgets) reads this row; × ci_tolerance on CI"
+
+[[budget]]
+id = "B6"
+part = "Deck sorter scroll frame interval"
+scenario = "Frame interval p95 while scrolling the slide sorter of the 200-slide .pptx at 2,000 px/s in the production web build: one 60 Hz frame (16.7 ms) plus 1 ms of timer jitter"
+limit = 17.7
+unit = "ms"
+manual = "e2e/specs/deck-gate.spec.ts (deck budgets) reads this row; × ci_tolerance on CI"
+
+[[budget]]
+id = "deck-show-frame"
+scenario = "One slide-show frame half way through a transition of the 200-slide .pptx at 1920 × 1080 (the composition of tiles already sent)"
+limit = 16.7
+unit = "ms"
+bench = "deck-show-frame"
+group = "component"

@@ -1,0 +1,7 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 1 | glyphs 39 | height 17.9 | rtl false
+ 0 end       g=39  x=0       w=249.32  top=0       h=17.9   base=13.96   |office fluffy AVATAR | office fluffy AVATAR|
+   line 0 run span=0 font=0 size=14.67 level=0 glyphs=19 x0=0 text="office fluffy AVATAR | "
+   line 0 run span=1 font=0 size=14.67 level=0 glyphs=20 x0=129.11 text="office fluffy AVATAR"

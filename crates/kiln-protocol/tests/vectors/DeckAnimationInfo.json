@@ -1,0 +1,47 @@
+{
+  "type": "DeckAnimationInfo",
+  "format": {
+    "TYPENAME": "DeckAnimationInfo"
+  },
+  "values": [
+    {
+      "id": 31,
+      "shape": 9,
+      "shape_name": "Title 1",
+      "paragraphs": [
+        0,
+        2
+      ],
+      "effect": "flyIn",
+      "name": "Fly In",
+      "class": "entrance",
+      "option": "fromBottom",
+      "start": "AfterPrevious",
+      "duration_ms": 500,
+      "delay_ms": 250,
+      "repeat": 1,
+      "click": 2,
+      "begin_ms": 250,
+      "end_ms": 750,
+      "playable": true
+    },
+    {
+      "id": 0,
+      "shape": 0,
+      "shape_name": "",
+      "paragraphs": null,
+      "effect": "",
+      "name": "",
+      "class": "",
+      "option": null,
+      "start": "OnClick",
+      "duration_ms": 0,
+      "delay_ms": 0,
+      "repeat": 0,
+      "click": 0,
+      "begin_ms": 0,
+      "end_ms": 0,
+      "playable": false
+    }
+  ]
+}

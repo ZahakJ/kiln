@@ -1,0 +1,15 @@
+{
+  "type": "WrapMode",
+  "format": {
+    "TYPENAME": "WrapMode"
+  },
+  "values": [
+    "InLine",
+    "Tight",
+    "InFront",
+    "InLine",
+    "Square",
+    "Tight",
+    "Through"
+  ]
+}

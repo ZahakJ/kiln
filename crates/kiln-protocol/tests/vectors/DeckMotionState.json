@@ -1,0 +1,157 @@
+{
+  "type": "DeckMotionState",
+  "format": {
+    "TYPENAME": "DeckMotionState"
+  },
+  "values": [
+    {
+      "transition": null,
+      "animations": [],
+      "selected": [],
+      "options": [],
+      "option": null,
+      "painter": false,
+      "badges": false,
+      "settings": {
+        "kind": "Speaker",
+        "loop_show": false,
+        "no_narration": false,
+        "no_animation": false,
+        "from": null,
+        "to": null,
+        "manual": false,
+        "presenter_view": false
+      },
+      "show": {
+        "running": false,
+        "mode": "Show",
+        "slide": 0,
+        "position": 0,
+        "count": 0,
+        "click": 0,
+        "clicks": 0,
+        "screen": "Slide",
+        "tool": "Arrow",
+        "typed": "",
+        "next": null,
+        "on_click": false,
+        "kind": "Speaker",
+        "version": 0
+      }
+    },
+    {
+      "transition": {
+        "effect": "push",
+        "option": "fromBottom",
+        "options": [
+          {
+            "id": "fromBottom",
+            "label": "From Bottom",
+            "group": "Direction"
+          }
+        ],
+        "duration_ms": 1000,
+        "on_click": true,
+        "after_ms": 5000,
+        "kept": false
+      },
+      "animations": [
+        {
+          "id": 31,
+          "shape": 9,
+          "shape_name": "Title 1",
+          "paragraphs": [
+            0,
+            2
+          ],
+          "effect": "flyIn",
+          "name": "Fly In",
+          "class": "entrance",
+          "option": "fromBottom",
+          "start": "AfterPrevious",
+          "duration_ms": 500,
+          "delay_ms": 250,
+          "repeat": 1,
+          "click": 2,
+          "begin_ms": 250,
+          "end_ms": 750,
+          "playable": true
+        }
+      ],
+      "selected": [
+        31
+      ],
+      "options": [
+        {
+          "id": "fromBottom",
+          "label": "From Bottom",
+          "group": "Direction"
+        }
+      ],
+      "option": "fromBottom",
+      "painter": false,
+      "badges": true,
+      "settings": {
+        "kind": "Kiosk",
+        "loop_show": true,
+        "no_narration": false,
+        "no_animation": true,
+        "from": 2,
+        "to": 5,
+        "manual": false,
+        "presenter_view": true
+      },
+      "show": {
+        "running": true,
+        "mode": "Show",
+        "slide": 2,
+        "position": 3,
+        "count": 12,
+        "click": 1,
+        "clicks": 4,
+        "screen": "Slide",
+        "tool": "Pen",
+        "typed": "1",
+        "next": 3,
+        "on_click": true,
+        "kind": "Speaker",
+        "version": 9007199254740991
+      }
+    },
+    {
+      "transition": null,
+      "animations": [],
+      "selected": [],
+      "options": [],
+      "option": null,
+      "painter": false,
+      "badges": false,
+      "settings": {
+        "kind": "Speaker",
+        "loop_show": false,
+        "no_narration": false,
+        "no_animation": false,
+        "from": null,
+        "to": null,
+        "manual": false,
+        "presenter_view": false
+      },
+      "show": {
+        "running": false,
+        "mode": "Show",
+        "slide": 0,
+        "position": 0,
+        "count": 0,
+        "click": 0,
+        "clicks": 0,
+        "screen": "Slide",
+        "tool": "Arrow",
+        "typed": "",
+        "next": null,
+        "on_click": false,
+        "kind": "Speaker",
+        "version": 0
+      }
+    }
+  ]
+}

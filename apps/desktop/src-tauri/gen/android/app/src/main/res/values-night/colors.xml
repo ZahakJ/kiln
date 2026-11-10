@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kiln's colours in the dark theme (see values/colors.xml). -->
+<resources>
+    <color name="kiln_window">#FF17110E</color>
+    <color name="kiln_ember">#FFF2804E</color>
+    <color name="kiln_on_ember">#FF1C0D06</color>
+    <color name="kiln_text">#FFF5EBDD</color>
+</resources>

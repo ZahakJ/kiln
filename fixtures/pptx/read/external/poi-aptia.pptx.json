@@ -1,0 +1,248 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 9,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "textbox",
+     "name": "Rectangle 2",
+     "text": "Role of the Fair Work Commission\u000bin the 4 yearly review of modern awards\n"
+    },
+    {
+     "kind": "textbox",
+     "name": "Rectangle 4",
+     "text": "Senior Deputy President Acton"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": "",
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 1",
+     "text": "2008-09 — Award modernisation\n\n2012-13 — Transitional review\n\n2014-15 —  4 yearly review"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Title 2",
+     "text": "Award modernisation overview"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 3",
+     "text": "2"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "\nThe common issues are:\napprentice conditions\nannual leave\npublic holidays\naward flexibility\ncasual employment and part-time employment\ntransitional provisions (accident pay & district allowances)\nfamily and domestic violence\nfamily friendly work arrangements\nmicro business schedule\n\n\n\n"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Common issues"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 3",
+     "text": "3"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": "Stage 3 and 4 timetable yet to be finalised.",
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Stage 1 — March 2014 to mid-2015\n\nStage 2 — October 2014 to late-2015\n\nStage 3 — March 2015 to late-2015\n\nStage 4 — March 2015 to early-2016"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Award stage\u000b"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 3",
+     "text": "4"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "APTIA awards"
+    },
+    {
+     "cells": [
+      [
+       "\nAward title",
+       "Group"
+      ],
+      [
+       "\nManufacturing and Associated Industries and Occupations Award 2010",
+       "1C"
+      ],
+      [
+       "\nVehicle Manufacturing, Repair, Services and Retail Award 2010",
+       "1C"
+      ],
+      [
+       "\nPassenger Vehicle Transportation Award 2010\n",
+       "2C"
+      ],
+      [
+       "\nClerks – Private Sector Award 2010\n",
+       "3A"
+      ]
+     ],
+     "kind": "table",
+     "name": "Table 7"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 3",
+     "text": "5"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Initial conference – scheduling\nParties asked to identify issues they wish to raise\nEach award referred to single member for conference\nExposure draft published with directions for submissions\nParties to make submissions on exposure drafts\nParties to make submissions in reply on exposure drafts\nFurther consultation with single member or Full Bench or hearing\nDecision or statement issued by Full Bench with determination varying award\n"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Steps in award stage"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 3",
+     "text": "6"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": "",
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Expressing rates of pay as hourly as well as weekly\nExpressing work-related allowances as monetary amounts as well as percentages\nPublishing tables of rates of pay incorporating overtime and penalty rates\nIncluding examples of how more complex provisions operate, \u000be.g. breaks after overtime and penalty rates for casuals working outside ordinary hours\nSome re-wording of provisions for plain English\nRe-arranging provisions to group like provisions together, \u000be.g. putting all provisions in relation to breaks in a single clause\n"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Technical and drafting changes in exposure drafts"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 3",
+     "text": "7"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 4",
+     "text": "awards or "
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 1",
+     "text": "As well as determining some changes sought by the parties, it was decided the following ‘general’ changes will be made to all awards:\nThe technical and drafting changes outlined previously.\nExamples clarifying the operation of award provisions.\nAn index of award facilitative provisions."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Title 2",
+     "text": "Group 1A & 1B awards decision"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Slide Number Placeholder 3",
+     "text": "8"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "Subtitle 2",
+     "text": ""
+    },
+    {
+     "kind": "picture",
+     "name": "Picture 2"
+    },
+    {
+     "kind": "textbox",
+     "name": "Rectangle 2",
+     "text": "Questions"
+    }
+   ]
+  }
+ ]
+}

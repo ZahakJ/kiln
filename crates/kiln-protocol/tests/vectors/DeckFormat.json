@@ -1,0 +1,60 @@
+{
+  "type": "DeckFormat",
+  "format": {
+    "TYPENAME": "DeckFormat"
+  },
+  "values": [
+    {
+      "font_family": "Figtree",
+      "font_size": 18.0,
+      "bold": true,
+      "italic": false,
+      "underline": false,
+      "strike": false,
+      "superscript": false,
+      "subscript": false,
+      "shadow": false,
+      "color": "1B1411",
+      "align": "left",
+      "bullets": true,
+      "numbering": false,
+      "anchor": "Top",
+      "direction": "Horizontal",
+      "autofit": "Shrink",
+      "columns": 1,
+      "spacing": 0.0,
+      "fill": "E2622A",
+      "fill_kind": "solid",
+      "outline": null,
+      "outline_width": 0.75,
+      "indent_left": 27.0,
+      "indent_first": -27.0
+    },
+    {
+      "font_family": "",
+      "font_size": 0.0,
+      "bold": false,
+      "italic": false,
+      "underline": false,
+      "strike": false,
+      "superscript": false,
+      "subscript": false,
+      "shadow": false,
+      "color": null,
+      "align": "",
+      "bullets": false,
+      "numbering": false,
+      "anchor": "Top",
+      "direction": "Horizontal",
+      "autofit": "Off",
+      "columns": 0,
+      "spacing": 0.0,
+      "fill": null,
+      "fill_kind": "",
+      "outline": "",
+      "outline_width": null,
+      "indent_left": 0.0,
+      "indent_first": 0.0
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "type": "GridCfRuleKind",
+  "format": {
+    "TYPENAME": "GridCfRuleKind"
+  },
+  "values": [
+    {
+      "Text": {
+        "rule": "BeginsWith",
+        "text": "Kiln"
+      }
+    },
+    {
+      "DateOccurring": {
+        "period": "Today"
+      }
+    },
+    {
+      "Duplicates": {
+        "unique": true
+      }
+    },
+    {
+      "TopBottom": {
+        "bottom": false,
+        "percent": false,
+        "rank": 10
+      }
+    },
+    {
+      "Average": {
+        "below": true,
+        "equal": false,
+        "std_dev": 1
+      }
+    },
+    {
+      "Blanks": {
+        "not": true
+      }
+    },
+    {
+      "Errors": {
+        "not": false
+      }
+    },
+    {
+      "Formula": {
+        "formula": "=MOD(ROW(),2)=0"
+      }
+    },
+    {
+      "ColorScale": {
+        "points": [
+          {
+            "kind": "Min",
+            "value": "",
+            "gte": true
+          },
+          {
+            "kind": "Max",
+            "value": "",
+            "gte": true
+          }
+        ],
+        "colors": [
+          "F8696B",
+          "63BE7B"
+        ]
+      }
+    },
+    {
+      "IconSet": {
+        "set": "3TrafficLights1",
+        "thresholds": [
+          {
+            "kind": "Percent",
+            "value": "33",
+            "gte": true
+          },
+          {
+            "kind": "Percent",
+            "value": "67",
+            "gte": true
+          }
+        ],
+        "reverse": false,
+        "show_value": true
+      }
+    },
+    {
+      "CellValue": {
+        "op": "Between",
+        "values": [
+          ""
+        ]
+      }
+    },
+    {
+      "Text": {
+        "rule": "Contains",
+        "text": ""
+      }
+    },
+    {
+      "DateOccurring": {
+        "period": "Today"
+      }
+    },
+    {
+      "Duplicates": {
+        "unique": false
+      }
+    },
+    {
+      "TopBottom": {
+        "bottom": false,
+        "percent": false,
+        "rank": 0
+      }
+    },
+    {
+      "Average": {
+        "below": false,
+        "equal": false,
+        "std_dev": 0
+      }
+    },
+    {
+      "Blanks": {
+        "not": false
+      }
+    },
+    {
+      "Errors": {
+        "not": false
+      }
+    },
+    {
+      "Formula": {
+        "formula": ""
+      }
+    },
+    {
+      "ColorScale": {
+        "points": [
+          {
+            "kind": "Min",
+            "value": "",
+            "gte": false
+          }
+        ],
+        "colors": [
+          ""
+        ]
+      }
+    },
+    {
+      "DataBar": {
+        "min": {
+          "kind": "Min",
+          "value": "",
+          "gte": false
+        },
+        "max": {
+          "kind": "Min",
+          "value": "",
+          "gte": false
+        },
+        "color": "",
+        "gradient": false,
+        "show_value": false,
+        "negative_color": "",
+        "border_color": ""
+      }
+    }
+  ]
+}

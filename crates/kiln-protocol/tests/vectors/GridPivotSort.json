@@ -1,0 +1,11 @@
+{
+  "type": "GridPivotSort",
+  "format": {
+    "TYPENAME": "GridPivotSort"
+  },
+  "values": [
+    "Ascending",
+    "Source",
+    "Ascending"
+  ]
+}

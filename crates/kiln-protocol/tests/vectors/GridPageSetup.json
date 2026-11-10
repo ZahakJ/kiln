@@ -1,0 +1,57 @@
+{
+  "type": "GridPageSetup",
+  "format": {
+    "TYPENAME": "GridPageSetup"
+  },
+  "values": [
+    {
+      "landscape": null,
+      "paper": null,
+      "margins": {
+        "left": 0.7,
+        "right": 0.7,
+        "top": 0.75,
+        "bottom": 0.75,
+        "header": 0.3,
+        "footer": 0.3
+      },
+      "scale": null,
+      "fit_width": null,
+      "fit_height": null,
+      "fit": null,
+      "gridlines": null,
+      "headings": null,
+      "center_h": null,
+      "center_v": null,
+      "header": "&C&A",
+      "footer": null,
+      "first_page": null,
+      "over_then_down": null,
+      "black_and_white": null,
+      "print_area": "",
+      "title_rows": null,
+      "title_cols": null
+    },
+    {
+      "landscape": null,
+      "paper": null,
+      "margins": null,
+      "scale": null,
+      "fit_width": null,
+      "fit_height": null,
+      "fit": null,
+      "gridlines": null,
+      "headings": null,
+      "center_h": null,
+      "center_v": null,
+      "header": null,
+      "footer": null,
+      "first_page": null,
+      "over_then_down": null,
+      "black_and_white": null,
+      "print_area": null,
+      "title_rows": null,
+      "title_cols": null
+    }
+  ]
+}

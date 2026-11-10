@@ -1,0 +1,17 @@
+{
+  "type": "DocKind",
+  "format": {
+    "TYPENAME": "DocKind"
+  },
+  "values": [
+    "Scratch",
+    "Write",
+    "Grid",
+    "Deck",
+    "Notes",
+    "Scratch",
+    "Write",
+    "Grid",
+    "Deck"
+  ]
+}

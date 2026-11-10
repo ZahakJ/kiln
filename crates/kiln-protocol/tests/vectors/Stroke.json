@@ -1,0 +1,28 @@
+{
+  "type": "Stroke",
+  "format": {
+    "TYPENAME": "Stroke"
+  },
+  "values": [
+    {
+      "paint": {
+        "Rgba": 255
+      },
+      "width": 0.75,
+      "join": "Miter",
+      "cap": "Butt",
+      "dash": []
+    },
+    {
+      "paint": {
+        "Rgba": 0
+      },
+      "width": 0.0,
+      "join": "Miter",
+      "cap": "Butt",
+      "dash": [
+        0.0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "type": "ChartAreaState",
+  "format": {
+    "TYPENAME": "ChartAreaState"
+  },
+  "values": [
+    {
+      "fill": "F3ECE3",
+      "no_fill": false,
+      "line": null,
+      "no_line": true,
+      "line_width": 1.5,
+      "shadow": true,
+      "rounded": false
+    },
+    {
+      "fill": null,
+      "no_fill": false,
+      "line": null,
+      "no_line": false,
+      "line_width": 0.0,
+      "shadow": false,
+      "rounded": false
+    }
+  ]
+}

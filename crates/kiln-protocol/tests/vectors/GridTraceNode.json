@@ -1,0 +1,45 @@
+{
+  "type": "GridTraceNode",
+  "format": {
+    "TYPENAME": "GridTraceNode"
+  },
+  "values": [
+    {
+      "kind": "call",
+      "label": "SUM",
+      "text": "SUM(A1:A3)",
+      "start": 4,
+      "end": 14,
+      "value": "6",
+      "evaluated": true,
+      "reference": null,
+      "summary": "Adds its arguments.",
+      "children": [
+        {
+          "kind": "reference",
+          "label": "A1:A3",
+          "text": "A1:A3",
+          "start": 8,
+          "end": 13,
+          "value": "{1;2;3}",
+          "evaluated": true,
+          "reference": "A1:A3",
+          "summary": null,
+          "children": []
+        }
+      ]
+    },
+    {
+      "kind": "",
+      "label": "",
+      "text": "",
+      "start": 0,
+      "end": 0,
+      "value": "",
+      "evaluated": false,
+      "reference": null,
+      "summary": null,
+      "children": []
+    }
+  ]
+}

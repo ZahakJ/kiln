@@ -1,0 +1,27 @@
+{
+  "type": "GridDynamicFilter",
+  "format": {
+    "TYPENAME": "GridDynamicFilter"
+  },
+  "values": [
+    "AboveAverage",
+    "YearToDate",
+    "AboveAverage",
+    "BelowAverage",
+    "Today",
+    "Yesterday",
+    "Tomorrow",
+    "ThisWeek",
+    "LastWeek",
+    "NextWeek",
+    "ThisMonth",
+    "LastMonth",
+    "NextMonth",
+    "ThisQuarter",
+    "LastQuarter",
+    "NextQuarter",
+    "ThisYear",
+    "LastYear",
+    "NextYear"
+  ]
+}

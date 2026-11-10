@@ -1,0 +1,30 @@
+{
+  "type": "AutoFormatOptions",
+  "format": {
+    "TYPENAME": "AutoFormatOptions"
+  },
+  "values": [
+    {
+      "markdown": true,
+      "smart_quotes": true,
+      "dashes": true,
+      "ellipsis": true,
+      "fractions": true,
+      "replace_text": true,
+      "capitalize_sentences": true,
+      "capitalize_days": true,
+      "two_initial_caps": true
+    },
+    {
+      "markdown": false,
+      "smart_quotes": false,
+      "dashes": false,
+      "ellipsis": false,
+      "fractions": false,
+      "replace_text": null,
+      "capitalize_sentences": null,
+      "capitalize_days": null,
+      "two_initial_caps": null
+    }
+  ]
+}

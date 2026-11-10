@@ -1,0 +1,218 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 37,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Theme colours and tints"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 2",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 4",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 5",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 6",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 7",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 8",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 9",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 10",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 11",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 12",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 13",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 15",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 16",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 17",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 18",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 19",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 20",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 21",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 22",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 23",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 24",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 25",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 26",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 27",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 28",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 29",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 30",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 31",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 32",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 33",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 34",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 35",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 36",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 37",
+     "text": ""
+    }
+   ]
+  }
+ ]
+}

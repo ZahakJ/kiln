@@ -1,0 +1,35 @@
+{
+  "type": "GridSparkEdit",
+  "format": {
+    "TYPENAME": "GridSparkEdit"
+  },
+  "values": [
+    "Group",
+    {
+      "Clear": {
+        "groups": false
+      }
+    },
+    {
+      "Options": {
+        "options": {
+          "kind": "Line",
+          "high": false,
+          "low": false,
+          "first": false,
+          "last": false,
+          "negative": false,
+          "markers": false,
+          "show_axis": false,
+          "line_weight": 0.0,
+          "empty": "Gap",
+          "show_hidden": false,
+          "min": "Individual",
+          "max": "Individual",
+          "right_to_left": false,
+          "colors": []
+        }
+      }
+    }
+  ]
+}

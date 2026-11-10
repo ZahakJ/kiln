@@ -1,0 +1,38 @@
+{
+  "type": "DeckShowSettings",
+  "format": {
+    "TYPENAME": "DeckShowSettings"
+  },
+  "values": [
+    {
+      "kind": "Speaker",
+      "loop_show": false,
+      "no_narration": false,
+      "no_animation": false,
+      "from": null,
+      "to": null,
+      "manual": false,
+      "presenter_view": false
+    },
+    {
+      "kind": "Kiosk",
+      "loop_show": true,
+      "no_narration": false,
+      "no_animation": true,
+      "from": 2,
+      "to": 5,
+      "manual": false,
+      "presenter_view": true
+    },
+    {
+      "kind": "Speaker",
+      "loop_show": false,
+      "no_narration": false,
+      "no_animation": false,
+      "from": null,
+      "to": null,
+      "manual": false,
+      "presenter_view": false
+    }
+  ]
+}

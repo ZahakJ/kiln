@@ -1,0 +1,14 @@
+{
+  "type": "PrintPaper",
+  "format": {
+    "TYPENAME": "PrintPaper"
+  },
+  "values": [
+    "Letter",
+    "Legal",
+    "A3",
+    "A4",
+    "A5",
+    "Letter"
+  ]
+}

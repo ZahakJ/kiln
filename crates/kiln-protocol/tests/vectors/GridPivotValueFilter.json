@@ -1,0 +1,22 @@
+{
+  "type": "GridPivotValueFilter",
+  "format": {
+    "TYPENAME": "GridPivotValueFilter"
+  },
+  "values": [
+    {
+      "value": 1,
+      "top": null,
+      "op": "Between",
+      "a": 10.0,
+      "b": 20.5
+    },
+    {
+      "value": 0,
+      "top": null,
+      "op": "Equal",
+      "a": 0.0,
+      "b": 0.0
+    }
+  ]
+}

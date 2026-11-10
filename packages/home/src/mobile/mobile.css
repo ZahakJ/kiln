@@ -1,0 +1,88 @@
+/*
+ * Kiln Home on phones and tablets (docs/design/mockups/phone-*.png): the floating
+ * New button with the spark, every target a finger uses at least 44 × 44 CSS px, and the doors
+ * two by two on a tablet so their names never clip.
+ */
+
+.kiln-home__new-spark {
+  display: none;
+}
+
+/* Tablet: the rail stays, the doors go two by two. ----------------------------------------------- */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .kiln-home__doors {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .kiln-door__noun {
+    font-size: 27px;
+  }
+}
+
+/* Phone ------------------------------------------------------------------------------------------ */
+
+@media (max-width: 639px) {
+  .kiln-home__new-plus {
+    display: none;
+  }
+  .kiln-home__new-spark {
+    display: inline-block;
+  }
+  .kiln-home__new-btn {
+    gap: 9px;
+    height: 54px;
+    padding-inline: 18px 22px;
+  }
+  .kiln-home__icon-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+  }
+  .kiln-home__seg {
+    padding: 3px;
+  }
+  .kiln-home__seg button {
+    min-height: 44px;
+    font-size: 14px;
+  }
+  .kiln-home__empty-actions .kiln-btn,
+  .kiln-home__empty-actions button {
+    min-height: 44px;
+    padding-inline: 14px;
+    font-size: 14px;
+  }
+  .kiln-home__section-head .kiln-home__link {
+    min-height: 44px;
+    padding-inline: 8px;
+    margin-inline-end: -8px;
+  }
+  /* The New button stands in a band over the tab bar that the page fades into, so nothing a
+     finger uses scrolls in under it; the page's end clears it (home.css pads it). */
+  .kiln-home__rail {
+    inset-inline: 0;
+    bottom: 76px;
+    justify-content: flex-end;
+    flex-direction: row;
+    padding: 22px 16px 10px;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--kiln-bg) 0%, transparent),
+      var(--kiln-bg) 46%
+    );
+    pointer-events: none;
+  }
+  .kiln-home__rail > .kiln-home__new {
+    pointer-events: auto;
+  }
+  .kiln-home {
+    padding-bottom: 168px;
+  }
+  .kiln-home__tabbar {
+    height: 76px;
+    padding-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+  }
+  .kiln-home__tabbar button {
+    min-height: 56px;
+  }
+}

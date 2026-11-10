@@ -1,0 +1,13 @@
+{
+  "type": "DeckOrder",
+  "format": {
+    "TYPENAME": "DeckOrder"
+  },
+  "values": [
+    "Front",
+    "Back",
+    "Front",
+    "Forward",
+    "Backward"
+  ]
+}

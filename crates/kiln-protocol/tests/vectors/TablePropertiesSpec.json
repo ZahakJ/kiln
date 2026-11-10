@@ -1,0 +1,44 @@
+{
+  "type": "TablePropertiesSpec",
+  "format": {
+    "TYPENAME": "TablePropertiesSpec"
+  },
+  "values": [
+    {
+      "width": null,
+      "alignment": null,
+      "indent": null,
+      "wrap_around": null,
+      "autofit": null,
+      "cell_margins": null,
+      "cell_spacing": null,
+      "row_height": null,
+      "row_can_break": null,
+      "row_header": null,
+      "column_width": null,
+      "cell_width": null,
+      "cell_v_align": null,
+      "cell_wrap": null,
+      "alt_title": null,
+      "alt_description": null
+    },
+    {
+      "width": null,
+      "alignment": null,
+      "indent": null,
+      "wrap_around": null,
+      "autofit": null,
+      "cell_margins": null,
+      "cell_spacing": null,
+      "row_height": null,
+      "row_can_break": null,
+      "row_header": null,
+      "column_width": null,
+      "cell_width": null,
+      "cell_v_align": null,
+      "cell_wrap": null,
+      "alt_title": null,
+      "alt_description": null
+    }
+  ]
+}

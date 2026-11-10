@@ -1,0 +1,475 @@
+{
+  "type": "QueryResult",
+  "format": {
+    "TYPENAME": "QueryResult"
+  },
+  "values": [
+    {
+      "Documents": [
+        {
+          "doc": 7,
+          "kind": "Scratch",
+          "app": "Write",
+          "title": "Scratch1",
+          "path": "/tmp/scratch.txt",
+          "format": "Txt",
+          "revision": 1234567890123,
+          "dirty": true,
+          "read_only": false,
+          "can_undo": true,
+          "can_redo": false,
+          "undo_label": "write.edit.insert_text",
+          "redo_label": null,
+          "save_formats": [
+            "Txt",
+            "Md"
+          ],
+          "autosave": {
+            "Unavailable": "Save the document first"
+          }
+        }
+      ]
+    },
+    {
+      "Summary": {
+        "doc": 7,
+        "kind": "Scratch",
+        "app": "Write",
+        "title": "Scratch1",
+        "path": "/tmp/scratch.txt",
+        "format": "Txt",
+        "revision": 1234567890123,
+        "dirty": true,
+        "read_only": false,
+        "can_undo": true,
+        "can_redo": false,
+        "undo_label": "write.edit.insert_text",
+        "redo_label": null,
+        "save_formats": [
+          "Txt",
+          "Md"
+        ],
+        "autosave": {
+          "Unavailable": "Save the document first"
+        }
+      }
+    },
+    {
+      "Paragraphs": [
+        {
+          "id": 1,
+          "text": "First"
+        },
+        {
+          "id": 2,
+          "text": ""
+        }
+      ]
+    },
+    {
+      "Selection": {
+        "kind": {
+          "Text": {
+            "anchor": {
+              "block": 1,
+              "offset": 0
+            },
+            "head": {
+              "block": 2,
+              "offset": 5
+            }
+          }
+        },
+        "rects": [
+          {
+            "x": -12.5,
+            "y": 96.0,
+            "width": 0.75,
+            "height": 18.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1000000.0,
+            "height": 0.0034
+          }
+        ],
+        "caret": {
+          "rect": {
+            "x": -12.5,
+            "y": 96.0,
+            "width": 0.75,
+            "height": 18.0
+          },
+          "rtl": true
+        },
+        "handles": [
+          {
+            "kind": "SelectionStart",
+            "rect": {
+              "x": -12.5,
+              "y": 96.0,
+              "width": 0.75,
+              "height": 18.0
+            }
+          },
+          {
+            "kind": {
+              "Resize": "SW"
+            },
+            "rect": {
+              "x": -12.5,
+              "y": 96.0,
+              "width": 0.75,
+              "height": 18.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Status": {
+        "page": {
+          "current": 3,
+          "total": 12
+        },
+        "words": 1284,
+        "chars": 7311,
+        "language": "en-GB",
+        "cells": {
+          "count": 10,
+          "numeric_count": 9,
+          "sum": 1284.0,
+          "average": 142.66666666666666,
+          "min": -3.5,
+          "max": null
+        },
+        "slide": null,
+        "zoom": 1.5,
+        "view": "PrintLayout"
+      }
+    },
+    {
+      "A11y": {
+        "nodes": [
+          {
+            "id": 1,
+            "role": "Document",
+            "name": "Scratch1",
+            "text": null,
+            "bounds": null,
+            "level": null,
+            "children": [
+              2,
+              3
+            ],
+            "objects": null,
+            "revisions": null
+          },
+          {
+            "id": 2,
+            "role": "Heading",
+            "name": null,
+            "text": "Résumé",
+            "bounds": {
+              "x": -12.5,
+              "y": 96.0,
+              "width": 0.75,
+              "height": 18.0
+            },
+            "level": 1,
+            "children": [],
+            "objects": [
+              "1"
+            ],
+            "revisions": [
+              {
+                "start": 0,
+                "end": 1,
+                "inserted": false,
+                "display": "Marked"
+              }
+            ]
+          }
+        ],
+        "active": 2,
+        "announce": "Bold on",
+        "caret": {
+          "block": 2,
+          "offset": 3
+        }
+      }
+    },
+    {
+      "Text": "Kiln\nWrite"
+    },
+    {
+      "CompatReport": []
+    },
+    {
+      "CompatReport": [
+        {
+          "code": "image.missing",
+          "severity": "Loss",
+          "message": "Pictures whose image data is not available are not saved — «Ünïcödé».",
+          "count": 300,
+          "origin": "Save"
+        },
+        {
+          "code": "drawing.smartArt",
+          "severity": "Info",
+          "message": "SmartArt is kept in the file but shown as a placeholder.",
+          "count": 1,
+          "origin": "Open"
+        }
+      ]
+    },
+    {
+      "PrintPreview": {
+        "sheets": 12,
+        "sheet": 1,
+        "width_pt": 612.0,
+        "height_pt": 792.0,
+        "pages": [
+          2,
+          3
+        ],
+        "page_count": 300,
+        "scene": {
+          "revision": 42,
+          "reset": false,
+          "scale": 2.0,
+          "extent": {
+            "x": 0.0,
+            "y": 0.0,
+            "w": 0.0,
+            "h": 0.0
+          },
+          "background": {
+            "Rgba": 0
+          },
+          "tiles": [],
+          "removed": [],
+          "atlas": [],
+          "images": [],
+          "overlay": null
+        }
+      }
+    },
+    {
+      "Pdf": {
+        "name": "Quarterly report «Ünïcödé».pdf",
+        "bytes": [
+          37,
+          80,
+          68,
+          70,
+          45,
+          49,
+          46,
+          55
+        ],
+        "pdf_ua": false,
+        "ua_issues": [
+          "a figure has no alt text"
+        ]
+      }
+    },
+    {
+      "Write": {
+        "Bookmarks": [
+          "intro"
+        ]
+      }
+    },
+    {
+      "Grid": {
+        "Zoom": 0.75
+      }
+    },
+    {
+      "Deck": {
+        "Cursor": "Text"
+      }
+    },
+    {
+      "Collab": {
+        "shared": true,
+        "status": "Online",
+        "link": {
+          "server": "wss://collab.example.org",
+          "room": "k7p2q9xw",
+          "token": "s3cret"
+        },
+        "name": "Ana Martín",
+        "initials": "AM",
+        "colour": "3159C6",
+        "peers": [
+          {
+            "peer": "1849302215568113",
+            "name": "Rana Okafor",
+            "initials": "RO",
+            "colour": "1D8A60",
+            "caret": {
+              "shape": null,
+              "para": 12,
+              "offset": 7
+            },
+            "anchor": null,
+            "slide": 4,
+            "shapes": [
+              9
+            ],
+            "at": {
+              "x": 96.0,
+              "y": 240.5,
+              "width": 1.5,
+              "height": 18.0
+            }
+          }
+        ],
+        "queued": 0,
+        "preview": null,
+        "problem": null
+      }
+    },
+    {
+      "Versions": [
+        {
+          "id": "v3",
+          "name": "Draft for Saturday",
+          "author": "Zoë Okafor",
+          "time_ms": 1792000000000,
+          "origin": "Save"
+        }
+      ]
+    },
+    {
+      "VersionCompare": [
+        {
+          "change": "Same",
+          "spans": [
+            {
+              "change": "Same",
+              "text": "We load the "
+            },
+            {
+              "change": "Removed",
+              "text": "small"
+            },
+            {
+              "change": "Added",
+              "text": "big"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "VersionSlides": {
+        "slides": [
+          {
+            "slide": 3,
+            "mark": "Same"
+          }
+        ],
+        "scene": {
+          "revision": 42,
+          "reset": false,
+          "scale": 2.0,
+          "extent": {
+            "x": 0.0,
+            "y": 0.0,
+            "w": 0.0,
+            "h": 0.0
+          },
+          "background": {
+            "Rgba": 0
+          },
+          "tiles": [],
+          "removed": [],
+          "atlas": [],
+          "images": [],
+          "overlay": null
+        }
+      }
+    },
+    {
+      "Recents": [
+        {
+          "path": "/data/ana/Budget.xlsx",
+          "name": "Budget",
+          "kind": "Grid",
+          "opened_at_ms": 1792000000000,
+          "pinned": true,
+          "thumbnail": null
+        },
+        {
+          "path": "opfs:documents/Plan.kwrite",
+          "name": "Plan",
+          "kind": "Write",
+          "opened_at_ms": 1792000000001,
+          "pinned": false,
+          "thumbnail": "data:image/png;base64,iVBORw0KGgo="
+        }
+      ]
+    },
+    {
+      "Properties": {
+        "title": "Budget 2027",
+        "subject": null,
+        "author": "Ana",
+        "keywords": null,
+        "description": null,
+        "last_modified_by": null,
+        "created": null,
+        "modified": null,
+        "revision": null,
+        "application": null,
+        "pages": 0,
+        "words": 0,
+        "characters": 0,
+        "paragraphs": 0,
+        "category": null,
+        "status": null,
+        "company": "Kiln & Co",
+        "manager": null,
+        "sheets": 3,
+        "slides": 0
+      }
+    },
+    {
+      "Inspect": [
+        {
+          "kind": "Comments",
+          "count": 2
+        },
+        {
+          "kind": "HiddenSheets",
+          "count": 0
+        }
+      ]
+    },
+    {
+      "Documents": [
+        {
+          "doc": 0,
+          "kind": "Scratch",
+          "app": "Write",
+          "title": "",
+          "path": null,
+          "format": null,
+          "revision": 0,
+          "dirty": false,
+          "read_only": false,
+          "can_undo": false,
+          "can_redo": false,
+          "undo_label": null,
+          "redo_label": null,
+          "save_formats": [],
+          "autosave": "Off"
+        }
+      ]
+    }
+  ]
+}

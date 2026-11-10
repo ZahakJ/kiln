@@ -1,0 +1,47 @@
+{
+  "type": "GridCfRule",
+  "format": {
+    "TYPENAME": "GridCfRule"
+  },
+  "values": [
+    {
+      "id": 0,
+      "applies_to": "$C$2:$C$20",
+      "kind": {
+        "DataBar": {
+          "min": {
+            "kind": "Automatic",
+            "value": "",
+            "gte": true
+          },
+          "max": {
+            "kind": "Percent",
+            "value": "90",
+            "gte": true
+          },
+          "color": "638EC6",
+          "gradient": true,
+          "show_value": true,
+          "negative_color": "FF0000",
+          "border_color": null
+        }
+      },
+      "style": null,
+      "stop_if_true": false
+    },
+    {
+      "id": 0,
+      "applies_to": "",
+      "kind": {
+        "CellValue": {
+          "op": "Between",
+          "values": [
+            ""
+          ]
+        }
+      },
+      "style": null,
+      "stop_if_true": false
+    }
+  ]
+}

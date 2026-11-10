@@ -1,0 +1,329 @@
+{
+  "version": 1,
+  "templates": [
+    {
+      "id": "write-letter",
+      "kind": "Write",
+      "name": "Business letter",
+      "file": "write/letter.kwrite",
+      "thumbnail": "write/letter.png",
+      "description": "A formal one-page letter on a clean letterhead.",
+      "featured": true
+    },
+    {
+      "id": "write-resume",
+      "kind": "Write",
+      "name": "Résumé",
+      "file": "write/resume.kwrite",
+      "thumbnail": "write/resume.png",
+      "description": "A one-page CV with experience, education and skills.",
+      "featured": true
+    },
+    {
+      "id": "write-report",
+      "kind": "Write",
+      "name": "Annual report",
+      "file": "write/report.kwrite",
+      "thumbnail": "write/report.png",
+      "description": "A report with a cover page, tables and page numbers.",
+      "featured": true
+    },
+    {
+      "id": "write-invoice",
+      "kind": "Write",
+      "name": "Invoice",
+      "file": "write/invoice.kwrite",
+      "thumbnail": "write/invoice.png",
+      "description": "An itemised invoice with VAT, totals and payment details.",
+      "featured": false
+    },
+    {
+      "id": "write-newsletter",
+      "kind": "Write",
+      "name": "Newsletter",
+      "file": "write/newsletter.kwrite",
+      "thumbnail": "write/newsletter.png",
+      "description": "A two-column community newsletter with a masthead.",
+      "featured": false
+    },
+    {
+      "id": "write-meeting-notes",
+      "kind": "Write",
+      "name": "Meeting notes",
+      "file": "write/meeting-notes.kwrite",
+      "thumbnail": "write/meeting-notes.png",
+      "description": "Agenda, discussion, decisions and actions in one page.",
+      "featured": false
+    },
+    {
+      "id": "write-proposal",
+      "kind": "Write",
+      "name": "Project proposal",
+      "file": "write/proposal.kwrite",
+      "thumbnail": "write/proposal.png",
+      "description": "A funding proposal with a timeline and a budget.",
+      "featured": false
+    },
+    {
+      "id": "write-cover-letter",
+      "kind": "Write",
+      "name": "Cover letter",
+      "file": "write/cover-letter.kwrite",
+      "thumbnail": "write/cover-letter.png",
+      "description": "A job application letter that matches the résumé.",
+      "featured": false
+    },
+    {
+      "id": "write-memo",
+      "kind": "Write",
+      "name": "Memo",
+      "file": "write/memo.kwrite",
+      "thumbnail": "write/memo.png",
+      "description": "An internal memo with clear headings and actions.",
+      "featured": false
+    },
+    {
+      "id": "write-press-release",
+      "kind": "Write",
+      "name": "Press release",
+      "file": "write/press-release.kwrite",
+      "thumbnail": "write/press-release.png",
+      "description": "A news release with a quote and media contacts.",
+      "featured": false
+    },
+    {
+      "id": "write-research-paper",
+      "kind": "Write",
+      "name": "Research paper",
+      "file": "write/research-paper.kwrite",
+      "thumbnail": "write/research-paper.png",
+      "description": "An academic paper with an abstract and references.",
+      "featured": false
+    },
+    {
+      "id": "write-recipe",
+      "kind": "Write",
+      "name": "Recipe",
+      "file": "write/recipe.kwrite",
+      "thumbnail": "write/recipe.png",
+      "description": "A recipe card with ingredients, method and notes.",
+      "featured": false
+    },
+    {
+      "id": "grid-budget",
+      "kind": "Grid",
+      "name": "Monthly budget",
+      "file": "grid/budget.kgrid",
+      "thumbnail": "grid/budget.png",
+      "description": "Income and spending against plan, with a chart.",
+      "featured": true
+    },
+    {
+      "id": "grid-tracker",
+      "kind": "Grid",
+      "name": "Project tracker",
+      "file": "grid/tracker.kgrid",
+      "thumbnail": "grid/tracker.png",
+      "description": "Tasks, owners, dates and progress at a glance.",
+      "featured": true
+    },
+    {
+      "id": "grid-loan",
+      "kind": "Grid",
+      "name": "Loan calculator",
+      "file": "grid/loan.kgrid",
+      "thumbnail": "grid/loan.png",
+      "description": "Monthly payments and a full repayment schedule.",
+      "featured": true
+    },
+    {
+      "id": "grid-invoice",
+      "kind": "Grid",
+      "name": "Invoice",
+      "file": "grid/invoice.kgrid",
+      "thumbnail": "grid/invoice.png",
+      "description": "An invoice that totals itself, VAT included.",
+      "featured": false
+    },
+    {
+      "id": "grid-schedule",
+      "kind": "Grid",
+      "name": "Weekly schedule",
+      "file": "grid/schedule.kgrid",
+      "thumbnail": "grid/schedule.png",
+      "description": "A colour-coded week planner in hourly slots.",
+      "featured": false
+    },
+    {
+      "id": "grid-gradebook",
+      "kind": "Grid",
+      "name": "Gradebook",
+      "file": "grid/gradebook.kgrid",
+      "thumbnail": "grid/gradebook.png",
+      "description": "Weighted marks, averages and grades for a class.",
+      "featured": false
+    },
+    {
+      "id": "grid-expenses",
+      "kind": "Grid",
+      "name": "Expense report",
+      "file": "grid/expenses.kgrid",
+      "thumbnail": "grid/expenses.png",
+      "description": "Expenses by date and category, ready to approve.",
+      "featured": false
+    },
+    {
+      "id": "grid-inventory",
+      "kind": "Grid",
+      "name": "Stock inventory",
+      "file": "grid/inventory.kgrid",
+      "thumbnail": "grid/inventory.png",
+      "description": "Stock levels, values and what to reorder.",
+      "featured": false
+    },
+    {
+      "id": "grid-sales",
+      "kind": "Grid",
+      "name": "Sales report",
+      "file": "grid/sales.kgrid",
+      "thumbnail": "grid/sales.png",
+      "description": "Monthly sales by region with totals and a chart.",
+      "featured": false
+    },
+    {
+      "id": "grid-timesheet",
+      "kind": "Grid",
+      "name": "Timesheet",
+      "file": "grid/timesheet.kgrid",
+      "thumbnail": "grid/timesheet.png",
+      "description": "Hours worked in a week, with overtime and pay.",
+      "featured": false
+    },
+    {
+      "id": "grid-savings",
+      "kind": "Grid",
+      "name": "Savings goals",
+      "file": "grid/savings.kgrid",
+      "thumbnail": "grid/savings.png",
+      "description": "Progress towards savings goals, month by month.",
+      "featured": false
+    },
+    {
+      "id": "grid-travel",
+      "kind": "Grid",
+      "name": "Travel planner",
+      "file": "grid/travel.kgrid",
+      "thumbnail": "grid/travel.png",
+      "description": "An itinerary with costs set against a budget.",
+      "featured": false
+    },
+    {
+      "id": "deck-pitch",
+      "kind": "Deck",
+      "name": "Pitch deck",
+      "file": "deck/pitch.kdeck",
+      "thumbnail": "deck/pitch.png",
+      "description": "A startup pitch: problem, solution, traction and the ask.",
+      "featured": true
+    },
+    {
+      "id": "deck-quarterly",
+      "kind": "Deck",
+      "name": "Quarterly review",
+      "file": "deck/quarterly.kdeck",
+      "thumbnail": "deck/quarterly.png",
+      "description": "Results, highlights, risks and the next quarter.",
+      "featured": true
+    },
+    {
+      "id": "deck-report",
+      "kind": "Deck",
+      "name": "Business review",
+      "file": "deck/report.kdeck",
+      "thumbnail": "deck/report.png",
+      "description": "A year in numbers, lessons and priorities.",
+      "featured": false
+    },
+    {
+      "id": "deck-lesson",
+      "kind": "Deck",
+      "name": "Lesson",
+      "file": "deck/lesson.kdeck",
+      "thumbnail": "deck/lesson.png",
+      "description": "A classroom lesson with objectives and an activity.",
+      "featured": false
+    },
+    {
+      "id": "deck-portfolio",
+      "kind": "Deck",
+      "name": "Portfolio",
+      "file": "deck/portfolio.kdeck",
+      "thumbnail": "deck/portfolio.png",
+      "description": "Selected projects, illustrated, with how you work.",
+      "featured": false
+    },
+    {
+      "id": "deck-timeline",
+      "kind": "Deck",
+      "name": "Product roadmap",
+      "file": "deck/timeline.kdeck",
+      "thumbnail": "deck/timeline.png",
+      "description": "A year of milestones on a timeline.",
+      "featured": false
+    },
+    {
+      "id": "deck-kickoff",
+      "kind": "Deck",
+      "name": "Project kickoff",
+      "file": "deck/kickoff.kdeck",
+      "thumbnail": "deck/kickoff.png",
+      "description": "Goals, scope, team, milestones and next steps.",
+      "featured": false
+    },
+    {
+      "id": "deck-workshop",
+      "kind": "Deck",
+      "name": "Workshop",
+      "file": "deck/workshop.kdeck",
+      "thumbnail": "deck/workshop.png",
+      "description": "A half-day workshop with a plan and exercises.",
+      "featured": false
+    },
+    {
+      "id": "deck-launch",
+      "kind": "Deck",
+      "name": "Product launch",
+      "file": "deck/launch.kdeck",
+      "thumbnail": "deck/launch.png",
+      "description": "A launch briefing with audience, plan and prices.",
+      "featured": false
+    },
+    {
+      "id": "deck-all-hands",
+      "kind": "Deck",
+      "name": "All-hands",
+      "file": "deck/all-hands.kdeck",
+      "thumbnail": "deck/all-hands.png",
+      "description": "A company meeting: news, people and celebrations.",
+      "featured": false
+    },
+    {
+      "id": "deck-talk",
+      "kind": "Deck",
+      "name": "Conference talk",
+      "file": "deck/talk.kdeck",
+      "thumbnail": "deck/talk.png",
+      "description": "A talk with findings, a chart and lessons.",
+      "featured": false
+    },
+    {
+      "id": "deck-case-study",
+      "kind": "Deck",
+      "name": "Case study",
+      "file": "deck/case-study.kdeck",
+      "thumbnail": "deck/case-study.png",
+      "description": "A client story: challenge, approach and results.",
+      "featured": false
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "type": "DeckTransitionInfo",
+  "format": {
+    "TYPENAME": "DeckTransitionInfo"
+  },
+  "values": [
+    {
+      "effect": "push",
+      "option": "fromBottom",
+      "options": [
+        {
+          "id": "fromBottom",
+          "label": "From Bottom",
+          "group": "Direction"
+        }
+      ],
+      "duration_ms": 1000,
+      "on_click": true,
+      "after_ms": 5000,
+      "kept": false
+    },
+    {
+      "effect": "",
+      "option": null,
+      "options": [],
+      "duration_ms": 0,
+      "on_click": false,
+      "after_ms": null,
+      "kept": false
+    }
+  ]
+}

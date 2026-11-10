@@ -1,0 +1,50 @@
+{
+  "type": "GridPivotOptions",
+  "format": {
+    "TYPENAME": "GridPivotOptions"
+  },
+  "values": [
+    {
+      "layout": "Tabular",
+      "subtotals": "Bottom",
+      "row_totals": true,
+      "col_totals": false,
+      "repeat_labels": true,
+      "blank_rows": false,
+      "empty_text": "0",
+      "style": "PivotStyleMedium9",
+      "row_headers": true,
+      "col_headers": true,
+      "row_stripes": true,
+      "col_stripes": false
+    },
+    {
+      "layout": "Compact",
+      "subtotals": "Top",
+      "row_totals": false,
+      "col_totals": false,
+      "repeat_labels": false,
+      "blank_rows": false,
+      "empty_text": null,
+      "style": "",
+      "row_headers": false,
+      "col_headers": false,
+      "row_stripes": false,
+      "col_stripes": false
+    },
+    {
+      "layout": "Compact",
+      "subtotals": "Top",
+      "row_totals": false,
+      "col_totals": false,
+      "repeat_labels": false,
+      "blank_rows": false,
+      "empty_text": null,
+      "style": "",
+      "row_headers": false,
+      "col_headers": false,
+      "row_stripes": false,
+      "col_stripes": false
+    }
+  ]
+}

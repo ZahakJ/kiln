@@ -1,0 +1,1861 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//! [`write_xlsx`]: [`kiln_sheet::Workbook`] → a SpreadsheetML package.
+//!
+//! With the [`XlsxSource`] of the file read, the original package is the starting point: the
+//! parts the model covers (workbook, worksheets, styles, shared strings, notes, threaded
+//! comments, tables, cell metadata, and drawings and the theme when they changed) are written
+//! from the model, reusing the XML read wherever the model still holds what it said; every other
+//! part keeps its bytes, and its relationships their ids. `calcChain.xml` is dropped (Excel
+//! rebuilds it). Parts that only the removed content referred to (the table of a deleted sheet)
+//! go with it. Without a source a new package is written.
+
+mod array_form;
+mod cells;
+mod sheet;
+
+use std::collections::{BTreeSet, VecDeque};
+
+use kiln_ooxml::opc::{
+    OpcPackage, RelationshipOptions, part_key, rel_type, to_transitional_rel_type,
+};
+use kiln_ooxml::props::{
+    AppProperties, CoreProperties, PropertiesUpdate, read_document_properties,
+    write_document_properties,
+};
+use kiln_ooxml::xml::{WriteOptions as XmlWriteOptions, XmlElement, XmlNode, write_element};
+use kiln_sheet::meta::{CalcMode, DrawingAnchor, DrawingKind, Note, SheetVisibility};
+use kiln_sheet::{SheetId, Workbook};
+use rustc_hash::FxHashMap;
+
+use crate::XlsxError;
+use crate::parts::{
+    CT_COMMENTS, CT_METADATA, CT_PERSON, CT_TABLE, CT_THREADED, CT_VML, DYNAMIC_METADATA,
+    REL_PERSON, REL_THREADED, comments_el, notes_vml, patch_drawing, persons_el, table_el,
+    threaded_el, write_theme,
+};
+use crate::sheet_xml::{WORKSHEET_ORDER, file_formula, set_password};
+use crate::source::{SheetSource, XlsxKind, XlsxSource};
+use crate::strings::SstBuilder;
+use crate::styles::write_styles;
+use crate::xmlx::{replace_children, set_attr};
+
+/// How to write.
+#[derive(Debug, Clone, Default)]
+pub struct WriteOptions {
+    /// The package kind (default: the kind read, else `.xlsx`). Saving a macro-enabled workbook
+    /// as `.xlsx` drops its macros.
+    pub kind: Option<XlsxKind>,
+    /// The save time (W3CDTF): sets `dcterms:modified` (and `dcterms:created` when missing) and
+    /// the application name. `None` leaves the document properties as read, so a rewrite is
+    /// deterministic.
+    pub now: Option<String>,
+    /// `cp:lastModifiedBy` (with `now`).
+    pub author: Option<String>,
+    /// Charts to write, by part name (`/xl/charts/chart3.xml`): the charts edited since reading
+    /// and the charts added on sheets. A drawing anchor of kind chart whose `reference` names one
+    /// of them is written with a frame for it, in the sheet's drawing part (created when the
+    /// sheet has none).
+    pub charts: Vec<(String, kiln_charts::model::ChartSpace)>,
+    /// Pictures added in Kiln, by media part name (`/xl/media/image3.png`): the bytes of each
+    /// picture anchor whose `reference` the package does not have.
+    pub media: Vec<(String, Vec<u8>)>,
+}
+
+/// The result of a write.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct XlsxWritten {
+    /// The package.
+    pub bytes: Vec<u8>,
+    /// Parts written from the model, relationships parts that changed and
+    /// `/[Content_Types].xml` when it changed; every other part is a copy of the original.
+    pub regenerated: Vec<String>,
+    /// Parts of the original package that the output no longer has.
+    pub dropped: Vec<String>,
+    /// What could not be written exactly.
+    pub issues: Vec<String>,
+}
+
+const WORKBOOK_ORDER: &[&str] = &[
+    "fileVersion",
+    "fileSharing",
+    "workbookPr",
+    "workbookProtection",
+    "bookViews",
+    "sheets",
+    "functionGroups",
+    "externalReferences",
+    "definedNames",
+    "calcPr",
+    "oleSize",
+    "customWorkbookViews",
+    "pivotCaches",
+    "smartTagPr",
+    "smartTagTypes",
+    "webPublishing",
+    "fileRecoveryPr",
+    "webPublishObjects",
+    "extLst",
+];
+
+const CT_CHARTSHEET: &str =
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.chartsheet+xml";
+const CT_WORKSHEET: &str =
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml";
+const CT_STYLES: &str = "application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml";
+const CT_SST: &str =
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml";
+
+struct Out {
+    pkg: OpcPackage,
+    regenerated: BTreeSet<String>,
+    issues: Vec<String>,
+    /// The charts written ([`WriteOptions::charts`]), by part key: their vocabulary and whether
+    /// it differs from the part read (a chart that became a chartex chart, or back).
+    charts: FxHashMap<String, (kiln_charts::model::PartFormat, bool)>,
+    /// The images of pictures added in Kiln ([`WriteOptions::media`]).
+    media: Vec<(String, Vec<u8>)>,
+    /// PivotTable caches the workbook lists: (`cacheId`, cache definition part).
+    pivot_caches: Vec<(u32, String)>,
+    /// Caches of PivotTables written as read (no edited PivotTable may take one over).
+    kept_pivot_caches: BTreeSet<String>,
+    /// Every `cacheId` the file read had, on any sheet: a new cache takes a number none of them
+    /// has (a sheet written before the one whose PivotTable holds a number cannot reuse it).
+    read_cache_ids: BTreeSet<u32>,
+}
+
+/// A part's XML as bytes. A tree that cannot be serialised (say, a reused subtree with a prefix
+/// no ancestor declares) is an error naming the part, never an empty part in a corrupt package.
+fn xml_bytes(name: &str, root: &XmlElement) -> Result<Vec<u8>, XlsxError> {
+    write_element(root, &XmlWriteOptions::default())
+        .map(String::into_bytes)
+        .map_err(|e| XlsxError::Xml {
+            part: name.to_owned(),
+            message: e.to_string(),
+        })
+}
+
+impl Out {
+    fn put(&mut self, name: &str, ct: &str, bytes: Vec<u8>) -> Result<(), XlsxError> {
+        if self.pkg.has(name) {
+            self.pkg.set_part(name, bytes)?;
+            if self.pkg.content_type(name) != Some(ct) {
+                self.pkg.set_content_type(name, ct)?;
+            }
+        } else {
+            self.pkg.add_part(name, ct, bytes)?;
+        }
+        self.regenerated.insert(name.to_owned());
+        Ok(())
+    }
+
+    fn put_xml(&mut self, name: &str, ct: &str, root: &XmlElement) -> Result<(), XlsxError> {
+        let bytes = xml_bytes(name, root)?;
+        self.put(name, ct, bytes)
+    }
+
+    /// The id of a relationship of `source` to `target` of type `ty`, added when missing.
+    fn rel(&mut self, source: &str, ty: &str, target: &str) -> Result<String, XlsxError> {
+        let rels = self.pkg.relationships(source)?;
+        if let Some(r) = rels.by_type(ty).find(|r| {
+            rels.resolve(r)
+                .is_some_and(|t| part_key(&t) == part_key(target))
+        }) {
+            return Ok(r.id.clone());
+        }
+        drop(rels);
+        let r = self
+            .pkg
+            .add_relationship(source, ty, target, RelationshipOptions::default())?;
+        self.regenerated
+            .insert(kiln_ooxml::opc::rels_part_name(source));
+        Ok(r.id)
+    }
+
+    fn external_rel(
+        &mut self,
+        source: &str,
+        ty: &str,
+        target: &str,
+        prefer: Option<&str>,
+    ) -> Result<String, XlsxError> {
+        let rels = self.pkg.relationships(source)?;
+        if let Some(id) = prefer
+            && rels
+                .get(id)
+                .is_some_and(|r| r.is_external() && r.target == target && r.rel_type == ty)
+        {
+            return Ok(id.to_owned());
+        }
+        if let Some(r) = rels
+            .by_type(ty)
+            .find(|r| r.is_external() && r.target == target)
+        {
+            return Ok(r.id.clone());
+        }
+        drop(rels);
+        let r = self.pkg.add_relationship(
+            source,
+            ty,
+            target,
+            RelationshipOptions {
+                id: None,
+                external: true,
+            },
+        )?;
+        self.regenerated
+            .insert(kiln_ooxml::opc::rels_part_name(source));
+        Ok(r.id)
+    }
+
+    fn remove_rel(&mut self, source: &str, id: &str) -> Result<(), XlsxError> {
+        if self.pkg.remove_relationship(source, id)? {
+            self.regenerated
+                .insert(kiln_ooxml::opc::rels_part_name(source));
+        }
+        Ok(())
+    }
+
+    /// Removes every relationship of `source` of type `ty` not in `keep`.
+    fn prune_rels(
+        &mut self,
+        source: &str,
+        ty: &str,
+        keep: &BTreeSet<String>,
+    ) -> Result<(), XlsxError> {
+        let ids: Vec<String> = self
+            .pkg
+            .relationships(source)?
+            .by_type(ty)
+            .filter(|r| !keep.contains(&r.id))
+            .map(|r| r.id.clone())
+            .collect();
+        for id in ids {
+            self.remove_rel(source, &id)?;
+        }
+        Ok(())
+    }
+
+    fn next_name(&self, pattern: &str, taken: &BTreeSet<String>) -> Result<String, XlsxError> {
+        let mut n = 1u64;
+        loop {
+            let c = pattern.replacen("{n}", &n.to_string(), 1);
+            if !self.pkg.has(&c) && !taken.contains(&part_key(&c)) {
+                return Ok(c);
+            }
+            n += 1;
+            if n > 1_000_000 {
+                return Err(XlsxError::NotWorkbook("too many parts".into()));
+            }
+        }
+    }
+}
+
+/// Parts reachable from the package relationships.
+fn reachable(pkg: &OpcPackage) -> BTreeSet<String> {
+    let mut seen = BTreeSet::new();
+    let mut queue = VecDeque::from(["/".to_owned()]);
+    while let Some(src) = queue.pop_front() {
+        let Ok(rels) = pkg.relationships(&src) else {
+            continue;
+        };
+        for r in rels.all() {
+            if let Some(t) = rels.resolve(r)
+                && pkg.has(&t)
+                && seen.insert(part_key(&t))
+            {
+                queue.push_back(t);
+            }
+        }
+    }
+    seen
+}
+
+fn new_package() -> Result<OpcPackage, XlsxError> {
+    let mut pkg = OpcPackage::new();
+    pkg.add_part(
+        "/xl/workbook.xml",
+        XlsxKind::Workbook.content_type(),
+        Vec::new(),
+    )?;
+    pkg.add_relationship(
+        "/",
+        rel_type::OFFICE_DOCUMENT,
+        "/xl/workbook.xml",
+        RelationshipOptions::default(),
+    )?;
+    Ok(pkg)
+}
+
+fn workbook_template() -> XmlElement {
+    XmlElement::new("workbook")
+        .with_attr(
+            "xmlns",
+            "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+        )
+        .with_attr(
+            "xmlns:r",
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+        )
+        .with_child(XmlElement::new("workbookPr"))
+        .with_child(XmlElement::new("bookViews").with_child(XmlElement::new("workbookView")))
+        .with_child(XmlElement::new("sheets"))
+        .with_child(XmlElement::new("calcPr").with_attr("calcId", "191029"))
+}
+
+fn is_macro_ct(ct: &str) -> bool {
+    let l = ct.to_ascii_lowercase();
+    l.contains("vbaproject") || l.contains("ms-office.activex") || l.contains("vbadata")
+}
+
+/// Reads and writes a workbook without editing it (the fidelity round trip).
+///
+/// # Errors
+///
+/// As [`crate::read_xlsx`] and [`write_xlsx`].
+pub fn rewrite_xlsx(bytes: &[u8], options: &WriteOptions) -> Result<XlsxWritten, XlsxError> {
+    let read = crate::read_xlsx(bytes)?;
+    write_xlsx(&read.workbook, Some(&read.source), options)
+}
+
+/// The application a saved workbook names in docProps/app.xml.
+const APPLICATION: &str = "Microsoft Excel Compatible / Kiln";
+
+/// Writes a workbook; with the source of the file read, the save keeps everything the model
+/// does not cover.
+///
+/// # Errors
+///
+/// [`XlsxError::Package`] when the package cannot be assembled.
+#[allow(clippy::too_many_lines)]
+pub fn write_xlsx(
+    wb: &Workbook,
+    source: Option<&XlsxSource>,
+    options: &WriteOptions,
+) -> Result<XlsxWritten, XlsxError> {
+    let kind = options
+        .kind
+        .or(source.map(XlsxSource::kind))
+        .unwrap_or_default();
+    let pkg = match source {
+        Some(s) => s.package.clone(),
+        None => new_package()?,
+    };
+    let before = reachable(&pkg);
+    let original: Vec<String> = pkg.all_part_names().map(str::to_owned).collect();
+    let mut out = Out {
+        pkg,
+        regenerated: BTreeSet::new(),
+        issues: Vec::new(),
+        charts: FxHashMap::default(),
+        media: options.media.clone(),
+        pivot_caches: Vec::new(),
+        kept_pivot_caches: kept_pivot_caches(wb, source),
+        read_cache_ids: source
+            .map(|src| {
+                src.sheets
+                    .iter()
+                    .flat_map(|s| s.pivots.iter().map(|r| r.cache_id))
+                    .collect()
+            })
+            .unwrap_or_default(),
+    };
+    // Charts edited or added: their parts first, so the drawings can point at them.
+    for (name, chart) in &options.charts {
+        let was = out
+            .pkg
+            .has(name)
+            .then(|| out.pkg.content_type(name).map(str::to_owned))
+            .flatten();
+        let changed = was
+            .as_deref()
+            .is_some_and(|ct| ct != chart.format.content_type());
+        if was.is_none() {
+            out.pkg
+                .add_part(name, chart.format.content_type(), Vec::new())?;
+        }
+        kiln_charts::package::write_part(&mut out.pkg, name, chart)
+            .map_err(|e| XlsxError::NotWorkbook(format!("{name}: {e}")))?;
+        out.regenerated.insert(name.clone());
+        out.charts
+            .insert(part_key(name), (chart.format, changed || was.is_none()));
+    }
+    let wb_part = source.map_or_else(
+        || "/xl/workbook.xml".to_owned(),
+        |s| s.workbook_part.clone(),
+    );
+    let mut taken: BTreeSet<String> = BTreeSet::new();
+
+    // Strict files are saved as transitional: every relationship type is mapped.
+    if source.is_some_and(XlsxSource::is_strict) {
+        transitional_rels(&mut out)?;
+    }
+
+    // Macros only into macro-enabled kinds.
+    if !kind.has_macros() {
+        let macro_parts: Vec<String> = out
+            .pkg
+            .part_names()
+            .filter(|p| out.pkg.content_type(p).is_some_and(is_macro_ct))
+            .map(str::to_owned)
+            .collect();
+        for p in macro_parts {
+            out.pkg.remove_part(&p, true)?;
+            out.regenerated
+                .insert(kiln_ooxml::opc::rels_part_name(&wb_part));
+            out.issues
+                .push(format!("{p}: macros are not kept in this file type"));
+        }
+    }
+
+    // Shared strings are written after the sheets; reserve the part name.
+    let sst_part = source
+        .and_then(|s| s.sst_part.clone())
+        .unwrap_or_else(|| "/xl/sharedStrings.xml".to_owned());
+    taken.insert(part_key(&sst_part));
+    let styles_part = source
+        .and_then(|s| s.styles_part.clone())
+        .unwrap_or_else(|| "/xl/styles.xml".to_owned());
+    taken.insert(part_key(&styles_part));
+
+    // Dynamic-array metadata index.
+    let dynamic_cm = source.and_then(|s| s.dynamic_cm).unwrap_or(1);
+    let has_metadata = source.is_some_and(|s| s.metadata_part.is_some());
+    let metadata_usable = !has_metadata || source.is_some_and(|s| s.dynamic_cm.is_some());
+
+    let future = source
+        .map(|s| s.future_functions.clone())
+        .unwrap_or_default();
+    let mut sst = SstBuilder::default();
+    let xf_count = wb.styles().len() as u32;
+    let active = wb.props().active_sheet;
+
+    // Sheet parts: kept for sheets read, new ones numbered after them.
+    let model_ids: BTreeSet<u32> = wb.sheets().iter().map(|s| s.id().0).collect();
+    let mut sheet_parts: Vec<(SheetId, String)> = Vec::new();
+    for s in wb.sheets() {
+        if let Some(src) = source.and_then(|x| x.sheet(s.id())) {
+            taken.insert(part_key(&src.part));
+            sheet_parts.push((s.id(), src.part.clone()));
+        }
+    }
+    for s in wb.sheets() {
+        if sheet_parts.iter().any(|(id, _)| *id == s.id()) {
+            continue;
+        }
+        let pattern = if s.meta().chart_sheet {
+            "/xl/chartsheets/sheet{n}.xml"
+        } else {
+            "/xl/worksheets/sheet{n}.xml"
+        };
+        let name = out.next_name(pattern, &taken)?;
+        taken.insert(part_key(&name));
+        sheet_parts.push((s.id(), name));
+    }
+    // Sheets removed since reading.
+    if let Some(src) = source {
+        for s in &src.sheets {
+            if !model_ids.contains(&s.id.0) {
+                out.pkg.remove_part(&s.part, true)?;
+                out.regenerated
+                    .insert(kiln_ooxml::opc::rels_part_name(&wb_part));
+            }
+        }
+    }
+
+    let mut any_dynamic = false;
+    let mut sheet_rels: Vec<(SheetId, String)> = Vec::new();
+    for (pos, s) in wb.sheets().iter().enumerate() {
+        let part = sheet_parts
+            .iter()
+            .find(|(id, _)| *id == s.id())
+            .map(|(_, p)| p.clone())
+            .unwrap_or_default();
+        let src = source.and_then(|x| x.sheet(s.id()));
+        if s.meta().chart_sheet {
+            // A chart sheet: its own root (or Excel's default one) and its drawing.
+            let mut root = src
+                .map(|x| &x.root)
+                .filter(|r| r.name == "chartsheet")
+                .filter(|r| write_element(r, &XmlWriteOptions::default()).is_ok())
+                .map_or_else(sheet::chartsheet_template, Clone::clone);
+            sheet::patch_chartsheet(&mut root, s, pos == active);
+            if !out.pkg.has(&part) {
+                out.pkg.add_part(&part, CT_CHARTSHEET, Vec::new())?;
+            }
+            write_sheet_relations(
+                &mut out,
+                wb,
+                s,
+                src,
+                &part,
+                &mut root,
+                &mut taken,
+                pos as u32 + 1,
+            )?;
+            out.put_xml(&part, CT_CHARTSHEET, &root)?;
+            let id = out.rel(&wb_part, rel_type::CHARTSHEET, &part)?;
+            sheet_rels.push((s.id(), id));
+            continue;
+        }
+        let cells = cells::write_cells(
+            wb,
+            s,
+            src,
+            &mut sst,
+            metadata_usable.then_some(dynamic_cm),
+            &future,
+            xf_count,
+        );
+        any_dynamic |= cells.dynamic;
+        let mut issues = Vec::new();
+        // A kept worksheet that cannot be written again (say an element with an undeclared
+        // prefix) starts from the template rather than becoming an empty part.
+        let kept = src
+            .map(|x| &x.root)
+            .filter(|r| write_element(r, &XmlWriteOptions::default()).is_ok());
+        if src.is_some() && kept.is_none() {
+            issues.push(format!(
+                "sheet \"{}\": its original XML could not be kept and was rewritten",
+                s.name()
+            ));
+        }
+        let mut root = kept.map_or_else(sheet::template, Clone::clone);
+        sheet::patch_worksheet(&mut root, s, src, pos == active, cells.used, &mut issues);
+        out.issues.extend(issues);
+        if !out.pkg.has(&part) {
+            out.pkg.add_part(&part, CT_WORKSHEET, Vec::new())?;
+        }
+        write_sheet_relations(
+            &mut out,
+            wb,
+            s,
+            src,
+            &part,
+            &mut root,
+            &mut taken,
+            pos as u32 + 1,
+        )?;
+        // Serialise with the streamed cells in place of the placeholder.
+        let text = write_element(&root, &XmlWriteOptions::default()).unwrap_or_default();
+        let bytes = match text.find("<sheetData/>") {
+            Some(i) => {
+                let mut b = String::with_capacity(text.len() + cells.xml.len());
+                b.push_str(&text[..i]);
+                b.push_str(&cells.xml);
+                b.push_str(&text[i + "<sheetData/>".len()..]);
+                b.into_bytes()
+            }
+            None => text.into_bytes(),
+        };
+        out.put(&part, CT_WORKSHEET, bytes)?;
+        let id = out.rel(&wb_part, rel_type::WORKSHEET, &part)?;
+        sheet_rels.push((s.id(), id));
+    }
+
+    // Styles.
+    let styles_root = write_styles(wb.styles(), source.and_then(|s| s.styles.as_ref()));
+    out.put_xml(&styles_part, CT_STYLES, &styles_root)?;
+    out.rel(&wb_part, rel_type::STYLES, &styles_part)?;
+
+    // Shared strings.
+    // With no strings and no table in use there is nothing to write; a table nothing refers to
+    // stays as it came.
+    if !sst.items.is_empty() || source.is_some_and(|s| s.sst_part.is_some()) {
+        out.put(&sst_part, CT_SST, sst.to_xml().into_bytes())?;
+        out.rel(&wb_part, rel_type::SHARED_STRINGS, &sst_part)?;
+    }
+
+    // Theme: kept unless the model's colours or fonts changed (or there is none).
+    let theme_changed = source.is_none_or(|s| s.theme.as_ref() != Some(wb.theme()));
+    if theme_changed {
+        let part = source
+            .and_then(|s| s.theme_part.clone())
+            .unwrap_or_else(|| "/xl/theme/theme1.xml".to_owned());
+        let base = out
+            .pkg
+            .part(&part)?
+            .and_then(|b| kiln_ooxml::drawingml::theme::parse_theme_bytes(&b).ok());
+        out.put(
+            &part,
+            kiln_ooxml::opc::content_type::THEME,
+            write_theme(wb.theme(), base),
+        )?;
+        out.rel(&wb_part, rel_type::THEME, &part)?;
+    }
+
+    // Dynamic-array metadata.
+    if any_dynamic && !has_metadata {
+        let part = "/xl/metadata.xml";
+        out.put(part, CT_METADATA, DYNAMIC_METADATA.as_bytes().to_vec())?;
+        out.rel(&wb_part, rel_type::SHEET_METADATA, part)?;
+    }
+
+    // People of threaded comments.
+    let persons_changed = source.is_none_or(|s| s.persons != wb.persons());
+    if persons_changed && !wb.persons().is_empty() {
+        let part = source
+            .and_then(|s| s.persons_part.clone())
+            .unwrap_or_else(|| "/xl/persons/person.xml".to_owned());
+        out.put_xml(&part, CT_PERSON, &persons_el(wb.persons()))?;
+        out.rel(&wb_part, REL_PERSON, &part)?;
+    }
+
+    // calcChain is rebuilt by Excel; a stale one makes it repair the file.
+    let chains: Vec<String> = out
+        .pkg
+        .relationships(&wb_part)?
+        .by_type(rel_type::CALC_CHAIN)
+        .map(|r| r.id.clone())
+        .collect();
+    for id in chains {
+        out.remove_rel(&wb_part, &id)?;
+    }
+
+    // The workbook part, with the PivotTable caches the sheets use.
+    let mut root = workbook_xml(wb, source, &sheet_rels);
+    pivot_caches(&mut out, &wb_part, &mut root)?;
+    out.put_xml(&wb_part, kind.content_type(), &root)?;
+
+    // Document properties.
+    if options.now.is_some() || source.is_none() {
+        let props = read_document_properties(&out.pkg)?;
+        let mut core: CoreProperties = props.core.clone();
+        let mut app: AppProperties = props.app.clone();
+        if let Some(now) = &options.now {
+            core.modified = Some(now.clone());
+            if core.created.is_none() {
+                core.created = Some(now.clone());
+            }
+        }
+        if let Some(a) = &options.author {
+            core.last_modified_by = Some(a.clone());
+            if core.creator.is_none() {
+                core.creator = Some(a.clone());
+            }
+        }
+        // LibreOffice reads and writes sheet references inside strings (INDIRECT, ADDRESS) in Excel's
+        // syntax only when the application names Microsoft Excel; Kiln's are Excel's.
+        app.application = Some(APPLICATION.to_owned());
+        write_document_properties(
+            &mut out.pkg,
+            &PropertiesUpdate {
+                core: Some(core),
+                app: Some(app),
+                custom: None,
+            },
+        )?;
+        for p in ["/docProps/core.xml", "/docProps/app.xml", "/_rels/.rels"] {
+            out.regenerated.insert(p.to_owned());
+        }
+        if let Ok(Some(p)) = out.pkg.related_part("/", rel_type::CORE_PROPERTIES) {
+            out.regenerated.insert(p);
+        }
+        if let Ok(Some(p)) = out.pkg.related_part("/", rel_type::EXTENDED_PROPERTIES) {
+            out.regenerated.insert(p);
+        }
+    }
+
+    // Strict parts kept verbatim are re-serialised in transitional namespaces.
+    if source.is_some_and(XlsxSource::is_strict) {
+        transitional_parts(&mut out)?;
+    }
+
+    // Parts only removed content referred to.
+    let after = reachable(&out.pkg);
+    let orphans: Vec<String> = out
+        .pkg
+        .part_names()
+        .filter(|p| before.contains(&part_key(p)) && !after.contains(&part_key(p)))
+        .map(str::to_owned)
+        .collect();
+    for p in orphans {
+        out.pkg.remove_part(&p, true)?;
+    }
+
+    if out.pkg.content_types().is_dirty() {
+        out.regenerated.insert("/[Content_Types].xml".to_owned());
+    }
+    let present: BTreeSet<String> = out.pkg.all_part_names().map(part_key).collect();
+    let dropped: Vec<String> = original
+        .into_iter()
+        .filter(|p| !present.contains(&part_key(p)))
+        .collect();
+    let bytes = out.pkg.save()?;
+    Ok(XlsxWritten {
+        bytes,
+        regenerated: out
+            .regenerated
+            .into_iter()
+            .filter(|p| present.contains(&part_key(p)) || p.starts_with("/["))
+            .collect(),
+        dropped,
+        issues: out.issues,
+    })
+}
+
+/// A sheet's PivotTables: parts kept while the model is as read, regenerated otherwise (each
+/// regenerated PivotTable gets a cache of its own); the caches go to [`Out::pivot_caches`].
+fn write_pivots(
+    out: &mut Out,
+    s: &kiln_sheet::Sheet,
+    src: Option<&SheetSource>,
+    part: &str,
+    taken: &mut BTreeSet<String>,
+) -> Result<(), XlsxError> {
+    use crate::pivot::{
+        CT_PIVOT_CACHE, CT_PIVOT_RECORDS, CT_PIVOT_TABLE, REL_PIVOT_CACHE, REL_PIVOT_RECORDS,
+        REL_PIVOT_TABLE, cache_parts, table_part,
+    };
+    let read: &[crate::pivot::PivotRead] = src.map_or(&[], |x| x.pivots.as_slice());
+    let mut keep = BTreeSet::new();
+    // Static PivotTables stay as they are.
+    for r in read.iter().filter(|r| r.model.is_none()) {
+        let id = out.rel(part, REL_PIVOT_TABLE, &r.table_part)?;
+        keep.insert(id);
+        if !out
+            .pivot_caches
+            .iter()
+            .any(|c| part_key(&c.1) == part_key(&r.cache_part))
+        {
+            out.pivot_caches.push((r.cache_id, r.cache_part.clone()));
+        }
+    }
+    let models = &s.meta().pivots;
+    let kept_caches = out.kept_pivot_caches.clone();
+    for t in models {
+        let same = read.iter().find(|r| r.model.as_ref() == Some(t));
+        if let Some(r) = same {
+            let id = out.rel(part, REL_PIVOT_TABLE, &r.table_part)?;
+            keep.insert(id);
+            if !out
+                .pivot_caches
+                .iter()
+                .any(|c| part_key(&c.1) == part_key(&r.cache_part))
+            {
+                out.pivot_caches.push((r.cache_id, r.cache_part.clone()));
+            }
+            continue;
+        }
+        let was = read.iter().find(|r| {
+            r.model
+                .as_ref()
+                .is_some_and(|m| m.name.eq_ignore_ascii_case(&t.name))
+        });
+        let tp = match was {
+            Some(r) => r.table_part.clone(),
+            None => {
+                let n = out.next_name("/xl/pivotTables/pivotTable{n}.xml", taken)?;
+                taken.insert(part_key(&n));
+                n
+            }
+        };
+        let reuse = was.filter(|r| {
+            !kept_caches.contains(&part_key(&r.cache_part))
+                && !out
+                    .pivot_caches
+                    .iter()
+                    .any(|c| part_key(&c.1) == part_key(&r.cache_part))
+        });
+        let (cp, rp) = match reuse {
+            Some(r) => (
+                r.cache_part.clone(),
+                r.records_part.clone().unwrap_or_else(|| {
+                    r.cache_part
+                        .replace("pivotCacheDefinition", "pivotCacheRecords")
+                }),
+            ),
+            None => {
+                let c = out.next_name("/xl/pivotCache/pivotCacheDefinition{n}.xml", taken)?;
+                taken.insert(part_key(&c));
+                let r = out.next_name("/xl/pivotCache/pivotCacheRecords{n}.xml", taken)?;
+                taken.insert(part_key(&r));
+                (c, r)
+            }
+        };
+        let cache_id = match reuse {
+            Some(r) => r.cache_id,
+            None => out
+                .pivot_caches
+                .iter()
+                .map(|c| c.0)
+                .chain(read.iter().map(|r| r.cache_id))
+                .chain(out.read_cache_ids.iter().copied())
+                .max()
+                .map_or(1, |m| m + 1),
+        };
+        // Records first: the definition points at them.
+        let (_, rec) = cache_parts(t, "");
+        out.put_xml(&rp, CT_PIVOT_RECORDS, &rec)?;
+        if !out.pkg.has(&cp) {
+            out.pkg.add_part(&cp, CT_PIVOT_CACHE, Vec::new())?;
+        }
+        let rid = out.rel(&cp, REL_PIVOT_RECORDS, &rp)?;
+        let (def, _) = cache_parts(t, &rid);
+        out.put_xml(&cp, CT_PIVOT_CACHE, &def)?;
+        if !out.pkg.has(&tp) {
+            out.pkg.add_part(&tp, CT_PIVOT_TABLE, Vec::new())?;
+        }
+        // The definition's own relationships: only its cache.
+        let old: Vec<String> = out
+            .pkg
+            .relationships(&tp)?
+            .by_type(REL_PIVOT_CACHE)
+            .map(|r| r.id.clone())
+            .collect();
+        for id in old {
+            out.remove_rel(&tp, &id)?;
+        }
+        out.rel(&tp, REL_PIVOT_CACHE, &cp)?;
+        out.put_xml(
+            &tp,
+            CT_PIVOT_TABLE,
+            &table_part(t, cache_id, was.map(|r| &r.root)),
+        )?;
+        let id = out.rel(part, REL_PIVOT_TABLE, &tp)?;
+        keep.insert(id);
+        out.pivot_caches.push((cache_id, cp));
+    }
+    out.prune_rels(part, REL_PIVOT_TABLE, &keep)?;
+    Ok(())
+}
+
+/// The caches of every PivotTable that is written as it was read, static ones included.
+fn kept_pivot_caches(wb: &Workbook, source: Option<&XlsxSource>) -> BTreeSet<String> {
+    let mut out = BTreeSet::new();
+    let Some(src) = source else {
+        return out;
+    };
+    for ss in &src.sheets {
+        let models = wb
+            .sheet(ss.id)
+            .map(|s| s.meta().pivots.as_slice())
+            .unwrap_or(&[]);
+        for r in &ss.pivots {
+            let kept = match &r.model {
+                None => true,
+                Some(m) => models.contains(m),
+            };
+            if kept {
+                out.insert(part_key(&r.cache_part));
+            }
+        }
+    }
+    out
+}
+
+/// The workbook's `pivotCaches` list and its relationships.
+fn pivot_caches(out: &mut Out, wb_part: &str, root: &mut XmlElement) -> Result<(), XlsxError> {
+    use crate::pivot::REL_PIVOT_CACHE;
+    let mut caches = std::mem::take(&mut out.pivot_caches);
+    caches.sort_by_key(|c| c.0);
+    caches.dedup_by(|a, b| part_key(&a.1) == part_key(&b.1));
+    let mut keep = BTreeSet::new();
+    let mut list = XmlElement::new("pivotCaches");
+    for (id, part) in &caches {
+        let rid = out.rel(wb_part, REL_PIVOT_CACHE, part)?;
+        keep.insert(rid.clone());
+        list.children.push(XmlNode::Element(
+            XmlElement::new("pivotCache")
+                .with_attr("cacheId", id.to_string())
+                .with_attr("r:id", rid),
+        ));
+    }
+    out.prune_rels(wb_part, REL_PIVOT_CACHE, &keep)?;
+    let had = root.child("pivotCaches").is_some();
+    if !caches.is_empty() || had {
+        replace_children(
+            root,
+            "pivotCaches",
+            (!caches.is_empty()).then_some(list).into_iter().collect(),
+            WORKBOOK_ORDER,
+        );
+    }
+    Ok(())
+}
+
+/// Relationship-bearing worksheet children and the parts behind them: hyperlinks, notes,
+/// threaded comments, tables and the drawing.
+#[allow(clippy::too_many_arguments, clippy::too_many_lines)]
+fn write_sheet_relations(
+    out: &mut Out,
+    wb: &Workbook,
+    s: &kiln_sheet::Sheet,
+    src: Option<&SheetSource>,
+    part: &str,
+    root: &mut XmlElement,
+    taken: &mut BTreeSet<String>,
+    number: u32,
+) -> Result<(), XlsxError> {
+    let meta = s.meta();
+    let read = src.map(|x| &x.meta);
+
+    // Hyperlinks.
+    if read.is_none_or(|r| r.hyperlinks != meta.hyperlinks) {
+        let mut keep = BTreeSet::new();
+        let mut list = XmlElement::new("hyperlinks");
+        for h in &meta.hyperlinks {
+            let mut e =
+                XmlElement::new("hyperlink").with_attr("ref", crate::sheet_xml::ref_text(&h.range));
+            if let Some(t) = &h.target {
+                let prefer = src
+                    .and_then(|x| x.hyperlink_rels.get(t))
+                    .map(String::as_str);
+                let id = out.external_rel(part, rel_type::HYPERLINK, t, prefer)?;
+                keep.insert(id.clone());
+                e.attrs.set("r:id", id);
+            }
+            for (k, v) in [
+                ("location", &h.location),
+                ("tooltip", &h.tooltip),
+                ("display", &h.display),
+            ] {
+                if let Some(v) = v {
+                    e.attrs.set(k, v.clone());
+                }
+            }
+            list.children.push(XmlNode::Element(e));
+        }
+        out.prune_rels(part, rel_type::HYPERLINK, &keep)?;
+        replace_children(
+            root,
+            "hyperlinks",
+            (!meta.hyperlinks.is_empty())
+                .then_some(list)
+                .into_iter()
+                .collect(),
+            WORKSHEET_ORDER,
+        );
+    }
+
+    // Notes (and legacy placeholders for threaded comments, which Excel expects).
+    let notes_same = read.is_some_and(|r| r.notes == meta.notes);
+    let threads_same = read.is_some_and(|r| r.threads == meta.threads);
+    if !notes_same || !threads_same {
+        let mut legacy: Vec<Note> = meta.notes.clone();
+        for t in meta.threads.iter().filter(|t| t.parent_id.is_none()) {
+            if !legacy.iter().any(|n| n.at == t.at) {
+                legacy.push(Note {
+                    at: t.at,
+                    author: format!("tc={}", t.id),
+                    text: format!(
+                        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel.\n\nComment:\n    {}",
+                        t.text
+                    ),
+                    visible: false,
+                    size: None,
+                });
+            }
+        }
+        legacy.sort_by_key(|n| (n.at.row, n.at.col));
+        let old = src.and_then(|x| x.notes.as_ref());
+        if legacy.is_empty() {
+            if let Some(o) = old {
+                out.pkg.remove_part(&o.comments_part, true)?;
+                out.regenerated
+                    .insert(kiln_ooxml::opc::rels_part_name(part));
+                if let Some(v) = &o.vml_part {
+                    // A VML part with other shapes (form controls) stays.
+                    if !vml_has_other_shapes(&out.pkg, v) {
+                        out.pkg.remove_part(v, true)?;
+                        replace_children(root, "legacyDrawing", Vec::new(), WORKSHEET_ORDER);
+                    }
+                }
+            }
+        } else {
+            let cp = match old {
+                Some(o) => o.comments_part.clone(),
+                None => {
+                    let n = out.next_name("/xl/comments{n}.xml", taken)?;
+                    taken.insert(part_key(&n));
+                    n
+                }
+            };
+            out.put_xml(&cp, CT_COMMENTS, &comments_el(&legacy))?;
+            out.rel(part, rel_type::COMMENTS, &cp)?;
+            let vp = match old.and_then(|o| o.vml_part.clone()) {
+                Some(v) => v,
+                None => {
+                    let n = out.next_name("/xl/drawings/vmlDrawing{n}.vml", taken)?;
+                    taken.insert(part_key(&n));
+                    n
+                }
+            };
+            let vml = merge_vml(&out.pkg, &vp, &notes_vml(&legacy, number));
+            out.put(&vp, CT_VML, vml.into_bytes())?;
+            let id = out.rel(part, rel_type::VML_DRAWING, &vp)?;
+            replace_children(
+                root,
+                "legacyDrawing",
+                vec![XmlElement::new("legacyDrawing").with_attr("r:id", id)],
+                WORKSHEET_ORDER,
+            );
+        }
+    }
+
+    // Threaded comments.
+    if !threads_same {
+        let old = src.and_then(|x| x.threads_part.clone());
+        if meta.threads.is_empty() {
+            if let Some(o) = old {
+                out.pkg.remove_part(&o, true)?;
+                out.regenerated
+                    .insert(kiln_ooxml::opc::rels_part_name(part));
+            }
+        } else {
+            let tp = match old {
+                Some(o) => o,
+                None => {
+                    let n = out.next_name("/xl/threadedComments/threadedComment{n}.xml", taken)?;
+                    taken.insert(part_key(&n));
+                    n
+                }
+            };
+            out.put_xml(&tp, CT_THREADED, &threaded_el(&meta.threads))?;
+            out.rel(part, REL_THREADED, &tp)?;
+            if wb.persons().is_empty() {
+                out.issues.push(format!(
+                    "{}: threaded comments without a people list",
+                    s.name()
+                ));
+            }
+        }
+    }
+
+    // Tables.
+    let tables_same = read.is_some_and(|r| r.tables == meta.tables);
+    if !tables_same {
+        let mut keep = BTreeSet::new();
+        let mut parts_el = XmlElement::new("tableParts").with_attr("count", meta.tables.len());
+        for t in &meta.tables {
+            let old = src.and_then(|x| x.tables.get(&t.id));
+            let tp = match old {
+                Some((p, read_t, troot)) => {
+                    if read_t != t {
+                        out.put_xml(p, CT_TABLE, &table_el(t, Some(troot)))?;
+                    }
+                    p.clone()
+                }
+                None => {
+                    let n = out.next_name("/xl/tables/table{n}.xml", taken)?;
+                    taken.insert(part_key(&n));
+                    out.put_xml(&n, CT_TABLE, &table_el(t, None))?;
+                    n
+                }
+            };
+            let id = out.rel(part, rel_type::TABLE, &tp)?;
+            keep.insert(id.clone());
+            parts_el.children.push(XmlNode::Element(
+                XmlElement::new("tablePart").with_attr("r:id", id),
+            ));
+        }
+        out.prune_rels(part, rel_type::TABLE, &keep)?;
+        replace_children(
+            root,
+            "tableParts",
+            (!meta.tables.is_empty())
+                .then_some(parts_el)
+                .into_iter()
+                .collect(),
+            WORKSHEET_ORDER,
+        );
+    }
+
+    // PivotTables.
+    write_pivots(out, s, src, part, taken)?;
+
+    // Drawing anchors, and frames for the charts Kiln added (or whose vocabulary changed).
+    let read_anchors: &[DrawingAnchor] = src
+        .and_then(|x| x.drawing.as_ref())
+        .map_or(&[], |d| d.anchors.as_slice());
+    let framed: Vec<(&DrawingAnchor, kiln_charts::model::PartFormat)> = meta
+        .drawings
+        .iter()
+        .filter(|a| a.kind == DrawingKind::Chart)
+        .filter_map(|a| {
+            let (format, retyped) = *out.charts.get(&part_key(&a.reference))?;
+            let new = !read_anchors.iter().any(|r| r.id == a.id);
+            (new || retyped).then_some((a, format))
+        })
+        .collect();
+    // Pictures and shapes added or edited in Kiln: their elements are written from the model.
+    let drawn: Vec<&DrawingAnchor> = meta
+        .drawings
+        .iter()
+        .filter(|a| {
+            matches!(
+                a.kind,
+                DrawingKind::Picture | DrawingKind::Shape | DrawingKind::Connector
+            )
+        })
+        .filter(|a| {
+            read_anchors.iter().find(|r| r.id == a.id).is_none_or(|r| {
+                r.look != a.look
+                    || r.name != a.name
+                    || r.alt_text != a.alt_text
+                    || r.hidden != a.hidden
+            })
+        })
+        .collect();
+    let drawing = src.and_then(|x| x.drawing.as_ref());
+    if drawing.is_some_and(|d| d.anchors == meta.drawings) && framed.is_empty() && drawn.is_empty()
+    {
+        return Ok(());
+    }
+    if drawing.is_none() && framed.is_empty() && drawn.is_empty() {
+        // Nothing to write (objects other than charts added in Kiln are reported by the sheet).
+        return Ok(());
+    }
+    if meta.drawings.is_empty() {
+        let ids: Vec<String> = out
+            .pkg
+            .relationships(part)?
+            .by_type(rel_type::DRAWING)
+            .map(|r| r.id.clone())
+            .collect();
+        for id in ids {
+            out.remove_rel(part, &id)?;
+        }
+        replace_children(root, "drawing", Vec::new(), WORKSHEET_ORDER);
+        return Ok(());
+    }
+    let (dpart, droot) = match drawing {
+        Some(d) => (d.part.clone(), d.root.clone()),
+        None => {
+            let n = out.next_name("/xl/drawings/drawing{n}.xml", taken)?;
+            taken.insert(part_key(&n));
+            let root = XmlElement::new("xdr:wsDr")
+                .with_attr(
+                    "xmlns:xdr",
+                    "http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing",
+                )
+                .with_attr(
+                    "xmlns:a",
+                    "http://schemas.openxmlformats.org/drawingml/2006/main",
+                );
+            (n, root)
+        }
+    };
+    if drawing.is_none() {
+        // The drawing part is written below; the sheet points at it.
+        out.put_xml(&dpart, CT_DRAWING, &droot)?;
+        let id = out.rel(part, rel_type::DRAWING, &dpart)?;
+        replace_children(
+            root,
+            "drawing",
+            vec![XmlElement::new("drawing").with_attr("r:id", id)],
+            WORKSHEET_ORDER,
+        );
+    }
+    let mut objects: FxHashMap<String, Vec<XmlElement>> = FxHashMap::default();
+    for (next_id, (a, format)) in (max_object_id(&droot) + 1..).zip(framed) {
+        let rid = out.rel(&dpart, format.relationship_type(), &a.reference)?;
+        let name = a.name.clone().unwrap_or_else(|| format!("Chart {next_id}"));
+        objects.insert(
+            a.id.clone(),
+            vec![
+                chart_frame(format, next_id, &name, a.alt_text.as_deref(), &rid),
+                XmlElement::new("xdr:clientData"),
+            ],
+        );
+    }
+    let first = max_object_id(&droot) + 1 + u32::try_from(objects.len()).unwrap_or(0);
+    for (next_id, a) in (first..).zip(drawn) {
+        let rid = if a.kind == DrawingKind::Picture {
+            if !out.pkg.has(&a.reference) {
+                let found = out
+                    .media
+                    .iter()
+                    .position(|(n, _)| part_key(n) == part_key(&a.reference));
+                match found {
+                    Some(i) => {
+                        let (name, bytes) = out.media[i].clone();
+                        out.put(&name, image_content_type(&name), bytes)?;
+                    }
+                    None => {
+                        out.issues.push(format!(
+                            "the picture \"{}\" has no image to write",
+                            a.name.as_deref().unwrap_or(&a.id)
+                        ));
+                        continue;
+                    }
+                }
+            }
+            Some(out.rel(&dpart, rel_type::IMAGE, &a.reference)?)
+        } else {
+            None
+        };
+        objects.insert(
+            a.id.clone(),
+            vec![
+                object_element(a, next_id, rid.as_deref()),
+                XmlElement::new("xdr:clientData"),
+            ],
+        );
+    }
+    let mut issues = Vec::new();
+    let patched = patch_drawing(&droot, read_anchors, &meta.drawings, &objects, &mut issues);
+    out.issues.extend(issues);
+    out.put_xml(&dpart, CT_DRAWING, &patched)?;
+    Ok(())
+}
+
+const CT_DRAWING: &str = "application/vnd.openxmlformats-officedocument.drawing+xml";
+
+/// The content type of an image part, by its extension.
+fn image_content_type(name: &str) -> &'static str {
+    match name
+        .rsplit('.')
+        .next()
+        .map(str::to_ascii_lowercase)
+        .as_deref()
+    {
+        Some("jpg" | "jpeg") => "image/jpeg",
+        Some("gif") => "image/gif",
+        Some("bmp") => "image/bmp",
+        Some("webp") => "image/webp",
+        Some("svg") => "image/svg+xml",
+        _ => "image/png",
+    }
+}
+
+/// A colour of a look (`RRGGBB`, `scheme:accent1`) as a DrawingML fill choice, `None` for `none`.
+fn color_el(c: &str) -> Option<XmlElement> {
+    if c == "none" {
+        return None;
+    }
+    Some(match c.strip_prefix("scheme:") {
+        Some(slot) => XmlElement::new("a:schemeClr").with_attr("val", slot),
+        None => XmlElement::new("a:srgbClr").with_attr("val", c),
+    })
+}
+
+fn fill_el(c: Option<&str>) -> Option<XmlElement> {
+    let c = c?;
+    Some(match color_el(c) {
+        Some(clr) => XmlElement::new("a:solidFill").with_child(clr),
+        None => XmlElement::new("a:noFill"),
+    })
+}
+
+/// The `xdr:pic` or `xdr:sp` element of a picture or shape, from its look. The placement is the
+/// anchor's; `a:xfrm` holds zeros, which Excel recomputes.
+fn object_element(a: &DrawingAnchor, id: u32, image_rid: Option<&str>) -> XmlElement {
+    let look = &a.look;
+    let default_name = match a.kind {
+        DrawingKind::Picture => format!("Picture {id}"),
+        _ => format!("{} {id}", look.preset.as_deref().map_or("Shape", |p| p)),
+    };
+    let mut cnv = XmlElement::new("xdr:cNvPr")
+        .with_attr("id", id.to_string())
+        .with_attr("name", a.name.clone().unwrap_or(default_name));
+    if let Some(d) = &a.alt_text {
+        cnv.attrs.set("descr", d.as_str());
+    }
+    if a.hidden {
+        cnv.attrs.set("hidden", "1");
+    }
+    let xfrm = XmlElement::new("a:xfrm")
+        .with_child(
+            XmlElement::new("a:off")
+                .with_attr("x", "0")
+                .with_attr("y", "0"),
+        )
+        .with_child(
+            XmlElement::new("a:ext")
+                .with_attr("cx", "0")
+                .with_attr("cy", "0"),
+        );
+    let geom = XmlElement::new("a:prstGeom")
+        .with_attr("prst", look.preset.as_deref().unwrap_or("rect"))
+        .with_child(XmlElement::new("a:avLst"));
+    let line = || {
+        let w = look.line_width.unwrap_or(12_700);
+        look.line.as_deref().map(|c| {
+            let mut ln = XmlElement::new("a:ln").with_attr("w", w.to_string());
+            if let Some(f) = fill_el(Some(c)) {
+                ln = ln.with_child(f);
+            }
+            ln
+        })
+    };
+    if a.kind == DrawingKind::Picture {
+        let mut locks = XmlElement::new("a:picLocks");
+        if look.lock_aspect {
+            locks.attrs.set("noChangeAspect", "1");
+        }
+        let mut blip_fill = XmlElement::new("xdr:blipFill").with_child(
+            XmlElement::new("a:blip")
+                .with_attr(
+                    "xmlns:r",
+                    "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+                )
+                .with_attr("r:embed", image_rid.unwrap_or_default()),
+        );
+        if look.crop != [0; 4] {
+            let mut r = XmlElement::new("a:srcRect");
+            for (k, v) in ["l", "t", "r", "b"].iter().zip(look.crop) {
+                if v != 0 {
+                    r.attrs.set(*k, v.to_string());
+                }
+            }
+            blip_fill = blip_fill.with_child(r);
+        }
+        blip_fill = blip_fill
+            .with_child(XmlElement::new("a:stretch").with_child(XmlElement::new("a:fillRect")));
+        let mut sp_pr = XmlElement::new("xdr:spPr")
+            .with_child(xfrm)
+            .with_child(geom);
+        if let Some(ln) = line() {
+            sp_pr = sp_pr.with_child(ln);
+        }
+        return XmlElement::new("xdr:pic")
+            .with_child(
+                XmlElement::new("xdr:nvPicPr")
+                    .with_child(cnv)
+                    .with_child(XmlElement::new("xdr:cNvPicPr").with_child(locks)),
+            )
+            .with_child(blip_fill)
+            .with_child(sp_pr);
+    }
+    let mut sp_pr = XmlElement::new("xdr:spPr")
+        .with_child(xfrm)
+        .with_child(geom);
+    if let Some(f) = fill_el(look.fill.as_deref()) {
+        sp_pr = sp_pr.with_child(f);
+    }
+    match line() {
+        Some(ln) => sp_pr = sp_pr.with_child(ln),
+        None if look.line.is_none() => {
+            sp_pr =
+                sp_pr.with_child(XmlElement::new("a:ln").with_child(XmlElement::new("a:noFill")));
+        }
+        None => {}
+    }
+    let mut body = XmlElement::new("xdr:txBody")
+        .with_child(
+            XmlElement::new("a:bodyPr")
+                .with_attr("vertOverflow", "clip")
+                .with_attr("horzOverflow", "clip")
+                .with_attr("rtlCol", "0")
+                .with_attr("anchor", "ctr"),
+        )
+        .with_child(XmlElement::new("a:lstStyle"));
+    let size = look.text_size.unwrap_or(1100).to_string();
+    let run_pr = || {
+        let mut rpr = XmlElement::new("a:rPr")
+            .with_attr("lang", "en-US")
+            .with_attr("sz", size.as_str());
+        if let Some(f) = fill_el(look.text_color.as_deref()) {
+            rpr = rpr.with_child(f);
+        }
+        rpr
+    };
+    for para in look.text.split('\n') {
+        let mut p =
+            XmlElement::new("a:p").with_child(XmlElement::new("a:pPr").with_attr("algn", "ctr"));
+        if para.is_empty() {
+            let mut end = run_pr();
+            end.name = "a:endParaRPr".into();
+            p = p.with_child(end);
+        } else {
+            p = p.with_child(
+                XmlElement::new("a:r")
+                    .with_child(run_pr())
+                    .with_child(XmlElement::new("a:t").with_text(para)),
+            );
+        }
+        body = body.with_child(p);
+    }
+    let tag = if a.kind == DrawingKind::Connector {
+        "xdr:cxnSp"
+    } else {
+        "xdr:sp"
+    };
+    let nv = if a.kind == DrawingKind::Connector {
+        XmlElement::new("xdr:nvCxnSpPr")
+            .with_child(cnv)
+            .with_child(XmlElement::new("xdr:cNvCxnSpPr"))
+    } else {
+        XmlElement::new("xdr:nvSpPr")
+            .with_child(cnv)
+            .with_child(XmlElement::new("xdr:cNvSpPr"))
+    };
+    let mut el = XmlElement::new(tag)
+        .with_attr("macro", "")
+        .with_child(nv)
+        .with_child(sp_pr);
+    if a.kind != DrawingKind::Connector {
+        el.attrs.set("textlink", "");
+        el = el.with_child(body);
+    }
+    el
+}
+
+/// The largest `cNvPr` id of a drawing part (new objects take the next ones).
+fn max_object_id(root: &XmlElement) -> u32 {
+    root.descendants("xdr:cNvPr")
+        .iter()
+        .filter_map(|e| e.attr("id").and_then(|v| v.parse::<u32>().ok()))
+        .max()
+        .unwrap_or(1)
+}
+
+/// The graphic frame of a chart (`c:chart`), or for a chartex chart the frame inside
+/// `mc:AlternateContent` that Excel writes (`Requires="cx1"`).
+fn chart_frame(
+    format: kiln_charts::model::PartFormat,
+    id: u32,
+    name: &str,
+    descr: Option<&str>,
+    rid: &str,
+) -> XmlElement {
+    use kiln_charts::model::PartFormat;
+    let mut cnv = XmlElement::new("xdr:cNvPr")
+        .with_attr("id", id.to_string())
+        .with_attr("name", name);
+    if let Some(d) = descr {
+        cnv.attrs.set("descr", d);
+    }
+    let (uri, chart) = match format {
+        PartFormat::Classic => (
+            "http://schemas.openxmlformats.org/drawingml/2006/chart",
+            XmlElement::new("c:chart")
+                .with_attr(
+                    "xmlns:c",
+                    "http://schemas.openxmlformats.org/drawingml/2006/chart",
+                )
+                .with_attr(
+                    "xmlns:r",
+                    "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+                )
+                .with_attr("r:id", rid),
+        ),
+        PartFormat::ChartEx => (
+            "http://schemas.microsoft.com/office/drawing/2014/chartex",
+            XmlElement::new("cx:chart")
+                .with_attr(
+                    "xmlns:cx",
+                    "http://schemas.microsoft.com/office/drawing/2014/chartex",
+                )
+                .with_attr(
+                    "xmlns:r",
+                    "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+                )
+                .with_attr("r:id", rid),
+        ),
+    };
+    let frame = XmlElement::new("xdr:graphicFrame")
+        .with_attr("macro", "")
+        .with_child(
+            XmlElement::new("xdr:nvGraphicFramePr")
+                .with_child(cnv)
+                .with_child(XmlElement::new("xdr:cNvGraphicFramePr")),
+        )
+        .with_child(
+            XmlElement::new("xdr:xfrm")
+                .with_child(
+                    XmlElement::new("a:off")
+                        .with_attr("x", "0")
+                        .with_attr("y", "0"),
+                )
+                .with_child(
+                    XmlElement::new("a:ext")
+                        .with_attr("cx", "0")
+                        .with_attr("cy", "0"),
+                ),
+        )
+        .with_child(
+            XmlElement::new("a:graphic").with_child(
+                XmlElement::new("a:graphicData")
+                    .with_attr("uri", uri)
+                    .with_child(chart),
+            ),
+        );
+    match format {
+        PartFormat::Classic => frame,
+        PartFormat::ChartEx => XmlElement::new("mc:AlternateContent")
+            .with_attr(
+                "xmlns:mc",
+                "http://schemas.openxmlformats.org/markup-compatibility/2006",
+            )
+            .with_child(
+                XmlElement::new("mc:Choice")
+                    .with_attr(
+                        "xmlns:cx1",
+                        "http://schemas.microsoft.com/office/drawing/2015/9/8/chartex",
+                    )
+                    .with_attr("Requires", "cx1")
+                    .with_child(frame),
+            )
+            .with_child(XmlElement::new("mc:Fallback")),
+    }
+}
+
+fn vml_has_other_shapes(pkg: &OpcPackage, vml: &str) -> bool {
+    pkg.part_xml(vml).ok().flatten().is_some_and(|d| {
+        d.root.descendants("v:shape").iter().any(|s| {
+            s.elements()
+                .find(|e| kiln_ooxml::xml::namespaces::local_name(&e.name) == "ClientData")
+                .is_some_and(|c| c.attr("ObjectType") != Some("Note"))
+        })
+    })
+}
+
+/// The note shapes of `generated` with the other shapes of the VML part read kept.
+fn merge_vml(pkg: &OpcPackage, part: &str, generated: &str) -> String {
+    let Some(doc) = pkg.part_xml(part).ok().flatten() else {
+        return generated.to_owned();
+    };
+    let others: Vec<&XmlElement> = doc
+        .root
+        .elements()
+        .filter(|e| e.name == "v:shape")
+        .filter(|s| {
+            s.elements()
+                .find(|e| kiln_ooxml::xml::namespaces::local_name(&e.name) == "ClientData")
+                .is_some_and(|c| c.attr("ObjectType") != Some("Note"))
+        })
+        .collect();
+    if others.is_empty() {
+        return generated.to_owned();
+    }
+    let opts = kiln_ooxml::xml::WriteOptions {
+        declaration: kiln_ooxml::xml::Declaration::Omit,
+        declare_namespaces: false,
+    };
+    let extra: String = others
+        .into_iter()
+        .filter_map(|e| write_element(e, &opts).ok())
+        .collect();
+    generated.replacen("</xml>", &format!("{extra}</xml>"), 1)
+}
+
+/// `workbook.xml`: sheets, defined names, properties, protection and views from the model; all
+/// else as read.
+#[allow(clippy::too_many_lines)]
+fn workbook_xml(
+    wb: &Workbook,
+    source: Option<&XlsxSource>,
+    rels: &[(SheetId, String)],
+) -> XmlElement {
+    let mut root = source.map_or_else(workbook_template, |s| s.workbook_root.clone());
+    root.attrs.remove("conformance");
+    let props = wb.props();
+    let read = source.map(|s| &s.props);
+
+    // Sheets, with chartsheets and dialog sheets where they were.
+    let mut entries: Vec<XmlElement> = Vec::new();
+    for s in wb.sheets() {
+        let base = source
+            .and_then(|x| x.sheet(s.id()))
+            .map(|x| x.sheet_el.clone());
+        let mut e = base.unwrap_or_else(|| XmlElement::new("sheet"));
+        e.attrs.set("name", s.name().to_owned());
+        e.attrs.set("sheetId", s.id().0.to_string());
+        let state = match s.meta().visibility {
+            SheetVisibility::Visible => e
+                .attr("state")
+                .filter(|v| *v == "visible")
+                .map(str::to_owned),
+            SheetVisibility::Hidden => Some("hidden".to_owned()),
+            SheetVisibility::VeryHidden => Some("veryHidden".to_owned()),
+        };
+        set_attr(&mut e, "state", state);
+        if let Some((_, id)) = rels.iter().find(|(i, _)| *i == s.id()) {
+            e.attrs.set("r:id", id.clone());
+        }
+        entries.push(e);
+    }
+    let mut all: Vec<Option<SheetId>> = wb.sheets().iter().map(|s| Some(s.id())).collect();
+    if let Some(src) = source {
+        for (pos, el) in &src.other_sheets {
+            let at = (*pos).min(entries.len());
+            entries.insert(at, el.clone());
+            all.insert(at, None);
+        }
+    }
+    let mut sheets_el = root
+        .child("sheets")
+        .cloned()
+        .unwrap_or_else(|| XmlElement::new("sheets"));
+    sheets_el.children = entries.into_iter().map(XmlNode::Element).collect();
+    replace_children(&mut root, "sheets", vec![sheets_el], WORKBOOK_ORDER);
+    let all_index = |model: usize| -> usize {
+        let id = wb.sheets().get(model).map(|s| s.id());
+        all.iter().position(|x| *x == id).unwrap_or(model)
+    };
+
+    // Defined names.
+    let mut names: Vec<XmlElement> = Vec::new();
+    for n in wb.names() {
+        let local = n.scope.and_then(|id| wb.sheet_index(id)).map(all_index);
+        let orig =
+            source.and_then(|s| s.names.iter().find(|(d, _)| d == n).map(|(_, e)| e.clone()));
+        let mut e = match orig {
+            Some(e) => e,
+            None => {
+                let mut e = XmlElement::new("definedName").with_attr("name", n.name.clone());
+                if let Some(c) = &n.comment {
+                    e.attrs.set("comment", c.clone());
+                }
+                if n.hidden {
+                    e.attrs.set("hidden", "1");
+                }
+                e.children.push(XmlNode::text(file_formula(&n.formula)));
+                e
+            }
+        };
+        set_attr(&mut e, "localSheetId", local.map(|l| l.to_string()));
+        names.push(e);
+    }
+    if let Some(src) = source {
+        names.extend(src.raw_names.iter().cloned());
+    }
+    let names_el = (!names.is_empty()).then(|| {
+        let mut d = root
+            .child("definedNames")
+            .cloned()
+            .unwrap_or_else(|| XmlElement::new("definedNames"));
+        d.children = names.into_iter().map(XmlNode::Element).collect();
+        d
+    });
+    replace_children(
+        &mut root,
+        "definedNames",
+        names_el.into_iter().collect(),
+        WORKBOOK_ORDER,
+    );
+
+    // workbookPr
+    if read.is_none_or(|r| {
+        r.date1904 != props.date1904
+            || r.code_name != props.code_name
+            || r.filter_privacy != props.filter_privacy
+    }) {
+        let mut p = root
+            .child("workbookPr")
+            .cloned()
+            .unwrap_or_else(|| XmlElement::new("workbookPr"));
+        set_attr(&mut p, "date1904", props.date1904.then(|| "1".to_owned()));
+        set_attr(&mut p, "codeName", props.code_name.clone());
+        set_attr(
+            &mut p,
+            "filterPrivacy",
+            props.filter_privacy.then(|| "1".to_owned()),
+        );
+        replace_children(&mut root, "workbookPr", vec![p], WORKBOOK_ORDER);
+    }
+
+    // workbookProtection
+    if source.is_none_or(|s| s.protection.as_ref() != wb.protection()) {
+        let el = wb.protection().map(|p| {
+            let mut e = XmlElement::new("workbookProtection");
+            set_password(&mut e, p.password.as_ref(), "workbookPassword", "workbook");
+            set_attr(
+                &mut e,
+                "lockStructure",
+                p.lock_structure.then(|| "1".to_owned()),
+            );
+            set_attr(
+                &mut e,
+                "lockWindows",
+                p.lock_windows.then(|| "1".to_owned()),
+            );
+            e
+        });
+        replace_children(
+            &mut root,
+            "workbookProtection",
+            el.into_iter().collect(),
+            WORKBOOK_ORDER,
+        );
+    }
+
+    // bookViews
+    let active = all_index(props.active_sheet);
+    let first = all_index(props.first_sheet);
+    let read_active = read.map(|r| all_index(r.active_sheet));
+    if read.is_none_or(|r| {
+        Some(active) != read_active
+            || r.first_sheet != props.first_sheet
+            || r.tab_ratio != props.tab_ratio
+    }) || root.child("bookViews").is_none()
+    {
+        let mut views = root
+            .child("bookViews")
+            .cloned()
+            .unwrap_or_else(|| XmlElement::new("bookViews"));
+        if views.child("workbookView").is_none() {
+            views
+                .children
+                .push(XmlNode::Element(XmlElement::new("workbookView")));
+        }
+        if let Some(v) = views.child_mut("workbookView") {
+            set_attr(v, "firstSheet", (first > 0).then(|| first.to_string()));
+            set_attr(v, "activeTab", (active > 0).then(|| active.to_string()));
+            set_attr(v, "tabRatio", props.tab_ratio.map(|t| t.to_string()));
+        }
+        replace_children(&mut root, "bookViews", vec![views], WORKBOOK_ORDER);
+    }
+
+    // calcPr
+    if read.is_none_or(|r| r.calc != props.calc) {
+        let c = &props.calc;
+        let mut e = root
+            .child("calcPr")
+            .cloned()
+            .unwrap_or_else(|| XmlElement::new("calcPr").with_attr("calcId", "191029"));
+        set_attr(
+            &mut e,
+            "calcMode",
+            match c.mode {
+                CalcMode::Auto => None,
+                CalcMode::Manual => Some("manual".to_owned()),
+                CalcMode::AutoNoTable => Some("autoNoTable".to_owned()),
+            },
+        );
+        set_attr(
+            &mut e,
+            "fullCalcOnLoad",
+            c.full_calc_on_load.then(|| "1".to_owned()),
+        );
+        set_attr(
+            &mut e,
+            "calcOnSave",
+            (!c.calc_on_save).then(|| "0".to_owned()),
+        );
+        set_attr(&mut e, "iterate", c.iterate.then(|| "1".to_owned()));
+        set_attr(
+            &mut e,
+            "iterateCount",
+            (c.iterate_count != 100).then(|| c.iterate_count.to_string()),
+        );
+        set_attr(
+            &mut e,
+            "iterateDelta",
+            (c.iterate_delta != 0.001).then(|| crate::text::fmt_num(c.iterate_delta)),
+        );
+        set_attr(
+            &mut e,
+            "fullPrecision",
+            (!c.full_precision).then(|| "0".to_owned()),
+        );
+        replace_children(&mut root, "calcPr", vec![e], WORKBOOK_ORDER);
+    }
+    root
+}
+
+/// Maps Strict relationship types to transitional in every `.rels` part.
+fn transitional_rels(out: &mut Out) -> Result<(), XlsxError> {
+    for src in out.pkg.relationship_sources() {
+        let rels = out.pkg.relationships(&src)?.into_owned();
+        let strict: Vec<_> = rels
+            .all()
+            .iter()
+            .filter(|r| to_transitional_rel_type(&r.rel_type) != r.rel_type)
+            .cloned()
+            .collect();
+        for r in strict {
+            out.pkg.remove_relationship(&src, &r.id)?;
+            out.pkg.add_relationship_raw(
+                &src,
+                &to_transitional_rel_type(&r.rel_type),
+                &r.target,
+                Some(&r.id),
+                r.target_mode,
+            )?;
+            out.regenerated
+                .insert(kiln_ooxml::opc::rels_part_name(&src));
+        }
+    }
+    Ok(())
+}
+
+/// Re-serialises the XML parts kept from a Strict file (namespaces become transitional).
+fn transitional_parts(out: &mut Out) -> Result<(), XlsxError> {
+    let names: Vec<String> = out
+        .pkg
+        .part_names()
+        .filter(|p| !out.regenerated.contains(*p))
+        .map(str::to_owned)
+        .collect();
+    for p in names {
+        let Some(ct) = out.pkg.content_type(&p).map(str::to_owned) else {
+            continue;
+        };
+        if !kiln_ooxml::opc::is_xml_content_type(&ct) {
+            continue;
+        }
+        let Ok(Some(bytes)) = out.pkg.part(&p).map(|b| b.map(|b| b.into_owned())) else {
+            continue;
+        };
+        if !String::from_utf8_lossy(&bytes).contains("purl.oclc.org/ooxml") {
+            continue;
+        }
+        if let Ok(doc) = kiln_ooxml::xml::parse_xml(&bytes) {
+            let b = kiln_ooxml::xml::document_to_bytes(&doc).unwrap_or(bytes);
+            out.put(&p, &ct, b)?;
+        }
+    }
+    Ok(())
+}
+
+/// The relationships a written workbook's part graph keeps, for tests.
+#[cfg(test)]
+pub(crate) fn reachable_parts(bytes: &[u8]) -> BTreeSet<String> {
+    OpcPackage::open(bytes)
+        .map(|p| reachable(&p))
+        .unwrap_or_default()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn an_unserialisable_part_is_an_error_not_an_empty_part() {
+        let mut root = XmlElement::new("worksheet");
+        root.children
+            .push(kiln_ooxml::xml::XmlNode::Element(XmlElement::new(
+                "zz9:mystery",
+            )));
+        match xml_bytes("/xl/worksheets/sheet1.xml", &root) {
+            Err(XlsxError::Xml { part, message }) => {
+                assert_eq!(part, "/xl/worksheets/sheet1.xml");
+                assert!(message.contains("zz9"), "{message}");
+            }
+            other => panic!("expected an XML error, got {other:?}"),
+        }
+        assert!(xml_bytes("/x.xml", &XmlElement::new("worksheet")).is_ok());
+    }
+
+    #[test]
+    fn a_new_workbook_is_a_complete_package() {
+        let mut wb = Workbook::new();
+        let id = wb.first_sheet().expect("sheet");
+        wb.load_value(id, 0, 0, kiln_sheet::CellValue::text("hello"))
+            .expect("value");
+        wb.load_formula(id, 1, 0, "LEN(A1)", kiln_sheet::CellValue::Blank, false)
+            .expect("formula");
+        wb.recalc_all();
+        let w = write_xlsx(&wb, None, &WriteOptions::default()).expect("write");
+        let parts = reachable_parts(&w.bytes);
+        for p in [
+            "/xl/workbook.xml",
+            "/xl/worksheets/sheet1.xml",
+            "/xl/styles.xml",
+            "/xl/sharedstrings.xml",
+            "/xl/theme/theme1.xml",
+        ] {
+            assert!(parts.contains(p), "{p} in {parts:?}");
+        }
+        let back = crate::read_xlsx(&w.bytes).expect("read back");
+        assert_eq!(
+            back.workbook.value(id, 1, 0),
+            kiln_sheet::CellValue::Number(5.0)
+        );
+        // Deterministic.
+        let again = write_xlsx(&wb, None, &WriteOptions::default()).expect("write");
+        assert_eq!(again.bytes, w.bytes);
+    }
+}

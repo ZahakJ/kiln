@@ -1,0 +1,12 @@
+{
+  "type": "DeckListDiagram",
+  "format": {
+    "TYPENAME": "DeckListDiagram"
+  },
+  "values": [
+    "BlockList",
+    "Process",
+    "VerticalList",
+    "BlockList"
+  ]
+}

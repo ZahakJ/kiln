@@ -1,0 +1,20 @@
+{
+  "type": "DeckShapeInfo",
+  "format": {
+    "TYPENAME": "DeckShapeInfo"
+  },
+  "values": [
+    {
+      "id": 9,
+      "name": "Title 1",
+      "kind": "placeholder",
+      "hidden": false
+    },
+    {
+      "id": 0,
+      "name": "",
+      "kind": "",
+      "hidden": false
+    }
+  ]
+}

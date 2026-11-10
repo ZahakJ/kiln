@@ -1,0 +1,77 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 3,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "شريحة 1"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "بسم الله الرحمن الرحيم، هذه فقرة عربية طويلة لاختبار اتجاه النص من اليمين إلى اليسار وانكساره بين الأسطر."
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "شريحة 2"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "تحتوي الوثيقة على أرقام مثل 1234 و٥٦٧٨ وكلمات لاتينية مثل Kiln Write داخل السطر نفسه."
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "شريحة 3"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "الفقرة الثالثة تضبط المحاذاة وتستخدم خط العناوين مع التشكيل: ذَهَبَ الطَّالِبُ إِلَى المَدْرَسَةِ."
+    }
+   ]
+  }
+ ]
+}

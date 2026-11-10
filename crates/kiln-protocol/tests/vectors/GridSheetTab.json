@@ -1,0 +1,20 @@
+{
+  "type": "GridSheetTab",
+  "format": {
+    "TYPENAME": "GridSheetTab"
+  },
+  "values": [
+    {
+      "name": "Firings «Ü»",
+      "color": null,
+      "hidden": true,
+      "chart": true
+    },
+    {
+      "name": "",
+      "color": "",
+      "hidden": false,
+      "chart": false
+    }
+  ]
+}

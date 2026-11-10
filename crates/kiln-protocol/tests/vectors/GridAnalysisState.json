@@ -1,0 +1,245 @@
+{
+  "type": "GridAnalysisState",
+  "format": {
+    "TYPENAME": "GridAnalysisState"
+  },
+  "values": [
+    {
+      "pivot": {
+        "name": "PivotTable1",
+        "source": "Sales!$A$1:$G$401",
+        "range": {
+          "r0": 0,
+          "c0": 0,
+          "r1": 12,
+          "c1": 3
+        },
+        "fields": [
+          {
+            "name": "Region",
+            "numeric": false,
+            "area": "Rows",
+            "values": 0,
+            "filtered": true,
+            "settings": {
+              "caption": "Area",
+              "subtotals": {
+                "Custom": [
+                  "Max"
+                ]
+              },
+              "sort": "Descending",
+              "sort_by_value": 0,
+              "hidden": [
+                "(blank)"
+              ],
+              "label_filter": {
+                "op": "BeginsWith",
+                "value": "E",
+                "value2": ""
+              },
+              "value_filter": {
+                "value": 0,
+                "top": [
+                  10,
+                  false
+                ],
+                "op": "GreaterThan",
+                "a": 0.0,
+                "b": 0.0
+              }
+            }
+          }
+        ],
+        "rows": [
+          0,
+          -1
+        ],
+        "cols": [
+          1
+        ],
+        "pages": [
+          [
+            2,
+            "Q1"
+          ]
+        ],
+        "values": [
+          {
+            "field": 4,
+            "name": "Sum of Units",
+            "function": "Sum",
+            "show_as": "PercentOfParentRow",
+            "base_field": 0,
+            "base_item": "(previous)",
+            "num_fmt": "0.0%"
+          }
+        ],
+        "options": {
+          "layout": "Tabular",
+          "subtotals": "Bottom",
+          "row_totals": true,
+          "col_totals": false,
+          "repeat_labels": true,
+          "blank_rows": false,
+          "empty_text": "0",
+          "style": "PivotStyleMedium9",
+          "row_headers": true,
+          "col_headers": true,
+          "row_stripes": true,
+          "col_stripes": false
+        },
+        "active_field": 0,
+        "active_value": null,
+        "on_value": true
+      },
+      "sparkline": {
+        "options": {
+          "kind": "Column",
+          "high": true,
+          "low": false,
+          "first": false,
+          "last": true,
+          "negative": true,
+          "markers": false,
+          "show_axis": true,
+          "line_weight": 0.75,
+          "empty": "Span",
+          "show_hidden": false,
+          "min": "Group",
+          "max": {
+            "Custom": 100.0
+          },
+          "right_to_left": false,
+          "colors": [
+            "376092",
+            "D00000"
+          ]
+        },
+        "data": "A2:E9",
+        "location": "F2:F9",
+        "count": 8
+      },
+      "goal_seek": {
+        "cell": "B5",
+        "found": true,
+        "target": "100",
+        "current": "100"
+      },
+      "flash": [
+        {
+          "row": 2,
+          "col": 3,
+          "text": "Ana",
+          "rect": [
+            120.0,
+            40.0,
+            64.0,
+            20.0
+          ]
+        }
+      ],
+      "flash_count": 9,
+      "sheet_protected": true,
+      "sheet_password": true,
+      "permissions": {
+        "select_locked": true,
+        "select_unlocked": true,
+        "format_cells": false,
+        "format_columns": false,
+        "format_rows": false,
+        "insert_columns": false,
+        "insert_rows": false,
+        "insert_hyperlinks": false,
+        "delete_columns": false,
+        "delete_rows": false,
+        "sort": true,
+        "auto_filter": false,
+        "pivot_tables": false,
+        "edit_objects": false,
+        "edit_scenarios": false
+      },
+      "workbook_protected": false,
+      "workbook_password": false,
+      "locked": true,
+      "alert": "The cell or chart you're trying to change is on a protected sheet.",
+      "alert_seq": 3,
+      "theme": "Kiln",
+      "placeholder": [
+        "PivotTable1",
+        [
+          44.0,
+          64.0,
+          192.0,
+          360.0
+        ]
+      ]
+    },
+    {
+      "pivot": null,
+      "sparkline": null,
+      "goal_seek": null,
+      "flash": [],
+      "flash_count": 0,
+      "sheet_protected": false,
+      "sheet_password": false,
+      "permissions": {
+        "select_locked": false,
+        "select_unlocked": false,
+        "format_cells": false,
+        "format_columns": false,
+        "format_rows": false,
+        "insert_columns": false,
+        "insert_rows": false,
+        "insert_hyperlinks": false,
+        "delete_columns": false,
+        "delete_rows": false,
+        "sort": false,
+        "auto_filter": false,
+        "pivot_tables": false,
+        "edit_objects": false,
+        "edit_scenarios": false
+      },
+      "workbook_protected": false,
+      "workbook_password": false,
+      "locked": false,
+      "alert": null,
+      "alert_seq": 0,
+      "theme": "",
+      "placeholder": null
+    },
+    {
+      "pivot": null,
+      "sparkline": null,
+      "goal_seek": null,
+      "flash": [],
+      "flash_count": 0,
+      "sheet_protected": false,
+      "sheet_password": false,
+      "permissions": {
+        "select_locked": false,
+        "select_unlocked": false,
+        "format_cells": false,
+        "format_columns": false,
+        "format_rows": false,
+        "insert_columns": false,
+        "insert_rows": false,
+        "insert_hyperlinks": false,
+        "delete_columns": false,
+        "delete_rows": false,
+        "sort": false,
+        "auto_filter": false,
+        "pivot_tables": false,
+        "edit_objects": false,
+        "edit_scenarios": false
+      },
+      "workbook_protected": false,
+      "workbook_password": false,
+      "locked": false,
+      "alert": null,
+      "alert_seq": 0,
+      "theme": "",
+      "placeholder": null
+    }
+  ]
+}

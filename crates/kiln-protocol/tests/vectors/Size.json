@@ -1,0 +1,16 @@
+{
+  "type": "Size",
+  "format": {
+    "TYPENAME": "Size"
+  },
+  "values": [
+    {
+      "width": 1440.0,
+      "height": 900.0
+    },
+    {
+      "width": 0.0,
+      "height": 0.0
+    }
+  ]
+}

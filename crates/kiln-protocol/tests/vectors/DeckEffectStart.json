@@ -1,0 +1,11 @@
+{
+  "type": "DeckEffectStart",
+  "format": {
+    "TYPENAME": "DeckEffectStart"
+  },
+  "values": [
+    "OnClick",
+    "AfterPrevious",
+    "OnClick"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "type": "ShadowStyle",
+  "format": {
+    "TYPENAME": "ShadowStyle"
+  },
+  "values": [
+    "Page",
+    {
+      "Drop": {
+        "dx": 1.0,
+        "dy": 2.0,
+        "blur": 3.0,
+        "spread": -4.0,
+        "paint": {
+          "Rgba": 255
+        }
+      }
+    },
+    "Page"
+  ]
+}

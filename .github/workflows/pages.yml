@@ -1,0 +1,88 @@
+# Builds the GitHub Pages site and deploys it: the landing page and the
+# manual from docs/, and the installable web app under /kiln/app/ (tools/pages-build.sh, which also
+# checks the budgets: chrome JS < 450 KB and each WebAssembly module < 4,500 KB gzipped).
+#
+# The deploy job needs the repository's Pages source set to GitHub Actions
+# (`gh api -X PUT repos/ZahakJ/kiln/pages -f build_type=workflow`). Until it is, it runs only when
+# the repository variable PAGES_WORKFLOW is '1', so a push before the switch does not fail;
+# docs/RELEASING.md ("GitHub Pages") says when to remove the condition.
+name: pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - 'apps/web/**'
+      - 'crates/**'
+      - 'packages/**'
+      - 'assets/**'
+      - 'tools/pages-*'
+      - 'xtask/**'
+      - '.github/workflows/pages.yml'
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  TURBO_TELEMETRY_DISABLED: 1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      # The web app runs the cores as WebAssembly; rust-src for the Grid core's
+      # threads module, which rebuilds the standard library with atomics.
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.1
+          components: rust-src
+          targets: wasm32-unknown-unknown
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-bindgen@0.2.129
+      - name: binaryen
+        run: |
+          curl -4 -LsSf https://github.com/WebAssembly/binaryen/releases/download/version_133/binaryen-version_133-x86_64-linux.tar.gz | tar xz -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/binaryen-version_133/bin" >> "$GITHUB_PATH"
+
+      - name: Build the site
+        env:
+          RUSTC_WRAPPER: ''
+          CARGO_BUILD_RUSTC_WRAPPER: ''
+        run: bash tools/pages-build.sh --wasm
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: target/pages/site
+
+  deploy:
+    needs: build
+    if: vars.PAGES_WORKFLOW == '1'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

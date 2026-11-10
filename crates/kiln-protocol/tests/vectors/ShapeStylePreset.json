@@ -1,0 +1,16 @@
+{
+  "type": "ShapeStylePreset",
+  "format": {
+    "TYPENAME": "ShapeStylePreset"
+  },
+  "values": [
+    {
+      "color": 0,
+      "level": "Outline"
+    },
+    {
+      "color": 0,
+      "level": "Fill"
+    }
+  ]
+}

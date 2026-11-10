@@ -1,0 +1,14 @@
+{
+  "type": "DeckAlign",
+  "format": {
+    "TYPENAME": "DeckAlign"
+  },
+  "values": [
+    "Left",
+    "Bottom",
+    "Left",
+    "Center",
+    "Right",
+    "Top"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "type": "DeckShowStatus",
+  "format": {
+    "TYPENAME": "DeckShowStatus"
+  },
+  "values": [
+    {
+      "running": false,
+      "mode": "Show",
+      "slide": 0,
+      "position": 0,
+      "count": 0,
+      "click": 0,
+      "clicks": 0,
+      "screen": "Slide",
+      "tool": "Arrow",
+      "typed": "",
+      "next": null,
+      "on_click": false,
+      "kind": "Speaker",
+      "version": 0
+    },
+    {
+      "running": true,
+      "mode": "Show",
+      "slide": 2,
+      "position": 3,
+      "count": 12,
+      "click": 1,
+      "clicks": 4,
+      "screen": "Slide",
+      "tool": "Pen",
+      "typed": "1",
+      "next": 3,
+      "on_click": true,
+      "kind": "Speaker",
+      "version": 9007199254740991
+    },
+    {
+      "running": false,
+      "mode": "Show",
+      "slide": 0,
+      "position": 0,
+      "count": 0,
+      "click": 0,
+      "clicks": 0,
+      "screen": "Slide",
+      "tool": "Arrow",
+      "typed": "",
+      "next": null,
+      "on_click": false,
+      "kind": "Speaker",
+      "version": 0
+    }
+  ]
+}

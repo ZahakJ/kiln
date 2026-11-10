@@ -1,0 +1,20 @@
+{
+  "type": "ListState",
+  "format": {
+    "TYPENAME": "ListState"
+  },
+  "values": [
+    {
+      "num_id": 3,
+      "level": 1,
+      "bullet": false,
+      "label": "1.2."
+    },
+    {
+      "num_id": 0,
+      "level": 0,
+      "bullet": false,
+      "label": ""
+    }
+  ]
+}

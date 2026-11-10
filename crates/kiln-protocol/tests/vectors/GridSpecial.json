@@ -1,0 +1,23 @@
+{
+  "type": "GridSpecial",
+  "format": {
+    "TYPENAME": "GridSpecial"
+  },
+  "values": [
+    "CurrentRegion",
+    "DataValidation",
+    "Notes",
+    "Constants",
+    "Formulas",
+    "Blanks",
+    "CurrentRegion",
+    "CurrentArray",
+    "LastCell",
+    "VisibleCells",
+    "Errors",
+    "ConditionalFormats",
+    "DataValidation",
+    "Precedents",
+    "Dependents"
+  ]
+}

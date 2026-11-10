@@ -1,0 +1,24 @@
+{
+  "type": "GridCellStyleInfo",
+  "format": {
+    "TYPENAME": "GridCellStyleInfo"
+  },
+  "values": [
+    {
+      "name": "Good",
+      "group": "Good, Bad and Neutral",
+      "fill": "C6EFCE",
+      "color": "006100",
+      "bold": false,
+      "border": null
+    },
+    {
+      "name": "",
+      "group": "",
+      "fill": null,
+      "color": null,
+      "bold": false,
+      "border": null
+    }
+  ]
+}

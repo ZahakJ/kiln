@@ -1,0 +1,18 @@
+{
+  "type": "TabStopSpec",
+  "format": {
+    "TYPENAME": "TabStopSpec"
+  },
+  "values": [
+    {
+      "pos": 216.5,
+      "align": "Decimal",
+      "leader": "Dot"
+    },
+    {
+      "pos": 0.0,
+      "align": "Left",
+      "leader": "None"
+    }
+  ]
+}

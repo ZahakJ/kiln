@@ -1,0 +1,58 @@
+{
+  "type": "GridTableInfo",
+  "format": {
+    "TYPENAME": "GridTableInfo"
+  },
+  "values": [
+    {
+      "name": "Budget",
+      "range": {
+        "r0": 0,
+        "c0": 0,
+        "r1": 20,
+        "c1": 3
+      },
+      "reference": "$A$1:$D$21",
+      "style": "TableStyleMedium2",
+      "options": {
+        "header_row": true,
+        "total_row": true,
+        "banded_rows": true,
+        "banded_columns": false,
+        "first_column": false,
+        "last_column": false,
+        "filter_button": true
+      },
+      "columns": [
+        {
+          "name": "Q1",
+          "totals": "Sum",
+          "formula": "=[@Q1]*2"
+        }
+      ],
+      "column": 0
+    },
+    {
+      "name": "",
+      "range": {
+        "r0": 0,
+        "c0": 0,
+        "r1": 0,
+        "c1": 0
+      },
+      "reference": "",
+      "style": "",
+      "options": {
+        "header_row": false,
+        "total_row": false,
+        "banded_rows": false,
+        "banded_columns": false,
+        "first_column": false,
+        "last_column": false,
+        "filter_button": false
+      },
+      "columns": [],
+      "column": 0
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+Anchored images: every wrap mode
+
+Wrap: square
+
+Reprehenderit ut nulla adipiscing do laborum incididunt cillum elit mollit ullamco amet tempor cupidatat sint sed ut tempor occaecat elit et laboris elit nulla adipiscing laboris consectetur magna aute sint aliqua et dolor veniam ut quis dolore incididunt sed elit exercitation deserunt laborum occaecat in in sunt cillum irure aliquip veniam aliquip eiusmod irure est deserunt voluptate proident duis do et anim sint ad voluptate ut officia sint consectetur do in voluptate velit deserunt sunt sed tempor commodo culpa sed elit dolor proident duis fugiat velit dolor in esse ad.
+
+Wrap: tight
+
+Labore deserunt elit ullamco duis dolore aliquip nulla nulla deserunt eiusmod ad proident pariatur consequat magna cupidatat consequat sint esse eu nisi ut eiusmod minim ut nisi nisi ipsum officia veniam ea duis lorem aliqua sint laborum dolore in dolore anim adipiscing sunt nulla nulla pariatur nulla ut qui pariatur elit quis sed exercitation non enim labore voluptate adipiscing ut lorem ut laborum incididunt cillum sit do exercitation eu ut ex velit cillum culpa et labore officia in qui qui dolor eiusmod aliqua ut voluptate ea qui enim id dolor.
+
+Wrap: through
+
+Exercitation est cillum aliqua sit est irure tempor ea id cillum ad esse laboris laborum mollit in laboris quis ut pariatur nisi nostrud id deserunt esse sit sit consequat culpa ea quis velit proident velit cillum eiusmod laboris ut nisi culpa nostrud voluptate exercitation qui lorem qui velit eiusmod et fugiat nostrud qui minim cupidatat in tempor nulla in pariatur eiusmod enim ad dolore sit ut in aliqua culpa velit ut dolore dolor ipsum ut est magna cupidatat quis ullamco sit ex ullamco aute mollit ut reprehenderit ea sint dolore.
+
+Wrap: topAndBottom
+
+Elit esse sunt id sint mollit dolore laborum ut est anim dolor non veniam lorem ut minim aliqua culpa et elit reprehenderit id est qui ut elit aliquip quis consequat consectetur incididunt mollit proident sit sed non reprehenderit mollit anim nostrud consequat proident anim laborum qui mollit aliquip id ea nostrud proident magna sint et nulla non in do ut occaecat do ullamco irure et ut cillum aliqua ex magna in laboris incididunt nulla officia enim laboris enim cupidatat anim pariatur voluptate sint nostrud esse in tempor cillum dolor voluptate.
+
+Wrap: behind
+
+Sunt non dolor fugiat in id aute anim sed labore nisi ut eiusmod ea commodo consectetur veniam commodo dolore occaecat ea pariatur ut laborum anim deserunt reprehenderit tempor consequat elit veniam occaecat do commodo dolor tempor ea eiusmod laboris sed ea et sunt ipsum voluptate sint commodo dolore consectetur est ut labore enim ea adipiscing veniam nostrud dolor dolor est exercitation aute proident mollit minim commodo velit dolor ex amet ipsum dolor mollit quis anim culpa aliquip proident ut cupidatat deserunt nulla mollit dolor ullamco nisi voluptate nostrud magna pariatur.
+
+Wrap: inFront
+
+Velit adipiscing dolore ipsum do ex cupidatat enim elit eiusmod eu mollit duis aliquip aute consectetur sunt veniam enim commodo proident lorem ea cillum in reprehenderit aliquip amet dolor ullamco esse veniam lorem in eu eiusmod culpa consequat mollit nostrud aliquip mollit lorem tempor ea tempor aliqua pariatur consectetur nulla dolor irure irure nisi eiusmod est ut fugiat reprehenderit deserunt ut duis aliqua consectetur anim occaecat mollit magna est mollit dolor nisi eiusmod sit consectetur magna cillum ut eu proident adipiscing dolor laborum aliquip officia ea lorem sunt sed mollit.
+

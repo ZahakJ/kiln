@@ -1,0 +1,134 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 4,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Solid Fill"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Subtitle 2",
+     "text": "Defined on the master slide:\nTan, darker 10%"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Gradient Fill"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Gradient stops"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Master Gradient Fill"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "hello"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Isosceles Triangle 3",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Oval 4",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Sun 5",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 6,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Texture: papirus"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 2",
+     "text": "Gradient Fill\nA\nA\nA\nA\nAa\na"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Right Arrow 3",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Oval 4",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 5",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 6",
+     "text": ""
+    }
+   ]
+  }
+ ]
+}

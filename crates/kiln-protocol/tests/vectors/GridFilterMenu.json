@@ -1,0 +1,42 @@
+{
+  "type": "GridFilterMenu",
+  "format": {
+    "TYPENAME": "GridFilterMenu"
+  },
+  "values": [
+    {
+      "row": 3,
+      "col": 1,
+      "header": "Category",
+      "kind": "Text",
+      "items": [
+        {
+          "text": "Firing",
+          "checked": false,
+          "date": "2026-01-05"
+        }
+      ],
+      "blanks": true,
+      "filter": null,
+      "fill_colors": [
+        "C6EFCE"
+      ],
+      "font_colors": [],
+      "sorted": false,
+      "truncated": false
+    },
+    {
+      "row": 0,
+      "col": 0,
+      "header": "",
+      "kind": "Text",
+      "items": [],
+      "blanks": null,
+      "filter": null,
+      "fill_colors": [],
+      "font_colors": [],
+      "sorted": null,
+      "truncated": false
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--
+      Kiln's theme from Android 12: the splash screen shows the kiln on the window's colour, then
+      Kiln Home appears on the same colour.
+    -->
+    <style name="Theme.kiln_desktop" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/kiln_ember</item>
+        <item name="colorOnPrimary">@color/kiln_on_ember</item>
+        <item name="android:windowBackground">@color/kiln_window</item>
+        <item name="android:statusBarColor">@color/kiln_window</item>
+        <item name="android:navigationBarColor">@color/kiln_window</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowSplashScreenBackground">@color/kiln_window</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+    </style>
+</resources>

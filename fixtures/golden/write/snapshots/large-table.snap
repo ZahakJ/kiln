@@ -1,0 +1,19 @@
+---
+source: crates/kiln-doc-layout/tests/fixtures.rs
+expression: summary(&l)
+---
+pages: 14
+  1 [s1 #1] Item … aliqua (219 words)
+  2 [s1 #2] Item … ad. (223 words)
+  3 [s1 #3] Item … ipsum (202 words)
+  4 [s1 #4] Item … qui. (213 words)
+  5 [s1 #5] Item … aliqua. (230 words)
+  6 [s1 #6] Item … adipiscing (219 words)
+  7 [s1 #7] Item … nulla (222 words)
+  8 [s1 #8] Item … dolore (211 words)
+  9 [s1 #9] Item … adipiscing (203 words)
+ 10 [s1 #10] Item … tempor. (205 words)
+ 11 [s1 #11] Item … et. (203 words)
+ 12 [s1 #12] Item … fugiat. (221 words)
+ 13 [s1 #13] Item … culpa (183 words)
+ 14 [s1 #14] Item … ea. (16 words)

@@ -1,0 +1,59 @@
+{
+  "type": "GridSheetPermissions",
+  "format": {
+    "TYPENAME": "GridSheetPermissions"
+  },
+  "values": [
+    {
+      "select_locked": false,
+      "select_unlocked": false,
+      "format_cells": false,
+      "format_columns": false,
+      "format_rows": false,
+      "insert_columns": false,
+      "insert_rows": false,
+      "insert_hyperlinks": false,
+      "delete_columns": false,
+      "delete_rows": false,
+      "sort": false,
+      "auto_filter": false,
+      "pivot_tables": false,
+      "edit_objects": false,
+      "edit_scenarios": false
+    },
+    {
+      "select_locked": true,
+      "select_unlocked": true,
+      "format_cells": false,
+      "format_columns": false,
+      "format_rows": false,
+      "insert_columns": false,
+      "insert_rows": false,
+      "insert_hyperlinks": false,
+      "delete_columns": false,
+      "delete_rows": false,
+      "sort": true,
+      "auto_filter": false,
+      "pivot_tables": false,
+      "edit_objects": false,
+      "edit_scenarios": false
+    },
+    {
+      "select_locked": false,
+      "select_unlocked": false,
+      "format_cells": false,
+      "format_columns": false,
+      "format_rows": false,
+      "insert_columns": false,
+      "insert_rows": false,
+      "insert_hyperlinks": false,
+      "delete_columns": false,
+      "delete_rows": false,
+      "sort": false,
+      "auto_filter": false,
+      "pivot_tables": false,
+      "edit_objects": false,
+      "edit_scenarios": false
+    }
+  ]
+}

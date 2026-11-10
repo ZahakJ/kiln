@@ -1,0 +1,102 @@
+{"new":{"kind":"write"}}
+{"execute":{"doc":1,"cmd":{"Write":{"PageSetup":{"setup":{"width":595.3,"height":841.9,"top":72,"bottom":72,"left":72,"right":72,"header":36,"footer":36}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Normal","spec":{"font":{"underline_none":false,"family":"Carlito","size":11,"color":"262626"},"paragraph":{"space_after":6,"line_multiple":1.15}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Title","spec":{"font":{"underline_none":false,"family":"Caladea","size":30,"color":"2A4A9E","bold":false},"paragraph":{"space_after":4,"line_multiple":1.0}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Subtitle","spec":{"font":{"underline_none":false,"family":"Carlito","size":12.5,"color":"6B6B6B","italic":false},"paragraph":{"space_after":18}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading1","spec":{"font":{"underline_none":false,"family":"Caladea","size":18,"color":"2A4A9E","bold":false},"paragraph":{"space_before":18,"space_after":6,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading2","spec":{"font":{"underline_none":false,"family":"Carlito","size":12.5,"color":"262626","bold":true},"paragraph":{"space_before":12,"space_after":4,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading3","spec":{"font":{"underline_none":false,"family":"Carlito","size":11,"color":"2A4A9E","bold":true},"paragraph":{"space_before":10,"space_after":2,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"PasteMarkdown":{"text":"# Executive summary\n\nIn 2025 the Coastal Paths Network welcomed 1.86 million visits, 12 % more than the year before, while maintenance costs per kilometre fell for the second year running. This report reviews the year, sets out where the network is under pressure, and recommends three priorities for 2026.\n\n- Visits grew fastest on the restored northern section (+31 %)\n- Volunteer hours reached 41,200, the highest on record\n- Erosion now threatens 6.4 km of path, up from 4.1 km\n\n# Visitor numbers\n\nCounters at fourteen access points recorded visits by month. Summer peaks were higher than in any previous year, but the strongest growth came in spring and autumn, which spreads the load on car parks and facilities.\n\n| Section | 2024 visits | 2025 visits | Change |\n|---|---|---|---|\n| Northern | 312,000 | 409,000 | +31 % |\n| Estuary | 488,000 | 521,000 | +7 % |\n| Cliffs | 540,000 | 583,000 | +8 % |\n| Southern | 322,000 | 347,000 | +8 % |\n| Total | 1,662,000 | 1,860,000 | +12 % |\n\n# Maintenance and erosion\n\nRoutine maintenance cost £1,140 per kilometre, down from £1,220, thanks largely to volunteer work parties on drainage and vegetation. Erosion is the main risk: two winter storms moved the cliff edge inland by up to four metres at Gull Point.\n\n## Sections at risk\n\nSurvey work identified eleven sites where the path is within five metres of an active cliff edge. Four need a permanent realignment within two years.\n\n# Recommendations\n\n1. Fund the realignment of the four highest-risk sites in 2026 (£186,000)\n2. Extend the volunteer ranger scheme to the southern section\n3. Install three more visitor counters to cover the new estuary links\n\n# Volunteers and partners\n\nVolunteers gave 41,200 hours in 2025, the equivalent of twenty-three full-time staff. Work parties cleared 38 km of vegetation, rebuilt 212 drainage channels and repaired 64 stiles and gates. The ranger scheme on the northern section now has 46 trained volunteers who walk their stretch at least once a month and report problems through the app.\n\n| Partner | Contribution in 2025 |\n|---|---|\n| Harbourside Rotary Club | Funded two new access gates at Mill Cove |\n| Saltmarsh Wildlife Group | Surveyed nesting birds before path works |\n| Eastport College | Students built 120 m of boardwalk as course work |\n| Seaview Holiday Parks | Sponsored the summer litter-pick weekends |\n\n## Finances\n\nTotal spending was £2.31 million against a budget of £2.38 million. Grants and donations covered 64 % of costs, the local authorities 29 % and car park income the remaining 7 %. The underspend will be carried forward to the erosion programme.\n\n# Next steps\n\nThe board is asked to approve the 2026 capital plan at its April meeting. Detailed costings and the full erosion survey are in the appendices.\n"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Section"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableStyle":{"style":"PlainTable1"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Section"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Row"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableShading":{"color":"3159C6"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"color":"FFFFFF","bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Section"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":151,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"2024 visits"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":100,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"2025 visits"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":100,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Change"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":100.29999999999995,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"2024 visits"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Column"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignRight"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"2025 visits"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Column"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignRight"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Change"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Column"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignRight"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Section"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Northern"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Estuary"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Cliffs"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Southern"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Total"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Total"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Row"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableShading":{"color":"DCE6F0"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Partner"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableStyle":{"style":"PlainTable1"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Partner"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Row"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableShading":{"color":"3159C6"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"color":"FFFFFF","bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Partner"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":170,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Contribution in 2025"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":281.29999999999995,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":"EditHeader"}}}
+{"execute":{"doc":1,"cmd":{"Write":{"InsertText":{"text":"Coastal Paths Network · Annual report 2025"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":8.5,"color":"7A7A7A","spacing":0.5}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":"CloseHeaderFooter"}}}
+{"execute":{"doc":1,"cmd":{"Write":"EditFooter"}}}
+{"execute":{"doc":1,"cmd":{"Write":{"PageNumber":{"position":"Caret"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9,"color":"7A7A7A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignRight"}}}}
+{"execute":{"doc":1,"cmd":{"Write":"CloseHeaderFooter"}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"InsertCoverPage":{"design":"Banded"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ReplaceAll":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Document title"},"replacement":"Annual report 2025"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ReplaceAll":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Document subtitle"},"replacement":"Coastal Paths Network · A year on the coast path"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ReplaceAll":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Author"},"replacement":"Prepared by Imogen Hart, Network Manager"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ReplaceAll":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":true,"text":"\\d{1,2} [A-Z][a-z]+ \\d{4}"},"replacement":"March 2026"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":"DifferentFirstPage"}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SpellCheck":{"on":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetProperties":{"props":{"title":"Annual report 2025","author":"Imogen Hart","company":"Coastal Paths Network"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"save":{"doc":1,"path":"target/templates-tmp/Annual report.kwrite","format":"KWrite"}}
+{"save":{"doc":1,"path":"assets/templates/write/report.kwrite","format":"KWrite"}}
+{"render": {"doc": 1, "png": "assets/templates/write/report.png", "page": 1, "dpi": 48}}

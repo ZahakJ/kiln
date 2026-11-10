@@ -1,0 +1,44 @@
+{
+  "type": "RevisionBalloonInfo",
+  "format": {
+    "TYPENAME": "RevisionBalloonInfo"
+  },
+  "values": [
+    {
+      "para": 9,
+      "offset": 3,
+      "deleted": true,
+      "text": "Deleted: «glaze»",
+      "author": "Zoë",
+      "color": "2B579A",
+      "rect": {
+        "x": 830.0,
+        "y": 120.0,
+        "width": 240.0,
+        "height": 36.0
+      },
+      "anchor": {
+        "x": 200.0,
+        "y": 130.0
+      }
+    },
+    {
+      "para": 0,
+      "offset": 0,
+      "deleted": false,
+      "text": "",
+      "author": "",
+      "color": "",
+      "rect": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.0,
+        "height": 0.0
+      },
+      "anchor": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    }
+  ]
+}

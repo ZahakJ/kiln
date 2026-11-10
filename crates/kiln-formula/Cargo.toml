@@ -1,0 +1,45 @@
+[package]
+name = "kiln-formula"
+description = "The spreadsheet formula engine: tokenizer, Pratt parser, references, dependency graph, incremental parallel recalculation, values and Excel number formats"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[features]
+default = ["parallel"]
+# Evaluate independent cells of a topological level on a rayon pool. Builds without it (the
+# single-threaded wasm artefact) evaluate the same levels sequentially with identical results.
+parallel = ["dep:rayon"]
+
+[dependencies]
+kiln-common.workspace = true
+rayon = { workspace = true, optional = true }
+rustc-hash.workspace = true
+smallvec.workspace = true
+thiserror.workspace = true
+# The function library: special functions for the distributions, exact decimal arithmetic
+# for DOLLARDE/DOLLARFR, REGEXTEST/REGEXEXTRACT/REGEXREPLACE, the documentation JSON, and the seed
+# of RAND/RANDBETWEEN/RANDARRAY.
+statrs = { workspace = true, default-features = false, features = ["std"] }
+rust_decimal = { workspace = true, default-features = false }
+fancy-regex.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+getrandom.workspace = true
+
+[target.'cfg(all(target_arch = "wasm32", target_os = "unknown"))'.dependencies]
+getrandom = { workspace = true, features = ["wasm_js"] }
+
+[dev-dependencies]
+proptest.workspace = true
+
+[[example]]
+name = "recalc_bench"
+required-features = ["parallel"]
+
+[lints]
+workspace = true

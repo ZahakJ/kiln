@@ -1,0 +1,36 @@
+{
+  "type": "DeckMediaItem",
+  "format": {
+    "TYPENAME": "DeckMediaItem"
+  },
+  "values": [
+    {
+      "shape": 30,
+      "kind": "Video",
+      "part": "/ppt/media/media1.mp4",
+      "mime": "video/mp4",
+      "rect": {
+        "x": 320.0,
+        "y": 180.0,
+        "width": 640.0,
+        "height": 360.0
+      },
+      "trim_start_ms": 0,
+      "trim_end_ms": 1500
+    },
+    {
+      "shape": 0,
+      "kind": "Video",
+      "part": null,
+      "mime": "",
+      "rect": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.0,
+        "height": 0.0
+      },
+      "trim_start_ms": 0,
+      "trim_end_ms": 0
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@kiln/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Kiln desktop and Android shell (Tauri 2). The Rust crate is src-tauri/ (kiln-desktop).",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "scripts": {
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "frontend": "node scripts/frontend.mjs",
+    "menu": "pnpm --filter @kiln/commands desktop:menu"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "catalog:"
+  }
+}

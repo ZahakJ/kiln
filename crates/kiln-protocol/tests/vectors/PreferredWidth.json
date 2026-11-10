@@ -1,0 +1,16 @@
+{
+  "type": "PreferredWidth",
+  "format": {
+    "TYPENAME": "PreferredWidth"
+  },
+  "values": [
+    {
+      "value": 0.0,
+      "percent": false
+    },
+    {
+      "value": 0.0,
+      "percent": false
+    }
+  ]
+}

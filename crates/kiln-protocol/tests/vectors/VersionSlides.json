@@ -1,0 +1,57 @@
+{
+  "type": "VersionSlides",
+  "format": {
+    "TYPENAME": "VersionSlides"
+  },
+  "values": [
+    {
+      "slides": [
+        {
+          "slide": 3,
+          "mark": "Same"
+        }
+      ],
+      "scene": {
+        "revision": 42,
+        "reset": false,
+        "scale": 2.0,
+        "extent": {
+          "x": 0.0,
+          "y": 0.0,
+          "w": 0.0,
+          "h": 0.0
+        },
+        "background": {
+          "Rgba": 0
+        },
+        "tiles": [],
+        "removed": [],
+        "atlas": [],
+        "images": [],
+        "overlay": null
+      }
+    },
+    {
+      "slides": [],
+      "scene": {
+        "revision": 0,
+        "reset": false,
+        "scale": 0.0,
+        "extent": {
+          "x": 0.0,
+          "y": 0.0,
+          "w": 0.0,
+          "h": 0.0
+        },
+        "background": {
+          "Rgba": 0
+        },
+        "tiles": [],
+        "removed": [],
+        "atlas": [],
+        "images": [],
+        "overlay": null
+      }
+    }
+  ]
+}

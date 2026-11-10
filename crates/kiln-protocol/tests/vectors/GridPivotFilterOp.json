@@ -1,0 +1,24 @@
+{
+  "type": "GridPivotFilterOp",
+  "format": {
+    "TYPENAME": "GridPivotFilterOp"
+  },
+  "values": [
+    "Between",
+    "NotContains",
+    "Equal",
+    "NotEqual",
+    "GreaterThan",
+    "GreaterThanOrEqual",
+    "LessThan",
+    "LessThanOrEqual",
+    "BeginsWith",
+    "NotBeginsWith",
+    "EndsWith",
+    "NotEndsWith",
+    "Contains",
+    "NotContains",
+    "Between",
+    "NotBetween"
+  ]
+}

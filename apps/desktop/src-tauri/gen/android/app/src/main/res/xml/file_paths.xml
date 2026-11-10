@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- What Kiln hands to other apps: the PDF to print and the copies it sends (the app's cache). -->
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+  <cache-path name="print" path="kiln-print/" />
+  <cache-path name="share" path="kiln-share/" />
+</paths>

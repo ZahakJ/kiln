@@ -1,0 +1,35 @@
+{
+  "type": "GlyphRun",
+  "format": {
+    "TYPENAME": "GlyphRun"
+  },
+  "values": [
+    {
+      "page": 0,
+      "paint": {
+        "Role": "Ink"
+      },
+      "quads": [
+        0,
+        0,
+        9,
+        12,
+        192,
+        -3,
+        10,
+        0,
+        7,
+        12,
+        201,
+        300
+      ]
+    },
+    {
+      "page": 0,
+      "paint": {
+        "Rgba": 0
+      },
+      "quads": []
+    }
+  ]
+}

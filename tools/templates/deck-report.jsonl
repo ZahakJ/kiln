@@ -1,0 +1,308 @@
+{"new":{"kind":"deck"}}
+{"execute":{"doc":1,"cmd":{"Deck":{"ApplyTheme":{"name":"Porcelain"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Annual business review 2025"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Northwind Outdoor Co. · Board meeting, 4 February 2026"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Welcome the board. The review follows the agenda on the next slide."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":96}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Agenda"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"The year in numbers"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"What went well"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"What we learned"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Priorities for 2026"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Questions"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"About forty minutes, with questions at the end."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":125}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"The year in numbers"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"All figures are unaudited and in pounds sterling."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":90,"y":200,"width":340,"height":70}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"£14.2m"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"2F6DB5"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":90,"y":270,"width":340,"height":60}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"revenue, up 18 % on 2024"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":470,"y":200,"width":340,"height":70}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"41 %"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"2F6DB5"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":470,"y":270,"width":340,"height":60}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"gross margin, up 3 points"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":850,"y":200,"width":340,"height":70}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"62"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"2F6DB5"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":850,"y":270,"width":340,"height":60}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"net promoter score"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":90,"y":420,"width":340,"height":70}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"212,000"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"2F6DB5"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":90,"y":490,"width":340,"height":60}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"orders shipped"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":470,"y":420,"width":340,"height":70}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"3.1 days"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"2F6DB5"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":470,"y":490,"width":340,"height":60}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"average delivery time"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":850,"y":420,"width":340,"height":70}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"94"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"2F6DB5"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":850,"y":490,"width":340,"height":60}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"people in the team"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":125}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Revenue by quarter"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Q4 includes the winter range, which sold out in early December."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"ChartInsert":{"kind":"ColumnClustered"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetChartData":{"cells":[["","FY 2024","FY 2025"],["Q1","2.6","2.9"],["Q2","3.0","3.4"],["Q3","2.8","3.5"],["Q4","3.6","4.4"]]}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"ChartSetTitle":{"text":"Revenue (£m)"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"ChartSetLegend":{"position":"Bottom"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetTransform":{"x":60.0,"y":142.5,"width":840.0,"height":352.5,"rotation":null,"lock_aspect":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":109}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"What went well"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Winter range sold out six weeks early"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Repair service launched in March"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Returns down from 11 % to 7 %"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"New warehouse in Doncaster on time"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Website conversion up to 3.4 %"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Staff turnover at a five-year low"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Credit the warehouse team: the move happened without a day of lost orders."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":96}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"What we learned"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Stock-outs cost more than overstock"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"We lost an estimated £0.6m of winter sales"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":true}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Customers value repairs"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"38 % of repair customers bought again within six months"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"Tab":{"shift":true}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Wholesale grows slowly but steadily"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"These lessons shape the priorities on the next slide."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":96}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Priorities for 2026"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Plan winter stock earlier, with two reorder points"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Take repairs to every product line"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Open a second wholesale channel in Europe"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Reach £17m revenue at a 42 % margin"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Each priority has an owner on the leadership team; details in the board pack."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":102}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Questions"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Thank you"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Leave time for questions; the finance director will answer anything on the numbers."}}}}}
+{"save":{"doc":1,"path":"target/templates-tmp/Business review.kdeck","format":"KDeck"}}
+{"save":{"doc":1,"path":"assets/templates/deck/report.kdeck","format":"KDeck"}}

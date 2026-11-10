@@ -1,0 +1,10 @@
+{
+  "type": "DeckScaleMode",
+  "format": {
+    "TYPENAME": "DeckScaleMode"
+  },
+  "values": [
+    "Maximize",
+    "Maximize"
+  ]
+}

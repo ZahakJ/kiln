@@ -1,0 +1,1130 @@
+[
+  {
+    "name": "BETADIST",
+    "category": "Compatibility",
+    "summary": "Returns the cumulative beta distribution. Use BETA.DIST in new workbooks.",
+    "syntax": "BETADIST(x, alpha, beta, [A], [B])",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "alpha",
+        "description": "A parameter."
+      },
+      {
+        "name": "beta",
+        "description": "A parameter."
+      },
+      {
+        "name": "A",
+        "description": "Lower bound (default 0).",
+        "optional": true
+      },
+      {
+        "name": "B",
+        "description": "Upper bound (default 1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BETADIST(2,8,10,1,3)",
+        "result": "0.685470581"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "BETAINV",
+    "category": "Compatibility",
+    "summary": "Returns the inverse of the cumulative beta distribution. Use BETA.INV in new workbooks.",
+    "syntax": "BETAINV(probability, alpha, beta, [A], [B])",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "alpha",
+        "description": "A parameter."
+      },
+      {
+        "name": "beta",
+        "description": "A parameter."
+      },
+      {
+        "name": "A",
+        "description": "Lower bound (default 0).",
+        "optional": true
+      },
+      {
+        "name": "B",
+        "description": "Upper bound (default 1).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BETAINV(0.685470581,8,10,1,3)",
+        "result": "2"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "BINOMDIST",
+    "category": "Compatibility",
+    "summary": "Returns the binomial distribution probability. Use BINOM.DIST in new workbooks.",
+    "syntax": "BINOMDIST(number_s, trials, probability_s, cumulative)",
+    "args": [
+      {
+        "name": "number_s",
+        "description": "The number of successes."
+      },
+      {
+        "name": "trials",
+        "description": "The number of trials."
+      },
+      {
+        "name": "probability_s",
+        "description": "The probability of success."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BINOMDIST(6,10,0.5,FALSE)",
+        "result": "0.205078125"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "CEILING",
+    "category": "Compatibility",
+    "summary": "Rounds a number up (away from zero for negative significance) to the nearest multiple of significance.",
+    "syntax": "CEILING(number, significance)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The value to round."
+      },
+      {
+        "name": "significance",
+        "description": "The multiple to round to."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CEILING(2.5,1)",
+        "result": "3"
+      },
+      {
+        "formula": "=CEILING(-2.5,-2)",
+        "result": "-4"
+      },
+      {
+        "formula": "=CEILING(-2.5,2)",
+        "result": "-2"
+      },
+      {
+        "formula": "=CEILING(1.5,0.1)",
+        "result": "1.5"
+      },
+      {
+        "formula": "=CEILING(0.234,0.01)",
+        "result": "0.24"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "CHIDIST",
+    "category": "Compatibility",
+    "summary": "Returns the right-tailed probability of the chi-squared distribution. Use CHISQ.DIST.RT in new workbooks.",
+    "syntax": "CHIDIST(x, deg_freedom)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "deg_freedom",
+        "description": "The degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CHIDIST(18.307,10)",
+        "result": "0.0500006"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "CHIINV",
+    "category": "Compatibility",
+    "summary": "Returns the inverse of the right-tailed chi-squared distribution. Use CHISQ.INV.RT in new workbooks.",
+    "syntax": "CHIINV(probability, deg_freedom)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "deg_freedom",
+        "description": "The degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CHIINV(0.050001,10)",
+        "result": "18.306973"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "CHITEST",
+    "category": "Compatibility",
+    "summary": "Returns the test for independence. Use CHISQ.TEST in new workbooks.",
+    "syntax": "CHITEST(actual_range, expected_range)",
+    "args": [
+      {
+        "name": "actual_range",
+        "description": "The observed values."
+      },
+      {
+        "name": "expected_range",
+        "description": "The expected values."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CHITEST({58,35;11,25;10,23},{45.35,47.65;17.56,18.44;16.09,16.91})",
+        "result": "0.000308192"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "CONFIDENCE",
+    "category": "Compatibility",
+    "summary": "Returns the confidence interval for a population mean. Use CONFIDENCE.NORM in new workbooks.",
+    "syntax": "CONFIDENCE(alpha, standard_dev, size)",
+    "args": [
+      {
+        "name": "alpha",
+        "description": "The significance level."
+      },
+      {
+        "name": "standard_dev",
+        "description": "The population standard deviation."
+      },
+      {
+        "name": "size",
+        "description": "The sample size."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CONFIDENCE(0.05,2.5,50)",
+        "result": "0.692951912"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "COVAR",
+    "category": "Compatibility",
+    "summary": "Returns covariance, the average of the products of paired deviations. Use COVARIANCE.P in new workbooks.",
+    "syntax": "COVAR(array1, array2)",
+    "args": [
+      {
+        "name": "array1",
+        "description": "The first range."
+      },
+      {
+        "name": "array2",
+        "description": "The second range."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COVAR({3,2,4,5,6},{9,7,12,15,17})",
+        "result": "5.2"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "CRITBINOM",
+    "category": "Compatibility",
+    "summary": "Returns the smallest value for which the cumulative binomial distribution is at least the criterion. Use BINOM.INV in new workbooks.",
+    "syntax": "CRITBINOM(trials, probability_s, alpha)",
+    "args": [
+      {
+        "name": "trials",
+        "description": "The number of trials."
+      },
+      {
+        "name": "probability_s",
+        "description": "The probability of success."
+      },
+      {
+        "name": "alpha",
+        "description": "The criterion value."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CRITBINOM(6,0.5,0.75)",
+        "result": "4"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "EXPONDIST",
+    "category": "Compatibility",
+    "summary": "Returns the exponential distribution. Use EXPON.DIST in new workbooks.",
+    "syntax": "EXPONDIST(x, lambda, cumulative)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "lambda",
+        "description": "The parameter value."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=EXPONDIST(0.2,10,TRUE)",
+        "result": "0.864664717"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FDIST",
+    "category": "Compatibility",
+    "summary": "Returns the right-tailed F probability distribution. Use F.DIST.RT in new workbooks.",
+    "syntax": "FDIST(x, deg_freedom1, deg_freedom2)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "deg_freedom1",
+        "description": "Numerator degrees of freedom."
+      },
+      {
+        "name": "deg_freedom2",
+        "description": "Denominator degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FDIST(15.2068649,6,4)",
+        "result": "0.01"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FINV",
+    "category": "Compatibility",
+    "summary": "Returns the inverse of the right-tailed F distribution. Use F.INV.RT in new workbooks.",
+    "syntax": "FINV(probability, deg_freedom1, deg_freedom2)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "deg_freedom1",
+        "description": "Numerator degrees of freedom."
+      },
+      {
+        "name": "deg_freedom2",
+        "description": "Denominator degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FINV(0.01,6,4)",
+        "result": "15.20686486"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FLOOR",
+    "category": "Compatibility",
+    "summary": "Rounds a number down, toward zero, to the nearest multiple of significance.",
+    "syntax": "FLOOR(number, significance)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The value to round."
+      },
+      {
+        "name": "significance",
+        "description": "The multiple to round to."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FLOOR(3.7,2)",
+        "result": "2"
+      },
+      {
+        "formula": "=FLOOR(-2.5,-2)",
+        "result": "-2"
+      },
+      {
+        "formula": "=FLOOR(2.5,-2)",
+        "result": "#NUM!"
+      },
+      {
+        "formula": "=FLOOR(1.58,0.1)",
+        "result": "1.5"
+      },
+      {
+        "formula": "=FLOOR(0.234,0.01)",
+        "result": "0.23"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FORECAST",
+    "category": "Compatibility",
+    "summary": "Predicts a value along a linear trend. Use FORECAST.LINEAR in new workbooks.",
+    "syntax": "FORECAST(x, known_y's, known_x's)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The data point to predict for."
+      },
+      {
+        "name": "known_y's",
+        "description": "The dependent data."
+      },
+      {
+        "name": "known_x's",
+        "description": "The independent data."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FORECAST(30,{6,7,9,15,21},{20,28,31,38,40})",
+        "result": "10.607253"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "FTEST",
+    "category": "Compatibility",
+    "summary": "Returns the result of an F-test. Use F.TEST in new workbooks.",
+    "syntax": "FTEST(array1, array2)",
+    "args": [
+      {
+        "name": "array1",
+        "description": "The first data set."
+      },
+      {
+        "name": "array2",
+        "description": "The second data set."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=FTEST({6,7,9,15,21},{20,28,31,38,40})",
+        "result": "0.64831785"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "GAMMADIST",
+    "category": "Compatibility",
+    "summary": "Returns the gamma distribution. Use GAMMA.DIST in new workbooks.",
+    "syntax": "GAMMADIST(x, alpha, beta, cumulative)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "alpha",
+        "description": "A parameter."
+      },
+      {
+        "name": "beta",
+        "description": "A parameter."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=GAMMADIST(10.00001131,9,2,TRUE)",
+        "result": "0.068094"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "GAMMAINV",
+    "category": "Compatibility",
+    "summary": "Returns the inverse of the gamma cumulative distribution. Use GAMMA.INV in new workbooks.",
+    "syntax": "GAMMAINV(probability, alpha, beta)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "alpha",
+        "description": "A parameter."
+      },
+      {
+        "name": "beta",
+        "description": "A parameter."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=GAMMAINV(0.068094,9,2)",
+        "result": "10.0000112"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "HYPGEOMDIST",
+    "category": "Compatibility",
+    "summary": "Returns the hypergeometric probability. Use HYPGEOM.DIST in new workbooks.",
+    "syntax": "HYPGEOMDIST(sample_s, number_sample, population_s, number_pop)",
+    "args": [
+      {
+        "name": "sample_s",
+        "description": "Successes in the sample."
+      },
+      {
+        "name": "number_sample",
+        "description": "Size of the sample."
+      },
+      {
+        "name": "population_s",
+        "description": "Successes in the population."
+      },
+      {
+        "name": "number_pop",
+        "description": "Size of the population."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=HYPGEOMDIST(1,4,8,20)",
+        "result": "0.363261094"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LOGINV",
+    "category": "Compatibility",
+    "summary": "Returns the inverse of the lognormal cumulative distribution. Use LOGNORM.INV in new workbooks.",
+    "syntax": "LOGINV(probability, mean, standard_dev)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "mean",
+        "description": "The mean of ln(x)."
+      },
+      {
+        "name": "standard_dev",
+        "description": "The standard deviation of ln(x)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LOGINV(0.039084,3.5,1.2)",
+        "result": "4.0000252"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "LOGNORMDIST",
+    "category": "Compatibility",
+    "summary": "Returns the cumulative lognormal distribution. Use LOGNORM.DIST in new workbooks.",
+    "syntax": "LOGNORMDIST(x, mean, standard_dev)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "mean",
+        "description": "The mean of ln(x)."
+      },
+      {
+        "name": "standard_dev",
+        "description": "The standard deviation of ln(x)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LOGNORMDIST(4,3.5,1.2)",
+        "result": "0.039083556"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MODE",
+    "category": "Compatibility",
+    "summary": "Returns the most common value in a data set. Use MODE.SNGL in new workbooks.",
+    "syntax": "MODE(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MODE(5.6,4,4,3,2,4)",
+        "result": "4"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "NEGBINOMDIST",
+    "category": "Compatibility",
+    "summary": "Returns the negative binomial distribution. Use NEGBINOM.DIST in new workbooks.",
+    "syntax": "NEGBINOMDIST(number_f, number_s, probability_s)",
+    "args": [
+      {
+        "name": "number_f",
+        "description": "The number of failures."
+      },
+      {
+        "name": "number_s",
+        "description": "The threshold number of successes."
+      },
+      {
+        "name": "probability_s",
+        "description": "The probability of a success."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NEGBINOMDIST(10,5,0.25)",
+        "result": "0.05504866"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "NORMDIST",
+    "category": "Compatibility",
+    "summary": "Returns the normal distribution. Use NORM.DIST in new workbooks.",
+    "syntax": "NORMDIST(x, mean, standard_dev, cumulative)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "mean",
+        "description": "The arithmetic mean."
+      },
+      {
+        "name": "standard_dev",
+        "description": "The standard deviation."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NORMDIST(42,40,1.5,TRUE)",
+        "result": "0.9087888"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "NORMINV",
+    "category": "Compatibility",
+    "summary": "Returns the inverse of the normal cumulative distribution. Use NORM.INV in new workbooks.",
+    "syntax": "NORMINV(probability, mean, standard_dev)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "mean",
+        "description": "The arithmetic mean."
+      },
+      {
+        "name": "standard_dev",
+        "description": "The standard deviation."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NORMINV(0.908789,40,1.5)",
+        "result": "42.000002"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "NORMSDIST",
+    "category": "Compatibility",
+    "summary": "Returns the standard normal cumulative distribution. Use NORM.S.DIST in new workbooks.",
+    "syntax": "NORMSDIST(z)",
+    "args": [
+      {
+        "name": "z",
+        "description": "The value."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NORMSDIST(1.333333)",
+        "result": "0.908788726"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "NORMSINV",
+    "category": "Compatibility",
+    "summary": "Returns the inverse of the standard normal cumulative distribution. Use NORM.S.INV in new workbooks.",
+    "syntax": "NORMSINV(probability)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NORMSINV(0.908789)",
+        "result": "1.3333347"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "PERCENTILE",
+    "category": "Compatibility",
+    "summary": "Returns the k-th percentile of values. Use PERCENTILE.INC in new workbooks.",
+    "syntax": "PERCENTILE(array, k)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The data."
+      },
+      {
+        "name": "k",
+        "description": "The percentile value, from 0 to 1."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PERCENTILE({1,3,2,4},0.3)",
+        "result": "1.9"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "PERCENTRANK",
+    "category": "Compatibility",
+    "summary": "Returns the percentage rank of a value in a data set. Use PERCENTRANK.INC in new workbooks.",
+    "syntax": "PERCENTRANK(array, x, [significance])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The data."
+      },
+      {
+        "name": "x",
+        "description": "The value to rank."
+      },
+      {
+        "name": "significance",
+        "description": "Significant digits (default 3).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=PERCENTRANK({13,12,11,8,4,3,2,1,1,1},2)",
+        "result": "0.333"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "POISSON",
+    "category": "Compatibility",
+    "summary": "Returns the Poisson distribution. Use POISSON.DIST in new workbooks.",
+    "syntax": "POISSON(x, mean, cumulative)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The number of events."
+      },
+      {
+        "name": "mean",
+        "description": "The expected numeric value."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=POISSON(2,5,TRUE)",
+        "result": "0.124652"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "QUARTILE",
+    "category": "Compatibility",
+    "summary": "Returns the quartile of a data set. Use QUARTILE.INC in new workbooks.",
+    "syntax": "QUARTILE(array, quart)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The data."
+      },
+      {
+        "name": "quart",
+        "description": "0 to 4."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=QUARTILE({1,2,4,7,8,9,10,12},1)",
+        "result": "3.5"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "RANK",
+    "category": "Compatibility",
+    "summary": "Returns the rank of a number in a list. Use RANK.EQ in new workbooks.",
+    "syntax": "RANK(number, ref, [order])",
+    "args": [
+      {
+        "name": "number",
+        "description": "The number to rank."
+      },
+      {
+        "name": "ref",
+        "description": "The list of numbers."
+      },
+      {
+        "name": "order",
+        "description": "0 or omitted for descending, non-zero for ascending.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=RANK(3.5,{7,3.5,3.5,1,2},1)",
+        "result": "3"
+      },
+      {
+        "formula": "=RANK(7,{7,3.5,3.5,1,2},1)",
+        "result": "5"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "STDEV",
+    "category": "Compatibility",
+    "summary": "Estimates standard deviation based on a sample. Use STDEV.S in new workbooks.",
+    "syntax": "STDEV(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=STDEV({1345,1301,1368,1322,1310,1370,1318,1350,1303,1299})",
+        "result": "27.46391572"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "STDEVP",
+    "category": "Compatibility",
+    "summary": "Calculates standard deviation of an entire population. Use STDEV.P in new workbooks.",
+    "syntax": "STDEVP(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=STDEVP({1345,1301,1368,1322,1310,1370,1318,1350,1303,1299})",
+        "result": "26.05456"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TDIST",
+    "category": "Compatibility",
+    "summary": "Returns the Student's t-distribution. Use T.DIST.RT or T.DIST.2T in new workbooks.",
+    "syntax": "TDIST(x, deg_freedom, tails)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "deg_freedom",
+        "description": "The degrees of freedom."
+      },
+      {
+        "name": "tails",
+        "description": "1 or 2."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TDIST(1.959999998,60,2)",
+        "result": "0.054645"
+      },
+      {
+        "formula": "=TDIST(1.959999998,60,1)",
+        "result": "0.027322"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TINV",
+    "category": "Compatibility",
+    "summary": "Returns the two-tailed inverse of the Student's t-distribution. Use T.INV.2T in new workbooks.",
+    "syntax": "TINV(probability, deg_freedom)",
+    "args": [
+      {
+        "name": "probability",
+        "description": "A probability."
+      },
+      {
+        "name": "deg_freedom",
+        "description": "The degrees of freedom."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TINV(0.054644930,60)",
+        "result": "1.96"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TTEST",
+    "category": "Compatibility",
+    "summary": "Returns the probability associated with a Student's t-test. Use T.TEST in new workbooks.",
+    "syntax": "TTEST(array1, array2, tails, type)",
+    "args": [
+      {
+        "name": "array1",
+        "description": "The first data set."
+      },
+      {
+        "name": "array2",
+        "description": "The second data set."
+      },
+      {
+        "name": "tails",
+        "description": "1 or 2."
+      },
+      {
+        "name": "type",
+        "description": "1 paired, 2 equal variance, 3 unequal variance."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TTEST({3,4,5,8,9,1,2,4,5},{6,19,3,2,14,4,5,17,1},2,1)",
+        "result": "0.196016"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "VAR",
+    "category": "Compatibility",
+    "summary": "Estimates variance based on a sample. Use VAR.S in new workbooks.",
+    "syntax": "VAR(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=VAR({1345,1301,1368,1322,1310,1370,1318,1350,1303,1299})",
+        "result": "754.2666667"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "VARP",
+    "category": "Compatibility",
+    "summary": "Calculates variance of an entire population. Use VAR.P in new workbooks.",
+    "syntax": "VARP(number1, [number2], ...)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number or range."
+      },
+      {
+        "name": "number2",
+        "description": "Further numbers or ranges.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=VARP({1345,1301,1368,1322,1310,1370,1318,1350,1303,1299})",
+        "result": "678.84"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "WEIBULL",
+    "category": "Compatibility",
+    "summary": "Returns the Weibull distribution. Use WEIBULL.DIST in new workbooks.",
+    "syntax": "WEIBULL(x, alpha, beta, cumulative)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the distribution."
+      },
+      {
+        "name": "alpha",
+        "description": "A parameter."
+      },
+      {
+        "name": "beta",
+        "description": "A parameter."
+      },
+      {
+        "name": "cumulative",
+        "description": "TRUE for the cumulative distribution function, FALSE for the density (or mass) function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=WEIBULL(105,20,100,TRUE)",
+        "result": "0.929581"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ZTEST",
+    "category": "Compatibility",
+    "summary": "Returns the one-tailed probability-value of a z-test. Use Z.TEST in new workbooks.",
+    "syntax": "ZTEST(array, x, [sigma])",
+    "args": [
+      {
+        "name": "array",
+        "description": "The data."
+      },
+      {
+        "name": "x",
+        "description": "The value to test."
+      },
+      {
+        "name": "sigma",
+        "description": "The population standard deviation.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ZTEST({3,6,7,8,6,5,4,2,1,9},4)",
+        "result": "0.090574"
+      }
+    ],
+    "since": "2007"
+  }
+]

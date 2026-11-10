@@ -1,0 +1,24 @@
+{
+  "type": "GridSubtotalSpec",
+  "format": {
+    "TYPENAME": "GridSubtotalSpec"
+  },
+  "values": [
+    {
+      "at_change_in": 0,
+      "function": "Sum",
+      "columns": [],
+      "replace": false,
+      "page_breaks": false,
+      "below": false
+    },
+    {
+      "at_change_in": 0,
+      "function": "Sum",
+      "columns": [],
+      "replace": false,
+      "page_breaks": false,
+      "below": false
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Pictures: crop, rotation, formats"
+    },
+    {
+     "kind": "picture",
+     "name": "Picture 2"
+    },
+    {
+     "kind": "picture",
+     "name": "Picture 3"
+    },
+    {
+     "kind": "picture",
+     "name": "Picture 4"
+    },
+    {
+     "kind": "picture",
+     "name": "Picture 5"
+    }
+   ]
+  }
+ ]
+}

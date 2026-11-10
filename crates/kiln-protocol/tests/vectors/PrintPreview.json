@@ -1,0 +1,65 @@
+{
+  "type": "PrintPreview",
+  "format": {
+    "TYPENAME": "PrintPreview"
+  },
+  "values": [
+    {
+      "sheets": 12,
+      "sheet": 1,
+      "width_pt": 612.0,
+      "height_pt": 792.0,
+      "pages": [
+        2,
+        3
+      ],
+      "page_count": 300,
+      "scene": {
+        "revision": 42,
+        "reset": false,
+        "scale": 2.0,
+        "extent": {
+          "x": 0.0,
+          "y": 0.0,
+          "w": 0.0,
+          "h": 0.0
+        },
+        "background": {
+          "Rgba": 0
+        },
+        "tiles": [],
+        "removed": [],
+        "atlas": [],
+        "images": [],
+        "overlay": null
+      }
+    },
+    {
+      "sheets": 0,
+      "sheet": 0,
+      "width_pt": 0.0,
+      "height_pt": 0.0,
+      "pages": [],
+      "page_count": 0,
+      "scene": {
+        "revision": 0,
+        "reset": false,
+        "scale": 0.0,
+        "extent": {
+          "x": 0.0,
+          "y": 0.0,
+          "w": 0.0,
+          "h": 0.0
+        },
+        "background": {
+          "Rgba": 0
+        },
+        "tiles": [],
+        "removed": [],
+        "atlas": [],
+        "images": [],
+        "overlay": null
+      }
+    }
+  ]
+}

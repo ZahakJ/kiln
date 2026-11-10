@@ -1,0 +1,36 @@
+{
+  "type": "GridCommentInfo",
+  "format": {
+    "TYPENAME": "GridCommentInfo"
+  },
+  "values": [
+    {
+      "id": "{A1B2}",
+      "sheet": 0,
+      "row": 4,
+      "col": 2,
+      "cell": "C5",
+      "author": "Ana",
+      "date": "2026-10-18T09:00:00Z",
+      "text": "Why?",
+      "parent": null,
+      "done": false,
+      "note": false,
+      "visible": false
+    },
+    {
+      "id": "",
+      "sheet": 0,
+      "row": 0,
+      "col": 0,
+      "cell": "",
+      "author": "",
+      "date": "",
+      "text": "",
+      "parent": null,
+      "done": false,
+      "note": false,
+      "visible": false
+    }
+  ]
+}

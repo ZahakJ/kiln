@@ -1,0 +1,53 @@
+{
+  "type": "Gradient",
+  "format": {
+    "TYPENAME": "Gradient"
+  },
+  "values": [
+    {
+      "kind": {
+        "Linear": {
+          "x0": 0.0,
+          "y0": 0.0,
+          "x1": 100.0,
+          "y1": 0.0
+        }
+      },
+      "stops": [
+        {
+          "offset": 0.0,
+          "paint": {
+            "Rgba": 4285146879
+          }
+        },
+        {
+          "offset": 1.0,
+          "paint": {
+            "Rgba": 4290070527
+          }
+        }
+      ]
+    },
+    {
+      "kind": {
+        "Radial": {
+          "cx": 5.0,
+          "cy": 5.0,
+          "r": 40.0
+        }
+      },
+      "stops": []
+    },
+    {
+      "kind": {
+        "Linear": {
+          "x0": 0.0,
+          "y0": 0.0,
+          "x1": 0.0,
+          "y1": 0.0
+        }
+      },
+      "stops": []
+    }
+  ]
+}

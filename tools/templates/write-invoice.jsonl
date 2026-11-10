@@ -1,0 +1,173 @@
+{"new":{"kind":"write"}}
+{"execute":{"doc":1,"cmd":{"Write":{"PageSetup":{"setup":{"width":595.3,"height":841.9,"top":60,"bottom":72,"left":72,"right":72,"header":36,"footer":36}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Normal","spec":{"font":{"underline_none":false,"family":"Carlito","size":10.5,"color":"262626"},"paragraph":{"space_after":6,"line_multiple":1.15}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Title","spec":{"font":{"underline_none":false,"family":"Caladea","size":30,"color":"B4532A","bold":false},"paragraph":{"space_after":4,"line_multiple":1.0}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Subtitle","spec":{"font":{"underline_none":false,"family":"Carlito","size":12.5,"color":"6B6B6B","italic":false},"paragraph":{"space_after":18}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading1","spec":{"font":{"underline_none":false,"family":"Caladea","size":16,"color":"B4532A","bold":false},"paragraph":{"space_before":18,"space_after":6,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading2","spec":{"font":{"underline_none":false,"family":"Carlito","size":12.0,"color":"262626","bold":true},"paragraph":{"space_before":12,"space_after":4,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading3","spec":{"font":{"underline_none":false,"family":"Carlito","size":10.5,"color":"B4532A","bold":true},"paragraph":{"space_before":10,"space_after":2,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"PasteMarkdown":{"text":"Wren & Pike Studio¦INVOICE\n\nUnit 3, Mill Yard, Sheffield S3 8PB¦Invoice no. INV-2026-0142\n\nhello@wrenpike.example · +44 114 496 0782¦Issued 3 March 2026\n\nVAT reg. GB 284 1937 06¦Due 2 April 2026\n\nBill to\n\nMoorland Coffee Roasters Ltd\n\nAttn: Sam Achebe, Head of Marketing\n\n27 Kelham Island Road, Sheffield S3 8RY\n\n| Description | Qty | Rate | Amount |\n|---|---|---|---|\n| Brand identity refresh: logo, palette and type system | 1 | £3,200.00 | £3,200.00 |\n| Packaging design, three single-origin labels | 3 | £650.00 | £1,950.00 |\n| Photography direction, one-day shoot | 1 | £720.00 | £720.00 |\n| Print management and proof checks (hours) | 6 | £55.00 | £330.00 |\n| Subtotal |  |  | £6,200.00 |\n| VAT at 20 % |  |  | £1,240.00 |\n| Total due |  |  | £7,440.00 |\n\nPayment details\n\nPlease pay by bank transfer within 30 days, quoting the invoice number.\n\nBank: Northern Mutual Bank · Account name: Wren & Pike Studio Ltd · Sort code: 40-12-76 · Account: 81457362\n\nThank you for your business.\n\nNotes\n\nLate payments may be charged interest at 8 % a year above the base rate under the Late Payment of Commercial Debts (Interest) Act 1998. Artwork files are released when this invoice is paid in full.\n\nWren & Pike Studio Ltd · Registered in England and Wales no. 11834502 · Unit 3, Mill Yard, Sheffield S3 8PB\n"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ReplaceAll":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"¦"},"replacement":"^t"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Wren & Pike Studio"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetTabs":{"tabs":[{"pos":451.29999999999995,"align":"Right","leader":"None"}]}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":0}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9.5,"color":"555555"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Wren & Pike Studio"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"family":"Caladea","size":22,"color":"222222"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"INVOICE"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"family":"Caladea","size":26,"color":"B4532A","spacing":3}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Invoice no. INV-2026-0142"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"bold":true,"color":"222222"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"VAT reg."},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ParagraphBorders":{"preset":"Bottom"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Bill to"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9,"bold":true,"color":"B4532A","all_caps":true,"spacing":1.5}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":12,"space_after":4}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Moorland Coffee Roasters"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":0}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Moorland Coffee Roasters Ltd"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"27 Kelham Island Road"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Description"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableStyle":{"style":"PlainTable1"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Description"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Row"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableShading":{"color":"B4532A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"color":"FFFFFF","bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Description"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":255,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Qty"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":40,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Rate"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":78,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Amount"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":78.29999999999995,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Qty"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Column"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignRight"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Rate"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Column"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignRight"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Amount"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Column"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignRight"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Description"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Brand identity refresh"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Packaging design,"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Photography direction"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Print management"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Subtotal"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"VAT at 20 %"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Total due"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Total due"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Row"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableShading":{"color":"F6E3D9"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Total due"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Row"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":12,"color":"B4532A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Payment details"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9,"bold":true,"color":"B4532A","all_caps":true,"spacing":1.5}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":24,"space_after":4}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Bank: Northern Mutual"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9.5,"color":"555555"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Thank you for your business."},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"family":"Caladea","size":13,"italic":true,"color":"B4532A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Notes"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9,"bold":true,"color":"B4532A","all_caps":true,"spacing":1.5}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":36,"space_after":4}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Late payments may"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9,"color":"555555"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Wren & Pike Studio Ltd · Registered"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentEnd","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":8,"color":"8A8A8A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ParagraphBorders":{"preset":"Top"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":48}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SpellCheck":{"on":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetProperties":{"props":{"title":"Invoice INV-2026-0142","author":"Wren & Pike Studio","company":"Wren & Pike Studio Ltd"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"save":{"doc":1,"path":"target/templates-tmp/Invoice.kwrite","format":"KWrite"}}
+{"save":{"doc":1,"path":"assets/templates/write/invoice.kwrite","format":"KWrite"}}
+{"render": {"doc": 1, "png": "assets/templates/write/invoice.png", "page": 1, "dpi": 48}}

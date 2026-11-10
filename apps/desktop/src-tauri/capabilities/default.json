@@ -1,0 +1,41 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Every Kiln window (Kiln Home, documents, the audience window of Presenter View): the Kiln IPC commands and the shell's own, and the plugins the pages use (files, dialogs, links, PDFs to print from the temporary folder, process). Nothing else.",
+  "windows": [
+    "main",
+    "doc-*",
+    "show-*"
+  ],
+  "permissions": [
+    "core:default",
+    "allow-kiln-open",
+    "allow-kiln-new",
+    "allow-kiln-execute",
+    "allow-kiln-query",
+    "allow-kiln-viewport",
+    "allow-kiln-frame",
+    "allow-kiln-a11y",
+    "allow-kiln-subscribe",
+    "allow-kiln-host-reply",
+    "allow-kiln-startup-probe",
+    "allow-kiln-home-painted",
+    "allow-kiln-window-context",
+    "allow-kiln-close-window",
+    "allow-kiln-open-paths",
+    "allow-kiln-open-route",
+    "allow-kiln-clipboard-text",
+    "fs:default",
+    "dialog:default",
+    "opener:default",
+    {
+      "identifier": "opener:allow-open-path",
+      "allow": [
+        {
+          "path": "$TEMP/kiln-print/**"
+        }
+      ]
+    },
+    "process:default"
+  ]
+}

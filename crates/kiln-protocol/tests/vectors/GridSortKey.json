@@ -1,0 +1,24 @@
+{
+  "type": "GridSortKey",
+  "format": {
+    "TYPENAME": "GridSortKey"
+  },
+  "values": [
+    {
+      "index": 0,
+      "descending": false,
+      "on": "Icon",
+      "color": null,
+      "icon": 2,
+      "custom_list": null
+    },
+    {
+      "index": 0,
+      "descending": false,
+      "on": "Values",
+      "color": null,
+      "icon": null,
+      "custom_list": null
+    }
+  ]
+}

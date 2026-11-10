@@ -1,0 +1,13 @@
+{
+  "type": "BalloonMode",
+  "format": {
+    "TYPENAME": "BalloonMode"
+  },
+  "values": [
+    "CommentsAndFormatting",
+    "Inline",
+    "CommentsAndFormatting",
+    "Revisions",
+    "Inline"
+  ]
+}

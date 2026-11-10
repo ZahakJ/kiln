@@ -1,0 +1,18 @@
+{
+  "type": "DeckChoice",
+  "format": {
+    "TYPENAME": "DeckChoice"
+  },
+  "values": [
+    {
+      "id": "fromBottom",
+      "label": "From Bottom",
+      "group": "Direction"
+    },
+    {
+      "id": "",
+      "label": "",
+      "group": null
+    }
+  ]
+}

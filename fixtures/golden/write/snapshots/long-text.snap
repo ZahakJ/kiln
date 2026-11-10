@@ -1,0 +1,15 @@
+---
+source: crates/kiln-doc-layout/tests/fixtures.rs
+expression: summary(&l)
+---
+pages: 10
+  1 [s1 #1] Long … aute (451 words)
+  2 [s1 #2] reprehenderit … ullamco (469 words)
+  3 [s1 #3] voluptate … culpa (549 words)
+  4 [s1 #4] eiusmod … mollit (456 words)
+  5 [s1 #5] adipiscing … ut. (490 words)
+  6 [s1 #6] Sint … dolore (491 words)
+  7 [s1 #7] laborum … occaecat (547 words)
+  8 [s1 #8] consectetur … aliqua (440 words)
+  9 [s1 #9] dolore … incididunt. (536 words)
+ 10 [s1 #10] Commodo … est. (477 words)

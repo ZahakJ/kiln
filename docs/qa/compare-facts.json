@@ -1,0 +1,397 @@
+{
+  "asOf": "2026-11",
+  "read": "2026-11-01",
+  "note": "What each product publishes, cell by cell, with the page that says it and the day it was read. Kiln's cells cite its own manual. `cargo xtask site` writes the Compared table from this file and, once it exists, the measured rows from docs/qa/compare.json. A cell with no source does not go in: drop the row or the product.",
+  "rows": [
+    {
+      "id": "price",
+      "label": "Price"
+    },
+    {
+      "id": "licence",
+      "label": "Licence"
+    },
+    {
+      "id": "formats",
+      "label": "File formats"
+    },
+    {
+      "id": "platforms",
+      "label": "Platforms"
+    },
+    {
+      "id": "offline",
+      "label": "Offline"
+    },
+    {
+      "id": "macros",
+      "label": "Macros"
+    }
+  ],
+  "products": [
+    {
+      "id": "kiln",
+      "name": "Kiln",
+      "cells": {
+        "price": {
+          "text": "Free, no account",
+          "urls": [
+            "manual/?p=faq"
+          ],
+          "read": "2026-11-01"
+        },
+        "licence": {
+          "text": "AGPL-3.0-or-later",
+          "urls": [
+            "manual/?p=faq"
+          ],
+          "read": "2026-11-01"
+        },
+        "formats": {
+          "text": ".docx, .xlsx and .pptx read and written directly; its own .kwrite, .kgrid and .kdeck; OpenDocument in the Linux build",
+          "urls": [
+            "manual/?p=formats"
+          ],
+          "read": "2026-11-01"
+        },
+        "platforms": {
+          "text": "Linux and the web",
+          "urls": [
+            "manual/?p=web",
+            "manual/?p=install-desktop"
+          ],
+          "read": "2026-11-01"
+        },
+        "offline": {
+          "text": "The installed web app and the Linux build",
+          "urls": [
+            "manual/?p=web"
+          ],
+          "read": "2026-11-01"
+        },
+        "macros": {
+          "text": "Kept in the file, not run",
+          "urls": [
+            "manual/?p=formats"
+          ],
+          "read": "2026-11-01"
+        }
+      }
+    },
+    {
+      "id": "microsoft365",
+      "name": "Microsoft 365",
+      "cells": {
+        "price": {
+          "text": "Free web apps with a Microsoft account; desktop apps by subscription from $9.99 a month, or Office Home 2024 once for $179.99",
+          "urls": [
+            "https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products",
+            "https://support.microsoft.com/en-us/office/what-s-the-difference-between-a-microsoft-365-subscription-and-free-web-apps-36a2c67d-3488-4cad-ae9d-470d0086e2b9"
+          ],
+          "read": "2026-11-01"
+        },
+        "licence": {
+          "text": "Proprietary: licensed, not sold",
+          "urls": [
+            "https://www.microsoft.com/en-us/servicesagreement"
+          ],
+          "read": "2026-11-01"
+        },
+        "formats": {
+          "text": "Office Open XML by default",
+          "urls": [
+            "https://support.microsoft.com/en-us/office/open-xml-formats-and-file-name-extensions-5200d93c-3449-4380-8e11-31ef14555b18"
+          ],
+          "read": "2026-11-01"
+        },
+        "platforms": {
+          "text": "Windows, macOS, iOS, Android, web",
+          "urls": [
+            "https://support.microsoft.com/en-us/office/system-requirements/system-requirements-for-microsoft-365-for-home-use",
+            "https://support.microsoft.com/en-us/office/what-s-the-difference-between-a-microsoft-365-subscription-and-free-web-apps-36a2c67d-3488-4cad-ae9d-470d0086e2b9",
+            "https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products"
+          ],
+          "read": "2026-11-01"
+        },
+        "offline": {
+          "text": "Installed desktop apps, online at least every 39 days",
+          "urls": [
+            "https://support.microsoft.com/en-us/office/what-s-the-difference-between-a-microsoft-365-subscription-and-free-web-apps-36a2c67d-3488-4cad-ae9d-470d0086e2b9"
+          ],
+          "read": "2026-11-01"
+        },
+        "macros": {
+          "text": "VBA",
+          "urls": [
+            "https://learn.microsoft.com/en-us/office/vba/library-reference/concepts/getting-started-with-vba-in-office"
+          ],
+          "read": "2026-11-01"
+        }
+      }
+    },
+    {
+      "id": "google",
+      "name": "Google Workspace",
+      "cells": {
+        "price": {
+          "text": "Docs with any Google Account; Business Starter at $7 per user a month",
+          "urls": [
+            "https://workspace.google.com/products/docs/",
+            "https://workspace.google.com/pricing"
+          ],
+          "read": "2026-11-01"
+        },
+        "licence": {
+          "text": "Proprietary terms",
+          "urls": [
+            "https://policies.google.com/terms"
+          ],
+          "read": "2026-11-01"
+        },
+        "formats": {
+          "text": "Google's own; Office files can be edited in place and stay in Office format, or be converted",
+          "urls": [
+            "https://support.google.com/docs/answer/9406611"
+          ],
+          "read": "2026-11-01"
+        },
+        "platforms": {
+          "text": "Web, iOS, Android",
+          "urls": [
+            "https://workspace.google.com/products/docs/",
+            "https://support.google.com/docs/answer/7068618"
+          ],
+          "read": "2026-11-01"
+        },
+        "offline": {
+          "text": "Chrome or Edge with the Docs Offline extension, turned on while online",
+          "urls": [
+            "https://support.google.com/docs/answer/6388102"
+          ],
+          "read": "2026-11-01"
+        },
+        "macros": {
+          "text": "Apps Script: custom menus in Docs, custom functions and macros in Sheets",
+          "urls": [
+            "https://developers.google.com/apps-script/overview"
+          ],
+          "read": "2026-11-01"
+        }
+      }
+    },
+    {
+      "id": "libreoffice",
+      "name": "LibreOffice",
+      "cells": {
+        "price": {
+          "text": "Free",
+          "urls": [
+            "https://www.libreoffice.org/discover/libreoffice/"
+          ],
+          "read": "2026-11-01"
+        },
+        "licence": {
+          "text": "MPL-2.0",
+          "urls": [
+            "https://www.libreoffice.org/about-us/licenses/"
+          ],
+          "read": "2026-11-01"
+        },
+        "formats": {
+          "text": "Opens and saves Microsoft Office formats, including Office Open XML; converts them to OpenDocument",
+          "urls": [
+            "https://help.libreoffice.org/latest/en-US/text/shared/guide/ms_user.html"
+          ],
+          "read": "2026-11-01"
+        },
+        "platforms": {
+          "text": "Windows, macOS, Linux; a viewer on Android",
+          "urls": [
+            "https://www.libreoffice.org/get-help/system-requirements/",
+            "https://www.libreoffice.org/download/android-and-ios/"
+          ],
+          "read": "2026-11-01"
+        },
+        "offline": {
+          "text": "Installed desktop apps",
+          "urls": [
+            "https://www.libreoffice.org/get-help/system-requirements/"
+          ],
+          "read": "2026-11-01"
+        },
+        "macros": {
+          "text": "Basic, Python, JavaScript, BeanShell",
+          "urls": [
+            "https://help.libreoffice.org/latest/en-US/text/shared/guide/scripting.html"
+          ],
+          "read": "2026-11-01"
+        }
+      }
+    },
+    {
+      "id": "onlyoffice",
+      "name": "ONLYOFFICE",
+      "cells": {
+        "price": {
+          "text": "Free desktop editors and Community server; Enterprise and Developer editions priced by plan",
+          "urls": [
+            "https://www.onlyoffice.com/desktop.aspx",
+            "https://github.com/ONLYOFFICE/DocumentServer"
+          ],
+          "read": "2026-11-01"
+        },
+        "licence": {
+          "text": "AGPL-3.0 Community; Enterprise and Developer proprietary",
+          "urls": [
+            "https://github.com/ONLYOFFICE/DocumentServer"
+          ],
+          "read": "2026-11-01"
+        },
+        "formats": {
+          "text": "Native .docx, .xlsx and .pptx",
+          "urls": [
+            "https://www.onlyoffice.com/desktop.aspx"
+          ],
+          "read": "2026-11-01"
+        },
+        "platforms": {
+          "text": "Windows, macOS, Linux, iOS, Android; web through its server",
+          "urls": [
+            "https://www.onlyoffice.com/desktop.aspx",
+            "https://www.onlyoffice.com/office-for-android",
+            "https://www.onlyoffice.com/office-for-ios",
+            "https://github.com/ONLYOFFICE/DocumentServer"
+          ],
+          "read": "2026-11-01"
+        },
+        "offline": {
+          "text": "Desktop editors and mobile apps",
+          "urls": [
+            "https://www.onlyoffice.com/desktop.aspx",
+            "https://www.onlyoffice.com/office-for-android",
+            "https://www.onlyoffice.com/office-for-ios"
+          ],
+          "read": "2026-11-01"
+        },
+        "macros": {
+          "text": "JavaScript; VBA has to be converted",
+          "urls": [
+            "https://api.onlyoffice.com/docs/macros/more-information/faq"
+          ],
+          "read": "2026-11-01"
+        }
+      }
+    },
+    {
+      "id": "univer",
+      "name": "Univer",
+      "cells": {
+        "price": {
+          "text": "Free Apache-2.0 core; Free Trial (3 editing connections, 10 watermarked exports a month), Business from $99 a month, Enterprise custom",
+          "urls": [
+            "https://univer.ai/pricing",
+            "https://github.com/dream-num/univer"
+          ],
+          "read": "2026-11-01"
+        },
+        "licence": {
+          "text": "Apache-2.0 core; Pro packages under a commercial licence",
+          "urls": [
+            "https://github.com/dream-num/univer"
+          ],
+          "read": "2026-11-01"
+        },
+        "formats": {
+          "text": "Its own snapshots; imports Office files and exports .xlsx, .docx and .pptx through a backend; exports limited by plan",
+          "urls": [
+            "https://docs.univer.ai/guides/sheets/features/import-export",
+            "https://docs.univer.ai/guides/docs/features/import-export",
+            "https://univer.ai/pricing"
+          ],
+          "read": "2026-11-01"
+        },
+        "platforms": {
+          "text": "An SDK for browsers and Node.js",
+          "urls": [
+            "https://github.com/dream-num/univer"
+          ],
+          "read": "2026-11-01"
+        },
+        "offline": {
+          "text": "Not stated",
+          "urls": [
+            "https://github.com/dream-num/univer"
+          ],
+          "read": "2026-11-01"
+        },
+        "macros": {
+          "text": "Scripted through its Facade API",
+          "urls": [
+            "https://docs.univer.ai/guides/sheets/getting-started/facade"
+          ],
+          "read": "2026-11-01"
+        }
+      }
+    },
+    {
+      "id": "craft",
+      "name": "WordCraft, GridCraft, DeckCraft",
+      "cells": {
+        "price": {
+          "text": "Free",
+          "urls": [
+            "https://github.com/storytold/wordcraft",
+            "https://github.com/storytold/gridcraft",
+            "https://github.com/storytold/deckcraft"
+          ],
+          "read": "2026-11-01"
+        },
+        "licence": {
+          "text": "MIT or Apache-2.0",
+          "urls": [
+            "https://github.com/storytold/wordcraft",
+            "https://github.com/storytold/gridcraft",
+            "https://github.com/storytold/deckcraft"
+          ],
+          "read": "2026-11-01"
+        },
+        "formats": {
+          "text": ".docx, .xlsx and .pptx",
+          "urls": [
+            "https://github.com/storytold/wordcraft",
+            "https://github.com/storytold/gridcraft",
+            "https://github.com/storytold/deckcraft"
+          ],
+          "read": "2026-11-01"
+        },
+        "platforms": {
+          "text": "macOS, Windows, Linux, FreeBSD, the browser",
+          "urls": [
+            "https://github.com/storytold/wordcraft",
+            "https://github.com/storytold/gridcraft",
+            "https://github.com/storytold/deckcraft"
+          ],
+          "read": "2026-11-01"
+        },
+        "offline": {
+          "text": "Native desktop apps; WordCraft says spelling, grammar and everything else work offline",
+          "urls": [
+            "https://github.com/storytold/wordcraft",
+            "https://github.com/storytold/gridcraft",
+            "https://github.com/storytold/deckcraft"
+          ],
+          "read": "2026-11-01"
+        },
+        "macros": {
+          "text": "WordCraft records macros; all three are scripted through a CLI, a JSON channel and MCP",
+          "urls": [
+            "https://github.com/storytold/wordcraft",
+            "https://github.com/storytold/gridcraft",
+            "https://github.com/storytold/deckcraft"
+          ],
+          "read": "2026-11-01"
+        }
+      }
+    }
+  ]
+}

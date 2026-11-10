@@ -1,0 +1,59 @@
+{
+ "date1904": false,
+ "sheets": [
+  {
+   "name": "Links",
+   "state": "visible",
+   "merges": [],
+   "cells": {
+    "A1": {
+     "style": {
+      "font": {
+       "color": "theme:10",
+       "name": "Calibri",
+       "size": 12
+      }
+     },
+     "type": "string",
+     "value": "External"
+    },
+    "A2": {
+     "style": {
+      "font": {
+       "color": "theme:10",
+       "name": "Calibri",
+       "size": 12
+      }
+     },
+     "type": "string",
+     "value": "Internal"
+    },
+    "A3": {
+     "style": {
+      "font": {
+       "color": "theme:10",
+       "name": "Calibri",
+       "size": 12
+      }
+     },
+     "type": "string",
+     "value": "Mail"
+    },
+    "A4": {
+     "formula": "HYPERLINK(\"https://example.org/formula\",\"Formula link\")"
+    }
+   }
+  },
+  {
+   "name": "Target",
+   "state": "visible",
+   "merges": [],
+   "cells": {
+    "B5": {
+     "type": "string",
+     "value": "Internal target"
+    }
+   }
+  }
+ ]
+}

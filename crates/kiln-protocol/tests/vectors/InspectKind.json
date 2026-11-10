@@ -1,0 +1,15 @@
+{
+  "type": "InspectKind",
+  "format": {
+    "TYPENAME": "InspectKind"
+  },
+  "values": [
+    "Comments",
+    "Revisions",
+    "Properties",
+    "HiddenSheets",
+    "HiddenSlides",
+    "SpeakerNotes",
+    "Comments"
+  ]
+}

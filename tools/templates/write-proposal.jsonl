@@ -1,0 +1,97 @@
+{"new":{"kind":"write"}}
+{"execute":{"doc":1,"cmd":{"Write":{"PageSetup":{"setup":{"width":595.3,"height":841.9,"top":72,"bottom":72,"left":72,"right":72,"header":36,"footer":36}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Normal","spec":{"font":{"underline_none":false,"family":"Carlito","size":11,"color":"262626"},"paragraph":{"space_after":6,"line_multiple":1.15}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Title","spec":{"font":{"underline_none":false,"family":"Caladea","size":30,"color":"2F6B3A","bold":false},"paragraph":{"space_after":4,"line_multiple":1.0}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Subtitle","spec":{"font":{"underline_none":false,"family":"Carlito","size":12.5,"color":"6B6B6B","italic":false},"paragraph":{"space_after":18}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading1","spec":{"font":{"underline_none":false,"family":"Caladea","size":17,"color":"2F6B3A","bold":false},"paragraph":{"space_before":18,"space_after":6,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading2","spec":{"font":{"underline_none":false,"family":"Carlito","size":12.5,"color":"262626","bold":true},"paragraph":{"space_before":12,"space_after":4,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading3","spec":{"font":{"underline_none":false,"family":"Carlito","size":11,"color":"2F6B3A","bold":true},"paragraph":{"space_before":10,"space_after":2,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"PasteMarkdown":{"text":"Project proposal\n\nCommunity repair café for Eastbrook\n\nPrepared for the Eastbrook Neighbourhood Fund · Submitted by Tilly Okonjo · 18 January 2026\n\n# Summary\n\nWe propose a monthly repair café in the Eastbrook Library hall, where volunteers help residents fix clothes, small electricals, bicycles and furniture instead of throwing them away. We ask the Fund for £8,400 to run twelve sessions, train volunteers and buy tools.\n\n# The need\n\nEastbrook households sent an estimated 310 tonnes of bulky and electrical waste to landfill last year. In our survey of 214 residents, 71 % said they had thrown away something that could have been repaired, most often because they did not know how or could not afford a professional repair.\n\n# What we will do\n\n- Run a repair café on the second Saturday of every month, 10 am to 2 pm\n- Recruit and train twenty volunteer fixers, with safety checks for electrical repairs\n- Lend tools between sessions through the library's catalogue\n- Record every repair so that we can report what was saved\n\n# Timeline\n\n| Phase | Months | Milestone |\n|---|---|---|\n| Set-up | February – March | Volunteers recruited, tools bought, insurance in place |\n| Launch | April | First repair café and open day |\n| Running | May – January | Monthly sessions, tool library open |\n| Review | February 2027 | Report to the Fund and the community |\n\n# Budget\n\n| Item | Cost |\n|---|---|\n| Tools and consumables | £3,200 |\n| Volunteer training and safety testing | £1,900 |\n| Hall hire (12 sessions) | £1,440 |\n| Publicity and printing | £860 |\n| Insurance | £1,000 |\n| Total requested | £8,400 |\n\n# Measuring success\n\nBy the end of the first year we aim to repair 600 items, divert at least four tonnes from landfill and have 150 residents attend more than one session.\n"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Project proposal"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":10,"color":"2F6B3A","bold":true,"all_caps":true,"spacing":2}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":4}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Community repair café"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ApplyStyle":{"style_id":"Title"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Prepared for the Eastbrook"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9.5,"color":"6B6B6B"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ParagraphBorders":{"preset":"Bottom"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":12}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Phase"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableStyle":{"style":"PlainTable1"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Phase"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Row"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableShading":{"color":"2F6B3A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"color":"FFFFFF","bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Phase"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":80,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Months"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":120,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Milestone"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":251.29999999999995,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Item"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableStyle":{"style":"PlainTable1"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Item"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Row"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableShading":{"color":"2F6B3A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"color":"FFFFFF","bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Item"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":340,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Cost"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":111.29999999999995,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Cost"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Column"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignRight"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Item"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Tools and consumables"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Volunteer training"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Hall hire"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Publicity and"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Insurance"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Total requested"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignLeft"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Total requested"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Row"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableShading":{"color":"E2EFE3"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SpellCheck":{"on":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetProperties":{"props":{"title":"Project proposal","author":"Tilly Okonjo"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"save":{"doc":1,"path":"target/templates-tmp/Project proposal.kwrite","format":"KWrite"}}
+{"save":{"doc":1,"path":"assets/templates/write/proposal.kwrite","format":"KWrite"}}
+{"render": {"doc": 1, "png": "assets/templates/write/proposal.png", "page": 1, "dpi": 48}}

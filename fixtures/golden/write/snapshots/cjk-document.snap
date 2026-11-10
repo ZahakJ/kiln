@@ -1,0 +1,6 @@
+---
+source: crates/kiln-doc-layout/tests/fixtures.rs
+expression: summary(&l)
+---
+pages: 1
+  1 [s1 #1] 这是一段中文文本，用于测试东亚字体回退、标点压缩和行尾禁则处理。文字应当在页面宽度内自然换行，不产生多余 … 的空格。 (58 words)

@@ -1,0 +1,76 @@
+{"new":{"kind":"write"}}
+{"execute":{"doc":1,"cmd":{"Write":{"PageSetup":{"setup":{"width":595.3,"height":841.9,"top":60,"bottom":72,"left":72,"right":72,"header":36,"footer":36}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Normal","spec":{"font":{"underline_none":false,"family":"Carlito","size":11,"color":"262626"},"paragraph":{"space_after":6,"line_multiple":1.15}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Title","spec":{"font":{"underline_none":false,"family":"Carlito","size":26,"color":"4B3F8C","bold":false},"paragraph":{"space_after":4,"line_multiple":1.0}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Subtitle","spec":{"font":{"underline_none":false,"family":"Carlito","size":12.5,"color":"6B6B6B","italic":false},"paragraph":{"space_after":18}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading1","spec":{"font":{"underline_none":false,"family":"Carlito","size":14,"color":"4B3F8C","bold":false},"paragraph":{"space_before":18,"space_after":6,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading2","spec":{"font":{"underline_none":false,"family":"Carlito","size":12.5,"color":"262626","bold":true},"paragraph":{"space_before":12,"space_after":4,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading3","spec":{"font":{"underline_none":false,"family":"Carlito","size":11,"color":"4B3F8C","bold":true},"paragraph":{"space_before":10,"space_after":2,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading1","spec":{"font":{"underline_none":false,"family":"Carlito","size":13,"color":"4B3F8C","bold":true},"paragraph":{"space_before":16,"space_after":6,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"PasteMarkdown":{"text":"Product team weekly\n\nMeeting notes · Tuesday 10 February 2026 · 10:00–10:45 · Room 4 and online\n\n| Chair | Notes | Attendees | Apologies |\n|---|---|---|---|\n| Ines Duarte | Theo Park | Ines, Theo, Maya, Rohan, Femi, Clara | Josh |\n\n# Agenda\n\n1. Release 4.2 status\n2. Customer feedback from the January survey\n3. Planning for the spring offsite\n\n# Discussion\n\n**Release 4.2.** Testing found two issues in the export flow; both are fixed and waiting for review. Release stays on track for Thursday.\n\n**Customer feedback.** 412 responses. Search and offline access are the most requested improvements; satisfaction is up four points on last quarter.\n\n**Spring offsite.** Two venues shortlisted. Budget agreed at £4,500 for two days.\n\n# Decisions\n\n- Ship release 4.2 on Thursday 12 February after the final review\n- Make offline access the headline goal for the next quarter\n\n# Actions\n\n| Action item | Owner | Due |\n|---|---|---|\n| Review the export fixes and approve the release | Maya | 11 Feb |\n| Share the survey summary with the wider team | Rohan | 13 Feb |\n| Draft an outline for offline access | Femi | 20 Feb |\n| Book the offsite venue | Clara | 17 Feb |\n\nNext meeting: Tuesday 17 February, 10:00, Room 4.\n"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Product team weekly"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ApplyStyle":{"style_id":"Title"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Meeting notes · Tuesday"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":10,"color":"6B6B6B"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":14}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Chair"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableStyle":{"style":"PlainTable1"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Chair"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Row"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableShading":{"color":"ECE9F7"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"color":"4B3F8C","bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Chair"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":90,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Notes"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":80,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Attendees"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":220,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Action item"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableStyle":{"style":"PlainTable1"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Action item"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Row"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableShading":{"color":"4B3F8C"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"color":"FFFFFF","bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Action item"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":290,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Owner"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableCellSize":{"width":80,"height":null}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Release 4.2."},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"color":"4B3F8C"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Customer feedback."},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"color":"4B3F8C"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Spring offsite."},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"color":"4B3F8C"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Next meeting:"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentEnd","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"italic":true,"color":"6B6B6B"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SpellCheck":{"on":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetProperties":{"props":{"title":"Meeting notes","author":"Theo Park"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"save":{"doc":1,"path":"target/templates-tmp/Meeting notes.kwrite","format":"KWrite"}}
+{"save":{"doc":1,"path":"assets/templates/write/meeting-notes.kwrite","format":"KWrite"}}
+{"render": {"doc": 1, "png": "assets/templates/write/meeting-notes.png", "page": 1, "dpi": 48}}

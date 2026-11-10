@@ -1,0 +1,12 @@
+{
+  "type": "GridBreakAction",
+  "format": {
+    "TYPENAME": "GridBreakAction"
+  },
+  "values": [
+    "Remove",
+    "Reset",
+    "Insert",
+    "Remove"
+  ]
+}

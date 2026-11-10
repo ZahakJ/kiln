@@ -1,0 +1,736 @@
+/* Ribbon (mockups and kiln-ui.css): tab strip on the window background with the
+   File button and the arch-shaped active tab, commands on a rounded slab. */
+
+.kiln-ribbon {
+  --ribbon-row-h: 26px;
+  --ribbon-body-h: 82px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  min-width: 0;
+  background: var(--kiln-bg);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-base);
+  z-index: var(--kiln-z-ribbon);
+}
+
+/* Tab strip ------------------------------------------------------------------------------------ */
+
+.kiln-ribbon__strip {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 38px;
+  padding: 0 12px;
+}
+.kiln-ribbon__tablist {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+.kiln-ribbon__tablist::-webkit-scrollbar {
+  display: none;
+}
+/* Tabs that do not fit wait in the More tabs menu (phones). */
+.kiln-ribbon__tab.is-overflow,
+.kiln-ribbon__ctxset.is-overflow {
+  display: none;
+}
+.kiln-ribbon__more-tabs {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  align-self: flex-end;
+  width: 32px;
+  height: 30px;
+  margin: 0 2px 5px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--kiln-fg-muted);
+  cursor: pointer;
+}
+.kiln-ribbon__more-tabs:hover {
+  background: var(--kiln-bg-hover);
+  color: var(--kiln-fg);
+}
+.kiln-ribbon__more-tabs:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: -2px;
+}
+.kiln-ribbon__file {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: none;
+  align-self: flex-end;
+  height: 30px;
+  margin-block: 0 5px;
+  margin-inline: 0 8px;
+  padding-block: 0;
+  padding-inline: 11px 14px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--app-solid);
+  color: var(--app-on-solid);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow:
+    inset 0 -2px 0 rgb(0 0 0 / 0.14),
+    0 1px 2px rgb(0 0 0 / 0.12);
+  transition: background-color var(--kiln-duration-fast) ease-out;
+}
+.kiln-ribbon__file:hover {
+  background: var(--kiln-accent-hover);
+}
+.kiln-ribbon__tab {
+  position: relative;
+  flex: none;
+  height: 34px;
+  padding: 0 15px;
+  border: 0;
+  border-radius: 9px 9px 0 0;
+  background: transparent;
+  color: var(--kiln-muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: default;
+  white-space: nowrap;
+  transition:
+    color var(--kiln-duration-fast) ease-out,
+    background-color var(--kiln-duration-fast) ease-out;
+}
+.kiln-ribbon__tab:hover {
+  color: var(--kiln-fg);
+}
+/* The active tab is the kiln's arch: a rounded doorway into the slab, with the app's ember dot. */
+.kiln-ribbon__tab.is-active {
+  height: 38px;
+  margin-bottom: -1px;
+  padding: 6px 22px 0;
+  border: 1px solid var(--kiln-line);
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0 / 26px 26px 0 0;
+  background: var(--kiln-panel);
+  color: var(--app-text);
+  font-weight: 700;
+}
+.kiln-ribbon__tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--app);
+}
+.kiln-ribbon--collapsed .kiln-ribbon__tab.is-active {
+  border-bottom: 1px solid var(--kiln-line);
+  margin-bottom: 0;
+}
+.kiln-ribbon__tab:focus-visible,
+.kiln-ribbon__file:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: 1px;
+}
+
+/* Contextual tab sets: the set's label above its tabs, in the app's colour. */
+.kiln-ribbon__ctxset {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  height: 100%;
+  margin-inline-start: 8px;
+  padding: 0 2px;
+  border-radius: 9px 9px 0 0;
+  background: color-mix(in srgb, var(--app) 9%, transparent);
+  box-shadow: inset 0 2px 0 var(--app);
+}
+.kiln-ribbon__ctxlabel {
+  padding: 4px 10px 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--app-text) 82%, var(--kiln-fg));
+  white-space: nowrap;
+  line-height: 1;
+}
+.kiln-ribbon__ctxtabs {
+  display: flex;
+  align-items: flex-end;
+}
+.kiln-ribbon__ctxtabs .kiln-ribbon__tab {
+  height: 26px;
+  /* The app's text colour, a shade towards the text so it keeps 4.5:1 on the set's tint. */
+  color: color-mix(in srgb, var(--app-text) 82%, var(--kiln-fg));
+}
+.kiln-ribbon__ctxtabs .kiln-ribbon__tab.is-active {
+  height: 28px;
+  padding-top: 4px;
+}
+.kiln-ribbon__strip-end {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-end;
+  flex: none;
+  padding-bottom: 5px;
+  padding-inline-start: 8px;
+}
+
+/* Panel: the slab ------------------------------------------------------------------------------- */
+
+.kiln-ribbon__panel {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  margin: 0 10px;
+  padding-block: 8px 0;
+  padding-inline: 4px 34px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 14px;
+  background: var(--kiln-panel);
+  box-shadow: var(--kiln-shadow-1);
+  animation: kiln-ribbon-in var(--kiln-duration-menu) var(--kiln-ease-out);
+}
+@keyframes kiln-ribbon-in {
+  from {
+    opacity: 0.4;
+  }
+}
+.kiln-ribbon__panel--floating {
+  position: absolute;
+  top: calc(100% - 2px);
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  box-shadow: var(--kiln-shadow-2);
+  z-index: var(--kiln-z-popover);
+}
+.kiln-ribbon__collapse {
+  position: absolute;
+  inset-inline-end: 7px;
+  bottom: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 24 px: the smallest pointer target WCAG 2.5.8 allows. */
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--kiln-muted);
+}
+.kiln-ribbon__collapse:hover {
+  background: var(--kiln-bg-hover);
+  color: var(--kiln-fg);
+}
+.kiln-ribbon__display {
+  color: var(--kiln-muted);
+}
+
+.kiln-ribbon__groups {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  gap: 0;
+}
+/* Disabled ribbon commands keep their tooltip (it explains why), but do nothing. */
+.kiln-ribbon .kiln-btn[aria-disabled="true"],
+.kiln-ribbon__overflow .kiln-btn[aria-disabled="true"] {
+  pointer-events: auto;
+}
+.kiln-ribbon .kiln-btn--toolbar[aria-disabled="true"],
+.kiln-ribbon .kiln-btn--split[aria-disabled="true"],
+.kiln-ribbon .kiln-btn--toolbar:disabled,
+.kiln-ribbon .kiln-btn--split:disabled,
+.kiln-ribbon__overflow .kiln-btn--toolbar[aria-disabled="true"] {
+  border-color: transparent;
+  background: transparent;
+}
+
+.kiln-ribbon__group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  padding: 0 8px;
+}
+.kiln-ribbon__group + .kiln-ribbon__group::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 4px;
+  bottom: 22px;
+  width: 1px;
+  background: var(--kiln-line);
+}
+.kiln-ribbon__group-body {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  height: var(--ribbon-body-h);
+}
+.kiln-ribbon__col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.kiln-ribbon__col--single {
+  justify-content: flex-start;
+}
+.kiln-ribbon__col--stack {
+  gap: 2px;
+  justify-content: flex-start;
+  padding-top: 1px;
+}
+.kiln-ribbon__group--rows-2 .kiln-ribbon__col--stack {
+  gap: 8px;
+  padding-top: 6px;
+}
+.kiln-ribbon__row {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  min-height: var(--ribbon-row-h);
+}
+.kiln-ribbon__group-label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--kiln-muted);
+  white-space: nowrap;
+  padding: 0 14px;
+}
+.kiln-ribbon__launcher {
+  position: absolute;
+  inset-inline-end: -4px;
+  bottom: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--kiln-fg-muted);
+}
+.kiln-ribbon__launcher:hover {
+  background: var(--kiln-bg-hover);
+  color: var(--kiln-fg);
+}
+.kiln-ribbon__launcher:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+}
+
+/* Commands ------------------------------------------------------------------------------------ */
+
+.kiln-ribbon__btn {
+  --btn-h: var(--ribbon-row-h);
+}
+.kiln-ribbon__btn--small {
+  width: var(--ribbon-row-h);
+  min-width: var(--ribbon-row-h);
+}
+.kiln-ribbon__btn--medium {
+  justify-content: flex-start;
+}
+/* Check boxes (View ▸ Show: Gridlines, Headings), as Office draws them. */
+.kiln-ribbon__check {
+  gap: 6px;
+}
+.kiln-ribbon__checkbox {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--kiln-line-strong);
+  border-radius: 3px;
+  background: var(--kiln-raised);
+  color: var(--app-on-solid);
+}
+.kiln-ribbon__check {
+  cursor: default;
+}
+/* The native input keeps the semantics and the focus; the box beside it is what shows. */
+.kiln-ribbon__check-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.kiln-ribbon__check:has(.kiln-ribbon__check-input:focus-visible) {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+}
+.kiln-ribbon__check[data-state="on"] .kiln-ribbon__checkbox {
+  border-color: var(--app-solid);
+  background: var(--app-solid);
+}
+.kiln-ribbon__check:has(.kiln-ribbon__check-input[aria-disabled="true"]) .kiln-ribbon__checkbox {
+  opacity: 0.5;
+}
+.kiln-ribbon__btn--large {
+  min-height: calc(var(--ribbon-body-h) - 4px);
+  min-width: 56px;
+  max-width: 76px;
+  justify-content: flex-start;
+  gap: 4px;
+  padding: 2px 4px 0;
+  font-size: 12px;
+  font-weight: 500;
+}
+/* Big commands sit on a soft tile (mockups: Paste, New slide, Dictate). */
+.kiln-ribbon__btn--large .kiln-btn__icon,
+.kiln-ribbon__split--large .kiln-split__main .kiln-btn__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--kiln-sunken);
+  color: var(--kiln-fg);
+}
+.kiln-ribbon__btn--large:hover .kiln-btn__icon,
+.kiln-ribbon__split--large .kiln-split__main:hover .kiln-btn__icon {
+  background: color-mix(in srgb, var(--kiln-sunken), var(--kiln-fg) 7%);
+}
+.kiln-ribbon__btn--large.kiln-toggle[data-state="on"] .kiln-btn__icon,
+.kiln-ribbon__group[data-group="kiln"] .kiln-ribbon__btn--large .kiln-btn__icon {
+  background: var(--app-tint);
+  color: var(--app-text);
+}
+.kiln-ribbon__btn--large:hover,
+.kiln-ribbon__btn--large.kiln-toggle[data-state="on"] {
+  background: transparent;
+}
+.kiln-ribbon__btn--large .kiln-btn__label {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  /* Two lines as Office has them; wider text spacing (WCAG 1.4.12) shows the whole label. */
+  overflow: visible;
+  overflow-wrap: break-word;
+}
+.kiln-ribbon__dropdown.kiln-btn--stacked .kiln-btn__icon-after {
+  margin: -2px 0 0;
+}
+.kiln-ribbon__group--collapsed .kiln-ribbon__btn--large .kiln-btn__label {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.kiln-ribbon__split {
+  display: inline-flex;
+}
+.kiln-ribbon__split .kiln-split > .kiln-btn {
+  height: var(--ribbon-row-h);
+}
+/* A row split button (Insert, Delete, AutoSum) reads like the row buttons beside it. */
+.kiln-ribbon__split:not(.kiln-ribbon__split--large) .kiln-split > .kiln-btn {
+  font-weight: var(--kiln-weight-regular);
+}
+.kiln-ribbon__split--large .kiln-split {
+  height: calc(var(--ribbon-body-h) - 4px);
+}
+.kiln-ribbon__split--large .kiln-split.kiln-split--stacked > .kiln-split__main {
+  height: auto;
+  flex: 1;
+  min-height: 0;
+  min-width: 48px;
+}
+.kiln-ribbon__split--large .kiln-split.kiln-split--stacked > .kiln-split__arrow {
+  height: 20px;
+  /* The arrow sits low, clear of the descenders of the label above it (Arabic tails). */
+  align-items: flex-end;
+  padding-block-end: 3px;
+}
+.kiln-ribbon__color-icon {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+.kiln-ribbon__color-icon .kiln-icon {
+  margin-bottom: 2px;
+}
+.kiln-ribbon__color-bar {
+  position: absolute;
+  inset-inline-start: 1px;
+  inset-inline-end: 1px;
+  bottom: -2px;
+  height: 4px;
+  border-radius: 1px;
+  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--kiln-fg) 25%, transparent);
+}
+.kiln-ribbon__spacer {
+  align-self: stretch;
+  width: 1px;
+  margin: 4px 4px;
+  background: var(--kiln-border);
+}
+.kiln-ribbon__field {
+  display: inline-flex;
+}
+.kiln-ribbon__number {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.kiln-ribbon__number-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 64px;
+  font-size: var(--kiln-text-sm);
+  color: var(--kiln-fg);
+}
+.kiln-ribbon__gallery {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 2px;
+}
+.kiln-ribbon__gallery-footer {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+}
+.kiln-ribbon__gallery-action {
+  justify-content: flex-start;
+}
+
+/* Super tooltip extras. */
+.kiln-ribbon__tip-text,
+.kiln-ribbon__tip-office,
+.kiln-ribbon__tip-pending {
+  display: block;
+}
+.kiln-ribbon__tip-office {
+  margin-top: 4px;
+  opacity: 0.75;
+  font-style: italic;
+}
+.kiln-ribbon__tip-pending {
+  margin-top: 4px;
+  opacity: 0.75;
+}
+
+/* Collapsed group popover. */
+.kiln-ribbon__group-popover {
+  padding: 6px 0 2px;
+}
+.kiln-ribbon__groups--popover {
+  overflow: visible;
+}
+
+/* Simplified layout ----------------------------------------------------------------------------- */
+
+.kiln-ribbon--simplified {
+  --ribbon-row-h: 30px;
+}
+.kiln-ribbon--simplified .kiln-ribbon__panel {
+  padding-block: 4px;
+
+  padding-inline: 8px 36px;
+}
+.kiln-ribbon__groups--simplified {
+  align-items: center;
+  gap: 2px;
+  height: 32px;
+}
+.kiln-ribbon__entry {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+}
+.kiln-ribbon__group-sep {
+  flex: none;
+  width: 1px;
+  height: 20px;
+  margin: 0 4px;
+  background: var(--kiln-border);
+}
+.kiln-ribbon--simplified .kiln-ribbon__gallery {
+  padding: 0;
+}
+.kiln-ribbon--simplified .kiln-gallery {
+  height: 32px;
+}
+.kiln-ribbon__more {
+  flex: none;
+  margin-inline-start: auto;
+}
+.kiln-ribbon__overflow {
+  max-height: min(70vh, 520px);
+  overflow: auto;
+  padding: 4px;
+  min-width: 220px;
+}
+.kiln-ribbon__overflow-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1px;
+}
+.kiln-ribbon__overflow-list .kiln-btn,
+.kiln-ribbon__overflow-list .kiln-split {
+  width: 100%;
+  justify-content: flex-start;
+}
+.kiln-ribbon__overflow-heading {
+  padding: 8px 8px 2px;
+  font-size: var(--kiln-text-xs);
+  font-weight: var(--kiln-weight-semibold);
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-ribbon--collapsed .kiln-ribbon__strip {
+  min-height: 36px;
+}
+
+@media (max-width: 639px) {
+  .kiln-ribbon__strip {
+    padding: 0 4px;
+  }
+  .kiln-ribbon__file,
+  .kiln-ribbon__tab {
+    padding: 0 9px;
+  }
+  .kiln-ribbon--simplified .kiln-ribbon__panel {
+    padding-inline-end: 8px;
+  }
+  .kiln-ribbon__collapse {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kiln-ribbon__panel,
+  .kiln-ribbon__tab::after {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Gallery tiles from ribbon data: a typographic sample with the style's name under it (mockups). */
+.kiln-gallery-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  padding: 6px 8px 5px;
+  overflow: hidden;
+}
+/* The sample is a picture of the style (hidden from assistive tech): it gives way to the name. */
+.kiln-gallery-sample {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--kiln-fg);
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.kiln-gallery-sample[data-accent] {
+  color: var(--app-text);
+}
+.kiln-gallery-sample[data-muted] {
+  color: var(--kiln-muted);
+}
+/* The name stays whole: with wider text spacing (WCAG 1.4.12) it wraps onto a second line. */
+.kiln-gallery-name {
+  max-width: 100%;
+  color: var(--kiln-muted);
+  font-size: 10.5px;
+  overflow-wrap: anywhere;
+}
+/* Swatches and pictures fill the tile (the preview box around them is sized by its content). */
+.kiln-gallery__preview:has(> .kiln-gallery-picture) {
+  align-self: stretch;
+  width: 100%;
+  height: 100%;
+}
+.kiln-gallery-picture {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+  padding: 3px;
+  box-sizing: border-box;
+}
+.kiln-gallery-picture > img {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+}
+.kiln-gallery-picture > .kiln-gallery-name {
+  flex: none;
+  text-align: center;
+}
+.kiln-gallery-swatch {
+  display: flex;
+  flex: 1;
+  min-height: 8px;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 3px;
+}
+.kiln-gallery-swatch > span {
+  flex: 1;
+}
+
+/* Long labels (German compounds, Arabic): a big button wraps its label at Office's width
+   between words, and grows to its longest word rather than letting it spill over the next group. */
+.kiln-ribbon .kiln-btn--stacked,
+.kiln-ribbon .kiln-ribbon__btn--large,
+.kiln-ribbon .kiln-split--stacked {
+  max-width: none;
+}
+.kiln-ribbon .kiln-btn--stacked .kiln-btn__label,
+.kiln-ribbon .kiln-ribbon__btn--large .kiln-btn__label,
+.kiln-ribbon .kiln-split.kiln-split--stacked > .kiln-split__main > .kiln-btn__label {
+  max-inline-size: 76px;
+  min-inline-size: min-content;
+  overflow-wrap: normal;
+  hyphens: manual;
+}
+
+/* Every ribbon label is shown whole: buttons are sized by their labels, so nothing is
+   ever shortened to an ellipsis, and the glyphs that reach past a tight line box (Arabic tails
+   and descenders, umlauts, descenders in English) are drawn rather than clipped. */
+.kiln-ribbon__groups .kiln-btn__label {
+  overflow: visible;
+  text-overflow: clip;
+}

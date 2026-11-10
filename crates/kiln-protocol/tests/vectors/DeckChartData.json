@@ -1,0 +1,31 @@
+{
+  "type": "DeckChartData",
+  "format": {
+    "TYPENAME": "DeckChartData"
+  },
+  "values": [
+    {
+      "sheet": "Sheet1",
+      "row": 0,
+      "col": 0,
+      "cells": [
+        [
+          "",
+          "Series 1"
+        ],
+        [
+          "Category 1",
+          "4.3"
+        ]
+      ],
+      "unreadable": null
+    },
+    {
+      "sheet": "",
+      "row": 0,
+      "col": 0,
+      "cells": [],
+      "unreadable": ""
+    }
+  ]
+}

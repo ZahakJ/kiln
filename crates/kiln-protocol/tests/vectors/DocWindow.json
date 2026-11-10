@@ -1,0 +1,11 @@
+{
+  "type": "DocWindow",
+  "format": {
+    "TYPENAME": "DocWindow"
+  },
+  "values": [
+    "Audience",
+    "Presenter",
+    "Audience"
+  ]
+}

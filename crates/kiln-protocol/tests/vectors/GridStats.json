@@ -1,0 +1,24 @@
+{
+  "type": "GridStats",
+  "format": {
+    "TYPENAME": "GridStats"
+  },
+  "values": [
+    {
+      "average": "£1,590.00",
+      "count": 5,
+      "numerical_count": 5,
+      "min": "£380.00",
+      "max": null,
+      "sum": "£7,950.00"
+    },
+    {
+      "average": null,
+      "count": 0,
+      "numerical_count": 0,
+      "min": null,
+      "max": "",
+      "sum": null
+    }
+  ]
+}

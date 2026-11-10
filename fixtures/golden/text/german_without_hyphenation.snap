@@ -1,0 +1,14 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 9 | glyphs 223 | height 151.8 | rtl false
+ 0 wrap      g=30  x=0       w=180.66  top=0       h=16.87  base=13.2    |Die Silbentrennung verbessert|
+ 1 wrap      g=30  x=0       w=172.1   top=16.87   h=16.87  base=30.07   |das Schriftbild von Blocksatz|
+ 2 wrap      g=25  x=0       w=144.66  top=33.73   h=16.87  base=46.93   |erheblich, besonders bei|
+ 3 wrap      g=28  x=0       w=172.63  top=50.6    h=16.87  base=63.8    |schmalen Spalten mit langen|
+ 4 wrap      g=30  x=0       w=198.66  top=67.47   h=16.87  base=80.67   |zusammengesetzten Wörtern wie|
+ 5 emergency g=30  x=0       w=192.03  top=84.33   h=16.87  base=97.53   |Donaudampfschifffahrtsgesellsc|
+ 6 wrap      g=10  x=0       w=54.55   top=101.2   h=16.87  base=114.4   |haft oder|
+ 7 emergency g=31  x=0       w=196.25  top=118.07  h=16.87  base=131.27  |Rechtsschutzversicherungsgesell|
+ 8 end       g=9   x=0       w=53.84   top=134.93  h=16.87  base=148.13  |schaften.|
+substitutions: Cambria -> Caladea (MetricCompatible)

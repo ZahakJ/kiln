@@ -1,0 +1,42 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  1800225,
+  1079500
+ ],
+ "slides": [
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "diagram",
+     "name": "Diagram 3"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 4",
+     "text": "This file contains a SmartArt diagram\n\u000bTesting:\nGradient fill on shape (with 25% transparency set)\nImage fill on shape\nText alignment inside text box\nText box positioning relative to shape (when text is centered it’s not in the center of the circles)\nShapes are styled with theme"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,273 @@
+{"new":{"kind":"deck"}}
+{"execute":{"doc":1,"cmd":{"Deck":{"ApplyTheme":{"name":"Celadon"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Writing for the web"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Half-day workshop · Communications team"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Check the room: everyone needs a laptop and a page they look after."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":97}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Today's plan"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"09:30  How people read online"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"10:15  Plain words and short sentences"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"11:00  Break"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"11:15  Headings, links and lists"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"12:00  Rewrite your own page"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"12:45  Share and close"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Keep to time; the rewrite exercise needs the full forty-five minutes."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":103}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"1. How people read online"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Scan first, read later"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Show the eye-tracking heat map from the handout."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":110}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"What readers do"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Scan headings and the first words of lines"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Leave when they cannot find what they need"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Read on phones, often in a hurry"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Put the answer first"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Use headings that say what follows"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Keep paragraphs to two or three sentences"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Ask for examples of pages people have given up on."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":97}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Plain words"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Use “buy”, not “purchase”"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Use “help”, not “facilitate”"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Use “about”, not “approximately”"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Write “you” and “we”"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Hand out the plain words list."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":126}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Exercise: rewrite your page"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Walk round the room while people work."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertShape":{"preset":"roundRect","rect":{"x":80.0,"y":200,"width":257.5,"height":300}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetFill":{"fill":{"Solid":{"color":"accent2","brightness":null,"transparency":null}}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetOutline":{"outline":"None"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":104.0,"y":228,"width":209.5,"height":34}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Find"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FFFFFF"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":104.0,"y":280,"width":209.5,"height":200}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Pick a page you look after with at least 300 words."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":19}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FFFFFF"}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertShape":{"preset":"roundRect","rect":{"x":367.5,"y":200,"width":257.5,"height":300}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetFill":{"fill":{"Solid":{"color":"accent2","brightness":null,"transparency":null}}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetOutline":{"outline":"None"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":391.5,"y":228,"width":209.5,"height":34}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Cut"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FFFFFF"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":391.5,"y":280,"width":209.5,"height":200}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Remove anything the reader does not need to act."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":19}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FFFFFF"}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertShape":{"preset":"roundRect","rect":{"x":655.0,"y":200,"width":257.5,"height":300}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetFill":{"fill":{"Solid":{"color":"accent2","brightness":null,"transparency":null}}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetOutline":{"outline":"None"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":679.0,"y":228,"width":209.5,"height":34}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Rewrite"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FFFFFF"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":679.0,"y":280,"width":209.5,"height":200}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Answer first, plain words, clear headings."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":19}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FFFFFF"}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertShape":{"preset":"roundRect","rect":{"x":942.5,"y":200,"width":257.5,"height":300}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetFill":{"fill":{"Solid":{"color":"accent2","brightness":null,"transparency":null}}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetOutline":{"outline":"None"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":966.5,"y":228,"width":209.5,"height":34}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Swap"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FFFFFF"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":966.5,"y":280,"width":209.5,"height":200}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Ask a partner to find one thing on your page in ten seconds."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":19}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FFFFFF"}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":103}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Thank you"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Slides and the plain words list are on the team site"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Collect feedback forms on the way out."}}}}}
+{"save":{"doc":1,"path":"target/templates-tmp/Workshop.kdeck","format":"KDeck"}}
+{"save":{"doc":1,"path":"assets/templates/deck/workshop.kdeck","format":"KDeck"}}

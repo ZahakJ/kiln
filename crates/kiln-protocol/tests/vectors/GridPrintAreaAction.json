@@ -1,0 +1,12 @@
+{
+  "type": "GridPrintAreaAction",
+  "format": {
+    "TYPENAME": "GridPrintAreaAction"
+  },
+  "values": [
+    "Add",
+    "Clear",
+    "Set",
+    "Add"
+  ]
+}

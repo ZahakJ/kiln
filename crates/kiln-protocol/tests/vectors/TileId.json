@@ -1,0 +1,20 @@
+{
+  "type": "TileId",
+  "format": {
+    "TYPENAME": "TileId"
+  },
+  "values": [
+    {
+      "layer": 0,
+      "index": 0
+    },
+    {
+      "layer": 1,
+      "index": 4294967295
+    },
+    {
+      "layer": 0,
+      "index": 0
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "type": "GridThemeInfo",
+  "format": {
+    "TYPENAME": "GridThemeInfo"
+  },
+  "values": [
+    {
+      "id": "kiln",
+      "name": "Kiln",
+      "colors": [
+        "1C1917",
+        "FFFFFF"
+      ],
+      "major_font": "Fraunces",
+      "minor_font": "Figtree"
+    },
+    {
+      "id": "",
+      "name": "",
+      "colors": [],
+      "major_font": "",
+      "minor_font": ""
+    }
+  ]
+}

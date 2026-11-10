@@ -1,0 +1,18 @@
+{
+  "type": "GridPivotLabelFilter",
+  "format": {
+    "TYPENAME": "GridPivotLabelFilter"
+  },
+  "values": [
+    {
+      "op": "BeginsWith",
+      "value": "E",
+      "value2": ""
+    },
+    {
+      "op": "Equal",
+      "value": "",
+      "value2": ""
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "type": "CellVerticalAlign",
+  "format": {
+    "TYPENAME": "CellVerticalAlign"
+  },
+  "values": [
+    "Top",
+    "Center",
+    "Top"
+  ]
+}

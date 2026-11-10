@@ -1,0 +1,11 @@
+{
+  "type": "SortKind",
+  "format": {
+    "TYPENAME": "SortKind"
+  },
+  "values": [
+    "Text",
+    "Date",
+    "Text"
+  ]
+}

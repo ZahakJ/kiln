@@ -1,0 +1,11 @@
+{
+  "type": "DeckAnchor",
+  "format": {
+    "TYPENAME": "DeckAnchor"
+  },
+  "values": [
+    "Top",
+    "Middle",
+    "Top"
+  ]
+}

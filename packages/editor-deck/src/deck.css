@@ -1,0 +1,820 @@
+/* Kiln Deck's editing area (the Deck mockup): numbered thumbnails in a rail on the canvas, the
+ * slide on the stage with its shadow drawn by the core, the speaker notes in a card under it. */
+
+.kiln-deck {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  /* The rail and the stage's pasteboard share the frame's background (the Deck mockup). */
+  background: var(--kiln-bg);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+}
+
+.kiln-deck__main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  padding-block: 0 8px;
+  padding-inline: 0 12px;
+  gap: 8px;
+}
+
+.kiln-deck__stage {
+  position: relative;
+  flex: 1;
+  min-height: 120px;
+}
+
+.kiln-deck__notice {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: min(560px, calc(100% - 32px));
+  padding-block: 8px;
+  padding-inline: 14px 10px;
+  border-radius: var(--kiln-radius-md, 8px);
+  background: var(--kiln-bg-tooltip);
+  color: var(--kiln-fg-tooltip);
+  font-size: var(--kiln-text-sm);
+  box-shadow: var(--kiln-shadow-2);
+  z-index: 3;
+}
+
+.kiln-deck__notice button {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ── stage ───────────────────────────────────────────────────────────────────── */
+
+.kiln-deckstage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+  outline: none;
+}
+
+.kiln-deckstage__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* The input proxy sits at the caret, invisible (the IME's candidates follow it). */
+.kiln-deckstage__proxy {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  opacity: 0;
+  resize: none;
+  overflow: hidden;
+  white-space: pre;
+  color: transparent;
+  background: transparent;
+  caret-color: transparent;
+  pointer-events: none;
+  font-size: 16px;
+}
+
+.kiln-deckstage__a11y {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── rail ────────────────────────────────────────────────────────────────────── */
+
+.kiln-deckrail {
+  flex: none;
+  width: 216px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-block: 16px;
+  padding-inline: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  outline: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--kiln-scrollbar, var(--kiln-line)) transparent;
+}
+
+.kiln-deckrail__item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  user-select: none;
+  touch-action: none;
+}
+
+.kiln-deckrail__number {
+  width: 18px;
+  flex: none;
+  padding-top: 2px;
+  text-align: end;
+  color: var(--kiln-fg-muted);
+  font-size: var(--kiln-text-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.kiln-deckrail__thumb {
+  position: relative;
+  flex: none;
+  border-radius: var(--kiln-radius-sm, 6px);
+  background: var(--kiln-page);
+  box-shadow:
+    0 0 0 1px var(--kiln-line),
+    var(--kiln-shadow-1);
+  overflow: hidden;
+}
+
+.kiln-deckrail__canvas {
+  display: block;
+}
+
+.kiln-deckrail__item[data-selected] .kiln-deckrail__thumb {
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--kiln-deck-fill) 45%, transparent),
+    var(--kiln-shadow-1);
+}
+
+.kiln-deckrail__item[data-current] .kiln-deckrail__thumb {
+  box-shadow:
+    0 0 0 2px var(--kiln-deck-fill),
+    0 0 0 5px color-mix(in srgb, var(--kiln-deck-fill) 22%, transparent),
+    var(--kiln-shadow-1);
+}
+
+.kiln-deckrail__item[data-hidden] .kiln-deckrail__thumb {
+  opacity: 0.5;
+}
+
+.kiln-deckrail__item[data-hidden] .kiln-deckrail__number {
+  text-decoration: line-through;
+}
+
+.kiln-deckrail[data-focused] .kiln-deckrail__item[data-current] .kiln-deckrail__number {
+  color: var(--kiln-deck-fill);
+  font-weight: var(--kiln-weight-bold);
+}
+
+.kiln-deckrail__item[data-drop="before"]::before,
+.kiln-deckrail__item[data-drop="after"]::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 26px;
+  inset-inline-end: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--kiln-deck-fill);
+}
+
+.kiln-deckrail__item[data-drop="before"]::before {
+  top: -8px;
+}
+
+.kiln-deckrail__item[data-drop="after"]::after {
+  bottom: -8px;
+}
+
+.kiln-deckrail__section {
+  margin: 4px 0 -4px;
+}
+
+.kiln-deckrail__sectionbtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  border: 0;
+  padding: 2px 4px;
+  background: transparent;
+  color: var(--kiln-fg);
+  font: var(--kiln-weight-semibold) var(--kiln-text-sm) / 1.3 var(--kiln-font-ui);
+  cursor: pointer;
+  border-radius: var(--kiln-radius-sm, 6px);
+  text-align: start;
+}
+
+.kiln-deckrail__sectionbtn:hover {
+  background: var(--kiln-bg-hover, var(--kiln-hover));
+}
+
+.kiln-deckrail__sectionname {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kiln-deckrail__sectioncount {
+  color: var(--kiln-fg-muted);
+  font-weight: normal;
+}
+
+/* ── notes ───────────────────────────────────────────────────────────────────── */
+
+.kiln-decknotes {
+  flex: none;
+  height: clamp(84px, 18%, 180px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-block: 0;
+  margin-inline: 4px 0;
+  padding: 12px 16px;
+  border-radius: var(--kiln-radius-md, 8px);
+  background: var(--kiln-panel, var(--kiln-bg-surface));
+  box-shadow: 0 0 0 1px var(--kiln-line);
+}
+
+.kiln-decknotes__title {
+  margin: 0;
+  color: var(--kiln-fg-muted);
+  font: var(--kiln-weight-semibold) var(--kiln-text-xs) / 1 var(--kiln-font-ui);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.kiln-decknotes__text {
+  flex: 1;
+  min-height: 0;
+  border: 0;
+  padding: 0;
+  resize: none;
+  background: transparent;
+  color: var(--kiln-fg);
+  font: var(--kiln-text-sm) / 1.5 var(--kiln-font-ui);
+  outline: none;
+}
+
+.kiln-decknotes__text::placeholder {
+  color: var(--kiln-fg-muted);
+}
+
+/* ── sorter ──────────────────────────────────────────────────────────────────── */
+
+.kiln-decksorter {
+  flex: 1;
+  overflow: auto;
+  padding: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 28px 24px;
+  outline: none;
+}
+
+.kiln-decksorter__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  user-select: none;
+  touch-action: none;
+}
+
+.kiln-decksorter__thumb {
+  border-radius: var(--kiln-radius-sm, 6px);
+  overflow: hidden;
+  background: var(--kiln-page);
+  box-shadow:
+    0 0 0 1px var(--kiln-line),
+    var(--kiln-shadow-1);
+}
+
+.kiln-decksorter__item[data-selected] .kiln-decksorter__thumb {
+  box-shadow:
+    0 0 0 3px var(--kiln-deck-fill),
+    var(--kiln-shadow-1);
+}
+
+.kiln-decksorter__item[data-hidden] .kiln-decksorter__thumb {
+  opacity: 0.5;
+}
+
+.kiln-decksorter__number {
+  color: var(--kiln-fg-muted);
+  font-size: var(--kiln-text-xs);
+}
+
+.kiln-decksorter__item[data-drop="before"]::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: -14px;
+  top: 0;
+  bottom: 18px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--kiln-deck-fill);
+}
+
+/* ── status bar ──────────────────────────────────────────────────────────────── */
+
+.kiln-deckstatus__toggle {
+  border: 0;
+  padding: 2px 8px;
+  border-radius: var(--kiln-radius-sm, 6px);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.kiln-deckstatus__toggle[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--kiln-deck-fill) 14%, transparent);
+  color: var(--kiln-fg);
+  font-weight: var(--kiln-weight-semibold);
+}
+
+.kiln-deckstatus__toggle:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.kiln-deckstatus__fit {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 22px;
+  border: 0;
+  border-radius: var(--kiln-radius-sm, 6px);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.kiln-deckstatus__fit:hover,
+.kiln-deckstatus__fit[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--kiln-deck-fill) 14%, transparent);
+}
+
+/* ── dialogs ─────────────────────────────────────────────────────────────────── */
+
+.kiln-deckdlg {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: var(--kiln-text-sm);
+}
+
+.kiln-deckdlg__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.kiln-deckdlg__row--end {
+  align-items: flex-end;
+}
+
+.kiln-deckdlg__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.kiln-deckdlg__field > label,
+.kiln-deckdlg__field > span {
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-deckdlg__radios {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 8px 12px 10px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-sm, 6px);
+}
+
+.kiln-deckdlg__radios legend {
+  padding: 0 4px;
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-deckdlg__radios label,
+.kiln-deckdlg__check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kiln-deckdlg__indent {
+  margin-inline-start: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kiln-deckdlg__text,
+.kiln-deckdlg__area {
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid var(--kiln-border, var(--kiln-line));
+  border-radius: var(--kiln-radius-control, 6px);
+  background: var(--kiln-bg-input, var(--kiln-page));
+  color: var(--kiln-fg);
+  font: inherit;
+}
+
+.kiln-deckdlg__area {
+  height: 96px;
+  padding: 6px 8px;
+  resize: vertical;
+}
+
+.kiln-deckdlg__text:focus-visible,
+.kiln-deckdlg__area:focus-visible {
+  outline: var(--kiln-focus-width, 2px) solid var(--kiln-focus);
+  outline-offset: 1px;
+}
+
+.kiln-deckdlg__hint {
+  margin: 0;
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-deckcolor {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid var(--kiln-border, var(--kiln-line));
+  border-radius: var(--kiln-radius-control, 6px);
+  background: var(--kiln-bg-input, var(--kiln-page));
+  color: var(--kiln-fg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.kiln-deckcolor__swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px var(--kiln-line-strong, var(--kiln-line));
+}
+
+.kiln-deckselection {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 320px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.kiln-deckselection li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 6px;
+  border-radius: var(--kiln-radius-sm, 6px);
+}
+
+.kiln-deckselection li[data-selected] {
+  background: color-mix(in srgb, var(--kiln-deck-fill) 16%, transparent);
+}
+
+.kiln-deckselection__name {
+  flex: 1;
+  border: 0;
+  padding: 4px 0;
+  background: transparent;
+  color: var(--kiln-fg);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.kiln-deckselection__kind {
+  color: var(--kiln-fg-muted);
+  font-size: var(--kiln-text-xs);
+}
+
+.kiln-deckshapes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 60vh;
+  overflow: auto;
+}
+
+.kiln-deckshapes__group h3 {
+  margin: 0 0 4px;
+  color: var(--kiln-fg-muted);
+  font: var(--kiln-weight-semibold) var(--kiln-text-xs) / 1.2 var(--kiln-font-ui);
+}
+
+.kiln-deckshapes__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.kiln-deckshapes__item {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: var(--kiln-radius-sm, 6px);
+  background: transparent;
+  color: var(--kiln-fg);
+  cursor: pointer;
+}
+
+.kiln-deckshapes__item:hover,
+.kiln-deckshapes__item:focus-visible {
+  background: var(--kiln-bg-hover, var(--kiln-hover));
+}
+
+.kiln-deckshapes__item svg path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.kiln-decksymbols {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  grid-template-columns: repeat(10, 32px);
+  gap: 2px;
+}
+
+.kiln-decksymbols__item {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 16px;
+}
+
+.kiln-decksymbols__font {
+  font-size: 20px;
+}
+
+.kiln-decksymbols__code {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.kiln-decksymbols__code label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kiln-decksymbols__code button {
+  flex: none;
+  white-space: nowrap;
+}
+
+/* Insert ▸ Icons: a scrolling grid; a chosen icon is outlined. */
+.kiln-deckicons {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 56px);
+  gap: 4px;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.kiln-deckicons__item {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+}
+
+.kiln-deckicons__item[aria-pressed="true"] {
+  outline: 2px solid var(--kiln-accent);
+  outline-offset: -2px;
+}
+
+.kiln-deckdlg__code {
+  width: 100%;
+  min-height: 200px;
+  font-family: Consolas, "Cascadia Mono", "DejaVu Sans Mono", monospace;
+  font-size: 13px;
+  tab-size: 4;
+  resize: vertical;
+}
+
+/* Phones: the rail becomes a strip of smaller thumbnails over the stage's width. */
+@media (max-width: 640px) {
+  .kiln-deck {
+    flex-direction: column-reverse;
+  }
+
+  .kiln-deckrail {
+    width: auto;
+    height: 96px;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px 12px;
+  }
+
+  .kiln-deckrail__thumb {
+    transform-origin: top left;
+    zoom: 0.5;
+  }
+
+  .kiln-deckrail__section {
+    display: none;
+  }
+
+  .kiln-deck__main {
+    padding: 0;
+    gap: 6px;
+  }
+
+  /* The slide takes the width; the notes take what is left under it. */
+  .kiln-deck__stage {
+    flex: none;
+    aspect-ratio: var(--kiln-deck-aspect, 16 / 9);
+    min-height: 0;
+  }
+
+  .kiln-deckstatus__wide {
+    display: none;
+  }
+
+  .kiln-decknotes {
+    flex: 1;
+    height: auto;
+    min-height: 64px;
+    margin: 0 8px;
+  }
+}
+
+/* A task pane at the right of the slide (Format Chart, Comments, Spelling). */
+.kiln-deckpane {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  width: 300px;
+  min-width: 260px;
+  min-height: 0;
+  border-inline-start: 1px solid var(--kiln-line);
+  background: var(--kiln-panel);
+  color: var(--kiln-fg);
+  font: 400 13px / 1.4 var(--kiln-font-ui, system-ui, sans-serif);
+}
+
+.kiln-deckpane__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-block: 10px 6px;
+  padding-inline: 14px 10px;
+}
+
+.kiln-deckpane__head h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.kiln-deckpane__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.kiln-deckpane__close:hover {
+  background: var(--kiln-bg-hover);
+}
+
+.kiln-deckpane__close:focus-visible {
+  outline: 2px solid var(--kiln-focus, var(--kiln-accent));
+  outline-offset: 1px;
+}
+
+.kiln-deckpane__body {
+  min-height: 0;
+  overflow: auto;
+  padding: 4px 14px 14px;
+}
+
+/* Edit Data: the chart's data sheet. */
+.kiln-chartdata__sheet {
+  max-height: 360px;
+  overflow: auto;
+  border: 1px solid var(--kiln-line);
+  border-radius: 6px;
+}
+
+.kiln-chartdata {
+  border-collapse: collapse;
+  font: 400 13px / 1.2 var(--kiln-font-ui, system-ui, sans-serif);
+  font-variant-numeric: tabular-nums;
+}
+
+.kiln-chartdata th {
+  position: sticky;
+  top: 0;
+  min-width: 32px;
+  padding: 4px 6px;
+  border: 1px solid var(--kiln-line);
+  background: var(--kiln-sunken);
+  color: var(--kiln-fg-muted);
+  font-weight: 500;
+  text-align: center;
+}
+
+.kiln-chartdata tbody th {
+  position: sticky;
+  inset-inline-start: 0;
+}
+
+.kiln-chartdata td {
+  padding: 0;
+  border: 1px solid var(--kiln-line);
+}
+
+.kiln-chartdata input {
+  width: 112px;
+  height: 28px;
+  padding: 0 8px;
+  border: 0;
+  background: var(--kiln-bg);
+  color: var(--kiln-fg);
+  font: inherit;
+}
+
+.kiln-chartdata input:focus {
+  outline: 2px solid var(--kiln-accent);
+  outline-offset: -2px;
+}
+
+.kiln-chartdata td.is-label input {
+  font-weight: 600;
+}
+
+.kiln-chartdata__tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.kiln-chartdata__empty {
+  margin: 0;
+  color: var(--kiln-fg-muted);
+}
+
+/* Slide Master view's rail: layouts indented under their master. */
+.kiln-deckmasterrail .kiln-deckrail__item:not([data-master]) {
+  padding-inline-start: 32px;
+}
+
+.kiln-deckmasterrail .kiln-deckrail__item {
+  cursor: default;
+}
+
+/* The thumbnails with the keys (F6): a ring round the rail, as well as the current slide's. */
+.kiln-deckrail:focus-visible {
+  outline: 2px solid var(--kiln-focus-ring);
+  outline-offset: -2px;
+}

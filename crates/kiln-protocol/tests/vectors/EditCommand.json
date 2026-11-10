@@ -1,0 +1,276 @@
+{
+  "type": "EditCommand",
+  "format": {
+    "TYPENAME": "EditCommand"
+  },
+  "values": [
+    "Cut",
+    "Copy",
+    {
+      "Paste": {
+        "data": null
+      }
+    },
+    {
+      "PasteKeepSource": {
+        "data": {
+          "text": "Kiln «Write»\tok",
+          "html": "<p><b>Kiln</b> «Write»</p>",
+          "kiln": "{\"v\":1}"
+        }
+      }
+    },
+    {
+      "PasteMerge": {
+        "data": null
+      }
+    },
+    {
+      "PasteTextOnly": {
+        "data": {
+          "text": "Kiln «Write»\tok",
+          "html": "<p><b>Kiln</b> «Write»</p>",
+          "kiln": "{\"v\":1}"
+        }
+      }
+    },
+    {
+      "PasteAs": {
+        "mode": "Html",
+        "data": null
+      }
+    },
+    "Repeat",
+    "Bold",
+    "Italic",
+    "Underline",
+    "DoubleUnderline",
+    "Strikethrough",
+    "Subscript",
+    "Superscript",
+    "AllCaps",
+    {
+      "FontFamily": {
+        "family": "Figtree"
+      }
+    },
+    {
+      "FontSize": {
+        "size": 10.5
+      }
+    },
+    {
+      "GrowFont": {
+        "one_point": false
+      }
+    },
+    {
+      "ShrinkFont": {
+        "one_point": true
+      }
+    },
+    {
+      "ChangeCase": {
+        "case": "Title"
+      }
+    },
+    "ClearFormatting",
+    {
+      "FontColor": {
+        "color": "C8352B"
+      }
+    },
+    {
+      "Highlight": {
+        "color": null
+      }
+    },
+    {
+      "Bullets": {
+        "glyph": "✓"
+      }
+    },
+    {
+      "Numbering": {
+        "style": "LowerRoman"
+      }
+    },
+    {
+      "MultilevelList": {
+        "legal": true
+      }
+    },
+    "Indent",
+    "Outdent",
+    "AlignLeft",
+    "AlignCenter",
+    "AlignRight",
+    "Justify",
+    {
+      "LineSpacing": {
+        "spacing": 1.15
+      }
+    },
+    "InsertDate",
+    "InsertTime",
+    "InsertPictures",
+    {
+      "Margins": {
+        "preset": "Narrow"
+      }
+    },
+    {
+      "Orientation": {
+        "orientation": "Landscape"
+      }
+    },
+    {
+      "PageSize": {
+        "size": "A4"
+      }
+    },
+    "TableInsertRowAbove",
+    "TableInsertRowBelow",
+    "TableInsertColumnLeft",
+    "TableInsertColumnRight",
+    {
+      "TableDelete": {
+        "what": "Columns"
+      }
+    },
+    "TableMergeCells",
+    {
+      "TableSplitCells": {
+        "rows": 2,
+        "cols": 3
+      }
+    },
+    "TableDistributeRows",
+    "TableDistributeColumns",
+    {
+      "TableCellAlignment": {
+        "vertical": "Bottom",
+        "horizontal": "Right"
+      }
+    },
+    "TableRepeatHeaderRows",
+    {
+      "TableConvertToText": {
+        "separator": "Commas"
+      }
+    },
+    "TableHeaderRow",
+    "TableTotalRow",
+    "TableBandedRows",
+    "TableFirstColumn",
+    "TableBandedColumns",
+    {
+      "TableStyle": {
+        "style": "GridTable4-Accent1"
+      }
+    },
+    {
+      "TableShading": {
+        "color": "DCE6FB"
+      }
+    },
+    {
+      "TableBorders": {
+        "preset": "Outside"
+      }
+    },
+    "Cut",
+    "Copy",
+    {
+      "Paste": {
+        "data": {
+          "text": "",
+          "html": null,
+          "kiln": null
+        }
+      }
+    },
+    {
+      "PasteKeepSource": {
+        "data": {
+          "text": "",
+          "html": null,
+          "kiln": null
+        }
+      }
+    },
+    {
+      "PasteMerge": {
+        "data": {
+          "text": "",
+          "html": null,
+          "kiln": null
+        }
+      }
+    },
+    {
+      "PasteTextOnly": {
+        "data": {
+          "text": "",
+          "html": null,
+          "kiln": null
+        }
+      }
+    },
+    {
+      "PasteAs": {
+        "mode": "KeepSource",
+        "data": {
+          "text": "",
+          "html": null,
+          "kiln": null
+        }
+      }
+    },
+    "Repeat",
+    "Bold",
+    "Italic",
+    "Underline",
+    "DoubleUnderline",
+    "Strikethrough",
+    "Subscript",
+    "Superscript",
+    "AllCaps",
+    {
+      "FontFamily": {
+        "family": ""
+      }
+    },
+    {
+      "FontSize": {
+        "size": 0.0
+      }
+    },
+    {
+      "GrowFont": {
+        "one_point": false
+      }
+    },
+    {
+      "ShrinkFont": {
+        "one_point": false
+      }
+    },
+    {
+      "ChangeCase": {
+        "case": "Sentence"
+      }
+    },
+    "ClearFormatting",
+    {
+      "FontColor": {
+        "color": ""
+      }
+    },
+    {
+      "Highlight": {
+        "color": ""
+      }
+    }
+  ]
+}

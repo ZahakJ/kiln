@@ -1,0 +1,60 @@
+{
+ "date1904": false,
+ "sheets": [
+  {
+   "name": "Validation",
+   "state": "visible",
+   "merges": [],
+   "cells": {
+    "A1": {
+     "type": "string",
+     "value": "List"
+    },
+    "A2": {
+     "type": "string",
+     "value": "List from range"
+    },
+    "A3": {
+     "type": "string",
+     "value": "Whole 1-10"
+    },
+    "A4": {
+     "type": "string",
+     "value": "Decimal > 0.5"
+    },
+    "A5": {
+     "type": "string",
+     "value": "Date in 2026"
+    },
+    "A6": {
+     "type": "string",
+     "value": "Time before noon"
+    },
+    "A7": {
+     "type": "string",
+     "value": "Text length <= 5"
+    },
+    "A8": {
+     "type": "string",
+     "value": "Custom even"
+    },
+    "H1": {
+     "type": "string",
+     "value": "North"
+    },
+    "H2": {
+     "type": "string",
+     "value": "South"
+    },
+    "H3": {
+     "type": "string",
+     "value": "East"
+    },
+    "H4": {
+     "type": "string",
+     "value": "West"
+    }
+   }
+  }
+ ]
+}

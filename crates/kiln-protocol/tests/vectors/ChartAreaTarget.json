@@ -1,0 +1,11 @@
+{
+  "type": "ChartAreaTarget",
+  "format": {
+    "TYPENAME": "ChartAreaTarget"
+  },
+  "values": [
+    "ChartArea",
+    "PlotArea",
+    "ChartArea"
+  ]
+}

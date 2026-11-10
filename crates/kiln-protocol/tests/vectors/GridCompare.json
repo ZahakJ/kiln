@@ -1,0 +1,17 @@
+{
+  "type": "GridCompare",
+  "format": {
+    "TYPENAME": "GridCompare"
+  },
+  "values": [
+    "Between",
+    "LessThanOrEqual",
+    "Between",
+    "NotBetween",
+    "Equal",
+    "NotEqual",
+    "GreaterThan",
+    "LessThan",
+    "GreaterThanOrEqual"
+  ]
+}

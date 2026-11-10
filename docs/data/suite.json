@@ -1,0 +1,11 @@
+{
+  "functions": 505,
+  "interfaceLanguages": 3,
+  "parity": {
+    "critical": 97.8,
+    "done": 576,
+    "rows": 740
+  },
+  "templates": 36,
+  "version": "0.1.0"
+}

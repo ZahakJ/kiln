@@ -1,0 +1,87 @@
+/*
+ * Windows contrast themes (forced-colors: active). The browser replaces colours with the user's
+ * system colours; what Kiln draws with shadows or tinted backgrounds alone gets a system-coloured
+ * outline instead, so focus, selection and the pressed state stay visible.
+ */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  /* Selected tabs, pressed toggles, checked menu items and the chosen gallery tile. */
+  [role="tab"][aria-selected="true"],
+  [aria-pressed="true"],
+  [data-state="on"],
+  [data-state="checked"],
+  [aria-checked="true"]:not([role="switch"]),
+  [aria-current="true"],
+  [aria-current="page"] {
+    outline: 2px solid SelectedItem;
+    outline-offset: -2px;
+  }
+
+  /* The highlighted menu, list or palette row, and the chosen gallery tile: the system's
+     highlight, with everything inside it in the highlight's text colour. */
+  [data-highlighted],
+  [aria-selected="true"]:not([role="tab"]) {
+    /* biome-ignore lint/complexity/noImportantStyles: in a contrast theme the system's colours win over every themed rule */
+    background: Highlight !important;
+    /* biome-ignore lint/complexity/noImportantStyles: in a contrast theme the system's colours win over every themed rule */
+    color: HighlightText !important;
+    forced-color-adjust: none;
+  }
+  :is([data-highlighted], [aria-selected="true"]:not([role="tab"])) * {
+    /* biome-ignore lint/complexity/noImportantStyles: in a contrast theme the system's colours win over every themed rule */
+    background: transparent !important;
+    /* biome-ignore lint/complexity/noImportantStyles: in a contrast theme the system's colours win over every themed rule */
+    color: HighlightText !important;
+    forced-color-adjust: none;
+  }
+
+  [aria-disabled="true"],
+  :disabled {
+    color: GrayText;
+  }
+
+  /* Dialogs, menus, popovers and panes keep an edge where they had only a shadow. */
+  [role="dialog"],
+  [role="alertdialog"],
+  [role="menu"],
+  [role="listbox"],
+  .kiln-popover,
+  .kiln-taskpane,
+  .kiln-statusbar,
+  .kiln-ribbon {
+    border: 1px solid CanvasText;
+  }
+
+  /* The app-coloured buttons (File, Share, a dialog's default button): the system's highlight. */
+  .kiln-ribbon__file,
+  .kiln-appframe__share,
+  .kiln-btn--primary {
+    forced-color-adjust: none;
+    /* biome-ignore lint/complexity/noImportantStyles: in a contrast theme the system's colours win over every themed rule */
+    background: Highlight !important;
+    /* biome-ignore lint/complexity/noImportantStyles: in a contrast theme the system's colours win over every themed rule */
+    color: HighlightText !important;
+    border: 1px solid HighlightText;
+  }
+  :is(.kiln-ribbon__file, .kiln-appframe__share, .kiln-btn--primary) * {
+    forced-color-adjust: none;
+    /* biome-ignore lint/complexity/noImportantStyles: in a contrast theme the system's colours win over every themed rule */
+    color: HighlightText !important;
+    fill: currentColor;
+  }
+
+  /* Key Tip badges and the document canvas keep their own colours. */
+  .kiln-keytip {
+    forced-color-adjust: none;
+    background: CanvasText;
+    color: Canvas;
+  }
+
+  canvas {
+    forced-color-adjust: none;
+  }
+}

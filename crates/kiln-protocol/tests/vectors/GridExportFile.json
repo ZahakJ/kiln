@@ -1,0 +1,24 @@
+{
+  "type": "GridExportFile",
+  "format": {
+    "TYPENAME": "GridExportFile"
+  },
+  "values": [
+    {
+      "name": "Budget.csv",
+      "mime": "text/csv",
+      "bytes": [
+        97,
+        44,
+        98,
+        13,
+        10
+      ]
+    },
+    {
+      "name": "",
+      "mime": "",
+      "bytes": []
+    }
+  ]
+}

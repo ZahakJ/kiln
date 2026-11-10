@@ -1,0 +1,351 @@
+import { msg, t, tx } from '@kiln/i18n';
+import { ChevronDown, Plus } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { Icon } from '../icons/Icon.tsx';
+import { Button } from '../primitives/Button.tsx';
+import { cx } from '../primitives/cx.ts';
+import {
+  Menu,
+  MenuCheckboxItem,
+  MenuContent,
+  MenuItem,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuSeparator,
+  MenuTrigger,
+  Submenu,
+} from '../primitives/Menu.tsx';
+import { COLOR_SETS, QUICK_LAYOUTS } from './kinds.ts';
+import type { ChartElementKind, ChartLabelPosition, ChartLegendPosition, ChartUiHost } from './types.ts';
+
+/** Props of the chart menu buttons: `stacked` in the Classic ribbon, `inline` in Simplified. */
+export interface MenuButtonProps {
+  host: ChartUiHost;
+  layout?: 'stacked' | 'inline';
+}
+
+/** The Change Colors set each of Office's chart styles 1–8 shows (column 1 greys, 2 colourful). */
+const STYLE_SETS: readonly number[] = [7, 0, 1, 2, 3, 4, 5, 6];
+
+const LEGEND: readonly [ChartLegendPosition, string][] = [
+  ['Right', msg('Right')],
+  ['Top', msg('Top')],
+  ['Left', msg('Left')],
+  ['Bottom', msg('Bottom')],
+  ['TopRight', msg('Top Right')],
+];
+
+const LABELS: readonly [ChartLabelPosition, string][] = [
+  ['Center', msg('Center')],
+  ['InsideEnd', msg('Inside End')],
+  ['InsideBase', msg('Inside Base')],
+  ['OutsideEnd', msg('Outside End')],
+  ['BestFit', msg('Best Fit')],
+  ['Above', msg('Above')],
+  ['Below', msg('Below')],
+];
+
+const TOGGLES: readonly { label: string; items: readonly [ChartElementKind, string][] }[] = [
+  {
+    label: msg('Axes'),
+    items: [
+      ['PrimaryHorizontalAxis', msg('Primary Horizontal')],
+      ['PrimaryVerticalAxis', msg('Primary Vertical')],
+    ],
+  },
+  {
+    label: msg('Axis Titles'),
+    items: [
+      ['PrimaryHorizontalAxisTitle', msg('Primary Horizontal')],
+      ['PrimaryVerticalAxisTitle', msg('Primary Vertical')],
+    ],
+  },
+  {
+    label: msg('Gridlines'),
+    items: [
+      ['MajorGridlines', msg('Primary Major Horizontal')],
+      ['MinorGridlines', msg('Primary Minor Horizontal')],
+      ['CategoryGridlines', msg('Primary Major Vertical')],
+    ],
+  },
+  {
+    label: msg('Error Bars'),
+    items: [
+      ['StandardErrorBars', msg('Standard Error')],
+      ['PercentageErrorBars', msg('Percentage')],
+      ['StandardDeviationErrorBars', msg('Standard Deviation')],
+    ],
+  },
+  {
+    label: msg('Trendline'),
+    items: [
+      ['LinearTrendline', msg('Linear')],
+      ['ExponentialTrendline', msg('Exponential')],
+      ['MovingAverage', msg('Moving Average')],
+    ],
+  },
+];
+
+/**
+ * Chart Design ▸ Add Chart Element (and the + button beside a selected chart): every element with
+ * its check mark, the legend and data label positions as radio submenus.
+ */
+export function ChartElementsMenu({
+  host,
+  trigger,
+  layout = 'stacked',
+}: MenuButtonProps & { trigger?: ReactNode }) {
+  const { state, run } = host;
+  const on = (k: ChartElementKind) => state.elements.includes(k);
+  return (
+    <Menu>
+      <MenuTrigger asChild>
+        {trigger ?? (
+          <Button
+            variant="toolbar"
+            layout={layout}
+            icon={<Icon icon={Plus} size={20} />}
+            iconAfter={<Icon icon={ChevronDown} size={12} />}
+          >
+            {t('Add Chart Element')}
+          </Button>
+        )}
+      </MenuTrigger>
+      <MenuContent className="kiln-chart-elements" aria-label={t('Chart elements')}>
+        <MenuCheckboxItem
+          checked={state.title !== null}
+          onCheckedChange={(v) => run({ ChartSetElement: { element: 'ChartTitle', on: v === true } })}
+        >
+          {t('Chart Title')}
+        </MenuCheckboxItem>
+        {TOGGLES.map((g) => (
+          <Submenu key={g.label} label={tx(g.label)}>
+            {g.items.map(([k, label]) => (
+              <MenuCheckboxItem
+                key={k}
+                checked={on(k)}
+                onCheckedChange={(v) => run({ ChartSetElement: { element: k, on: v === true } })}
+              >
+                {tx(label)}
+              </MenuCheckboxItem>
+            ))}
+          </Submenu>
+        ))}
+        <Submenu label={t('Data Labels')}>
+          <MenuRadioGroup
+            value={state.data_labels ?? 'None'}
+            onValueChange={(v) =>
+              run({ ChartSetDataLabels: { position: v === 'None' ? null : (v as ChartLabelPosition) } })
+            }
+          >
+            <MenuRadioItem value="None">{t('None')}</MenuRadioItem>
+            {LABELS.map(([v, label]) => (
+              <MenuRadioItem key={v} value={v}>
+                {tx(label)}
+              </MenuRadioItem>
+            ))}
+          </MenuRadioGroup>
+        </Submenu>
+        <Submenu label={t('Legend')}>
+          <MenuRadioGroup
+            value={state.legend ?? 'None'}
+            onValueChange={(v) =>
+              run({ ChartSetLegend: { position: v === 'None' ? null : (v as ChartLegendPosition) } })
+            }
+          >
+            <MenuRadioItem value="None">{t('None')}</MenuRadioItem>
+            {LEGEND.map(([v, label]) => (
+              <MenuRadioItem key={v} value={v}>
+                {tx(label)}
+              </MenuRadioItem>
+            ))}
+          </MenuRadioGroup>
+        </Submenu>
+      </MenuContent>
+    </Menu>
+  );
+}
+
+/** A miniature of a quick layout: where title, legend, labels and axis titles go. */
+function LayoutThumb({ layout }: { layout: number }) {
+  const title = ![4, 7, 11].includes(layout);
+  const legend =
+    layout === 5 || layout === 8 ? null : layout === 2 ? 'top' : [3, 4].includes(layout) ? 'bottom' : 'right';
+  const axisTitles = [5, 6, 7, 8, 9].includes(layout);
+  const labels = [2, 4, 10].includes(layout);
+  const plotRight = legend === 'right' ? 34 : 44;
+  const plotTop = (title ? 9 : 4) + (legend === 'top' ? 4 : 0);
+  const plotBottom = legend === 'bottom' ? 26 : 30;
+  const left = axisTitles ? 9 : 5;
+  const bars = [0.5, 0.8, 0.6, 0.9];
+  const w = (plotRight - left) / bars.length;
+  return (
+    <svg className="kiln-chart-thumb" viewBox="0 0 48 36" width={48} height={36} aria-hidden="true">
+      {title ? <rect className="kiln-chart-thumb__text" x={14} y={2} width={20} height={3} rx={1} /> : null}
+      {axisTitles ? (
+        <rect className="kiln-chart-thumb__text" x={2} y={12} width={2} height={12} rx={1} />
+      ) : null}
+      {bars.map((b, i) => {
+        const h = (plotBottom - plotTop) * b;
+        return (
+          <g key={b}>
+            <rect
+              className="kiln-chart-thumb__s1"
+              x={left + i * w + w * 0.2}
+              y={plotBottom - h}
+              width={w * 0.6}
+              height={h}
+            />
+            {labels ? (
+              <rect
+                className="kiln-chart-thumb__text"
+                x={left + i * w + w * 0.25}
+                y={plotBottom - h - 3}
+                width={w * 0.5}
+                height={1.6}
+              />
+            ) : null}
+          </g>
+        );
+      })}
+      <line
+        className="kiln-chart-thumb__axis"
+        x1={left}
+        y1={plotBottom + 0.5}
+        x2={plotRight}
+        y2={plotBottom + 0.5}
+      />
+      {legend === 'right' ? (
+        <rect className="kiln-chart-thumb__text" x={37} y={14} width={8} height={8} rx={1} />
+      ) : null}
+      {legend === 'top' ? (
+        <rect className="kiln-chart-thumb__text" x={16} y={plotTop - 4} width={16} height={2} rx={1} />
+      ) : null}
+      {legend === 'bottom' ? (
+        <rect className="kiln-chart-thumb__text" x={16} y={31} width={16} height={2} rx={1} />
+      ) : null}
+    </svg>
+  );
+}
+
+/** Chart Design ▸ Quick Layout: Office's eleven layouts. */
+export function QuickLayoutMenu({ host, layout = 'stacked' }: MenuButtonProps) {
+  return (
+    <Menu>
+      <MenuTrigger asChild>
+        <Button
+          variant="toolbar"
+          layout={layout}
+          icon={<LayoutThumb layout={1} />}
+          iconAfter={<Icon icon={ChevronDown} size={12} />}
+        >
+          {t('Quick Layout')}
+        </Button>
+      </MenuTrigger>
+      <MenuContent aria-label={t('Quick layouts')} className="kiln-chart-layouts">
+        {QUICK_LAYOUTS.map((l) => (
+          <MenuItem
+            key={l.layout}
+            aria-label={tx(l.label)}
+            title={tx(l.label)}
+            onSelect={() => host.run({ ChartQuickLayout: { layout: l.layout } })}
+          >
+            <LayoutThumb layout={l.layout} />
+          </MenuItem>
+        ))}
+      </MenuContent>
+    </Menu>
+  );
+}
+
+/** Chart Design ▸ Change Colors: colourful, monochrome per accent, greys, in the chart's theme. */
+export function ChangeColorsMenu({ host, layout = 'stacked' }: MenuButtonProps) {
+  const sets = host.state.color_sets;
+  return (
+    <Menu>
+      <MenuTrigger asChild>
+        <Button
+          variant="toolbar"
+          layout={layout}
+          icon={<Swatches palette={host.state.color_set} colors={sets[host.state.color_set]} />}
+          iconAfter={<Icon icon={ChevronDown} size={12} />}
+        >
+          {t('Change Colors')}
+        </Button>
+      </MenuTrigger>
+      <MenuContent aria-label={t('Colour sets')} className="kiln-chart-colors">
+        <MenuRadioGroup
+          value={String(host.state.color_set)}
+          onValueChange={(v) => host.run({ ChartSetColors: { palette: Number(v) } })}
+        >
+          {COLOR_SETS.map((c) => (
+            <MenuRadioItem key={c.palette} value={String(c.palette)} aria-label={tx(c.label)}>
+              <Swatches palette={c.palette} colors={sets[c.palette]} />
+              <span className="kiln-chart-colors__label">{tx(c.label)}</span>
+            </MenuRadioItem>
+          ))}
+        </MenuRadioGroup>
+      </MenuContent>
+    </Menu>
+  );
+}
+
+/**
+ * Six colour chips. `colors` (`RRGGBB`, from the core's `ChartState::color_sets`) are the chart's
+ * own theme colours; without them the chips use the app's chart tokens.
+ */
+function Swatches({ palette, colors }: { palette: number; colors?: readonly string[] | undefined }) {
+  const own = colors !== undefined && colors.length > 0 ? colors : null;
+  return (
+    <span className={cx('kiln-chart-swatches', `kiln-chart-swatches--p${palette}`)} aria-hidden="true">
+      {[1, 2, 3, 4, 5, 6].map((i) => {
+        const hex = own?.[(i - 1) % own.length];
+        return (
+          <span
+            key={i}
+            className={`kiln-chart-swatches__s${i}`}
+            style={hex ? { background: `#${hex}` } : undefined}
+          />
+        );
+      })}
+    </span>
+  );
+}
+
+/** Chart Design ▸ Chart Styles: the eight colour styles of a row (Office numbering 1–8). */
+export function ChartStylesMenu({ host, layout = 'stacked' }: MenuButtonProps) {
+  return (
+    <Menu>
+      <MenuTrigger asChild>
+        <Button
+          variant="toolbar"
+          layout={layout}
+          icon={<Swatches palette={0} colors={host.state.color_sets[0]} />}
+          iconAfter={<Icon icon={ChevronDown} size={12} />}
+        >
+          {t('Chart Styles')}
+        </Button>
+      </MenuTrigger>
+      <MenuContent aria-label={t('Chart styles')} className="kiln-chart-colors">
+        <MenuRadioGroup
+          value={String(host.state.style ?? 2)}
+          onValueChange={(v) => host.run({ ChartSetStyle: { style: Number(v) } })}
+        >
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((style) => (
+            <MenuRadioItem key={style} value={String(style)} aria-label={t('Style {style}', { style })}>
+              <Swatches
+                palette={STYLE_SETS[style - 1] ?? 0}
+                colors={host.state.color_sets[STYLE_SETS[style - 1] ?? 0]}
+              />
+              <span className="kiln-chart-colors__label">{t('Style {style}', { style })}</span>
+            </MenuRadioItem>
+          ))}
+        </MenuRadioGroup>
+        <MenuSeparator />
+        <MenuItem onSelect={() => host.run({ ChartSetStyle: { style: 2 } })}>
+          {t('Reset to Match Style')}
+        </MenuItem>
+      </MenuContent>
+    </Menu>
+  );
+}

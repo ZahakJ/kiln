@@ -1,0 +1,18 @@
+{
+  "type": "ErrorKind",
+  "format": {
+    "TYPENAME": "ErrorKind"
+  },
+  "values": [
+    "NotFound",
+    "Internal",
+    "NotFound",
+    "InvalidInput",
+    "Unavailable",
+    "Unsupported",
+    "Format",
+    "Io",
+    "Cancelled",
+    "Closed"
+  ]
+}

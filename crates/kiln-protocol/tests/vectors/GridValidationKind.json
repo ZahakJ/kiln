@@ -1,0 +1,17 @@
+{
+  "type": "GridValidationKind",
+  "format": {
+    "TYPENAME": "GridValidationKind"
+  },
+  "values": [
+    "Whole",
+    "Custom",
+    "Any",
+    "Whole",
+    "Decimal",
+    "List",
+    "Date",
+    "Time",
+    "TextLength"
+  ]
+}

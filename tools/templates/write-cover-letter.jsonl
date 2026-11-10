@@ -1,0 +1,65 @@
+{"new":{"kind":"write"}}
+{"execute":{"doc":1,"cmd":{"Write":{"PageSetup":{"setup":{"width":595.3,"height":841.9,"top":64,"bottom":72,"left":72,"right":72,"header":36,"footer":36}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Normal","spec":{"font":{"underline_none":false,"family":"Carlito","size":11,"color":"262626"},"paragraph":{"space_after":6,"line_multiple":1.15}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Title","spec":{"font":{"underline_none":false,"family":"Caladea","size":30,"color":"7A3E2E","bold":false},"paragraph":{"space_after":4,"line_multiple":1.0}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Subtitle","spec":{"font":{"underline_none":false,"family":"Carlito","size":12.5,"color":"6B6B6B","italic":false},"paragraph":{"space_after":18}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading1","spec":{"font":{"underline_none":false,"family":"Caladea","size":16,"color":"7A3E2E","bold":false},"paragraph":{"space_before":18,"space_after":6,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading2","spec":{"font":{"underline_none":false,"family":"Carlito","size":12.5,"color":"262626","bold":true},"paragraph":{"space_before":12,"space_after":4,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading3","spec":{"font":{"underline_none":false,"family":"Carlito","size":11,"color":"7A3E2E","bold":true},"paragraph":{"space_before":10,"space_after":2,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"PasteMarkdown":{"text":"Amara Lindqvist\n\nSenior Product Designer\n\nLeeds · +44 7700 900 418 · amara.lindqvist@example.com · amaralindqvist.example\n\n4 May 2026\n\nHiring Team\n\nNorthfield Health\n\n21 Wellington Place\n\nLeeds LS1 4AP\n\nDear Hiring Team,\n\nI am writing to apply for the Lead Product Designer role on your patient app. For the past six years I have designed health and booking products used by more than two million people, and the problem you describe — making repeat prescriptions effortless for people managing long-term conditions — is exactly the kind of work I want to lead.\n\nAt Brightwell Clinics I led the redesign of appointment booking across web and mobile. By testing every step with patients over seventy, we cut the average booking time from four minutes to under ninety seconds and halved calls to the help line. I also built the design system that four product teams now share.\n\nWhat I would bring to Northfield:\n\n- Research habits that put real patients, carers and pharmacists in the room early\n- Accessible, tested design: every release met WCAG 2.2 AA\n- Calm leadership of designers, researchers and engineers across time zones\n\nI would be glad to walk you through two recent case studies. Thank you for your time and consideration.\n\nKind regards,\n\nAmara Lindqvist\n"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Amara Lindqvist"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"family":"Caladea","size":28,"color":"7A3E2E"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":0,"line_multiple":1.0}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Senior Product Designer"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":12,"color":"444444","small_caps":true,"spacing":1.0}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":4}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Leeds · +44"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9,"color":"6B6B6B"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":30}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ParagraphBorders":{"preset":"Bottom"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"4 May 2026"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Hiring Team"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":0}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Leeds LS1 4AP"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"What I would bring to Northfield:"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"bold":true,"color":"7A3E2E"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentEnd","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"family":"Caladea","size":16,"color":"7A3E2E"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SpellCheck":{"on":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetProperties":{"props":{"title":"Cover letter","author":"Amara Lindqvist"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"save":{"doc":1,"path":"target/templates-tmp/Cover letter.kwrite","format":"KWrite"}}
+{"save":{"doc":1,"path":"assets/templates/write/cover-letter.kwrite","format":"KWrite"}}
+{"render": {"doc": 1, "png": "assets/templates/write/cover-letter.png", "page": 1, "dpi": 48}}

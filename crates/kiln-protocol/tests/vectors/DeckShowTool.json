@@ -1,0 +1,15 @@
+{
+  "type": "DeckShowTool",
+  "format": {
+    "TYPENAME": "DeckShowTool"
+  },
+  "values": [
+    "Arrow",
+    "Highlighter",
+    "Arrow",
+    "Laser",
+    "Pen",
+    "Highlighter",
+    "Eraser"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "type": "GridSelectMode",
+  "format": {
+    "TYPENAME": "GridSelectMode"
+  },
+  "values": [
+    "Normal",
+    "Add",
+    "Normal"
+  ]
+}

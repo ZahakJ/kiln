@@ -1,0 +1,11 @@
+{
+  "type": "GridPlacement",
+  "format": {
+    "TYPENAME": "GridPlacement"
+  },
+  "values": [
+    "Move",
+    "Fixed",
+    "MoveAndSize"
+  ]
+}

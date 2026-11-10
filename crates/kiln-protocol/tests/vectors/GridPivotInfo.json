@@ -1,0 +1,128 @@
+{
+  "type": "GridPivotInfo",
+  "format": {
+    "TYPENAME": "GridPivotInfo"
+  },
+  "values": [
+    {
+      "name": "PivotTable1",
+      "source": "Sales!$A$1:$G$401",
+      "range": {
+        "r0": 0,
+        "c0": 0,
+        "r1": 12,
+        "c1": 3
+      },
+      "fields": [
+        {
+          "name": "Region",
+          "numeric": false,
+          "area": "Rows",
+          "values": 0,
+          "filtered": true,
+          "settings": {
+            "caption": "Area",
+            "subtotals": {
+              "Custom": [
+                "Max"
+              ]
+            },
+            "sort": "Descending",
+            "sort_by_value": 0,
+            "hidden": [
+              "(blank)"
+            ],
+            "label_filter": {
+              "op": "BeginsWith",
+              "value": "E",
+              "value2": ""
+            },
+            "value_filter": {
+              "value": 0,
+              "top": [
+                10,
+                false
+              ],
+              "op": "GreaterThan",
+              "a": 0.0,
+              "b": 0.0
+            }
+          }
+        }
+      ],
+      "rows": [
+        0,
+        -1
+      ],
+      "cols": [
+        1
+      ],
+      "pages": [
+        [
+          2,
+          "Q1"
+        ]
+      ],
+      "values": [
+        {
+          "field": 4,
+          "name": "Sum of Units",
+          "function": "Sum",
+          "show_as": "PercentOfParentRow",
+          "base_field": 0,
+          "base_item": "(previous)",
+          "num_fmt": "0.0%"
+        }
+      ],
+      "options": {
+        "layout": "Tabular",
+        "subtotals": "Bottom",
+        "row_totals": true,
+        "col_totals": false,
+        "repeat_labels": true,
+        "blank_rows": false,
+        "empty_text": "0",
+        "style": "PivotStyleMedium9",
+        "row_headers": true,
+        "col_headers": true,
+        "row_stripes": true,
+        "col_stripes": false
+      },
+      "active_field": 0,
+      "active_value": null,
+      "on_value": true
+    },
+    {
+      "name": "",
+      "source": "",
+      "range": {
+        "r0": 0,
+        "c0": 0,
+        "r1": 0,
+        "c1": 0
+      },
+      "fields": [],
+      "rows": [],
+      "cols": [],
+      "pages": [],
+      "values": [],
+      "options": {
+        "layout": "Compact",
+        "subtotals": "Top",
+        "row_totals": false,
+        "col_totals": false,
+        "repeat_labels": false,
+        "blank_rows": false,
+        "empty_text": null,
+        "style": "",
+        "row_headers": false,
+        "col_headers": false,
+        "row_stripes": false,
+        "col_stripes": false
+      },
+      "active_field": null,
+      "active_value": 0,
+      "on_value": false
+    }
+  ]
+}

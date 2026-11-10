@@ -1,0 +1,19 @@
+{
+  "type": "GridTotals",
+  "format": {
+    "TYPENAME": "GridTotals"
+  },
+  "values": [
+    "None",
+    "StdDev",
+    "None",
+    "Sum",
+    "Average",
+    "Count",
+    "CountNumbers",
+    "Max",
+    "Min",
+    "StdDev",
+    "Var"
+  ]
+}

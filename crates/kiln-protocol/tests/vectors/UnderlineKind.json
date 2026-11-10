@@ -1,0 +1,16 @@
+{
+  "type": "UnderlineKind",
+  "format": {
+    "TYPENAME": "UnderlineKind"
+  },
+  "values": [
+    "Single",
+    "DotDash",
+    "Single",
+    "Words",
+    "Double",
+    "Thick",
+    "Dotted",
+    "Dash"
+  ]
+}

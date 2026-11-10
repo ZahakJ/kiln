@@ -1,0 +1,156 @@
+{"new":{"kind":"write"}}
+{"execute":{"doc":1,"cmd":{"Write":{"PageSetup":{"setup":{"width":595.3,"height":841.9,"top":54,"bottom":54,"left":62,"right":62,"header":36,"footer":36}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Normal","spec":{"font":{"underline_none":false,"family":"Carlito","size":10.5,"color":"262626"},"paragraph":{"space_after":6,"line_multiple":1.15}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Title","spec":{"font":{"underline_none":false,"family":"Caladea","size":30,"color":"1E5B5B","bold":false},"paragraph":{"space_after":4,"line_multiple":1.0}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Subtitle","spec":{"font":{"underline_none":false,"family":"Carlito","size":12.5,"color":"6B6B6B","italic":false},"paragraph":{"space_after":18}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading1","spec":{"font":{"underline_none":false,"family":"Caladea","size":13,"color":"1E5B5B","bold":false},"paragraph":{"space_before":18,"space_after":6,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading2","spec":{"font":{"underline_none":false,"family":"Carlito","size":12.0,"color":"262626","bold":true},"paragraph":{"space_before":12,"space_after":4,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading3","spec":{"font":{"underline_none":false,"family":"Carlito","size":10.5,"color":"1E5B5B","bold":true},"paragraph":{"space_before":10,"space_after":2,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"PasteMarkdown":{"text":"Amara Lindqvist\n\nSenior Product Designer\n\nLeeds, UK · +44 7700 900 418 · amara.lindqvist@example.com · amaralindqvist.example\n\n# Profile\n\nProduct designer with eight years in health and booking products. I turn messy services into calm, accessible journeys, back decisions with research, and build the systems teams need to ship consistently.\n\n# Experience\n\n## Senior Product Designer, Brightwell Clinics\n\nLeeds · 2022 – present\n\n- Led the redesign of appointment booking across web and mobile apps (1.4 million users)\n- Cut median booking time from 4 minutes to 85 seconds; help-line calls fell by 48 %\n- Built and maintain the design system shared by four product teams\n\n## Product Designer, Tessellate Travel\n\nManchester · 2019 – 2022\n\n- Designed the group booking flow that now accounts for 22 % of revenue\n- Introduced fortnightly usability testing and a research repository\n\n## UX Designer, Copperline Agency\n\nManchester · 2017 – 2019\n\n- Delivered service design and prototypes for twelve public and charity clients\n\n# Education\n\n## MA Interaction Design, University of Northbridge\n\n2016 – 2017 · Distinction\n\n## BA Graphic Communication, Pennine College of Art\n\n2013 – 2016 · First-class honours\n\n# Selected projects\n\n**Booking for everyone** — a booking journey tested with 60 patients aged 70 and over; shortlisted for the Northern Design Awards 2024.\n\n**Quiet mode** — a low-stimulation version of the clinic app for neurodivergent patients, now used by 38,000 people a month.\n\n# Skills\n\n**Design** — interaction and visual design, prototyping, design systems, accessibility (WCAG 2.2)\n\n**Research** — interviews, usability testing, journey mapping, service blueprints\n\n**Tools** — prototyping and design-system tools, HTML and CSS, research repositories\n\n**Languages** — English (native), Swedish (fluent), French (conversational)\n"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Amara Lindqvist"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"family":"Caladea","size":30,"color":"1E5B5B"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":0,"line_multiple":1.0}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Senior Product Designer"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":12,"color":"333333","small_caps":true,"spacing":1.2}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":2}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Leeds, UK"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9,"color":"6B6B6B"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":6}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Profile"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"small_caps":true,"spacing":1.5}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Profile"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ParagraphBorders":{"preset":"Bottom"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":14,"space_after":6}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Experience"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"small_caps":true,"spacing":1.5}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Experience"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ParagraphBorders":{"preset":"Bottom"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":14,"space_after":6}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Education"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"small_caps":true,"spacing":1.5}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Education"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ParagraphBorders":{"preset":"Bottom"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":14,"space_after":6}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Selected projects"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"small_caps":true,"spacing":1.5}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Selected projects"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ParagraphBorders":{"preset":"Bottom"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":14,"space_after":6}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Skills"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"small_caps":true,"spacing":1.5}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Skills"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ParagraphBorders":{"preset":"Bottom"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":14,"space_after":6}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Leeds · 2022"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9.5,"color":"1E5B5B","italic":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":3}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Manchester · 2019"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9.5,"color":"1E5B5B","italic":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":3}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Manchester · 2017"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9.5,"color":"1E5B5B","italic":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":3}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"2016 – 2017"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9.5,"color":"1E5B5B","italic":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":3}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"2013 – 2016"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9.5,"color":"1E5B5B","italic":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":3}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Senior Product Designer, Brightwell"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":8,"space_after":0}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":11}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Product Designer, Tessellate"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":8,"space_after":0}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":11}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"UX Designer, Copperline"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":8,"space_after":0}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":11}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"MA Interaction Design"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":8,"space_after":0}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":11}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"BA Graphic Communication"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":8,"space_after":0}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":11}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SpellCheck":{"on":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetProperties":{"props":{"title":"Résumé","author":"Amara Lindqvist"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"save":{"doc":1,"path":"target/templates-tmp/Résumé.kwrite","format":"KWrite"}}
+{"save":{"doc":1,"path":"assets/templates/write/resume.kwrite","format":"KWrite"}}
+{"render": {"doc": 1, "png": "assets/templates/write/resume.png", "page": 1, "dpi": 48}}

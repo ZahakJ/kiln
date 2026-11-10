@@ -1,0 +1,904 @@
+{
+ "date1904": false,
+ "sheets": [
+  {
+   "name": "Formats",
+   "state": "visible",
+   "merges": [],
+   "cells": {
+    "A1": {
+     "style": {
+      "font": {
+       "bold": true
+      }
+     },
+     "type": "string",
+     "value": "Category"
+    },
+    "A10": {
+     "type": "string",
+     "value": "Currency"
+    },
+    "A11": {
+     "type": "string",
+     "value": "Accounting"
+    },
+    "A12": {
+     "type": "string",
+     "value": "Accounting"
+    },
+    "A13": {
+     "type": "string",
+     "value": "Date"
+    },
+    "A14": {
+     "type": "string",
+     "value": "Date"
+    },
+    "A15": {
+     "type": "string",
+     "value": "Date"
+    },
+    "A16": {
+     "type": "string",
+     "value": "Date"
+    },
+    "A17": {
+     "type": "string",
+     "value": "Date"
+    },
+    "A18": {
+     "type": "string",
+     "value": "Time"
+    },
+    "A19": {
+     "type": "string",
+     "value": "Time"
+    },
+    "A2": {
+     "type": "string",
+     "value": "General"
+    },
+    "A20": {
+     "type": "string",
+     "value": "Time"
+    },
+    "A21": {
+     "type": "string",
+     "value": "Time"
+    },
+    "A22": {
+     "type": "string",
+     "value": "Percentage"
+    },
+    "A23": {
+     "type": "string",
+     "value": "Percentage"
+    },
+    "A24": {
+     "type": "string",
+     "value": "Fraction"
+    },
+    "A25": {
+     "type": "string",
+     "value": "Fraction"
+    },
+    "A26": {
+     "type": "string",
+     "value": "Fraction"
+    },
+    "A27": {
+     "type": "string",
+     "value": "Scientific"
+    },
+    "A28": {
+     "type": "string",
+     "value": "Scientific"
+    },
+    "A29": {
+     "type": "string",
+     "value": "Text"
+    },
+    "A3": {
+     "type": "string",
+     "value": "Number"
+    },
+    "A30": {
+     "type": "string",
+     "value": "Special"
+    },
+    "A31": {
+     "type": "string",
+     "value": "Special"
+    },
+    "A32": {
+     "type": "string",
+     "value": "Custom"
+    },
+    "A33": {
+     "type": "string",
+     "value": "Custom"
+    },
+    "A34": {
+     "type": "string",
+     "value": "Custom"
+    },
+    "A35": {
+     "type": "string",
+     "value": "Custom"
+    },
+    "A36": {
+     "type": "string",
+     "value": "Custom"
+    },
+    "A37": {
+     "type": "string",
+     "value": "Custom"
+    },
+    "A4": {
+     "type": "string",
+     "value": "Number"
+    },
+    "A5": {
+     "type": "string",
+     "value": "Number"
+    },
+    "A6": {
+     "type": "string",
+     "value": "Number"
+    },
+    "A7": {
+     "type": "string",
+     "value": "Number"
+    },
+    "A8": {
+     "type": "string",
+     "value": "Currency"
+    },
+    "A9": {
+     "type": "string",
+     "value": "Currency"
+    },
+    "B1": {
+     "style": {
+      "font": {
+       "bold": true
+      }
+     },
+     "type": "string",
+     "value": "Format code"
+    },
+    "B10": {
+     "type": "string",
+     "value": "\"£\"#,##0.00;[Red]-\"£\"#,##0.00"
+    },
+    "B11": {
+     "type": "string",
+     "value": "_-* #,##0.00_-;-* #,##0.00_-;_-* \"-\"??_-;_-@_-"
+    },
+    "B12": {
+     "type": "string",
+     "value": "_(\"$\"* #,##0.00_);_(\"$\"* (#,##0.00);_(\"$\"* \"-\"??_);_(@_)"
+    },
+    "B13": {
+     "type": "string",
+     "value": "m/d/yyyy"
+    },
+    "B14": {
+     "type": "string",
+     "value": "d-mmm-yy"
+    },
+    "B15": {
+     "type": "string",
+     "value": "yyyy-mm-dd"
+    },
+    "B16": {
+     "type": "string",
+     "value": "dddd, mmmm d, yyyy"
+    },
+    "B17": {
+     "type": "string",
+     "value": "mmm-yy"
+    },
+    "B18": {
+     "type": "string",
+     "value": "h:mm AM/PM"
+    },
+    "B19": {
+     "type": "string",
+     "value": "h:mm:ss"
+    },
+    "B2": {
+     "type": "string",
+     "value": "General"
+    },
+    "B20": {
+     "type": "string",
+     "value": "[h]:mm:ss"
+    },
+    "B21": {
+     "type": "string",
+     "value": "m/d/yyyy h:mm"
+    },
+    "B22": {
+     "type": "string",
+     "value": "0%"
+    },
+    "B23": {
+     "type": "string",
+     "value": "0.00%"
+    },
+    "B24": {
+     "type": "string",
+     "value": "# ?/?"
+    },
+    "B25": {
+     "type": "string",
+     "value": "# ??/??"
+    },
+    "B26": {
+     "type": "string",
+     "value": "# ?/8"
+    },
+    "B27": {
+     "type": "string",
+     "value": "0.00E+00"
+    },
+    "B28": {
+     "type": "string",
+     "value": "##0.0E+0"
+    },
+    "B29": {
+     "type": "string",
+     "value": "@"
+    },
+    "B3": {
+     "type": "string",
+     "value": "0"
+    },
+    "B30": {
+     "type": "string",
+     "value": "00000"
+    },
+    "B31": {
+     "type": "string",
+     "value": "[<=9999999]###-####;(###) ###-####"
+    },
+    "B32": {
+     "type": "string",
+     "value": "[>=1000000]#,##0.0,,\"M\";[>=1000]#,##0.0,\"K\";0"
+    },
+    "B33": {
+     "type": "string",
+     "value": "[Blue]#,##0;[Red]-#,##0;[Green]\"zero\""
+    },
+    "B34": {
+     "type": "string",
+     "value": "\"Total: \"#,##0"
+    },
+    "B35": {
+     "type": "string",
+     "value": "0.000"
+    },
+    "B36": {
+     "type": "string",
+     "value": "#,##0_);(#,##0)"
+    },
+    "B37": {
+     "type": "string",
+     "value": ";;;"
+    },
+    "B4": {
+     "type": "string",
+     "value": "0.00"
+    },
+    "B5": {
+     "type": "string",
+     "value": "#,##0"
+    },
+    "B6": {
+     "type": "string",
+     "value": "#,##0.00"
+    },
+    "B7": {
+     "type": "string",
+     "value": "#,##0.00;[Red]-#,##0.00"
+    },
+    "B8": {
+     "type": "string",
+     "value": "\"$\"#,##0.00"
+    },
+    "B9": {
+     "type": "string",
+     "value": "[$€-x-euro2] #,##0.00"
+    },
+    "C1": {
+     "style": {
+      "font": {
+       "bold": true
+      }
+     },
+     "type": "string",
+     "value": "Value"
+    },
+    "C10": {
+     "type": "number",
+     "value": -99.95
+    },
+    "C11": {
+     "type": "number",
+     "value": 1234.5
+    },
+    "C12": {
+     "type": "number",
+     "value": 0
+    },
+    "C13": {
+     "type": "number",
+     "value": 46037
+    },
+    "C14": {
+     "type": "number",
+     "value": 46037
+    },
+    "C15": {
+     "type": "number",
+     "value": 46037
+    },
+    "C16": {
+     "type": "number",
+     "value": 46037
+    },
+    "C17": {
+     "type": "number",
+     "value": 46037
+    },
+    "C18": {
+     "type": "number",
+     "value": 0.396
+    },
+    "C19": {
+     "type": "number",
+     "value": 0.396
+    },
+    "C2": {
+     "type": "number",
+     "value": 1234.5678
+    },
+    "C20": {
+     "type": "number",
+     "value": 1.75
+    },
+    "C21": {
+     "type": "number",
+     "value": 46037.396
+    },
+    "C22": {
+     "type": "number",
+     "value": 0.256
+    },
+    "C23": {
+     "type": "number",
+     "value": 0.25678
+    },
+    "C24": {
+     "type": "number",
+     "value": 1.25
+    },
+    "C25": {
+     "type": "number",
+     "value": 3.14159
+    },
+    "C26": {
+     "type": "number",
+     "value": 0.625
+    },
+    "C27": {
+     "type": "number",
+     "value": 123456789
+    },
+    "C28": {
+     "type": "number",
+     "value": 0.000123
+    },
+    "C29": {
+     "type": "string",
+     "value": "00123"
+    },
+    "C3": {
+     "type": "number",
+     "value": 1234.5678
+    },
+    "C30": {
+     "type": "number",
+     "value": 2134
+    },
+    "C31": {
+     "type": "number",
+     "value": 5551234567
+    },
+    "C32": {
+     "type": "number",
+     "value": 2500000
+    },
+    "C33": {
+     "type": "number",
+     "value": 0
+    },
+    "C34": {
+     "type": "number",
+     "value": 512
+    },
+    "C35": {
+     "type": "number",
+     "value": 3.14159
+    },
+    "C36": {
+     "type": "number",
+     "value": -1500
+    },
+    "C37": {
+     "type": "string",
+     "value": "hidden"
+    },
+    "C4": {
+     "type": "number",
+     "value": 1234.5678
+    },
+    "C5": {
+     "type": "number",
+     "value": 1234567.891
+    },
+    "C6": {
+     "type": "number",
+     "value": -1234567.891
+    },
+    "C7": {
+     "type": "number",
+     "value": -42.5
+    },
+    "C8": {
+     "type": "number",
+     "value": 1234.5
+    },
+    "C9": {
+     "type": "number",
+     "value": 1234.5
+    },
+    "D1": {
+     "style": {
+      "font": {
+       "bold": true
+      }
+     },
+     "type": "string",
+     "value": "Formatted"
+    },
+    "D10": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "\"£\"#,##0.00;[Red]-\"£\"#,##0.00"
+     },
+     "type": "number",
+     "value": -99.95
+    },
+    "D11": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "_-* #,##0.00_-;-* #,##0.00_-;_-* \"-\"??_-;_-@_-"
+     },
+     "type": "number",
+     "value": 1234.5
+    },
+    "D12": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "_(\"$\"* #,##0.00_);_(\"$\"* (#,##0.00);_(\"$\"* \"-\"??_);_(@_)"
+     },
+     "type": "number",
+     "value": 0
+    },
+    "D13": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "m/d/yyyy"
+     },
+     "type": "number",
+     "value": 46037
+    },
+    "D14": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "d-mmm-yy"
+     },
+     "type": "number",
+     "value": 46037
+    },
+    "D15": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "yyyy-mm-dd"
+     },
+     "type": "number",
+     "value": 46037
+    },
+    "D16": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "dddd, mmmm d, yyyy"
+     },
+     "type": "number",
+     "value": 46037
+    },
+    "D17": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "mmm-yy"
+     },
+     "type": "number",
+     "value": 46037
+    },
+    "D18": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "h:mm AM/PM"
+     },
+     "type": "number",
+     "value": 0.396
+    },
+    "D19": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "h:mm:ss"
+     },
+     "type": "number",
+     "value": 0.396
+    },
+    "D2": {
+     "type": "number",
+     "value": 1234.5678
+    },
+    "D20": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "[h]:mm:ss"
+     },
+     "type": "number",
+     "value": 1.75
+    },
+    "D21": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "m/d/yyyy h:mm"
+     },
+     "type": "number",
+     "value": 46037.396
+    },
+    "D22": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "0%"
+     },
+     "type": "number",
+     "value": 0.256
+    },
+    "D23": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "0.00%"
+     },
+     "type": "number",
+     "value": 0.25678
+    },
+    "D24": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "# ?/?"
+     },
+     "type": "number",
+     "value": 1.25
+    },
+    "D25": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "# ??/??"
+     },
+     "type": "number",
+     "value": 3.14159
+    },
+    "D26": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "# ?/8"
+     },
+     "type": "number",
+     "value": 0.625
+    },
+    "D27": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "0.00E+00"
+     },
+     "type": "number",
+     "value": 123456789
+    },
+    "D28": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "##0.0E+0"
+     },
+     "type": "number",
+     "value": 0.000123
+    },
+    "D29": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "@"
+     },
+     "type": "string",
+     "value": "00123"
+    },
+    "D3": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "0"
+     },
+     "type": "number",
+     "value": 1234.5678
+    },
+    "D30": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "00000"
+     },
+     "type": "number",
+     "value": 2134
+    },
+    "D31": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "[<=9999999]###-####;(###) ###-####"
+     },
+     "type": "number",
+     "value": 5551234567
+    },
+    "D32": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "[>=1000000]#,##0.0,,\"M\";[>=1000]#,##0.0,\"K\";0"
+     },
+     "type": "number",
+     "value": 2500000
+    },
+    "D33": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "[Blue]#,##0;[Red]-#,##0;[Green]\"zero\""
+     },
+     "type": "number",
+     "value": 0
+    },
+    "D34": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "\"Total: \"#,##0"
+     },
+     "type": "number",
+     "value": 512
+    },
+    "D35": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "0.000"
+     },
+     "type": "number",
+     "value": 3.14159
+    },
+    "D36": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "#,##0 ;(#,##0)"
+     },
+     "type": "number",
+     "value": -1500
+    },
+    "D37": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": ";;;"
+     },
+     "type": "string",
+     "value": "hidden"
+    },
+    "D4": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "0.00"
+     },
+     "type": "number",
+     "value": 1234.5678
+    },
+    "D5": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "#,##0"
+     },
+     "type": "number",
+     "value": 1234567.891
+    },
+    "D6": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "#,##0.00"
+     },
+     "type": "number",
+     "value": -1234567.891
+    },
+    "D7": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "#,##0.00;[Red]-#,##0.00"
+     },
+     "type": "number",
+     "value": -42.5
+    },
+    "D8": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "\"$\"#,##0.00"
+     },
+     "type": "number",
+     "value": 1234.5
+    },
+    "D9": {
+     "style": {
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      },
+      "numFmt": "[$€-x-euro2] #,##0.00"
+     },
+     "type": "number",
+     "value": 1234.5
+    }
+   }
+  }
+ ]
+}

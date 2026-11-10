@@ -1,0 +1,13 @@
+{
+  "type": "RelativeTo",
+  "format": {
+    "TYPENAME": "RelativeTo"
+  },
+  "values": [
+    "Page",
+    "ColumnOrParagraph",
+    "Page",
+    "Margin",
+    "ColumnOrParagraph"
+  ]
+}

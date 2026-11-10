@@ -1,0 +1,108 @@
+{
+  "type": "DeckQuery",
+  "format": {
+    "TYPENAME": "DeckQuery"
+  },
+  "values": [
+    "State",
+    {
+      "Thumbnails": {
+        "from": 0,
+        "count": 12,
+        "width": 160.0,
+        "dpr": 2.0
+      }
+    },
+    {
+      "LayoutThumbnails": {
+        "width": 120.0,
+        "dpr": 1.0
+      }
+    },
+    {
+      "ThemeThumbnails": {
+        "width": 96.0,
+        "dpr": 1.5
+      }
+    },
+    {
+      "VariantThumbnails": {
+        "width": 64.0,
+        "dpr": 2.0
+      }
+    },
+    {
+      "MasterThumbnails": {
+        "width": 160.0,
+        "dpr": 1.0
+      }
+    },
+    "NotesPage",
+    {
+      "HitTest": {
+        "x": 12.5,
+        "y": -3.0
+      }
+    },
+    "Outline",
+    {
+      "ShapeIcons": {
+        "size": 20.0
+      }
+    },
+    {
+      "ShowFrame": {
+        "now_ms": 1234.5,
+        "width": 1440.0,
+        "height": 900.0,
+        "dpr": 2.0
+      }
+    },
+    "ShowInfo",
+    "Snapshot",
+    {
+      "DesignIdeas": {
+        "width": 180.0,
+        "dpr": 2.0
+      }
+    },
+    {
+      "ExportPictures": {
+        "slides": [
+          1
+        ],
+        "format": "Png",
+        "width": 1280
+      }
+    },
+    {
+      "ExportPictures": {
+        "slides": null,
+        "format": "Jpeg",
+        "width": 1920
+      }
+    },
+    "OutlineView",
+    {
+      "ReuseList": {
+        "bytes": [
+          80,
+          75,
+          3,
+          4
+        ],
+        "width": 160.0,
+        "dpr": 1.0
+      }
+    },
+    "SlideMedia",
+    {
+      "MediaBytes": {
+        "part": "/ppt/media/media1.mp4"
+      }
+    },
+    "ChartData",
+    "SlideText",
+    "State"
+  ]
+}

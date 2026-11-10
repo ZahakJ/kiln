@@ -1,0 +1,11 @@
+{
+  "type": "GridArrows",
+  "format": {
+    "TYPENAME": "GridArrows"
+  },
+  "values": [
+    "Precedents",
+    "Dependents",
+    "All"
+  ]
+}

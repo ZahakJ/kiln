@@ -1,0 +1,15 @@
+{
+  "$schema": "../gen/schemas/mobile-schema.json",
+  "identifier": "mobile",
+  "description": "Android-only permissions of Kiln's window: sending a copy of a document through the share sheet and leaving for the launcher on Back from Kiln Home. The app plugin's back-button listener comes with core:default.",
+  "platforms": [
+    "android"
+  ],
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "allow-kiln-share",
+    "allow-kiln-leave"
+  ]
+}

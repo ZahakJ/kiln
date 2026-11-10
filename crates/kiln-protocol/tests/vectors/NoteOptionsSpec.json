@@ -1,0 +1,20 @@
+{
+  "type": "NoteOptionsSpec",
+  "format": {
+    "TYPENAME": "NoteOptionsSpec"
+  },
+  "values": [
+    {
+      "endnotes": false,
+      "format": "chicago",
+      "start": 1,
+      "restart": "eachPage"
+    },
+    {
+      "endnotes": false,
+      "format": "",
+      "start": 0,
+      "restart": ""
+    }
+  ]
+}

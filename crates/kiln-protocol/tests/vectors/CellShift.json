@@ -1,0 +1,13 @@
+{
+  "type": "CellShift",
+  "format": {
+    "TYPENAME": "CellShift"
+  },
+  "values": [
+    "Vertical",
+    "Columns",
+    "Vertical",
+    "Horizontal",
+    "Rows"
+  ]
+}

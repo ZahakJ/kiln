@@ -1,0 +1,42 @@
+{
+ "date1904": false,
+ "sheets": [
+  {
+   "name": "Rich",
+   "state": "visible",
+   "merges": [],
+   "cells": {
+    "A1": {
+     "type": "string",
+     "value": "Plain, bold, red italic, big underline"
+    },
+    "A2": {
+     "type": "string",
+     "value": "mono and super"
+    },
+    "A3": {
+     "type": "string",
+     "value": "Shared string repeated"
+    },
+    "A4": {
+     "type": "string",
+     "value": "Shared string repeated"
+    },
+    "A5": {
+     "style": {
+      "alignment": {
+       "wrapText": true
+      },
+      "font": {
+       "color": "theme:1",
+       "name": "Calibri",
+       "size": 11
+      }
+     },
+     "type": "string",
+     "value": "Line one\nLine two"
+    }
+   }
+  }
+ ]
+}

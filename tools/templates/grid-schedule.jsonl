@@ -1,0 +1,331 @@
+{"new":{"kind":"grid"}}
+{"execute":{"doc":1,"cmd":{"Grid":"Gridlines"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":0,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Weekly schedule","start":15,"end":15,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":0,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"font_family":"Caladea","font_size":22.0,"font_color":"3A4E9C"}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":1,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Studio rota · week of 9 March 2026","start":34,"end":34,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":1,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"font_size":10.0,"font_color":"6B6B6B"}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectRows":{"from":0,"to":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"RowHeight":{"points":34}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectRows":{"from":1,"to":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"RowHeight":{"points":18}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectColumns":{"from":0,"to":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ColumnWidth":{"chars":9}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectColumns":{"from":1,"to":5,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ColumnWidth":{"chars":19}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":3,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Time","start":4,"end":4,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":3,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Monday","start":6,"end":6,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":3,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Tuesday","start":7,"end":7,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":3,"col":3,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Wednesday","start":9,"end":9,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":3,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Thursday","start":8,"end":8,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":3,"col":5,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Friday","start":6,"end":6,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectRange":{"range":{"r0":3,"c0":0,"r1":3,"c1":5},"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"bold":true,"font_color":"FFFFFF","fill_color":"3A4E9C","v_align":"Center","border_bottom":{"style":"Thin","color":"3A4E9C"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectRange":{"range":{"r0":3,"c0":1,"r1":3,"c1":5},"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"h_align":"Center"}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":4,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"08:00","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":5,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"09:00","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":6,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"10:00","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":7,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"11:00","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":8,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"12:00","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":9,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"13:00","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":10,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"14:00","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":11,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"15:00","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":12,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"16:00","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":13,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"17:00","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectRange":{"range":{"r0":4,"c0":0,"r1":13,"c1":0},"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"number_format":"hh:mm"}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectRange":{"range":{"r0":4,"c0":0,"r1":13,"c1":0},"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"font_color":"6B6B6B","v_align":"Top"}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectRows":{"from":4,"to":13,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"RowHeight":{"points":30}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":4,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Team stand-up","start":13,"end":13,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":4,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E8ECF8","font_color":"3A4E9C","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"3A4E9C"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":5,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Client workshop","start":15,"end":15,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":5,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"FDE8DC","font_color":"9A3B12","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"9A3B12"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":6,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Client workshop","start":15,"end":15,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":6,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"FDE8DC","font_color":"9A3B12","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"9A3B12"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":8,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Lunch","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":8,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"F2F2F2","font_color":"6B6B6B","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"6B6B6B"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":9,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Design review","start":13,"end":13,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":9,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"F3E8F8","font_color":"6B2E8A","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"6B2E8A"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":11,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Focus time","start":10,"end":10,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":11,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E4F3EC","font_color":"1D6B4F","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"1D6B4F"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":12,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Focus time","start":10,"end":10,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":12,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E4F3EC","font_color":"1D6B4F","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"1D6B4F"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":4,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Team stand-up","start":13,"end":13,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":4,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E8ECF8","font_color":"3A4E9C","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"3A4E9C"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":5,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Focus time","start":10,"end":10,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":5,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E4F3EC","font_color":"1D6B4F","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"1D6B4F"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":6,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Focus time","start":10,"end":10,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":6,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E4F3EC","font_color":"1D6B4F","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"1D6B4F"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":8,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Lunch","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":8,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"F2F2F2","font_color":"6B6B6B","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"6B6B6B"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":9,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Supplier call","start":13,"end":13,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":9,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"FFF4D6","font_color":"8A6100","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"8A6100"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":10,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Studio tidy","start":11,"end":11,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":10,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"F2F2F2","font_color":"6B6B6B","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"6B6B6B"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":12,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Reading group","start":13,"end":13,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":12,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"F3E8F8","font_color":"6B2E8A","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"6B2E8A"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":4,"col":3,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Team stand-up","start":13,"end":13,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":4,"col":3,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E8ECF8","font_color":"3A4E9C","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"3A4E9C"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":6,"col":3,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Planning","start":8,"end":8,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":6,"col":3,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E8ECF8","font_color":"3A4E9C","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"3A4E9C"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":7,"col":3,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Planning","start":8,"end":8,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":7,"col":3,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E8ECF8","font_color":"3A4E9C","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"3A4E9C"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":8,"col":3,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Lunch","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":8,"col":3,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"F2F2F2","font_color":"6B6B6B","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"6B6B6B"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":10,"col":3,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Portfolio shoot","start":15,"end":15,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":10,"col":3,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"FDE8DC","font_color":"9A3B12","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"9A3B12"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":11,"col":3,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Portfolio shoot","start":15,"end":15,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":11,"col":3,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"FDE8DC","font_color":"9A3B12","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"9A3B12"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":4,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Team stand-up","start":13,"end":13,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":4,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E8ECF8","font_color":"3A4E9C","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"3A4E9C"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":5,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Focus time","start":10,"end":10,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":5,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E4F3EC","font_color":"1D6B4F","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"1D6B4F"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":6,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Focus time","start":10,"end":10,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":6,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E4F3EC","font_color":"1D6B4F","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"1D6B4F"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":8,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Lunch","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":8,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"F2F2F2","font_color":"6B6B6B","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"6B6B6B"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":9,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Client call","start":11,"end":11,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":9,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"FFF4D6","font_color":"8A6100","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"8A6100"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":11,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Mentoring","start":9,"end":9,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":11,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E4F3EC","font_color":"1D6B4F","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"1D6B4F"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":12,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Mentoring","start":9,"end":9,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":12,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E4F3EC","font_color":"1D6B4F","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"1D6B4F"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":4,"col":5,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Team stand-up","start":13,"end":13,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":4,"col":5,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E8ECF8","font_color":"3A4E9C","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"3A4E9C"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":5,"col":5,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Show and tell","start":13,"end":13,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":5,"col":5,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"F3E8F8","font_color":"6B2E8A","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"6B2E8A"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":8,"col":5,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Team lunch","start":10,"end":10,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":8,"col":5,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"F2F2F2","font_color":"6B6B6B","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"6B6B6B"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":10,"col":5,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Admin","start":5,"end":5,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":10,"col":5,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"F2F2F2","font_color":"6B6B6B","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"6B6B6B"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":11,"col":5,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Week review","start":11,"end":11,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":11,"col":5,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"fill_color":"E8ECF8","font_color":"3A4E9C","bold":true,"font_size":10.0,"v_align":"Center","border_left":{"style":"Thick","color":"3A4E9C"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectRange":{"range":{"r0":4,"c0":0,"r1":13,"c1":5},"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"border_inside_h":{"style":"Thin","color":"E5E5E5"},"border_bottom":{"style":"Thin","color":"E5E5E5"}}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":15,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"Booked","start":6,"end":6,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":15,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"=COUNTA(B5:B14)&\" of 10 hours\"","start":30,"end":30,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":15,"col":2,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"=COUNTA(C5:C14)&\" of 10 hours\"","start":30,"end":30,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":15,"col":3,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"=COUNTA(D5:D14)&\" of 10 hours\"","start":30,"end":30,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":15,"col":4,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"=COUNTA(E5:E14)&\" of 10 hours\"","start":30,"end":30,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":15,"col":5,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"EditCell"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SetEditText":{"text":"=COUNTA(F5:F14)&\" of 10 hours\"","start":30,"end":30,"formula_bar":true}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"CommitEdit":{"advance":null}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectRange":{"range":{"r0":15,"c0":0,"r1":15,"c1":5},"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"font_color":"6B6B6B","font_size":9.0,"h_align":"Center"}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":15,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ApplyFormat":{"format":{"h_align":"Left","bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":4,"col":1,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"FreezePanes"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":0,"col":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":"InsertColumns"}}}
+{"execute":{"doc":1,"cmd":{"Grid":"InsertRows"}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectColumns":{"from":0,"to":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"ColumnWidth":{"chars":2.5}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectRows":{"from":0,"to":0,"extend":false,"add":false}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"RowHeight":{"points":10}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"RenameSheet":{"index":0,"name":"Week 11"}}}}}
+{"execute":{"doc":1,"cmd":{"Grid":{"SelectCell":{"row":1,"col":1,"extend":false,"add":false}}}}}
+{"save":{"doc":1,"path":"target/templates-tmp/Weekly schedule.kgrid","format":"KGrid"}}
+{"save":{"doc":1,"path":"assets/templates/grid/schedule.kgrid","format":"KGrid"}}

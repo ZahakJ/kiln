@@ -1,0 +1,8 @@
+---
+source: crates/kiln-doc-layout/tests/fixtures.rs
+expression: summary(&l)
+---
+pages: 3
+  1 [s1 #1] Paragraph … velit. (416 words)
+  2 [s1 #2] [line … 1234.56 (277 words)
+  3 [s1 #3] Page … paragraph. (5 words)

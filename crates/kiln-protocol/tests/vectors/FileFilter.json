@@ -1,0 +1,19 @@
+{
+  "type": "FileFilter",
+  "format": {
+    "TYPENAME": "FileFilter"
+  },
+  "values": [
+    {
+      "name": "Word Document",
+      "extensions": [
+        "docx",
+        "docm"
+      ]
+    },
+    {
+      "name": "",
+      "extensions": []
+    }
+  ]
+}

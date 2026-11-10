@@ -1,0 +1,12 @@
+{
+  "type": "VersionChange",
+  "format": {
+    "TYPENAME": "VersionChange"
+  },
+  "values": [
+    "Same",
+    "Added",
+    "Removed",
+    "Same"
+  ]
+}

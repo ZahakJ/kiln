@@ -1,0 +1,31 @@
+{
+  "type": "GridDataRange",
+  "format": {
+    "TYPENAME": "GridDataRange"
+  },
+  "values": [
+    {
+      "range": {
+        "r0": 0,
+        "c0": 0,
+        "r1": 20,
+        "c1": 3
+      },
+      "headers": [
+        "Item",
+        "Qty"
+      ],
+      "header": true
+    },
+    {
+      "range": {
+        "r0": 0,
+        "c0": 0,
+        "r1": 0,
+        "c1": 0
+      },
+      "headers": [],
+      "header": false
+    }
+  ]
+}

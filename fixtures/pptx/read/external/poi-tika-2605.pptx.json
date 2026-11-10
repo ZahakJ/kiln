@@ -1,0 +1,181 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 14,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 6"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 3"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 3"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 3"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "ole",
+     "name": "Object 1"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 2"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 3"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 2"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 2"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 3"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 3"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 3"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 3"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "textbox",
+     "name": "TextBox 4",
+     "text": " \u000b\u000b"
+    }
+   ]
+  }
+ ]
+}

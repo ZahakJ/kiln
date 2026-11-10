@@ -1,0 +1,13 @@
+{
+  "name": "carlito_first_line_indent",
+  "font": "Calibri",
+  "size_pt": 12,
+  "width_pt": 400,
+  "alignment": "left",
+  "first_line_pt": 36,
+  "runs": [
+    {
+      "text": "Fidelity is measured, not claimed: every fixture in the corpus is opened, laid out and compared with a reference rendering, and a regression in the number of lines of any paragraph fails the build before it reaches anyone who depends on their documents looking the way they wrote them."
+    }
+  ]
+}

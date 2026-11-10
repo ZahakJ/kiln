@@ -1,0 +1,21 @@
+{
+  "type": "DeckEffect",
+  "format": {
+    "TYPENAME": "DeckEffect"
+  },
+  "values": [
+    "None",
+    {
+      "Glow": {
+        "radius": 8.0
+      }
+    },
+    {
+      "SoftEdges": {
+        "radius": 2.5
+      }
+    },
+    "NoShadow",
+    "None"
+  ]
+}

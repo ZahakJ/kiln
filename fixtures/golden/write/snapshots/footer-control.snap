@@ -1,0 +1,9 @@
+---
+source: crates/kiln-doc-layout/tests/fixtures.rs
+expression: summary(&l)
+---
+pages: 4
+  1 [s1 #1] Incididunt … reprehenderit. (450 words)
+  2 [s1 #2] Enim … commodo (482 words)
+  3 [s1 #3] laboris … cupidatat. (468 words)
+  4 [s1 #4] Labore … ut. (100 words)

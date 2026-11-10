@@ -1,0 +1,12 @@
+{
+  "type": "VersionSlideMark",
+  "format": {
+    "TYPENAME": "VersionSlideMark"
+  },
+  "values": [
+    "Same",
+    "Added",
+    "Changed",
+    "Same"
+  ]
+}

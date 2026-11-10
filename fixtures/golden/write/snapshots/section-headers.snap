@@ -1,0 +1,11 @@
+---
+source: crates/kiln-doc-layout/tests/fixtures.rs
+expression: summary(&l)
+---
+pages: 6
+  1 [s1 #1] Proident … culpa (536 words)
+  2 [s1 #2] quis … velit. (184 words)
+  3 [s2 #3] Nulla … cupidatat (526 words)
+  4 [s2 #4] cupidatat … laboris. (194 words)
+  5 [s3 #5] Cillum … ad (543 words)
+  6 [s3 #6] exercitation … in. (177 words)

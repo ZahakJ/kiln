@@ -1,0 +1,52 @@
+{
+  "type": "GridColumnFilter",
+  "format": {
+    "TYPENAME": "GridColumnFilter"
+  },
+  "values": [
+    {
+      "Top10": {
+        "top": false,
+        "percent": true,
+        "value": 25
+      }
+    },
+    {
+      "Dynamic": {
+        "kind": "ThisMonth"
+      }
+    },
+    {
+      "Color": {
+        "color": "FFEB9C",
+        "font": false
+      }
+    },
+    {
+      "Values": {
+        "values": [
+          ""
+        ],
+        "blanks": false
+      }
+    },
+    {
+      "Custom": {
+        "and": false,
+        "criteria": [
+          {
+            "op": "Equal",
+            "value": ""
+          }
+        ]
+      }
+    },
+    {
+      "Top10": {
+        "top": false,
+        "percent": false,
+        "value": 0
+      }
+    }
+  ]
+}

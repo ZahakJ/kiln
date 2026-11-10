@@ -1,0 +1,50 @@
+[package]
+name = "kiln-bridge-wasm"
+description = "The WebAssembly bridge"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+# The apps this core serves. The web builds one module per app (`cargo xtask wasm`:
+# `--no-default-features --features <app>`) and loads only the one the open document needs
+# (budget B12 per module); every other build, and the native tests, take all of them.
+default = ["write", "grid", "deck"]
+# Kiln Write (.docx, .dotx, .docm, .txt, .md, .html) and the developer scratch document.
+write = []
+# Kiln Grid (.xlsx, .xltx, .xlsm, .csv).
+grid = []
+# Kiln Deck (.pptx, .potx, .pptm).
+deck = []
+# Multi-threaded build (a second artefact, used when the page is cross-origin isolated): exports
+# `initThreadPool` from wasm-bindgen-rayon. Needs a nightly toolchain with `+atomics` to be useful;
+# off by default.
+threads = ["dep:wasm-bindgen-rayon", "kiln-session/parallel"]
+# OpenDocument open and save in the web core. Off: kiln-io-odf takes the release core over its
+# gzipped size budget (B12).
+odf = ["kiln-session/odf"]
+# Check cores (`cargo xtask wasm --journal-check`): every journal write is replayed onto a shadow
+# copy of the workbook and compared, as the native tests do. Never in a release core.
+journal-check = ["kiln-session/journal-check"]
+
+[dependencies]
+kiln-common.workspace = true
+kiln-protocol.workspace = true
+kiln-session = { workspace = true, default-features = false }
+serde.workspace = true
+serde_json.workspace = true
+postcard.workspace = true
+wasm-bindgen.workspace = true
+js-sys.workspace = true
+console_error_panic_hook.workspace = true
+wasm-bindgen-rayon = { workspace = true, optional = true }
+
+[lints]
+workspace = true

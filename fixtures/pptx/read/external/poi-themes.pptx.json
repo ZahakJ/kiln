@@ -1,0 +1,285 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  },
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  },
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  },
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  },
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  },
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  },
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 10,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Standard Office theme"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Subtitle 2",
+     "text": "No subtitle"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 3",
+     "text": "Fill: RGB(79,129,189)\nText: white"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Office theme again"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "With a solid fill defined in the slide layout"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 3",
+     "text": "Radial Gradient Fill On Slide Layout"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 3",
+     "text": "Austin Theme"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 4",
+     "text": "Text in a autoshape is white\nFill: RGB(148, 198,0)"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "This slide overrides master background with a texture fill"
+    },
+    {
+     "kind": "picture",
+     "name": "Picture 3"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 2",
+     "text": "Title slide"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Subtitle 3",
+     "text": "Slide layout turns off graphics from the master slide"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Overridden background"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Subtitle 2",
+     "text": "Slide background overrides slide master.\nAlso, background graphics is suppressed."
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 2",
+     "text": "Treck theme is sandy"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Subtitle 3",
+     "text": "Text in the title is capitalized (in fact it is lower-case)"
+    }
+   ]
+  },
+  {
+   "layout": "Section Header",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 1",
+     "text": "Darker background"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Title 2",
+     "text": "Section header in the treck theme"
+    }
+   ]
+  },
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 3",
+     "text": "Trade show "
+    },
+    {
+     "kind": "placeholder",
+     "name": "Subtitle 4",
+     "text": "White text on a blue background"
+    }
+   ]
+  }
+ ]
+}

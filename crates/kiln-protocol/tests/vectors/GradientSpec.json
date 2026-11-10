@@ -1,0 +1,18 @@
+{
+  "type": "GradientSpec",
+  "format": {
+    "TYPENAME": "GradientSpec"
+  },
+  "values": [
+    {
+      "from": "FFFFFF",
+      "to": "000000",
+      "angle": 45.0
+    },
+    {
+      "from": "",
+      "to": "",
+      "angle": 0.0
+    }
+  ]
+}

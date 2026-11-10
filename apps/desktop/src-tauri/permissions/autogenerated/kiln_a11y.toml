@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-kiln-a11y"
+description = "Enables the kiln_a11y command without any pre-configured scope."
+commands.allow = ["kiln_a11y"]
+
+[[permission]]
+identifier = "deny-kiln-a11y"
+description = "Denies the kiln_a11y command without any pre-configured scope."
+commands.deny = ["kiln_a11y"]

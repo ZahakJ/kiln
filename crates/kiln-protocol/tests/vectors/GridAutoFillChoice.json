@@ -1,0 +1,16 @@
+{
+  "type": "GridAutoFillChoice",
+  "format": {
+    "TYPENAME": "GridAutoFillChoice"
+  },
+  "values": [
+    {
+      "Fill": "Days"
+    },
+    "FlashFill",
+    {
+      "Fill": "Auto"
+    },
+    "FlashFill"
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "type": "GridSparkInfo",
+  "format": {
+    "TYPENAME": "GridSparkInfo"
+  },
+  "values": [
+    {
+      "options": {
+        "kind": "Column",
+        "high": true,
+        "low": false,
+        "first": false,
+        "last": true,
+        "negative": true,
+        "markers": false,
+        "show_axis": true,
+        "line_weight": 0.75,
+        "empty": "Span",
+        "show_hidden": false,
+        "min": "Group",
+        "max": {
+          "Custom": 100.0
+        },
+        "right_to_left": false,
+        "colors": [
+          "376092",
+          "D00000"
+        ]
+      },
+      "data": "A2:E9",
+      "location": "F2:F9",
+      "count": 8
+    },
+    {
+      "options": {
+        "kind": "Line",
+        "high": false,
+        "low": false,
+        "first": false,
+        "last": false,
+        "negative": false,
+        "markers": false,
+        "show_axis": false,
+        "line_weight": 0.0,
+        "empty": "Gap",
+        "show_hidden": false,
+        "min": "Individual",
+        "max": "Individual",
+        "right_to_left": false,
+        "colors": []
+      },
+      "data": "",
+      "location": "",
+      "count": 0
+    }
+  ]
+}

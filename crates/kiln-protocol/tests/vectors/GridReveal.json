@@ -1,0 +1,18 @@
+{
+  "type": "GridReveal",
+  "format": {
+    "TYPENAME": "GridReveal"
+  },
+  "values": [
+    {
+      "seq": 0,
+      "x": 64.0,
+      "y": 0.0
+    },
+    {
+      "seq": 0,
+      "x": 0.0,
+      "y": 0.0
+    }
+  ]
+}

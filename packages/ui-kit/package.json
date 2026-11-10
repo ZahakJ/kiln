@@ -1,0 +1,60 @@
+{
+  "name": "@kiln/ui-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Office-familiar UI building blocks shared by every app.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./stories": "./stories/Gallery.tsx"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "gallery": "vite --config stories/vite.config.ts",
+    "gallery:shots": "node stories/screenshot.mjs",
+    "shots": "node stories/shots.mjs",
+    "chrome:shots": "node stories/chrome-shots.mjs",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@kiln/commands": "workspace:*",
+    "@kiln/i18n": "workspace:*",
+    "@kiln/protocol": "workspace:*",
+    "@kiln/surface": "workspace:*",
+    "@kiln/tokens": "workspace:*",
+    "@radix-ui/react-dialog": "catalog:",
+    "@radix-ui/react-direction": "catalog:",
+    "@radix-ui/react-dropdown-menu": "catalog:",
+    "@radix-ui/react-popover": "catalog:",
+    "@radix-ui/react-select": "catalog:",
+    "@radix-ui/react-tabs": "catalog:",
+    "@radix-ui/react-toolbar": "catalog:",
+    "@radix-ui/react-tooltip": "catalog:",
+    "cmdk": "catalog:",
+    "lucide-react": "catalog:",
+    "react": "catalog:",
+    "react-colorful": "catalog:",
+    "react-dom": "catalog:",
+    "zustand": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@testing-library/dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "jsdom": "catalog:",
+    "playwright": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  }
+}

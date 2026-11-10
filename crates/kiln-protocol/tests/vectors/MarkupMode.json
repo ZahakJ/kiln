@@ -1,0 +1,13 @@
+{
+  "type": "MarkupMode",
+  "format": {
+    "TYPENAME": "MarkupMode"
+  },
+  "values": [
+    "Simple",
+    "All",
+    "None",
+    "Original",
+    "Simple"
+  ]
+}

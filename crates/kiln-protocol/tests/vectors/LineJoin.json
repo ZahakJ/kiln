@@ -1,0 +1,11 @@
+{
+  "type": "LineJoin",
+  "format": {
+    "TYPENAME": "LineJoin"
+  },
+  "values": [
+    "Bevel",
+    "Miter",
+    "Round"
+  ]
+}

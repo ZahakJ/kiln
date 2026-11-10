@@ -1,0 +1,29 @@
+{
+  "type": "GridImportPreview",
+  "format": {
+    "TYPENAME": "GridImportPreview"
+  },
+  "values": [
+    {
+      "rows": [
+        [
+          "a",
+          "b"
+        ]
+      ],
+      "total_rows": 2,
+      "total_cols": 2,
+      "encoding": "utf-8",
+      "delimiter": ",",
+      "warnings": []
+    },
+    {
+      "rows": [],
+      "total_rows": 0,
+      "total_cols": 0,
+      "encoding": "",
+      "delimiter": "",
+      "warnings": []
+    }
+  ]
+}

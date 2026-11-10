@@ -1,0 +1,12 @@
+{
+  "type": "GridLookIn",
+  "format": {
+    "TYPENAME": "GridLookIn"
+  },
+  "values": [
+    "Values",
+    "Notes",
+    "Formulas",
+    "Values"
+  ]
+}

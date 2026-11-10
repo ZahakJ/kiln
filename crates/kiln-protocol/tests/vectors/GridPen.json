@@ -1,0 +1,18 @@
+{
+  "type": "GridPen",
+  "format": {
+    "TYPENAME": "GridPen"
+  },
+  "values": [
+    {
+      "mode": "Grid",
+      "style": "Dashed",
+      "color": "C8352B"
+    },
+    {
+      "mode": "Draw",
+      "style": "None",
+      "color": null
+    }
+  ]
+}

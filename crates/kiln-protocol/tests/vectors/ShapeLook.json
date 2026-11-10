@@ -1,0 +1,32 @@
+{
+  "type": "ShapeLook",
+  "format": {
+    "TYPENAME": "ShapeLook"
+  },
+  "values": [
+    {
+      "fill": null,
+      "outline": "000000",
+      "outline_weight": 2.25,
+      "anchor": "Bottom",
+      "margins": {
+        "left": 0.0,
+        "top": 0.0,
+        "right": 0.0,
+        "bottom": 0.0
+      }
+    },
+    {
+      "fill": null,
+      "outline": null,
+      "outline_weight": 0.0,
+      "anchor": "Top",
+      "margins": {
+        "left": 0.0,
+        "top": 0.0,
+        "right": 0.0,
+        "bottom": 0.0
+      }
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "type": "GridQuery",
+  "format": {
+    "TYPENAME": "GridQuery"
+  },
+  "values": [
+    "State",
+    "CustomLists",
+    {
+      "HitTest": {
+        "x": 120.5,
+        "y": -3.0,
+        "coarse": true
+      }
+    },
+    "FormatCells",
+    {
+      "FormatPreview": {
+        "code": "[Red]0.00"
+      }
+    },
+    {
+      "FormulaHint": {
+        "text": "=IF(A1>2,",
+        "caret": 9
+      }
+    },
+    {
+      "ZoomToSelection": {
+        "width": 1200.0,
+        "height": 700.0
+      }
+    },
+    {
+      "Functions": {
+        "prefix": "SU",
+        "category": "Math & Trig"
+      }
+    },
+    "RecommendedCharts",
+    {
+      "FilterMenu": {
+        "row": 0,
+        "col": 2
+      }
+    },
+    {
+      "ConditionalFormats": {
+        "sheet": true
+      }
+    },
+    "Validation",
+    "TableStyles",
+    "CellStyles",
+    {
+      "FindAll": {
+        "spec": {
+          "text": "glaze",
+          "match_case": false,
+          "whole_cell": false,
+          "look_in": "Formulas",
+          "workbook": false,
+          "by_columns": false
+        }
+      }
+    },
+    "Comments",
+    "PageSetup",
+    "Names",
+    "FormulaTrace",
+    "Errors",
+    {
+      "ImportPreview": {
+        "import": {
+          "bytes": [
+            97,
+            59,
+            98
+          ],
+          "name": "x.csv",
+          "format": "Text",
+          "delimiter": null,
+          "encoding": null,
+          "as_text": false,
+          "at_cell": false,
+          "decimal_comma": false
+        }
+      }
+    },
+    "Spelling",
+    "DataRange",
+    {
+      "Export": {
+        "format": "Tsv",
+        "selection": true
+      }
+    },
+    {
+      "FunctionDoc": {
+        "name": "PMT"
+      }
+    },
+    {
+      "Evaluate": {
+        "formula": "=SUM(A1:A3)"
+      }
+    },
+    {
+      "PivotItems": {
+        "field": 2
+      }
+    },
+    "PivotStyles",
+    "Themes",
+    {
+      "PageMap": {
+        "page": 0
+      }
+    },
+    "State"
+  ]
+}

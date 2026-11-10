@@ -1,0 +1,78 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 9,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Fills, lines and effects"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "solid"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 3",
+     "text": "gradient"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 4",
+     "text": "pattern"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 5",
+     "text": "dash-dot line"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 6",
+     "text": "outer shadow"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 7",
+     "text": "glow"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 8",
+     "text": "reflection"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 9",
+     "text": "soft edge"
+    }
+   ]
+  }
+ ]
+}

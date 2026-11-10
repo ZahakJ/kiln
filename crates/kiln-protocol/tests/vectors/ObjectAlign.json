@@ -1,0 +1,18 @@
+{
+  "type": "ObjectAlign",
+  "format": {
+    "TYPENAME": "ObjectAlign"
+  },
+  "values": [
+    "Left",
+    "Bottom",
+    "DistributeVertically",
+    "Left",
+    "Center",
+    "Right",
+    "Top",
+    "Middle",
+    "Bottom",
+    "DistributeHorizontally"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "GridTableColumn",
+  "format": {
+    "TYPENAME": "GridTableColumn"
+  },
+  "values": [
+    {
+      "name": "Q1",
+      "totals": "Sum",
+      "formula": "=[@Q1]*2"
+    },
+    {
+      "name": "",
+      "totals": "None",
+      "formula": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+.kiln-contextmenu__mini {
+  position: fixed;
+  z-index: var(--kiln-z-menu);
+  transform: translateY(-4px);
+  animation: kiln-mini-in var(--kiln-duration-menu) var(--kiln-ease-out);
+}
+@keyframes kiln-mini-in {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kiln-contextmenu__mini {
+    animation: none;
+  }
+}

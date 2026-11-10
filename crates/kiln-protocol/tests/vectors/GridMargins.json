@@ -1,0 +1,24 @@
+{
+  "type": "GridMargins",
+  "format": {
+    "TYPENAME": "GridMargins"
+  },
+  "values": [
+    {
+      "left": 0.7,
+      "right": 0.7,
+      "top": 0.75,
+      "bottom": 0.75,
+      "header": 0.3,
+      "footer": 0.3
+    },
+    {
+      "left": 0.0,
+      "right": 0.0,
+      "top": 0.0,
+      "bottom": 0.0,
+      "header": 0.0,
+      "footer": 0.0
+    }
+  ]
+}

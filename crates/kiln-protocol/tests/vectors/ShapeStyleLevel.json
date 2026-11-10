@@ -1,0 +1,14 @@
+{
+  "type": "ShapeStyleLevel",
+  "format": {
+    "TYPENAME": "ShapeStyleLevel"
+  },
+  "values": [
+    "Fill",
+    "Intense",
+    "Outline",
+    "Fill",
+    "LightOutline",
+    "Subtle"
+  ]
+}

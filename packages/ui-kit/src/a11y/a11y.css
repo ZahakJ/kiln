@@ -1,0 +1,172 @@
+/* The Accessible text view (TextView.tsx): plain, readable type over the document area. */
+
+.kiln-textview {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  background: var(--kiln-bg);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+}
+
+.kiln-textview__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--kiln-line);
+  background: var(--kiln-panel);
+}
+
+.kiln-textview__title {
+  margin: 0;
+  font-family: var(--kiln-font-display);
+  font-size: var(--kiln-text-lg, 17px);
+  font-weight: 700;
+}
+
+.kiln-textview__hint {
+  flex: 1;
+  min-width: 16ch;
+  margin: 0;
+  color: var(--kiln-fg-muted);
+  font-size: var(--kiln-text-sm);
+}
+
+.kiln-textview__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 24px;
+}
+
+.kiln-textview__doc,
+.kiln-textview__slides {
+  max-width: 76ch;
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.kiln-textview__doc {
+  min-height: 100%;
+  padding: 8px 12px;
+  border-radius: var(--kiln-radius-sm, 6px);
+  caret-color: var(--kiln-fg);
+}
+
+.kiln-textview__doc:focus-visible,
+.kiln-textview__shape:focus-visible,
+.kiln-textview__sheet td:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: 2px;
+}
+
+.kiln-textview :is(h1, h2, h3, h4, h5, h6) {
+  margin: 1.2em 0 0.4em;
+  font-family: var(--kiln-font-display);
+  line-height: 1.25;
+}
+
+.kiln-textview p {
+  margin: 0 0 0.6em;
+}
+
+.kiln-textview__list {
+  margin: 0 0 0.6em;
+  padding-inline-start: 1.5em;
+  list-style: none;
+}
+
+.kiln-textview__label {
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-textview__object:empty::before {
+  content: "\25A1";
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-textview__table {
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+
+.kiln-textview__table :is(td, th) {
+  min-width: 4ch;
+  padding: 4px 8px;
+  border: 1px solid var(--kiln-line);
+  text-align: start;
+  vertical-align: top;
+}
+
+.kiln-textview__table th {
+  background: var(--kiln-panel);
+  font-weight: 600;
+}
+
+.kiln-textview__sheet td {
+  white-space: pre-wrap;
+}
+
+.kiln-textview__input {
+  width: 100%;
+  min-width: 12ch;
+  font: inherit;
+}
+
+.kiln-textview__box,
+.kiln-textview__part,
+.kiln-textview__notes {
+  margin: 0 0 1em;
+  padding: 8px 12px;
+  border-inline-start: 3px solid var(--kiln-line);
+}
+
+.kiln-textview__part::before,
+.kiln-textview__notes::before {
+  content: attr(aria-label);
+  display: block;
+  color: var(--kiln-fg-muted);
+  font-size: var(--kiln-text-sm);
+  font-weight: 600;
+}
+
+.kiln-textview__slide {
+  margin: 0 0 2em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid var(--kiln-line);
+}
+
+.kiln-textview__slide-title {
+  padding: 0 8px;
+}
+
+.kiln-textview__shape {
+  margin: 0 0 0.8em;
+  padding: 4px 8px;
+  border-radius: var(--kiln-radius-sm, 6px);
+}
+
+.kiln-textview__picture::before {
+  content: "\25A3  " attr(aria-label);
+  display: block;
+  margin: 0 0 0.8em;
+  color: var(--kiln-fg-muted);
+}
+
+/* The canvas under the text view takes no keys or pointer. */
+.kiln-appframe__doc[inert] {
+  visibility: hidden;
+}
+
+@media (forced-colors: active) {
+  .kiln-textview__doc:focus-visible,
+  .kiln-textview__shape:focus-visible,
+  .kiln-textview__sheet td:focus-visible {
+    outline-color: Highlight;
+  }
+}

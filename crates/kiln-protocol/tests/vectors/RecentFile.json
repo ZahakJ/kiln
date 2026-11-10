@@ -1,0 +1,32 @@
+{
+  "type": "RecentFile",
+  "format": {
+    "TYPENAME": "RecentFile"
+  },
+  "values": [
+    {
+      "path": "/data/ana/Budget.xlsx",
+      "name": "Budget",
+      "kind": "Grid",
+      "opened_at_ms": 1792000000000,
+      "pinned": true,
+      "thumbnail": null
+    },
+    {
+      "path": "opfs:documents/Plan.kwrite",
+      "name": "Plan",
+      "kind": "Write",
+      "opened_at_ms": 1792000000001,
+      "pinned": false,
+      "thumbnail": "data:image/png;base64,iVBORw0KGgo="
+    },
+    {
+      "path": "",
+      "name": "",
+      "kind": "Scratch",
+      "opened_at_ms": 0,
+      "pinned": false,
+      "thumbnail": null
+    }
+  ]
+}

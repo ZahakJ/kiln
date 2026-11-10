@@ -1,0 +1,12 @@
+{
+  "type": "ChartBlanks",
+  "format": {
+    "TYPENAME": "ChartBlanks"
+  },
+  "values": [
+    "Gap",
+    "Zero",
+    "Span",
+    "Gap"
+  ]
+}

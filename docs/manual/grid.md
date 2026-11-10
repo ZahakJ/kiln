@@ -1,0 +1,236 @@
+# Kiln Grid
+
+Kiln Grid is the spreadsheet of Kiln. It opens and saves Excel workbooks (`.xlsx`, `.xlsm`, `.xltx`,
+`.xltm`). Parts of the file Kiln does not model are copied back byte for byte; the parts it models
+are written again, with your edits. The ribbon, the shortcuts, the formula bar and the dialogs follow
+Excel; the sheet is drawn by Kiln itself.
+
+![Kiln Grid with a household budget: totals, conditional formatting and a bar chart](../media/screenshots/grid-budget-light.png)
+
+## The window
+
+- **Ribbon**: Home, Insert, Page Layout, Formulas, Data, Review and View, with Excel's groups. The
+  dialog launcher ↘ in the corner of Font, Alignment and Number opens Format Cells on that tab.
+- **Formula bar** (under the ribbon): the **name box** shows the active cell or range; type a
+  reference (`B12`, `Sheet2!A1:C3`) or a defined name and press Enter to go there, or pick a name
+  from its list; type a new name (`Totals`) and press Enter to name the selected cells. **✕** and **✓** cancel and enter the cell being edited; **fx** opens Insert
+  Function; the box shows the active cell's formula with each reference in the colour of its outline
+  on the sheet. The arrow at the right expands the bar to several lines (View ▸ Formula Bar hides it).
+- **Sheet**: column letters and row numbers, with the selected ones highlighted. Gridlines and
+  headings are View options (View ▸ Gridlines, Page Layout ▸ Headings).
+- **Sheet tabs** (below the sheet): **+** adds a sheet (Shift+F11); click a tab to show it, double-
+  click to rename it, drag it to reorder. Right-click a tab for Excel's menu: **Insert…** (a
+  worksheet, or a chart sheet of the selection), Delete, Rename, **Move or Copy…** (before the
+  sheet you choose or at the end, with **Create a copy** for a copy), Protect Sheet…, Tab Color,
+  Hide and **Unhide…**. View Code and Select All Sheets are shown but not available.
+- **Status bar**: the mode (Ready, Enter, Edit, Point), and for a selection of several cells the
+  Average, Count and Sum, formatted like the active cell. Right-click it to add Numerical Count,
+  Minimum and Maximum. At the right: the views and the zoom (10 %–400 %, Zoom to Selection).
+
+## Moving and selecting
+
+| To | Press |
+|---|---|
+| Move one cell | the arrow keys |
+| Next / previous cell across | Tab / Shift+Tab |
+| Next / previous cell down | Enter / Shift+Enter |
+| Jump to the edge of the data | Ctrl+arrow (add Shift to extend the selection) |
+| Go to A1 / the last used cell | Ctrl+Home / Ctrl+End |
+| Start of the row | Home |
+| A screen down / up, right / left | Page Down / Page Up, Alt+Page Down / Alt+Page Up |
+| Select the current region, then the whole sheet | Ctrl+A (press again) |
+| Select the row / the column | Shift+Space / Ctrl+Space |
+| Previous / next sheet | Ctrl+Page Up / Ctrl+Page Down |
+| Go To | F5 or Ctrl+G |
+| Extend the selection with the arrow keys or clicks (Extend Selection) | F8 (again to stop) |
+| Add ranges with clicks or the arrow keys (Add or Remove Selection) | Shift+F8 (Esc to stop) |
+
+Click a cell to select it; drag, or Shift+click, to select a range; Ctrl+click adds another range.
+Click a column letter or a row number to select it whole. The status bar names the mode while F8
+or Shift+F8 is on. Inside a selection of several cells,
+Enter and Tab move through it without leaving it. After a run of entries made with Tab, Enter goes
+to the next row under the cell where the run started, as in Excel.
+
+## Entering and editing
+
+Type to replace the active cell's content (**Enter** mode); press **F2**, double-click the cell or
+click in the formula bar to edit it where it is (**Edit** mode). Enter, Tab or a click elsewhere
+keeps the entry; Esc cancels it. Alt+Enter starts a new line in the cell; Ctrl+Enter enters the same
+value in every selected cell; Delete clears the selection's contents.
+
+Kiln reads what you type as Excel does: numbers, percentages, currency, dates and times become
+values with a matching number format; text that would read as a number stays text when it starts
+with an apostrophe (`'0042`). **AutoComplete** finishes a word from the entries above in the same
+column when only one entry matches; Alt+Down shows the list of the column's entries.
+Ctrl+; enters today's date, Ctrl+Shift+; the time. While you edit a cell, bold, italic, underline,
+font, size and colour apply to the characters you have selected, as in Excel.
+
+### Formulas
+
+Start with `=`. While you type a function name, the **autocomplete** list shows the matching
+functions with a description of the highlighted one; Tab inserts it with its opening parenthesis.
+Inside the parentheses a tooltip shows the function's arguments with the current one in bold.
+
+While a formula expects a reference, the arrow keys and clicks **point**: the reference goes into
+the formula, and Shift extends it to a range (**Point** mode). Each reference in a formula is
+outlined on the sheet in its own colour. F4 cycles the reference at the caret through `$A$1`, `A$1`,
+`$A1` and `A1`. Enter closes the parentheses you left open. Ctrl+Shift+Enter enters a legacy array
+formula over the selection, shown as `{=…}`. **Alt+=** (AutoSum) sums the numbers above or to the left. Formulas ▸ Calculate Now (F9)
+recalculates the workbook, Show Formulas (Ctrl+`) shows formulas instead of their results.
+
+### The fill handle
+
+Drag the small square at the corner of the selection to fill: numbers and dates continue their
+series (1, 2 → 3, 4, 5), text with a number counts on (Item 1 → Item 2), lists such as weekdays and
+months follow, and formulas adjust their relative references. Ctrl+D fills down and Ctrl+R fills
+right from the first row or column of the selection; Home ▸ Fill also fills up and left.
+
+After a drag, the **Auto Fill Options** button at the corner of the filled cells changes what the
+fill did: Copy Cells, Fill Series, Fill Formatting Only, Fill Without Formatting, Flash Fill, and the
+day, weekday, month and year steps of a date. **Home ▸ Fill ▸ Series…** fills a series to a step and a
+stop value (linear, growth, dates by day, weekday, month or year, AutoFill, trend). **Home ▸ Fill ▸
+Edit Custom Lists…** adds lists of your own (Kiln keeps them for you, in this browser or app) that
+the fill handle continues like the weekdays.
+
+### Errors in cells
+
+A cell whose formula returns an error, or that holds a number stored as text, shows a small
+triangle in its top-left corner. Select it and click the button beside it: the menu names the
+error and offers **Help on this Error**, **Show Calculation Steps…**, **Ignore Error** (the triangle
+goes and stays gone in the saved file), **Edit in Formula Bar**, **Error Checking…** and, for a
+number stored as text, **Convert to Number**.
+
+### Moving cells by dragging
+
+Point at the border of the selection until the pointer shows arrows, then drag it: the cells move
+and formulas that refer to them follow. Hold Ctrl to copy instead, or Shift to insert the cells
+between others. Kiln asks before the cells replace data.
+
+## Rows, columns and sheets
+
+Drag the border between two column letters (or row numbers) to resize; double-click it to fit the
+content. Home ▸ Format sets an exact Row Height or Column Width, AutoFits, hides and unhides; Home ▸
+Insert and Delete insert or delete cells (shifting the others), whole rows, whole columns or sheets.
+Ctrl+Shift+= and Ctrl+- insert and delete; Ctrl+9 / Ctrl+0 hide rows / columns, Ctrl+Shift+9 /
+Ctrl+Shift+0 unhide them. A column you have not sized widens to fit a date, time or formatted number
+you enter (Ctrl+;, `$1,234.50`), so it shows its value instead of `#####`.
+
+**Freeze panes** (View ▸ Freeze Panes) keeps the rows above and the columns left of the active cell
+in view while the rest scrolls; Freeze Top Row and Freeze First Column are the usual cases. Choose
+Freeze Panes again to unfreeze. **Split** divides the view at the active cell; in this version the
+parts above and left of the split stay put while the rest scrolls, like frozen panes. The zoom (status bar,
+Ctrl+wheel, View ▸ Zoom to Selection) is kept with the sheet.
+
+**Right-to-left sheets.** Page Layout ▸ Sheet Right-to-Left (Alt, P, SR) turns the sheet round, as in
+Excel: column A is at the right, the row numbers and the corner are at the right edge, columns run
+to the left and frozen columns stay at the right. Cells are mirrored too: text with General
+alignment sits at the right of its cell and numbers at the left, the fill handle is at the bottom-left
+corner of the selection, note and comment indicators are at the top-left corner, a cell's left
+border is drawn on its right side, and data bars grow from the right. Align Left and Align Right
+keep their sides. Text, icons, sparklines and charts are not mirrored, so Arabic and Latin text read
+as usual. The arrow keys follow the screen: Right moves towards column A, Left away from it; Tab
+still moves to the next column. The vertical scroll bar is at the left. The setting is saved with
+the sheet (`rightToLeft` in the file) and applies to the active sheet only.
+
+## The clipboard
+
+Copy (Ctrl+C) and Cut (Ctrl+X) mark the copied range with a moving border; Esc removes it. Paste
+(Ctrl+V) pastes everything: values, formulas with their references adjusted, formats, merges and row
+heights. Content from other applications pastes as text, split on tabs and lines (HTML tables keep
+their cells). When the browser does not let Kiln use the system clipboard, Ctrl+C and Ctrl+V still
+copy and paste within Kiln Grid. **Home ▸ Paste ▾** has Paste Values (Ctrl+Shift+V), Formulas, Formatting and Transpose;
+**Paste Special…** (Ctrl+Alt+V) chooses what to paste (all, formulas, values, formats, comments and
+notes, validation, all except borders, column widths, formulas and number formats, values and
+number formats), an operation (add, subtract, multiply, divide), Skip blanks and Transpose; **Paste
+Link** pastes formulas that refer to the copied cells. Ctrl+V also carries data validation and
+comments.
+
+## Right-click menus and the mini toolbar
+
+Right-click a cell, a row number, a column letter, a sheet tab, a chart or an object for Excel's
+menu of that thing; Shift+F10 or the Menu key opens it from the keyboard. The cell menu has the
+clipboard and its paste options, Insert…, Delete…, Clear Contents, Filter and Sort by the selected
+cell's value or colour, comments and notes, Format Cells…, Pick From Drop-down List…, Define Name…
+and Link. Above the menu (below it, when the menu opens upwards) the **mini toolbar** has the Home
+tab's font, size, bold, italic, alignment, colours, borders, merge and number buttons. A button,
+a pick from one of its lists, or a font or size typed and Enter applies to the selection, closes
+the menu and the toolbar and gives the sheet the keys, so you can type straight on. A menu taller than the room below or above the
+pointer moves up to fit the window.
+
+## Formatting cells
+
+The Home tab formats the selection: font and size, bold (Ctrl+B), italic (Ctrl+I), underline
+(Ctrl+U), strikethrough, font colour, fill colour, borders (with the line style and colour of the
+Borders menu), alignment (top, middle, bottom, left, centre, right), indent, orientation, **Wrap
+Text** and **Merge & Center** (with Merge Across, Merge Cells and Unmerge). The Number group sets the
+number format (General, Number, Currency, Accounting, Short and Long Date, Time, Percentage,
+Fraction, Scientific, Text) and adds or removes decimals; Ctrl+Shift+1 / 4 / 5 apply Number,
+Currency and Percent; Ctrl+Shift+& draws an outline border and Ctrl+Shift+_ removes the borders.
+
+**Home ▸ Borders ▸ Draw Border** turns the pointer into a pen: click a cell edge to draw it, or drag
+to draw the outline of the cells; **Draw Border Grid** draws every edge of the cells dragged over,
+and **Erase Border** removes them. Line Color and Line Style set the pen. Esc puts it away.
+
+**Format Cells** (Ctrl+1, or the ↘ launchers) has Excel's six tabs:
+
+- **Number**: the categories with their formats, a **Type** box for any custom format code, and a
+  **Sample** of the active cell in the chosen format.
+- **Alignment**: horizontal (including Fill, Justify, Center Across Selection and Distributed) with
+  the indent, vertical, Wrap text, Shrink to fit, Merge cells, and the text orientation in degrees or
+  vertical text.
+- **Font**: font, style, size, underline (single, double, accounting), strikethrough, superscript,
+  subscript, colour, with a preview.
+- **Border**: a line style and colour, then the presets (None, Outline, Inside) or each edge,
+  inside line and diagonal on the preview.
+- **Fill**: the background colour, the pattern style and pattern colour.
+- **Protection**: Locked and Hidden (they apply once the sheet is protected).
+
+## Charts
+
+- **Insert a chart**: select the data (or one cell inside it: Kiln takes the whole block around
+  it), then **Insert ▸ Chart** for the chart that suits the data best, **Recommended Charts** to
+  choose among the best ones, or a type button (Column, Line, Pie, Scatter, Hierarchy, Combo).
+  **Chart Design ▸ Change Chart Type** turns a chart into any type, the histogram, Pareto, box and
+  whisker, waterfall and funnel charts among them (see [Charts](charts.md)). The
+  chart appears in the middle of the window, selected. Text in the first row and column becomes the
+  series names and the categories.
+- **Select, move and resize**: click a chart to select it; drag it to move it, drag one of its
+  eight handles to resize it. It moves and sizes with the cells under it, so inserting rows above
+  moves it down. Click a cell or press Esc to go back to the cells; **Delete** removes the
+  selected chart.
+- **Chart Design** (shown while a chart is selected): Add Chart Element, Quick Layout, Change
+  Colors, Chart Styles, **Switch Row/Column**, **Select Data**, **Change Chart Type** and **Move
+  Chart** (to another sheet, or to a chart sheet of its own). A new chart is selected and Chart
+  Design shows. A chart sheet is zoomed to fit the window, and again when the window changes size,
+  until you choose a zoom there yourself.
+- **Format**: **Format Selection** opens the Format Chart Area pane at the right: the chart title,
+  each series' fill, line and width and its axis, and the axes' minimum, maximum, unit, scale and
+  number format. Shape Fill and Shape Outline colour a series.
+- Charts follow their cells: change a value and the chart changes with it. Every chart edit is one
+  step of Undo. Charts are drawn in the app's light or dark theme on screen and saved with the
+  workbook's own colours; Kiln keeps the charts of the files it opens and writes the ones you add
+  or change into the `.xlsx` (Excel opens them as its own charts).
+
+## Macros
+
+A workbook with macros (`.xlsm`) opens with its VBA project kept as it is; **View ▸ Macros** explains
+that Kiln keeps macros but never runs them. **File ▸ Save As ▸ Excel Macro-Enabled Workbook** saves
+them with the workbook; saving as `.xlsx` asks first, as Excel does, and leaves them out.
+
+## Find and Go To
+
+Ctrl+F opens the find bar over the sheet: Enter finds the next cell containing the text, Shift+Enter
+the previous one; the options match case, the entire cell, and look in formulas instead of values.
+F5 or Ctrl+G opens Go To: pick a defined name or type a reference.
+
+## Undo
+
+Every change can be undone (Ctrl+Z) and redone (Ctrl+Y or Ctrl+Shift+Z), in Excel's steps: one entry,
+one paste, one formatting command, one fill. Undo while typing an entry discards the entry.
+
+## Accessibility
+
+The sheet is a grid for screen readers: moving announces the cell's address, its value and its
+formula. Every command has a keyboard path (the shortcuts above, Key Tips with Alt, the command
+search with Alt+Q). The sheet follows the light and dark themes; cell colours set in the file are
+kept, automatic colours follow the theme.

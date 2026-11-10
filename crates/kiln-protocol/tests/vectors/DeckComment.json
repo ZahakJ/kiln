@@ -1,0 +1,43 @@
+{
+  "type": "DeckComment",
+  "format": {
+    "TYPENAME": "DeckComment"
+  },
+  "values": [
+    {
+      "id": 40,
+      "author": "Zoë Okafor",
+      "initials": "ZO",
+      "date": "2026-10-22T09:30:00Z",
+      "text": "Can we show last year here?",
+      "resolved": false,
+      "shape": 12,
+      "shape_name": "Title 1",
+      "x": 1020.0,
+      "y": 64.0,
+      "color": "C44D27",
+      "replies": [
+        {
+          "id": 41,
+          "author": "Sam Price",
+          "date": "2026-10-22T10:02:00Z",
+          "text": "Added it."
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "author": "",
+      "initials": "",
+      "date": "",
+      "text": "",
+      "resolved": false,
+      "shape": null,
+      "shape_name": null,
+      "x": 0.0,
+      "y": 0.0,
+      "color": "",
+      "replies": []
+    }
+  ]
+}

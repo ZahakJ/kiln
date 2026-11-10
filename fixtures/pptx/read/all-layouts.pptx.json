@@ -1,0 +1,227 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 11,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Minim adipiscing enim aute duis dolor."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Subtitle 2",
+     "text": "Esse anim ut sed et exercitation."
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Velit consequat laboris amet esse eiusmod."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Eiusmod velit in cupidatat lorem dolor."
+    }
+   ]
+  },
+  {
+   "layout": "Section Header",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "In sunt deserunt excepteur veniam labore."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 2",
+     "text": "Ut culpa ex quis commodo reprehenderit."
+    }
+   ]
+  },
+  {
+   "layout": "Two Content",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Dolore nisi qui commodo adipiscing sed."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Dolor pariatur ullamco velit ea sed."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 3",
+     "text": "Dolore dolor occaecat aliquip eiusmod in."
+    }
+   ]
+  },
+  {
+   "layout": "Comparison",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Officia officia in ullamco ad ea."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 2",
+     "text": "Dolor dolor eiusmod et duis sed."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 3",
+     "text": "Nulla dolore enim culpa pariatur ipsum."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 4",
+     "text": "Ut magna labore aute sunt pariatur."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 5",
+     "text": "Officia culpa sint lorem amet ut."
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Ea ea quis enim ad incididunt."
+    }
+   ]
+  },
+  {
+   "layout": "Blank",
+   "notes": null,
+   "shape_count": 0,
+   "shapes": []
+  },
+  {
+   "layout": "Content with Caption",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Velit eu aliqua irure nulla in."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Aliquip esse quis duis sint in."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 3",
+     "text": "Nulla do sed dolor amet ex."
+    }
+   ]
+  },
+  {
+   "layout": "Picture with Caption",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Minim enim aliquip aute incididunt et."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Picture Placeholder 2",
+     "text": "Enim lorem laboris aute adipiscing elit."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 3",
+     "text": "Id velit eu nisi incididunt nulla."
+    }
+   ]
+  },
+  {
+   "layout": "Title and Vertical Text",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Laborum non quis cillum dolore ipsum."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Vertical Text Placeholder 2",
+     "text": "Ut deserunt laboris dolor sed amet."
+    }
+   ]
+  },
+  {
+   "layout": "Vertical Title and Text",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Vertical Title 1",
+     "text": "Ut culpa duis commodo culpa mollit."
+    },
+    {
+     "kind": "placeholder",
+     "name": "Vertical Text Placeholder 2",
+     "text": "Ad ut est commodo amet in."
+    }
+   ]
+  }
+ ]
+}

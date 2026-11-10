@@ -1,0 +1,13 @@
+{
+  "type": "GridSparkAxis",
+  "format": {
+    "TYPENAME": "GridSparkAxis"
+  },
+  "values": [
+    "Individual",
+    {
+      "Custom": -2.5
+    },
+    "Individual"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "DeckShowMode",
+  "format": {
+    "TYPENAME": "DeckShowMode"
+  },
+  "values": [
+    "Show",
+    "PreviewAnimations",
+    "Show",
+    "Rehearse",
+    "PreviewTransition"
+  ]
+}

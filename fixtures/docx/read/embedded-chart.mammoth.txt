@@ -1,0 +1,4 @@
+A column chart follows, with its cached values only.
+
+
+

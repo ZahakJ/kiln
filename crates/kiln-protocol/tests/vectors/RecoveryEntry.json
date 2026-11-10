@@ -1,0 +1,35 @@
+{
+  "type": "RecoveryEntry",
+  "format": {
+    "TYPENAME": "RecoveryEntry"
+  },
+  "values": [
+    {
+      "key": "k1x9",
+      "kind": "Write",
+      "title": "Document1",
+      "path": null,
+      "format": null,
+      "saved_at_ms": 1792000000000,
+      "problem": null
+    },
+    {
+      "key": "k2",
+      "kind": "Grid",
+      "title": "Budget",
+      "path": "/data/ana/Budget.xlsx",
+      "format": "Xlsx",
+      "saved_at_ms": 1792000000500,
+      "problem": "written by a newer version of Kiln"
+    },
+    {
+      "key": "",
+      "kind": "Scratch",
+      "title": "",
+      "path": null,
+      "format": null,
+      "saved_at_ms": 0,
+      "problem": null
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "GridSeriesType",
+  "format": {
+    "TYPENAME": "GridSeriesType"
+  },
+  "values": [
+    "Linear",
+    "AutoFill",
+    "Linear",
+    "Growth"
+  ]
+}

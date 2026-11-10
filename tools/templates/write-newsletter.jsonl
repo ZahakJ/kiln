@@ -1,0 +1,67 @@
+{"new":{"kind":"write"}}
+{"execute":{"doc":1,"cmd":{"Write":{"PageSetup":{"setup":{"width":595.3,"height":841.9,"top":48,"bottom":56,"left":56,"right":56,"header":36,"footer":36}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Normal","spec":{"font":{"underline_none":false,"family":"Carlito","size":10.5,"color":"262626"},"paragraph":{"space_after":6,"line_multiple":1.15}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Title","spec":{"font":{"underline_none":false,"family":"Caladea","size":30,"color":"1F6F5C","bold":false},"paragraph":{"space_after":4,"line_multiple":1.0}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Subtitle","spec":{"font":{"underline_none":false,"family":"Carlito","size":12.5,"color":"6B6B6B","italic":false},"paragraph":{"space_after":18}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading1","spec":{"font":{"underline_none":false,"family":"Caladea","size":17,"color":"1F6F5C","bold":false},"paragraph":{"space_before":18,"space_after":6,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading2","spec":{"font":{"underline_none":false,"family":"Carlito","size":12.0,"color":"262626","bold":true},"paragraph":{"space_before":12,"space_after":4,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ModifyStyle":{"style_id":"Heading3","spec":{"font":{"underline_none":false,"family":"Carlito","size":10.5,"color":"1F6F5C","bold":true},"paragraph":{"space_before":10,"space_after":2,"keep_next":true}}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"PasteMarkdown":{"text":"THE ALLOTMENT\n\nNews from Hollins Lane Community Garden · Spring 2026 · Issue 18\n\n# Seed swap returns on 21 March\n\nOur spring seed swap is back in the polytunnel from 10 am to 1 pm. Bring spare seeds in labelled envelopes and take home something new. Last year more than ninety varieties changed hands, from purple carrots to heritage beans. Tea and Margaret's famous flapjacks will be served all morning.\n\n# New raised beds for wheelchair users\n\nThanks to a grant from the Riverside Community Fund, six new waist-height beds now line the path by the shed. They are open to every member; to book one for the season, add your name to the list on the noticeboard.\n\n| This season's work days |  |\n|---|---|\n| 7 March | Clearing the orchard and mulching fruit trees |\n| 4 April | Building the new compost bays |\n| 2 May | Planting out the shared herb garden |\n| 6 June | Pond clean and wildflower survey |\n\n# From the plot: early potatoes\n\nChit your seed potatoes now in egg boxes on a cool, bright windowsill. Plant them out in late March, 30 cm apart, and earth them up as the shoots appear. Charlotte and Rocket both do well on our heavy soil and should be ready to lift by late June.\n\n# Welcome to our new members\n\nA warm welcome to the Asante family, who have taken on plot 14, and to the pupils of Hollins Primary, whose gardening club now meets on Wednesday afternoons.\n\n# Bees on the east boundary\n\nTwo hives arrived in October and came through the winter strong. Our beekeeper, Joe Nwosu, asks members to keep the gate by the hives closed and to leave the clover along the boundary uncut until July. Honey from the first harvest will be sold at the summer fair, with every penny going back into the garden.\n\n# Committee news\n\nAt the AGM in January, members elected Ruth Kaplan as chair and Dev Malhotra as treasurer. The committee meets on the first Monday of each month in the shed; minutes are posted on the noticeboard and every member is welcome to attend.\n\n> “The garden gave me somewhere to be when I needed it most. Now I come for the people.” — Lorna, plot 9\n\nMembership is £24 a year · hollinslanegarden.example · Find us behind the library on Hollins Lane\n"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"THE ALLOTMENT"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"family":"Caladea","size":40,"color":"FFFFFF","spacing":4}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ParagraphShading":{"color":"1F6F5C"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":0,"space_before":0,"line_multiple":1.0}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"News from Hollins Lane"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9.5,"color":"FFFFFF","spacing":0.5}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ParagraphShading":{"color":"1F6F5C"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_after":12}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"This season's work days"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableStyle":{"style":"PlainTable1"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"This season's work days"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"TableSelect":{"what":"Row"}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"TableShading":{"color":"1F6F5C"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"color":"FFFFFF","bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Seed swap returns"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SectionBreak":{"kind":"Continuous"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"Columns":{"count":2}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Seed swap returns"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":0}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"“The garden gave me"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"ParagraphForward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"Backward","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"family":"Caladea","size":13,"italic":true,"color":"1F6F5C"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":10,"space_after":10,"indent_left":0}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"FindNext":{"query":{"match_case":true,"whole_word":false,"wildcards":false,"regex":false,"text":"Membership is £24"},"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"LineStart","extend":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentEnd","extend":true}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetFont":{"format":{"underline_none":false,"size":9,"color":"1F6F5C","bold":true}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"ParagraphBorders":{"preset":"Top"}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetParagraph":{"format":{"space_before":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SpellCheck":{"on":false}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"SetProperties":{"props":{"title":"Community newsletter","author":"Hollins Lane Community Garden"}}}}}}
+{"execute":{"doc":1,"cmd":{"Write":{"MoveCaret":{"motion":"DocumentStart","extend":false}}}}}
+{"save":{"doc":1,"path":"target/templates-tmp/Newsletter.kwrite","format":"KWrite"}}
+{"save":{"doc":1,"path":"assets/templates/write/newsletter.kwrite","format":"KWrite"}}
+{"render": {"doc": 1, "png": "assets/templates/write/newsletter.png", "page": 1, "dpi": 48}}

@@ -1,0 +1,18 @@
+{
+  "type": "ChartLabelPosition",
+  "format": {
+    "TYPENAME": "ChartLabelPosition"
+  },
+  "values": [
+    "Center",
+    "InsideEnd",
+    "InsideBase",
+    "OutsideEnd",
+    "BestFit",
+    "Left",
+    "Right",
+    "Above",
+    "Below",
+    "Center"
+  ]
+}

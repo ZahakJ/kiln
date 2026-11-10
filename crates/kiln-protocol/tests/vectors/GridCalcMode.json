@@ -1,0 +1,11 @@
+{
+  "type": "GridCalcMode",
+  "format": {
+    "TYPENAME": "GridCalcMode"
+  },
+  "values": [
+    "Automatic",
+    "AutomaticExceptTables",
+    "Automatic"
+  ]
+}

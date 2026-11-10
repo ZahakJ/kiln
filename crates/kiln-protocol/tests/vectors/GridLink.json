@@ -1,0 +1,20 @@
+{
+  "type": "GridLink",
+  "format": {
+    "TYPENAME": "GridLink"
+  },
+  "values": [
+    {
+      "target": "",
+      "location": "'Sheet 2'!A1",
+      "display": "",
+      "tooltip": "Totals"
+    },
+    {
+      "target": "",
+      "location": "",
+      "display": "",
+      "tooltip": ""
+    }
+  ]
+}

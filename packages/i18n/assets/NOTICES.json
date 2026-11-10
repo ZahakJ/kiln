@@ -1,0 +1,17 @@
+{
+  "assets": [
+    {
+      "name": "Noto Sans Arabic (interface text in Arabic)",
+      "version": "Noto release 2026.08.01 (Noto Sans Arabic 2.013)",
+      "license": "OFL-1.1",
+      "author": "The Noto Project Authors; Google LLC",
+      "homepage": "https://github.com/notofonts/arabic",
+      "files": [
+        "../../../assets/fonts/noto/NotoSansArabic-Regular.ttf",
+        "../../../assets/fonts/noto/NotoSansArabic-Medium.ttf",
+        "../../../assets/fonts/noto/NotoSansArabic-Bold.ttf"
+      ],
+      "licenseFile": "../../../assets/fonts/noto/OFL.txt"
+    }
+  ]
+}

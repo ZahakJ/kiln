@@ -1,0 +1,54 @@
+{
+  "type": "GridPivotFieldSettings",
+  "format": {
+    "TYPENAME": "GridPivotFieldSettings"
+  },
+  "values": [
+    {
+      "caption": "Area",
+      "subtotals": {
+        "Custom": [
+          "Max"
+        ]
+      },
+      "sort": "Descending",
+      "sort_by_value": 0,
+      "hidden": [
+        "(blank)"
+      ],
+      "label_filter": {
+        "op": "BeginsWith",
+        "value": "E",
+        "value2": ""
+      },
+      "value_filter": {
+        "value": 0,
+        "top": [
+          10,
+          false
+        ],
+        "op": "GreaterThan",
+        "a": 0.0,
+        "b": 0.0
+      }
+    },
+    {
+      "caption": null,
+      "subtotals": "Automatic",
+      "sort": "Ascending",
+      "sort_by_value": null,
+      "hidden": [],
+      "label_filter": null,
+      "value_filter": null
+    },
+    {
+      "caption": null,
+      "subtotals": "Automatic",
+      "sort": "Ascending",
+      "sort_by_value": null,
+      "hidden": [],
+      "label_filter": null,
+      "value_filter": null
+    }
+  ]
+}

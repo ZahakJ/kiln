@@ -1,0 +1,13 @@
+{
+  "type": "SlideLayout",
+  "format": {
+    "TYPENAME": "SlideLayout"
+  },
+  "values": [
+    "FullPage",
+    "NotesPages",
+    "Outline",
+    "Handouts",
+    "FullPage"
+  ]
+}

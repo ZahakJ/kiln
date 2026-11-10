@@ -1,0 +1,28 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "autoshape",
+     "name": "Téglalap 1",
+     "text": ""
+    }
+   ]
+  }
+ ]
+}

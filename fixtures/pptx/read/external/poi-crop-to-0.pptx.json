@@ -1,0 +1,49 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Default"
+   ]
+  }
+ ],
+ "slide_count": 3,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Default",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 4"
+    }
+   ]
+  },
+  {
+   "layout": "Default",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 1"
+    }
+   ]
+  },
+  {
+   "layout": "Default",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 2"
+    }
+   ]
+  }
+ ]
+}

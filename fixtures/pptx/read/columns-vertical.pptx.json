@@ -1,0 +1,53 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Columns and vertical text"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 2",
+     "text": "Lorem nisi fugiat ex cupidatat aliquip sed adipiscing eu laborum tempor irure minim in amet nisi reprehenderit duis dolor commodo aute consectetur excepteur sunt et amet dolore deserunt sint duis id exercitation eiusmod deserunt qui do minim aliquip sed non magna irure ipsum ullamco sint nulla eu qui eu lorem ut enim tempor ex culpa nostrud do minim nostrud veniam eiusmod aute commodo esse ullamco enim sed excepteur culpa esse culpa enim duis excepteur eiusmod ipsum ex sunt occaecat enim commodo ipsum in ut lorem in in veniam voluptate lorem consectetur consequat cupidatat sunt laborum in anim deserunt excepteur ipsum minim sunt nostrud magna voluptate irure eiusmod est esse in cupidatat excepteur et veniam anim do mollit non exercitation velit dolor in laboris elit ut sunt nisi et dolor deserunt magna magna et ut non lorem do enim ipsum excepteur consectetur anim dolor id excepteur voluptate ut aliquip mollit tempor."
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 3",
+     "text": "Rotated ninety"
+    },
+    {
+     "kind": "textbox",
+     "name": "TextBox 4",
+     "text": "Rotated back"
+    }
+   ]
+  }
+ ]
+}

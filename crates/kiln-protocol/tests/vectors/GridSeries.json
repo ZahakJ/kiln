@@ -1,0 +1,24 @@
+{
+  "type": "GridSeries",
+  "format": {
+    "TYPENAME": "GridSeries"
+  },
+  "values": [
+    {
+      "columns": true,
+      "kind": "Date",
+      "unit": "Month",
+      "step": 2.0,
+      "stop": 46000.0,
+      "trend": false
+    },
+    {
+      "columns": null,
+      "kind": "Linear",
+      "unit": "Day",
+      "step": 0.0,
+      "stop": null,
+      "trend": false
+    }
+  ]
+}

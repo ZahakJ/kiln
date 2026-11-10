@@ -1,0 +1,13 @@
+{
+  "type": "PrintMargins",
+  "format": {
+    "TYPENAME": "PrintMargins"
+  },
+  "values": [
+    "Normal",
+    "Narrow",
+    "Moderate",
+    "Wide",
+    "Normal"
+  ]
+}

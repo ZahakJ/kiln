@@ -1,0 +1,12 @@
+{
+  "type": "DeckShowType",
+  "format": {
+    "TYPENAME": "DeckShowType"
+  },
+  "values": [
+    "Speaker",
+    "Window",
+    "Speaker",
+    "Window"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "GridFilterItem",
+  "format": {
+    "TYPENAME": "GridFilterItem"
+  },
+  "values": [
+    {
+      "text": "Clay",
+      "checked": true,
+      "date": null
+    },
+    {
+      "text": "",
+      "checked": false,
+      "date": null
+    }
+  ]
+}

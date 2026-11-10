@@ -1,0 +1,11 @@
+{
+  "type": "GridErrorRule",
+  "format": {
+    "TYPENAME": "GridErrorRule"
+  },
+  "values": [
+    "ErrorValue",
+    "NumberAsText",
+    "ErrorValue"
+  ]
+}

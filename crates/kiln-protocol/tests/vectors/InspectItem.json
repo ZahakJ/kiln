@@ -1,0 +1,16 @@
+{
+  "type": "InspectItem",
+  "format": {
+    "TYPENAME": "InspectItem"
+  },
+  "values": [
+    {
+      "kind": "Revisions",
+      "count": 12
+    },
+    {
+      "kind": "Comments",
+      "count": 0
+    }
+  ]
+}

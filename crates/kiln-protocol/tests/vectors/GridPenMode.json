@@ -1,0 +1,11 @@
+{
+  "type": "GridPenMode",
+  "format": {
+    "TYPENAME": "GridPenMode"
+  },
+  "values": [
+    "Draw",
+    "Erase",
+    "Draw"
+  ]
+}

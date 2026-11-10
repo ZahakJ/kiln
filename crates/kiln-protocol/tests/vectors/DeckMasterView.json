@@ -1,0 +1,37 @@
+{
+  "type": "DeckMasterView",
+  "format": {
+    "TYPENAME": "DeckMasterView"
+  },
+  "values": [
+    {
+      "items": [
+        {
+          "id": 2,
+          "name": "Kiln",
+          "master": true,
+          "preserved": true,
+          "used": 4,
+          "version": 7
+        },
+        {
+          "id": 3,
+          "name": "Title Slide",
+          "master": false,
+          "preserved": false,
+          "used": 1,
+          "version": 9
+        }
+      ],
+      "current": 3,
+      "title": true,
+      "footers": false
+    },
+    {
+      "items": [],
+      "current": 0,
+      "title": false,
+      "footers": false
+    }
+  ]
+}

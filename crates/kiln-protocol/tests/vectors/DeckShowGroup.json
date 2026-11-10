@@ -1,0 +1,122 @@
+{
+  "type": "DeckShowGroup",
+  "format": {
+    "TYPENAME": "DeckShowGroup"
+  },
+  "values": [
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "opacity": 1.0,
+      "clip": null,
+      "ramp": null,
+      "layers": [
+        {
+          "tile": {
+            "layer": 0,
+            "index": 2049
+          },
+          "fill": null,
+          "matrix": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -640.0,
+            0.0
+          ],
+          "opacity": 0.5,
+          "clip": {
+            "verbs": [
+              0,
+              1,
+              1,
+              1,
+              4
+            ],
+            "coords": [
+              0.0,
+              0.0,
+              320.0,
+              0.0,
+              320.0,
+              720.0,
+              0.0,
+              720.0
+            ]
+          },
+          "ramp": {
+            "from": [
+              640.0,
+              360.0
+            ],
+            "to": [
+              793.6,
+              360.0
+            ],
+            "stops": [
+              [
+                0.0,
+                1.0
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ]
+          }
+        },
+        {
+          "tile": null,
+          "fill": {
+            "Rgba": 255
+          },
+          "matrix": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          "opacity": 1.0,
+          "clip": null,
+          "ramp": null
+        }
+      ]
+    },
+    {
+      "matrix": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "opacity": 0.0,
+      "clip": {
+        "verbs": [],
+        "coords": []
+      },
+      "ramp": {
+        "from": [
+          0.0,
+          0.0
+        ],
+        "to": [
+          0.0,
+          0.0
+        ],
+        "stops": []
+      },
+      "layers": []
+    }
+  ]
+}

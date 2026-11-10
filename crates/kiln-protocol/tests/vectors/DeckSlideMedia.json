@@ -1,0 +1,35 @@
+{
+  "type": "DeckSlideMedia",
+  "format": {
+    "TYPENAME": "DeckSlideMedia"
+  },
+  "values": [
+    {
+      "slide": 2,
+      "width": 1280.0,
+      "height": 720.0,
+      "items": [
+        {
+          "shape": 30,
+          "kind": "Video",
+          "part": "/ppt/media/media1.mp4",
+          "mime": "video/mp4",
+          "rect": {
+            "x": 320.0,
+            "y": 180.0,
+            "width": 640.0,
+            "height": 360.0
+          },
+          "trim_start_ms": 0,
+          "trim_end_ms": 1500
+        }
+      ]
+    },
+    {
+      "slide": 0,
+      "width": 0.0,
+      "height": 0.0,
+      "items": []
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+Inline images
+
+A PNG at 8 cm wide:
+
+
+
+A JPEG at 5 cm wide:
+
+
+
+Images inline with text:  between words  end.
+

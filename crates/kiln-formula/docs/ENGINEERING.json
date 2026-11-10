@@ -1,0 +1,1325 @@
+[
+  {
+    "name": "BESSELI",
+    "category": "Engineering",
+    "summary": "Returns the modified Bessel function In(x).",
+    "syntax": "BESSELI(x, n)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the function."
+      },
+      {
+        "name": "n",
+        "description": "The order of the function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BESSELI(1.5,1)",
+        "result": "0.981666"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "BESSELJ",
+    "category": "Engineering",
+    "summary": "Returns the Bessel function Jn(x).",
+    "syntax": "BESSELJ(x, n)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the function."
+      },
+      {
+        "name": "n",
+        "description": "The order of the function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BESSELJ(1.9,2)",
+        "result": "0.329926"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "BESSELK",
+    "category": "Engineering",
+    "summary": "Returns the modified Bessel function Kn(x).",
+    "syntax": "BESSELK(x, n)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the function."
+      },
+      {
+        "name": "n",
+        "description": "The order of the function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BESSELK(1.5,1)",
+        "result": "0.277388"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "BESSELY",
+    "category": "Engineering",
+    "summary": "Returns the Bessel function Yn(x), also called the Weber or Neumann function.",
+    "syntax": "BESSELY(x, n)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The value at which to evaluate the function."
+      },
+      {
+        "name": "n",
+        "description": "The order of the function."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BESSELY(2.5,1)",
+        "result": "0.145918"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "BIN2DEC",
+    "category": "Engineering",
+    "summary": "Converts a binary number to decimal.",
+    "syntax": "BIN2DEC(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "Up to 10 binary digits; the 10th bit is the sign (two's complement)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BIN2DEC(1100100)",
+        "result": "100"
+      },
+      {
+        "formula": "=BIN2DEC(1111111111)",
+        "result": "-1"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "BIN2HEX",
+    "category": "Engineering",
+    "summary": "Converts a binary number to hexadecimal.",
+    "syntax": "BIN2HEX(number, [places])",
+    "args": [
+      {
+        "name": "number",
+        "description": "Up to 10 binary digits."
+      },
+      {
+        "name": "places",
+        "description": "The number of characters to use (pads with zeros).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BIN2HEX(11111011,4)",
+        "result": "\"00FB\""
+      },
+      {
+        "formula": "=BIN2HEX(1110)",
+        "result": "\"E\""
+      },
+      {
+        "formula": "=BIN2HEX(1111111111)",
+        "result": "\"FFFFFFFFFF\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "BIN2OCT",
+    "category": "Engineering",
+    "summary": "Converts a binary number to octal.",
+    "syntax": "BIN2OCT(number, [places])",
+    "args": [
+      {
+        "name": "number",
+        "description": "Up to 10 binary digits."
+      },
+      {
+        "name": "places",
+        "description": "The number of characters to use (pads with zeros).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BIN2OCT(1001,3)",
+        "result": "\"011\""
+      },
+      {
+        "formula": "=BIN2OCT(1100100)",
+        "result": "\"144\""
+      },
+      {
+        "formula": "=BIN2OCT(1111111111)",
+        "result": "\"7777777777\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "BITAND",
+    "category": "Engineering",
+    "summary": "Returns a bitwise AND of two numbers.",
+    "syntax": "BITAND(number1, number2)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "A non-negative integer below 2^48."
+      },
+      {
+        "name": "number2",
+        "description": "A non-negative integer below 2^48."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BITAND(1,5)",
+        "result": "1"
+      },
+      {
+        "formula": "=BITAND(13,25)",
+        "result": "9"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "BITLSHIFT",
+    "category": "Engineering",
+    "summary": "Returns a number shifted left by the given number of bits.",
+    "syntax": "BITLSHIFT(number, shift_amount)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A non-negative integer below 2^48."
+      },
+      {
+        "name": "shift_amount",
+        "description": "Bits to shift (negative shifts right)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BITLSHIFT(4,2)",
+        "result": "16"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "BITOR",
+    "category": "Engineering",
+    "summary": "Returns a bitwise OR of two numbers.",
+    "syntax": "BITOR(number1, number2)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "A non-negative integer below 2^48."
+      },
+      {
+        "name": "number2",
+        "description": "A non-negative integer below 2^48."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BITOR(23,10)",
+        "result": "31"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "BITRSHIFT",
+    "category": "Engineering",
+    "summary": "Returns a number shifted right by the given number of bits.",
+    "syntax": "BITRSHIFT(number, shift_amount)",
+    "args": [
+      {
+        "name": "number",
+        "description": "A non-negative integer below 2^48."
+      },
+      {
+        "name": "shift_amount",
+        "description": "Bits to shift (negative shifts left)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BITRSHIFT(13,2)",
+        "result": "3"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "BITXOR",
+    "category": "Engineering",
+    "summary": "Returns a bitwise exclusive OR of two numbers.",
+    "syntax": "BITXOR(number1, number2)",
+    "args": [
+      {
+        "name": "number1",
+        "description": "A non-negative integer below 2^48."
+      },
+      {
+        "name": "number2",
+        "description": "A non-negative integer below 2^48."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BITXOR(5,3)",
+        "result": "6"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "COMPLEX",
+    "category": "Engineering",
+    "summary": "Converts real and imaginary coefficients into a complex number.",
+    "syntax": "COMPLEX(real_num, i_num, [suffix])",
+    "args": [
+      {
+        "name": "real_num",
+        "description": "The real coefficient."
+      },
+      {
+        "name": "i_num",
+        "description": "The imaginary coefficient."
+      },
+      {
+        "name": "suffix",
+        "description": "\"i\" (default) or \"j\".",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=COMPLEX(3,4)",
+        "result": "\"3+4i\""
+      },
+      {
+        "formula": "=COMPLEX(3,4,\"j\")",
+        "result": "\"3+4j\""
+      },
+      {
+        "formula": "=COMPLEX(0,1)",
+        "result": "\"i\""
+      },
+      {
+        "formula": "=COMPLEX(1,0)",
+        "result": "\"1\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "CONVERT",
+    "category": "Engineering",
+    "summary": "Converts a number from one measurement system to another.",
+    "syntax": "CONVERT(number, from_unit, to_unit)",
+    "args": [
+      {
+        "name": "number",
+        "description": "The value to convert."
+      },
+      {
+        "name": "from_unit",
+        "description": "The unit of number (e.g. \"lbm\", \"mi\", \"F\", \"kWh\")."
+      },
+      {
+        "name": "to_unit",
+        "description": "The unit for the result."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=CONVERT(1,\"lbm\",\"kg\")",
+        "result": "0.453592"
+      },
+      {
+        "formula": "=CONVERT(68,\"F\",\"C\")",
+        "result": "20"
+      },
+      {
+        "formula": "=CONVERT(2.5,\"ft\",\"sec\")",
+        "result": "#N/A"
+      },
+      {
+        "formula": "=CONVERT(100,\"ft2\",\"m2\")",
+        "result": "9.290304"
+      },
+      {
+        "formula": "=CONVERT(1,\"kbyte\",\"bit\")",
+        "result": "8000"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DEC2BIN",
+    "category": "Engineering",
+    "summary": "Converts a decimal number to binary.",
+    "syntax": "DEC2BIN(number, [places])",
+    "args": [
+      {
+        "name": "number",
+        "description": "An integer from -512 to 511."
+      },
+      {
+        "name": "places",
+        "description": "The number of characters to use (pads with zeros).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DEC2BIN(9,4)",
+        "result": "\"1001\""
+      },
+      {
+        "formula": "=DEC2BIN(-100)",
+        "result": "\"1110011100\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DEC2HEX",
+    "category": "Engineering",
+    "summary": "Converts a decimal number to hexadecimal.",
+    "syntax": "DEC2HEX(number, [places])",
+    "args": [
+      {
+        "name": "number",
+        "description": "An integer from -549755813888 to 549755813887."
+      },
+      {
+        "name": "places",
+        "description": "The number of characters to use (pads with zeros).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DEC2HEX(100,4)",
+        "result": "\"0064\""
+      },
+      {
+        "formula": "=DEC2HEX(-54)",
+        "result": "\"FFFFFFFFCA\""
+      },
+      {
+        "formula": "=DEC2HEX(28)",
+        "result": "\"1C\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DEC2OCT",
+    "category": "Engineering",
+    "summary": "Converts a decimal number to octal.",
+    "syntax": "DEC2OCT(number, [places])",
+    "args": [
+      {
+        "name": "number",
+        "description": "An integer from -536870912 to 536870911."
+      },
+      {
+        "name": "places",
+        "description": "The number of characters to use (pads with zeros).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DEC2OCT(58,3)",
+        "result": "\"072\""
+      },
+      {
+        "formula": "=DEC2OCT(-100)",
+        "result": "\"7777777634\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DELTA",
+    "category": "Engineering",
+    "summary": "Tests whether two values are equal (1) or not (0).",
+    "syntax": "DELTA(number1, [number2])",
+    "args": [
+      {
+        "name": "number1",
+        "description": "The first number."
+      },
+      {
+        "name": "number2",
+        "description": "The second number (default 0).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DELTA(5,4)",
+        "result": "0"
+      },
+      {
+        "formula": "=DELTA(5,5)",
+        "result": "1"
+      },
+      {
+        "formula": "=DELTA(0.5,0)",
+        "result": "0"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ERF",
+    "category": "Engineering",
+    "summary": "Returns the error function integrated between lower_limit and upper_limit (or 0 and lower_limit).",
+    "syntax": "ERF(lower_limit, [upper_limit])",
+    "args": [
+      {
+        "name": "lower_limit",
+        "description": "The lower bound (or upper bound when it is the only argument)."
+      },
+      {
+        "name": "upper_limit",
+        "description": "The upper bound.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ERF(0.745)",
+        "result": "0.70792892"
+      },
+      {
+        "formula": "=ERF(1)",
+        "result": "0.84270079"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ERF.PRECISE",
+    "category": "Engineering",
+    "summary": "Returns the error function.",
+    "syntax": "ERF.PRECISE(x)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The upper bound for integrating ERF.PRECISE."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ERF.PRECISE(0.745)",
+        "result": "0.70792892"
+      },
+      {
+        "formula": "=ERF.PRECISE(1)",
+        "result": "0.84270079"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "ERFC",
+    "category": "Engineering",
+    "summary": "Returns the complementary error function.",
+    "syntax": "ERFC(x)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The lower bound for integrating ERFC."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ERFC(1)",
+        "result": "0.15729921"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ERFC.PRECISE",
+    "category": "Engineering",
+    "summary": "Returns the complementary error function.",
+    "syntax": "ERFC.PRECISE(x)",
+    "args": [
+      {
+        "name": "x",
+        "description": "The lower bound for integrating ERFC.PRECISE."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ERFC.PRECISE(1)",
+        "result": "0.15729921"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "GESTEP",
+    "category": "Engineering",
+    "summary": "Returns 1 if a number is greater than or equal to a threshold, otherwise 0.",
+    "syntax": "GESTEP(number, [step])",
+    "args": [
+      {
+        "name": "number",
+        "description": "The value to test."
+      },
+      {
+        "name": "step",
+        "description": "The threshold (default 0).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=GESTEP(5,4)",
+        "result": "1"
+      },
+      {
+        "formula": "=GESTEP(5,5)",
+        "result": "1"
+      },
+      {
+        "formula": "=GESTEP(-4,-5)",
+        "result": "1"
+      },
+      {
+        "formula": "=GESTEP(-1)",
+        "result": "0"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "HEX2BIN",
+    "category": "Engineering",
+    "summary": "Converts a hexadecimal number to binary.",
+    "syntax": "HEX2BIN(number, [places])",
+    "args": [
+      {
+        "name": "number",
+        "description": "Up to 10 hexadecimal digits."
+      },
+      {
+        "name": "places",
+        "description": "The number of characters to use (pads with zeros).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=HEX2BIN(\"F\",8)",
+        "result": "\"00001111\""
+      },
+      {
+        "formula": "=HEX2BIN(\"B7\")",
+        "result": "\"10110111\""
+      },
+      {
+        "formula": "=HEX2BIN(\"FFFFFFFFFF\")",
+        "result": "\"1111111111\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "HEX2DEC",
+    "category": "Engineering",
+    "summary": "Converts a hexadecimal number to decimal.",
+    "syntax": "HEX2DEC(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "Up to 10 hexadecimal digits."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=HEX2DEC(\"A5\")",
+        "result": "165"
+      },
+      {
+        "formula": "=HEX2DEC(\"FFFFFFFF5B\")",
+        "result": "-165"
+      },
+      {
+        "formula": "=HEX2DEC(\"3DA408B9\")",
+        "result": "1034160313"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "HEX2OCT",
+    "category": "Engineering",
+    "summary": "Converts a hexadecimal number to octal.",
+    "syntax": "HEX2OCT(number, [places])",
+    "args": [
+      {
+        "name": "number",
+        "description": "Up to 10 hexadecimal digits."
+      },
+      {
+        "name": "places",
+        "description": "The number of characters to use (pads with zeros).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=HEX2OCT(\"F\",3)",
+        "result": "\"017\""
+      },
+      {
+        "formula": "=HEX2OCT(\"3B4E\")",
+        "result": "\"35516\""
+      },
+      {
+        "formula": "=HEX2OCT(\"FFFFFFFF00\")",
+        "result": "\"7777777400\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMABS",
+    "category": "Engineering",
+    "summary": "Returns the absolute value (modulus) of a complex number.",
+    "syntax": "IMABS(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMABS(\"5+12i\")",
+        "result": "13"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMAGINARY",
+    "category": "Engineering",
+    "summary": "Returns the imaginary coefficient of a complex number.",
+    "syntax": "IMAGINARY(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMAGINARY(\"3+4i\")",
+        "result": "4"
+      },
+      {
+        "formula": "=IMAGINARY(\"0-j\")",
+        "result": "-1"
+      },
+      {
+        "formula": "=IMAGINARY(4)",
+        "result": "0"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMARGUMENT",
+    "category": "Engineering",
+    "summary": "Returns the argument theta, an angle in radians.",
+    "syntax": "IMARGUMENT(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMARGUMENT(\"3+4i\")",
+        "result": "0.92729522"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMCONJUGATE",
+    "category": "Engineering",
+    "summary": "Returns the complex conjugate of a complex number.",
+    "syntax": "IMCONJUGATE(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMCONJUGATE(\"3+4i\")",
+        "result": "\"3-4i\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMCOS",
+    "category": "Engineering",
+    "summary": "Returns the cosine of a complex number.",
+    "syntax": "IMCOS(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMCOS(\"1+i\")",
+        "result": "\"0.833730025131149-0.988897705762865i\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMCOSH",
+    "category": "Engineering",
+    "summary": "Returns the hyperbolic cosine of a complex number.",
+    "syntax": "IMCOSH(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMCOSH(\"4+3i\")",
+        "result": "\"-27.0349456030742+3.85115333481178i\""
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "IMCOT",
+    "category": "Engineering",
+    "summary": "Returns the cotangent of a complex number.",
+    "syntax": "IMCOT(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMREAL(IMCOT(\"4+3i\"))",
+        "result": "0.004901182"
+      },
+      {
+        "formula": "=IMAGINARY(IMCOT(\"4+3i\"))",
+        "result": "-0.999266928"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "IMCSC",
+    "category": "Engineering",
+    "summary": "Returns the cosecant of a complex number.",
+    "syntax": "IMCSC(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMCSC(\"4+3i\")",
+        "result": "\"-0.0754898329158637+0.0648774713706355i\""
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "IMCSCH",
+    "category": "Engineering",
+    "summary": "Returns the hyperbolic cosecant of a complex number.",
+    "syntax": "IMCSCH(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMREAL(IMCSCH(\"4+3i\"))",
+        "result": "-0.03627589"
+      },
+      {
+        "formula": "=IMAGINARY(IMCSCH(\"4+3i\"))",
+        "result": "-0.005174473"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "IMDIV",
+    "category": "Engineering",
+    "summary": "Returns the quotient of two complex numbers.",
+    "syntax": "IMDIV(inumber1, inumber2)",
+    "args": [
+      {
+        "name": "inumber1",
+        "description": "The numerator."
+      },
+      {
+        "name": "inumber2",
+        "description": "The denominator."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMDIV(\"-238+240i\",\"10+24i\")",
+        "result": "\"5+12i\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMEXP",
+    "category": "Engineering",
+    "summary": "Returns the exponential of a complex number.",
+    "syntax": "IMEXP(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMEXP(\"1+i\")",
+        "result": "\"1.46869393991589+2.28735528717884i\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMLN",
+    "category": "Engineering",
+    "summary": "Returns the natural logarithm of a complex number.",
+    "syntax": "IMLN(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMLN(\"3+4i\")",
+        "result": "\"1.6094379124341+0.927295218001612i\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMLOG10",
+    "category": "Engineering",
+    "summary": "Returns the base-10 logarithm of a complex number.",
+    "syntax": "IMLOG10(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMLOG10(\"3+4i\")",
+        "result": "\"0.698970004336019+0.402719196273373i\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMLOG2",
+    "category": "Engineering",
+    "summary": "Returns the base-2 logarithm of a complex number.",
+    "syntax": "IMLOG2(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMLOG2(\"3+4i\")",
+        "result": "\"2.32192809488736+1.33780421245098i\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMPOWER",
+    "category": "Engineering",
+    "summary": "Returns a complex number raised to a power.",
+    "syntax": "IMPOWER(inumber, number)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      },
+      {
+        "name": "number",
+        "description": "The power."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMPOWER(\"2+3i\",3)",
+        "result": "\"-46+9.00000000000001i\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMPRODUCT",
+    "category": "Engineering",
+    "summary": "Returns the product of complex numbers.",
+    "syntax": "IMPRODUCT(inumber1, [inumber2], ...)",
+    "args": [
+      {
+        "name": "inumber1",
+        "description": "The first complex number."
+      },
+      {
+        "name": "inumber2",
+        "description": "Further complex numbers.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMPRODUCT(\"3+4i\",\"5-3i\")",
+        "result": "\"27+11i\""
+      },
+      {
+        "formula": "=IMPRODUCT(\"1+2i\",30)",
+        "result": "\"30+60i\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMREAL",
+    "category": "Engineering",
+    "summary": "Returns the real coefficient of a complex number.",
+    "syntax": "IMREAL(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMREAL(\"6-9i\")",
+        "result": "6"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMSEC",
+    "category": "Engineering",
+    "summary": "Returns the secant of a complex number.",
+    "syntax": "IMSEC(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMREAL(IMSEC(\"4+3i\"))",
+        "result": "-0.065294028"
+      },
+      {
+        "formula": "=IMAGINARY(IMSEC(\"4+3i\"))",
+        "result": "-0.07522496"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "IMSECH",
+    "category": "Engineering",
+    "summary": "Returns the hyperbolic secant of a complex number.",
+    "syntax": "IMSECH(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMSECH(\"4+3i\")",
+        "result": "\"-0.0362534969158689-0.00516434460775318i\""
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "IMSIN",
+    "category": "Engineering",
+    "summary": "Returns the sine of a complex number.",
+    "syntax": "IMSIN(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMSIN(\"4+3i\")",
+        "result": "\"-7.61923172032141-6.548120040911i\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMSINH",
+    "category": "Engineering",
+    "summary": "Returns the hyperbolic sine of a complex number.",
+    "syntax": "IMSINH(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMSINH(\"4+3i\")",
+        "result": "\"-27.0168132580039+3.85373803791938i\""
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "IMSQRT",
+    "category": "Engineering",
+    "summary": "Returns the square root of a complex number.",
+    "syntax": "IMSQRT(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMSQRT(\"1+i\")",
+        "result": "\"1.09868411346781+0.455089860562227i\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMSUB",
+    "category": "Engineering",
+    "summary": "Returns the difference of two complex numbers.",
+    "syntax": "IMSUB(inumber1, inumber2)",
+    "args": [
+      {
+        "name": "inumber1",
+        "description": "The number to subtract from."
+      },
+      {
+        "name": "inumber2",
+        "description": "The number to subtract."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMSUB(\"13+4i\",\"5+3i\")",
+        "result": "\"8+i\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMSUM",
+    "category": "Engineering",
+    "summary": "Returns the sum of complex numbers.",
+    "syntax": "IMSUM(inumber1, [inumber2], ...)",
+    "args": [
+      {
+        "name": "inumber1",
+        "description": "The first complex number."
+      },
+      {
+        "name": "inumber2",
+        "description": "Further complex numbers.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMSUM(\"3+4i\",\"5-3i\")",
+        "result": "\"8+i\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IMTAN",
+    "category": "Engineering",
+    "summary": "Returns the tangent of a complex number.",
+    "syntax": "IMTAN(inumber)",
+    "args": [
+      {
+        "name": "inumber",
+        "description": "A complex number such as \"3+4i\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IMREAL(IMTAN(\"4+3i\"))",
+        "result": "0.004908258"
+      },
+      {
+        "formula": "=IMAGINARY(IMTAN(\"4+3i\"))",
+        "result": "1.000709536"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "OCT2BIN",
+    "category": "Engineering",
+    "summary": "Converts an octal number to binary.",
+    "syntax": "OCT2BIN(number, [places])",
+    "args": [
+      {
+        "name": "number",
+        "description": "Up to 10 octal digits."
+      },
+      {
+        "name": "places",
+        "description": "The number of characters to use (pads with zeros).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=OCT2BIN(3,3)",
+        "result": "\"011\""
+      },
+      {
+        "formula": "=OCT2BIN(7777777000)",
+        "result": "\"1000000000\""
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "OCT2DEC",
+    "category": "Engineering",
+    "summary": "Converts an octal number to decimal.",
+    "syntax": "OCT2DEC(number)",
+    "args": [
+      {
+        "name": "number",
+        "description": "Up to 10 octal digits."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=OCT2DEC(54)",
+        "result": "44"
+      },
+      {
+        "formula": "=OCT2DEC(7777777533)",
+        "result": "-165"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "OCT2HEX",
+    "category": "Engineering",
+    "summary": "Converts an octal number to hexadecimal.",
+    "syntax": "OCT2HEX(number, [places])",
+    "args": [
+      {
+        "name": "number",
+        "description": "Up to 10 octal digits."
+      },
+      {
+        "name": "places",
+        "description": "The number of characters to use (pads with zeros).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=OCT2HEX(100,4)",
+        "result": "\"0040\""
+      },
+      {
+        "formula": "=OCT2HEX(7777777533)",
+        "result": "\"FFFFFFFF5B\""
+      }
+    ],
+    "since": "2007"
+  }
+]

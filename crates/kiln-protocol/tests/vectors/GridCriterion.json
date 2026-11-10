@@ -1,0 +1,16 @@
+{
+  "type": "GridCriterion",
+  "format": {
+    "TYPENAME": "GridCriterion"
+  },
+  "values": [
+    {
+      "op": "BeginsWith",
+      "value": "Kil*"
+    },
+    {
+      "op": "Equal",
+      "value": ""
+    }
+  ]
+}

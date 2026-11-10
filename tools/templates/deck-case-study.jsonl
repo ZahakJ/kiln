@@ -1,0 +1,428 @@
+{"new":{"kind":"deck"}}
+{"execute":{"doc":1,"cmd":{"Deck":{"ApplyTheme":{"name":"Terracotta"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Case study: Hearth Bakery"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"From one shop to six without losing the bread · Ferro Consulting"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"A twelve-month engagement, finished in January 2026."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":124}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"The client"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Hearth is family-owned and bakes everything on site."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertShape":{"preset":"rect","rect":{"x":80,"y":190,"width":560,"height":420}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetFill":{"fill":{"Gradient":{"from":"EED9C8","to":"F8EEE5","angle":90}}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetOutline":{"outline":"None"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertShape":{"preset":"ellipse","rect":{"x":214.4,"y":257.2,"width":109.2,"height":109.2}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetFill":{"fill":{"Solid":{"color":"F8EEE5","brightness":null,"transparency":null}}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetOutline":{"outline":"None"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertShape":{"preset":"triangle","rect":{"x":388.0,"y":349.6,"width":224.0,"height":197.39999999999998}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetFill":{"fill":{"Solid":{"color":"C98A2B","brightness":null,"transparency":null}}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetOutline":{"outline":"None"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertShape":{"preset":"triangle","rect":{"x":108.0,"y":316.0,"width":308.0,"height":231.00000000000003}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetFill":{"fill":{"Solid":{"color":"B4462A","brightness":null,"transparency":null}}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetOutline":{"outline":"None"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertShape":{"preset":"rect","rect":{"x":80,"y":534.4,"width":560,"height":75.6}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetFill":{"fill":{"Solid":{"color":"B4462A","brightness":null,"transparency":null}}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetOutline":{"outline":"None"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":690,"y":190,"width":510,"height":340}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"•  Independent bakery in Shrewsbury, founded in 1998"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"•  Two shops and a wholesale round"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"•  Wanted to grow without lowering quality"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":22}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":108}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"The challenge"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Every loaf was made in one small kitchen"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"No stock system: orders lived in a notebook"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Staff worked long, unpredictable shifts"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Waste was 14 % of what was baked"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Wholesale customers wanted earlier deliveries"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"NewParagraph"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Two new sites were already leased"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":24}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"The leases set the deadline for the whole project."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":124}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"What we did"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Each phase took about three months."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertShape":{"preset":"rect","rect":{"x":160,"y":358,"width":960,"height":4}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetFill":{"fill":{"Solid":{"color":"accent2","brightness":null,"transparency":null}}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetOutline":{"outline":"None"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertShape":{"preset":"ellipse","rect":{"x":138.0,"y":338,"width":44,"height":44}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetFill":{"fill":{"Solid":{"color":"accent1","brightness":null,"transparency":null}}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetOutline":{"outline":"None"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"1"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":16}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FFFFFF"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":45.0,"y":280,"width":230,"height":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Phase 1"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"B4462A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":45.0,"y":400,"width":230,"height":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Central bakery"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":20}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":45.0,"y":444,"width":230,"height":140}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"A new production kitchen with night shifts."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":16}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertShape":{"preset":"ellipse","rect":{"x":458.0,"y":338,"width":44,"height":44}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetFill":{"fill":{"Solid":{"color":"accent1","brightness":null,"transparency":null}}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetOutline":{"outline":"None"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"2"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":16}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FFFFFF"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":365.0,"y":280,"width":230,"height":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Phase 2"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"B4462A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":365.0,"y":400,"width":230,"height":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Ordering"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":20}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":365.0,"y":444,"width":230,"height":140}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Simple stock and order system for every shop."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":16}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertShape":{"preset":"ellipse","rect":{"x":778.0,"y":338,"width":44,"height":44}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetFill":{"fill":{"Solid":{"color":"accent1","brightness":null,"transparency":null}}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetOutline":{"outline":"None"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"3"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":16}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FFFFFF"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":685.0,"y":280,"width":230,"height":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Phase 3"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"B4462A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":685.0,"y":400,"width":230,"height":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"People"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":20}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":685.0,"y":444,"width":230,"height":140}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Rotas planned four weeks ahead."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":16}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertShape":{"preset":"ellipse","rect":{"x":1098.0,"y":338,"width":44,"height":44}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetFill":{"fill":{"Solid":{"color":"accent1","brightness":null,"transparency":null}}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetOutline":{"outline":"None"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"4"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":16}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"FFFFFF"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":1005.0,"y":280,"width":230,"height":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Phase 4"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"B4462A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":1005.0,"y":400,"width":230,"height":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Opening"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":20}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":1005.0,"y":444,"width":230,"height":140}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Four new shops in nine months."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"AlignCenter"}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":16}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":124}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Results"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"All figures compare the year before and the year after."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":90,"y":210,"width":340,"height":70}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"6 shops"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"B4462A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":90,"y":280,"width":340,"height":60}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"up from two, all profitable"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":470,"y":210,"width":340,"height":70}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"4 %"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"B4462A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":470,"y":280,"width":340,"height":60}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"waste, down from 14 %"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":850,"y":210,"width":340,"height":70}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"+138 %"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":40}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"B4462A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":"Bold"}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":850,"y":280,"width":340,"height":60}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"revenue in twelve months"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":18}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"ChartInsert":{"kind":"ColumnClustered"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetChartData":{"cells":[["","Revenue (£k)"],["Q1","310"],["Q2","420"],["Q3","560"],["Q4","740"]]}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"ChartSetTitle":{"text":""}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"ChartSetLegend":{"position":null}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetTransform":{"x":352.5,"y":285.0,"width":555.0,"height":217.5,"rotation":null,"lock_aspect":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":124}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"In their words"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Ruth is happy to take reference calls."}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":120,"y":250,"width":1040,"height":220}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"“We doubled our shops and our bread is better than ever. The night bakery changed everything.”"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":36}}}}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontColor":{"color":"B4462A"}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertTextBox":{"rect":{"x":120,"y":490,"width":1040,"height":60}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"— Ruth Penhaligon, owner, Hearth Bakery"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Suite":{"Edit":{"FontSize":{"size":20}}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"NewSlide":{"layout":88}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"Could this work for you?"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"CycleSelection":{"backward":false}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"EditText"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"SelectAll"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"InsertText":{"text":"hello@ferroconsulting.example · 01743 555 0182"}}}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":"Escape"}}}
+{"execute":{"doc":1,"cmd":{"Deck":{"SetNotes":{"text":"Offer a free first conversation."}}}}}
+{"save":{"doc":1,"path":"target/templates-tmp/Case study.kdeck","format":"KDeck"}}
+{"save":{"doc":1,"path":"assets/templates/deck/case-study.kdeck","format":"KDeck"}}

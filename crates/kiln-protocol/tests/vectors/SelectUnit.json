@@ -1,0 +1,11 @@
+{
+  "type": "SelectUnit",
+  "format": {
+    "TYPENAME": "SelectUnit"
+  },
+  "values": [
+    "Char",
+    "Paragraph",
+    "Char"
+  ]
+}

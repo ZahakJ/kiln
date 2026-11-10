@@ -1,0 +1,11 @@
+{
+  "type": "GridSparkEmpty",
+  "format": {
+    "TYPENAME": "GridSparkEmpty"
+  },
+  "values": [
+    "Gap",
+    "Zero",
+    "Gap"
+  ]
+}

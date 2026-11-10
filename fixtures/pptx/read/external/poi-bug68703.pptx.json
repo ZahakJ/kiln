@@ -1,0 +1,79 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Antwerpen_pag2_2 lijnen"
+   ]
+  },
+  {
+   "layouts": [
+    "Antwerpen_pag3_1 lijn",
+    "Antwerpen_pag3_2 lijnen"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Antwerpen_pag2_2 lijnen",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "cells": [
+      [
+       "Standaardnederlands",
+       "Vlaams"
+      ],
+      [
+       "Voornaamwoorden",
+       ""
+      ],
+      [
+       "Voorbeeld: jij, je",
+       "Gij, ge"
+      ],
+      [
+       "ik",
+       "Ik, ikke, ‘k, kik"
+      ],
+      [
+       "jullie",
+       "Gijle, gijlen, golle"
+      ],
+      [
+       "jou/je",
+       "u"
+      ],
+      [
+       "jouw/je",
+       "Uwe, uwen"
+      ],
+      [
+       "mijn",
+       "Mijne, mijnen"
+      ],
+      [
+       "ons, onze",
+       "Ons, onze, onzen (!)"
+      ],
+      [
+       "deze, dit, dat, die",
+       "Deze, dezen, dees, da, dieje"
+      ],
+      [
+       "hij",
+       "Hij, hem, ‘em, ‘m (dieje)"
+      ]
+     ],
+     "kind": "table",
+     "name": "Tabel 5"
+    }
+   ]
+  }
+ ]
+}

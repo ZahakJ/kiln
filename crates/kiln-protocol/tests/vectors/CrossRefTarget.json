@@ -1,0 +1,28 @@
+{
+  "type": "CrossRefTarget",
+  "format": {
+    "TYPENAME": "CrossRefTarget"
+  },
+  "values": [
+    {
+      "Heading": {
+        "para": 9
+      }
+    },
+    {
+      "Caption": {
+        "para": 300
+      }
+    },
+    {
+      "Note": {
+        "note": 70000
+      }
+    },
+    {
+      "Heading": {
+        "para": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "ShapeEffect",
+  "format": {
+    "TYPENAME": "ShapeEffect"
+  },
+  "values": [
+    "None",
+    "Glow",
+    "None",
+    "Shadow",
+    "Glow",
+    "SoftEdges"
+  ]
+}

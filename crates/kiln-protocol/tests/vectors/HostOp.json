@@ -1,0 +1,211 @@
+{
+  "type": "HostOp",
+  "format": {
+    "TYPENAME": "HostOp"
+  },
+  "values": [
+    {
+      "ReadFile": {
+        "path": "/a.txt"
+      }
+    },
+    {
+      "WriteFile": {
+        "path": "/a.txt",
+        "bytes": [
+          0,
+          1,
+          127,
+          128,
+          255
+        ]
+      }
+    },
+    {
+      "PickOpen": {
+        "filters": [
+          {
+            "name": "Word Document",
+            "extensions": [
+              "docx",
+              "docm"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "PickSave": {
+        "suggested_name": "Scratch1.txt",
+        "filters": []
+      }
+    },
+    "Recents",
+    {
+      "StorePref": {
+        "key": "ui.theme",
+        "value": "\"dark\""
+      }
+    },
+    {
+      "LoadPref": {
+        "key": "ui.theme"
+      }
+    },
+    "ClipboardRead",
+    {
+      "ClipboardWrite": {
+        "text": "x",
+        "html": "<b>x</b>"
+      }
+    },
+    {
+      "OpenExternal": {
+        "url": "https://zahakj.github.io/kiln/"
+      }
+    },
+    {
+      "OpenFile": {
+        "path": "/tmp/kiln-print/Report.pdf"
+      }
+    },
+    {
+      "PrintPdf": {
+        "name": "Report.pdf",
+        "bytes": [
+          37,
+          80,
+          68,
+          70,
+          45,
+          49,
+          46,
+          55
+        ]
+      }
+    },
+    {
+      "OpenWindow": {
+        "route": "#/present?doc=3&view=audience",
+        "title": "Kiln Deck - Slide Show"
+      }
+    },
+    {
+      "SocketOpen": {
+        "socket": 1,
+        "url": "wss://collab.example.org/rooms/k7p2q9xw"
+      }
+    },
+    {
+      "SocketSend": {
+        "socket": 1,
+        "bytes": [
+          0,
+          1,
+          200
+        ]
+      }
+    },
+    {
+      "SocketReceive": {
+        "socket": 1
+      }
+    },
+    {
+      "SocketClose": {
+        "socket": 1
+      }
+    },
+    {
+      "Timer": {
+        "ms": 15000
+      }
+    },
+    {
+      "StoreGet": {
+        "area": "Recents",
+        "key": "r/1f"
+      }
+    },
+    {
+      "StorePut": {
+        "area": "Journal",
+        "key": "k1x9.base",
+        "bytes": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "StoreAppend": {
+        "area": "Journal",
+        "key": "k1x9.log",
+        "bytes": [
+          7
+        ]
+      }
+    },
+    {
+      "StoreDelete": {
+        "area": "Versions",
+        "key": "f/2a/v1"
+      }
+    },
+    {
+      "StoreList": {
+        "area": "Journal",
+        "prefix": ""
+      }
+    },
+    {
+      "WatchFile": {
+        "path": "/data/ana/Report.docx"
+      }
+    },
+    {
+      "UnwatchFile": {
+        "path": "/data/ana/Report.docx"
+      }
+    },
+    {
+      "StatFile": {
+        "path": "/data/ana/Report.docx"
+      }
+    },
+    {
+      "ReadFile": {
+        "path": ""
+      }
+    },
+    {
+      "WriteFile": {
+        "path": "",
+        "bytes": [
+          0
+        ]
+      }
+    },
+    {
+      "PickOpen": {
+        "filters": [
+          {
+            "name": "",
+            "extensions": []
+          }
+        ]
+      }
+    },
+    {
+      "PickSave": {
+        "suggested_name": "",
+        "filters": [
+          {
+            "name": "",
+            "extensions": []
+          }
+        ]
+      }
+    }
+  ]
+}

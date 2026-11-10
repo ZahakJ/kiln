@@ -1,0 +1,20 @@
+{
+  "type": "GridErrorCheck",
+  "format": {
+    "TYPENAME": "GridErrorCheck"
+  },
+  "values": [
+    {
+      "rule": "ErrorValue",
+      "error": "#DIV/0!",
+      "title": "Divide by Zero Error",
+      "help": "The formula or function divides by zero or by an empty cell."
+    },
+    {
+      "rule": "ErrorValue",
+      "error": "",
+      "title": "",
+      "help": ""
+    }
+  ]
+}

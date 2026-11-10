@@ -1,0 +1,888 @@
+{
+  "type": "WriteQueryResult",
+  "format": {
+    "TYPENAME": "WriteQueryResult"
+  },
+  "values": [
+    {
+      "Format": {
+        "font": "Carlito",
+        "size": 11.0,
+        "bold": true,
+        "italic": false,
+        "underline": "Single",
+        "strike": false,
+        "double_strike": false,
+        "subscript": false,
+        "superscript": false,
+        "all_caps": false,
+        "small_caps": false,
+        "hidden": false,
+        "color": "2F5496",
+        "highlight": null,
+        "spacing": 0.0,
+        "mixed": [
+          "size"
+        ],
+        "alignment": "Left",
+        "line_multiple": 1.08,
+        "line_points": null,
+        "indent_left": 0.0,
+        "indent_right": 0.0,
+        "first_line": 0.0,
+        "space_before": 0.0,
+        "space_after": 8.0,
+        "keep_next": false,
+        "keep_lines": false,
+        "widow_control": false,
+        "page_break_before": false,
+        "contextual_spacing": false,
+        "outline_level": 0,
+        "style_id": "Heading1",
+        "style_name": "Heading 1",
+        "char_style_id": null,
+        "list": {
+          "num_id": 3,
+          "level": 1,
+          "bullet": false,
+          "label": "1.2."
+        },
+        "table": {
+          "rows": 4,
+          "cols": 3,
+          "row": 1,
+          "col": 2,
+          "style": "TableGrid",
+          "header_row": true,
+          "total_row": false,
+          "banded_rows": true,
+          "first_column": true,
+          "banded_columns": false,
+          "repeat_header": false,
+          "multi_cell": true,
+          "depth": 2
+        },
+        "story": "Header",
+        "header_footer": {
+          "different_first": true,
+          "different_odd_even": false,
+          "linked": false,
+          "has_previous": true,
+          "label": "First Page Header -Section 2-"
+        },
+        "section": {
+          "width": 612.0,
+          "height": 792.0,
+          "landscape": false,
+          "top": 72.0,
+          "bottom": 72.0,
+          "left": 72.0,
+          "right": 72.0,
+          "columns": 1,
+          "paper": "Letter",
+          "header": 36.0,
+          "footer": 36.0
+        },
+        "show_marks": false,
+        "rtl": null,
+        "collapsed": false,
+        "link": "https://example.org/",
+        "can_repeat": false,
+        "tabs": [
+          {
+            "pos": 216.5,
+            "align": "Decimal",
+            "leader": "Dot"
+          }
+        ],
+        "shading": null,
+        "borders": false,
+        "features": {
+          "tracking": false,
+          "author": "",
+          "markup": "Simple",
+          "show_comments": false,
+          "show_insertions": false,
+          "show_formatting": false,
+          "revisions": 0,
+          "comments": 0,
+          "open_comments": 0,
+          "comment": null,
+          "painter": null,
+          "copied_format": false,
+          "focus": false,
+          "word_goal": 0,
+          "autoformat": {
+            "markdown": true,
+            "smart_quotes": true,
+            "dashes": true,
+            "ellipsis": true,
+            "fractions": true,
+            "replace_text": true,
+            "capitalize_sentences": true,
+            "capitalize_days": true,
+            "two_initial_caps": true
+          },
+          "spelling": false,
+          "dictionary": false,
+          "misspellings": 0,
+          "hyphenation": false,
+          "object": null,
+          "in_note": false,
+          "has_toc": false,
+          "hidden_reviewers": [],
+          "side_to_side": false,
+          "balloons": "CommentsAndFormatting"
+        }
+      }
+    },
+    {
+      "Rulers": null
+    },
+    {
+      "Rulers": {
+        "page": 2,
+        "page_rect": {
+          "x": 64.0,
+          "y": 32.0,
+          "width": 816.0,
+          "height": 1056.0
+        },
+        "text_rect": {
+          "x": 64.0,
+          "y": 32.0,
+          "width": 816.0,
+          "height": 1056.0
+        },
+        "columns": [
+          {
+            "x": 64.0,
+            "y": 32.0,
+            "width": 816.0,
+            "height": 1056.0
+          }
+        ],
+        "indent_left": 48.0,
+        "indent_right": 0.0,
+        "first_line": -24.0,
+        "tabs": [
+          {
+            "pos": 120.0,
+            "align": "Center"
+          }
+        ],
+        "default_tab": 48.0,
+        "margin_top": 96.0,
+        "margin_bottom": 960.0
+      }
+    },
+    {
+      "Styles": [
+        {
+          "id": "Heading1",
+          "name": "Heading 1",
+          "kind": "Linked",
+          "quick": true,
+          "hidden": false,
+          "priority": 9,
+          "based_on": "Normal",
+          "next": "Normal",
+          "font": "Carlito",
+          "size": 16.0,
+          "bold": false,
+          "italic": false,
+          "color": "2F5496",
+          "current": true,
+          "in_use": true
+        }
+      ]
+    },
+    {
+      "Headings": [
+        {
+          "para": 12,
+          "level": 2,
+          "text": "Résumé",
+          "page": 3,
+          "current": false
+        }
+      ]
+    },
+    {
+      "Pages": {
+        "count": 300,
+        "complete": true,
+        "current": 4,
+        "rects": [
+          {
+            "x": 64.0,
+            "y": 32.0,
+            "width": 816.0,
+            "height": 1056.0
+          }
+        ],
+        "extent": {
+          "x": 64.0,
+          "y": 32.0,
+          "width": 816.0,
+          "height": 1056.0
+        }
+      }
+    },
+    {
+      "FindAll": {
+        "hits": [
+          {
+            "start": {
+              "block": 4,
+              "offset": 2
+            },
+            "end": {
+              "block": 4,
+              "offset": 6
+            },
+            "before": "the ",
+            "text": "kiln",
+            "after": ", warm",
+            "page": 1
+          }
+        ],
+        "total": 1284,
+        "error": null
+      }
+    },
+    {
+      "WordCount": {
+        "pages": 12,
+        "words": 1284,
+        "characters": 6000,
+        "characters_with_spaces": 7311,
+        "paragraphs": 80,
+        "lines": 240,
+        "selection": false
+      }
+    },
+    {
+      "Properties": {
+        "title": "Quarterly report",
+        "subject": null,
+        "author": "Zoë",
+        "keywords": null,
+        "description": null,
+        "last_modified_by": null,
+        "created": "2026-10-17T09:00:00Z",
+        "modified": null,
+        "revision": null,
+        "application": null,
+        "pages": 12,
+        "words": 1284,
+        "characters": 0,
+        "paragraphs": 0,
+        "category": null,
+        "status": null,
+        "company": null,
+        "manager": null,
+        "sheets": 0,
+        "slides": 0
+      }
+    },
+    {
+      "Clipboard": {
+        "text": "Kiln «Write»\tok",
+        "html": "<p><b>Kiln</b> «Write»</p>",
+        "kiln": "{\"v\":1}"
+      }
+    },
+    {
+      "Clipboard": null
+    },
+    {
+      "PageSetup": {
+        "top": 72.0,
+        "bottom": null,
+        "left": 90.0,
+        "right": null,
+        "gutter": null,
+        "header": null,
+        "footer": null,
+        "width": 595.3,
+        "height": 841.9,
+        "landscape": false,
+        "columns": 2,
+        "column_space": null,
+        "vertical_align": "Center"
+      }
+    },
+    {
+      "Bookmarks": [
+        "_Toc1",
+        "intro"
+      ]
+    },
+    {
+      "CommandLog": [
+        {
+          "id": "suite.format.bold",
+          "outcome": "applied"
+        }
+      ]
+    },
+    {
+      "Comments": []
+    },
+    {
+      "Revisions": {
+        "entries": [],
+        "reviewers": [],
+        "insertions": 0,
+        "deletions": 0,
+        "formatting": 0,
+        "comments": 0
+      }
+    },
+    {
+      "CrossRefTargets": []
+    },
+    {
+      "Objects": []
+    },
+    {
+      "Spelling": null
+    },
+    {
+      "OutlineIssues": []
+    },
+    {
+      "SymbolTable": [
+        {
+          "code": 61692,
+          "text": "✓"
+        }
+      ]
+    },
+    {
+      "TableProperties": null
+    },
+    {
+      "TableProperties": {
+        "width": null,
+        "alignment": null,
+        "indent": null,
+        "wrap_around": null,
+        "autofit": null,
+        "cell_margins": null,
+        "cell_spacing": null,
+        "row_height": null,
+        "row_can_break": null,
+        "row_header": null,
+        "column_width": null,
+        "cell_width": null,
+        "cell_v_align": null,
+        "cell_wrap": null,
+        "alt_title": null,
+        "alt_description": null
+      }
+    },
+    {
+      "DropPoint": null
+    },
+    {
+      "RevisionBalloons": []
+    },
+    {
+      "ObjectPicture": null
+    },
+    {
+      "ObjectPicture": {
+        "content_type": "image/png",
+        "bytes": [
+          137,
+          80,
+          78,
+          71
+        ],
+        "alt_text": "A kiln"
+      }
+    },
+    {
+      "TextEncoding": null
+    },
+    {
+      "TextEncoding": {
+        "encoding": "windows-1251",
+        "confident": false,
+        "choices": [
+          {
+            "name": "windows-1251",
+            "title": "Cyrillic (Windows)",
+            "preview": "Привет"
+          }
+        ],
+        "unrepresentable": [
+          "日"
+        ]
+      }
+    },
+    {
+      "Format": {
+        "font": "",
+        "size": 0.0,
+        "bold": false,
+        "italic": false,
+        "underline": null,
+        "strike": false,
+        "double_strike": false,
+        "subscript": false,
+        "superscript": false,
+        "all_caps": false,
+        "small_caps": false,
+        "hidden": false,
+        "color": null,
+        "highlight": "",
+        "spacing": 0.0,
+        "mixed": [],
+        "alignment": null,
+        "line_multiple": null,
+        "line_points": 0.0,
+        "indent_left": 0.0,
+        "indent_right": 0.0,
+        "first_line": 0.0,
+        "space_before": 0.0,
+        "space_after": 0.0,
+        "keep_next": false,
+        "keep_lines": false,
+        "widow_control": false,
+        "page_break_before": false,
+        "contextual_spacing": false,
+        "outline_level": 0,
+        "style_id": "",
+        "style_name": "",
+        "char_style_id": "",
+        "list": null,
+        "table": null,
+        "story": "Body",
+        "header_footer": null,
+        "section": {
+          "width": 0.0,
+          "height": 0.0,
+          "landscape": false,
+          "top": 0.0,
+          "bottom": 0.0,
+          "left": 0.0,
+          "right": 0.0,
+          "columns": 0,
+          "paper": "",
+          "header": 0.0,
+          "footer": 0.0
+        },
+        "show_marks": false,
+        "rtl": false,
+        "collapsed": false,
+        "link": null,
+        "can_repeat": false,
+        "tabs": [],
+        "shading": "",
+        "borders": false,
+        "features": {
+          "tracking": false,
+          "author": "",
+          "markup": "Simple",
+          "show_comments": false,
+          "show_insertions": false,
+          "show_formatting": false,
+          "revisions": 0,
+          "comments": 0,
+          "open_comments": 0,
+          "comment": 0,
+          "painter": false,
+          "copied_format": false,
+          "focus": false,
+          "word_goal": 0,
+          "autoformat": {
+            "markdown": false,
+            "smart_quotes": false,
+            "dashes": false,
+            "ellipsis": false,
+            "fractions": false,
+            "replace_text": null,
+            "capitalize_sentences": null,
+            "capitalize_days": null,
+            "two_initial_caps": null
+          },
+          "spelling": false,
+          "dictionary": false,
+          "misspellings": 0,
+          "hyphenation": false,
+          "object": {
+            "id": 0,
+            "name": "",
+            "kind": "",
+            "wrap": "InLine",
+            "para": 0,
+            "offset": 0,
+            "rect": null,
+            "width": 0.0,
+            "height": 0.0,
+            "rotation": 0.0,
+            "z": 0,
+            "alt_text": null,
+            "decorative": false,
+            "selected": false,
+            "crop": null,
+            "shape": null,
+            "hidden": false,
+            "in_selection": false
+          },
+          "in_note": false,
+          "has_toc": false,
+          "hidden_reviewers": [
+            ""
+          ],
+          "side_to_side": false,
+          "balloons": "Inline"
+        }
+      }
+    },
+    {
+      "Rulers": {
+        "page": 0,
+        "page_rect": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.0,
+          "height": 0.0
+        },
+        "text_rect": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.0,
+          "height": 0.0
+        },
+        "columns": [],
+        "indent_left": 0.0,
+        "indent_right": 0.0,
+        "first_line": 0.0,
+        "tabs": [],
+        "default_tab": 0.0,
+        "margin_top": 0.0,
+        "margin_bottom": 0.0
+      }
+    },
+    {
+      "Styles": [
+        {
+          "id": "",
+          "name": "",
+          "kind": "Paragraph",
+          "quick": false,
+          "hidden": false,
+          "priority": 0,
+          "based_on": null,
+          "next": null,
+          "font": "",
+          "size": 0.0,
+          "bold": false,
+          "italic": false,
+          "color": null,
+          "current": false,
+          "in_use": false
+        }
+      ]
+    },
+    {
+      "Headings": [
+        {
+          "para": 0,
+          "level": 0,
+          "text": "",
+          "page": null,
+          "current": false
+        }
+      ]
+    },
+    {
+      "Pages": {
+        "count": 0,
+        "complete": false,
+        "current": 0,
+        "rects": [],
+        "extent": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.0,
+          "height": 0.0
+        }
+      }
+    },
+    {
+      "FindAll": {
+        "hits": [],
+        "total": 0,
+        "error": ""
+      }
+    },
+    {
+      "WordCount": {
+        "pages": 0,
+        "words": 0,
+        "characters": 0,
+        "characters_with_spaces": 0,
+        "paragraphs": 0,
+        "lines": 0,
+        "selection": false
+      }
+    },
+    {
+      "Properties": {
+        "title": null,
+        "subject": "",
+        "author": null,
+        "keywords": "",
+        "description": "",
+        "last_modified_by": "",
+        "created": null,
+        "modified": "",
+        "revision": "",
+        "application": "",
+        "pages": 0,
+        "words": 0,
+        "characters": 0,
+        "paragraphs": 0,
+        "category": "",
+        "status": "",
+        "company": null,
+        "manager": "",
+        "sheets": 0,
+        "slides": 0
+      }
+    },
+    {
+      "Clipboard": {
+        "text": "",
+        "html": null,
+        "kiln": null
+      }
+    },
+    {
+      "PageSetup": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "gutter": null,
+        "header": null,
+        "footer": null,
+        "width": null,
+        "height": null,
+        "landscape": null,
+        "columns": null,
+        "column_space": null,
+        "vertical_align": null
+      }
+    },
+    {
+      "Bookmarks": [
+        ""
+      ]
+    },
+    {
+      "CommandLog": [
+        {
+          "id": "",
+          "outcome": ""
+        }
+      ]
+    },
+    {
+      "Comments": [
+        {
+          "id": 0,
+          "parent": null,
+          "author": "",
+          "initials": "",
+          "date": null,
+          "text": "",
+          "resolved": false,
+          "anchor_text": null,
+          "color": "",
+          "page": null,
+          "balloon": null,
+          "anchor": null,
+          "current": false
+        }
+      ]
+    },
+    {
+      "Revisions": {
+        "entries": [
+          {
+            "target": {
+              "kind": "Inserted",
+              "node": 0,
+              "start": 0,
+              "end": 0
+            },
+            "author": "",
+            "date": "",
+            "text": "",
+            "color": "",
+            "story": "",
+            "current": false
+          }
+        ],
+        "reviewers": [
+          {
+            "name": "",
+            "color": "",
+            "changes": 0
+          }
+        ],
+        "insertions": 0,
+        "deletions": 0,
+        "formatting": 0,
+        "comments": 0
+      }
+    },
+    {
+      "CrossRefTargets": [
+        {
+          "target": {
+            "Heading": {
+              "para": 0
+            }
+          },
+          "label": "",
+          "category": "",
+          "level": 0
+        }
+      ]
+    },
+    {
+      "Objects": [
+        {
+          "id": 0,
+          "name": "",
+          "kind": "",
+          "wrap": "InLine",
+          "para": 0,
+          "offset": 0,
+          "rect": null,
+          "width": 0.0,
+          "height": 0.0,
+          "rotation": 0.0,
+          "z": 0,
+          "alt_text": null,
+          "decorative": false,
+          "selected": false,
+          "crop": null,
+          "shape": null,
+          "hidden": false,
+          "in_selection": false
+        }
+      ]
+    },
+    {
+      "Spelling": {
+        "word": "",
+        "start": {
+          "block": 0,
+          "offset": 0
+        },
+        "len": 0,
+        "suggestions": [],
+        "context": "",
+        "context_offset": 0
+      }
+    },
+    {
+      "OutlineIssues": [
+        {
+          "para": 0,
+          "level": 0,
+          "text": "",
+          "kind": {
+            "SkippedLevel": {
+              "expected": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "SymbolTable": [
+        {
+          "code": 0,
+          "text": ""
+        }
+      ]
+    },
+    {
+      "TableProperties": {
+        "width": null,
+        "alignment": null,
+        "indent": 0.0,
+        "wrap_around": false,
+        "autofit": false,
+        "cell_margins": {
+          "top": 0.0,
+          "left": 0.0,
+          "bottom": 0.0,
+          "right": 0.0
+        },
+        "cell_spacing": 0.0,
+        "row_height": null,
+        "row_can_break": false,
+        "row_header": false,
+        "column_width": {
+          "value": 0.0,
+          "percent": false
+        },
+        "cell_width": {
+          "value": 0.0,
+          "percent": false
+        },
+        "cell_v_align": null,
+        "cell_wrap": false,
+        "alt_title": null,
+        "alt_description": ""
+      }
+    },
+    {
+      "RevisionBalloons": [
+        {
+          "para": 0,
+          "offset": 0,
+          "deleted": false,
+          "text": "",
+          "author": "",
+          "color": "",
+          "rect": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          "anchor": {
+            "x": 0.0,
+            "y": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "DropPoint": {
+        "pos": {
+          "block": 0,
+          "offset": 0
+        },
+        "caret": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.0,
+          "height": 0.0
+        },
+        "inside": false
+      }
+    }
+  ]
+}

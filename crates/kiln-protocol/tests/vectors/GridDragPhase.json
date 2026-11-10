@@ -1,0 +1,11 @@
+{
+  "type": "GridDragPhase",
+  "format": {
+    "TYPENAME": "GridDragPhase"
+  },
+  "values": [
+    "Preview",
+    "Cancel",
+    "Preview"
+  ]
+}

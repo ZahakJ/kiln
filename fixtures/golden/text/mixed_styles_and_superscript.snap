@@ -1,0 +1,13 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 2 | glyphs 66 | height 39.37 | rtl false
+ 0 wrap      g=44  x=0       w=256.08  top=0       h=17.9   base=13.96   |Einstein's famous equation E = mc2 is set in|
+ 1 end       g=22  x=0       w=159.88  top=17.9    h=21.47  base=34.7    |larger italic Cambria.|
+substitutions: Calibri -> Carlito (MetricCompatible), Cambria -> Caladea (MetricCompatible)
+   line 0 run span=0 font=0 size=14.67 level=0 glyphs=11 x0=0 text="Einstein's "
+   line 0 run span=1 font=1 size=14.67 level=0 glyphs=6 x0=59.22 text="famous"
+   line 0 run span=2 font=0 size=14.67 level=0 glyphs=15 x0=104.4 text=" equation E = mc"
+   line 0 run span=3 font=0 size=9.53 level=0 glyphs=1 x0=203.26 text="2"
+   line 0 run span=4 font=0 size=14.67 level=0 glyphs=11 x0=208.09 text=" is set in "
+   line 1 run span=5 font=2 size=18.67 level=0 glyphs=22 x0=0 text="larger italic Cambria."

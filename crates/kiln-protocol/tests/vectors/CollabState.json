@@ -1,0 +1,71 @@
+{
+  "type": "CollabState",
+  "format": {
+    "TYPENAME": "CollabState"
+  },
+  "values": [
+    {
+      "shared": true,
+      "status": "Online",
+      "link": {
+        "server": "wss://collab.example.org",
+        "room": "k7p2q9xw",
+        "token": "s3cret"
+      },
+      "name": "Ana Martín",
+      "initials": "AM",
+      "colour": "3159C6",
+      "peers": [
+        {
+          "peer": "1849302215568113",
+          "name": "Rana Okafor",
+          "initials": "RO",
+          "colour": "1D8A60",
+          "caret": {
+            "shape": null,
+            "para": 12,
+            "offset": 7
+          },
+          "anchor": null,
+          "slide": 4,
+          "shapes": [
+            9
+          ],
+          "at": {
+            "x": 96.0,
+            "y": 240.5,
+            "width": 1.5,
+            "height": 18.0
+          }
+        }
+      ],
+      "queued": 0,
+      "preview": null,
+      "problem": null
+    },
+    {
+      "shared": false,
+      "status": "Offline",
+      "link": null,
+      "name": "",
+      "initials": "",
+      "colour": "",
+      "peers": [],
+      "queued": 3,
+      "preview": "v1",
+      "problem": "The server refused the token."
+    },
+    {
+      "shared": false,
+      "status": "Connecting",
+      "link": null,
+      "name": "",
+      "initials": "",
+      "colour": "",
+      "peers": [],
+      "queued": 0,
+      "preview": null,
+      "problem": null
+    }
+  ]
+}

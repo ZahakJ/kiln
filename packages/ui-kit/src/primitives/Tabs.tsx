@@ -1,0 +1,26 @@
+import * as RT from '@radix-ui/react-tabs';
+import type { ComponentPropsWithRef } from 'react';
+import { cx } from './cx.ts';
+
+/** WAI-ARIA Tabs (Radix): arrow keys move between tabs, Home/End, automatic activation. */
+export const Tabs = RT.Root;
+
+export interface TabsListProps extends ComponentPropsWithRef<typeof RT.List> {
+  /**
+   * `underline`: app-coloured underline. `segmented`: a sunken well with a raised chip (pane switchers).
+   * `arch`: the brand's arch-topped door for the active tab (ribbon tabs; BRAND.md §5).
+   */
+  variant?: 'underline' | 'segmented' | 'arch';
+}
+
+export function TabsList({ variant = 'underline', className, ...rest }: TabsListProps) {
+  return <RT.List className={cx('kiln-tabs', `kiln-tabs--${variant}`, className)} {...rest} />;
+}
+
+export function TabsTrigger({ className, ...rest }: ComponentPropsWithRef<typeof RT.Trigger>) {
+  return <RT.Trigger className={cx('kiln-tabs__tab', className)} {...rest} />;
+}
+
+export function TabsContent({ className, ...rest }: ComponentPropsWithRef<typeof RT.Content>) {
+  return <RT.Content className={cx('kiln-tabs__panel', className)} {...rest} />;
+}

@@ -1,0 +1,15 @@
+{
+  "type": "VersionOrigin",
+  "format": {
+    "TYPENAME": "VersionOrigin"
+  },
+  "values": [
+    "Save",
+    "Auto",
+    {
+      "Restore": "v1"
+    },
+    "Shared",
+    "Save"
+  ]
+}

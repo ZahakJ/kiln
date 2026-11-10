@@ -1,0 +1,16 @@
+{
+  "type": "FileStamp",
+  "format": {
+    "TYPENAME": "FileStamp"
+  },
+  "values": [
+    {
+      "size": 18204,
+      "modified_ms": 1792000000000
+    },
+    {
+      "size": 0,
+      "modified_ms": 0
+    }
+  ]
+}

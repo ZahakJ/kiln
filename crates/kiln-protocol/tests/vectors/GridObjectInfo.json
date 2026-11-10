@@ -1,0 +1,48 @@
+{
+  "type": "GridObjectInfo",
+  "format": {
+    "TYPENAME": "GridObjectInfo"
+  },
+  "values": [
+    {
+      "preset": "roundRect",
+      "fill": "C2481C",
+      "line": "none",
+      "line_width": 1.0,
+      "text": "Firing",
+      "text_color": "FFFFFF",
+      "text_size": 11.0,
+      "crop": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lock_aspect": false,
+      "alt_text": "A kiln",
+      "placement": "Move",
+      "natural_width": 0.0,
+      "natural_height": 0.0
+    },
+    {
+      "preset": "",
+      "fill": "",
+      "line": "",
+      "line_width": 0.0,
+      "text": "",
+      "text_color": "",
+      "text_size": 0.0,
+      "crop": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lock_aspect": false,
+      "alt_text": "",
+      "placement": "MoveAndSize",
+      "natural_width": 0.0,
+      "natural_height": 0.0
+    }
+  ]
+}

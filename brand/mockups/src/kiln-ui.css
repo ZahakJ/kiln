@@ -1,0 +1,99 @@
+/* Kiln UI: visual target for the app team. Uses ../../tokens.css */
+@font-face { font-family: 'Fraunces'; src: url('../../fonts/Fraunces-VF.ttf') format('truetype'); font-weight: 100 900; font-style: normal; }
+@font-face { font-family: 'Figtree'; src: url('../../fonts/Figtree-VF.ttf') format('truetype'); font-weight: 300 900; font-style: normal; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font: 13px/1.4 var(--kiln-font-ui); color: var(--kiln-fg); background: var(--kiln-bg); -webkit-font-smoothing: antialiased; }
+body { width: 1440px; height: 900px; overflow: hidden; background: var(--kiln-bg); }
+svg.i { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+svg.i.s14 { width: 14px; height: 14px; } svg.i.s18 { width: 18px; height: 18px; } svg.i.s20 { width: 20px; height: 20px; } svg.i.s24 { width: 24px; height: 24px; stroke-width: 1.6; }
+.disp { font-family: var(--kiln-font-display); font-variation-settings: 'SOFT' 40, 'WONK' 0; font-optical-sizing: auto; }
+.tnum { font-variant-numeric: tabular-nums; }
+.muted { color: var(--kiln-muted); } .faint { color: var(--kiln-faint); }
+
+/* ---------- window frame ---------- */
+.app { width: 1440px; height: 900px; display: flex; flex-direction: column; position: relative; background: var(--kiln-bg); }
+.tb { height: 46px; flex: none; display: flex; align-items: center; gap: 4px; padding: 0 8px 0 14px; position: relative; }
+.tb .brand { display: flex; align-items: center; gap: 8px; margin-right: 10px; }
+.tb .brand img { width: 20px; height: 20px; display: block; }
+.tb .brand b { font: 800 16px/1 var(--kiln-font-display); font-variation-settings: 'SOFT' 40; letter-spacing: -.01em; }
+.qa { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; color: var(--kiln-muted); }
+.tb .title { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 13px; }
+.tb .title .ext { color: var(--kiln-faint); font-weight: 500; }
+.chip { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px 0 8px; border-radius: 999px; font-size: 12px; font-weight: 500; color: var(--kiln-muted); background: var(--kiln-sunken); white-space: nowrap; }
+.chip svg.fl { width: 11px; height: 13px; }
+.search { margin-left: auto; width: 300px; height: 32px; border-radius: 9px; background: var(--kiln-sunken); display: flex; align-items: center; gap: 8px; padding: 0 6px 0 10px; color: var(--kiln-faint); font-size: 13px; }
+.kbd { margin-left: auto; font: 600 11px/1 var(--kiln-font-ui); color: var(--kiln-muted); border: 1px solid var(--kiln-line-strong); border-bottom-width: 2px; border-radius: 5px; padding: 3px 5px 2px; background: var(--kiln-raised); white-space: nowrap; }
+.avatar { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font: 700 11px/1 var(--kiln-font-ui); color: #fff; background: linear-gradient(160deg, #C2481C, #7A2508); box-shadow: 0 0 0 2px var(--kiln-bg), 0 0 0 3.5px var(--kiln-line-strong); margin: 0 6px 0 12px; }
+.win { width: 40px; height: 30px; display: grid; place-items: center; color: var(--kiln-muted); }
+
+/* ---------- ribbon tabs ---------- */
+.tabs { height: 38px; flex: none; display: flex; align-items: flex-end; gap: 2px; padding: 0 12px; position: relative; z-index: 2; }
+.file { height: 30px; margin: 0 8px 5px 0; padding: 0 14px 0 11px; border-radius: 9px; display: flex; align-items: center; gap: 7px; font-weight: 700; font-size: 13px; background: var(--app-solid); color: var(--app-on-solid); box-shadow: inset 0 -2px 0 rgba(0,0,0,.14), 0 1px 2px rgba(0,0,0,.12); }
+.file svg.sp { width: 14px; height: 14px; }
+.tab { height: 34px; padding: 0 15px; display: flex; align-items: center; color: var(--kiln-muted); font-weight: 500; font-size: 13px; }
+.tab.on { background: var(--kiln-panel); color: var(--app-text); font-weight: 700; border-radius: 50% 50% 0 0 / 26px 26px 0 0; padding: 6px 22px 0; border: 1px solid var(--kiln-line); border-bottom: 0; margin-bottom: -1px; height: 38px; position: relative; }
+.tab.on::after { content: ''; position: absolute; left: 50%; top: 6px; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: var(--app); }
+.tabs .right { margin-left: auto; display: flex; gap: 8px; align-items: center; height: 100%; padding-bottom: 5px; align-items: flex-end; }
+.btn { height: 30px; display: inline-flex; align-items: center; gap: 7px; padding: 0 12px; border-radius: 9px; font-weight: 600; font-size: 13px; border: 1px solid var(--kiln-line-strong); background: var(--kiln-raised); color: var(--kiln-fg); white-space: nowrap; }
+.btn.solid { background: var(--app-solid); color: var(--app-on-solid); border-color: transparent; box-shadow: inset 0 -2px 0 rgba(0,0,0,.14); }
+.btn.ember { background: var(--kiln-ember); color: var(--kiln-on-ember); border-color: transparent; }
+.btn.ghost { border-color: transparent; background: transparent; }
+
+/* ---------- ribbon slab ---------- */
+.ribbon { margin: 0 10px; height: 108px; flex: none; background: var(--kiln-panel); border: 1px solid var(--kiln-line); border-radius: 14px; box-shadow: var(--kiln-shadow-1); display: flex; padding: 8px 4px 0; position: relative; z-index: 1; }
+.grp { display: flex; flex-direction: column; padding: 0 10px; position: relative; }
+.grp + .grp::before { content: ''; position: absolute; left: 0; top: 4px; bottom: 22px; width: 1px; background: var(--kiln-line); }
+.grp .body { display: flex; gap: 6px; flex: 1; }
+.grp .lbl { height: 20px; font-size: 11px; color: var(--kiln-faint); text-align: center; font-weight: 500; }
+.col { display: flex; flex-direction: column; gap: 4px; }
+.row { display: flex; gap: 2px; align-items: center; }
+.ib { width: 28px; height: 28px; border-radius: 7px; display: grid; place-items: center; color: var(--kiln-fg); position: relative; }
+.ib.on { background: var(--app-tint); color: var(--app-text); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--app) 30%, transparent); }
+.ib .bar { position: absolute; left: 7px; right: 7px; bottom: 4px; height: 3px; border-radius: 2px; }
+.big { width: 56px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 2px; font-size: 12px; font-weight: 500; color: var(--kiln-fg); }
+.big .ic { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: var(--kiln-sunken); color: var(--kiln-fg); }
+.big .ic.app { background: var(--app-tint); color: var(--app-text); }
+.sm { display: flex; align-items: center; gap: 7px; height: 24px; padding: 0 6px; border-radius: 6px; font-size: 12px; color: var(--kiln-fg); white-space: nowrap; }
+.dd { height: 28px; border: 1px solid var(--kiln-line); border-radius: 7px; background: var(--kiln-raised); padding: 0 6px 0 9px; display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 12.5px; color: var(--kiln-fg); white-space: nowrap; }
+.dd svg { color: var(--kiln-faint); }
+.gal { display: flex; gap: 6px; }
+.sty { width: 78px; height: 58px; border: 1px solid var(--kiln-line); border-radius: 9px; background: var(--kiln-raised); padding: 6px 8px; display: flex; flex-direction: column; justify-content: space-between; }
+.sty.on { border-color: var(--app); box-shadow: 0 0 0 2px color-mix(in srgb, var(--app) 22%, transparent); }
+.sty .s { font-size: 17px; line-height: 1.1; white-space: nowrap; overflow: hidden; }
+.sty .n { font-size: 10.5px; color: var(--kiln-faint); }
+.galmore { width: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--kiln-faint); border: 1px solid var(--kiln-line); border-radius: 7px; }
+
+/* ---------- status bar ---------- */
+.sb { height: 30px; flex: none; display: flex; align-items: center; gap: 18px; padding: 0 14px; font-size: 12px; color: var(--kiln-muted); }
+.sb .it { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.sb .sp { flex: 1; }
+.sb .ok { color: var(--kiln-success); }
+.zoom { display: flex; align-items: center; gap: 8px; }
+.zoom .track { width: 110px; height: 4px; border-radius: 2px; background: var(--kiln-line-strong); position: relative; }
+.zoom .track i { position: absolute; left: 58%; top: -5px; width: 14px; height: 14px; border-radius: 50%; background: var(--kiln-raised); border: 2px solid var(--app); }
+.vm { display: flex; gap: 2px; }
+.vm span { width: 26px; height: 22px; border-radius: 6px; display: grid; place-items: center; }
+.vm span.on { background: var(--app-tint); color: var(--app-text); }
+.goal { display: flex; align-items: center; gap: 7px; }
+.goal .m { width: 56px; height: 5px; border-radius: 3px; background: var(--kiln-line-strong); overflow: hidden; }
+.goal .m i { display: block; height: 100%; width: 86%; background: linear-gradient(90deg, #FF6A26, #FFB547); border-radius: 3px; }
+
+/* ---------- panes ---------- */
+.work { flex: 1; display: flex; min-height: 0; padding: 10px 10px 0; gap: 10px; }
+.pane { background: var(--kiln-panel); border: 1px solid var(--kiln-line); border-radius: 14px; }
+.pane h4 { font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; }
+.seg { display: flex; background: var(--kiln-sunken); border-radius: 9px; padding: 3px; gap: 2px; }
+.seg span { flex: 1; text-align: center; padding: 5px 8px; border-radius: 7px; font-size: 12px; font-weight: 500; color: var(--kiln-muted); white-space: nowrap; }
+.seg span.on { background: var(--kiln-raised); color: var(--kiln-fg); font-weight: 600; box-shadow: var(--kiln-shadow-1); }
+.field { height: 32px; border-radius: 8px; border: 1px solid var(--kiln-line); background: var(--kiln-raised); display: flex; align-items: center; gap: 8px; padding: 0 10px; color: var(--kiln-faint); font-size: 12.5px; }
+
+/* spark caret and flame bits */
+.caret { display: inline-block; width: 2px; height: 1.15em; background: var(--app); vertical-align: -0.18em; position: relative; margin: 0 1px; border-radius: 1px; }
+.caret::before { content: ''; position: absolute; left: -3px; top: -7px; width: 8px; height: 8px; background: url('spark.svg') center/contain no-repeat; }
+
+/* dark-mode ember glow under the page */
+[data-theme="dark"] .glowpage { box-shadow: 0 40px 120px -30px rgba(255,106,38,.30), 0 0 0 1px rgba(255,255,255,.04), 0 2px 12px rgba(0,0,0,.5); }
+
+/* tag for presentation */
+.label { position: absolute; left: 16px; bottom: 40px; font: 700 12px/1 var(--kiln-font-ui); letter-spacing: .02em; }

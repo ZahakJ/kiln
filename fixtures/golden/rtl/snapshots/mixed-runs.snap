@@ -1,0 +1,13 @@
+---
+source: crates/kiln-doc-layout/tests/rtl.rs
+expression: out
+---
+pages: 1
+  1 [s1 #1] Mixed … وأندرويد. (49 words)
+page 1
+  Mixed directions
+  The word كيلن means kiln, and ٢٠٢٦ is the year 2026.
+  يستخدم الفريق Rust وTypeScript لبناء الواجهة، مع مكتبة parley للتخطيط.
+  النص العريض والكلمة italic في سطر واحد.
+  Quote: «مرحباً بالعالم» — from the release notes (v0.1).
+  الإصدار Kiln 0.1 (beta) يعمل على Linux, Windows, macOS وأندرويد.

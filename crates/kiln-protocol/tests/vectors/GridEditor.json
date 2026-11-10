@@ -1,0 +1,85 @@
+{
+  "type": "GridEditor",
+  "format": {
+    "TYPENAME": "GridEditor"
+  },
+  "values": [
+    {
+      "text": "=SUM(G5:G9)",
+      "start": 11,
+      "end": 11,
+      "refs": [
+        {
+          "start": 5,
+          "end": 10,
+          "color": "1D8A60"
+        }
+      ],
+      "completions": [
+        {
+          "label": "SUMIFS",
+          "kind": "Function",
+          "detail": "Adds the cells that meet several criteria.",
+          "syntax": "SUMIFS(sum_range, criteria_range1, criteria1, …)"
+        }
+      ],
+      "completion_index": 0,
+      "inline_completion": "na",
+      "hint": {
+        "function": "XLOOKUP",
+        "syntax": "XLOOKUP(lookup_value, lookup_array, return_array, …)",
+        "summary": "Looks up a value.",
+        "args": [
+          {
+            "name": "lookup_value",
+            "description": "What to find.",
+            "optional": false
+          }
+        ],
+        "current": 0,
+        "since": "365"
+      },
+      "rect": {
+        "x": 320.5,
+        "y": 250.0,
+        "width": 92.0,
+        "height": 28.0
+      },
+      "caret": {
+        "x": 400.0,
+        "y": 254.0,
+        "width": 1.5,
+        "height": 18.0
+      },
+      "pick_list": [
+        "apple",
+        "cherry"
+      ],
+      "formula_bar": false
+    },
+    {
+      "text": "",
+      "start": 0,
+      "end": 0,
+      "refs": [],
+      "completions": [],
+      "completion_index": 0,
+      "inline_completion": null,
+      "hint": null,
+      "rect": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.0,
+        "height": 0.0
+      },
+      "caret": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.0,
+        "height": 0.0
+      },
+      "pick_list": null,
+      "formula_bar": false
+    }
+  ]
+}

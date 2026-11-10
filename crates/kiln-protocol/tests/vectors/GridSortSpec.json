@@ -1,0 +1,22 @@
+{
+  "type": "GridSortSpec",
+  "format": {
+    "TYPENAME": "GridSortSpec"
+  },
+  "values": [
+    {
+      "range": null,
+      "keys": [],
+      "header": true,
+      "case_sensitive": false,
+      "by_columns": true
+    },
+    {
+      "range": null,
+      "keys": [],
+      "header": null,
+      "case_sensitive": false,
+      "by_columns": false
+    }
+  ]
+}

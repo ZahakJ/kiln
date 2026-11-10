@@ -1,0 +1,22 @@
+{
+  "type": "GridPivotEdit",
+  "format": {
+    "TYPENAME": "GridPivotEdit"
+  },
+  "values": [
+    "ClearAll",
+    {
+      "Page": {
+        "field": 1,
+        "item": null
+      }
+    },
+    {
+      "Place": {
+        "field": 0,
+        "area": "Filters",
+        "position": 0
+      }
+    }
+  ]
+}

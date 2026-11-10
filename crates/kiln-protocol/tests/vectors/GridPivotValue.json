@@ -1,0 +1,35 @@
+{
+  "type": "GridPivotValue",
+  "format": {
+    "TYPENAME": "GridPivotValue"
+  },
+  "values": [
+    {
+      "field": 4,
+      "name": "Sum of Units",
+      "function": "Sum",
+      "show_as": "PercentOfParentRow",
+      "base_field": 0,
+      "base_item": "(previous)",
+      "num_fmt": "0.0%"
+    },
+    {
+      "field": 0,
+      "name": "",
+      "function": "Sum",
+      "show_as": "Normal",
+      "base_field": null,
+      "base_item": null,
+      "num_fmt": null
+    },
+    {
+      "field": 0,
+      "name": "",
+      "function": "Sum",
+      "show_as": "Normal",
+      "base_field": null,
+      "base_item": null,
+      "num_fmt": null
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "DeckHeaderFooter",
+  "format": {
+    "TYPENAME": "DeckHeaderFooter"
+  },
+  "values": [
+    {
+      "date": false,
+      "slide_number": true,
+      "footer": "Kiln Co-op"
+    },
+    {
+      "date": false,
+      "slide_number": false,
+      "footer": null
+    }
+  ]
+}

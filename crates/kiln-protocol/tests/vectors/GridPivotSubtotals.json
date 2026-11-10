@@ -1,0 +1,16 @@
+{
+  "type": "GridPivotSubtotals",
+  "format": {
+    "TYPENAME": "GridPivotSubtotals"
+  },
+  "values": [
+    "Automatic",
+    "None",
+    {
+      "Custom": [
+        "Count"
+      ]
+    },
+    "Automatic"
+  ]
+}

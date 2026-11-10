@@ -1,0 +1,11 @@
+{
+  "type": "GridImportFormat",
+  "format": {
+    "TYPENAME": "GridImportFormat"
+  },
+  "values": [
+    "Text",
+    "Json",
+    "Text"
+  ]
+}

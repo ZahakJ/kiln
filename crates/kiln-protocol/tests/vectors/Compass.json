@@ -1,0 +1,17 @@
+{
+  "type": "Compass",
+  "format": {
+    "TYPENAME": "Compass"
+  },
+  "values": [
+    "N",
+    "NW",
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W"
+  ]
+}

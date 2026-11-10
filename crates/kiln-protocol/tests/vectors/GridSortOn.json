@@ -1,0 +1,14 @@
+{
+  "type": "GridSortOn",
+  "format": {
+    "TYPENAME": "GridSortOn"
+  },
+  "values": [
+    "Values",
+    "Icon",
+    "Values",
+    "CellColor",
+    "FontColor",
+    "Icon"
+  ]
+}

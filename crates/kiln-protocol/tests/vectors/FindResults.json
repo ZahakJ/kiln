@@ -1,0 +1,18 @@
+{
+  "type": "FindResults",
+  "format": {
+    "TYPENAME": "FindResults"
+  },
+  "values": [
+    {
+      "hits": [],
+      "total": 0,
+      "error": "unbalanced ("
+    },
+    {
+      "hits": [],
+      "total": 0,
+      "error": null
+    }
+  ]
+}

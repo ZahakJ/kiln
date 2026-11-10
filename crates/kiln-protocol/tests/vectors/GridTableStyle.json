@@ -1,0 +1,24 @@
+{
+  "type": "GridTableStyle",
+  "format": {
+    "TYPENAME": "GridTableStyle"
+  },
+  "values": [
+    {
+      "name": "TableStyleMedium2",
+      "family": "Medium",
+      "header": "4472C4",
+      "header_text": "FFFFFF",
+      "band": "D9E1F2",
+      "line": null
+    },
+    {
+      "name": "",
+      "family": "",
+      "header": null,
+      "header_text": null,
+      "band": null,
+      "line": null
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "type": "HostReply",
+  "format": {
+    "TYPENAME": "HostReply"
+  },
+  "values": [
+    "Done",
+    "Empty",
+    {
+      "Bytes": [
+        75,
+        105,
+        108,
+        110,
+        10,
+        87,
+        114,
+        105,
+        116,
+        101
+      ]
+    },
+    {
+      "Path": "/data/ana/x.txt"
+    },
+    {
+      "Text": "\"dark\""
+    },
+    {
+      "Recents": [
+        {
+          "path": "/data/ana/Budget.xlsx",
+          "name": "Budget",
+          "kind": "Grid",
+          "opened_at_ms": 1792000000000,
+          "pinned": true,
+          "thumbnail": null
+        },
+        {
+          "path": "opfs:documents/Plan.kwrite",
+          "name": "Plan",
+          "kind": "Write",
+          "opened_at_ms": 1792000000001,
+          "pinned": false,
+          "thumbnail": "data:image/png;base64,iVBORw0KGgo="
+        }
+      ]
+    },
+    {
+      "Keys": [
+        "k1x9.base.1",
+        "k1x9.log.1"
+      ]
+    },
+    {
+      "Stamp": {
+        "size": 18204,
+        "modified_ms": 1792000000000
+      }
+    },
+    {
+      "Clipboard": {
+        "text": "t",
+        "html": null
+      }
+    },
+    "Cancelled",
+    {
+      "Failed": {
+        "kind": "Unavailable",
+        "message": "write.edit.insert_text is not available: read-only"
+      }
+    },
+    "Done",
+    "Empty",
+    {
+      "Bytes": [
+        0
+      ]
+    },
+    {
+      "Path": ""
+    },
+    {
+      "Text": ""
+    },
+    {
+      "Recents": [
+        {
+          "path": "",
+          "name": "",
+          "kind": "Scratch",
+          "opened_at_ms": 0,
+          "pinned": false,
+          "thumbnail": null
+        }
+      ]
+    },
+    {
+      "Keys": [
+        ""
+      ]
+    },
+    {
+      "Stamp": {
+        "size": 0,
+        "modified_ms": 0
+      }
+    },
+    {
+      "Clipboard": {
+        "text": "",
+        "html": ""
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "PrintParity",
+  "format": {
+    "TYPENAME": "PrintParity"
+  },
+  "values": [
+    "All",
+    "Odd",
+    "Even",
+    "All"
+  ]
+}

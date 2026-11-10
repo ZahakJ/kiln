@@ -1,0 +1,11 @@
+{
+  "type": "TextDirection",
+  "format": {
+    "TYPENAME": "TextDirection"
+  },
+  "values": [
+    "Horizontal",
+    "Rotate90",
+    "Horizontal"
+  ]
+}

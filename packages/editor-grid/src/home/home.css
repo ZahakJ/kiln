@@ -1,0 +1,98 @@
+/* Kiln Grid Home completions: the Auto Fill Options button, the border pen's badge and the
+   Series and Custom Lists dialogs. Brand tokens only, so light, dark and high contrast follow. */
+
+.kiln-ghome__layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.kiln-ghome__layer > * {
+  pointer-events: auto;
+}
+
+.kiln-ghome__autofill {
+  position: absolute;
+}
+
+.kiln-ghome__autofill-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 2px 3px;
+  border: 1px solid var(--kiln-line-strong, var(--kiln-line));
+  border-radius: 3px;
+  background: var(--kiln-raised);
+  color: var(--kiln-fg);
+  box-shadow: var(--kiln-shadow-sm, 0 1px 2px rgb(0 0 0 / 0.12));
+  cursor: pointer;
+}
+
+.kiln-ghome__autofill-button:hover,
+.kiln-ghome__autofill-button[data-state="open"] {
+  border-color: var(--kiln-accent);
+}
+
+.kiln-ghome__autofill-button:focus-visible {
+  outline: 2px solid var(--kiln-focus, var(--kiln-accent));
+  outline-offset: 1px;
+}
+
+.kiln-ghome__pen {
+  position: absolute;
+  inset-inline-end: 12px;
+  bottom: 10px;
+  padding: 4px 10px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 999px;
+  background: var(--kiln-raised);
+  color: var(--kiln-fg);
+  font-size: var(--kiln-text-sm, 12px);
+  pointer-events: none;
+}
+
+.kiln-griddlg__entries {
+  width: 100%;
+  min-height: 140px;
+  resize: vertical;
+  font: inherit;
+}
+
+.kiln-griddlg__hint {
+  margin: 8px 0 0;
+  color: var(--kiln-danger, var(--kiln-fg));
+  font-size: var(--kiln-text-sm, 12px);
+}
+
+.kiln-fc__row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.kiln-griddlg__cols.kiln-ghome__lists {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.kiln-ghome__lists > * {
+  min-width: 0;
+}
+
+.kiln-ghome__lists .kiln-griddlg__list {
+  overflow-x: hidden;
+}
+
+.kiln-ghome__lists .kiln-griddlg__option {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kiln-ghome__list-actions {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}

@@ -1,0 +1,23 @@
+{
+  "type": "CollabCaret",
+  "format": {
+    "TYPENAME": "CollabCaret"
+  },
+  "values": [
+    {
+      "shape": null,
+      "para": 12,
+      "offset": 7
+    },
+    {
+      "shape": 5,
+      "para": 1,
+      "offset": 0
+    },
+    {
+      "shape": null,
+      "para": 0,
+      "offset": 0
+    }
+  ]
+}

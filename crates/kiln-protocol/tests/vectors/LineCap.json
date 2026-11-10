@@ -1,0 +1,12 @@
+{
+  "type": "LineCap",
+  "format": {
+    "TYPENAME": "LineCap"
+  },
+  "values": [
+    "Round",
+    "Butt",
+    "Round",
+    "Square"
+  ]
+}

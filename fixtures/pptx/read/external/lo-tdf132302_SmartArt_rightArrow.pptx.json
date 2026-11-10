@@ -1,0 +1,27 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Blank"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  8640763,
+  5759450
+ ],
+ "slides": [
+  {
+   "layout": "Blank",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "diagram",
+     "name": "Diagram 1"
+    }
+   ]
+  }
+ ]
+}

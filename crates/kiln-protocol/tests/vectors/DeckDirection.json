@@ -1,0 +1,11 @@
+{
+  "type": "DeckDirection",
+  "format": {
+    "TYPENAME": "DeckDirection"
+  },
+  "values": [
+    "Up",
+    "Right",
+    "Up"
+  ]
+}

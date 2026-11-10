@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-kiln-frame"
+description = "Enables the kiln_frame command without any pre-configured scope."
+commands.allow = ["kiln_frame"]
+
+[[permission]]
+identifier = "deny-kiln-frame"
+description = "Denies the kiln_frame command without any pre-configured scope."
+commands.deny = ["kiln_frame"]

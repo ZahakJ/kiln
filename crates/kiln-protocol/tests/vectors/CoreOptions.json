@@ -1,0 +1,24 @@
+{
+  "type": "CoreOptions",
+  "format": {
+    "TYPENAME": "CoreOptions"
+  },
+  "values": [
+    {
+      "autosave_delay_s": 2,
+      "recovery": true,
+      "spell_ignore_uppercase": true,
+      "spell_ignore_numbers": true,
+      "spell_ignore_addresses": true,
+      "ui_language": ""
+    },
+    {
+      "autosave_delay_s": 0,
+      "recovery": false,
+      "spell_ignore_uppercase": false,
+      "spell_ignore_numbers": false,
+      "spell_ignore_addresses": false,
+      "ui_language": ""
+    }
+  ]
+}

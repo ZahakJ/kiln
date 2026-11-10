@@ -1,0 +1,586 @@
+format,value,kind,expected
+d,1,number,1
+d,59,number,28
+d,60,number,29
+d,61,number,1
+d,366,number,31
+d,32874.25,number,1
+d,36526.5,number,1
+d,43831.0208333333,number,1
+d,45306,number,15
+d,45306.75,number,15
+d,45306.123456,number,15
+d,45658.999988,number,1
+d,2958465,number,31
+dd,1,number,01
+dd,59,number,28
+dd,60,number,29
+dd,61,number,01
+dd,366,number,31
+dd,32874.25,number,01
+dd,36526.5,number,01
+dd,43831.0208333333,number,01
+dd,45306,number,15
+dd,45306.75,number,15
+dd,45306.123456,number,15
+dd,45658.999988,number,01
+dd,2958465,number,31
+ddd,1,number,Sun
+ddd,59,number,Tue
+ddd,60,number,Wed
+ddd,61,number,Thu
+ddd,366,number,Mon
+ddd,32874.25,number,Mon
+ddd,36526.5,number,Sat
+ddd,43831.0208333333,number,Wed
+ddd,45306,number,Mon
+ddd,45306.75,number,Mon
+ddd,45306.123456,number,Mon
+ddd,45658.999988,number,Wed
+ddd,2958465,number,Fri
+dddd,1,number,Sunday
+dddd,59,number,Tuesday
+dddd,60,number,Wednesday
+dddd,61,number,Thursday
+dddd,366,number,Monday
+dddd,32874.25,number,Monday
+dddd,36526.5,number,Saturday
+dddd,43831.0208333333,number,Wednesday
+dddd,45306,number,Monday
+dddd,45306.75,number,Monday
+dddd,45306.123456,number,Monday
+dddd,45658.999988,number,Wednesday
+dddd,2958465,number,Friday
+m,1,number,1
+m,59,number,2
+m,60,number,2
+m,61,number,3
+m,366,number,12
+m,32874.25,number,1
+m,36526.5,number,1
+m,43831.0208333333,number,1
+m,45306,number,1
+m,45306.75,number,1
+m,45306.123456,number,1
+m,45658.999988,number,1
+m,2958465,number,12
+mm,1,number,01
+mm,59,number,02
+mm,60,number,02
+mm,61,number,03
+mm,366,number,12
+mm,32874.25,number,01
+mm,36526.5,number,01
+mm,43831.0208333333,number,01
+mm,45306,number,01
+mm,45306.75,number,01
+mm,45306.123456,number,01
+mm,45658.999988,number,01
+mm,2958465,number,12
+mmm,1,number,Jan
+mmm,59,number,Feb
+mmm,60,number,Feb
+mmm,61,number,Mar
+mmm,366,number,Dec
+mmm,32874.25,number,Jan
+mmm,36526.5,number,Jan
+mmm,43831.0208333333,number,Jan
+mmm,45306,number,Jan
+mmm,45306.75,number,Jan
+mmm,45306.123456,number,Jan
+mmm,45658.999988,number,Jan
+mmm,2958465,number,Dec
+mmmm,1,number,January
+mmmm,59,number,February
+mmmm,60,number,February
+mmmm,61,number,March
+mmmm,366,number,December
+mmmm,32874.25,number,January
+mmmm,36526.5,number,January
+mmmm,43831.0208333333,number,January
+mmmm,45306,number,January
+mmmm,45306.75,number,January
+mmmm,45306.123456,number,January
+mmmm,45658.999988,number,January
+mmmm,2958465,number,December
+mmmmm,1,number,J
+mmmmm,59,number,F
+mmmmm,60,number,F
+mmmmm,61,number,M
+mmmmm,366,number,D
+mmmmm,32874.25,number,J
+mmmmm,36526.5,number,J
+mmmmm,43831.0208333333,number,J
+mmmmm,45306,number,J
+mmmmm,45306.75,number,J
+mmmmm,45306.123456,number,J
+mmmmm,45658.999988,number,J
+mmmmm,2958465,number,D
+yy,1,number,00
+yy,59,number,00
+yy,60,number,00
+yy,61,number,00
+yy,366,number,00
+yy,32874.25,number,90
+yy,36526.5,number,00
+yy,43831.0208333333,number,20
+yy,45306,number,24
+yy,45306.75,number,24
+yy,45306.123456,number,24
+yy,45658.999988,number,25
+yy,2958465,number,99
+yyyy,1,number,1900
+yyyy,59,number,1900
+yyyy,60,number,1900
+yyyy,61,number,1900
+yyyy,366,number,1900
+yyyy,32874.25,number,1990
+yyyy,36526.5,number,2000
+yyyy,43831.0208333333,number,2020
+yyyy,45306,number,2024
+yyyy,45306.75,number,2024
+yyyy,45306.123456,number,2024
+yyyy,45658.999988,number,2025
+yyyy,2958465,number,9999
+m/d/yyyy,1,number,1/1/1900
+m/d/yyyy,59,number,2/28/1900
+m/d/yyyy,60,number,2/29/1900
+m/d/yyyy,61,number,3/1/1900
+m/d/yyyy,366,number,12/31/1900
+m/d/yyyy,32874.25,number,1/1/1990
+m/d/yyyy,36526.5,number,1/1/2000
+m/d/yyyy,43831.0208333333,number,1/1/2020
+m/d/yyyy,45306,number,1/15/2024
+m/d/yyyy,45306.75,number,1/15/2024
+m/d/yyyy,45306.123456,number,1/15/2024
+m/d/yyyy,45658.999988,number,1/1/2025
+m/d/yyyy,2958465,number,12/31/9999
+mm/dd/yyyy,1,number,01/01/1900
+mm/dd/yyyy,59,number,02/28/1900
+mm/dd/yyyy,60,number,02/29/1900
+mm/dd/yyyy,61,number,03/01/1900
+mm/dd/yyyy,366,number,12/31/1900
+mm/dd/yyyy,32874.25,number,01/01/1990
+mm/dd/yyyy,36526.5,number,01/01/2000
+mm/dd/yyyy,43831.0208333333,number,01/01/2020
+mm/dd/yyyy,45306,number,01/15/2024
+mm/dd/yyyy,45306.75,number,01/15/2024
+mm/dd/yyyy,45306.123456,number,01/15/2024
+mm/dd/yyyy,45658.999988,number,01/01/2025
+mm/dd/yyyy,2958465,number,12/31/9999
+d-mmm-yy,1,number,1-Jan-00
+d-mmm-yy,59,number,28-Feb-00
+d-mmm-yy,60,number,29-Feb-00
+d-mmm-yy,61,number,1-Mar-00
+d-mmm-yy,366,number,31-Dec-00
+d-mmm-yy,32874.25,number,1-Jan-90
+d-mmm-yy,36526.5,number,1-Jan-00
+d-mmm-yy,43831.0208333333,number,1-Jan-20
+d-mmm-yy,45306,number,15-Jan-24
+d-mmm-yy,45306.75,number,15-Jan-24
+d-mmm-yy,45306.123456,number,15-Jan-24
+d-mmm-yy,45658.999988,number,1-Jan-25
+d-mmm-yy,2958465,number,31-Dec-99
+dd-mmm-yyyy,1,number,01-Jan-1900
+dd-mmm-yyyy,59,number,28-Feb-1900
+dd-mmm-yyyy,60,number,29-Feb-1900
+dd-mmm-yyyy,61,number,01-Mar-1900
+dd-mmm-yyyy,366,number,31-Dec-1900
+dd-mmm-yyyy,32874.25,number,01-Jan-1990
+dd-mmm-yyyy,36526.5,number,01-Jan-2000
+dd-mmm-yyyy,43831.0208333333,number,01-Jan-2020
+dd-mmm-yyyy,45306,number,15-Jan-2024
+dd-mmm-yyyy,45306.75,number,15-Jan-2024
+dd-mmm-yyyy,45306.123456,number,15-Jan-2024
+dd-mmm-yyyy,45658.999988,number,01-Jan-2025
+dd-mmm-yyyy,2958465,number,31-Dec-9999
+"mmm d, yyyy",1,number,"Jan 1, 1900"
+"mmm d, yyyy",59,number,"Feb 28, 1900"
+"mmm d, yyyy",60,number,"Feb 29, 1900"
+"mmm d, yyyy",61,number,"Mar 1, 1900"
+"mmm d, yyyy",366,number,"Dec 31, 1900"
+"mmm d, yyyy",32874.25,number,"Jan 1, 1990"
+"mmm d, yyyy",36526.5,number,"Jan 1, 2000"
+"mmm d, yyyy",43831.0208333333,number,"Jan 1, 2020"
+"mmm d, yyyy",45306,number,"Jan 15, 2024"
+"mmm d, yyyy",45306.75,number,"Jan 15, 2024"
+"mmm d, yyyy",45306.123456,number,"Jan 15, 2024"
+"mmm d, yyyy",45658.999988,number,"Jan 1, 2025"
+"mmm d, yyyy",2958465,number,"Dec 31, 9999"
+"dddd, mmmm d, yyyy",1,number,"Sunday, January 1, 1900"
+"dddd, mmmm d, yyyy",59,number,"Tuesday, February 28, 1900"
+"dddd, mmmm d, yyyy",60,number,"Wednesday, February 29, 1900"
+"dddd, mmmm d, yyyy",61,number,"Thursday, March 1, 1900"
+"dddd, mmmm d, yyyy",366,number,"Monday, December 31, 1900"
+"dddd, mmmm d, yyyy",32874.25,number,"Monday, January 1, 1990"
+"dddd, mmmm d, yyyy",36526.5,number,"Saturday, January 1, 2000"
+"dddd, mmmm d, yyyy",43831.0208333333,number,"Wednesday, January 1, 2020"
+"dddd, mmmm d, yyyy",45306,number,"Monday, January 15, 2024"
+"dddd, mmmm d, yyyy",45306.75,number,"Monday, January 15, 2024"
+"dddd, mmmm d, yyyy",45306.123456,number,"Monday, January 15, 2024"
+"dddd, mmmm d, yyyy",45658.999988,number,"Wednesday, January 1, 2025"
+"dddd, mmmm d, yyyy",2958465,number,"Friday, December 31, 9999"
+yyyy-mm-dd,1,number,1900-01-01
+yyyy-mm-dd,59,number,1900-02-28
+yyyy-mm-dd,60,number,1900-02-29
+yyyy-mm-dd,61,number,1900-03-01
+yyyy-mm-dd,366,number,1900-12-31
+yyyy-mm-dd,32874.25,number,1990-01-01
+yyyy-mm-dd,36526.5,number,2000-01-01
+yyyy-mm-dd,43831.0208333333,number,2020-01-01
+yyyy-mm-dd,45306,number,2024-01-15
+yyyy-mm-dd,45306.75,number,2024-01-15
+yyyy-mm-dd,45306.123456,number,2024-01-15
+yyyy-mm-dd,45658.999988,number,2025-01-01
+yyyy-mm-dd,2958465,number,9999-12-31
+yyyy-mm-dd hh:mm:ss,1,number,1900-01-01 00:00:00
+yyyy-mm-dd hh:mm:ss,59,number,1900-02-28 00:00:00
+yyyy-mm-dd hh:mm:ss,60,number,1900-02-29 00:00:00
+yyyy-mm-dd hh:mm:ss,61,number,1900-03-01 00:00:00
+yyyy-mm-dd hh:mm:ss,366,number,1900-12-31 00:00:00
+yyyy-mm-dd hh:mm:ss,32874.25,number,1990-01-01 06:00:00
+yyyy-mm-dd hh:mm:ss,36526.5,number,2000-01-01 12:00:00
+yyyy-mm-dd hh:mm:ss,43831.0208333333,number,2020-01-01 00:30:00
+yyyy-mm-dd hh:mm:ss,45306,number,2024-01-15 00:00:00
+yyyy-mm-dd hh:mm:ss,45306.75,number,2024-01-15 18:00:00
+yyyy-mm-dd hh:mm:ss,45306.123456,number,2024-01-15 02:57:47
+yyyy-mm-dd hh:mm:ss,45658.999988,number,2025-01-01 23:59:59
+yyyy-mm-dd hh:mm:ss,2958465,number,9999-12-31 00:00:00
+m/d/yy h:mm,1,number,1/1/00 0:00
+m/d/yy h:mm,59,number,2/28/00 0:00
+m/d/yy h:mm,60,number,2/29/00 0:00
+m/d/yy h:mm,61,number,3/1/00 0:00
+m/d/yy h:mm,366,number,12/31/00 0:00
+m/d/yy h:mm,32874.25,number,1/1/90 6:00
+m/d/yy h:mm,36526.5,number,1/1/00 12:00
+m/d/yy h:mm,43831.0208333333,number,1/1/20 0:30
+m/d/yy h:mm,45306,number,1/15/24 0:00
+m/d/yy h:mm,45306.75,number,1/15/24 18:00
+m/d/yy h:mm,45306.123456,number,1/15/24 2:57
+m/d/yy h:mm,45658.999988,number,1/1/25 23:59
+m/d/yy h:mm,2958465,number,12/31/99 0:00
+h:mm,1,number,0:00
+h:mm,59,number,0:00
+h:mm,60,number,0:00
+h:mm,61,number,0:00
+h:mm,366,number,0:00
+h:mm,32874.25,number,6:00
+h:mm,36526.5,number,12:00
+h:mm,43831.0208333333,number,0:30
+h:mm,45306,number,0:00
+h:mm,45306.75,number,18:00
+h:mm,45306.123456,number,2:57
+h:mm,45658.999988,number,23:59
+h:mm,2958465,number,0:00
+hh:mm,1,number,00:00
+hh:mm,59,number,00:00
+hh:mm,60,number,00:00
+hh:mm,61,number,00:00
+hh:mm,366,number,00:00
+hh:mm,32874.25,number,06:00
+hh:mm,36526.5,number,12:00
+hh:mm,43831.0208333333,number,00:30
+hh:mm,45306,number,00:00
+hh:mm,45306.75,number,18:00
+hh:mm,45306.123456,number,02:57
+hh:mm,45658.999988,number,23:59
+hh:mm,2958465,number,00:00
+h:mm:ss,1,number,0:00:00
+h:mm:ss,59,number,0:00:00
+h:mm:ss,60,number,0:00:00
+h:mm:ss,61,number,0:00:00
+h:mm:ss,366,number,0:00:00
+h:mm:ss,32874.25,number,6:00:00
+h:mm:ss,36526.5,number,12:00:00
+h:mm:ss,43831.0208333333,number,0:30:00
+h:mm:ss,45306,number,0:00:00
+h:mm:ss,45306.75,number,18:00:00
+h:mm:ss,45306.123456,number,2:57:47
+h:mm:ss,45658.999988,number,23:59:59
+h:mm:ss,2958465,number,0:00:00
+h:mm AM/PM,1,number,12:00 AM
+h:mm AM/PM,59,number,12:00 AM
+h:mm AM/PM,60,number,12:00 AM
+h:mm AM/PM,61,number,12:00 AM
+h:mm AM/PM,366,number,12:00 AM
+h:mm AM/PM,32874.25,number,6:00 AM
+h:mm AM/PM,36526.5,number,12:00 PM
+h:mm AM/PM,43831.0208333333,number,12:30 AM
+h:mm AM/PM,45306,number,12:00 AM
+h:mm AM/PM,45306.75,number,6:00 PM
+h:mm AM/PM,45306.123456,number,2:57 AM
+h:mm AM/PM,45658.999988,number,11:59 PM
+h:mm AM/PM,2958465,number,12:00 AM
+h:mm:ss AM/PM,1,number,12:00:00 AM
+h:mm:ss AM/PM,59,number,12:00:00 AM
+h:mm:ss AM/PM,60,number,12:00:00 AM
+h:mm:ss AM/PM,61,number,12:00:00 AM
+h:mm:ss AM/PM,366,number,12:00:00 AM
+h:mm:ss AM/PM,32874.25,number,6:00:00 AM
+h:mm:ss AM/PM,36526.5,number,12:00:00 PM
+h:mm:ss AM/PM,43831.0208333333,number,12:30:00 AM
+h:mm:ss AM/PM,45306,number,12:00:00 AM
+h:mm:ss AM/PM,45306.75,number,6:00:00 PM
+h:mm:ss AM/PM,45306.123456,number,2:57:47 AM
+h:mm:ss AM/PM,45658.999988,number,11:59:59 PM
+h:mm:ss AM/PM,2958465,number,12:00:00 AM
+hh:mm A/P,1,number,12:00 A
+hh:mm A/P,59,number,12:00 A
+hh:mm A/P,60,number,12:00 A
+hh:mm A/P,61,number,12:00 A
+hh:mm A/P,366,number,12:00 A
+hh:mm A/P,32874.25,number,06:00 A
+hh:mm A/P,36526.5,number,12:00 P
+hh:mm A/P,43831.0208333333,number,12:30 A
+hh:mm A/P,45306,number,12:00 A
+hh:mm A/P,45306.75,number,06:00 P
+hh:mm A/P,45306.123456,number,02:57 A
+hh:mm A/P,45658.999988,number,11:59 P
+hh:mm A/P,2958465,number,12:00 A
+h AM/PM,1,number,12 AM
+h AM/PM,59,number,12 AM
+h AM/PM,60,number,12 AM
+h AM/PM,61,number,12 AM
+h AM/PM,366,number,12 AM
+h AM/PM,32874.25,number,6 AM
+h AM/PM,36526.5,number,12 PM
+h AM/PM,43831.0208333333,number,12 AM
+h AM/PM,45306,number,12 AM
+h AM/PM,45306.75,number,6 PM
+h AM/PM,45306.123456,number,2 AM
+h AM/PM,45658.999988,number,11 PM
+h AM/PM,2958465,number,12 AM
+[h]:mm:ss,1,number,24:00:00
+[h]:mm:ss,59,number,1416:00:00
+[h]:mm:ss,60,number,1440:00:00
+[h]:mm:ss,61,number,1464:00:00
+[h]:mm:ss,366,number,8784:00:00
+[h]:mm:ss,32874.25,number,788982:00:00
+[h]:mm:ss,36526.5,number,876636:00:00
+[h]:mm:ss,43831.0208333333,number,1051944:30:00
+[h]:mm:ss,45306,number,1087344:00:00
+[h]:mm:ss,45306.75,number,1087362:00:00
+[h]:mm:ss,45306.123456,number,1087346:57:47
+[h]:mm:ss,45658.999988,number,1095815:59:59
+[h]:mm:ss,2958465,number,71003160:00:00
+[h]:mm,1,number,24:00
+[h]:mm,59,number,1416:00
+[h]:mm,60,number,1440:00
+[h]:mm,61,number,1464:00
+[h]:mm,366,number,8784:00
+[h]:mm,32874.25,number,788982:00
+[h]:mm,36526.5,number,876636:00
+[h]:mm,43831.0208333333,number,1051944:30
+[h]:mm,45306,number,1087344:00
+[h]:mm,45306.75,number,1087362:00
+[h]:mm,45306.123456,number,1087346:57
+[h]:mm,45658.999988,number,1095815:59
+[h]:mm,2958465,number,71003160:00
+[mm]:ss,1,number,1440:00
+[mm]:ss,59,number,84960:00
+[mm]:ss,60,number,86400:00
+[mm]:ss,61,number,87840:00
+[mm]:ss,366,number,527040:00
+[mm]:ss,32874.25,number,47338920:00
+[mm]:ss,36526.5,number,52598160:00
+[mm]:ss,43831.0208333333,number,63116670:00
+[mm]:ss,45306,number,65240640:00
+[mm]:ss,45306.75,number,65241720:00
+[mm]:ss,45306.123456,number,65240817:47
+[mm]:ss,45658.999988,number,65748959:59
+[mm]:ss,2958465,number,4260189600:00
+[ss],1,number,86400
+[ss],59,number,5097600
+[ss],60,number,5184000
+[ss],61,number,5270400
+[ss],366,number,31622400
+[ss],32874.25,number,2840335200
+[ss],36526.5,number,3155889600
+[ss],43831.0208333333,number,3787000200
+[ss],45306,number,3914438400
+[ss],45306.75,number,3914503200
+[ss],45306.123456,number,3914449067
+[ss],45658.999988,number,3944937599
+[ss],2958465,number,255611376000
+mm:ss,1,number,00:00
+mm:ss,59,number,00:00
+mm:ss,60,number,00:00
+mm:ss,61,number,00:00
+mm:ss,366,number,00:00
+mm:ss,32874.25,number,00:00
+mm:ss,36526.5,number,00:00
+mm:ss,43831.0208333333,number,30:00
+mm:ss,45306,number,00:00
+mm:ss,45306.75,number,00:00
+mm:ss,45306.123456,number,57:47
+mm:ss,45658.999988,number,59:59
+mm:ss,2958465,number,00:00
+mm:ss.0,1,number,00:00.0
+mm:ss.0,59,number,00:00.0
+mm:ss.0,60,number,00:00.0
+mm:ss.0,61,number,00:00.0
+mm:ss.0,366,number,00:00.0
+mm:ss.0,32874.25,number,00:00.0
+mm:ss.0,36526.5,number,00:00.0
+mm:ss.0,43831.0208333333,number,30:00.0
+mm:ss.0,45306,number,00:00.0
+mm:ss.0,45306.75,number,00:00.0
+mm:ss.0,45306.123456,number,57:46.6
+mm:ss.0,45658.999988,number,59:59.0
+mm:ss.0,2958465,number,00:00.0
+hh:mm:ss.00,1,number,00:00:00.00
+hh:mm:ss.00,59,number,00:00:00.00
+hh:mm:ss.00,60,number,00:00:00.00
+hh:mm:ss.00,61,number,00:00:00.00
+hh:mm:ss.00,366,number,00:00:00.00
+hh:mm:ss.00,32874.25,number,06:00:00.00
+hh:mm:ss.00,36526.5,number,12:00:00.00
+hh:mm:ss.00,43831.0208333333,number,00:30:00.00
+hh:mm:ss.00,45306,number,00:00:00.00
+hh:mm:ss.00,45306.75,number,18:00:00.00
+hh:mm:ss.00,45306.123456,number,02:57:46.60
+hh:mm:ss.00,45658.999988,number,23:59:58.96
+hh:mm:ss.00,2958465,number,00:00:00.00
+h:mm:ss.000,1,number,0:00:00.000
+h:mm:ss.000,59,number,0:00:00.000
+h:mm:ss.000,60,number,0:00:00.000
+h:mm:ss.000,61,number,0:00:00.000
+h:mm:ss.000,366,number,0:00:00.000
+h:mm:ss.000,32874.25,number,6:00:00.000
+h:mm:ss.000,36526.5,number,12:00:00.000
+h:mm:ss.000,43831.0208333333,number,0:30:00.000
+h:mm:ss.000,45306,number,0:00:00.000
+h:mm:ss.000,45306.75,number,18:00:00.000
+h:mm:ss.000,45306.123456,number,2:57:46.598
+h:mm:ss.000,45658.999988,number,23:59:58.963
+h:mm:ss.000,2958465,number,0:00:00.000
+"yyyy-mm-dd""T""hh:mm:ss",1,number,1900-01-01T00:00:00
+"yyyy-mm-dd""T""hh:mm:ss",59,number,1900-02-28T00:00:00
+"yyyy-mm-dd""T""hh:mm:ss",60,number,1900-02-29T00:00:00
+"yyyy-mm-dd""T""hh:mm:ss",61,number,1900-03-01T00:00:00
+"yyyy-mm-dd""T""hh:mm:ss",366,number,1900-12-31T00:00:00
+"yyyy-mm-dd""T""hh:mm:ss",32874.25,number,1990-01-01T06:00:00
+"yyyy-mm-dd""T""hh:mm:ss",36526.5,number,2000-01-01T12:00:00
+"yyyy-mm-dd""T""hh:mm:ss",43831.0208333333,number,2020-01-01T00:30:00
+"yyyy-mm-dd""T""hh:mm:ss",45306,number,2024-01-15T00:00:00
+"yyyy-mm-dd""T""hh:mm:ss",45306.75,number,2024-01-15T18:00:00
+"yyyy-mm-dd""T""hh:mm:ss",45306.123456,number,2024-01-15T02:57:47
+"yyyy-mm-dd""T""hh:mm:ss",45658.999988,number,2025-01-01T23:59:59
+"yyyy-mm-dd""T""hh:mm:ss",2958465,number,9999-12-31T00:00:00
+d/m/yyyy,1,number,1/1/1900
+d/m/yyyy,59,number,28/2/1900
+d/m/yyyy,60,number,29/2/1900
+d/m/yyyy,61,number,1/3/1900
+d/m/yyyy,366,number,31/12/1900
+d/m/yyyy,32874.25,number,1/1/1990
+d/m/yyyy,36526.5,number,1/1/2000
+d/m/yyyy,43831.0208333333,number,1/1/2020
+d/m/yyyy,45306,number,15/1/2024
+d/m/yyyy,45306.75,number,15/1/2024
+d/m/yyyy,45306.123456,number,15/1/2024
+d/m/yyyy,45658.999988,number,1/1/2025
+d/m/yyyy,2958465,number,31/12/9999
+mmmm yyyy,1,number,January 1900
+mmmm yyyy,59,number,February 1900
+mmmm yyyy,60,number,February 1900
+mmmm yyyy,61,number,March 1900
+mmmm yyyy,366,number,December 1900
+mmmm yyyy,32874.25,number,January 1990
+mmmm yyyy,36526.5,number,January 2000
+mmmm yyyy,43831.0208333333,number,January 2020
+mmmm yyyy,45306,number,January 2024
+mmmm yyyy,45306.75,number,January 2024
+mmmm yyyy,45306.123456,number,January 2024
+mmmm yyyy,45658.999988,number,January 2025
+mmmm yyyy,2958465,number,December 9999
+[$-409]m/d/yy h:mm AM/PM,1,number,1/1/00 12:00 AM
+[$-409]m/d/yy h:mm AM/PM,59,number,2/28/00 12:00 AM
+[$-409]m/d/yy h:mm AM/PM,60,number,2/29/00 12:00 AM
+[$-409]m/d/yy h:mm AM/PM,61,number,3/1/00 12:00 AM
+[$-409]m/d/yy h:mm AM/PM,366,number,12/31/00 12:00 AM
+[$-409]m/d/yy h:mm AM/PM,32874.25,number,1/1/90 6:00 AM
+[$-409]m/d/yy h:mm AM/PM,36526.5,number,1/1/00 12:00 PM
+[$-409]m/d/yy h:mm AM/PM,43831.0208333333,number,1/1/20 12:30 AM
+[$-409]m/d/yy h:mm AM/PM,45306,number,1/15/24 12:00 AM
+[$-409]m/d/yy h:mm AM/PM,45306.75,number,1/15/24 6:00 PM
+[$-409]m/d/yy h:mm AM/PM,45306.123456,number,1/15/24 2:57 AM
+[$-409]m/d/yy h:mm AM/PM,45658.999988,number,1/1/25 11:59 PM
+[$-409]m/d/yy h:mm AM/PM,2958465,number,12/31/99 12:00 AM
+"[$-409]dddd, mmmm d, yyyy",1,number,"Sunday, January 1, 1900"
+"[$-409]dddd, mmmm d, yyyy",59,number,"Tuesday, February 28, 1900"
+"[$-409]dddd, mmmm d, yyyy",60,number,"Wednesday, February 29, 1900"
+"[$-409]dddd, mmmm d, yyyy",61,number,"Thursday, March 1, 1900"
+"[$-409]dddd, mmmm d, yyyy",366,number,"Monday, December 31, 1900"
+"[$-409]dddd, mmmm d, yyyy",32874.25,number,"Monday, January 1, 1990"
+"[$-409]dddd, mmmm d, yyyy",36526.5,number,"Saturday, January 1, 2000"
+"[$-409]dddd, mmmm d, yyyy",43831.0208333333,number,"Wednesday, January 1, 2020"
+"[$-409]dddd, mmmm d, yyyy",45306,number,"Monday, January 15, 2024"
+"[$-409]dddd, mmmm d, yyyy",45306.75,number,"Monday, January 15, 2024"
+"[$-409]dddd, mmmm d, yyyy",45306.123456,number,"Monday, January 15, 2024"
+"[$-409]dddd, mmmm d, yyyy",45658.999988,number,"Wednesday, January 1, 2025"
+"[$-409]dddd, mmmm d, yyyy",2958465,number,"Friday, December 31, 9999"
+bbbb,1,number,2443
+bbbb,59,number,2443
+bbbb,60,number,2443
+bbbb,61,number,2443
+bbbb,366,number,2443
+bbbb,32874.25,number,2533
+bbbb,36526.5,number,2543
+bbbb,43831.0208333333,number,2563
+bbbb,45306,number,2567
+bbbb,45306.75,number,2567
+bbbb,45306.123456,number,2567
+bbbb,45658.999988,number,2568
+bbbb,2958465,number,10542
+dd/mm/bbbb,1,number,01/01/2443
+dd/mm/bbbb,59,number,28/02/2443
+dd/mm/bbbb,60,number,29/02/2443
+dd/mm/bbbb,61,number,01/03/2443
+dd/mm/bbbb,366,number,31/12/2443
+dd/mm/bbbb,32874.25,number,01/01/2533
+dd/mm/bbbb,36526.5,number,01/01/2543
+dd/mm/bbbb,43831.0208333333,number,01/01/2563
+dd/mm/bbbb,45306,number,15/01/2567
+dd/mm/bbbb,45306.75,number,15/01/2567
+dd/mm/bbbb,45306.123456,number,15/01/2567
+dd/mm/bbbb,45658.999988,number,01/01/2568
+dd/mm/bbbb,2958465,number,31/12/10542
+ddd d mmm,1,number,Sun 1 Jan
+ddd d mmm,59,number,Tue 28 Feb
+ddd d mmm,60,number,Wed 29 Feb
+ddd d mmm,61,number,Thu 1 Mar
+ddd d mmm,366,number,Mon 31 Dec
+ddd d mmm,32874.25,number,Mon 1 Jan
+ddd d mmm,36526.5,number,Sat 1 Jan
+ddd d mmm,43831.0208333333,number,Wed 1 Jan
+ddd d mmm,45306,number,Mon 15 Jan
+ddd d mmm,45306.75,number,Mon 15 Jan
+ddd d mmm,45306.123456,number,Mon 15 Jan
+ddd d mmm,45658.999988,number,Wed 1 Jan
+ddd d mmm,2958465,number,Fri 31 Dec
+"yyyy"" year""",1,number,1900 year
+"yyyy"" year""",59,number,1900 year
+"yyyy"" year""",60,number,1900 year
+"yyyy"" year""",61,number,1900 year
+"yyyy"" year""",366,number,1900 year
+"yyyy"" year""",32874.25,number,1990 year
+"yyyy"" year""",36526.5,number,2000 year
+"yyyy"" year""",43831.0208333333,number,2020 year
+"yyyy"" year""",45306,number,2024 year
+"yyyy"" year""",45306.75,number,2024 year
+"yyyy"" year""",45306.123456,number,2024 year
+"yyyy"" year""",45658.999988,number,2025 year
+"yyyy"" year""",2958465,number,9999 year
+[$-1809]d mmm yyyy,1,number,1 Jan 1900
+[$-1809]d mmm yyyy,59,number,28 Feb 1900
+[$-1809]d mmm yyyy,60,number,29 Feb 1900
+[$-1809]d mmm yyyy,61,number,1 Mar 1900
+[$-1809]d mmm yyyy,366,number,31 Dec 1900
+[$-1809]d mmm yyyy,32874.25,number,1 Jan 1990
+[$-1809]d mmm yyyy,36526.5,number,1 Jan 2000
+[$-1809]d mmm yyyy,43831.0208333333,number,1 Jan 2020
+[$-1809]d mmm yyyy,45306,number,15 Jan 2024
+[$-1809]d mmm yyyy,45306.75,number,15 Jan 2024
+[$-1809]d mmm yyyy,45306.123456,number,15 Jan 2024
+[$-1809]d mmm yyyy,45658.999988,number,1 Jan 2025
+[$-1809]d mmm yyyy,2958465,number,31 Dec 9999

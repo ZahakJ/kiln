@@ -1,0 +1,21 @@
+{
+  "type": "ViewMode",
+  "format": {
+    "TYPENAME": "ViewMode"
+  },
+  "values": [
+    "PrintLayout",
+    "ReadingView",
+    "PrintLayout",
+    "WebLayout",
+    "ReadMode",
+    "Outline",
+    "Draft",
+    "Normal",
+    "PageLayout",
+    "PageBreakPreview",
+    "SlideNormal",
+    "SlideSorter",
+    "NotesPage"
+  ]
+}

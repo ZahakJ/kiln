@@ -1,0 +1,33 @@
+{
+  "type": "DeckOutlineEntry",
+  "format": {
+    "TYPENAME": "DeckOutlineEntry"
+  },
+  "values": [
+    {
+      "slide": 12,
+      "title": "Plans",
+      "lines": [
+        {
+          "level": 0,
+          "text": "Clay"
+        },
+        {
+          "level": 1,
+          "text": ""
+        }
+      ],
+      "has_title": true,
+      "hidden": false,
+      "more": true
+    },
+    {
+      "slide": 0,
+      "title": "",
+      "lines": [],
+      "has_title": false,
+      "hidden": false,
+      "more": false
+    }
+  ]
+}

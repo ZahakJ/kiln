@@ -1,0 +1,12 @@
+{
+  "type": "ZOrder",
+  "format": {
+    "TYPENAME": "ZOrder"
+  },
+  "values": [
+    "Forward",
+    "Backward",
+    "Forward",
+    "ToFront"
+  ]
+}

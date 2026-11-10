@@ -1,0 +1,840 @@
+{
+  "type": "DeckQueryResult",
+  "format": {
+    "TYPENAME": "DeckQueryResult"
+  },
+  "values": [
+    {
+      "State": {
+        "slides": [
+          {
+            "id": 3,
+            "title": "Every ticket fires the next kiln.",
+            "hidden": false,
+            "layout": "Title and Content",
+            "notes": true,
+            "motion": true,
+            "version": 9007199254740991
+          }
+        ],
+        "sections": [
+          {
+            "name": "Open studio",
+            "start": 0,
+            "count": 1
+          }
+        ],
+        "current": 0,
+        "selected": [
+          0
+        ],
+        "slide_width": 1280.0,
+        "slide_height": 720.0,
+        "size_kind": "widescreen",
+        "shapes": [
+          {
+            "id": 9,
+            "name": "Title 1",
+            "kind": "placeholder",
+            "hidden": false
+          }
+        ],
+        "selection": [
+          9
+        ],
+        "editing": true,
+        "contexts": [
+          "shape"
+        ],
+        "format": {
+          "font_family": "Figtree",
+          "font_size": 18.0,
+          "bold": true,
+          "italic": false,
+          "underline": false,
+          "strike": false,
+          "superscript": false,
+          "subscript": false,
+          "shadow": false,
+          "color": "1B1411",
+          "align": "left",
+          "bullets": true,
+          "numbering": false,
+          "anchor": "Top",
+          "direction": "Horizontal",
+          "autofit": "Shrink",
+          "columns": 1,
+          "spacing": 0.0,
+          "fill": "E2622A",
+          "fill_kind": "solid",
+          "outline": null,
+          "outline_width": 0.75,
+          "indent_left": 27.0,
+          "indent_first": -27.0
+        },
+        "selection_box": {
+          "x": 72.0,
+          "y": 40.5,
+          "width": 600.0,
+          "height": 96.0,
+          "rotation": 0.0
+        },
+        "alt_text": null,
+        "theme": "Kiln",
+        "themes": [
+          "Kiln",
+          "Porcelain"
+        ],
+        "layouts": [
+          {
+            "id": 5,
+            "name": "Title Slide"
+          }
+        ],
+        "layout": 5,
+        "notes": "Start with the number.",
+        "guides": false,
+        "gridlines": true,
+        "notes_visible": true,
+        "header_footer": {
+          "date": false,
+          "slide_number": true,
+          "footer": "Kiln Co-op"
+        },
+        "background": "FFF7EE",
+        "hide_graphics": false,
+        "armed": null,
+        "find_done": false,
+        "caret": {
+          "x": 300.0,
+          "y": 60.0,
+          "width": 1.0,
+          "height": 40.0
+        },
+        "motion": {
+          "transition": {
+            "effect": "push",
+            "option": "fromBottom",
+            "options": [
+              {
+                "id": "fromBottom",
+                "label": "From Bottom",
+                "group": "Direction"
+              }
+            ],
+            "duration_ms": 1000,
+            "on_click": true,
+            "after_ms": 5000,
+            "kept": false
+          },
+          "animations": [
+            {
+              "id": 31,
+              "shape": 9,
+              "shape_name": "Title 1",
+              "paragraphs": [
+                0,
+                2
+              ],
+              "effect": "flyIn",
+              "name": "Fly In",
+              "class": "entrance",
+              "option": "fromBottom",
+              "start": "AfterPrevious",
+              "duration_ms": 500,
+              "delay_ms": 250,
+              "repeat": 1,
+              "click": 2,
+              "begin_ms": 250,
+              "end_ms": 750,
+              "playable": true
+            }
+          ],
+          "selected": [
+            31
+          ],
+          "options": [
+            {
+              "id": "fromBottom",
+              "label": "From Bottom",
+              "group": "Direction"
+            }
+          ],
+          "option": "fromBottom",
+          "painter": false,
+          "badges": true,
+          "settings": {
+            "kind": "Kiosk",
+            "loop_show": true,
+            "no_narration": false,
+            "no_animation": true,
+            "from": 2,
+            "to": 5,
+            "manual": false,
+            "presenter_view": true
+          },
+          "show": {
+            "running": true,
+            "mode": "Show",
+            "slide": 2,
+            "position": 3,
+            "count": 12,
+            "click": 1,
+            "clicks": 4,
+            "screen": "Slide",
+            "tool": "Pen",
+            "typed": "1",
+            "next": 3,
+            "on_click": true,
+            "kind": "Speaker",
+            "version": 9007199254740991
+          }
+        },
+        "chart": null,
+        "comments": [
+          {
+            "id": 40,
+            "author": "Zoë Okafor",
+            "initials": "ZO",
+            "date": "2026-10-22T09:30:00Z",
+            "text": "Can we show last year here?",
+            "resolved": false,
+            "shape": 12,
+            "shape_name": "Title 1",
+            "x": 1020.0,
+            "y": 64.0,
+            "color": "C44D27",
+            "replies": [
+              {
+                "id": 41,
+                "author": "Sam Price",
+                "date": "2026-10-22T10:02:00Z",
+                "text": "Added it."
+              }
+            ]
+          }
+        ],
+        "comment_total": 3,
+        "comment": 40,
+        "spelling": {
+          "slide": 2,
+          "notes": true,
+          "word": "glazze",
+          "suggestions": [
+            "glaze",
+            "glazes"
+          ]
+        },
+        "spell_done": false,
+        "master_view": {
+          "items": [
+            {
+              "id": 2,
+              "name": "Kiln",
+              "master": true,
+              "preserved": true,
+              "used": 4,
+              "version": 7
+            },
+            {
+              "id": 3,
+              "name": "Title Slide",
+              "master": false,
+              "preserved": false,
+              "used": 1,
+              "version": 9
+            }
+          ],
+          "current": 3,
+          "title": true,
+          "footers": false
+        },
+        "guide_list": [
+          {
+            "horizontal": true,
+            "pos": 360.0
+          }
+        ],
+        "text_area": {
+          "x": 120.5,
+          "y": -8.0,
+          "width": 240.0,
+          "height": 135.0
+        },
+        "cropping": false,
+        "cells": {
+          "row": 0,
+          "col": 1,
+          "rows": 2,
+          "cols": 2
+        }
+      }
+    },
+    {
+      "Scene": {
+        "revision": 42,
+        "reset": false,
+        "scale": 2.0,
+        "extent": {
+          "x": 0.0,
+          "y": 0.0,
+          "w": 0.0,
+          "h": 0.0
+        },
+        "background": {
+          "Rgba": 0
+        },
+        "tiles": [],
+        "removed": [],
+        "atlas": [],
+        "images": [],
+        "overlay": null
+      }
+    },
+    {
+      "Cursor": "Move"
+    },
+    {
+      "Outline": []
+    },
+    {
+      "Icons": []
+    },
+    {
+      "ShowFrame": {
+        "delta": {
+          "revision": 42,
+          "reset": false,
+          "scale": 2.0,
+          "extent": {
+            "x": 0.0,
+            "y": 0.0,
+            "w": 0.0,
+            "h": 0.0
+          },
+          "background": {
+            "Rgba": 0
+          },
+          "tiles": [],
+          "removed": [],
+          "atlas": [],
+          "images": [],
+          "overlay": null
+        },
+        "groups": [
+          {
+            "matrix": [
+              1.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            "opacity": 1.0,
+            "clip": null,
+            "ramp": null,
+            "layers": [
+              {
+                "tile": {
+                  "layer": 0,
+                  "index": 2049
+                },
+                "fill": null,
+                "matrix": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  -640.0,
+                  0.0
+                ],
+                "opacity": 0.5,
+                "clip": {
+                  "verbs": [
+                    0,
+                    1,
+                    1,
+                    1,
+                    4
+                  ],
+                  "coords": [
+                    0.0,
+                    0.0,
+                    320.0,
+                    0.0,
+                    320.0,
+                    720.0,
+                    0.0,
+                    720.0
+                  ]
+                },
+                "ramp": {
+                  "from": [
+                    640.0,
+                    360.0
+                  ],
+                  "to": [
+                    793.6,
+                    360.0
+                  ],
+                  "stops": [
+                    [
+                      0.0,
+                      1.0
+                    ],
+                    [
+                      1.0,
+                      0.0
+                    ]
+                  ]
+                }
+              },
+              {
+                "tile": null,
+                "fill": {
+                  "Rgba": 255
+                },
+                "matrix": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "opacity": 1.0,
+                "clip": null,
+                "ramp": null
+              }
+            ]
+          }
+        ],
+        "ink": [],
+        "slide_width": 1280.0,
+        "slide_height": 720.0,
+        "animating": true,
+        "advance_in_ms": 1500,
+        "status": {
+          "running": true,
+          "mode": "Show",
+          "slide": 2,
+          "position": 3,
+          "count": 12,
+          "click": 1,
+          "clicks": 4,
+          "screen": "Slide",
+          "tool": "Pen",
+          "typed": "1",
+          "next": 3,
+          "on_click": true,
+          "kind": "Speaker",
+          "version": 9007199254740991
+        }
+      }
+    },
+    {
+      "ShowInfo": {
+        "status": {
+          "running": true,
+          "mode": "Show",
+          "slide": 2,
+          "position": 3,
+          "count": 12,
+          "click": 1,
+          "clicks": 4,
+          "screen": "Slide",
+          "tool": "Pen",
+          "typed": "1",
+          "next": 3,
+          "on_click": true,
+          "kind": "Speaker",
+          "version": 9007199254740991
+        },
+        "notes": "Pause on the chart.",
+        "title": "Results",
+        "slides": [
+          0,
+          1,
+          3
+        ],
+        "rehearsed": [
+          12000,
+          4500
+        ]
+      }
+    },
+    {
+      "Bytes": [
+        80,
+        75,
+        3,
+        4
+      ]
+    },
+    {
+      "DesignIdeas": []
+    },
+    {
+      "File": {
+        "name": "Plans.zip",
+        "mime": "application/zip",
+        "bytes": [
+          80,
+          75
+        ]
+      }
+    },
+    {
+      "OutlineView": [
+        {
+          "slide": 12,
+          "title": "Plans",
+          "lines": [
+            {
+              "level": 0,
+              "text": "Clay"
+            },
+            {
+              "level": 1,
+              "text": ""
+            }
+          ],
+          "has_title": true,
+          "hidden": false,
+          "more": true
+        }
+      ]
+    },
+    {
+      "ReuseList": []
+    },
+    {
+      "SlideMedia": {
+        "slide": 0,
+        "width": 960.0,
+        "height": 540.0,
+        "items": [
+          {
+            "shape": 30,
+            "kind": "Video",
+            "part": "/ppt/media/media1.mp4",
+            "mime": "video/mp4",
+            "rect": {
+              "x": 320.0,
+              "y": 180.0,
+              "width": 640.0,
+              "height": 360.0
+            },
+            "trim_start_ms": 0,
+            "trim_end_ms": 1500
+          }
+        ]
+      }
+    },
+    {
+      "ChartData": {
+        "sheet": "Sheet1",
+        "row": 0,
+        "col": 0,
+        "cells": [
+          [
+            "",
+            "Series 1"
+          ],
+          [
+            "Category 1",
+            "4.3"
+          ]
+        ],
+        "unreadable": null
+      }
+    },
+    {
+      "NotesPage": {
+        "width": 720.0,
+        "height": 960.0,
+        "slide": {
+          "x": 120.5,
+          "y": -8.0,
+          "width": 240.0,
+          "height": 135.0
+        },
+        "body": {
+          "x": 120.5,
+          "y": -8.0,
+          "width": 240.0,
+          "height": 135.0
+        }
+      }
+    },
+    {
+      "SlideText": [
+        {
+          "slide": 7,
+          "shapes": 2,
+          "texts": [
+            {
+              "name": "Title 1",
+              "kind": "shape",
+              "lines": [
+                "Firing schedule",
+                "Autumn"
+              ]
+            }
+          ],
+          "notes": [],
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "State": {
+        "slides": [],
+        "sections": [],
+        "current": 0,
+        "selected": [],
+        "slide_width": 0.0,
+        "slide_height": 0.0,
+        "size_kind": "",
+        "shapes": [],
+        "selection": [],
+        "editing": false,
+        "contexts": [],
+        "format": null,
+        "selection_box": null,
+        "alt_text": null,
+        "theme": "",
+        "themes": [],
+        "layouts": [],
+        "layout": null,
+        "notes": "",
+        "guides": false,
+        "gridlines": false,
+        "notes_visible": false,
+        "header_footer": {
+          "date": false,
+          "slide_number": false,
+          "footer": null
+        },
+        "background": null,
+        "hide_graphics": false,
+        "armed": null,
+        "find_done": false,
+        "caret": null,
+        "motion": {
+          "transition": null,
+          "animations": [],
+          "selected": [],
+          "options": [],
+          "option": null,
+          "painter": false,
+          "badges": false,
+          "settings": {
+            "kind": "Speaker",
+            "loop_show": false,
+            "no_narration": false,
+            "no_animation": false,
+            "from": null,
+            "to": null,
+            "manual": false,
+            "presenter_view": false
+          },
+          "show": {
+            "running": false,
+            "mode": "Show",
+            "slide": 0,
+            "position": 0,
+            "count": 0,
+            "click": 0,
+            "clicks": 0,
+            "screen": "Slide",
+            "tool": "Arrow",
+            "typed": "",
+            "next": null,
+            "on_click": false,
+            "kind": "Speaker",
+            "version": 0
+          }
+        },
+        "chart": null,
+        "comments": [],
+        "comment_total": 0,
+        "comment": null,
+        "spelling": null,
+        "spell_done": false,
+        "master_view": null,
+        "guide_list": [],
+        "text_area": null,
+        "cropping": false,
+        "cells": null
+      }
+    },
+    {
+      "Scene": {
+        "revision": 0,
+        "reset": false,
+        "scale": 0.0,
+        "extent": {
+          "x": 0.0,
+          "y": 0.0,
+          "w": 0.0,
+          "h": 0.0
+        },
+        "background": {
+          "Rgba": 0
+        },
+        "tiles": [],
+        "removed": [],
+        "atlas": [],
+        "images": [],
+        "overlay": null
+      }
+    },
+    {
+      "Cursor": "Default"
+    },
+    {
+      "Outline": [
+        {
+          "title": "",
+          "lines": []
+        }
+      ]
+    },
+    {
+      "Icons": [
+        {
+          "preset": "",
+          "label": "",
+          "category": "",
+          "path": ""
+        }
+      ]
+    },
+    {
+      "ShowFrame": {
+        "delta": {
+          "revision": 0,
+          "reset": false,
+          "scale": 0.0,
+          "extent": {
+            "x": 0.0,
+            "y": 0.0,
+            "w": 0.0,
+            "h": 0.0
+          },
+          "background": {
+            "Rgba": 0
+          },
+          "tiles": [],
+          "removed": [],
+          "atlas": [],
+          "images": [],
+          "overlay": null
+        },
+        "groups": [],
+        "ink": [
+          {
+            "FillRect": {
+              "rect": {
+                "x": 0.0,
+                "y": 0.0,
+                "w": 0.0,
+                "h": 0.0
+              },
+              "paint": {
+                "Rgba": 0
+              },
+              "radius": 0.0
+            }
+          }
+        ],
+        "slide_width": 0.0,
+        "slide_height": 0.0,
+        "animating": false,
+        "advance_in_ms": null,
+        "status": {
+          "running": false,
+          "mode": "Show",
+          "slide": 0,
+          "position": 0,
+          "count": 0,
+          "click": 0,
+          "clicks": 0,
+          "screen": "Slide",
+          "tool": "Arrow",
+          "typed": "",
+          "next": null,
+          "on_click": false,
+          "kind": "Speaker",
+          "version": 0
+        }
+      }
+    },
+    {
+      "ShowInfo": {
+        "status": {
+          "running": false,
+          "mode": "Show",
+          "slide": 0,
+          "position": 0,
+          "count": 0,
+          "click": 0,
+          "clicks": 0,
+          "screen": "Slide",
+          "tool": "Arrow",
+          "typed": "",
+          "next": null,
+          "on_click": false,
+          "kind": "Speaker",
+          "version": 0
+        },
+        "notes": "",
+        "title": "",
+        "slides": [],
+        "rehearsed": []
+      }
+    },
+    {
+      "Bytes": []
+    },
+    {
+      "DesignIdeas": [
+        {
+          "id": "",
+          "label": "",
+          "png": []
+        }
+      ]
+    },
+    {
+      "File": {
+        "name": "",
+        "mime": "",
+        "bytes": []
+      }
+    },
+    {
+      "OutlineView": [
+        {
+          "slide": 0,
+          "title": "",
+          "lines": [],
+          "has_title": false,
+          "hidden": false,
+          "more": false
+        }
+      ]
+    },
+    {
+      "ReuseList": [
+        {
+          "index": 0,
+          "title": "",
+          "png": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,238 @@
+/* Presenter View: the presenter's screen, dark as PowerPoint's, with the brand accent. */
+.kiln-presenter {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: #1b1714;
+  color: #f4ede6;
+  font: 400 14px / 1.4 var(--kiln-font-ui, system-ui, sans-serif);
+  outline: none;
+  z-index: 50;
+}
+
+.kiln-presenter__top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.kiln-presenter__timer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kiln-presenter__elapsed {
+  min-width: 72px;
+  font: 600 22px / 1 var(--kiln-font-mono, ui-monospace, monospace);
+  font-variant-numeric: tabular-nums;
+}
+
+.kiln-presenter__clock {
+  font-variant-numeric: tabular-nums;
+  color: rgba(244, 237, 230, 0.7);
+}
+
+.kiln-presenter__audience {
+  flex: 1;
+  color: rgba(244, 237, 230, 0.6);
+  font-size: 12px;
+}
+
+.kiln-presenter__end {
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.kiln-presenter__end:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.kiln-presenter__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(260px, 1fr);
+  gap: 20px;
+  padding: 18px 20px;
+  min-height: 0;
+}
+
+.kiln-presenter__current {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 10px;
+  min-height: 0;
+}
+
+.kiln-presenter__slide {
+  position: relative;
+  min-height: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #000;
+}
+
+.kiln-presenter__tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kiln-presenter__toolgroup {
+  position: relative;
+}
+
+.kiln-presenter__menu {
+  margin: 0;
+  border: 0;
+  position: absolute;
+  inset-inline-start: 0;
+  bottom: calc(100% + 6px);
+  display: grid;
+  gap: 2px;
+  min-width: 200px;
+  padding: 6px;
+  border-radius: 10px;
+  background: #2a2420;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+  z-index: 2;
+}
+
+.kiln-presenter__menuitem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.kiln-presenter__menuitem:hover,
+.kiln-presenter__menuitem[aria-pressed="true"] {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.kiln-presenter__spacer {
+  flex: 1;
+}
+
+.kiln-presenter__icon,
+.kiln-presenter__nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.kiln-presenter__nav {
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.kiln-presenter__icon:hover,
+.kiln-presenter__nav:hover,
+.kiln-presenter__icon[data-active] {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.kiln-presenter__icon:focus-visible,
+.kiln-presenter__nav:focus-visible,
+.kiln-presenter__end:focus-visible,
+.kiln-presenter__menuitem:focus-visible {
+  outline: 2px solid var(--kiln-app-fill, #e05a27);
+  outline-offset: 1px;
+}
+
+.kiln-presenter__count {
+  min-width: 110px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.kiln-presenter__side {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 18px;
+  min-height: 0;
+}
+
+.kiln-presenter__side h2 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: rgba(244, 237, 230, 0.6);
+}
+
+.kiln-presenter__nextthumb {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.kiln-presenter__nonext {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+  background: #000;
+  color: rgba(244, 237, 230, 0.6);
+}
+
+.kiln-presenter__notes {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 0;
+}
+
+.kiln-presenter__noteshead {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.kiln-presenter__noteshead h2 {
+  flex: 1;
+  margin: 0;
+}
+
+.kiln-presenter__notestext {
+  overflow: auto;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.kiln-presenter__nonotes {
+  color: rgba(244, 237, 230, 0.5);
+}
+
+@media (max-width: 760px) {
+  .kiln-presenter__main {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+}

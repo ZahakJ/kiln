@@ -1,0 +1,71 @@
+{
+  "type": "FontFormat",
+  "format": {
+    "TYPENAME": "FontFormat"
+  },
+  "values": [
+    {
+      "family": "Fraunces",
+      "size": 10.5,
+      "bold": true,
+      "italic": null,
+      "underline": "Wave",
+      "underline_none": false,
+      "underline_color": null,
+      "color": "3159C6",
+      "strike": null,
+      "double_strike": null,
+      "superscript": null,
+      "subscript": null,
+      "small_caps": null,
+      "all_caps": null,
+      "hidden": null,
+      "spacing": -0.5,
+      "scale": 120,
+      "position": null,
+      "kerning": null
+    },
+    {
+      "family": null,
+      "size": null,
+      "bold": null,
+      "italic": null,
+      "underline": null,
+      "underline_none": false,
+      "underline_color": null,
+      "color": null,
+      "strike": null,
+      "double_strike": null,
+      "superscript": null,
+      "subscript": null,
+      "small_caps": null,
+      "all_caps": null,
+      "hidden": null,
+      "spacing": null,
+      "scale": null,
+      "position": null,
+      "kerning": null
+    },
+    {
+      "family": null,
+      "size": null,
+      "bold": null,
+      "italic": null,
+      "underline": null,
+      "underline_none": false,
+      "underline_color": null,
+      "color": null,
+      "strike": null,
+      "double_strike": null,
+      "superscript": null,
+      "subscript": null,
+      "small_caps": null,
+      "all_caps": null,
+      "hidden": null,
+      "spacing": null,
+      "scale": null,
+      "position": null,
+      "kerning": null
+    }
+  ]
+}

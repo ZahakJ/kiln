@@ -1,0 +1,13 @@
+{
+  "type": "ChartAxisTarget",
+  "format": {
+    "TYPENAME": "ChartAxisTarget"
+  },
+  "values": [
+    "PrimaryValue",
+    "PrimaryCategory",
+    "SecondaryValue",
+    "SecondaryCategory",
+    "PrimaryValue"
+  ]
+}

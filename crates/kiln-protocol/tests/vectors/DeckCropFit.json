@@ -1,0 +1,22 @@
+{
+  "type": "DeckCropFit",
+  "format": {
+    "TYPENAME": "DeckCropFit"
+  },
+  "values": [
+    {
+      "Aspect": {
+        "width": 16,
+        "height": 9
+      }
+    },
+    "Fill",
+    "Fit",
+    {
+      "Aspect": {
+        "width": 0,
+        "height": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 11,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Slide",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Layout 1: Title Slide"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Subtitle 2",
+     "text": "subtitle placeholder (idx 1)\nLevel 2 bullet\nLevel 3 bullet"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Layout 2: Title and Content"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "object placeholder (idx 1)\nLevel 2 bullet\nLevel 3 bullet"
+    }
+   ]
+  },
+  {
+   "layout": "Section Header",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Layout 3: Section Header"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 2",
+     "text": "body placeholder (idx 1)\nLevel 2 bullet\nLevel 3 bullet"
+    }
+   ]
+  },
+  {
+   "layout": "Two Content",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Layout 4: Two Content"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "object placeholder (idx 1)\nLevel 2 bullet\nLevel 3 bullet"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 3",
+     "text": "object placeholder (idx 2)\nLevel 2 bullet\nLevel 3 bullet"
+    }
+   ]
+  },
+  {
+   "layout": "Comparison",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Layout 5: Comparison"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 2",
+     "text": "body placeholder (idx 1)\nLevel 2 bullet\nLevel 3 bullet"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 3",
+     "text": "object placeholder (idx 2)\nLevel 2 bullet\nLevel 3 bullet"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 4",
+     "text": "body placeholder (idx 3)\nLevel 2 bullet\nLevel 3 bullet"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 5",
+     "text": "object placeholder (idx 4)\nLevel 2 bullet\nLevel 3 bullet"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Layout 6: Title Only"
+    }
+   ]
+  },
+  {
+   "layout": "Blank",
+   "notes": null,
+   "shape_count": 0,
+   "shapes": []
+  },
+  {
+   "layout": "Content with Caption",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Layout 8: Content with Caption"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "object placeholder (idx 1)\nLevel 2 bullet\nLevel 3 bullet"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 3",
+     "text": "body placeholder (idx 2)\nLevel 2 bullet\nLevel 3 bullet"
+    }
+   ]
+  },
+  {
+   "layout": "Picture with Caption",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Layout 9: Picture with Caption"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Picture Placeholder 2"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Text Placeholder 3",
+     "text": "body placeholder (idx 2)\nLevel 2 bullet\nLevel 3 bullet"
+    }
+   ]
+  },
+  {
+   "layout": "Title and Vertical Text",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Layout 10: Title and Vertical Text"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Vertical Text Placeholder 2",
+     "text": "body placeholder (idx 1)\nLevel 2 bullet\nLevel 3 bullet"
+    }
+   ]
+  },
+  {
+   "layout": "Vertical Title and Text",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Vertical Title 1",
+     "text": "Layout 11: Vertical Title and Text"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Vertical Text Placeholder 2",
+     "text": "body placeholder (idx 1)\nLevel 2 bullet\nLevel 3 bullet"
+    }
+   ]
+  }
+ ]
+}

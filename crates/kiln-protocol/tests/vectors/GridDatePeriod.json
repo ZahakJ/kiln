@@ -1,0 +1,19 @@
+{
+  "type": "GridDatePeriod",
+  "format": {
+    "TYPENAME": "GridDatePeriod"
+  },
+  "values": [
+    "Last7Days",
+    "NextMonth",
+    "Today",
+    "Yesterday",
+    "Tomorrow",
+    "Last7Days",
+    "ThisWeek",
+    "LastWeek",
+    "NextWeek",
+    "ThisMonth",
+    "LastMonth"
+  ]
+}

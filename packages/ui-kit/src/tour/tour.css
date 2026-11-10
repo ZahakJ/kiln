@@ -1,0 +1,316 @@
+/* The welcome tour: a card docked at the bottom of the window (bottom-end; a sheet on phones). */
+
+.kiln-tour {
+  position: fixed;
+  z-index: var(--kiln-z-menu, 50);
+  inset-inline-end: 28px;
+  bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  width: min(408px, calc(100vw - 32px));
+  overflow: hidden;
+  border: 1px solid var(--kiln-line-strong);
+  border-radius: 20px;
+  background: var(--kiln-raised);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+  box-shadow:
+    0 24px 60px -18px rgb(43 28 20 / 0.42),
+    0 2px 6px rgb(43 28 20 / 0.12);
+  animation: kiln-tour-in 320ms var(--kiln-ease-out, ease-out) both;
+}
+@keyframes kiln-tour-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+}
+
+.kiln-tour__visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 150px;
+  background:
+    radial-gradient(70% 90% at 50% 120%, rgb(255 106 38 / 0.38), rgb(255 106 38 / 0.08) 55%, transparent 75%),
+    linear-gradient(180deg, #3d281c, #21160f);
+  color: #fff1df;
+}
+.kiln-tour__close {
+  position: absolute;
+  top: 10px;
+  inset-inline-end: 10px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(255 241 223 / 0.12);
+  color: #fff1df;
+}
+.kiln-tour__close:hover {
+  background: rgb(255 241 223 / 0.22);
+}
+.kiln-tour__close:focus-visible {
+  outline: 2px solid #ffb547;
+  outline-offset: 2px;
+}
+
+.kiln-tour__text {
+  padding: 18px 22px 4px;
+}
+.kiln-tour__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 6px;
+  color: var(--kiln-ember-text);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.kiln-tour__count {
+  margin-inline-start: auto;
+  color: var(--kiln-muted);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  font-variant-numeric: tabular-nums;
+}
+.kiln-tour__title {
+  margin: 0 0 8px;
+  font: 800 23px / 1.12 var(--kiln-font-display);
+  font-variation-settings: "SOFT" 40;
+  letter-spacing: -0.01em;
+}
+.kiln-tour__body {
+  margin: 0;
+  color: var(--kiln-muted);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.kiln-tour__foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 22px 18px;
+}
+.kiln-tour__dots {
+  display: flex;
+  gap: 6px;
+  margin-inline-end: auto;
+}
+.kiln-tour__dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--kiln-line-strong);
+  transition:
+    width var(--kiln-duration-fast, 120ms) ease-out,
+    background var(--kiln-duration-fast, 120ms) ease-out;
+}
+.kiln-tour__dots i.is-on {
+  width: 20px;
+  background: var(--kiln-ember);
+}
+
+/* Card 1: the three Office files going into the kiln. */
+.kiln-tour__art {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.kiln-tour__file {
+  display: grid;
+  place-items: end center;
+  width: 48px;
+  height: 60px;
+  padding-bottom: 7px;
+  border-radius: 7px;
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 800;
+  box-shadow: 0 8px 18px rgb(0 0 0 / 0.3);
+}
+/* Fixed glazes, white text at 4.5:1 or more in both themes. */
+.kiln-tour__file[data-app="write"] {
+  background: #2d4fb5;
+  transform: rotate(-7deg);
+}
+.kiln-tour__file[data-app="grid"] {
+  margin-inline-start: -16px;
+  background: #17714e;
+  transform: rotate(2deg) translateY(-4px);
+}
+.kiln-tour__file[data-app="deck"] {
+  margin-inline-start: -16px;
+  background: #b2431a;
+  transform: rotate(9deg);
+}
+.kiln-tour__arrow {
+  color: #ffb547;
+  opacity: 0.9;
+}
+[dir="rtl"] .kiln-tour__arrow,
+.kiln-tour:dir(rtl) .kiln-tour__arrow {
+  transform: scaleX(-1);
+}
+
+/* Card 2: a ribbon with Key Tips and the command palette. */
+.kiln-tour__art--ribbon {
+  flex-direction: column;
+  gap: 14px;
+}
+.kiln-tour__ribbon {
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 10px;
+  background: rgb(255 241 223 / 0.08);
+}
+.kiln-tour__ribbon span {
+  position: relative;
+  padding: 6px 14px;
+  border-radius: 7px;
+  color: rgb(255 241 223 / 0.75);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.kiln-tour__ribbon span.is-on {
+  background: rgb(255 241 223 / 0.14);
+  color: #fff1df;
+}
+.kiln-tour__ribbon b {
+  position: absolute;
+  top: -8px;
+  inset-inline-end: -4px;
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 5px;
+  background: #fff1df;
+  color: #2b1c14;
+  font-size: 10.5px;
+  font-weight: 800;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.3);
+}
+.kiln-tour__palette {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 250px;
+  padding: 8px 10px 8px 12px;
+  border-radius: 10px;
+  background: #fff8ef;
+  color: #2b1c14;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 0.35);
+}
+.kiln-tour__palette .kiln-kbd {
+  margin-inline-start: auto;
+}
+
+/* Card 3: three template cards and the local-first note. */
+.kiln-tour__art--templates {
+  position: relative;
+  gap: 14px;
+}
+.kiln-tour__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 68px;
+  height: 86px;
+  padding: 12px 9px;
+  border-radius: 6px;
+  background: #fffdf9;
+  box-shadow: 0 10px 22px rgb(0 0 0 / 0.35);
+}
+.kiln-tour__card:nth-child(1) {
+  transform: rotate(-6deg) translateY(4px);
+}
+.kiln-tour__card:nth-child(3) {
+  transform: rotate(6deg) translateY(4px);
+}
+.kiln-tour__card i {
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: rgb(43 28 20 / 0.14);
+}
+.kiln-tour__card i:first-child {
+  width: 70%;
+  height: 6px;
+}
+.kiln-tour__card[data-app="write"] i:first-child {
+  background: var(--kiln-write-solid);
+}
+.kiln-tour__card[data-app="grid"] i:first-child {
+  background: var(--kiln-grid-solid);
+}
+.kiln-tour__card[data-app="deck"] i:first-child {
+  background: var(--kiln-deck-solid);
+}
+.kiln-tour__card .kiln-app-tile {
+  position: absolute;
+  bottom: 8px;
+  inset-inline-end: 8px;
+}
+.kiln-tour__local {
+  position: absolute;
+  bottom: -26px;
+  inset-inline-start: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgb(255 241 223 / 0.12);
+  color: #fff1df;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+.kiln-tour__local:dir(rtl) {
+  transform: translateX(50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kiln-tour {
+    animation: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .kiln-tour {
+    inset-inline: 12px;
+    bottom: 84px;
+    width: auto;
+    border-radius: 18px;
+  }
+  .kiln-tour__visual {
+    height: 120px;
+  }
+  .kiln-tour__text {
+    padding: 14px 18px 2px;
+  }
+  .kiln-tour__title {
+    font-size: 20px;
+  }
+  .kiln-tour__foot {
+    padding: 12px 18px 14px;
+  }
+}
+
+@media (forced-colors: active) {
+  .kiln-tour {
+    border: 2px solid CanvasText;
+  }
+}

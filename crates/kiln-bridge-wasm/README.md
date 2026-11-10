@@ -1,0 +1,9 @@
+# kiln-bridge-wasm
+
+The WebAssembly bridge: `wasm-bindgen` exports of `kiln-session` for the web build, run inside a Web Worker (`apps/web/src/worker.ts`).
+
+`KilnSession` exports `open`, `newDocument`, `execute`, `query`, `setViewport`, `frame`, `a11y`, `poll` and `hostReply`. Small payloads are JSON strings of the `kiln-protocol` types; frames are postcard bytes (`Uint8Array`). Errors are thrown as `Error`s whose message is `ErrorInfo` JSON. `console_error_panic_hook` is installed at start. The logic lives in the plain-Rust `Bridge` type so it is unit-tested natively.
+
+The web builds one module per app. The `write`, `grid` and `deck` features choose which apps the session registers (`write` also brings the developer scratch document). By default all three are on, which is what the native tests and clippy use. `cargo xtask wasm` builds the crate three times with `--no-default-features --features <app>` and binds each module into `apps/web/src/wasm/<app>/` (gitignored). The page starts an app's Worker, and so fetches its module, only when a document of that app is created or opened (`apps/web/src/client/cores.ts`). A per-app module numbers its documents `tag, tag + 4, …` (Write 1, Grid 2, Deck 3, see `DOC_IDS`), so ids stay unique across the Workers. `coreApps()` names the module's app, and only the Grid module exports `loadFunctionDocs`. Desktop and Android use the full native core.
+
+Build with `cargo xtask wasm` (dev) or `cargo xtask wasm --release` (`wasm-release` profile and `wasm-opt -Os`). The release build prints `wasm gzip: <n> KB (<app>)` for each module and enforces budget B12, < 4,500 KB per module. `--app <app>` builds a single module. The `threads` feature exports `initThreadPool` from `wasm-bindgen-rayon`; it needs a nightly toolchain with `+atomics,+bulk-memory` and is off by default.

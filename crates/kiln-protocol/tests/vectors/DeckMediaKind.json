@@ -1,0 +1,12 @@
+{
+  "type": "DeckMediaKind",
+  "format": {
+    "TYPENAME": "DeckMediaKind"
+  },
+  "values": [
+    "Video",
+    "Audio",
+    "Video",
+    "Audio"
+  ]
+}

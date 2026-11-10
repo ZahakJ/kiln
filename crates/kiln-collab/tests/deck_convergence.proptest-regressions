@@ -1,0 +1,12 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc e8d8b44648799490bc473c4beee6589d60214e4e911b793716230e6662f895f4 # shrinks to edits = [(1, Animate { shape: 1 }), (2, Animate { shape: 2 }), (0, DeleteShape { shape: 1 })], order = [1, 2, 0]
+cc abeffb2c408e894c431cdbb29f7d70a46fc60163c9b4657caf4fd79766d101cc # shrinks to r = [[(0, AddBox { slide: 0, text: "a" }), (0, AddBox { slide: 0, text: "a" }), (0, AddBox { slide: 0, text: "a" })], [(2, Group { shape: 2 }), (0, Group { shape: 2 })]], s = [(2, 0)]
+cc 7d4904c47652a672e7d6e5f41047f5b4d1f86e93c53a4cb44283a23437dc6dee # shrinks to r = [[(0, AddSlide { at: 5 })], [(1, AddBox { slide: 0, text: "a" })], [(0, DeleteSlide { slide: 2 })]], s = []
+cc 867870b90cd7e9c83d95af2f2442b4c89bb4c65df1f6592dc0d3a3a3d9c73d0d # shrinks to r = [[(2, AddSlide { at: 2 })], [(2, DeleteSlide { slide: 1 }), (0, AddBox { slide: 0, text: "a" })]], s = []
+cc e299de7ebf40e946a9675b4bb3599ac99043507f1964133bb29e249b2feeeead # shrinks to r = [[(0, AddSlide { at: 0 }), (1, AddSlide { at: 1 }), (0, MoveSlide { slide: 0, to: 0 })], [(1, DeleteSlide { slide: 0 })], [(0, Section { at: 0, name: "Aa" })]], s = []
+cc 834a2e8a9fc81a29b45d60c9e3f301393bea9ef072a6874bf42bc3af0ee058e8 # shrinks to r = [[(0, Section { at: 0, name: "Aa" }), (1, AddSlide { at: 1 })], [(1, DeleteSlide { slide: 5 }), (0, AddSlide { at: 3 })]], s = [(0, 1)]

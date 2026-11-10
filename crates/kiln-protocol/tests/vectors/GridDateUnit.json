@@ -1,0 +1,12 @@
+{
+  "type": "GridDateUnit",
+  "format": {
+    "TYPENAME": "GridDateUnit"
+  },
+  "values": [
+    "Day",
+    "Year",
+    "Day",
+    "Weekday"
+  ]
+}

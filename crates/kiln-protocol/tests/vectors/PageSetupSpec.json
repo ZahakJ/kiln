@@ -1,0 +1,53 @@
+{
+  "type": "PageSetupSpec",
+  "format": {
+    "TYPENAME": "PageSetupSpec"
+  },
+  "values": [
+    {
+      "top": 72.0,
+      "bottom": null,
+      "left": 90.0,
+      "right": null,
+      "gutter": null,
+      "header": null,
+      "footer": null,
+      "width": 595.3,
+      "height": 841.9,
+      "landscape": false,
+      "columns": 2,
+      "column_space": null,
+      "vertical_align": "Center"
+    },
+    {
+      "top": null,
+      "bottom": null,
+      "left": null,
+      "right": null,
+      "gutter": null,
+      "header": null,
+      "footer": null,
+      "width": null,
+      "height": null,
+      "landscape": null,
+      "columns": null,
+      "column_space": null,
+      "vertical_align": null
+    },
+    {
+      "top": null,
+      "bottom": null,
+      "left": null,
+      "right": null,
+      "gutter": null,
+      "header": null,
+      "footer": null,
+      "width": null,
+      "height": null,
+      "landscape": null,
+      "columns": null,
+      "column_space": null,
+      "vertical_align": null
+    }
+  ]
+}

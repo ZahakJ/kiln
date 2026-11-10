@@ -1,0 +1,16 @@
+{
+  "type": "PageNumberPosition",
+  "format": {
+    "TYPENAME": "PageNumberPosition"
+  },
+  "values": [
+    "TopLeft",
+    "Caret",
+    "TopLeft",
+    "TopCenter",
+    "TopRight",
+    "BottomLeft",
+    "BottomCenter",
+    "BottomRight"
+  ]
+}

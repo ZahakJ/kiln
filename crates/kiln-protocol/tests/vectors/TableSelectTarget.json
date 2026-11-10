@@ -1,0 +1,12 @@
+{
+  "type": "TableSelectTarget",
+  "format": {
+    "TYPENAME": "TableSelectTarget"
+  },
+  "values": [
+    "Cell",
+    "Table",
+    "Cell",
+    "Row"
+  ]
+}

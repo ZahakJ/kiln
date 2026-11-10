@@ -1,0 +1,139 @@
+{
+ "date1904": false,
+ "sheets": [
+  {
+   "name": "Jan",
+   "state": "visible",
+   "merges": [],
+   "cells": {
+    "A1": {
+     "type": "number",
+     "value": 1
+    },
+    "A2": {
+     "type": "number",
+     "value": 2
+    },
+    "A3": {
+     "type": "number",
+     "value": 3
+    },
+    "A4": {
+     "type": "number",
+     "value": 4
+    },
+    "A5": {
+     "type": "number",
+     "value": 5
+    }
+   }
+  },
+  {
+   "name": "Feb",
+   "state": "visible",
+   "merges": [],
+   "cells": {
+    "A1": {
+     "type": "number",
+     "value": 2
+    },
+    "A2": {
+     "type": "number",
+     "value": 4
+    },
+    "A3": {
+     "type": "number",
+     "value": 6
+    },
+    "A4": {
+     "type": "number",
+     "value": 8
+    },
+    "A5": {
+     "type": "number",
+     "value": 10
+    }
+   }
+  },
+  {
+   "name": "Mar",
+   "state": "visible",
+   "merges": [],
+   "cells": {
+    "A1": {
+     "type": "number",
+     "value": 3
+    },
+    "A2": {
+     "type": "number",
+     "value": 6
+    },
+    "A3": {
+     "type": "number",
+     "value": 9
+    },
+    "A4": {
+     "type": "number",
+     "value": 12
+    },
+    "A5": {
+     "type": "number",
+     "value": 15
+    }
+   }
+  },
+  {
+   "name": "Apr",
+   "state": "visible",
+   "merges": [],
+   "cells": {
+    "A1": {
+     "type": "number",
+     "value": 4
+    },
+    "A2": {
+     "type": "number",
+     "value": 8
+    },
+    "A3": {
+     "type": "number",
+     "value": 12
+    },
+    "A4": {
+     "type": "number",
+     "value": 16
+    },
+    "A5": {
+     "type": "number",
+     "value": 20
+    }
+   }
+  },
+  {
+   "name": "Summary",
+   "state": "visible",
+   "merges": [],
+   "cells": {
+    "A1": {
+     "formula": "SUM(Jan:Apr!A1:A5)"
+    },
+    "A2": {
+     "formula": "Jan!A1+Feb!A1"
+    },
+    "A3": {
+     "formula": "AVERAGE('Mar'!A1:A5)"
+    }
+   }
+  },
+  {
+   "name": "Name with spaces",
+   "state": "visible",
+   "merges": [],
+   "cells": {
+    "A1": {
+     "formula": "Summary!A1*2"
+    }
+   }
+  }
+ ]
+}

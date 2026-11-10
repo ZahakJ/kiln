@@ -1,0 +1,37 @@
+{
+  "type": "GridPageMap",
+  "format": {
+    "TYPENAME": "GridPageMap"
+  },
+  "values": [
+    {
+      "width": 816.0,
+      "height": 1056.0,
+      "bands": [
+        {
+          "x": 67.2,
+          "y": 72.0,
+          "rows": [
+            {
+              "index": 0,
+              "at": 0.0,
+              "size": 20.0
+            }
+          ],
+          "cols": [
+            {
+              "index": 2,
+              "at": 0.0,
+              "size": 64.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 0.0,
+      "height": 0.0,
+      "bands": []
+    }
+  ]
+}

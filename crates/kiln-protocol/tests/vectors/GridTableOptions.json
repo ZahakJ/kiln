@@ -1,0 +1,26 @@
+{
+  "type": "GridTableOptions",
+  "format": {
+    "TYPENAME": "GridTableOptions"
+  },
+  "values": [
+    {
+      "header_row": false,
+      "total_row": false,
+      "banded_rows": false,
+      "banded_columns": false,
+      "first_column": false,
+      "last_column": false,
+      "filter_button": false
+    },
+    {
+      "header_row": false,
+      "total_row": false,
+      "banded_rows": false,
+      "banded_columns": false,
+      "first_column": false,
+      "last_column": false,
+      "filter_button": false
+    }
+  ]
+}

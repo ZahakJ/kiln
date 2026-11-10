@@ -1,0 +1,38 @@
+{
+  "type": "GridImport",
+  "format": {
+    "TYPENAME": "GridImport"
+  },
+  "values": [
+    {
+      "bytes": [
+        91,
+        123,
+        34,
+        97,
+        34,
+        58,
+        49,
+        125,
+        93
+      ],
+      "name": "data.json",
+      "format": "Json",
+      "delimiter": ";",
+      "encoding": "utf-8",
+      "as_text": true,
+      "at_cell": true,
+      "decimal_comma": true
+    },
+    {
+      "bytes": [],
+      "name": "",
+      "format": "Text",
+      "delimiter": null,
+      "encoding": null,
+      "as_text": false,
+      "at_cell": false,
+      "decimal_comma": false
+    }
+  ]
+}

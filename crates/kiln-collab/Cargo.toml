@@ -1,0 +1,42 @@
+[package]
+name = "kiln-collab"
+description = "Collaboration and version history on Loro"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[features]
+default = ["crdt"]
+# Collaboration and Version History on Loro. Without it the crate is the word-level comparison
+# and the changed slides only (the web's app cores).
+crdt = ["dep:loro"]
+
+[dependencies]
+kiln-common = { workspace = true, features = ["serde"] }
+kiln-doc.workspace = true
+kiln-deck.workspace = true
+# The calls between the core and the engine, and what the panes show.
+kiln-protocol.workspace = true
+# The CRDT (docs/adr/0004-crdt.md). No counter container: the models do not use one.
+loro = { workspace = true, default-features = false, optional = true }
+serde.workspace = true
+# Model values inside Loro containers are stored as JSON, one key per field.
+serde_json.workspace = true
+# Sync frames and version history records.
+postcard.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
+# Grid is not collaborative yet; its command log must serialise for the later bridge.
+kiln-sheet = { workspace = true, default-features = false }
+# Real documents for the mapping round trips.
+kiln-io-docx.workspace = true
+kiln-io-pptx.workspace = true
+
+[lints]
+workspace = true

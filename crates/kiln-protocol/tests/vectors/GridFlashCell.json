@@ -1,0 +1,30 @@
+{
+  "type": "GridFlashCell",
+  "format": {
+    "TYPENAME": "GridFlashCell"
+  },
+  "values": [
+    {
+      "row": 2,
+      "col": 3,
+      "text": "Ana",
+      "rect": [
+        120.0,
+        40.0,
+        64.0,
+        20.0
+      ]
+    },
+    {
+      "row": 0,
+      "col": 0,
+      "text": "",
+      "rect": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ]
+}

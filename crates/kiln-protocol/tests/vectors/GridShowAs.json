@@ -1,0 +1,24 @@
+{
+  "type": "GridShowAs",
+  "format": {
+    "TYPENAME": "GridShowAs"
+  },
+  "values": [
+    "Normal",
+    "RankDescending",
+    "Normal",
+    "PercentOfTotal",
+    "PercentOfColumn",
+    "PercentOfRow",
+    "PercentOfParentRow",
+    "PercentOfParentColumn",
+    "Percent",
+    "Difference",
+    "PercentDifference",
+    "RunningTotal",
+    "PercentRunningTotal",
+    "RankAscending",
+    "RankDescending",
+    "Index"
+  ]
+}

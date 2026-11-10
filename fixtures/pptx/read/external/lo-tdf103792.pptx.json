@@ -1,0 +1,28 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Címdia"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Címdia",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Cím 1",
+     "text": ""
+    }
+   ]
+  }
+ ]
+}

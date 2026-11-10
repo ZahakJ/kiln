@@ -1,0 +1,1726 @@
+/*
+ * Kiln UI primitives, styled after the brand kit's component styles (brand/mockups/src/kiln-ui.css,
+ * the mockups in docs/design/mockups/). Every value comes from @kiln/tokens: the kit's names
+ * (--kiln-panel, --kiln-line, --app-solid, …) and the semantic names (--kiln-bg-hover, --kiln-focus-ring, …),
+ * so light, dark, high contrast and the per-app colour (data-app) work without per-component overrides.
+ *
+ * Shape language (from the mockups): 9 px radius on 30 px buttons, 7 px on 28 px icon buttons and
+ * dropdowns, 8 px on 32 px fields, 10 px on large ribbon icon wells, 12 px on menus and popovers, 16 px
+ * on dialogs; hairlines in --kiln-line; selected states take the app tint and app text colour; solid
+ * buttons carry a 2 px inner foot like glaze pooling at the base of a tile.
+ */
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Shared                                                                                          */
+/* ---------------------------------------------------------------------------------------------- */
+
+.kiln-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.kiln-glyph,
+.kiln-icon,
+.kiln-brand-mark {
+  display: inline-block;
+  vertical-align: middle;
+  flex: none;
+}
+
+.kiln-app-tile {
+  display: inline-block;
+  vertical-align: middle;
+  flex: none;
+  user-select: none;
+}
+
+/* A glyph's filled accent part (e.g. the colour bar of Font Colour) can be tinted with --kiln-glyph-accent. */
+.kiln-glyph path[data-accent][fill="currentColor"] {
+  fill: var(--kiln-glyph-accent, currentColor);
+}
+
+/* Colourful icons (opt-in with data-icon-style="colorful" on any ancestor): accents in the app colour. */
+[data-icon-style="colorful"] .kiln-glyph [data-accent] {
+  stroke: var(--kiln-accent-strong);
+}
+[data-icon-style="colorful"] .kiln-glyph path[data-accent][fill="currentColor"] {
+  fill: var(--kiln-glyph-accent, var(--kiln-accent-strong));
+}
+
+/*
+ * Native check boxes and radio buttons in dialogs, panes and the File menu: 16 px with 4 px around,
+ * so each is a 24 px pointer target with its neighbours a full target away (WCAG 2.5.8).
+ */
+:where([role="dialog"], [role="alertdialog"], aside, .kiln-taskpane, .kiln-backstage)
+:where(input[type="checkbox"]:not([class]), input[type="radio"]:not([class])) {
+  width: 16px;
+  height: 16px;
+  margin: 4px;
+  flex: none;
+}
+
+/* The focus ring follows the app colour (BRAND.md §5). */
+:where(
+  .kiln-btn,
+  .kiln-field,
+  .kiln-menu__item,
+  .kiln-tabs__tab,
+  .kiln-gallery__item,
+  .kiln-color__swatch,
+  .kiln-slider__thumb
+):focus-visible,
+:where(.kiln-scroll, .kiln-split__main, .kiln-split__arrow):focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Button family                                                                                   */
+/* ---------------------------------------------------------------------------------------------- */
+
+.kiln-btn {
+  --btn-h: var(--kiln-button-h);
+  --btn-px: 12px;
+  --btn-r: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  box-sizing: border-box;
+  height: var(--btn-h);
+  min-width: var(--btn-h);
+  padding: 0 var(--btn-px);
+  margin: 0;
+  border: var(--kiln-border-width) solid var(--kiln-line-strong);
+  border-radius: var(--btn-r);
+  background: var(--kiln-raised);
+  color: var(--kiln-fg);
+  font: inherit;
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-base);
+  font-weight: var(--kiln-weight-semibold);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--kiln-duration-fast) var(--kiln-ease),
+    border-color var(--kiln-duration-fast) var(--kiln-ease),
+    box-shadow var(--kiln-duration-fast) var(--kiln-ease),
+    color var(--kiln-duration-fast) var(--kiln-ease);
+}
+.kiln-btn:hover {
+  border-color: color-mix(in srgb, var(--kiln-line-strong), var(--kiln-fg) 18%);
+  background: color-mix(in srgb, var(--kiln-raised), var(--kiln-fg) 4%);
+}
+.kiln-btn:active {
+  background: color-mix(in srgb, var(--kiln-raised), var(--kiln-fg) 9%);
+}
+.kiln-btn:disabled,
+.kiln-btn[aria-disabled="true"] {
+  color: var(--kiln-fg-disabled);
+  border-color: var(--kiln-line);
+  background: var(--kiln-raised);
+  box-shadow: none;
+  pointer-events: none;
+}
+.kiln-btn[aria-busy="true"] {
+  cursor: progress;
+  opacity: 0.75;
+}
+
+.kiln-btn--sm {
+  --btn-h: var(--kiln-control-h-sm);
+  --btn-px: 8px;
+  --btn-r: 7px;
+  gap: 6px;
+  font-size: var(--kiln-text-sm);
+}
+.kiln-btn--lg {
+  --btn-h: var(--kiln-control-h-lg);
+  --btn-px: 16px;
+}
+.kiln-btn--icon-only {
+  padding: 0;
+  width: var(--btn-h);
+}
+
+.kiln-btn__icon,
+.kiln-btn__icon-after {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.kiln-btn__icon-after {
+  margin-inline-start: -2px;
+  color: var(--kiln-faint);
+}
+.kiln-btn__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Solid: the app's colour (Share, Reply, OK). A 2 px inner foot gives the glaze some weight. */
+.kiln-btn--primary {
+  border-color: transparent;
+  background: var(--app-solid);
+  color: var(--app-on-solid);
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.14);
+}
+.kiln-btn--primary:hover {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--app-solid), var(--app-on-solid) 10%);
+}
+.kiln-btn--primary:active {
+  background: color-mix(in srgb, var(--app-solid), #000 10%);
+  box-shadow: inset 0 1px 0 rgb(0 0 0 / 0.16);
+}
+.kiln-btn--primary .kiln-btn__icon-after {
+  color: inherit;
+}
+.kiln-btn--primary:disabled {
+  border-color: var(--kiln-line);
+  background: var(--kiln-sunken);
+}
+
+/* Ember: suite-level actions only (Home's New, the onboarding tour, brand moments). */
+.kiln-btn--ember {
+  border-color: transparent;
+  background: var(--kiln-ember);
+  color: var(--kiln-on-ember);
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.14);
+}
+.kiln-btn--ember:hover {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--kiln-ember), var(--kiln-on-ember) 10%);
+}
+.kiln-btn--ember:active {
+  background: color-mix(in srgb, var(--kiln-ember), #000 10%);
+  box-shadow: inset 0 1px 0 rgb(0 0 0 / 0.16);
+}
+.kiln-btn--ember:disabled {
+  border-color: var(--kiln-line);
+  background: var(--kiln-sunken);
+}
+
+.kiln-btn--danger {
+  border-color: transparent;
+  background: var(--kiln-danger);
+  color: var(--kiln-bg);
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.14);
+}
+.kiln-btn--danger:hover {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--kiln-danger), var(--kiln-fg) 12%);
+}
+
+.kiln-btn--ghost,
+.kiln-btn--toolbar,
+.kiln-btn--split {
+  border-color: transparent;
+  background: transparent;
+}
+.kiln-btn--ghost:hover,
+.kiln-btn--toolbar:hover,
+.kiln-btn--split:hover {
+  border-color: transparent;
+  background: var(--kiln-bg-hover);
+}
+.kiln-btn--ghost:active,
+.kiln-btn--toolbar:active,
+.kiln-btn--split:active {
+  background: var(--kiln-bg-pressed);
+}
+.kiln-btn--ghost:disabled,
+.kiln-btn--toolbar:disabled,
+.kiln-btn--split:disabled {
+  border-color: transparent;
+  background: transparent;
+}
+
+/* Ribbon command: 28 px square icon buttons, 24 px text rows (Cut, Copy, Format). */
+.kiln-btn--toolbar {
+  --btn-h: var(--kiln-control-h);
+  --btn-px: 6px;
+  --btn-r: 7px;
+  gap: 7px;
+  font-size: var(--kiln-text-sm);
+  font-weight: var(--kiln-weight-regular);
+}
+.kiln-btn--toolbar.kiln-btn--sm {
+  --btn-h: var(--kiln-control-h-sm);
+  --btn-r: 6px;
+}
+.kiln-btn--toolbar.kiln-btn--icon-only {
+  padding: 0;
+}
+.kiln-btn--ghost {
+  font-weight: var(--kiln-weight-medium);
+}
+
+/* Classic-ribbon large button: a 40 px icon well above a (possibly two-line) label. */
+.kiln-btn--stacked {
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 4px;
+  height: auto;
+  min-height: 66px;
+  min-width: 52px;
+  max-width: 76px;
+  padding: 2px 4px 4px;
+  border-color: transparent;
+  background: transparent;
+  font-size: var(--kiln-text-sm);
+  font-weight: var(--kiln-weight-medium);
+  white-space: normal;
+}
+.kiln-btn--stacked .kiln-btn__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--kiln-sunken);
+  transition: background-color var(--kiln-duration-fast) var(--kiln-ease);
+}
+.kiln-btn--stacked:hover,
+.kiln-btn--stacked:active {
+  border-color: transparent;
+  background: transparent;
+}
+.kiln-btn--stacked:hover .kiln-btn__icon {
+  background: color-mix(in srgb, var(--kiln-sunken), var(--kiln-fg) 7%);
+}
+.kiln-btn--stacked:active .kiln-btn__icon {
+  background: color-mix(in srgb, var(--kiln-sunken), var(--kiln-fg) 12%);
+}
+.kiln-btn--stacked .kiln-btn__label {
+  font-size: var(--kiln-text-sm);
+  line-height: var(--kiln-leading-tight);
+  text-align: center;
+  white-space: normal;
+}
+.kiln-btn--stacked:disabled .kiln-btn__icon {
+  background: transparent;
+}
+
+/* Toggle (aria-pressed): the app tint with a hairline of the app colour (Bold on, Align left). */
+.kiln-toggle[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--app-tint);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--app) 30%, transparent);
+  color: var(--app-text);
+}
+.kiln-toggle[aria-pressed="true"]:hover {
+  background: color-mix(in srgb, var(--app-tint), var(--app) 10%);
+}
+.kiln-toggle[aria-pressed="true"] .kiln-btn__icon {
+  color: var(--app-text);
+}
+.kiln-btn--stacked.kiln-toggle[aria-pressed="true"] {
+  background: transparent;
+  box-shadow: none;
+}
+.kiln-btn--stacked.kiln-toggle[aria-pressed="true"] .kiln-btn__icon {
+  background: var(--app-tint);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--app) 30%, transparent);
+}
+[data-theme="hc"] .kiln-toggle[aria-pressed="true"] {
+  background: var(--kiln-fg);
+  box-shadow: none;
+  color: var(--kiln-bg);
+}
+[data-theme="hc"] .kiln-toggle[aria-pressed="true"] .kiln-btn__icon {
+  color: var(--kiln-bg);
+}
+
+/* Split button. */
+.kiln-split {
+  display: inline-flex;
+  align-items: stretch;
+  border: var(--kiln-border-width) solid transparent;
+  border-radius: 7px;
+  transition: border-color var(--kiln-duration-fast) var(--kiln-ease);
+}
+.kiln-split > .kiln-btn {
+  border: 0;
+}
+.kiln-split > .kiln-split__main {
+  border-radius: 0;
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
+  padding-block: 0;
+  padding-inline: 6px 4px;
+}
+.kiln-split > .kiln-split__main.kiln-btn--icon-only {
+  width: auto;
+  min-width: var(--kiln-control-h);
+  padding: 0 4px;
+}
+.kiln-split > .kiln-split__arrow {
+  min-width: 0;
+  width: 16px;
+  padding: 0;
+  border-radius: 0;
+  border-start-end-radius: 6px;
+  border-end-end-radius: 6px;
+  color: var(--kiln-faint);
+}
+.kiln-split--stacked {
+  flex-direction: column;
+  max-width: 76px;
+}
+.kiln-split.kiln-split--stacked > .kiln-split__main {
+  flex-direction: column;
+  height: auto;
+  min-height: 48px;
+  padding: 2px 4px 0;
+  border-radius: 6px 6px 0 0;
+}
+.kiln-split.kiln-split--stacked > .kiln-split__main > .kiln-btn__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--kiln-sunken);
+}
+.kiln-split.kiln-split--stacked > .kiln-split__main > .kiln-btn__label {
+  font-size: var(--kiln-text-sm);
+  font-weight: var(--kiln-weight-medium);
+  /* The whole label with wider text spacing (WCAG 1.4.12); laid out as when it clipped. */
+  overflow: visible;
+  min-width: 0;
+  min-height: 0;
+}
+.kiln-split.kiln-split--stacked > .kiln-split__arrow {
+  width: auto;
+  height: 18px;
+  border-radius: 0 0 6px 6px;
+}
+.kiln-split:hover,
+.kiln-split.is-open {
+  border-color: var(--kiln-line);
+}
+.kiln-split:hover .kiln-split__arrow {
+  box-shadow: inset 1px 0 0 var(--kiln-line);
+}
+.kiln-split.is-open .kiln-split__arrow {
+  background: var(--kiln-bg-pressed);
+  color: var(--kiln-fg);
+}
+.kiln-split--stacked:hover > .kiln-split__arrow {
+  box-shadow: inset 0 1px 0 var(--kiln-line);
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Kbd, spinner, separator                                                                         */
+/* ---------------------------------------------------------------------------------------------- */
+
+.kiln-kbd {
+  display: inline-flex;
+  gap: 3px;
+  font: inherit;
+}
+.kiln-kbd__key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 20px;
+  height: 19px;
+  padding: 3px 5px 2px;
+  border: 1px solid var(--kiln-line-strong);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: var(--kiln-raised);
+  color: var(--kiln-muted);
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-xs);
+  font-weight: var(--kiln-weight-semibold);
+  line-height: 1;
+  white-space: nowrap;
+}
+.kiln-kbd-inline {
+  font-family: var(--kiln-font-ui);
+  font-size: inherit;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+}
+
+.kiln-spinner {
+  display: inline-flex;
+  color: var(--kiln-accent);
+}
+.kiln-spinner svg {
+  animation: kiln-spin 0.8s linear infinite;
+}
+.kiln-spinner__track {
+  stroke: var(--kiln-line);
+}
+.kiln-spinner__arc {
+  stroke: currentColor;
+}
+@keyframes kiln-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kiln-spinner svg {
+    animation-duration: 2.4s;
+  }
+}
+
+.kiln-separator {
+  flex: none;
+  background: var(--kiln-line);
+}
+.kiln-separator[data-orientation="horizontal"] {
+  height: 1px;
+  width: 100%;
+  margin: 4px 0;
+}
+.kiln-separator[data-orientation="vertical"] {
+  width: 1px;
+  align-self: stretch;
+  min-height: 20px;
+  margin: 0 4px;
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Tooltip                                                                                         */
+/* ---------------------------------------------------------------------------------------------- */
+
+.kiln-tooltip {
+  z-index: var(--kiln-z-tooltip);
+  box-sizing: border-box;
+  max-width: 300px;
+  padding: 6px 9px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 8px;
+  background: var(--kiln-raised);
+  box-shadow: var(--kiln-shadow-2);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-sm);
+  line-height: var(--kiln-leading-normal);
+  user-select: none;
+  animation: kiln-fade-in var(--kiln-duration-menu) var(--kiln-ease);
+}
+.kiln-tooltip--rich {
+  padding: 10px 12px;
+}
+.kiln-tooltip__title {
+  display: block;
+  font-weight: var(--kiln-weight-bold);
+}
+.kiln-tooltip:not(.kiln-tooltip--rich) .kiln-tooltip__title {
+  font-weight: var(--kiln-weight-medium);
+}
+.kiln-tooltip__shortcut {
+  color: var(--kiln-muted);
+  font-weight: var(--kiln-weight-regular);
+}
+.kiln-tooltip__description {
+  display: block;
+  margin-top: 4px;
+  color: var(--kiln-muted);
+}
+
+@keyframes kiln-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes kiln-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+}
+@keyframes kiln-dialog-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 8px)) scale(0.98);
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Menus, popovers, select lists                                                                   */
+/* ---------------------------------------------------------------------------------------------- */
+
+.kiln-menu,
+.kiln-popover {
+  z-index: var(--kiln-z-menu);
+  box-sizing: border-box;
+  min-width: 200px;
+  max-height: var(--radix-dropdown-menu-content-available-height, 80vh);
+  overflow: auto;
+  padding: 5px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-menu);
+  background: var(--kiln-panel);
+  box-shadow: var(--kiln-shadow-2);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-base);
+  outline: none;
+  transform-origin: var(
+    --radix-dropdown-menu-content-transform-origin,
+    var(--radix-popover-content-transform-origin)
+  );
+  animation: kiln-pop-in var(--kiln-duration-menu) var(--kiln-ease);
+  scrollbar-width: thin;
+  scrollbar-color: var(--kiln-scrollbar) transparent;
+}
+.kiln-popover {
+  z-index: var(--kiln-z-popover);
+  min-width: 0;
+  max-height: var(--radix-popover-content-available-height, 80vh);
+  padding: 12px;
+}
+.kiln-popover--flush {
+  padding: 0;
+}
+.kiln-popover__arrow {
+  fill: var(--kiln-panel);
+  stroke: var(--kiln-line);
+}
+
+.kiln-menu__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 16px 20px 1fr auto;
+  align-items: center;
+  column-gap: 6px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 30px;
+  padding-block: 4px;
+  padding-inline: 6px 10px;
+  margin: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--kiln-fg);
+  font: inherit;
+  text-align: start;
+  cursor: default;
+  user-select: none;
+  outline: none;
+}
+.kiln-menu__item[data-highlighted],
+button.kiln-menu__item:hover {
+  background: var(--kiln-bg-hover);
+}
+/* A menu-styled button outside a Radix menu (the colour picker's Automatic and More Colors) has
+   no highlight of its own: the keys show with the focus ring. */
+button.kiln-menu__item:not([role^="menuitem"]):focus-visible {
+  background: var(--kiln-bg-hover);
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: -2px;
+}
+.kiln-menu__item[data-highlighted]:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 1px var(--kiln-line-strong);
+}
+[data-theme="hc"] .kiln-menu__item[data-highlighted] {
+  outline: 2px solid var(--kiln-focus-ring);
+  outline-offset: -2px;
+}
+.kiln-menu__item[data-disabled] {
+  color: var(--kiln-fg-disabled);
+}
+.kiln-menu__item--danger {
+  color: var(--kiln-danger);
+}
+.kiln-menu__indicator {
+  grid-column: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--app-text);
+}
+.kiln-menu__icon {
+  grid-column: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--kiln-muted);
+}
+.kiln-menu__item[data-highlighted] .kiln-menu__icon {
+  color: var(--kiln-fg);
+}
+.kiln-menu__text {
+  grid-column: 3;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.kiln-menu__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kiln-menu__description {
+  color: var(--kiln-muted);
+  font-size: var(--kiln-text-sm);
+  white-space: normal;
+}
+.kiln-menu__shortcut,
+.kiln-menu__chevron {
+  grid-column: 4;
+  margin-inline-start: 24px;
+  color: var(--kiln-faint);
+  font-size: var(--kiln-text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.kiln-menu__chevron {
+  margin-inline-start: 12px;
+  display: inline-flex;
+}
+.kiln-menu__item--sub[data-state="open"] {
+  background: var(--kiln-bg-hover);
+}
+/* Group labels are eyebrows: Figtree 800, uppercase, +12 % tracking (BRAND.md §4). */
+.kiln-menu__group-label {
+  padding: 9px 10px 5px;
+  color: var(--kiln-faint);
+  font-size: 10.5px;
+  font-weight: var(--kiln-weight-heavy);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.kiln-menu__separator {
+  height: 1px;
+  margin: 5px -5px;
+  background: var(--kiln-line);
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Fields: select, combobox, number                                                                 */
+/* ---------------------------------------------------------------------------------------------- */
+
+.kiln-field {
+  --field-h: var(--kiln-control-h);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: var(--field-h);
+  min-width: 0;
+  padding-block: 0;
+  padding-inline: 9px 6px;
+  border: var(--kiln-border-width) solid var(--kiln-line);
+  border-radius: 7px;
+  background: var(--kiln-raised);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+  font-size: 12.5px;
+  transition:
+    border-color var(--kiln-duration-fast) var(--kiln-ease),
+    box-shadow var(--kiln-duration-fast) var(--kiln-ease);
+}
+.kiln-field:hover {
+  border-color: var(--kiln-line-strong);
+}
+.kiln-field:focus-within,
+.kiln-field[data-state="open"] {
+  border-color: var(--app-text);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--app) 22%, transparent);
+}
+.kiln-field:has(:focus-visible),
+.kiln-field.kiln-select:focus-visible {
+  outline: none;
+}
+.kiln-field--sm {
+  --field-h: var(--kiln-control-h-sm);
+  border-radius: 6px;
+  font-size: var(--kiln-text-sm);
+}
+.kiln-field--lg {
+  --field-h: var(--kiln-control-h-lg);
+  border-radius: 8px;
+}
+.kiln-field.is-disabled,
+.kiln-field:disabled {
+  color: var(--kiln-fg-disabled);
+  border-color: var(--kiln-line);
+  background: var(--kiln-sunken);
+}
+.kiln-field.is-invalid {
+  border-color: var(--kiln-danger);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--kiln-danger) 20%, transparent);
+}
+
+.kiln-select {
+  justify-content: space-between;
+  gap: 6px;
+  margin: 0;
+  cursor: default;
+  text-align: start;
+}
+.kiln-select__value {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kiln-select__value [data-placeholder],
+.kiln-select[data-placeholder] .kiln-select__value {
+  color: var(--kiln-faint);
+}
+.kiln-select__chevron {
+  display: inline-flex;
+  color: var(--kiln-faint);
+}
+.kiln-select__content {
+  /* Above dialogs: a list opened from a dialog's field must not open under its overlay. */
+  z-index: var(--kiln-z-popover);
+  min-width: var(--radix-select-trigger-width);
+  max-height: min(360px, var(--radix-select-content-available-height));
+  padding: 0;
+  overflow: hidden;
+}
+.kiln-select__viewport {
+  padding: 5px;
+}
+.kiln-select__item {
+  grid-template-columns: 16px auto 1fr;
+}
+.kiln-select__item:not(:has(.kiln-menu__icon)) {
+  grid-template-columns: 16px 1fr;
+}
+.kiln-select__scroll {
+  display: flex;
+  justify-content: center;
+  padding: 2px;
+  color: var(--kiln-faint);
+}
+
+.kiln-combobox {
+  padding: 0;
+}
+.kiln-combobox__input,
+.kiln-number__input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  box-sizing: border-box;
+  padding-block: 0;
+  padding-inline: 9px 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+.kiln-combobox__input::placeholder {
+  color: var(--kiln-faint);
+}
+.kiln-combobox__input::selection,
+.kiln-number__input::selection {
+  background: var(--kiln-selection);
+  color: var(--kiln-fg);
+}
+.kiln-combobox__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 22px;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-start-end-radius: 6px;
+  border-end-end-radius: 6px;
+  background: transparent;
+  color: var(--kiln-faint);
+}
+.kiln-combobox__toggle:hover {
+  background: var(--kiln-bg-hover);
+  color: var(--kiln-fg);
+}
+.kiln-combobox__popup {
+  padding: 0;
+  overflow: hidden;
+}
+.kiln-combobox__list {
+  overflow-y: auto;
+  padding: 5px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--kiln-scrollbar) transparent;
+}
+.kiln-combobox__option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 30px;
+  padding: 3px 10px;
+  border-radius: 7px;
+  cursor: default;
+  user-select: none;
+}
+.kiln-combobox__option[data-active] {
+  background: var(--kiln-bg-hover);
+}
+[data-theme="hc"] .kiln-combobox__option[data-active] {
+  outline: 2px solid var(--kiln-focus-ring);
+  outline-offset: -2px;
+}
+/* The current value: app tint with the app bar on the leading edge, like the navigation pane. */
+.kiln-combobox__option[aria-selected="true"] {
+  background: var(--app-tint);
+  box-shadow: inset 3px 0 0 var(--app);
+  color: var(--app-text);
+}
+.kiln-combobox__option[aria-selected="true"][data-active] {
+  background: color-mix(in srgb, var(--app-tint), var(--app) 10%);
+}
+.kiln-combobox__option-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kiln-combobox__hint {
+  color: var(--kiln-faint);
+  font-size: var(--kiln-text-sm);
+}
+.kiln-combobox__group + .kiln-combobox__group {
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid var(--kiln-line);
+}
+.kiln-combobox__empty {
+  padding: 8px 10px;
+  color: var(--kiln-muted);
+}
+
+.kiln-number {
+  padding: 0;
+}
+.kiln-number__input {
+  text-align: start;
+  font-variant-numeric: tabular-nums;
+}
+.kiln-number__spin {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  width: 18px;
+  border-inline-start: 1px solid var(--kiln-line);
+}
+.kiln-number__spin button {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: var(--kiln-faint);
+}
+.kiln-number__spin button:hover:not(:disabled) {
+  background: var(--kiln-bg-hover);
+  color: var(--kiln-fg);
+}
+.kiln-number__spin button:disabled {
+  color: var(--kiln-fg-disabled);
+}
+.kiln-number__spin button:first-child {
+  border-start-end-radius: 6px;
+}
+.kiln-number__spin button:last-child {
+  border-end-end-radius: 6px;
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Dialog                                                                                          */
+/* ---------------------------------------------------------------------------------------------- */
+
+.kiln-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--kiln-z-dialog);
+  background: var(--kiln-overlay);
+  animation: kiln-fade-in var(--kiln-duration-pane) var(--kiln-ease);
+}
+.kiln-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: var(--kiln-z-dialog);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: min(calc(100vw - 32px), var(--dialog-w, 480px));
+  max-height: calc(100vh - 48px);
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-dialog);
+  background: var(--kiln-panel);
+  box-shadow: var(--kiln-shadow-3);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-base);
+  transform: translate(-50%, -50%);
+  outline: none;
+  animation: kiln-dialog-in var(--kiln-duration-pane) var(--kiln-ease);
+}
+.kiln-dialog--sm {
+  --dialog-w: 360px;
+}
+.kiln-dialog--lg {
+  --dialog-w: 640px;
+}
+.kiln-dialog--xl {
+  --dialog-w: 840px;
+}
+.kiln-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 16px 4px;
+  padding-inline: 22px 12px;
+}
+/* Dialog titles are display type: Fraunces 700, SOFT 40 (BRAND.md §4). */
+.kiln-dialog__title {
+  margin: 0;
+  font-family: var(--kiln-font-display);
+  font-size: var(--kiln-text-xl);
+  font-variation-settings: var(--kiln-display-settings);
+  font-optical-sizing: auto;
+  font-weight: var(--kiln-weight-bold);
+  letter-spacing: -0.01em;
+  line-height: var(--kiln-leading-tight);
+}
+.kiln-dialog__close {
+  color: var(--kiln-muted);
+}
+.kiln-dialog__description {
+  margin: 0;
+  padding: 0 22px 4px;
+  color: var(--kiln-muted);
+  line-height: var(--kiln-leading-normal);
+}
+.kiln-dialog__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 12px 22px 18px;
+  line-height: var(--kiln-leading-normal);
+}
+.kiln-dialog__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-block: 12px 14px;
+  padding-inline: 22px 16px;
+  border-top: 1px solid var(--kiln-line);
+  background: var(--kiln-bg);
+  border-end-start-radius: var(--kiln-radius-dialog);
+  border-end-end-radius: var(--kiln-radius-dialog);
+}
+.kiln-dialog__footer-start,
+.kiln-dialog__footer-end {
+  display: flex;
+  gap: 8px;
+}
+.kiln-dialog__footer-end .kiln-btn {
+  min-width: 84px;
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Tabs                                                                                            */
+/* ---------------------------------------------------------------------------------------------- */
+
+.kiln-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+}
+.kiln-tabs__tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  margin: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--kiln-muted);
+  font: inherit;
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-base);
+  font-weight: var(--kiln-weight-medium);
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  transition:
+    background-color var(--kiln-duration-fast) var(--kiln-ease),
+    color var(--kiln-duration-fast) var(--kiln-ease);
+}
+.kiln-tabs__tab:hover {
+  background: var(--kiln-bg-hover);
+  color: var(--kiln-fg);
+}
+.kiln-tabs__tab[data-state="active"] {
+  color: var(--app-text);
+  font-weight: var(--kiln-weight-bold);
+}
+.kiln-tabs__tab[data-disabled] {
+  color: var(--kiln-fg-disabled);
+}
+
+.kiln-tabs--underline .kiln-tabs__tab::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 12px;
+  inset-inline-end: 12px;
+  bottom: 0;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: transparent;
+  transition: background-color var(--kiln-duration-menu) var(--kiln-ease);
+}
+.kiln-tabs--underline .kiln-tabs__tab[data-state="active"]::after {
+  background: var(--app);
+}
+
+/* The arch: the active tab is an arch-topped door with a dot of the app colour (BRAND.md §5). */
+.kiln-tabs--arch {
+  align-items: flex-end;
+  gap: 2px;
+}
+.kiln-tabs--arch .kiln-tabs__tab {
+  height: 34px;
+  padding: 0 15px;
+  border-radius: 9px 9px 0 0;
+}
+.kiln-tabs--arch .kiln-tabs__tab[data-state="active"] {
+  height: 38px;
+  margin-bottom: -1px;
+  padding: 6px 22px 0;
+  border: 1px solid var(--kiln-line);
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0 / 26px 26px 0 0;
+  background: var(--kiln-panel);
+}
+.kiln-tabs--arch .kiln-tabs__tab[data-state="active"]::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--app);
+}
+
+/* Segmented: a sunken well with a raised chip for the current choice (Headings | Pages | Results). */
+.kiln-tabs--segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 9px;
+  background: var(--kiln-sunken);
+}
+.kiln-tabs--segmented .kiln-tabs__tab {
+  flex: 1;
+  height: 26px;
+  padding: 0 10px;
+  font-size: var(--kiln-text-sm);
+}
+.kiln-tabs--segmented .kiln-tabs__tab:hover {
+  background: color-mix(in srgb, var(--kiln-raised) 50%, transparent);
+}
+.kiln-tabs--segmented .kiln-tabs__tab[data-state="active"] {
+  background: var(--kiln-raised);
+  box-shadow: var(--kiln-shadow-1);
+  color: var(--kiln-fg);
+  font-weight: var(--kiln-weight-semibold);
+}
+[data-theme="hc"] .kiln-tabs--segmented .kiln-tabs__tab[data-state="active"] {
+  outline: 1px solid var(--kiln-fg);
+}
+.kiln-tabs__panel {
+  outline: none;
+}
+.kiln-tabs__panel:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Toolbar                                                                                         */
+/* ---------------------------------------------------------------------------------------------- */
+
+.kiln-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.kiln-toolbar--vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Slider / zoom                                                                                   */
+/* ---------------------------------------------------------------------------------------------- */
+
+.kiln-slider {
+  --slider-pad: 7px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 120px;
+  height: 20px;
+  padding: 0 var(--slider-pad);
+  touch-action: none;
+  cursor: default;
+}
+.kiln-slider__track {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--kiln-line-strong);
+}
+.kiln-slider__fill {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  border-radius: 2px;
+  background: var(--app);
+}
+.kiln-slider__mark {
+  position: absolute;
+  top: -4px;
+  width: 2px;
+  height: 12px;
+  margin-inline-start: -1px;
+  border-radius: 1px;
+  background: var(--kiln-faint);
+}
+/* The thumb's centre sits on the value: pad + (inner width × p), shifted back by half its size. */
+.kiln-slider__thumb {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: calc(var(--slider-pad) + (100% - 2 * var(--slider-pad)) * var(--p, 0) - 7px);
+  box-sizing: border-box;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  border: 2px solid var(--app);
+  border-radius: 50%;
+  background: var(--kiln-raised);
+  box-shadow: var(--kiln-shadow-1);
+  transition:
+    transform var(--kiln-duration-fast) var(--kiln-ease),
+    border-color var(--kiln-duration-fast) var(--kiln-ease);
+}
+.kiln-slider:hover .kiln-slider__thumb,
+.kiln-slider__thumb:focus-visible {
+  transform: scale(1.12);
+}
+.kiln-slider__thumb:focus-visible {
+  outline-offset: 2px;
+}
+.kiln-slider.is-disabled {
+  opacity: 0.5;
+}
+.kiln-slider.is-disabled .kiln-slider__thumb {
+  border-color: var(--kiln-faint);
+}
+
+.kiln-zoom {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.kiln-zoom__label {
+  min-width: 44px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Gallery (Styles, Shape styles, …): raised cards like the kit's Styles gallery                  */
+/* ---------------------------------------------------------------------------------------------- */
+
+.kiln-gallery {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 6px;
+  box-sizing: border-box;
+}
+.kiln-gallery__row {
+  display: flex;
+  gap: 6px;
+  padding: 0;
+}
+.kiln-gallery__grid {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+}
+.kiln-gallery__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--gallery-item-w);
+  height: var(--gallery-item-h);
+  overflow: hidden;
+  border: 1px solid var(--kiln-line);
+  border-radius: 9px;
+  background: var(--kiln-raised);
+  color: var(--kiln-fg);
+  cursor: default;
+  user-select: none;
+  transition:
+    border-color var(--kiln-duration-fast) var(--kiln-ease),
+    box-shadow var(--kiln-duration-fast) var(--kiln-ease);
+}
+.kiln-gallery__item:hover {
+  border-color: var(--kiln-line-strong);
+  box-shadow: var(--kiln-shadow-1);
+}
+.kiln-gallery__item[aria-selected="true"] {
+  border-color: var(--app);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--app) 22%, transparent);
+}
+.kiln-gallery__item[aria-disabled="true"] {
+  opacity: 0.45;
+}
+.kiln-gallery__preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  max-width: 100%;
+  overflow: hidden;
+  font-size: var(--kiln-text-sm);
+  white-space: nowrap;
+}
+.kiln-gallery__scroller {
+  display: flex;
+  flex-direction: column;
+  width: 20px;
+  overflow: hidden;
+  border: 1px solid var(--kiln-line);
+  border-radius: 7px;
+}
+.kiln-gallery__scroller button {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: var(--kiln-faint);
+}
+.kiln-gallery__scroller button + button {
+  border-top: 1px solid var(--kiln-line);
+}
+.kiln-gallery__scroller button:hover:not(:disabled) {
+  background: var(--kiln-bg-hover);
+  color: var(--kiln-fg);
+}
+.kiln-gallery__scroller button:disabled {
+  color: var(--kiln-fg-disabled);
+}
+.kiln-gallery__more-bar {
+  position: absolute;
+  top: 3px;
+  inset-inline-start: 5px;
+  inset-inline-end: 5px;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 1px;
+}
+.kiln-gallery__footer {
+  padding: 5px;
+  border-top: 1px solid var(--kiln-line);
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Colour picker                                                                                   */
+/* ---------------------------------------------------------------------------------------------- */
+
+.kiln-color {
+  --swatch-size: 18px;
+  --swatch-gap: 5px;
+  display: flex;
+  flex-direction: column;
+  width: calc(10 * var(--swatch-size) + 9 * var(--swatch-gap) + 16px);
+  box-sizing: border-box;
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-base);
+}
+.kiln-color__specials {
+  display: flex;
+  flex-direction: column;
+  margin: -4px -4px 4px;
+}
+.kiln-color__special {
+  grid-template-columns: 20px 1fr auto;
+  column-gap: 8px;
+}
+.kiln-color__special > :first-child {
+  justify-self: center;
+}
+.kiln-color__auto-chip {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: var(--kiln-fg);
+}
+.kiln-color__check {
+  color: var(--app-text);
+}
+.kiln-color__heading {
+  padding-block: 8px 6px;
+
+  padding-inline: 0 2px;
+  color: var(--kiln-faint);
+  font-size: 10.5px;
+  font-weight: var(--kiln-weight-heavy);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.kiln-color__section {
+  display: flex;
+  flex-direction: column;
+  padding-block: 0;
+  padding-inline: 0 8px;
+}
+.kiln-color__row {
+  display: flex;
+  gap: var(--swatch-gap);
+}
+.kiln-color__row:first-child {
+  margin-bottom: 6px;
+}
+.kiln-color__swatch {
+  position: relative;
+  box-sizing: border-box;
+  width: var(--swatch-size);
+  height: var(--swatch-size);
+  padding: 0;
+  margin: 0;
+  border: 1px solid color-mix(in srgb, var(--kiln-fg) 16%, transparent);
+  border-radius: 4px;
+  background: var(--swatch);
+  cursor: default;
+}
+.kiln-color__row--variants .kiln-color__swatch {
+  border-radius: 0;
+}
+.kiln-color__row--variants:nth-child(2 of .kiln-color__row--variants) .kiln-color__swatch {
+  border-radius: 4px 4px 0 0;
+}
+.kiln-color__row--variants:last-child .kiln-color__swatch {
+  border-radius: 0 0 4px 4px;
+}
+.kiln-color__row--variants + .kiln-color__row--variants .kiln-color__swatch {
+  border-top-width: 0;
+}
+.kiln-color__swatch:hover {
+  z-index: 1;
+  outline: 1.5px solid var(--kiln-fg);
+  outline-offset: 1px;
+}
+.kiln-color__swatch[aria-pressed="true"] {
+  z-index: 1;
+  outline: 2px solid var(--app-text);
+  outline-offset: 1px;
+}
+.kiln-color__swatch:focus-visible {
+  z-index: 2;
+}
+.kiln-color__custom {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 0 0;
+}
+.kiln-color__custom .react-colorful {
+  width: 100%;
+  height: 150px;
+}
+.kiln-color__custom .react-colorful__saturation {
+  border-radius: 8px 8px 0 0;
+}
+.kiln-color__custom .react-colorful__hue {
+  height: 14px;
+  border-radius: 0 0 8px 8px;
+}
+.kiln-color__custom .react-colorful__pointer {
+  width: 16px;
+  height: 16px;
+}
+.kiln-color__custom-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.kiln-color__preview {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border: 1px solid var(--kiln-line-strong);
+  border-radius: 7px;
+}
+.kiln-color__hex {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  color: var(--kiln-muted);
+  font-size: var(--kiln-text-sm);
+}
+.kiln-color__hex-input {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  font-family: var(--kiln-font-ui);
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Toast                                                                                           */
+/* ---------------------------------------------------------------------------------------------- */
+
+.kiln-toast-region {
+  position: fixed;
+  inset-inline-end: 16px;
+  bottom: 44px;
+  z-index: var(--kiln-z-toast);
+  pointer-events: none;
+}
+.kiln-toast-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kiln-toast {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  box-sizing: border-box;
+  width: min(380px, calc(100vw - 32px));
+  padding-block: 12px;
+  padding-inline: 16px 8px;
+  overflow: hidden;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-lg);
+  background: var(--kiln-panel);
+  box-shadow: var(--kiln-shadow-2);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-base);
+  pointer-events: auto;
+  animation: kiln-toast-in var(--kiln-duration-pane) var(--kiln-ease);
+}
+/* A short bar of the tone colour on the leading edge. */
+.kiln-toast::before {
+  content: "";
+  position: absolute;
+  inset-block: 12px;
+  inset-inline-start: 0;
+  width: 3px;
+  border-start-start-radius: 0;
+  border-start-end-radius: 3px;
+  border-end-end-radius: 3px;
+  border-end-start-radius: 0;
+  background: var(--toast-tone);
+}
+@keyframes kiln-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.kiln-toast--info {
+  --toast-tone: var(--app-text);
+}
+.kiln-toast--success {
+  --toast-tone: var(--kiln-success);
+}
+.kiln-toast--warning {
+  --toast-tone: var(--kiln-warning);
+}
+.kiln-toast--danger {
+  --toast-tone: var(--kiln-danger);
+}
+.kiln-toast__icon {
+  display: inline-flex;
+  padding-top: 1px;
+  color: var(--toast-tone);
+}
+.kiln-toast__body {
+  flex: 1;
+  min-width: 0;
+  padding-top: 1px;
+  line-height: var(--kiln-leading-normal);
+}
+.kiln-toast__title {
+  font-weight: var(--kiln-weight-bold);
+}
+.kiln-toast__description {
+  color: var(--kiln-muted);
+}
+.kiln-toast__action {
+  color: var(--app-text);
+  font-weight: var(--kiln-weight-semibold);
+}
+.kiln-toast__close {
+  color: var(--kiln-muted);
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Scroll area                                                                                     */
+/* ---------------------------------------------------------------------------------------------- */
+
+.kiln-scroll {
+  --fade: 16px;
+  position: relative;
+  overflow: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--kiln-scrollbar) transparent;
+}
+.kiln-scroll--vertical {
+  overflow-y: auto;
+}
+.kiln-scroll--horizontal {
+  overflow-x: auto;
+}
+.kiln-scroll--both {
+  overflow: auto;
+}
+.kiln-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.kiln-scroll::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 10px;
+  background: var(--kiln-scrollbar) padding-box;
+}
+.kiln-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--kiln-scrollbar-hover) padding-box;
+}
+/* Soft fades where more content is hidden. */
+.kiln-scroll--vertical[data-scroll-top],
+.kiln-scroll--vertical[data-scroll-bottom] {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 var(--fade-top, 0),
+    #000 calc(100% - var(--fade-bottom, 0px)),
+    transparent 100%
+  );
+}
+.kiln-scroll--vertical[data-scroll-top] {
+  --fade-top: var(--fade);
+}
+.kiln-scroll--vertical[data-scroll-bottom] {
+  --fade-bottom: var(--fade);
+}
+.kiln-scroll--horizontal[data-scroll-left],
+.kiln-scroll--horizontal[data-scroll-right] {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--fade-left, 0),
+    #000 calc(100% - var(--fade-right, 0px)),
+    transparent 100%
+  );
+}
+.kiln-scroll--horizontal[data-scroll-left] {
+  --fade-left: var(--fade);
+}
+.kiln-scroll--horizontal[data-scroll-right] {
+  --fade-right: var(--fade);
+}
+
+/* High contrast: every interactive surface gets a visible outline. */
+[data-theme="hc"] .kiln-btn--toolbar:hover,
+[data-theme="hc"] .kiln-btn--ghost:hover,
+[data-theme="hc"] .kiln-btn--split:hover,
+[data-theme="hc"] .kiln-gallery__item:hover,
+[data-theme="hc"] .kiln-tabs__tab:hover {
+  outline: 1px solid var(--kiln-focus-ring);
+  outline-offset: -1px;
+}
+
+/* Reduced motion: no pop, slide or scale; colour changes stay. */
+@media (prefers-reduced-motion: reduce) {
+  .kiln-menu,
+  .kiln-popover,
+  .kiln-tooltip,
+  .kiln-dialog,
+  .kiln-dialog-overlay,
+  .kiln-toast {
+    animation: none;
+  }
+  .kiln-slider:hover .kiln-slider__thumb,
+  .kiln-slider__thumb:focus-visible {
+    transform: none;
+  }
+}
+
+/*
+ * High contrast: the app-coloured buttons (File, Share, a dialog's default button) take the
+ * theme's light app colour with the ground's near-black text (9:1 or more), and pressed or checked
+ * controls keep the theme's text colour on their tint (7:1 or more).
+ */
+[data-theme="hc"] :is(.kiln-ribbon__file, .kiln-appframe__share, .kiln-btn--primary) {
+  background: var(--app-text);
+  color: var(--kiln-bg);
+}
+[data-theme="hc"] :is(.kiln-ribbon__file, .kiln-appframe__share, .kiln-btn--primary) :is(span, svg) {
+  color: var(--kiln-bg);
+}
+[data-theme="hc"]
+  :is([aria-pressed="true"], [data-state="on"], [data-state="checked"], [aria-checked="true"]):not(
+    .kiln-btn--primary
+  ) {
+  color: var(--kiln-fg);
+}
+[data-theme="hc"]
+  :is([aria-pressed="true"], [data-state="on"], [data-state="checked"], [aria-checked="true"]):not(
+    .kiln-btn--primary
+  )
+  :is(span, .kiln-btn__label) {
+  color: var(--kiln-fg);
+}
+
+/* A right-to-left interface mirrors the icons that point along the line of text. */
+.kiln-icon[data-mirror]:dir(rtl) {
+  transform: scaleX(-1);
+}

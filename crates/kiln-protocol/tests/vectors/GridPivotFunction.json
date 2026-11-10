@@ -1,0 +1,20 @@
+{
+  "type": "GridPivotFunction",
+  "format": {
+    "TYPENAME": "GridPivotFunction"
+  },
+  "values": [
+    "Sum",
+    "VarP",
+    "Sum",
+    "Count",
+    "Average",
+    "Max",
+    "Min",
+    "Product",
+    "CountNums",
+    "StdDev",
+    "StdDevP",
+    "Var"
+  ]
+}

@@ -1,0 +1,3218 @@
+{
+  "write": [
+    {
+      "label": "Home",
+      "tip": "H",
+      "items": [
+        {
+          "label": "Paste",
+          "command": "suite.edit.paste",
+          "tip": "V",
+          "source": "office"
+        },
+        {
+          "label": "Cut",
+          "command": "suite.edit.cut",
+          "tip": "X",
+          "source": "office"
+        },
+        {
+          "label": "Copy",
+          "command": "suite.edit.copy",
+          "tip": "C",
+          "source": "office"
+        },
+        {
+          "label": "Format Painter",
+          "command": "suite.edit.format_painter",
+          "tip": "FP",
+          "source": "office"
+        },
+        {
+          "label": "Font",
+          "command": "suite.format.font_family",
+          "tip": "FF",
+          "source": "office"
+        },
+        {
+          "label": "Font Size",
+          "command": "suite.format.font_size",
+          "tip": "FS",
+          "source": "office"
+        },
+        {
+          "label": "Increase Font Size",
+          "command": "suite.format.grow_font",
+          "tip": "FG",
+          "source": "office"
+        },
+        {
+          "label": "Decrease Font Size",
+          "command": "suite.format.shrink_font",
+          "tip": "FK",
+          "source": "office"
+        },
+        {
+          "label": "Change Case",
+          "command": "suite.format.change_case",
+          "tip": "7",
+          "source": "office"
+        },
+        {
+          "label": "Clear All Formatting",
+          "command": "suite.format.clear_formatting",
+          "tip": "E",
+          "source": "office"
+        },
+        {
+          "label": "Bold",
+          "command": "suite.format.bold",
+          "tip": "1",
+          "source": "office"
+        },
+        {
+          "label": "Italic",
+          "command": "suite.format.italic",
+          "tip": "2",
+          "source": "office"
+        },
+        {
+          "label": "Underline",
+          "command": "suite.format.underline",
+          "tip": "3",
+          "source": "office"
+        },
+        {
+          "label": "Strikethrough",
+          "command": "suite.format.strikethrough",
+          "tip": "4",
+          "source": "office"
+        },
+        {
+          "label": "Subscript",
+          "command": "suite.format.subscript",
+          "tip": "5",
+          "source": "office"
+        },
+        {
+          "label": "Superscript",
+          "command": "suite.format.superscript",
+          "tip": "6",
+          "source": "office"
+        },
+        {
+          "label": "Font Color",
+          "command": "suite.format.font_color",
+          "tip": "FC",
+          "source": "office"
+        },
+        {
+          "label": "Text Highlight Color",
+          "command": "suite.format.highlight",
+          "tip": "I",
+          "source": "office"
+        },
+        {
+          "label": "Font…",
+          "command": "suite.format.font_dialog",
+          "tip": "FN",
+          "source": "office"
+        },
+        {
+          "label": "Bullets",
+          "command": "suite.format.bullets",
+          "tip": "U",
+          "source": "office"
+        },
+        {
+          "label": "Numbering",
+          "command": "suite.format.numbering",
+          "tip": "N",
+          "source": "office"
+        },
+        {
+          "label": "Multilevel List",
+          "command": "suite.format.multilevel_list",
+          "tip": "M",
+          "source": "office"
+        },
+        {
+          "label": "Decrease Indent",
+          "command": "suite.format.outdent",
+          "tip": "AO",
+          "source": "office"
+        },
+        {
+          "label": "Increase Indent",
+          "command": "suite.format.indent",
+          "tip": "AI",
+          "source": "office"
+        },
+        {
+          "label": "Sort",
+          "command": "write.paragraph.sort",
+          "tip": "SO",
+          "source": "kiln"
+        },
+        {
+          "label": "Show/Hide ¶",
+          "command": "write.paragraph.show_marks",
+          "tip": "8",
+          "source": "office"
+        },
+        {
+          "label": "Align Left",
+          "command": "suite.format.align_left",
+          "tip": "AL",
+          "source": "office"
+        },
+        {
+          "label": "Center",
+          "command": "suite.format.align_center",
+          "tip": "AC",
+          "source": "office"
+        },
+        {
+          "label": "Align Right",
+          "command": "suite.format.align_right",
+          "tip": "AR",
+          "source": "office"
+        },
+        {
+          "label": "Justify",
+          "command": "suite.format.justify",
+          "tip": "AJ",
+          "source": "office"
+        },
+        {
+          "label": "Right-to-Left Text Direction",
+          "command": "write.paragraph.right_to_left",
+          "tip": "TD",
+          "source": "office"
+        },
+        {
+          "label": "Line and Paragraph Spacing",
+          "command": "suite.format.line_spacing",
+          "tip": "K",
+          "source": "office"
+        },
+        {
+          "label": "Shading",
+          "command": "write.paragraph.shading",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Borders",
+          "command": "write.paragraph.borders",
+          "tip": "B",
+          "source": "office"
+        },
+        {
+          "label": "Paragraph…",
+          "command": "suite.format.paragraph_dialog",
+          "tip": "PG",
+          "source": "office"
+        },
+        {
+          "label": "Styles",
+          "command": "write.styles.apply",
+          "tip": "L",
+          "source": "office"
+        },
+        {
+          "label": "Styles Pane",
+          "command": "write.styles.pane",
+          "tip": "SS",
+          "source": "kiln"
+        },
+        {
+          "label": "Find",
+          "command": "suite.edit.find",
+          "tip": "FD",
+          "source": "office"
+        },
+        {
+          "label": "Replace",
+          "command": "suite.edit.replace",
+          "tip": "R",
+          "source": "office"
+        },
+        {
+          "label": "Select",
+          "command": "suite.edit.select",
+          "tip": "SL",
+          "source": "office"
+        },
+        {
+          "label": "Focus Mode",
+          "command": "write.view.focus_mode",
+          "tip": "FM",
+          "source": "office"
+        }
+      ]
+    },
+    {
+      "label": "Insert",
+      "tip": "N",
+      "items": [
+        {
+          "label": "Cover Page",
+          "command": "write.insert.cover_page",
+          "tip": "V",
+          "source": "office"
+        },
+        {
+          "label": "Blank Page",
+          "command": "write.insert.blank_page",
+          "tip": "NP",
+          "source": "office"
+        },
+        {
+          "label": "Page Break",
+          "command": "write.insert.page_break",
+          "tip": "B",
+          "source": "office"
+        },
+        {
+          "label": "Insert Table…",
+          "command": "suite.insert.table",
+          "tip": "T",
+          "source": "office"
+        },
+        {
+          "label": "Pictures",
+          "command": "suite.insert.pictures",
+          "tip": "P",
+          "source": "office"
+        },
+        {
+          "label": "Shapes",
+          "command": "suite.insert.shapes",
+          "tip": "SH",
+          "source": "office"
+        },
+        {
+          "label": "Icons",
+          "command": "suite.insert.icons",
+          "tip": "Y1",
+          "source": "office"
+        },
+        {
+          "label": "Chart",
+          "command": "suite.chart.insert",
+          "tip": "C",
+          "source": "kiln"
+        },
+        {
+          "label": "Link…",
+          "command": "suite.insert.link",
+          "tip": "I",
+          "source": "office"
+        },
+        {
+          "label": "Bookmark…",
+          "command": "ui.write.bookmark",
+          "tip": "K",
+          "source": "office"
+        },
+        {
+          "label": "Cross-reference…",
+          "command": "ui.write.cross_reference_dialog",
+          "tip": "RF",
+          "source": "office"
+        },
+        {
+          "label": "New Comment",
+          "command": "suite.review.new_comment",
+          "tip": "L",
+          "source": "office"
+        },
+        {
+          "label": "Header",
+          "command": "write.insert.header",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Footer",
+          "command": "write.insert.footer",
+          "tip": "O",
+          "source": "office"
+        },
+        {
+          "label": "Page Number",
+          "command": "write.insert.page_number",
+          "tip": "NU",
+          "source": "office"
+        },
+        {
+          "label": "Text Box",
+          "command": "suite.insert.text_box",
+          "tip": "X",
+          "source": "office"
+        },
+        {
+          "label": "Quick Parts",
+          "command": "write.insert.quick_parts",
+          "tip": "Q",
+          "source": "office"
+        },
+        {
+          "label": "Drop Cap",
+          "command": "write.insert.drop_cap",
+          "tip": "RC",
+          "source": "office"
+        },
+        {
+          "label": "Date & Time…",
+          "command": "suite.insert.date_time",
+          "tip": "D",
+          "source": "office"
+        },
+        {
+          "label": "Symbol…",
+          "command": "suite.insert.symbol",
+          "tip": "U",
+          "source": "office"
+        },
+        {
+          "label": "Table of Contents",
+          "command": "write.insert.table_of_contents_quick",
+          "tip": "ZT",
+          "source": "kiln"
+        },
+        {
+          "label": "Callout",
+          "command": "write.insert.callout",
+          "tip": "ZC",
+          "source": "kiln"
+        },
+        {
+          "label": "Code Block",
+          "command": "suite.insert.code_block",
+          "tip": "ZK",
+          "source": "kiln"
+        }
+      ]
+    },
+    {
+      "label": "Layout",
+      "tip": "P",
+      "items": [
+        {
+          "label": "Margins",
+          "command": "suite.layout.margins",
+          "tip": "M",
+          "source": "office"
+        },
+        {
+          "label": "Orientation",
+          "command": "suite.layout.orientation",
+          "tip": "O",
+          "source": "office"
+        },
+        {
+          "label": "Size",
+          "command": "suite.layout.size",
+          "tip": "SZ",
+          "source": "office"
+        },
+        {
+          "label": "Columns",
+          "command": "write.layout.columns",
+          "tip": "J",
+          "source": "office"
+        },
+        {
+          "label": "Breaks",
+          "command": "suite.layout.breaks",
+          "tip": "B",
+          "source": "office"
+        },
+        {
+          "label": "Hyphenation",
+          "command": "write.layout.hyphenation",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Page Setup…",
+          "command": "suite.layout.page_setup",
+          "tip": "PS",
+          "source": "kiln"
+        },
+        {
+          "label": "Indent Left",
+          "command": "write.layout.indent_left",
+          "tip": "IL",
+          "source": "office"
+        },
+        {
+          "label": "Indent Right",
+          "command": "write.layout.indent_right",
+          "tip": "IR",
+          "source": "office"
+        },
+        {
+          "label": "Spacing Before",
+          "command": "write.layout.spacing_before",
+          "tip": "SB",
+          "source": "office"
+        },
+        {
+          "label": "Spacing After",
+          "command": "write.layout.spacing_after",
+          "tip": "SA",
+          "source": "office"
+        },
+        {
+          "label": "Paragraph…",
+          "command": "suite.format.paragraph_dialog",
+          "tip": "PG",
+          "source": "office"
+        },
+        {
+          "label": "Position",
+          "command": "suite.arrange.position",
+          "tip": "PO",
+          "source": "office"
+        },
+        {
+          "label": "Wrap Text",
+          "command": "suite.arrange.wrap_text",
+          "tip": "TW",
+          "source": "office"
+        },
+        {
+          "label": "Bring Forward",
+          "command": "suite.arrange.bring_forward",
+          "tip": "AF",
+          "source": "office"
+        },
+        {
+          "label": "Send Backward",
+          "command": "suite.arrange.send_backward",
+          "tip": "AE",
+          "source": "office"
+        },
+        {
+          "label": "Selection Pane",
+          "command": "suite.arrange.selection_pane",
+          "tip": "AP",
+          "source": "office"
+        },
+        {
+          "label": "Align",
+          "command": "suite.arrange.align",
+          "tip": "AA",
+          "source": "office"
+        },
+        {
+          "label": "Group",
+          "command": null,
+          "tip": "G",
+          "source": "office"
+        },
+        {
+          "label": "Rotate",
+          "command": "suite.arrange.rotate",
+          "tip": "AY",
+          "source": "office"
+        }
+      ]
+    },
+    {
+      "label": "References",
+      "tip": "S",
+      "items": [
+        {
+          "label": "Table of Contents",
+          "command": "write.references.table_of_contents",
+          "tip": "T",
+          "source": "office"
+        },
+        {
+          "label": "Add Text",
+          "command": "write.references.add_text",
+          "tip": "A",
+          "source": "office"
+        },
+        {
+          "label": "Update Table",
+          "command": "write.references.update_table",
+          "tip": "U",
+          "source": "office"
+        },
+        {
+          "label": "Insert Footnote",
+          "command": "write.references.insert_footnote",
+          "tip": "F",
+          "source": "office"
+        },
+        {
+          "label": "Insert Endnote",
+          "command": "write.references.insert_endnote",
+          "tip": "E",
+          "source": "office"
+        },
+        {
+          "label": "Next Footnote",
+          "command": "write.references.next_footnote",
+          "tip": "O",
+          "source": "office"
+        },
+        {
+          "label": "Show Notes",
+          "command": "write.references.show_notes",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Footnote and Endnote…",
+          "command": "ui.write.footnote_dialog",
+          "tip": "S",
+          "source": "kiln"
+        },
+        {
+          "label": "Insert Caption…",
+          "command": "ui.write.caption_dialog",
+          "tip": "P",
+          "source": "office"
+        },
+        {
+          "label": "Insert Table of Figures",
+          "command": "write.references.table_of_figures",
+          "tip": "G",
+          "source": "office"
+        },
+        {
+          "label": "Cross-reference…",
+          "command": "ui.write.cross_reference_dialog",
+          "tip": "RF",
+          "source": "office"
+        }
+      ]
+    },
+    {
+      "label": "Review",
+      "tip": "R",
+      "items": [
+        {
+          "label": "Spelling & Grammar",
+          "command": "suite.review.spelling",
+          "tip": "C",
+          "source": "office"
+        },
+        {
+          "label": "Word Count",
+          "command": "suite.review.word_count",
+          "tip": "W",
+          "source": "office"
+        },
+        {
+          "label": "Language",
+          "command": null,
+          "tip": "U",
+          "source": "office"
+        },
+        {
+          "label": "New Comment",
+          "command": "suite.review.new_comment",
+          "tip": "E",
+          "source": "kiln"
+        },
+        {
+          "label": "Delete Comment",
+          "command": "suite.review.delete_comment",
+          "tip": "D",
+          "source": "office"
+        },
+        {
+          "label": "Previous Comment",
+          "command": "suite.review.previous_comment",
+          "tip": "V",
+          "source": "office"
+        },
+        {
+          "label": "Next Comment",
+          "command": "suite.review.next_comment",
+          "tip": "N",
+          "source": "office"
+        },
+        {
+          "label": "Show Comments",
+          "command": "suite.review.show_comments",
+          "tip": "K",
+          "source": "office"
+        },
+        {
+          "label": "Comments Pane",
+          "command": "ui.write.comments_pane",
+          "tip": "P",
+          "source": "kiln"
+        },
+        {
+          "label": "Track Changes",
+          "command": "write.review.track_changes",
+          "tip": "G",
+          "source": "office"
+        },
+        {
+          "label": "Display for Review",
+          "command": "write.review.markup_mode",
+          "tip": "TD",
+          "source": "office"
+        },
+        {
+          "label": "Show Markup",
+          "command": "write.review.show_markup",
+          "tip": "TM",
+          "source": "office"
+        },
+        {
+          "label": "Reviewing Pane",
+          "command": "write.review.reviewing_pane",
+          "tip": "TP",
+          "source": "office"
+        },
+        {
+          "label": "Accept",
+          "command": "write.review.accept",
+          "tip": "A2",
+          "source": "office"
+        },
+        {
+          "label": "Reject",
+          "command": "write.review.reject",
+          "tip": "J",
+          "source": "office"
+        },
+        {
+          "label": "Previous Change",
+          "command": "write.review.previous_change",
+          "tip": "F",
+          "source": "office"
+        },
+        {
+          "label": "Next Change",
+          "command": "write.review.next_change",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Version History",
+          "command": "suite.file.version_history",
+          "tip": "ZV",
+          "source": "kiln"
+        }
+      ]
+    },
+    {
+      "label": "View",
+      "tip": "W",
+      "items": [
+        {
+          "label": "Change View",
+          "command": "suite.view.mode",
+          "tip": "F",
+          "source": "office"
+        },
+        {
+          "label": "Change View",
+          "command": "suite.view.mode",
+          "tip": "P",
+          "source": "office"
+        },
+        {
+          "label": "Change View",
+          "command": "suite.view.mode",
+          "tip": "L",
+          "source": "office"
+        },
+        {
+          "label": "Change View",
+          "command": "suite.view.mode",
+          "tip": "E",
+          "source": "office"
+        },
+        {
+          "label": "Focus Mode",
+          "command": "write.view.focus_mode",
+          "tip": "O",
+          "source": "office"
+        },
+        {
+          "label": "Set Word Goal…",
+          "command": "ui.write.word_goal_dialog",
+          "tip": "WG",
+          "source": "office"
+        },
+        {
+          "label": "Vertical",
+          "command": "suite.view.vertical_pages",
+          "tip": "VP",
+          "source": "office"
+        },
+        {
+          "label": "Side to Side",
+          "command": "suite.view.side_to_side",
+          "tip": "SS",
+          "source": "office"
+        },
+        {
+          "label": "Ruler",
+          "command": "suite.view.ruler",
+          "tip": "R",
+          "source": "office"
+        },
+        {
+          "label": "Gridlines",
+          "command": "suite.view.gridlines",
+          "tip": "G",
+          "source": "office"
+        },
+        {
+          "label": "Navigation Pane",
+          "command": "suite.view.navigation_pane",
+          "tip": "K",
+          "source": "office"
+        },
+        {
+          "label": "Zoom…",
+          "command": "ui.write.zoom_dialog",
+          "tip": "Q",
+          "source": "office"
+        },
+        {
+          "label": "Zoom",
+          "command": "suite.view.zoom",
+          "tip": "J",
+          "source": "office"
+        },
+        {
+          "label": "One Page",
+          "command": "suite.view.one_page",
+          "tip": "1",
+          "source": "office"
+        },
+        {
+          "label": "Multiple Pages",
+          "command": "suite.view.multiple_pages",
+          "tip": "M",
+          "source": "office"
+        },
+        {
+          "label": "Page Width",
+          "command": "suite.view.page_width",
+          "tip": "I",
+          "source": "office"
+        },
+        {
+          "label": "Split",
+          "command": "suite.view.split",
+          "tip": "SP",
+          "source": "office"
+        },
+        {
+          "label": "Text View",
+          "command": "ui.view.text_view",
+          "tip": "TV",
+          "source": "office"
+        },
+        {
+          "label": "Theme",
+          "command": null,
+          "tip": "TH",
+          "source": "kiln"
+        },
+        {
+          "label": "Macros",
+          "command": "ui.macros.explain",
+          "tip": "A",
+          "source": "kiln"
+        }
+      ]
+    },
+    {
+      "label": "Table Design",
+      "tip": "JT",
+      "items": [
+        {
+          "label": "Header Row",
+          "command": "suite.table.header_row",
+          "tip": "H",
+          "source": "kiln"
+        },
+        {
+          "label": "Total Row",
+          "command": "suite.table.total_row",
+          "tip": "T",
+          "source": "kiln"
+        },
+        {
+          "label": "Banded Rows",
+          "command": "suite.table.banded_rows",
+          "tip": "R",
+          "source": "kiln"
+        },
+        {
+          "label": "First Column",
+          "command": "suite.table.first_column",
+          "tip": "F",
+          "source": "kiln"
+        },
+        {
+          "label": "Banded Columns",
+          "command": "suite.table.banded_columns",
+          "tip": "C",
+          "source": "kiln"
+        },
+        {
+          "label": "Table Styles",
+          "command": "suite.table.styles",
+          "tip": "S",
+          "source": "kiln"
+        },
+        {
+          "label": "Shading",
+          "command": "suite.table.shading",
+          "tip": "P",
+          "source": "kiln"
+        },
+        {
+          "label": "Borders",
+          "command": "suite.table.borders",
+          "tip": "B",
+          "source": "kiln"
+        }
+      ]
+    },
+    {
+      "label": "Layout",
+      "tip": "JL",
+      "items": [
+        {
+          "label": "Select in Table",
+          "command": "write.table.select",
+          "tip": "S",
+          "source": "kiln"
+        },
+        {
+          "label": "Table Properties…",
+          "command": "ui.write.table_properties_dialog",
+          "tip": "O",
+          "source": "office"
+        },
+        {
+          "label": "Delete",
+          "command": "suite.table.delete",
+          "tip": "D",
+          "source": "office"
+        },
+        {
+          "label": "Insert Above",
+          "command": "suite.table.insert_row_above",
+          "tip": "A",
+          "source": "office"
+        },
+        {
+          "label": "Insert Below",
+          "command": "suite.table.insert_row_below",
+          "tip": "BE",
+          "source": "office"
+        },
+        {
+          "label": "Insert Left",
+          "command": "suite.table.insert_column_left",
+          "tip": "L",
+          "source": "office"
+        },
+        {
+          "label": "Insert Right",
+          "command": "suite.table.insert_column_right",
+          "tip": "R",
+          "source": "office"
+        },
+        {
+          "label": "Merge Cells",
+          "command": "suite.table.merge_cells",
+          "tip": "M",
+          "source": "office"
+        },
+        {
+          "label": "Split Cells",
+          "command": "suite.table.split_cells",
+          "tip": "P",
+          "source": "office"
+        },
+        {
+          "label": "Split Table",
+          "command": "write.table.split",
+          "tip": "T",
+          "source": "office"
+        },
+        {
+          "label": "AutoFit",
+          "command": "write.table.autofit",
+          "tip": "U",
+          "source": "kiln"
+        },
+        {
+          "label": "Table Row Height",
+          "command": "ui.write.table_row_height",
+          "tip": "E",
+          "source": "kiln"
+        },
+        {
+          "label": "Table Column Width",
+          "command": "ui.write.table_column_width",
+          "tip": "C",
+          "source": "kiln"
+        },
+        {
+          "label": "Distribute Rows",
+          "command": "suite.table.distribute_rows",
+          "tip": "HR",
+          "source": "office"
+        },
+        {
+          "label": "Distribute Columns",
+          "command": "suite.table.distribute_columns",
+          "tip": "HC",
+          "source": "office"
+        },
+        {
+          "label": "Alignment",
+          "command": "suite.table.cell_alignment",
+          "tip": "I",
+          "source": "kiln"
+        },
+        {
+          "label": "Table Alignment",
+          "command": "write.table.align",
+          "tip": "N",
+          "source": "kiln"
+        },
+        {
+          "label": "Repeat Header Rows",
+          "command": "suite.table.repeat_header_rows",
+          "tip": "W",
+          "source": "kiln"
+        },
+        {
+          "label": "Convert to Text",
+          "command": "suite.table.convert_to_text",
+          "tip": "V",
+          "source": "office"
+        }
+      ]
+    },
+    {
+      "label": "Picture Format",
+      "tip": "JP",
+      "items": [
+        {
+          "label": "Corrections",
+          "command": null,
+          "tip": "R",
+          "source": "office"
+        },
+        {
+          "label": "Change Picture…",
+          "command": "ui.write.change_picture",
+          "tip": "N",
+          "source": "kiln"
+        },
+        {
+          "label": "Reset Picture",
+          "command": "write.picture.reset",
+          "tip": "Q",
+          "source": "office"
+        },
+        {
+          "label": "Alt Text",
+          "command": "suite.picture.alt_text",
+          "tip": "AT",
+          "source": "office"
+        },
+        {
+          "label": "Position",
+          "command": "suite.arrange.position",
+          "tip": "PO",
+          "source": "office"
+        },
+        {
+          "label": "Wrap Text",
+          "command": "suite.arrange.wrap_text",
+          "tip": "TW",
+          "source": "office"
+        },
+        {
+          "label": "Bring Forward",
+          "command": "suite.arrange.bring_forward",
+          "tip": "AF",
+          "source": "office"
+        },
+        {
+          "label": "Send Backward",
+          "command": "suite.arrange.send_backward",
+          "tip": "AE",
+          "source": "office"
+        },
+        {
+          "label": "Selection Pane",
+          "command": "suite.arrange.selection_pane",
+          "tip": "AP",
+          "source": "office"
+        },
+        {
+          "label": "Align",
+          "command": "suite.arrange.align",
+          "tip": "AA",
+          "source": "office"
+        },
+        {
+          "label": "Group",
+          "command": null,
+          "tip": "G",
+          "source": "office"
+        },
+        {
+          "label": "Rotate",
+          "command": "suite.arrange.rotate",
+          "tip": "AY",
+          "source": "office"
+        },
+        {
+          "label": "Crop…",
+          "command": "ui.write.crop_dialog",
+          "tip": "C",
+          "source": "office"
+        },
+        {
+          "label": "Shape Height",
+          "command": "ui.write.object_height",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Shape Width",
+          "command": "ui.write.object_width",
+          "tip": "W",
+          "source": "office"
+        },
+        {
+          "label": "More Layout Options…",
+          "command": "ui.write.layout_dialog",
+          "tip": "SS",
+          "source": "kiln"
+        }
+      ]
+    },
+    {
+      "label": "Shape Format",
+      "tip": "JD",
+      "items": [
+        {
+          "label": "Shapes",
+          "command": "suite.insert.shapes",
+          "tip": "SH",
+          "source": "office"
+        },
+        {
+          "label": "Draw Text Box",
+          "command": "ui.write.draw_text_box",
+          "tip": "X",
+          "source": "office"
+        },
+        {
+          "label": "Shape Style",
+          "command": "write.shape.style",
+          "tip": "K",
+          "source": "office"
+        },
+        {
+          "label": "Shape Fill",
+          "command": "write.shape.fill",
+          "tip": "SI",
+          "source": "office"
+        },
+        {
+          "label": "Shape Outline",
+          "command": "write.shape.outline",
+          "tip": "SO",
+          "source": "office"
+        },
+        {
+          "label": "Outline Weight",
+          "command": "write.shape.outline_weight",
+          "tip": "E",
+          "source": "kiln"
+        },
+        {
+          "label": "Gradient",
+          "command": null,
+          "tip": "R",
+          "source": "kiln"
+        },
+        {
+          "label": "Shape Effects",
+          "command": null,
+          "tip": "SE",
+          "source": "office"
+        },
+        {
+          "label": "Text Direction",
+          "command": null,
+          "tip": "TD",
+          "source": "office"
+        },
+        {
+          "label": "Align Text",
+          "command": "write.shape.text_layout",
+          "tip": "AT",
+          "source": "office"
+        },
+        {
+          "label": "Position",
+          "command": "suite.arrange.position",
+          "tip": "PO",
+          "source": "office"
+        },
+        {
+          "label": "Wrap Text",
+          "command": "suite.arrange.wrap_text",
+          "tip": "TW",
+          "source": "office"
+        },
+        {
+          "label": "Bring Forward",
+          "command": "suite.arrange.bring_forward",
+          "tip": "AF",
+          "source": "office"
+        },
+        {
+          "label": "Send Backward",
+          "command": "suite.arrange.send_backward",
+          "tip": "AE",
+          "source": "office"
+        },
+        {
+          "label": "Selection Pane",
+          "command": "suite.arrange.selection_pane",
+          "tip": "AP",
+          "source": "office"
+        },
+        {
+          "label": "Align",
+          "command": "suite.arrange.align",
+          "tip": "AA",
+          "source": "office"
+        },
+        {
+          "label": "Group",
+          "command": null,
+          "tip": "G",
+          "source": "office"
+        },
+        {
+          "label": "Rotate",
+          "command": "suite.arrange.rotate",
+          "tip": "AY",
+          "source": "office"
+        }
+      ]
+    }
+  ],
+  "grid": [
+    {
+      "label": "Home",
+      "tip": "H",
+      "items": [
+        {
+          "label": "Paste",
+          "command": "suite.edit.paste",
+          "tip": "V",
+          "source": "office"
+        },
+        {
+          "label": "Cut",
+          "command": "suite.edit.cut",
+          "tip": "X",
+          "source": "office"
+        },
+        {
+          "label": "Copy",
+          "command": "suite.edit.copy",
+          "tip": "C",
+          "source": "office"
+        },
+        {
+          "label": "Format Painter",
+          "command": "suite.edit.format_painter",
+          "tip": "FP",
+          "source": "office"
+        },
+        {
+          "label": "Font",
+          "command": "suite.format.font_family",
+          "tip": "FF",
+          "source": "office"
+        },
+        {
+          "label": "Font Size",
+          "command": "suite.format.font_size",
+          "tip": "FS",
+          "source": "office"
+        },
+        {
+          "label": "Increase Font Size",
+          "command": "suite.format.grow_font",
+          "tip": "FG",
+          "source": "office"
+        },
+        {
+          "label": "Decrease Font Size",
+          "command": "suite.format.shrink_font",
+          "tip": "FK",
+          "source": "office"
+        },
+        {
+          "label": "Bold",
+          "command": "suite.format.bold",
+          "tip": "1",
+          "source": "office"
+        },
+        {
+          "label": "Italic",
+          "command": "suite.format.italic",
+          "tip": "2",
+          "source": "office"
+        },
+        {
+          "label": "Underline",
+          "command": "suite.format.underline",
+          "tip": "3",
+          "source": "office"
+        },
+        {
+          "label": "Borders",
+          "command": "grid.font.borders",
+          "tip": "B",
+          "source": "office"
+        },
+        {
+          "label": "Fill Color",
+          "command": "grid.font.fill_color",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Font Color",
+          "command": "suite.format.font_color",
+          "tip": "FC",
+          "source": "office"
+        },
+        {
+          "label": "Format Cells…",
+          "command": "grid.cells.format_cells",
+          "tip": "FN",
+          "source": "office"
+        },
+        {
+          "label": "Top Align",
+          "command": "grid.alignment.align_top",
+          "tip": "AT",
+          "source": "office"
+        },
+        {
+          "label": "Middle Align",
+          "command": "grid.alignment.align_middle",
+          "tip": "AM",
+          "source": "office"
+        },
+        {
+          "label": "Bottom Align",
+          "command": "grid.alignment.align_bottom",
+          "tip": "AB",
+          "source": "office"
+        },
+        {
+          "label": "Wrap Text",
+          "command": "grid.alignment.wrap_text",
+          "tip": "W",
+          "source": "office"
+        },
+        {
+          "label": "Align Left",
+          "command": "suite.format.align_left",
+          "tip": "AL",
+          "source": "office"
+        },
+        {
+          "label": "Center",
+          "command": "suite.format.align_center",
+          "tip": "AC",
+          "source": "office"
+        },
+        {
+          "label": "Align Right",
+          "command": "suite.format.align_right",
+          "tip": "AR",
+          "source": "office"
+        },
+        {
+          "label": "Decrease Indent",
+          "command": "suite.format.outdent",
+          "tip": "5",
+          "source": "office"
+        },
+        {
+          "label": "Increase Indent",
+          "command": "suite.format.indent",
+          "tip": "6",
+          "source": "office"
+        },
+        {
+          "label": "Orientation",
+          "command": "grid.alignment.orientation",
+          "tip": "FQ",
+          "source": "office"
+        },
+        {
+          "label": "Merge & Center",
+          "command": "grid.alignment.merge_center",
+          "tip": "M",
+          "source": "office"
+        },
+        {
+          "label": "Format Cells…",
+          "command": "grid.cells.format_cells",
+          "tip": "FA",
+          "source": "office"
+        },
+        {
+          "label": "Number Format",
+          "command": "grid.number.number_format",
+          "tip": "N",
+          "source": "office"
+        },
+        {
+          "label": "Accounting Number Format",
+          "command": "grid.number.accounting",
+          "tip": "AN",
+          "source": "office"
+        },
+        {
+          "label": "Percent Style",
+          "command": "grid.number.percent",
+          "tip": "P",
+          "source": "office"
+        },
+        {
+          "label": "Comma Style",
+          "command": "grid.number.comma",
+          "tip": "K",
+          "source": "office"
+        },
+        {
+          "label": "Increase Decimal",
+          "command": "grid.number.increase_decimal",
+          "tip": "0",
+          "source": "office"
+        },
+        {
+          "label": "Decrease Decimal",
+          "command": "grid.number.decrease_decimal",
+          "tip": "9",
+          "source": "office"
+        },
+        {
+          "label": "Format Cells…",
+          "command": "grid.cells.format_cells",
+          "tip": "FM",
+          "source": "office"
+        },
+        {
+          "label": "Conditional Formatting",
+          "command": null,
+          "tip": "L",
+          "source": "office"
+        },
+        {
+          "label": "Format as Table",
+          "command": "grid.styles.format_as_table",
+          "tip": "T",
+          "source": "office"
+        },
+        {
+          "label": "Cell Styles",
+          "command": null,
+          "tip": "J",
+          "source": "office"
+        },
+        {
+          "label": "Insert Cells",
+          "command": "grid.cells.insert_cells",
+          "tip": "I",
+          "source": "office"
+        },
+        {
+          "label": "Delete Cells",
+          "command": "grid.cells.delete_cells",
+          "tip": "D",
+          "source": "office"
+        },
+        {
+          "label": "Format Cells…",
+          "command": "grid.cells.format_cells",
+          "tip": "O",
+          "source": "office"
+        },
+        {
+          "label": "AutoSum",
+          "command": "grid.editing.auto_sum",
+          "tip": "U",
+          "source": "office"
+        },
+        {
+          "label": "Sort & Filter",
+          "command": null,
+          "tip": "S",
+          "source": "office"
+        },
+        {
+          "label": "Find",
+          "command": null,
+          "tip": "FD",
+          "source": "office"
+        },
+        {
+          "label": "Fill",
+          "command": "grid.editing.fill",
+          "tip": "FI",
+          "source": "office"
+        },
+        {
+          "label": "Clear",
+          "command": "grid.editing.clear",
+          "tip": "E",
+          "source": "office"
+        },
+        {
+          "label": "Formula Lab",
+          "command": "grid.formulas.formula_lab",
+          "tip": "ZL",
+          "source": "kiln"
+        }
+      ]
+    },
+    {
+      "label": "Insert",
+      "tip": "N",
+      "items": [
+        {
+          "label": "PivotTable",
+          "command": "grid.insert.pivot_table",
+          "tip": "V",
+          "source": "office"
+        },
+        {
+          "label": "Create Table",
+          "command": "grid.insert.table",
+          "tip": "T",
+          "source": "office"
+        },
+        {
+          "label": "Pictures",
+          "command": "suite.insert.pictures",
+          "tip": "P",
+          "source": "office"
+        },
+        {
+          "label": "Insert Shape",
+          "command": "grid.insert.shape",
+          "tip": "SH",
+          "source": "office"
+        },
+        {
+          "label": "Recommended Charts",
+          "command": "grid.insert.recommended_charts",
+          "tip": "R",
+          "source": "office"
+        },
+        {
+          "label": "Chart",
+          "command": "suite.chart.insert",
+          "tip": "CH",
+          "source": "kiln"
+        },
+        {
+          "label": "Column or Bar Chart",
+          "command": "grid.insert.chart_column",
+          "tip": "C1",
+          "source": "office"
+        },
+        {
+          "label": "Line or Area Chart",
+          "command": "grid.insert.chart_line",
+          "tip": "N1",
+          "source": "office"
+        },
+        {
+          "label": "Pie or Doughnut Chart",
+          "command": "grid.insert.chart_pie",
+          "tip": "Q",
+          "source": "office"
+        },
+        {
+          "label": "Scatter or Bubble Chart",
+          "command": "grid.insert.chart_scatter",
+          "tip": "D",
+          "source": "office"
+        },
+        {
+          "label": "Hierarchy Chart",
+          "command": "grid.insert.chart_hierarchy",
+          "tip": "E",
+          "source": "kiln"
+        },
+        {
+          "label": "Statistic Chart",
+          "command": "grid.insert.chart_statistic",
+          "tip": "S1",
+          "source": "office"
+        },
+        {
+          "label": "Combo Chart",
+          "command": "grid.insert.chart_combo",
+          "tip": "N2",
+          "source": "office"
+        },
+        {
+          "label": "Recommended Charts",
+          "command": "grid.insert.recommended_charts",
+          "tip": "CS",
+          "source": "kiln"
+        },
+        {
+          "label": "Line Sparkline",
+          "command": "grid.insert.sparkline_line",
+          "tip": "SL",
+          "source": "office"
+        },
+        {
+          "label": "Column Sparkline",
+          "command": "grid.insert.sparkline_column",
+          "tip": "SO",
+          "source": "office"
+        },
+        {
+          "label": "Win/Loss Sparkline",
+          "command": "grid.insert.sparkline_win_loss",
+          "tip": "SW",
+          "source": "office"
+        },
+        {
+          "label": "Insert Hyperlink",
+          "command": "suite.insert.link",
+          "tip": "I",
+          "source": "office"
+        },
+        {
+          "label": "New Comment",
+          "command": "suite.review.new_comment",
+          "tip": "M",
+          "source": "office"
+        },
+        {
+          "label": "New Note",
+          "command": "grid.review.new_note",
+          "tip": "NN",
+          "source": "kiln"
+        },
+        {
+          "label": "Text Box",
+          "command": "suite.insert.text_box",
+          "tip": "X",
+          "source": "office"
+        },
+        {
+          "label": "Header & Footer…",
+          "command": "suite.insert.header_footer",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Symbol…",
+          "command": "suite.insert.symbol",
+          "tip": "U",
+          "source": "office"
+        }
+      ]
+    },
+    {
+      "label": "Page Layout",
+      "tip": "P",
+      "items": [
+        {
+          "label": "Themes",
+          "command": "grid.page_layout.themes",
+          "tip": "TH",
+          "source": "office"
+        },
+        {
+          "label": "Colors",
+          "command": null,
+          "tip": "TC",
+          "source": "office"
+        },
+        {
+          "label": "Fonts",
+          "command": null,
+          "tip": "TF",
+          "source": "office"
+        },
+        {
+          "label": "Margins",
+          "command": null,
+          "tip": "M",
+          "source": "office"
+        },
+        {
+          "label": "Orientation",
+          "command": null,
+          "tip": "O",
+          "source": "office"
+        },
+        {
+          "label": "Size",
+          "command": null,
+          "tip": "SZ",
+          "source": "office"
+        },
+        {
+          "label": "Print Area",
+          "command": null,
+          "tip": "R",
+          "source": "office"
+        },
+        {
+          "label": "Breaks",
+          "command": null,
+          "tip": "B",
+          "source": "office"
+        },
+        {
+          "label": "Print Titles…",
+          "command": "grid.page_layout.print_titles",
+          "tip": "I",
+          "source": "office"
+        },
+        {
+          "label": "Page Setup…",
+          "command": "suite.layout.page_setup",
+          "tip": "PS",
+          "source": "kiln"
+        },
+        {
+          "label": "Scale to Fit",
+          "command": null,
+          "tip": "SC",
+          "source": "office"
+        },
+        {
+          "label": "Page Setup…",
+          "command": "suite.layout.page_setup",
+          "tip": "ST",
+          "source": "kiln"
+        },
+        {
+          "label": "Gridlines",
+          "command": "grid.view.gridlines",
+          "tip": "VG",
+          "source": "office"
+        },
+        {
+          "label": "Print Gridlines",
+          "command": "grid.page_layout.print_gridlines",
+          "tip": "PG",
+          "source": "office"
+        },
+        {
+          "label": "Headings",
+          "command": "grid.page_layout.headings",
+          "tip": "VH",
+          "source": "office"
+        },
+        {
+          "label": "Print Headings",
+          "command": "grid.page_layout.print_headings",
+          "tip": "PH",
+          "source": "office"
+        },
+        {
+          "label": "Sheet Right-to-Left",
+          "command": "grid.page_layout.sheet_right_to_left",
+          "tip": "SR",
+          "source": "office"
+        },
+        {
+          "label": "Print Titles…",
+          "command": "grid.page_layout.print_titles",
+          "tip": "SO",
+          "source": "kiln"
+        },
+        {
+          "label": "Bring Forward",
+          "command": "suite.arrange.bring_forward",
+          "tip": "AF",
+          "source": "office"
+        },
+        {
+          "label": "Send Backward",
+          "command": "suite.arrange.send_backward",
+          "tip": "AE",
+          "source": "office"
+        }
+      ]
+    },
+    {
+      "label": "Formulas",
+      "tip": "M",
+      "items": [
+        {
+          "label": "Insert Function",
+          "command": "grid.formulas.insert_function",
+          "tip": "F",
+          "source": "office"
+        },
+        {
+          "label": "AutoSum",
+          "command": "grid.editing.auto_sum",
+          "tip": "U",
+          "source": "office"
+        },
+        {
+          "label": "Recently Used",
+          "command": "grid.formulas.recently_used_functions",
+          "tip": "E",
+          "source": "office"
+        },
+        {
+          "label": "Financial",
+          "command": null,
+          "tip": "I",
+          "source": "office"
+        },
+        {
+          "label": "Logical",
+          "command": null,
+          "tip": "L",
+          "source": "office"
+        },
+        {
+          "label": "Text",
+          "command": null,
+          "tip": "T",
+          "source": "office"
+        },
+        {
+          "label": "Date & Time",
+          "command": null,
+          "tip": "RA",
+          "source": "kiln"
+        },
+        {
+          "label": "Lookup & Reference",
+          "command": null,
+          "tip": "O",
+          "source": "office"
+        },
+        {
+          "label": "Math & Trig",
+          "command": null,
+          "tip": "G",
+          "source": "office"
+        },
+        {
+          "label": "More Functions",
+          "command": null,
+          "tip": "Q",
+          "source": "office"
+        },
+        {
+          "label": "Name Manager",
+          "command": "grid.formulas.name_manager",
+          "tip": "N",
+          "source": "office"
+        },
+        {
+          "label": "Define Name…",
+          "command": "grid.formulas.define_name",
+          "tip": "M",
+          "source": "office"
+        },
+        {
+          "label": "Paste Names…",
+          "command": "grid.formulas.use_in_formula",
+          "tip": "S",
+          "source": "office"
+        },
+        {
+          "label": "Create Names from Selection",
+          "command": "grid.formulas.create_from_selection",
+          "tip": "C",
+          "source": "office"
+        },
+        {
+          "label": "Trace Precedents",
+          "command": "grid.formulas.trace_precedents",
+          "tip": "P",
+          "source": "office"
+        },
+        {
+          "label": "Trace Dependents",
+          "command": "grid.formulas.trace_dependents",
+          "tip": "D",
+          "source": "office"
+        },
+        {
+          "label": "Remove Arrows",
+          "command": "grid.formulas.remove_arrows",
+          "tip": "A",
+          "source": "office"
+        },
+        {
+          "label": "Show Formulas",
+          "command": "grid.formulas.show_formulas",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Error Checking",
+          "command": "grid.formulas.error_checking",
+          "tip": "K",
+          "source": "office"
+        },
+        {
+          "label": "Evaluate Formula",
+          "command": "grid.formulas.evaluate_formula",
+          "tip": "V",
+          "source": "office"
+        },
+        {
+          "label": "Watch Window",
+          "command": "grid.formulas.watch_window",
+          "tip": "W",
+          "source": "office"
+        },
+        {
+          "label": "Calculation Options",
+          "command": null,
+          "tip": "X",
+          "source": "office"
+        },
+        {
+          "label": "Calculate Now",
+          "command": "grid.formulas.calculate_now",
+          "tip": "B",
+          "source": "office"
+        },
+        {
+          "label": "Calculate Sheet",
+          "command": "grid.formulas.calculate_sheet",
+          "tip": "J",
+          "source": "office"
+        },
+        {
+          "label": "Formula Lab",
+          "command": "grid.formulas.formula_lab",
+          "tip": "ZL",
+          "source": "kiln"
+        }
+      ]
+    },
+    {
+      "label": "Data",
+      "tip": "A",
+      "items": [
+        {
+          "label": "From Text/CSV",
+          "command": "grid.data.from_text_csv",
+          "tip": "FT",
+          "source": "office"
+        },
+        {
+          "label": "From JSON",
+          "command": "grid.data.from_json",
+          "tip": "FJ",
+          "source": "office"
+        },
+        {
+          "label": "Refresh All",
+          "command": "grid.data.refresh_all",
+          "tip": "RA",
+          "source": "office"
+        },
+        {
+          "label": "Export",
+          "command": null,
+          "tip": "X",
+          "source": "kiln"
+        },
+        {
+          "label": "Sort A to Z",
+          "command": "grid.data.sort_ascending",
+          "tip": "SA",
+          "source": "office"
+        },
+        {
+          "label": "Sort Z to A",
+          "command": "grid.data.sort_descending",
+          "tip": "SD",
+          "source": "office"
+        },
+        {
+          "label": "Sort…",
+          "command": "grid.data.sort",
+          "tip": "SS",
+          "source": "office"
+        },
+        {
+          "label": "Filter",
+          "command": "grid.data.toggle_filter",
+          "tip": "T",
+          "source": "office"
+        },
+        {
+          "label": "Clear Filter",
+          "command": "grid.data.clear_filter",
+          "tip": "C",
+          "source": "office"
+        },
+        {
+          "label": "Reapply",
+          "command": "grid.data.reapply_filter",
+          "tip": "Y",
+          "source": "office"
+        },
+        {
+          "label": "Text to Columns…",
+          "command": "grid.data.text_to_columns",
+          "tip": "E",
+          "source": "office"
+        },
+        {
+          "label": "Flash Fill",
+          "command": "grid.editing.flash_fill",
+          "tip": "FF",
+          "source": "office"
+        },
+        {
+          "label": "Remove Duplicates…",
+          "command": "grid.data.remove_duplicates",
+          "tip": "M",
+          "source": "office"
+        },
+        {
+          "label": "Data Validation…",
+          "command": "grid.data.data_validation",
+          "tip": "V",
+          "source": "office"
+        },
+        {
+          "label": "What-If Analysis",
+          "command": "grid.data.what_if",
+          "tip": "W",
+          "source": "office"
+        },
+        {
+          "label": "Group",
+          "command": "grid.data.group_rows",
+          "tip": "G",
+          "source": "office"
+        },
+        {
+          "label": "Ungroup",
+          "command": "grid.data.ungroup_rows",
+          "tip": "U",
+          "source": "office"
+        },
+        {
+          "label": "Show or Hide Detail",
+          "command": "grid.data.outline_detail",
+          "tip": "SH",
+          "source": "office"
+        },
+        {
+          "label": "Show or Hide Detail",
+          "command": "grid.data.outline_detail",
+          "tip": "HI",
+          "source": "office"
+        },
+        {
+          "label": "Subtotal",
+          "command": "grid.data.subtotal",
+          "tip": "B",
+          "source": "office"
+        },
+        {
+          "label": "Show Outline Symbols",
+          "command": "grid.data.show_outline_symbols",
+          "tip": "J",
+          "source": "office"
+        }
+      ]
+    },
+    {
+      "label": "Review",
+      "tip": "R",
+      "items": [
+        {
+          "label": "Spelling",
+          "command": "suite.review.spelling",
+          "tip": "S",
+          "source": "office"
+        },
+        {
+          "label": "New Comment",
+          "command": "suite.review.new_comment",
+          "tip": "C",
+          "source": "office"
+        },
+        {
+          "label": "Delete Comment",
+          "command": "suite.review.delete_comment",
+          "tip": "D",
+          "source": "office"
+        },
+        {
+          "label": "Previous Comment",
+          "command": "suite.review.previous_comment",
+          "tip": "V",
+          "source": "office"
+        },
+        {
+          "label": "Next Comment",
+          "command": "suite.review.next_comment",
+          "tip": "N",
+          "source": "office"
+        },
+        {
+          "label": "Show Comments",
+          "command": "suite.review.show_comments",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Notes",
+          "command": null,
+          "tip": "T",
+          "source": "office"
+        },
+        {
+          "label": "Protect Sheet",
+          "command": "grid.review.protect_sheet",
+          "tip": "PS",
+          "source": "office"
+        },
+        {
+          "label": "Protect Workbook",
+          "command": "grid.review.protect_workbook",
+          "tip": "PW",
+          "source": "office"
+        },
+        {
+          "label": "Version History",
+          "command": "suite.file.version_history",
+          "tip": "ZV",
+          "source": "kiln"
+        }
+      ]
+    },
+    {
+      "label": "View",
+      "tip": "W",
+      "items": [
+        {
+          "label": "Change View",
+          "command": "suite.view.mode",
+          "tip": "L",
+          "source": "office"
+        },
+        {
+          "label": "Change View",
+          "command": "suite.view.mode",
+          "tip": "I",
+          "source": "office"
+        },
+        {
+          "label": "Change View",
+          "command": "suite.view.mode",
+          "tip": "P",
+          "source": "office"
+        },
+        {
+          "label": "Ruler",
+          "command": "suite.view.ruler",
+          "tip": "R",
+          "source": "office"
+        },
+        {
+          "label": "Gridlines",
+          "command": "grid.view.gridlines",
+          "tip": "VG",
+          "source": "office"
+        },
+        {
+          "label": "Formula Bar",
+          "command": "grid.view.formula_bar",
+          "tip": "B",
+          "source": "kiln"
+        },
+        {
+          "label": "Headings",
+          "command": "grid.page_layout.headings",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Zoom",
+          "command": "suite.view.zoom",
+          "tip": "Q",
+          "source": "office"
+        },
+        {
+          "label": "Zoom",
+          "command": "suite.view.zoom",
+          "tip": "J",
+          "source": "office"
+        },
+        {
+          "label": "Zoom to Selection",
+          "command": "grid.view.zoom_to_selection",
+          "tip": "G",
+          "source": "office"
+        },
+        {
+          "label": "Freeze Panes",
+          "command": "grid.view.freeze_panes",
+          "tip": "F",
+          "source": "office"
+        },
+        {
+          "label": "Split",
+          "command": "grid.view.split",
+          "tip": "S",
+          "source": "office"
+        },
+        {
+          "label": "Text View",
+          "command": "ui.view.text_view",
+          "tip": "TV",
+          "source": "office"
+        },
+        {
+          "label": "Theme",
+          "command": null,
+          "tip": "TH",
+          "source": "kiln"
+        },
+        {
+          "label": "Macros",
+          "command": "ui.macros.explain",
+          "tip": "M",
+          "source": "office"
+        }
+      ]
+    },
+    {
+      "label": "Table Design",
+      "tip": "JT",
+      "items": [
+        {
+          "label": "Table Name",
+          "command": "grid.table.rename",
+          "tip": "N",
+          "source": "kiln"
+        },
+        {
+          "label": "Resize Table…",
+          "command": "ui.grid.resize_table",
+          "tip": "E",
+          "source": "kiln"
+        },
+        {
+          "label": "Remove Duplicates",
+          "command": "ui.grid.table_remove_duplicates",
+          "tip": "M",
+          "source": "office"
+        },
+        {
+          "label": "Convert to Range",
+          "command": "ui.grid.convert_to_range",
+          "tip": "G",
+          "source": "office"
+        },
+        {
+          "label": "Total Function",
+          "command": null,
+          "tip": "A",
+          "source": "kiln"
+        },
+        {
+          "label": "Header Row",
+          "command": "ui.grid.table_header_row",
+          "tip": "O",
+          "source": "office"
+        },
+        {
+          "label": "Total Row",
+          "command": "ui.grid.table_total_row",
+          "tip": "T",
+          "source": "office"
+        },
+        {
+          "label": "Banded Rows",
+          "command": "ui.grid.table_banded_rows",
+          "tip": "R",
+          "source": "office"
+        },
+        {
+          "label": "First Column",
+          "command": "ui.grid.table_first_column",
+          "tip": "F",
+          "source": "office"
+        },
+        {
+          "label": "Last Column",
+          "command": "ui.grid.table_last_column",
+          "tip": "L",
+          "source": "office"
+        },
+        {
+          "label": "Banded Columns",
+          "command": "ui.grid.table_banded_columns",
+          "tip": "B",
+          "source": "office"
+        },
+        {
+          "label": "Filter Button",
+          "command": "ui.grid.table_filter_button",
+          "tip": "W",
+          "source": "office"
+        },
+        {
+          "label": "Table Styles",
+          "command": "grid.table.style",
+          "tip": "S",
+          "source": "office"
+        }
+      ]
+    },
+    {
+      "label": "PivotTable Analyze",
+      "tip": "JT",
+      "items": [
+        {
+          "label": "PivotTable Name",
+          "command": "ui.grid.pivot_name",
+          "tip": "N",
+          "source": "office"
+        },
+        {
+          "label": "Options",
+          "command": "ui.grid.pivot_options",
+          "tip": "T",
+          "source": "office"
+        },
+        {
+          "label": "Field Settings",
+          "command": "ui.grid.pivot_field_settings",
+          "tip": "G",
+          "source": "office"
+        },
+        {
+          "label": "Refresh",
+          "command": "grid.pivot.refresh",
+          "tip": "F5",
+          "source": "office"
+        },
+        {
+          "label": "Change Data Source",
+          "command": "ui.grid.pivot_change_source",
+          "tip": "I",
+          "source": "office"
+        },
+        {
+          "label": "Clear",
+          "command": null,
+          "tip": "C",
+          "source": "office"
+        },
+        {
+          "label": "Select",
+          "command": null,
+          "tip": "S",
+          "source": "office"
+        },
+        {
+          "label": "Move PivotTable",
+          "command": "ui.grid.pivot_move",
+          "tip": "M",
+          "source": "office"
+        },
+        {
+          "label": "Delete PivotTable",
+          "command": "ui.grid.pivot_delete",
+          "tip": "D",
+          "source": "office"
+        },
+        {
+          "label": "Show Details",
+          "command": "ui.grid.pivot_show_details",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Field List",
+          "command": "ui.grid.pivot_fields",
+          "tip": "L",
+          "source": "office"
+        }
+      ]
+    },
+    {
+      "label": "Design",
+      "tip": "JY",
+      "items": [
+        {
+          "label": "Subtotals",
+          "command": null,
+          "tip": "ST",
+          "source": "office"
+        },
+        {
+          "label": "Grand Totals",
+          "command": null,
+          "tip": "GT",
+          "source": "office"
+        },
+        {
+          "label": "Report Layout",
+          "command": null,
+          "tip": "RP",
+          "source": "office"
+        },
+        {
+          "label": "Blank Rows",
+          "command": null,
+          "tip": "B",
+          "source": "office"
+        },
+        {
+          "label": "Row Headers",
+          "command": "ui.grid.pivot_row_headers",
+          "tip": "RH",
+          "source": "kiln"
+        },
+        {
+          "label": "Column Headers",
+          "command": "ui.grid.pivot_col_headers",
+          "tip": "C",
+          "source": "office"
+        },
+        {
+          "label": "Banded Rows",
+          "command": "ui.grid.pivot_banded_rows",
+          "tip": "A",
+          "source": "kiln"
+        },
+        {
+          "label": "Banded Columns",
+          "command": "ui.grid.pivot_banded_cols",
+          "tip": "N",
+          "source": "kiln"
+        },
+        {
+          "label": "PivotTable Styles",
+          "command": "ui.grid.pivot_style",
+          "tip": "PS",
+          "source": "kiln"
+        }
+      ]
+    }
+  ],
+  "deck": [
+    {
+      "label": "Home",
+      "tip": "H",
+      "items": [
+        {
+          "label": "Paste",
+          "command": "suite.edit.paste",
+          "tip": "V",
+          "source": "office"
+        },
+        {
+          "label": "Cut",
+          "command": "suite.edit.cut",
+          "tip": "X",
+          "source": "office"
+        },
+        {
+          "label": "Copy",
+          "command": "suite.edit.copy",
+          "tip": "C",
+          "source": "office"
+        },
+        {
+          "label": "Format Painter",
+          "command": "suite.edit.format_painter",
+          "tip": "FP",
+          "source": "office"
+        },
+        {
+          "label": "New Slide",
+          "command": "deck.slides.new_slide",
+          "tip": "I",
+          "source": "office"
+        },
+        {
+          "label": "Layout",
+          "command": "deck.slides.layout",
+          "tip": "L",
+          "source": "office"
+        },
+        {
+          "label": "Reset",
+          "command": "deck.slides.reset_slide",
+          "tip": "8",
+          "source": "kiln"
+        },
+        {
+          "label": "Section",
+          "command": "deck.slides.section",
+          "tip": "T1",
+          "source": "office"
+        },
+        {
+          "label": "Font",
+          "command": "suite.format.font_family",
+          "tip": "FF",
+          "source": "office"
+        },
+        {
+          "label": "Font Size",
+          "command": "suite.format.font_size",
+          "tip": "FS",
+          "source": "office"
+        },
+        {
+          "label": "Increase Font Size",
+          "command": "suite.format.grow_font",
+          "tip": "FG",
+          "source": "office"
+        },
+        {
+          "label": "Decrease Font Size",
+          "command": "suite.format.shrink_font",
+          "tip": "FK",
+          "source": "office"
+        },
+        {
+          "label": "Change Case",
+          "command": "suite.format.change_case",
+          "tip": "7",
+          "source": "office"
+        },
+        {
+          "label": "Clear All Formatting",
+          "command": "suite.format.clear_formatting",
+          "tip": "E",
+          "source": "office"
+        },
+        {
+          "label": "Bold",
+          "command": "suite.format.bold",
+          "tip": "1",
+          "source": "office"
+        },
+        {
+          "label": "Italic",
+          "command": "suite.format.italic",
+          "tip": "2",
+          "source": "office"
+        },
+        {
+          "label": "Underline",
+          "command": "suite.format.underline",
+          "tip": "3",
+          "source": "office"
+        },
+        {
+          "label": "Strikethrough",
+          "command": "suite.format.strikethrough",
+          "tip": "4",
+          "source": "office"
+        },
+        {
+          "label": "Subscript",
+          "command": "suite.format.subscript",
+          "tip": "5",
+          "source": "office"
+        },
+        {
+          "label": "Superscript",
+          "command": "suite.format.superscript",
+          "tip": "6",
+          "source": "office"
+        },
+        {
+          "label": "Character Spacing",
+          "command": "suite.format.character_spacing",
+          "tip": "SP",
+          "source": "office"
+        },
+        {
+          "label": "Text Shadow",
+          "command": "suite.format.text_shadow",
+          "tip": "TS",
+          "source": "kiln"
+        },
+        {
+          "label": "Font Color",
+          "command": "suite.format.font_color",
+          "tip": "FC",
+          "source": "office"
+        },
+        {
+          "label": "Text Highlight Color",
+          "command": "suite.format.highlight",
+          "tip": "TH",
+          "source": "kiln"
+        },
+        {
+          "label": "Font…",
+          "command": "suite.format.font_dialog",
+          "tip": "FN",
+          "source": "office"
+        },
+        {
+          "label": "Bullets",
+          "command": "suite.format.bullets",
+          "tip": "U",
+          "source": "office"
+        },
+        {
+          "label": "Numbering",
+          "command": "suite.format.numbering",
+          "tip": "N",
+          "source": "office"
+        },
+        {
+          "label": "Decrease Indent",
+          "command": "suite.format.outdent",
+          "tip": "AO",
+          "source": "office"
+        },
+        {
+          "label": "Increase Indent",
+          "command": "suite.format.indent",
+          "tip": "AI",
+          "source": "office"
+        },
+        {
+          "label": "Align Left",
+          "command": "suite.format.align_left",
+          "tip": "AL",
+          "source": "office"
+        },
+        {
+          "label": "Center",
+          "command": "suite.format.align_center",
+          "tip": "AC",
+          "source": "office"
+        },
+        {
+          "label": "Align Right",
+          "command": "suite.format.align_right",
+          "tip": "AR",
+          "source": "office"
+        },
+        {
+          "label": "Justify",
+          "command": "suite.format.justify",
+          "tip": "AJ",
+          "source": "office"
+        },
+        {
+          "label": "Line and Paragraph Spacing",
+          "command": "suite.format.line_spacing",
+          "tip": "K",
+          "source": "office"
+        },
+        {
+          "label": "Text Direction",
+          "command": "deck.paragraph.text_direction",
+          "tip": "AD",
+          "source": "office"
+        },
+        {
+          "label": "Align Text",
+          "command": "deck.paragraph.align_text",
+          "tip": "AT",
+          "source": "office"
+        },
+        {
+          "label": "Columns",
+          "command": "deck.paragraph.columns",
+          "tip": "AM",
+          "source": "office"
+        },
+        {
+          "label": "Paragraph…",
+          "command": "suite.format.paragraph_dialog",
+          "tip": "PG",
+          "source": "office"
+        },
+        {
+          "label": "Shapes",
+          "command": "suite.insert.shapes",
+          "tip": "SH",
+          "source": "office"
+        },
+        {
+          "label": "Arrange",
+          "command": null,
+          "tip": "G",
+          "source": "office"
+        },
+        {
+          "label": "Quick Styles",
+          "command": "deck.drawing.quick_styles",
+          "tip": "Q",
+          "source": "office"
+        },
+        {
+          "label": "Shape Fill",
+          "command": "deck.drawing.shape_fill",
+          "tip": "SF",
+          "source": "office"
+        },
+        {
+          "label": "Shape Outline",
+          "command": "deck.drawing.shape_outline",
+          "tip": "SO",
+          "source": "office"
+        },
+        {
+          "label": "Shape Effects",
+          "command": "deck.drawing.shape_effects",
+          "tip": "SE",
+          "source": "office"
+        },
+        {
+          "label": "Format Shape…",
+          "command": "ui.deck.format_shape",
+          "tip": "DS",
+          "source": "kiln"
+        },
+        {
+          "label": "Find",
+          "command": "suite.edit.find",
+          "tip": "FD",
+          "source": "office"
+        },
+        {
+          "label": "Replace",
+          "command": "suite.edit.replace",
+          "tip": "R",
+          "source": "office"
+        },
+        {
+          "label": "Select",
+          "command": null,
+          "tip": "SL",
+          "source": "office"
+        },
+        {
+          "label": "Design Ideas",
+          "command": "deck.drawing.design_ideas",
+          "tip": "DI",
+          "source": "office"
+        }
+      ]
+    },
+    {
+      "label": "Insert",
+      "tip": "N",
+      "items": [
+        {
+          "label": "New Slide",
+          "command": "deck.slides.new_slide",
+          "tip": "I",
+          "source": "office"
+        },
+        {
+          "label": "Table",
+          "command": "suite.insert.table",
+          "tip": "T",
+          "source": "office"
+        },
+        {
+          "label": "Pictures",
+          "command": "suite.insert.pictures",
+          "tip": "P",
+          "source": "office"
+        },
+        {
+          "label": "Shapes",
+          "command": "suite.insert.shapes",
+          "tip": "SH",
+          "source": "office"
+        },
+        {
+          "label": "Icons",
+          "command": "suite.insert.icons",
+          "tip": "Y1",
+          "source": "office"
+        },
+        {
+          "label": "Chart",
+          "command": "ui.deck.insert_chart",
+          "tip": "C",
+          "source": "office"
+        },
+        {
+          "label": "Link",
+          "command": "suite.insert.link",
+          "tip": "N",
+          "source": "kiln"
+        },
+        {
+          "label": "New Comment",
+          "command": "suite.review.new_comment",
+          "tip": "L",
+          "source": "office"
+        },
+        {
+          "label": "Text Box",
+          "command": "suite.insert.text_box",
+          "tip": "X",
+          "source": "office"
+        },
+        {
+          "label": "Header & Footer",
+          "command": "suite.insert.header_footer",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Date & Time",
+          "command": "suite.insert.date_time",
+          "tip": "D",
+          "source": "office"
+        },
+        {
+          "label": "Slide Number",
+          "command": "deck.insert.slide_number",
+          "tip": "SN",
+          "source": "office"
+        },
+        {
+          "label": "Symbol…",
+          "command": "suite.insert.symbol",
+          "tip": "U",
+          "source": "office"
+        },
+        {
+          "label": "Code Block",
+          "command": "suite.insert.code_block",
+          "tip": "ZK",
+          "source": "kiln"
+        }
+      ]
+    },
+    {
+      "label": "Design",
+      "tip": "G",
+      "items": [
+        {
+          "label": "Themes",
+          "command": "deck.design.themes",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Variants",
+          "command": "deck.design.variants",
+          "tip": "V",
+          "source": "office"
+        },
+        {
+          "label": "Slide Size",
+          "command": "deck.design.slide_size",
+          "tip": "S",
+          "source": "office"
+        },
+        {
+          "label": "Format Background…",
+          "command": "ui.deck.format_background",
+          "tip": "B",
+          "source": "office"
+        },
+        {
+          "label": "Hide Background Graphics",
+          "command": "deck.design.hide_background_graphics",
+          "tip": "G",
+          "source": "kiln"
+        },
+        {
+          "label": "Design Ideas",
+          "command": "deck.drawing.design_ideas",
+          "tip": "DI",
+          "source": "office"
+        }
+      ]
+    },
+    {
+      "label": "Transitions",
+      "tip": "K",
+      "items": [
+        {
+          "label": "Preview",
+          "command": "deck.transitions.preview",
+          "tip": "P",
+          "source": "office"
+        },
+        {
+          "label": "Transition to This Slide",
+          "command": "deck.transitions.gallery",
+          "tip": "T",
+          "source": "office"
+        },
+        {
+          "label": "Effect Options",
+          "command": "deck.transitions.effect_options",
+          "tip": "EO",
+          "source": "office"
+        },
+        {
+          "label": "Duration",
+          "command": "deck.transitions.duration",
+          "tip": "D",
+          "source": "kiln"
+        },
+        {
+          "label": "Apply To All",
+          "command": "deck.transitions.apply_to_all",
+          "tip": "L",
+          "source": "office"
+        },
+        {
+          "label": "On Mouse Click",
+          "command": "deck.transitions.on_click",
+          "tip": "M",
+          "source": "office"
+        },
+        {
+          "label": "Advance After",
+          "command": "ui.deck.advance_after",
+          "tip": "AF",
+          "source": "office"
+        },
+        {
+          "label": "After",
+          "command": "deck.transitions.after",
+          "tip": "S",
+          "source": "kiln"
+        }
+      ]
+    },
+    {
+      "label": "Animations",
+      "tip": "A",
+      "items": [
+        {
+          "label": "Preview Animations",
+          "command": "deck.animations.preview",
+          "tip": "P",
+          "source": "office"
+        },
+        {
+          "label": "Animation Styles",
+          "command": "deck.animations.gallery",
+          "tip": "S",
+          "source": "office"
+        },
+        {
+          "label": "Effect Options",
+          "command": "deck.animations.effect_options",
+          "tip": "EM",
+          "source": "office"
+        },
+        {
+          "label": "Add Animation",
+          "command": "deck.animations.add_animation",
+          "tip": "AA",
+          "source": "office"
+        },
+        {
+          "label": "Animation Pane",
+          "command": "deck.animations.animation_pane",
+          "tip": "C",
+          "source": "office"
+        },
+        {
+          "label": "Animation Painter",
+          "command": "deck.animations.animation_painter",
+          "tip": "AP",
+          "source": "kiln"
+        },
+        {
+          "label": "Start",
+          "command": "deck.animations.start",
+          "tip": "T",
+          "source": "kiln"
+        },
+        {
+          "label": "Duration",
+          "command": "deck.animations.duration",
+          "tip": "D",
+          "source": "office"
+        },
+        {
+          "label": "Delay",
+          "command": "deck.animations.delay",
+          "tip": "L",
+          "source": "kiln"
+        },
+        {
+          "label": "Reorder Animation",
+          "command": "deck.animations.reorder",
+          "tip": "ME",
+          "source": "office"
+        },
+        {
+          "label": "Reorder Animation",
+          "command": "deck.animations.reorder",
+          "tip": "ML",
+          "source": "office"
+        }
+      ]
+    },
+    {
+      "label": "Slide Show",
+      "tip": "S",
+      "items": [
+        {
+          "label": "From Beginning",
+          "command": "deck.show.from_beginning",
+          "tip": "B",
+          "source": "office"
+        },
+        {
+          "label": "From Current Slide",
+          "command": "deck.show.from_current",
+          "tip": "C",
+          "source": "office"
+        },
+        {
+          "label": "Present in Browser Tab",
+          "command": "deck.show.in_tab",
+          "tip": "ZT",
+          "source": "kiln"
+        },
+        {
+          "label": "Set Up Slide Show",
+          "command": "deck.show.set_up",
+          "tip": "S",
+          "source": "office"
+        },
+        {
+          "label": "Hide Slide",
+          "command": "deck.show.hide_slide",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Use Presenter View",
+          "command": "deck.show.presenter_view",
+          "tip": "V",
+          "source": "office"
+        },
+        {
+          "label": "Laser Pointer",
+          "command": "deck.show.audience_laser",
+          "tip": "ZL",
+          "source": "kiln"
+        },
+        {
+          "label": "Pen",
+          "command": "deck.show.audience_pen",
+          "tip": "ZP",
+          "source": "kiln"
+        },
+        {
+          "label": "Highlighter",
+          "command": "deck.show.audience_highlighter",
+          "tip": "ZH",
+          "source": "kiln"
+        },
+        {
+          "label": "Blackout",
+          "command": "deck.show.audience_blackout",
+          "tip": "ZB",
+          "source": "kiln"
+        }
+      ]
+    },
+    {
+      "label": "Review",
+      "tip": "R",
+      "items": [
+        {
+          "label": "Spelling",
+          "command": "suite.review.spelling",
+          "tip": "S",
+          "source": "office"
+        },
+        {
+          "label": "New Comment",
+          "command": "suite.review.new_comment",
+          "tip": "C",
+          "source": "office"
+        },
+        {
+          "label": "Delete Comment",
+          "command": "suite.review.delete_comment",
+          "tip": "D",
+          "source": "office"
+        },
+        {
+          "label": "Previous Comment",
+          "command": "suite.review.previous_comment",
+          "tip": "V",
+          "source": "office"
+        },
+        {
+          "label": "Next Comment",
+          "command": "suite.review.next_comment",
+          "tip": "N",
+          "source": "office"
+        },
+        {
+          "label": "Show Comments",
+          "command": "suite.review.show_comments",
+          "tip": "H",
+          "source": "office"
+        },
+        {
+          "label": "Version History",
+          "command": "suite.file.version_history",
+          "tip": "ZV",
+          "source": "kiln"
+        }
+      ]
+    },
+    {
+      "label": "View",
+      "tip": "W",
+      "items": [
+        {
+          "label": "Change View",
+          "command": "suite.view.mode",
+          "tip": "N",
+          "source": "office"
+        },
+        {
+          "label": "Outline View",
+          "command": "deck.view.outline_view",
+          "tip": "PO",
+          "source": "office"
+        },
+        {
+          "label": "Change View",
+          "command": "suite.view.mode",
+          "tip": "I",
+          "source": "office"
+        },
+        {
+          "label": "Change View",
+          "command": "suite.view.mode",
+          "tip": "T",
+          "source": "office"
+        },
+        {
+          "label": "Change View",
+          "command": "suite.view.mode",
+          "tip": "D",
+          "source": "office"
+        },
+        {
+          "label": "Slide Master",
+          "command": "deck.view.slide_master",
+          "tip": "M",
+          "source": "office"
+        },
+        {
+          "label": "Ruler",
+          "command": "suite.view.ruler",
+          "tip": "R",
+          "source": "office"
+        },
+        {
+          "label": "Gridlines",
+          "command": "deck.view.gridlines",
+          "tip": "G",
+          "source": "office"
+        },
+        {
+          "label": "Guides",
+          "command": "deck.view.guides",
+          "tip": "U",
+          "source": "office"
+        },
+        {
+          "label": "Notes",
+          "command": "deck.view.notes",
+          "tip": "O",
+          "source": "kiln"
+        },
+        {
+          "label": "Zoom",
+          "command": "suite.view.zoom",
+          "tip": "Q",
+          "source": "office"
+        },
+        {
+          "label": "Fit to Window",
+          "command": "deck.view.fit_to_window",
+          "tip": "F",
+          "source": "office"
+        },
+        {
+          "label": "Text View",
+          "command": "ui.view.text_view",
+          "tip": "V",
+          "source": "kiln"
+        },
+        {
+          "label": "Theme",
+          "command": null,
+          "tip": "H",
+          "source": "kiln"
+        },
+        {
+          "label": "Macros",
+          "command": "ui.macros.explain",
+          "tip": "A",
+          "source": "kiln"
+        }
+      ]
+    }
+  ]
+}

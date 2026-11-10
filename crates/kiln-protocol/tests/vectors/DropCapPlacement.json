@@ -1,0 +1,10 @@
+{
+  "type": "DropCapPlacement",
+  "format": {
+    "TYPENAME": "DropCapPlacement"
+  },
+  "values": [
+    "Dropped",
+    "Dropped"
+  ]
+}

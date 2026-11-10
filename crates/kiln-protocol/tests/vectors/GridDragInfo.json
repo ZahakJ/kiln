@@ -1,0 +1,20 @@
+{
+  "type": "GridDragInfo",
+  "format": {
+    "TYPENAME": "GridDragInfo"
+  },
+  "values": [
+    {
+      "target": "D4:E9",
+      "occupied": true,
+      "copy": false,
+      "insert": "Rows"
+    },
+    {
+      "target": "",
+      "occupied": false,
+      "copy": false,
+      "insert": null
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "DeckRect",
+  "format": {
+    "TYPENAME": "DeckRect"
+  },
+  "values": [
+    {
+      "x": 120.5,
+      "y": -8.0,
+      "width": 240.0,
+      "height": 135.0
+    },
+    {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    }
+  ]
+}

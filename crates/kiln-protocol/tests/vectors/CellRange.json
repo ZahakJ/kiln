@@ -1,0 +1,32 @@
+{
+  "type": "CellRange",
+  "format": {
+    "TYPENAME": "CellRange"
+  },
+  "values": [
+    {
+      "start": {
+        "sheet": 0,
+        "row": 0,
+        "col": 0
+      },
+      "end": {
+        "sheet": 0,
+        "row": 9,
+        "col": 3
+      }
+    },
+    {
+      "start": {
+        "sheet": 0,
+        "row": 0,
+        "col": 0
+      },
+      "end": {
+        "sheet": 0,
+        "row": 0,
+        "col": 0
+      }
+    }
+  ]
+}

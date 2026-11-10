@@ -1,0 +1,701 @@
+[
+  {
+    "name": "DATE",
+    "category": "Date & Time",
+    "summary": "Returns the serial number of a date; months and days may overflow (month 13 is January next year).",
+    "syntax": "DATE(year, month, day)",
+    "args": [
+      {
+        "name": "year",
+        "description": "The year (0–1899 are added to 1900)."
+      },
+      {
+        "name": "month",
+        "description": "The month, 1–12 (other values roll over)."
+      },
+      {
+        "name": "day",
+        "description": "The day of the month (other values roll over)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DATE(2024,1,15)",
+        "result": "45306"
+      },
+      {
+        "formula": "=DATE(2008,14,2)",
+        "result": "39846"
+      },
+      {
+        "formula": "=DATE(2008,1,-15)",
+        "result": "39432"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DATEDIF",
+    "category": "Date & Time",
+    "summary": "Calculates the number of days, months or years between two dates.",
+    "syntax": "DATEDIF(start_date, end_date, unit)",
+    "args": [
+      {
+        "name": "start_date",
+        "description": "The first date."
+      },
+      {
+        "name": "end_date",
+        "description": "The last date (not before start_date)."
+      },
+      {
+        "name": "unit",
+        "description": "\"Y\" years, \"M\" months, \"D\" days, \"MD\" days ignoring months and years, \"YM\" months ignoring years, \"YD\" days ignoring years."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DATEDIF(DATE(2001,1,1),DATE(2003,1,1),\"Y\")",
+        "result": "2"
+      },
+      {
+        "formula": "=DATEDIF(DATE(2001,6,1),DATE(2002,8,15),\"D\")",
+        "result": "440"
+      },
+      {
+        "formula": "=DATEDIF(DATE(2001,6,1),DATE(2002,8,15),\"YD\")",
+        "result": "75"
+      },
+      {
+        "formula": "=DATEDIF(DATE(2020,1,31),DATE(2020,3,1),\"MD\")",
+        "result": "1"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DATEVALUE",
+    "category": "Date & Time",
+    "summary": "Converts a date written as text to a serial number.",
+    "syntax": "DATEVALUE(date_text)",
+    "args": [
+      {
+        "name": "date_text",
+        "description": "Text such as \"2024-01-15\" or \"15-Jan-2024\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DATEVALUE(\"8/22/2011\")",
+        "result": "40777"
+      },
+      {
+        "formula": "=DATEVALUE(\"22-MAY-2011\")",
+        "result": "40685"
+      },
+      {
+        "formula": "=DATEVALUE(\"2011/02/23\")",
+        "result": "40597"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DAY",
+    "category": "Date & Time",
+    "summary": "Returns the day of the month (1–31) of a date.",
+    "syntax": "DAY(serial_number)",
+    "args": [
+      {
+        "name": "serial_number",
+        "description": "A date (serial number, or date text)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DAY(DATE(2011,4,15))",
+        "result": "15"
+      },
+      {
+        "formula": "=DAY(\"2024-02-29\")",
+        "result": "29"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "DAYS",
+    "category": "Date & Time",
+    "summary": "Returns the number of days between two dates.",
+    "syntax": "DAYS(end_date, start_date)",
+    "args": [
+      {
+        "name": "end_date",
+        "description": "The later date."
+      },
+      {
+        "name": "start_date",
+        "description": "The earlier date."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DAYS(\"15-MAR-2021\",\"1-FEB-2021\")",
+        "result": "42"
+      },
+      {
+        "formula": "=DAYS(DATE(2021,12,31),DATE(2021,1,1))",
+        "result": "364"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "DAYS360",
+    "category": "Date & Time",
+    "summary": "Returns the number of days between two dates based on a 360-day year.",
+    "syntax": "DAYS360(start_date, end_date, [method])",
+    "args": [
+      {
+        "name": "start_date",
+        "description": "The first date."
+      },
+      {
+        "name": "end_date",
+        "description": "The second date."
+      },
+      {
+        "name": "method",
+        "description": "FALSE (default) US method, TRUE European method.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=DAYS360(DATE(2011,1,1),DATE(2011,12,31))",
+        "result": "360"
+      },
+      {
+        "formula": "=DAYS360(DATE(2011,1,30),DATE(2011,2,1))",
+        "result": "1"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "EDATE",
+    "category": "Date & Time",
+    "summary": "Returns the date a number of months before or after a start date.",
+    "syntax": "EDATE(start_date, months)",
+    "args": [
+      {
+        "name": "start_date",
+        "description": "The starting date."
+      },
+      {
+        "name": "months",
+        "description": "Months before (negative) or after."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=EDATE(DATE(2011,1,15),1)",
+        "result": "40589"
+      },
+      {
+        "formula": "=EDATE(DATE(2011,1,31),1)",
+        "result": "40602"
+      },
+      {
+        "formula": "=EDATE(DATE(2011,1,15),-1)",
+        "result": "40527"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "EOMONTH",
+    "category": "Date & Time",
+    "summary": "Returns the last day of the month a number of months before or after a start date.",
+    "syntax": "EOMONTH(start_date, months)",
+    "args": [
+      {
+        "name": "start_date",
+        "description": "The starting date."
+      },
+      {
+        "name": "months",
+        "description": "Months before (negative) or after."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=EOMONTH(DATE(2011,1,1),1)",
+        "result": "40602"
+      },
+      {
+        "formula": "=EOMONTH(DATE(2011,1,1),-3)",
+        "result": "40482"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "HOUR",
+    "category": "Date & Time",
+    "summary": "Returns the hour (0–23) of a time value.",
+    "syntax": "HOUR(serial_number)",
+    "args": [
+      {
+        "name": "serial_number",
+        "description": "A date (serial number, or date text)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=HOUR(0.75)",
+        "result": "18"
+      },
+      {
+        "formula": "=HOUR(\"3:30:30 PM\")",
+        "result": "15"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "ISOWEEKNUM",
+    "category": "Date & Time",
+    "summary": "Returns the ISO week number of the year for a date.",
+    "syntax": "ISOWEEKNUM(date)",
+    "args": [
+      {
+        "name": "date",
+        "description": "The date."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=ISOWEEKNUM(DATE(2012,3,9))",
+        "result": "10"
+      },
+      {
+        "formula": "=ISOWEEKNUM(DATE(2021,1,1))",
+        "result": "53"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "MINUTE",
+    "category": "Date & Time",
+    "summary": "Returns the minute (0–59) of a time value.",
+    "syntax": "MINUTE(serial_number)",
+    "args": [
+      {
+        "name": "serial_number",
+        "description": "A date (serial number, or date text)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MINUTE(\"12:45:00 PM\")",
+        "result": "45"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "MONTH",
+    "category": "Date & Time",
+    "summary": "Returns the month (1–12) of a date.",
+    "syntax": "MONTH(serial_number)",
+    "args": [
+      {
+        "name": "serial_number",
+        "description": "A date (serial number, or date text)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MONTH(\"15-Apr-2011\")",
+        "result": "4"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "NETWORKDAYS",
+    "category": "Date & Time",
+    "summary": "Returns the number of whole working days between two dates (Monday to Friday, minus holidays).",
+    "syntax": "NETWORKDAYS(start_date, end_date, [holidays])",
+    "args": [
+      {
+        "name": "start_date",
+        "description": "The first date."
+      },
+      {
+        "name": "end_date",
+        "description": "The last date."
+      },
+      {
+        "name": "holidays",
+        "description": "Dates to exclude.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NETWORKDAYS(DATE(2012,10,1),DATE(2013,3,1))",
+        "result": "110"
+      },
+      {
+        "formula": "=NETWORKDAYS(DATE(2012,10,1),DATE(2013,3,1),DATE(2012,11,22))",
+        "result": "109"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "NETWORKDAYS.INTL",
+    "category": "Date & Time",
+    "summary": "Returns the number of whole working days between two dates with custom weekends.",
+    "syntax": "NETWORKDAYS.INTL(start_date, end_date, [weekend], [holidays])",
+    "args": [
+      {
+        "name": "start_date",
+        "description": "The first date."
+      },
+      {
+        "name": "end_date",
+        "description": "The last date."
+      },
+      {
+        "name": "weekend",
+        "description": "A weekend code (1 Saturday–Sunday … 7 Friday–Saturday, 11–17 single days) or a 7-character mask such as \"0000011\".",
+        "optional": true
+      },
+      {
+        "name": "holidays",
+        "description": "Dates to exclude.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NETWORKDAYS.INTL(DATE(2006,1,1),DATE(2006,1,31))",
+        "result": "22"
+      },
+      {
+        "formula": "=NETWORKDAYS.INTL(DATE(2006,2,28),DATE(2006,1,31))",
+        "result": "-21"
+      },
+      {
+        "formula": "=NETWORKDAYS.INTL(DATE(2006,1,1),DATE(2006,2,1),7,{\"2006/1/2\",\"2006/1/16\"})",
+        "result": "22"
+      },
+      {
+        "formula": "=NETWORKDAYS.INTL(DATE(2006,1,1),DATE(2006,2,1),\"0010001\",{\"2006/1/2\",\"2006/1/16\"})",
+        "result": "20"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "NOW",
+    "category": "Date & Time",
+    "summary": "Returns the current date and time as a serial number.",
+    "syntax": "NOW()",
+    "args": [],
+    "examples": [
+      {
+        "formula": "=NOW()>DATE(2020,1,1)",
+        "result": "TRUE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "SECOND",
+    "category": "Date & Time",
+    "summary": "Returns the second (0–59) of a time value.",
+    "syntax": "SECOND(serial_number)",
+    "args": [
+      {
+        "name": "serial_number",
+        "description": "A date (serial number, or date text)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SECOND(\"4:48:18 PM\")",
+        "result": "18"
+      },
+      {
+        "formula": "=SECOND(\"4:48 PM\")",
+        "result": "0"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TIME",
+    "category": "Date & Time",
+    "summary": "Returns the serial number of a time.",
+    "syntax": "TIME(hour, minute, second)",
+    "args": [
+      {
+        "name": "hour",
+        "description": "0–32767 (values over 23 wrap)."
+      },
+      {
+        "name": "minute",
+        "description": "0–32767."
+      },
+      {
+        "name": "second",
+        "description": "0–32767."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TIME(12,0,0)",
+        "result": "0.5"
+      },
+      {
+        "formula": "=TIME(16,48,10)",
+        "result": "0.700115741"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TIMEVALUE",
+    "category": "Date & Time",
+    "summary": "Converts a time written as text to a serial number.",
+    "syntax": "TIMEVALUE(time_text)",
+    "args": [
+      {
+        "name": "time_text",
+        "description": "Text such as \"6:35 AM\" or \"22-Aug-2011 6:35 AM\"."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=TIMEVALUE(\"2:24 AM\")",
+        "result": "0.1"
+      },
+      {
+        "formula": "=TIMEVALUE(\"22-Aug-2011 6:35 AM\")",
+        "result": "0.274305556"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "TODAY",
+    "category": "Date & Time",
+    "summary": "Returns today's date as a serial number.",
+    "syntax": "TODAY()",
+    "args": [],
+    "examples": [
+      {
+        "formula": "=TODAY()>DATE(2020,1,1)",
+        "result": "TRUE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "WEEKDAY",
+    "category": "Date & Time",
+    "summary": "Returns the day of the week for a date.",
+    "syntax": "WEEKDAY(serial_number, [return_type])",
+    "args": [
+      {
+        "name": "serial_number",
+        "description": "A date (serial number, or date text)."
+      },
+      {
+        "name": "return_type",
+        "description": "1 Sunday=1 (default), 2 Monday=1, 3 Monday=0, 11–17 week starting Monday–Sunday.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=WEEKDAY(DATE(2008,2,14))",
+        "result": "5"
+      },
+      {
+        "formula": "=WEEKDAY(DATE(2008,2,14),2)",
+        "result": "4"
+      },
+      {
+        "formula": "=WEEKDAY(DATE(2008,2,14),3)",
+        "result": "3"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "WEEKNUM",
+    "category": "Date & Time",
+    "summary": "Returns the week number of a date in the year.",
+    "syntax": "WEEKNUM(serial_number, [return_type])",
+    "args": [
+      {
+        "name": "serial_number",
+        "description": "A date (serial number, or date text)."
+      },
+      {
+        "name": "return_type",
+        "description": "1 week starts Sunday (default), 2 Monday, 11–17, or 21 for ISO weeks.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=WEEKNUM(DATE(2012,3,9))",
+        "result": "10"
+      },
+      {
+        "formula": "=WEEKNUM(DATE(2012,3,9),2)",
+        "result": "11"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "WORKDAY",
+    "category": "Date & Time",
+    "summary": "Returns the date a number of working days before or after a start date.",
+    "syntax": "WORKDAY(start_date, days, [holidays])",
+    "args": [
+      {
+        "name": "start_date",
+        "description": "The starting date."
+      },
+      {
+        "name": "days",
+        "description": "Working days before (negative) or after."
+      },
+      {
+        "name": "holidays",
+        "description": "Dates to exclude.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=WORKDAY(DATE(2008,10,1),151)",
+        "result": "39933"
+      },
+      {
+        "formula": "=WORKDAY(DATE(2008,10,1),151,{\"2008-11-26\",\"2008-12-04\",\"2009-01-21\"})",
+        "result": "39938"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "WORKDAY.INTL",
+    "category": "Date & Time",
+    "summary": "Returns the date a number of working days away, with custom weekends.",
+    "syntax": "WORKDAY.INTL(start_date, days, [weekend], [holidays])",
+    "args": [
+      {
+        "name": "start_date",
+        "description": "The starting date."
+      },
+      {
+        "name": "days",
+        "description": "Working days before (negative) or after."
+      },
+      {
+        "name": "weekend",
+        "description": "Weekend code or 7-character mask.",
+        "optional": true
+      },
+      {
+        "name": "holidays",
+        "description": "Dates to exclude.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=WORKDAY.INTL(DATE(2012,1,1),30,0)",
+        "result": "#NUM!"
+      },
+      {
+        "formula": "=WORKDAY.INTL(DATE(2012,1,1),90,11)",
+        "result": "41013"
+      },
+      {
+        "formula": "=WORKDAY.INTL(DATE(2012,1,1),30,17)",
+        "result": "40944"
+      }
+    ],
+    "since": "2010"
+  },
+  {
+    "name": "YEAR",
+    "category": "Date & Time",
+    "summary": "Returns the year of a date.",
+    "syntax": "YEAR(serial_number)",
+    "args": [
+      {
+        "name": "serial_number",
+        "description": "A date (serial number, or date text)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=YEAR(DATE(2008,7,5))",
+        "result": "2008"
+      },
+      {
+        "formula": "=YEAR(\"2010-07-05\")",
+        "result": "2010"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "YEARFRAC",
+    "category": "Date & Time",
+    "summary": "Returns the fraction of the year between two dates.",
+    "syntax": "YEARFRAC(start_date, end_date, [basis])",
+    "args": [
+      {
+        "name": "start_date",
+        "description": "The first date."
+      },
+      {
+        "name": "end_date",
+        "description": "The second date."
+      },
+      {
+        "name": "basis",
+        "description": "Day count basis: 0 US 30/360 (default), 1 actual/actual, 2 actual/360, 3 actual/365, 4 European 30/360.",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=YEARFRAC(DATE(2012,1,1),DATE(2012,7,30))",
+        "result": "0.580555556"
+      },
+      {
+        "formula": "=YEARFRAC(DATE(2012,1,1),DATE(2012,7,30),1)",
+        "result": "0.576502732"
+      },
+      {
+        "formula": "=YEARFRAC(DATE(2012,1,1),DATE(2012,7,30),3)",
+        "result": "0.578082192"
+      }
+    ],
+    "since": "2007"
+  }
+]

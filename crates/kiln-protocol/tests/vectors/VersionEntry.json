@@ -1,0 +1,22 @@
+{
+  "type": "VersionEntry",
+  "format": {
+    "TYPENAME": "VersionEntry"
+  },
+  "values": [
+    {
+      "id": "v3",
+      "name": "Draft for Saturday",
+      "author": "Zoë Okafor",
+      "time_ms": 1792000000000,
+      "origin": "Save"
+    },
+    {
+      "id": "",
+      "name": null,
+      "author": "",
+      "time_ms": 0,
+      "origin": "Save"
+    }
+  ]
+}

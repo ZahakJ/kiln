@@ -1,0 +1,45 @@
+{
+  "type": "CollabPeer",
+  "format": {
+    "TYPENAME": "CollabPeer"
+  },
+  "values": [
+    {
+      "peer": "1849302215568113",
+      "name": "Rana Okafor",
+      "initials": "RO",
+      "colour": "1D8A60",
+      "caret": {
+        "shape": null,
+        "para": 12,
+        "offset": 7
+      },
+      "anchor": null,
+      "slide": 4,
+      "shapes": [
+        9
+      ],
+      "at": {
+        "x": 96.0,
+        "y": 240.5,
+        "width": 1.5,
+        "height": 18.0
+      }
+    },
+    {
+      "peer": "",
+      "name": "",
+      "initials": "",
+      "colour": "",
+      "caret": null,
+      "anchor": {
+        "shape": null,
+        "para": 0,
+        "offset": 0
+      },
+      "slide": null,
+      "shapes": [],
+      "at": null
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Címdia",
+    "Cím és tartalom",
+    "Szakaszfejléc",
+    "2 tartalomrész",
+    "Összehasonlítás",
+    "Csak cím",
+    "Üres",
+    "Tartalomrész képaláírással",
+    "Kép képaláírással",
+    "Cím és függőleges szöveg",
+    "Függőleges cím és szöveg"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Címdia",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "cells": [
+      [
+       "Table with blue background in the first row."
+      ],
+      [
+       ""
+      ],
+      [
+       ""
+      ]
+     ],
+     "kind": "table",
+     "name": "Táblázat 3"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,365 @@
+# Builds every platform package from a version tag and attaches them, with SHA256SUMS.txt, to the
+# GitHub Release for that tag. docs/RELEASING.md is the runbook.
+#
+#   linux    AppImage + deb               (tauri-action, profile dist; tools/verify-bundles.sh)
+#   windows  NSIS .exe + .msi             (tauri-action, profile dist; signed when secrets exist)
+#   macos    .dmg for arm64 and x86_64    (tauri-action, profile dist; signed and notarised when
+#                                          secrets exist, unsigned otherwise)
+#   android  three APKs split per ABI     (pnpm tauri android build)
+#   web      kiln-web-<version>.tar.gz    (the web build)
+#
+# Every job asserts the installer size budgets (B13). Only `publish` holds a token
+# with write access.
+name: release
+
+on:
+  push:
+    tags: ['v*']
+  # A manual run builds and uploads workflow artifacts; it publishes a release only from a tag.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+  TURBO_TELEMETRY_DISABLED: 1
+
+jobs:
+  desktop:
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: linux
+            os: ubuntu-22.04
+            args: --bundles appimage,deb
+            targets: ''
+          - name: windows
+            os: windows-latest
+            args: --bundles nsis,msi
+            targets: ''
+          - name: macos-arm64
+            os: macos-latest
+            args: --target aarch64-apple-darwin --bundles dmg
+            targets: aarch64-apple-darwin
+          - name: macos-x64
+            os: macos-latest
+            args: --target x86_64-apple-darwin --bundles dmg
+            targets: x86_64-apple-darwin
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.1
+          targets: ${{ matrix.targets }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: release-${{ matrix.name }}
+
+      - name: Tauri Linux libraries
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev \
+            librsvg2-dev libxdo-dev libssl-dev patchelf file desktop-file-utils
+
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      # Signing hooks: each one is used when its secrets exist and skipped otherwise, so forks and
+      # first runs build unsigned packages (docs/RELEASING.md lists the secrets).
+      #   macOS     APPLE_CERTIFICATE (base64 .p12), APPLE_CERTIFICATE_PASSWORD,
+      #             APPLE_SIGNING_IDENTITY; notarisation with APPLE_ID, APPLE_PASSWORD, APPLE_TEAM_ID
+      #   Windows   WINDOWS_CERTIFICATE (base64 .pfx), WINDOWS_CERTIFICATE_PASSWORD
+      #   updater   TAURI_SIGNING_PRIVATE_KEY (+ _PASSWORD) and the public key in TAURI_UPDATER_PUBKEY:
+      #             the updater artefacts (latest.json, .sig) are made and the updater is switched on
+      - name: Signing
+        shell: bash
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          TAURI_UPDATER_PUBKEY: ${{ secrets.TAURI_UPDATER_PUBKEY }}
+        run: |
+          extra=''
+          if [ "$RUNNER_OS" = macOS ] && [ -n "$APPLE_CERTIFICATE" ]; then
+            {
+              echo "APPLE_CERTIFICATE=$APPLE_CERTIFICATE"
+              echo "APPLE_CERTIFICATE_PASSWORD=$APPLE_CERTIFICATE_PASSWORD"
+              echo "APPLE_SIGNING_IDENTITY=$APPLE_SIGNING_IDENTITY"
+            } >> "$GITHUB_ENV"
+            if [ -n "$APPLE_ID" ]; then
+              { echo "APPLE_ID=$APPLE_ID"; echo "APPLE_PASSWORD=$APPLE_PASSWORD"; echo "APPLE_TEAM_ID=$APPLE_TEAM_ID"; } >> "$GITHUB_ENV"
+            fi
+            echo "macOS: signing as $APPLE_SIGNING_IDENTITY"
+          elif [ "$RUNNER_OS" = macOS ]; then
+            echo "::notice::No Apple certificate secrets: the .dmg is unsigned."
+          fi
+          if [ "$RUNNER_OS" = Windows ] && [ -n "$WINDOWS_CERTIFICATE" ]; then
+            pfx="$RUNNER_TEMP/kiln.pfx"
+            printf '%s' "$WINDOWS_CERTIFICATE" | base64 -d > "$pfx"
+            thumb="$(powershell -NoProfile -Command "(Import-PfxCertificate -FilePath '$pfx' -CertStoreLocation Cert:\\CurrentUser\\My -Password (ConvertTo-SecureString -String \$env:WINDOWS_CERTIFICATE_PASSWORD -Force -AsPlainText)).Thumbprint")"
+            extra="$extra,\"windows\":{\"certificateThumbprint\":\"$thumb\",\"digestAlgorithm\":\"sha256\",\"timestampUrl\":\"http://timestamp.digicert.com\"}"
+            echo "Windows: signing with certificate $thumb"
+          elif [ "$RUNNER_OS" = Windows ]; then
+            echo "::notice::No Windows certificate secrets: the installers are unsigned."
+          fi
+          config='{}'
+          if [ -n "$TAURI_SIGNING_PRIVATE_KEY" ] && [ -n "$TAURI_UPDATER_PUBKEY" ]; then
+            { echo "TAURI_SIGNING_PRIVATE_KEY=$TAURI_SIGNING_PRIVATE_KEY"; echo "TAURI_SIGNING_PRIVATE_KEY_PASSWORD=$TAURI_SIGNING_PRIVATE_KEY_PASSWORD"; } >> "$GITHUB_ENV"
+            config="{\"bundle\":{\"createUpdaterArtifacts\":true$extra},\"plugins\":{\"updater\":{\"pubkey\":\"$TAURI_UPDATER_PUBKEY\"}}}"
+          elif [ -n "$extra" ]; then
+            config="{\"bundle\":{${extra#,}}}"
+          fi
+          printf '%s' "$config" > "$RUNNER_TEMP/kiln-release.json"
+          echo "KILN_RELEASE_CONFIG=$RUNNER_TEMP/kiln-release.json" >> "$GITHUB_ENV"
+
+      # The .cargo/config.toml wrapper is sccache; release builds run without it. The bundles land
+      # in target/<target>/dist/bundle (profile dist: fat LTO, one codegen unit).
+      - name: Build the bundles
+        uses: tauri-apps/tauri-action@v1
+        env:
+          RUSTC_WRAPPER: ''
+          CARGO_BUILD_RUSTC_WRAPPER: ''
+        with:
+          projectPath: apps/desktop
+          tauriScript: pnpm tauri
+          args: ${{ matrix.args }} --config ${{ env.KILN_RELEASE_CONFIG }} -- --profile dist
+
+      - name: Check the Linux bundles
+        if: runner.os == 'Linux'
+        run: bash tools/verify-bundles.sh target/dist/bundle
+
+      - name: Collect the bundles
+        shell: bash
+        run: |
+          mkdir -p out
+          find target -path '*/dist/bundle/*' -type f \
+            \( -name '*.AppImage' -o -name '*.deb' -o -name '*-setup.exe' -o -name '*.msi' -o -name '*.dmg' \
+               -o -name '*.sig' -o -name '*.tar.gz' -o -name '*.zip' \) \
+            -exec cp {} out/ \;
+          ls -la out
+          test -n "$(ls out)"
+
+      # B13: AppImage < 130 MB, deb < 30 MB, NSIS < 30 MB, dmg < 35 MB (amended 2026-10-30).
+      - name: Installer size budget (B13)
+        shell: bash
+        run: |
+          fail=0
+          for f in out/*; do
+            case "$f" in
+              *.AppImage) max=130 ;; *.deb) max=30 ;; *.exe) max=30 ;; *.msi) max=30 ;; *.dmg) max=35 ;; *) continue ;;
+            esac
+            size=$(wc -c < "$f")
+            mb=$(( (size + 1048575) / 1048576 ))
+            echo "$(basename "$f"): ${mb} MB (budget ${max} MB)"
+            echo "- $(basename "$f"): ${mb} MB (budget ${max} MB)" >> "$GITHUB_STEP_SUMMARY"
+            [ "$size" -le $(( max * 1048576 )) ] || fail=1
+          done
+          exit $fail
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.name }}
+          path: out/*
+          if-no-files-found: error
+
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: android-actions/setup-android@v4
+        with:
+          packages: 'platforms;android-36 build-tools;36.0.0 ndk;29.0.14206865'
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.1
+          targets: aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: release-android
+
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      # The release key comes from repository secrets (docs/RELEASING.md): the keystore in
+      # ANDROID_KEYSTORE_B64 (base64), its password in ANDROID_KEYSTORE_PASSWORD, the key's alias
+      # in ANDROID_KEY_ALIAS (default kiln) and its password in ANDROID_KEY_PASSWORD (default: the
+      # keystore's). Gradle reads them as KILN_KEYSTORE, KILN_KEYSTORE_PASSWORD, KILN_KEY_ALIAS and
+      # KILN_KEY_PASSWORD (gen/android/app/build.gradle.kts). Without them (forks, before the key
+      # exists) the APKs are signed with a throwaway debug key: they install, but cannot update an
+      # install signed with the release key.
+      - name: Signing key
+        env:
+          ANDROID_KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -n "$ANDROID_KEYSTORE_B64" ] && [ -n "$ANDROID_KEYSTORE_PASSWORD" ]; then
+            ks="$RUNNER_TEMP/keys/release.jks"
+            mkdir -p "$(dirname "$ks")"
+            printf '%s' "$ANDROID_KEYSTORE_B64" | base64 -d > "$ks"
+            echo "::add-mask::$ANDROID_KEYSTORE_PASSWORD"
+            {
+              echo "KILN_KEYSTORE=$ks"
+              echo "KILN_KEYSTORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD"
+              echo "KILN_KEY_ALIAS=${ANDROID_KEY_ALIAS:-kiln}"
+            } >> "$GITHUB_ENV"
+            if [ -n "$ANDROID_KEY_PASSWORD" ]; then
+              echo "::add-mask::$ANDROID_KEY_PASSWORD"
+              echo "KILN_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
+            fi
+            echo "Android: signing with the release key"
+          elif [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            # A release signed with a debug key could never be updated by the next one.
+            echo "::error::No Android release key secrets (ANDROID_KEYSTORE_B64, ANDROID_KEYSTORE_PASSWORD): a tagged release is never signed with a debug key."
+            exit 1
+          else
+            echo "::warning::No Android release key secrets: the APKs are signed with a throwaway debug key."
+          fi
+
+      # One APK per ABI (Tauri's product flavours arm64, arm and x86_64); the core is the release
+      # profile. The .cargo/config.toml wrapper is sccache; release builds run without it.
+      - name: Build the APKs
+        env:
+          NDK_HOME: ${{ env.ANDROID_SDK_ROOT }}/ndk/29.0.14206865
+          RUSTC_WRAPPER: ''
+          CARGO_BUILD_RUSTC_WRAPPER: ''
+        run: pnpm tauri android build --apk --split-per-abi --target aarch64 armv7 x86_64
+
+      - name: Collect the APKs
+        run: |
+          case "$GITHUB_REF" in
+            refs/tags/v*) version="${GITHUB_REF_NAME#v}" ;;
+            *) version="$(jq -r .version apps/desktop/src-tauri/tauri.conf.json)" ;;
+          esac
+          outputs=apps/desktop/src-tauri/gen/android/app/build/outputs/apk
+          mkdir -p out
+          for pair in arm64:arm64-v8a arm:armeabi-v7a x86_64:x86_64; do
+            flavor="${pair%%:*}" abi="${pair#*:}"
+            apk="$outputs/$flavor/release/app-$flavor-release.apk"
+            test -f "$apk" || { echo "::error::no APK for $abi ($apk)"; exit 1; }
+            cp "$apk" "out/kiln-${version}-${abi}.apk"
+          done
+          ls -la out
+
+      # tools/verify-apk.sh: package, intent filters, signature, contents and B13 (< 35 MB).
+      # On a tag, --release fails an APK signed with the debug key.
+      - name: Check the APKs (B13)
+        run: |
+          release=''
+          case "$GITHUB_REF" in refs/tags/v*) release=--release ;; esac
+          for f in out/*.apk; do
+            bash tools/verify-apk.sh $release "$f"
+            size=$(wc -c < "$f")
+            echo "- $(basename "$f"): $(( (size + 1048575) / 1048576 )) MB (budget 35 MB)" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: android
+          path: out/*.apk
+          if-no-files-found: error
+
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.1
+          # rust-src: the Grid core's threads module rebuilds the standard library with atomics.
+          components: rust-src
+          targets: wasm32-unknown-unknown
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-bindgen@0.2.129
+      - name: binaryen
+        run: |
+          curl -4 -LsSf https://github.com/WebAssembly/binaryen/releases/download/version_133/binaryen-version_133-x86_64-linux.tar.gz | tar xz -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/binaryen-version_133/bin" >> "$GITHUB_PATH"
+      - name: WebAssembly core
+        env:
+          RUSTC_WRAPPER: ''
+          CARGO_BUILD_RUSTC_WRAPPER: ''
+        run: cargo xtask wasm --release --ci
+      - name: Build and pack the web app
+        run: |
+          pnpm --filter @kiln/web build
+          version="${GITHUB_REF_NAME#v}"
+          mkdir -p out
+          tar -C apps/web/dist -czf "out/kiln-web-${version}.tar.gz" .
+          ls -la out
+      - uses: actions/upload-artifact@v7
+        with:
+          name: web
+          path: out/*.tar.gz
+          if-no-files-found: error
+
+  publish:
+    needs: [desktop, android, web]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: assets
+          merge-multiple: true
+
+      - name: SHA256SUMS.txt
+        run: |
+          cd assets
+          rm -f SHA256SUMS.txt
+          sha256sum -- * > ../SHA256SUMS.txt
+          mv ../SHA256SUMS.txt .
+          cat SHA256SUMS.txt
+
+      - uses: softprops/action-gh-release@v3
+        with:
+          files: assets/*
+          generate_release_notes: true
+          fail_on_unmatched_files: true

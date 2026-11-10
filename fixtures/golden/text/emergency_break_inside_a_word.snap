@@ -1,0 +1,10 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 5 | glyphs 68 | height 89.52 | rtl false
+ 0 wrap      g=9   x=0       w=57.95   top=0       h=17.9   base=13.96   |Sequence|
+ 1 emergency g=18  x=0       w=145.84  top=17.9    h=17.9   base=31.87   |ACGTTGCAACGTTGCAAC|
+ 2 emergency g=18  x=0       w=146.29  top=35.81   h=17.9   base=49.77   |GTTGCAACGTTGCAACGT|
+ 3 wrap      g=18  x=0       w=128.93  top=53.71   h=17.9   base=67.68   |TGCAACGTTGCA ends|
+ 4 end       g=5   x=0       w=30.92   top=71.61   h=17.9   base=85.58   |here.|
+substitutions: Calibri -> Carlito (MetricCompatible)

@@ -1,0 +1,170 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 9,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Column Clustered"
+    },
+    {
+     "kind": "chart",
+     "name": "Chart 2"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Bar Stacked"
+    },
+    {
+     "kind": "chart",
+     "name": "Chart 2"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Line Markers"
+    },
+    {
+     "kind": "chart",
+     "name": "Chart 2"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Pie"
+    },
+    {
+     "kind": "chart",
+     "name": "Chart 2"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Doughnut"
+    },
+    {
+     "kind": "chart",
+     "name": "Chart 2"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Area"
+    },
+    {
+     "kind": "chart",
+     "name": "Chart 2"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Radar"
+    },
+    {
+     "kind": "chart",
+     "name": "Chart 2"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Scatter"
+    },
+    {
+     "kind": "chart",
+     "name": "Chart 2"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Bubble"
+    },
+    {
+     "kind": "chart",
+     "name": "Chart 2"
+    }
+   ]
+  }
+ ]
+}

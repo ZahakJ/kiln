@@ -1,0 +1,11 @@
+{
+  "type": "DeckPictureFormat",
+  "format": {
+    "TYPENAME": "DeckPictureFormat"
+  },
+  "values": [
+    "Png",
+    "Jpeg",
+    "Png"
+  ]
+}

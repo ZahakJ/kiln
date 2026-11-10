@@ -1,0 +1,105 @@
+{
+  "type": "GridHit",
+  "format": {
+    "TYPENAME": "GridHit"
+  },
+  "values": [
+    "None",
+    {
+      "Cell": {
+        "row": 3,
+        "col": 9
+      }
+    },
+    "FillHandle",
+    {
+      "ColumnBorder": {
+        "col": 2,
+        "start": 172.5,
+        "size": 64.0
+      }
+    },
+    "Corner",
+    {
+      "Drawing": {
+        "index": 1
+      }
+    },
+    {
+      "DrawingHandle": {
+        "index": 0,
+        "handle": 4
+      }
+    },
+    {
+      "FilterButton": {
+        "row": 0,
+        "col": 3
+      }
+    },
+    "ListButton",
+    {
+      "PivotButton": {
+        "row": 2,
+        "col": 0
+      }
+    },
+    {
+      "OutlineLevel": {
+        "columns": false,
+        "level": 2
+      }
+    },
+    {
+      "OutlineToggle": {
+        "columns": true,
+        "index": 5
+      }
+    },
+    {
+      "PageBreak": {
+        "columns": true,
+        "index": 7
+      }
+    },
+    {
+      "SelectionBorder": {
+        "row": 4,
+        "col": 2
+      }
+    },
+    "ErrorButton",
+    "None",
+    {
+      "Cell": {
+        "row": 0,
+        "col": 0
+      }
+    },
+    "FillHandle",
+    {
+      "ColumnHeader": {
+        "col": 0
+      }
+    },
+    {
+      "RowHeader": {
+        "row": 0
+      }
+    },
+    {
+      "ColumnBorder": {
+        "col": 0,
+        "start": 0.0,
+        "size": 0.0
+      }
+    },
+    {
+      "RowBorder": {
+        "row": 0,
+        "start": 0.0,
+        "size": 0.0
+      }
+    }
+  ]
+}

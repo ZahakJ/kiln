@@ -1,0 +1,58 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "探索",
+    "智能",
+    "1_创新",
+    "攀登"
+   ]
+  },
+  {
+   "layouts": []
+  },
+  {
+   "layouts": [
+    "章节页"
+   ]
+  },
+  {
+   "layouts": [
+    "结束页"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  12196763,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "章节页",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Subtitle 1",
+     "text": ""
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Gdfafsdafafa\n嘿嘿\n哈哈哈哈哈\n\n呵呵呵\n\n"
+    },
+    {
+     "kind": "textbox",
+     "name": "Content Placeholder 2",
+     "text": ""
+    },
+    {
+     "kind": "ole",
+     "name": "对象 3"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,41 @@
+{
+  "corpus": {
+    "generated": 186,
+    "realWorld": 150
+  },
+  "formats": [
+    {
+      "files": 90,
+      "format": "docx",
+      "passing": 90,
+      "structural": 1.0,
+      "text": 1.0,
+      "visual": 0.916
+    },
+    {
+      "files": 102,
+      "format": "xlsx",
+      "passing": 102,
+      "structural": 1.0,
+      "text": 1.0,
+      "visual": 0.9
+    },
+    {
+      "files": 81,
+      "format": "pptx",
+      "passing": 81,
+      "structural": 1.0,
+      "text": 1.0,
+      "visual": 0.999
+    },
+    {
+      "files": 63,
+      "format": "odf",
+      "passing": 63,
+      "structural": 0.979,
+      "text": 1.0,
+      "visual": 0.812
+    }
+  ],
+  "oracle": "LibreOffice"
+}

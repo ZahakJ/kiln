@@ -1,0 +1,16 @@
+{
+  "type": "RowHeightSpec",
+  "format": {
+    "TYPENAME": "RowHeightSpec"
+  },
+  "values": [
+    {
+      "points": 14.5,
+      "exact": true
+    },
+    {
+      "points": 0.0,
+      "exact": false
+    }
+  ]
+}

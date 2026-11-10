@@ -1,0 +1,12 @@
+{
+  "type": "GridPivotArea",
+  "format": {
+    "TYPENAME": "GridPivotArea"
+  },
+  "values": [
+    "Filters",
+    "Values",
+    "Filters",
+    "Columns"
+  ]
+}

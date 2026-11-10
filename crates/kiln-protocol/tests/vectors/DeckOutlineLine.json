@@ -1,0 +1,16 @@
+{
+  "type": "DeckOutlineLine",
+  "format": {
+    "TYPENAME": "DeckOutlineLine"
+  },
+  "values": [
+    {
+      "level": 0,
+      "text": "Clay"
+    },
+    {
+      "level": 0,
+      "text": ""
+    }
+  ]
+}

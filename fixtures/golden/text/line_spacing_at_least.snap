@@ -1,0 +1,10 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 5 | glyphs 219 | height 120 | rtl false
+ 0 wrap      g=50  x=0       w=285.42  top=0       h=24     base=20.06   |Kiln is an office suite that opens, edits and saves|
+ 1 wrap      g=46  x=0       w=273.17  top=24      h=24     base=44.06   |real Microsoft Office files. It feels immediately|
+ 2 wrap      g=49  x=0       w=285.46  top=48      h=24     base=68.06   |familiar to Office users while looking and feeling|
+ 3 wrap      g=49  x=0       w=282.46  top=72      h=24     base=92.06   |like its own product: warmer, calmer and faster,|
+ 4 end       g=25  x=0       w=152.9   top=96      h=24     base=116.06  |with features Office lacks.|
+substitutions: Calibri -> Carlito (MetricCompatible)

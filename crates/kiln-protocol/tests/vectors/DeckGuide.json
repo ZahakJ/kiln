@@ -1,0 +1,20 @@
+{
+  "type": "DeckGuide",
+  "format": {
+    "TYPENAME": "DeckGuide"
+  },
+  "values": [
+    {
+      "horizontal": true,
+      "pos": 360.0
+    },
+    {
+      "horizontal": false,
+      "pos": 120.5
+    },
+    {
+      "horizontal": false,
+      "pos": 0.0
+    }
+  ]
+}

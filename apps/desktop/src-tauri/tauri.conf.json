@@ -1,0 +1,437 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Kiln",
+  "mainBinaryName": "kiln",
+  "version": "0.1.0",
+  "identifier": "io.github.zahakj.kiln",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "pnpm --filter @kiln/commands desktop:menu && pnpm --filter @kiln/web dev",
+    "beforeBuildCommand": "pnpm --filter @kiln/commands desktop:menu && pnpm --filter @kiln/web build && pnpm --filter @kiln/desktop frontend"
+  },
+  "app": {
+    "windows": [],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost; worker-src 'self' blob:"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "appimage",
+      "deb",
+      "nsis",
+      "msi",
+      "dmg"
+    ],
+    "createUpdaterArtifacts": false,
+    "publisher": "The Kiln contributors",
+    "homepage": "https://github.com/ZahakJ/kiln",
+    "license": "AGPL-3.0-or-later",
+    "licenseFile": "../../../LICENSE",
+    "category": "Productivity",
+    "shortDescription": "Documents, spreadsheets and slides",
+    "longDescription": "Kiln is an open-source office suite: Kiln Write, Kiln Grid and Kiln Deck.",
+    "copyright": "Copyright the Kiln contributors. AGPL-3.0-or-later.",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "fileAssociations": [
+      {
+        "ext": [
+          "docx"
+        ],
+        "name": "Word Document",
+        "description": "Kiln Write document (Word)",
+        "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "role": "Editor",
+        "rank": "Default",
+        "contentTypes": [
+          "org.openxmlformats.wordprocessingml.document"
+        ]
+      },
+      {
+        "ext": [
+          "dotx"
+        ],
+        "name": "Word Template",
+        "description": "Kiln Write template (Word)",
+        "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+        "role": "Editor",
+        "rank": "Default",
+        "contentTypes": [
+          "org.openxmlformats.wordprocessingml.template"
+        ]
+      },
+      {
+        "ext": [
+          "docm"
+        ],
+        "name": "Word Macro-Enabled Document",
+        "description": "Kiln Write document with macros (Word)",
+        "mimeType": "application/vnd.ms-word.document.macroEnabled.12",
+        "role": "Editor",
+        "rank": "Default",
+        "contentTypes": [
+          "org.openxmlformats.wordprocessingml.document.macroenabled"
+        ]
+      },
+      {
+        "ext": [
+          "odt"
+        ],
+        "name": "OpenDocument Text",
+        "description": "Kiln Write document (OpenDocument)",
+        "mimeType": "application/vnd.oasis.opendocument.text",
+        "role": "Editor",
+        "rank": "Default",
+        "contentTypes": [
+          "org.oasis-open.opendocument.text"
+        ]
+      },
+      {
+        "ext": [
+          "kwrite"
+        ],
+        "name": "Kiln Write Document",
+        "description": "Kiln Write document",
+        "mimeType": "application/x-kiln-write",
+        "role": "Editor",
+        "rank": "Owner",
+        "exportedType": {
+          "identifier": "io.github.zahakj.kiln.kwrite",
+          "conformsTo": [
+            "public.zip-archive",
+            "public.content"
+          ]
+        }
+      },
+      {
+        "ext": [
+          "xlsx"
+        ],
+        "name": "Excel Workbook",
+        "description": "Kiln Grid workbook (Excel)",
+        "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "role": "Editor",
+        "rank": "Default",
+        "contentTypes": [
+          "org.openxmlformats.spreadsheetml.sheet"
+        ]
+      },
+      {
+        "ext": [
+          "xltx"
+        ],
+        "name": "Excel Template",
+        "description": "Kiln Grid template (Excel)",
+        "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
+        "role": "Editor",
+        "rank": "Default",
+        "contentTypes": [
+          "org.openxmlformats.spreadsheetml.template"
+        ]
+      },
+      {
+        "ext": [
+          "xlsm"
+        ],
+        "name": "Excel Macro-Enabled Workbook",
+        "description": "Kiln Grid workbook with macros (Excel)",
+        "mimeType": "application/vnd.ms-excel.sheet.macroEnabled.12",
+        "role": "Editor",
+        "rank": "Default",
+        "contentTypes": [
+          "org.openxmlformats.spreadsheetml.sheet.macroenabled"
+        ]
+      },
+      {
+        "ext": [
+          "csv"
+        ],
+        "name": "CSV",
+        "description": "Kiln Grid comma-separated values",
+        "mimeType": "text/csv",
+        "role": "Editor",
+        "rank": "Default",
+        "contentTypes": [
+          "public.comma-separated-values-text"
+        ]
+      },
+      {
+        "ext": [
+          "ods"
+        ],
+        "name": "OpenDocument Spreadsheet",
+        "description": "Kiln Grid workbook (OpenDocument)",
+        "mimeType": "application/vnd.oasis.opendocument.spreadsheet",
+        "role": "Editor",
+        "rank": "Default",
+        "contentTypes": [
+          "org.oasis-open.opendocument.spreadsheet"
+        ]
+      },
+      {
+        "ext": [
+          "kgrid"
+        ],
+        "name": "Kiln Grid Workbook",
+        "description": "Kiln Grid workbook",
+        "mimeType": "application/x-kiln-grid",
+        "role": "Editor",
+        "rank": "Owner",
+        "exportedType": {
+          "identifier": "io.github.zahakj.kiln.kgrid",
+          "conformsTo": [
+            "public.zip-archive",
+            "public.content"
+          ]
+        }
+      },
+      {
+        "ext": [
+          "pptx"
+        ],
+        "name": "PowerPoint Presentation",
+        "description": "Kiln Deck presentation (PowerPoint)",
+        "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "role": "Editor",
+        "rank": "Default",
+        "contentTypes": [
+          "org.openxmlformats.presentationml.presentation"
+        ]
+      },
+      {
+        "ext": [
+          "potx"
+        ],
+        "name": "PowerPoint Template",
+        "description": "Kiln Deck template (PowerPoint)",
+        "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.template",
+        "role": "Editor",
+        "rank": "Default",
+        "contentTypes": [
+          "org.openxmlformats.presentationml.template"
+        ]
+      },
+      {
+        "ext": [
+          "pptm"
+        ],
+        "name": "PowerPoint Macro-Enabled Presentation",
+        "description": "Kiln Deck presentation with macros (PowerPoint)",
+        "mimeType": "application/vnd.ms-powerpoint.presentation.macroEnabled.12",
+        "role": "Editor",
+        "rank": "Default",
+        "contentTypes": [
+          "org.openxmlformats.presentationml.presentation.macroenabled"
+        ]
+      },
+      {
+        "ext": [
+          "odp"
+        ],
+        "name": "OpenDocument Presentation",
+        "description": "Kiln Deck presentation (OpenDocument)",
+        "mimeType": "application/vnd.oasis.opendocument.presentation",
+        "role": "Editor",
+        "rank": "Default",
+        "contentTypes": [
+          "org.oasis-open.opendocument.presentation"
+        ]
+      },
+      {
+        "ext": [
+          "kdeck"
+        ],
+        "name": "Kiln Deck Presentation",
+        "description": "Kiln Deck presentation",
+        "mimeType": "application/x-kiln-deck",
+        "role": "Editor",
+        "rank": "Owner",
+        "exportedType": {
+          "identifier": "io.github.zahakj.kiln.kdeck",
+          "conformsTo": [
+            "public.zip-archive",
+            "public.content"
+          ]
+        }
+      }
+    ],
+    "linux": {
+      "deb": {
+        "section": "editors",
+        "priority": "optional",
+        "desktopTemplate": "bundle/linux/kiln.desktop",
+        "files": {
+          "/usr/share/mime/packages/kiln.xml": "bundle/linux/kiln.xml",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.document.png": "icons/filetypes/write-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.document.png": "icons/filetypes/write-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.document.png": "icons/filetypes/write-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.document.png": "icons/filetypes/write-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.document.png": "icons/filetypes/write-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.document.png": "icons/filetypes/write-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.document.png": "icons/filetypes/write-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.template.png": "icons/filetypes/write-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.template.png": "icons/filetypes/write-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.template.png": "icons/filetypes/write-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.template.png": "icons/filetypes/write-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.template.png": "icons/filetypes/write-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.template.png": "icons/filetypes/write-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.template.png": "icons/filetypes/write-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-vnd.ms-word.document.macroEnabled.12.png": "icons/filetypes/write-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-vnd.ms-word.document.macroEnabled.12.png": "icons/filetypes/write-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-vnd.ms-word.document.macroEnabled.12.png": "icons/filetypes/write-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-vnd.ms-word.document.macroEnabled.12.png": "icons/filetypes/write-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-vnd.ms-word.document.macroEnabled.12.png": "icons/filetypes/write-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-vnd.ms-word.document.macroEnabled.12.png": "icons/filetypes/write-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-vnd.ms-word.document.macroEnabled.12.png": "icons/filetypes/write-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-vnd.oasis.opendocument.text.png": "icons/filetypes/write-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-vnd.oasis.opendocument.text.png": "icons/filetypes/write-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-vnd.oasis.opendocument.text.png": "icons/filetypes/write-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-vnd.oasis.opendocument.text.png": "icons/filetypes/write-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-vnd.oasis.opendocument.text.png": "icons/filetypes/write-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-vnd.oasis.opendocument.text.png": "icons/filetypes/write-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-vnd.oasis.opendocument.text.png": "icons/filetypes/write-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-x-kiln-write.png": "icons/filetypes/write-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-x-kiln-write.png": "icons/filetypes/write-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-x-kiln-write.png": "icons/filetypes/write-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-x-kiln-write.png": "icons/filetypes/write-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-x-kiln-write.png": "icons/filetypes/write-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-x-kiln-write.png": "icons/filetypes/write-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-x-kiln-write.png": "icons/filetypes/write-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-vnd.openxmlformats-officedocument.spreadsheetml.sheet.png": "icons/filetypes/grid-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-vnd.openxmlformats-officedocument.spreadsheetml.sheet.png": "icons/filetypes/grid-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-vnd.openxmlformats-officedocument.spreadsheetml.sheet.png": "icons/filetypes/grid-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-vnd.openxmlformats-officedocument.spreadsheetml.sheet.png": "icons/filetypes/grid-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-vnd.openxmlformats-officedocument.spreadsheetml.sheet.png": "icons/filetypes/grid-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-vnd.openxmlformats-officedocument.spreadsheetml.sheet.png": "icons/filetypes/grid-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-vnd.openxmlformats-officedocument.spreadsheetml.sheet.png": "icons/filetypes/grid-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-vnd.openxmlformats-officedocument.spreadsheetml.template.png": "icons/filetypes/grid-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-vnd.openxmlformats-officedocument.spreadsheetml.template.png": "icons/filetypes/grid-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-vnd.openxmlformats-officedocument.spreadsheetml.template.png": "icons/filetypes/grid-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-vnd.openxmlformats-officedocument.spreadsheetml.template.png": "icons/filetypes/grid-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-vnd.openxmlformats-officedocument.spreadsheetml.template.png": "icons/filetypes/grid-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-vnd.openxmlformats-officedocument.spreadsheetml.template.png": "icons/filetypes/grid-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-vnd.openxmlformats-officedocument.spreadsheetml.template.png": "icons/filetypes/grid-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-vnd.ms-excel.sheet.macroEnabled.12.png": "icons/filetypes/grid-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-vnd.ms-excel.sheet.macroEnabled.12.png": "icons/filetypes/grid-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-vnd.ms-excel.sheet.macroEnabled.12.png": "icons/filetypes/grid-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-vnd.ms-excel.sheet.macroEnabled.12.png": "icons/filetypes/grid-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-vnd.ms-excel.sheet.macroEnabled.12.png": "icons/filetypes/grid-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-vnd.ms-excel.sheet.macroEnabled.12.png": "icons/filetypes/grid-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-vnd.ms-excel.sheet.macroEnabled.12.png": "icons/filetypes/grid-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/text-csv.png": "icons/filetypes/grid-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/text-csv.png": "icons/filetypes/grid-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/text-csv.png": "icons/filetypes/grid-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/text-csv.png": "icons/filetypes/grid-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/text-csv.png": "icons/filetypes/grid-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/text-csv.png": "icons/filetypes/grid-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/text-csv.png": "icons/filetypes/grid-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-vnd.oasis.opendocument.spreadsheet.png": "icons/filetypes/grid-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-vnd.oasis.opendocument.spreadsheet.png": "icons/filetypes/grid-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-vnd.oasis.opendocument.spreadsheet.png": "icons/filetypes/grid-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-vnd.oasis.opendocument.spreadsheet.png": "icons/filetypes/grid-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-vnd.oasis.opendocument.spreadsheet.png": "icons/filetypes/grid-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-vnd.oasis.opendocument.spreadsheet.png": "icons/filetypes/grid-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-vnd.oasis.opendocument.spreadsheet.png": "icons/filetypes/grid-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-x-kiln-grid.png": "icons/filetypes/grid-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-x-kiln-grid.png": "icons/filetypes/grid-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-x-kiln-grid.png": "icons/filetypes/grid-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-x-kiln-grid.png": "icons/filetypes/grid-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-x-kiln-grid.png": "icons/filetypes/grid-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-x-kiln-grid.png": "icons/filetypes/grid-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-x-kiln-grid.png": "icons/filetypes/grid-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-vnd.openxmlformats-officedocument.presentationml.presentation.png": "icons/filetypes/deck-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-vnd.openxmlformats-officedocument.presentationml.presentation.png": "icons/filetypes/deck-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-vnd.openxmlformats-officedocument.presentationml.presentation.png": "icons/filetypes/deck-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-vnd.openxmlformats-officedocument.presentationml.presentation.png": "icons/filetypes/deck-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-vnd.openxmlformats-officedocument.presentationml.presentation.png": "icons/filetypes/deck-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-vnd.openxmlformats-officedocument.presentationml.presentation.png": "icons/filetypes/deck-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-vnd.openxmlformats-officedocument.presentationml.presentation.png": "icons/filetypes/deck-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-vnd.openxmlformats-officedocument.presentationml.template.png": "icons/filetypes/deck-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-vnd.openxmlformats-officedocument.presentationml.template.png": "icons/filetypes/deck-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-vnd.openxmlformats-officedocument.presentationml.template.png": "icons/filetypes/deck-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-vnd.openxmlformats-officedocument.presentationml.template.png": "icons/filetypes/deck-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-vnd.openxmlformats-officedocument.presentationml.template.png": "icons/filetypes/deck-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-vnd.openxmlformats-officedocument.presentationml.template.png": "icons/filetypes/deck-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-vnd.openxmlformats-officedocument.presentationml.template.png": "icons/filetypes/deck-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-vnd.ms-powerpoint.presentation.macroEnabled.12.png": "icons/filetypes/deck-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-vnd.ms-powerpoint.presentation.macroEnabled.12.png": "icons/filetypes/deck-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-vnd.ms-powerpoint.presentation.macroEnabled.12.png": "icons/filetypes/deck-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-vnd.ms-powerpoint.presentation.macroEnabled.12.png": "icons/filetypes/deck-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-vnd.ms-powerpoint.presentation.macroEnabled.12.png": "icons/filetypes/deck-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-vnd.ms-powerpoint.presentation.macroEnabled.12.png": "icons/filetypes/deck-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-vnd.ms-powerpoint.presentation.macroEnabled.12.png": "icons/filetypes/deck-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-vnd.oasis.opendocument.presentation.png": "icons/filetypes/deck-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-vnd.oasis.opendocument.presentation.png": "icons/filetypes/deck-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-vnd.oasis.opendocument.presentation.png": "icons/filetypes/deck-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-vnd.oasis.opendocument.presentation.png": "icons/filetypes/deck-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-vnd.oasis.opendocument.presentation.png": "icons/filetypes/deck-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-vnd.oasis.opendocument.presentation.png": "icons/filetypes/deck-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-vnd.oasis.opendocument.presentation.png": "icons/filetypes/deck-256.png",
+          "/usr/share/icons/hicolor/16x16/mimetypes/application-x-kiln-deck.png": "icons/filetypes/deck-16.png",
+          "/usr/share/icons/hicolor/24x24/mimetypes/application-x-kiln-deck.png": "icons/filetypes/deck-24.png",
+          "/usr/share/icons/hicolor/32x32/mimetypes/application-x-kiln-deck.png": "icons/filetypes/deck-32.png",
+          "/usr/share/icons/hicolor/48x48/mimetypes/application-x-kiln-deck.png": "icons/filetypes/deck-48.png",
+          "/usr/share/icons/hicolor/64x64/mimetypes/application-x-kiln-deck.png": "icons/filetypes/deck-64.png",
+          "/usr/share/icons/hicolor/128x128/mimetypes/application-x-kiln-deck.png": "icons/filetypes/deck-128.png",
+          "/usr/share/icons/hicolor/256x256/mimetypes/application-x-kiln-deck.png": "icons/filetypes/deck-256.png"
+        }
+      },
+      "appimage": {
+        "bundleMediaFramework": false
+      }
+    },
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": [
+          "English",
+          "German",
+          "Arabic"
+        ],
+        "displayLanguageSelector": false,
+        "installerIcon": "icons/icon.ico"
+      },
+      "wix": {
+        "language": "en-US"
+      }
+    },
+    "macOS": {
+      "minimumSystemVersion": "11.0",
+      "hardenedRuntime": true,
+      "signingIdentity": null,
+      "dmg": {
+        "windowSize": {
+          "width": 660,
+          "height": 400
+        },
+        "appPosition": {
+          "x": 180,
+          "y": 200
+        },
+        "applicationFolderPosition": {
+          "x": 480,
+          "y": 200
+        }
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "",
+      "endpoints": [
+        "https://github.com/ZahakJ/kiln/releases/latest/download/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  }
+}

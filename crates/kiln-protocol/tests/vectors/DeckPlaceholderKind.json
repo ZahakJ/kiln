@@ -1,0 +1,16 @@
+{
+  "type": "DeckPlaceholderKind",
+  "format": {
+    "TYPENAME": "DeckPlaceholderKind"
+  },
+  "values": [
+    "Content",
+    "Picture",
+    "Media",
+    "Content",
+    "Text",
+    "Picture",
+    "Chart",
+    "Table"
+  ]
+}

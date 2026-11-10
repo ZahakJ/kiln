@@ -1,0 +1,11 @@
+{
+  "type": "GridErrorStyle",
+  "format": {
+    "TYPENAME": "GridErrorStyle"
+  },
+  "values": [
+    "Stop",
+    "Information",
+    "Stop"
+  ]
+}

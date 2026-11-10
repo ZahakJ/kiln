@@ -1,0 +1,26 @@
+{
+  "type": "DeckSlideInfo",
+  "format": {
+    "TYPENAME": "DeckSlideInfo"
+  },
+  "values": [
+    {
+      "id": 3,
+      "title": "Every ticket fires the next kiln.",
+      "hidden": false,
+      "layout": "Title and Content",
+      "notes": true,
+      "motion": true,
+      "version": 9007199254740991
+    },
+    {
+      "id": 0,
+      "title": "",
+      "hidden": false,
+      "layout": "",
+      "notes": false,
+      "motion": false,
+      "version": 0
+    }
+  ]
+}

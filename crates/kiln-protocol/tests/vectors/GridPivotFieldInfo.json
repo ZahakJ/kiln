@@ -1,0 +1,59 @@
+{
+  "type": "GridPivotFieldInfo",
+  "format": {
+    "TYPENAME": "GridPivotFieldInfo"
+  },
+  "values": [
+    {
+      "name": "Region",
+      "numeric": false,
+      "area": "Rows",
+      "values": 0,
+      "filtered": true,
+      "settings": {
+        "caption": "Area",
+        "subtotals": {
+          "Custom": [
+            "Max"
+          ]
+        },
+        "sort": "Descending",
+        "sort_by_value": 0,
+        "hidden": [
+          "(blank)"
+        ],
+        "label_filter": {
+          "op": "BeginsWith",
+          "value": "E",
+          "value2": ""
+        },
+        "value_filter": {
+          "value": 0,
+          "top": [
+            10,
+            false
+          ],
+          "op": "GreaterThan",
+          "a": 0.0,
+          "b": 0.0
+        }
+      }
+    },
+    {
+      "name": "",
+      "numeric": false,
+      "area": null,
+      "values": 0,
+      "filtered": false,
+      "settings": {
+        "caption": null,
+        "subtotals": "Automatic",
+        "sort": "Ascending",
+        "sort_by_value": null,
+        "hidden": [],
+        "label_filter": null,
+        "value_filter": null
+      }
+    }
+  ]
+}

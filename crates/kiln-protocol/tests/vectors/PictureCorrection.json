@@ -1,0 +1,16 @@
+{
+  "type": "PictureCorrection",
+  "format": {
+    "TYPENAME": "PictureCorrection"
+  },
+  "values": [
+    {
+      "brightness": 0,
+      "contrast": 0
+    },
+    {
+      "brightness": 0,
+      "contrast": 0
+    }
+  ]
+}

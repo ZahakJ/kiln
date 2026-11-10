@@ -1,0 +1,103 @@
+# Kiln JavaScript workspace: the presentation layer only (the core is the Cargo workspace).
+# Every third-party version is pinned ONCE in `catalog:`
+# and referenced from packages as "<name>": "catalog:". Append-only; never reorder or bump in packages.
+packages:
+  - apps/*
+  - packages/*
+  - e2e
+
+
+# Dependencies allowed to run install scripts (pnpm 12 blocks all others). Add with `pnpm approve-builds <pkg>`.
+allowBuilds:
+  esbuild: true
+
+catalog:
+  # Language, build, test
+  typescript: 7.0.2
+  vite: 8.3.4
+  '@vitejs/plugin-react': 6.1.2
+  vitest: 5.0.5
+  '@vitest/coverage-v8': 5.0.5
+  '@playwright/test': 1.64.1
+  playwright: 1.64.1
+  turbo: 2.11.8
+  '@biomejs/biome': 2.5.15
+  tsx: 4.23.15
+  '@types/node': 24.19.2
+  '@types/react': 19.3.0
+  '@types/react-dom': 19.3.0
+  jsdom: 30.1.3
+  '@testing-library/react': 16.3.3
+  '@testing-library/dom': 10.4.2
+  '@testing-library/user-event': 14.6.8
+  # UI
+  react: 19.3.1
+  react-dom: 19.3.1
+  zustand: 5.0.15
+  '@radix-ui/react-dropdown-menu': 2.2.1
+  '@radix-ui/react-popover': 1.3.1
+  '@radix-ui/react-dialog': 1.3.1
+  '@radix-ui/react-tooltip': 1.4.1
+  '@radix-ui/react-tabs': 1.2.1
+  '@radix-ui/react-toolbar': 1.2.1
+  '@radix-ui/react-select': 2.4.1
+  '@radix-ui/react-direction': 1.2.0
+  lucide-react: 1.57.0
+  cmdk: 1.1.1
+  react-colorful: 5.8.1
+  tailwindcss: 4.3.3
+  '@tailwindcss/vite': 4.3.3
+  vite-plugin-pwa: 2.0.0
+  workbox-window: 7.4.1
+  # Data and i18n
+  i18next: 26.4.6
+  react-i18next: 17.0.18
+  # ICU message format for i18next (MIT; intl-messageformat BSD-3-Clause)
+  i18next-icu: 2.5.0
+  intl-messageformat: 12.1.3
+  zod: 4.6.7
+  # Tauri 2 (desktop + Android shell, TauriClient)
+  '@tauri-apps/cli': 2.12.3
+  '@tauri-apps/api': 2.12.4
+  '@tauri-apps/plugin-fs': 2.7.1
+  '@tauri-apps/plugin-dialog': 2.8.3
+  '@tauri-apps/plugin-opener': 2.7.2
+  '@tauri-apps/plugin-store': 2.5.0
+  '@tauri-apps/plugin-window-state': 2.5.0
+  '@tauri-apps/plugin-updater': 2.14.0
+  '@tauri-apps/plugin-os': 2.4.0
+  '@tauri-apps/plugin-process': 2.4.0
+  '@tauri-apps/plugin-clipboard-manager': 2.5.0
+  # wasm loading in Vite (web build of the core)
+  vite-plugin-wasm: 3.6.0
+  vite-plugin-top-level-await: 1.6.0
+  # Dev-only: accessibility, visual diff
+  axe-core: 4.14.0
+  '@axe-core/playwright': 4.14.0
+  pixelmatch: 8.0.0
+  # Dev-only: Lighthouse CLI for the web app's B12 time to interactive (Apache-2.0)
+  lighthouse: 13.5.0
+  # Dev-only test oracles (never shipped)
+  exceljs: 4.4.0
+  mammoth: 1.13.0
+  docx: 9.11.0
+  pptxgenjs: 4.0.1
+  docx-preview: 0.4.1
+  # DOCX reader: w:sym symbol-font characters → Unicode (BSD-2-Clause; also a mammoth dependency)
+  dingbat-to-unicode: 1.0.2
+  # Dev-only number-format oracle for conformance/numfmt (tools/gen-numfmt-cases.mjs; MIT)
+  numfmt: 3.2.6
+  # Dev-only TSX parser for the hard-coded string guard of @kiln/i18n (MIT; the version Vite already uses)
+  rolldown: 1.2.14
+
+# Catalog versions newer than pnpm's minimum release age, accepted deliberately.
+minimumReleaseAgeExclude:
+  - '@asamuzakjp/dom-selector@10.0.3'
+  - '@vitest/mocker@5.0.5'
+  - '@vitest/spy@5.0.5'
+  - i18next@26.4.6
+  - jsdom@30.1.3
+  - react-i18next@17.0.18
+  - vitest@5.0.5
+  - '@vitest/coverage-v8@5.0.5'
+  - '@axe-core/playwright@4.14.0'

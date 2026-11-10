@@ -1,0 +1,70 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Blank Slide",
+    "Title Slide",
+    "Title, Content",
+    "Title, 2 Content",
+    "Title Only",
+    "Centered Text",
+    "Title, 2 Content and Content",
+    "Title Content and 2 Content",
+    "Title, 2 Content over Content",
+    "Title, Content over Content",
+    "Title, 4 Content",
+    "Title, 6 Content"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  12193587,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Blank Slide",
+   "notes": null,
+   "shape_count": 1,
+   "shapes": [
+    {
+     "cells": [
+      [
+       "a",
+       "",
+       ""
+      ],
+      [
+       "b",
+       "",
+       ""
+      ],
+      [
+       "",
+       "ta\nta",
+       ""
+      ],
+      [
+       "Test",
+       "Here",
+       "Test\nTest\ntest"
+      ],
+      [
+       "",
+       "there",
+       ""
+      ],
+      [
+       "",
+       "",
+       ""
+      ]
+     ],
+     "kind": "table",
+     "name": "Table 1"
+    }
+   ]
+  }
+ ]
+}

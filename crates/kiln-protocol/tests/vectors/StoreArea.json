@@ -1,0 +1,14 @@
+{
+  "type": "StoreArea",
+  "format": {
+    "TYPENAME": "StoreArea"
+  },
+  "values": [
+    "Journal",
+    "Versions",
+    "Recents",
+    "Dictionary",
+    "Prefs",
+    "Journal"
+  ]
+}

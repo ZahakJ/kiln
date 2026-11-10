@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-kiln-close-window"
+description = "Enables the kiln_close_window command without any pre-configured scope."
+commands.allow = ["kiln_close_window"]
+
+[[permission]]
+identifier = "deny-kiln-close-window"
+description = "Denies the kiln_close_window command without any pre-configured scope."
+commands.deny = ["kiln_close_window"]

@@ -1,0 +1,18 @@
+{
+  "type": "CollabLink",
+  "format": {
+    "TYPENAME": "CollabLink"
+  },
+  "values": [
+    {
+      "server": "wss://collab.example.org",
+      "room": "k7p2q9xw",
+      "token": "s3cret"
+    },
+    {
+      "server": "",
+      "room": "",
+      "token": ""
+    }
+  ]
+}

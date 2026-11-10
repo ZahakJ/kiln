@@ -1,0 +1,12 @@
+{
+  "type": "DeckCommentScope",
+  "format": {
+    "TYPENAME": "DeckCommentScope"
+  },
+  "values": [
+    "One",
+    "Slide",
+    "All",
+    "One"
+  ]
+}

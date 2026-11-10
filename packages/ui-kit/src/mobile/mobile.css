@@ -1,0 +1,732 @@
+/*
+ * The phone and tablet frame (docs/design/mockups/phone-*.png): the top app bar,
+ * the bottom toolbar, the bottom sheets (the ribbon sheet, Share), keyboard docking. Every target
+ * a finger uses is at least 44 × 44 CSS px.
+ */
+
+:root {
+  --kiln-touch: 44px;
+  --kiln-appbar-h: 56px;
+  --kiln-bottombar-h: 52px;
+}
+
+/* The frame on phones: no ribbon or status bar; the bottom toolbar docks on the keyboard. ------ */
+
+.kiln-appframe[data-form-factor="phone"],
+.kiln-appframe[data-form-factor="tablet"] {
+  padding-bottom: max(var(--kiln-keyboard-inset, 0px), env(keyboard-inset-height, 0px));
+  transition: padding-bottom var(--kiln-duration-fast) ease-out;
+}
+.kiln-appframe[data-form-factor="phone"] > .kiln-statusbar {
+  display: none;
+}
+.kiln-appframe[data-form-factor="phone"] .kiln-appframe__body {
+  padding: 0;
+  gap: 0;
+}
+
+/* Top app bar ------------------------------------------------------------------------------------ */
+
+.kiln-titlebar.kiln-appbar {
+  height: var(--kiln-appbar-h);
+  gap: 0;
+  padding-block: 0;
+  padding-inline: 4px;
+  border-bottom: 1px solid var(--kiln-line);
+  background: var(--kiln-panel);
+  -webkit-app-region: no-drag;
+}
+.kiln-appbar__btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--kiln-touch);
+  height: var(--kiln-touch);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--kiln-fg);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--kiln-duration-fast) ease-out,
+    color var(--kiln-duration-fast) ease-out;
+}
+.kiln-appbar__btn:hover,
+.kiln-appbar__btn[data-state="open"] {
+  background: var(--kiln-bg-hover);
+}
+.kiln-appbar__btn:active {
+  background: var(--kiln-bg-pressed);
+}
+.kiln-appbar__btn[aria-disabled="true"] {
+  color: var(--kiln-fg-disabled);
+  background: transparent;
+}
+.kiln-appbar__btn:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: -2px;
+}
+/* Back points the way the interface reads. */
+[dir="rtl"] .kiln-appbar__back .kiln-icon {
+  transform: scaleX(-1);
+}
+.kiln-appbar__title {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-width: 0;
+  margin-inline: 2px 4px;
+}
+.kiln-appbar .kiln-titlebar__title {
+  height: var(--kiln-touch);
+  max-width: 100%;
+  padding-inline: 8px;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 650;
+  line-height: var(--kiln-touch);
+  letter-spacing: -0.01em;
+}
+.kiln-appbar .kiln-titlebar__ext {
+  font-size: 15px;
+  font-weight: 500;
+}
+.kiln-appbar .kiln-titlebar__title-input {
+  width: 100%;
+  height: var(--kiln-touch);
+  font-size: 16px;
+}
+.kiln-appbar__presence {
+  margin-inline: 0 4px;
+}
+/* The collaborators' avatars are buttons (go to where someone is): a finger's size here. */
+.kiln-appbar .kiln-presence__avatar {
+  width: var(--kiln-touch);
+  height: var(--kiln-touch);
+  font-size: 15px;
+}
+.kiln-appbar .kiln-presence__stack .kiln-presence__avatar + .kiln-presence__avatar {
+  margin-inline-start: -10px;
+}
+
+/* The overflow menu: a finger's rows. */
+.kiln-menu.kiln-appbar__menu {
+  min-width: 248px;
+  padding: 6px;
+}
+.kiln-appbar__menu .kiln-menu__item {
+  min-height: 48px;
+  padding-inline: 12px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+.kiln-appbar__menu .kiln-menu__shortcut,
+.kiln-appbar__menu .kiln-kbd {
+  display: none;
+}
+
+/* Bottom toolbar --------------------------------------------------------------------------------- */
+
+.kiln-bottombar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  height: var(--kiln-bottombar-h);
+  padding-block: 4px;
+  padding-inline: 6px 0;
+  border-top: 1px solid var(--kiln-line);
+  background: var(--kiln-panel);
+  box-shadow: 0 -6px 18px -14px rgb(0 0 0 / 0.35);
+}
+.kiln-bottombar__sheet {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  height: var(--kiln-touch);
+  min-width: var(--kiln-touch);
+  padding-inline: 14px 10px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--app-tint);
+  color: var(--app-text);
+  font: 650 14px / 1 var(--kiln-font-ui);
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.kiln-bottombar__sheet[aria-expanded="true"],
+.kiln-bottombar__sheet:active {
+  background: color-mix(in srgb, var(--app-tint), var(--app-text) 12%);
+}
+.kiln-bottombar__sheet:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: 1px;
+}
+.kiln-bottombar__quick {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  height: 100%;
+  padding-inline: 2px 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  /* The row fades out under the edge it scrolls past. */
+  mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+}
+[dir="rtl"] .kiln-bottombar__quick {
+  mask-image: linear-gradient(to left, #000 calc(100% - 24px), transparent);
+}
+.kiln-bottombar__quick::-webkit-scrollbar {
+  display: none;
+}
+
+/* Touch-sized ribbon controls (the bottom toolbar and the ribbon sheet). ------------------------- */
+
+.kiln-bottombar,
+.kiln-ribbon-sheet {
+  --ribbon-row-h: var(--kiln-touch);
+  --ribbon-body-h: 96px;
+}
+/* Disabled commands keep their name and do nothing, as in the ribbon. */
+:is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-btn[aria-disabled="true"] {
+  pointer-events: auto;
+}
+:is(.kiln-bottombar, .kiln-ribbon-sheet)
+  :is(.kiln-btn--toolbar, .kiln-btn--split):is([aria-disabled="true"], :disabled) {
+  border-color: transparent;
+  background: transparent;
+}
+
+:is(.kiln-bottombar, .kiln-ribbon-sheet) :is(.kiln-ribbon__btn, .kiln-btn--toolbar, .kiln-btn--split) {
+  min-width: var(--kiln-touch);
+  height: var(--kiln-touch);
+  min-height: var(--kiln-touch);
+  border-radius: 10px;
+}
+:is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-ribbon__split {
+  height: var(--kiln-touch);
+}
+:is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-ribbon__field {
+  height: var(--kiln-touch);
+}
+:is(.kiln-bottombar, .kiln-ribbon-sheet) :is(.kiln-combobox__input, .kiln-number__input) {
+  height: var(--kiln-touch);
+  font-size: 15px;
+}
+:is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-combobox__toggle {
+  min-width: var(--kiln-touch);
+  height: var(--kiln-touch);
+}
+.kiln-bottombar .kiln-ribbon__field {
+  flex: none;
+  width: 132px;
+}
+
+/* Bottom sheets ---------------------------------------------------------------------------------- */
+
+.kiln-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--kiln-z-dialog);
+  background: color-mix(in srgb, var(--kiln-overlay) 70%, transparent);
+  animation: kiln-fade-in var(--kiln-duration-pane) var(--kiln-ease);
+}
+.kiln-sheet {
+  --kiln-sheet-drag: 0px;
+  position: fixed;
+  inset-inline: 0;
+  bottom: max(var(--kiln-keyboard-inset, 0px), env(keyboard-inset-height, 0px));
+  z-index: var(--kiln-z-dialog);
+  display: flex;
+  flex-direction: column;
+  max-height: min(78vh, calc(100dvh - 64px));
+  margin-inline: auto;
+  max-width: 640px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  border: 1px solid var(--kiln-line);
+  border-bottom: 0;
+  border-radius: 22px 22px 0 0;
+  background: var(--kiln-panel);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+  box-shadow: 0 -18px 48px -18px rgb(0 0 0 / 0.38);
+  transform: translateY(var(--kiln-sheet-drag));
+  animation: kiln-sheet-in var(--kiln-duration-pane) var(--kiln-ease-out, ease-out);
+}
+.kiln-sheet:focus {
+  outline: none;
+}
+@keyframes kiln-sheet-in {
+  from {
+    transform: translateY(32px);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kiln-sheet,
+  .kiln-sheet-overlay {
+    animation: none;
+  }
+}
+.kiln-sheet__grip {
+  display: flex;
+  flex: none;
+  justify-content: center;
+  padding-block: 8px 4px;
+  cursor: grab;
+  touch-action: none;
+}
+.kiln-sheet__handle {
+  width: 40px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--kiln-line-strong);
+}
+.kiln-sheet__header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding-block: 2px 8px;
+  padding-inline: 18px 8px;
+}
+.kiln-sheet__title {
+  flex: 1;
+  margin: 0;
+  font: 800 20px / 1.15 var(--kiln-font-display);
+  font-variation-settings: "SOFT" 40;
+  letter-spacing: -0.01em;
+}
+.kiln-sheet__close {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--kiln-touch);
+  height: var(--kiln-touch);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--kiln-sunken);
+  color: var(--kiln-muted);
+}
+.kiln-sheet__close:hover {
+  color: var(--kiln-fg);
+}
+.kiln-sheet__close:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: 1px;
+}
+.kiln-sheet__description {
+  margin: -4px 18px 8px;
+  color: var(--kiln-muted);
+  font-size: 14px;
+}
+.kiln-sheet__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+/* The ribbon sheet: tabs as chips, groups as tiles. --------------------------------------------- */
+
+.kiln-ribbon-sheet .kiln-sheet__header {
+  padding-inline: 10px 8px;
+}
+.kiln-ribbon-sheet__chips {
+  display: flex;
+  flex: 1;
+  gap: 6px;
+  min-width: 0;
+  padding: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.kiln-ribbon-sheet__chips::-webkit-scrollbar {
+  display: none;
+}
+.kiln-ribbon-sheet__chip {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  height: var(--kiln-touch);
+  padding-inline: 16px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 999px;
+  background: var(--kiln-raised);
+  color: var(--kiln-fg);
+  font: 600 14px / 1 var(--kiln-font-ui);
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.kiln-ribbon-sheet__chip[aria-selected="true"] {
+  border-color: transparent;
+  background: var(--app-solid);
+  color: var(--app-on-solid);
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.14);
+}
+.kiln-ribbon-sheet__chip:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: 2px;
+}
+.kiln-ribbon-sheet__chip-set {
+  color: var(--kiln-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.kiln-ribbon-sheet__chip[aria-selected="true"] .kiln-ribbon-sheet__chip-set {
+  color: inherit;
+  opacity: 0.8;
+}
+.kiln-ribbon-sheet__panel {
+  padding-block: 4px 16px;
+  padding-inline: 12px;
+}
+.kiln-ribbon-sheet .kiln-ribbon-sheet__tiles {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+.kiln-ribbon-sheet__tile {
+  padding-block: 8px 10px;
+  padding-inline: 12px 8px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 16px;
+  background: var(--kiln-raised);
+}
+.kiln-ribbon-sheet__tile-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  margin-bottom: 4px;
+  color: var(--kiln-muted);
+}
+.kiln-ribbon-sheet__tile-title {
+  flex: 1;
+  margin: 0;
+  font: 700 12px / 1.2 var(--kiln-font-ui);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.kiln-ribbon-sheet__tile .kiln-ribbon__launcher {
+  width: var(--kiln-touch);
+  height: var(--kiln-touch);
+  margin-block: -8px;
+  border-radius: 10px;
+}
+.kiln-ribbon-sheet__items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+.kiln-ribbon-sheet__items > .kiln-ribbon__field {
+  display: flex;
+  flex: 1 1 96px;
+  min-width: 0;
+}
+.kiln-ribbon-sheet__items > .kiln-ribbon__field[data-command="suite.format.font_family"] {
+  flex: 3 1 160px;
+}
+.kiln-ribbon-sheet__items > .kiln-ribbon__field > * {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+}
+/* A gallery: its first row across the tile, the rest under More (the full gallery). */
+.kiln-ribbon-sheet__items > .kiln-ribbon__gallery {
+  display: flex;
+  flex: 1 1 100%;
+  min-width: 0;
+}
+.kiln-ribbon-sheet .kiln-gallery {
+  flex: 1;
+  min-width: 0;
+}
+.kiln-ribbon-sheet .kiln-gallery__row {
+  flex: 1;
+  min-width: 0;
+}
+.kiln-ribbon-sheet .kiln-gallery__item {
+  flex: 1 1 0;
+  width: auto;
+  min-width: var(--kiln-touch);
+  height: 52px;
+}
+.kiln-ribbon-sheet .kiln-gallery__scroller {
+  width: calc(var(--kiln-touch) + 2px);
+  flex: none;
+}
+.kiln-ribbon-sheet .kiln-gallery__scroller button:not(.kiln-gallery__more) {
+  display: none;
+}
+@media (max-width: 639px) {
+  .kiln-gallery__panel .kiln-gallery__item {
+    min-height: var(--kiln-touch);
+  }
+}
+
+/* Share ------------------------------------------------------------------------------------------ */
+
+.kiln-share-sheet__choices {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 12px 18px;
+}
+.kiln-share-sheet__choice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 10px 14px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 16px;
+  background: var(--kiln-raised);
+  color: var(--kiln-fg);
+  font: inherit;
+  text-align: start;
+  -webkit-tap-highlight-color: transparent;
+}
+.kiln-share-sheet__choice:hover,
+.kiln-share-sheet__choice:active {
+  background: color-mix(in srgb, var(--kiln-raised), var(--kiln-fg) 5%);
+}
+.kiln-share-sheet__choice[aria-disabled="true"] {
+  opacity: 0.6;
+}
+.kiln-share-sheet__choice:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: 2px;
+}
+.kiln-share-sheet__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: var(--app-tint);
+  color: var(--app-text);
+}
+.kiln-share-sheet__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.kiln-share-sheet__title {
+  font-size: 16px;
+  font-weight: 650;
+}
+.kiln-share-sheet__detail {
+  overflow: hidden;
+  color: var(--kiln-muted);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Fields and spin boxes at a finger's size: 44 px high, the steppers side by side. --------------- */
+
+:is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-field {
+  /* The border inside: the steppers and the drop-down button keep 44 px. */
+  --field-h: calc(var(--kiln-touch) + 2px);
+  border-radius: 10px;
+  font-size: 15px;
+}
+:is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-number__spin {
+  flex-direction: row;
+  width: auto;
+}
+:is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-number__spin button {
+  width: var(--kiln-touch);
+  border-inline-start: 1px solid var(--kiln-line);
+}
+:is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-number__spin button:first-child {
+  border-radius: 0;
+}
+:is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-number__spin button:last-child {
+  border-start-end-radius: 9px;
+  border-end-end-radius: 9px;
+}
+/* Split buttons: a pill of two 44 px targets, the command and its menu. */
+:is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-split {
+  border-color: var(--kiln-line);
+  border-radius: 11px;
+}
+:is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-split > .kiln-split__main,
+:is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-split > .kiln-split__main.kiln-btn--icon-only {
+  min-width: var(--kiln-touch);
+  height: var(--kiln-touch);
+  padding-inline: 10px 4px;
+  border-start-start-radius: 10px;
+  border-end-start-radius: 10px;
+}
+:is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-split > .kiln-split__arrow {
+  width: 36px;
+  min-width: var(--kiln-touch);
+  height: var(--kiln-touch);
+  border-start-end-radius: 10px;
+  border-end-end-radius: 10px;
+  box-shadow: inset 1px 0 0 var(--kiln-line);
+}
+[dir="rtl"] :is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-split > .kiln-split__arrow {
+  box-shadow: inset -1px 0 0 var(--kiln-line);
+}
+/* A spin box keeps room for its number beside the two steppers. */
+:is(.kiln-bottombar, .kiln-ribbon-sheet) .kiln-number {
+  min-width: 156px;
+}
+.kiln-ribbon-sheet__tile .kiln-ribbon__launcher {
+  position: static;
+  inset: auto;
+}
+/* The ribbon sheet keeps one height from tab to tab. */
+.kiln-sheet.kiln-ribbon-sheet {
+  height: min(72vh, calc(100dvh - 72px));
+}
+
+/* On the keyboard the toolbar needs no shadow. */
+.kiln-appframe[data-keyboard="open"] .kiln-bottombar {
+  box-shadow: none;
+}
+
+/* The floating context toolbar over a touch selection. ----------------------------------------- */
+
+.kiln-ctxbar {
+  position: fixed;
+  z-index: var(--kiln-z-popover);
+  padding: 4px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 16px;
+  background: var(--kiln-raised);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.06) inset,
+    0 14px 34px -12px rgb(0 0 0 / 0.42),
+    0 2px 6px -2px rgb(0 0 0 / 0.18);
+  animation: kiln-ctxbar-in var(--kiln-duration-fast) var(--kiln-ease-out, ease-out);
+}
+@keyframes kiln-ctxbar-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kiln-ctxbar {
+    animation: none;
+  }
+}
+.kiln-ctxbar__row {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+}
+.kiln-ctxbar__btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-width: 56px;
+  min-height: 52px;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--kiln-fg);
+  font: 600 11.5px / 1.1 var(--kiln-font-ui);
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.kiln-ctxbar__btn .kiln-icon {
+  color: var(--app-text, var(--kiln-fg));
+}
+.kiln-ctxbar__btn:hover,
+.kiln-ctxbar__btn:active {
+  background: var(--kiln-bg-hover);
+}
+.kiln-ctxbar__btn[aria-disabled="true"] {
+  color: var(--kiln-fg-disabled);
+}
+.kiln-ctxbar__btn[aria-disabled="true"] .kiln-icon {
+  color: inherit;
+}
+.kiln-ctxbar__btn:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: -2px;
+}
+.kiln-ctxbar__label {
+  max-width: 76px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Menus on a phone (the long-press context menu, the sheet tabs' and the drop-downs' menus): a
+   finger's rows. The context menu's mini toolbar steps aside there: the floating context toolbar
+   and the ribbon sheet have its commands. */
+@media (max-width: 639px) {
+  .kiln-menu {
+    max-width: calc(100vw - 16px);
+    max-height: var(--radix-dropdown-menu-content-available-height, calc(100dvh - 16px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .kiln-menu .kiln-menu__item {
+    min-height: 48px;
+    padding-inline: 8px 12px;
+    font-size: 15px;
+  }
+  .kiln-menu .kiln-menu__shortcut,
+  .kiln-menu .kiln-kbd {
+    display: none;
+  }
+  .kiln-contextmenu__mini {
+    display: none;
+  }
+}
+
+/* The ribbon sheet's chip strip fades at an edge it can scroll past. */
+.kiln-ribbon-sheet__chips {
+  --fade-start: 0px;
+  --fade-end: 0px;
+  scroll-padding-inline: 2px;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fade-start),
+    #000 calc(100% - var(--fade-end)),
+    transparent
+  );
+}
+[dir="rtl"] .kiln-ribbon-sheet__chips {
+  mask-image: linear-gradient(
+    to left,
+    transparent,
+    #000 var(--fade-start),
+    #000 calc(100% - var(--fade-end)),
+    transparent
+  );
+}
+.kiln-ribbon-sheet__chips[data-more-start] {
+  --fade-start: 28px;
+}
+.kiln-ribbon-sheet__chips[data-more-end] {
+  --fade-end: 28px;
+}

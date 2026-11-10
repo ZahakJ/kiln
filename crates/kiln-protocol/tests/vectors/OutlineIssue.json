@@ -1,0 +1,28 @@
+{
+  "type": "OutlineIssue",
+  "format": {
+    "TYPENAME": "OutlineIssue"
+  },
+  "values": [
+    {
+      "para": 77,
+      "level": 3,
+      "text": "Loading «order»",
+      "kind": {
+        "SkippedLevel": {
+          "expected": 2
+        }
+      }
+    },
+    {
+      "para": 0,
+      "level": 0,
+      "text": "",
+      "kind": {
+        "SkippedLevel": {
+          "expected": 0
+        }
+      }
+    }
+  ]
+}

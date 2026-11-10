@@ -1,0 +1,14 @@
+{
+  "type": "AutoSave",
+  "format": {
+    "TYPENAME": "AutoSave"
+  },
+  "values": [
+    "Off",
+    "On",
+    {
+      "Unavailable": "Save the document first"
+    },
+    "Off"
+  ]
+}

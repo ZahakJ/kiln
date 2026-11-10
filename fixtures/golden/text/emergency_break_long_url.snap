@@ -1,0 +1,9 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 4 | glyphs 88 | height 60.42 | rtl false
+ 0 wrap      g=23  x=0       w=184.03  top=0       h=15.1   base=11.1    |See https://github.com/|
+ 1 wrap      g=22  x=0       w=176.03  top=15.1    h=15.1   base=26.2    |ZahakJ/kiln/blob/main/|
+ 2 wrap      g=21  x=0       w=168.03  top=30.21   h=15.1   base=41.31   |crates/kiln-text/src/|
+ 3 end       g=22  x=0       w=176.03  top=45.31   h=15.1   base=56.41   |layout.rs for details.|
+substitutions: Courier New -> Liberation Mono (MetricCompatible)

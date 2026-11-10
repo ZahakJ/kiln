@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Kiln's colours from the design tokens (brand/tokens.json, packages/tokens): the window and the
+  system bars use `bg-surface-2`, the colour of the title bar and of Kiln Home; accents are ember.
+  A unit test (src/android/logic.rs) keeps these in step with the tokens.
+-->
+<resources>
+    <color name="kiln_window">#FFF6EFE6</color>
+    <color name="kiln_ember">#FFC2481C</color>
+    <color name="kiln_on_ember">#FFFFF7EE</color>
+    <color name="kiln_text">#FF2B1C14</color>
+</resources>

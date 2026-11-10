@@ -1,0 +1,38 @@
+{
+  "type": "RevisionsInfo",
+  "format": {
+    "TYPENAME": "RevisionsInfo"
+  },
+  "values": [
+    {
+      "entries": [],
+      "reviewers": [],
+      "insertions": 0,
+      "deletions": 0,
+      "formatting": 0,
+      "comments": 0
+    },
+    {
+      "entries": [],
+      "reviewers": [
+        {
+          "name": "Bo",
+          "color": "0F766E",
+          "changes": 1
+        }
+      ],
+      "insertions": 70000,
+      "deletions": 2,
+      "formatting": 0,
+      "comments": 128
+    },
+    {
+      "entries": [],
+      "reviewers": [],
+      "insertions": 0,
+      "deletions": 0,
+      "formatting": 0,
+      "comments": 0
+    }
+  ]
+}

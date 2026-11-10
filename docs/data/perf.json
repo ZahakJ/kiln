@@ -1,0 +1,70 @@
+{
+  "budgets": [
+    {
+      "budgetMs": 400.0,
+      "id": "B3 (first page painted)",
+      "label": "Open a 300-page .docx: first page painted",
+      "measuredMs": 30.7,
+      "passed": true
+    },
+    {
+      "budgetMs": 1500.0,
+      "id": "B3 (fully paginated)",
+      "label": "Open a 300-page .docx: fully paginated",
+      "measuredMs": 76.2,
+      "passed": true
+    },
+    {
+      "budgetMs": 1200.0,
+      "id": "B7 (first paint)",
+      "label": "Open a 10 MB .xlsx: first paint",
+      "measuredMs": 258.0,
+      "passed": true
+    },
+    {
+      "budgetMs": 2500.0,
+      "id": "B7 (full calc)",
+      "label": "Open a 10 MB .xlsx: fully calculated",
+      "measuredMs": 565.0,
+      "passed": true
+    },
+    {
+      "budgetMs": 2000.0,
+      "id": "B8",
+      "label": "Recalculate 1,000,000 formulas",
+      "measuredMs": 224.0,
+      "passed": true
+    },
+    {
+      "budgetMs": 2.0,
+      "id": "B9",
+      "label": "Recalculate after one edit, 100,000 formulas",
+      "measuredMs": 0.1,
+      "passed": true
+    },
+    {
+      "budgetMs": 800.0,
+      "id": "B10",
+      "label": "Open a 200-slide .pptx: first slide painted",
+      "measuredMs": 24.5,
+      "passed": true
+    },
+    {
+      "budgetMs": 2000.0,
+      "id": "B11",
+      "label": "Export the 300-page document to PDF",
+      "measuredMs": 146.0,
+      "passed": true
+    },
+    {
+      "budgetMs": 50.0,
+      "id": "B14",
+      "label": "Apply 1,000 collaborator edits",
+      "measuredMs": 24.9,
+      "passed": true
+    }
+  ],
+  "date": "2026-11-03",
+  "machine": "release build of `kiln-bench`, linux x86_64, 16 CPUs",
+  "webOpenMs": 2760.0
+}

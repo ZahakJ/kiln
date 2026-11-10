@@ -1,0 +1,58 @@
+/*
+ * Arabic interface text. Figtree and Fraunces have no Arabic letters, so the interface's font stacks
+ * get an Arabic family after each of them: Noto Sans Arabic (interface) and Noto Naskh Arabic
+ * (display headings), both SIL OFL 1.1 (assets/fonts). They are families of their own, so the
+ * weight of the Latin faces is chosen as before. Browsers download a face only when a page shows a
+ * character of its range.
+ */
+:root:root {
+  --kiln-font-display: "Fraunces", "Kiln Arabic Serif", "Iowan Old Style", Georgia, serif;
+  --kiln-font-ui:
+    "Figtree", "Kiln Arabic Sans", "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, "Noto Sans",
+    sans-serif;
+}
+
+@font-face {
+  font-family: "Kiln Arabic Sans";
+  font-style: normal;
+  font-weight: 100 449;
+  font-display: swap;
+  src: url("../../../assets/fonts/noto/NotoSansArabic-Regular.ttf") format("truetype");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: "Kiln Arabic Sans";
+  font-style: normal;
+  font-weight: 450 549;
+  font-display: swap;
+  src: url("../../../assets/fonts/noto/NotoSansArabic-Medium.ttf") format("truetype");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: "Kiln Arabic Sans";
+  font-style: normal;
+  font-weight: 550 1000;
+  font-display: swap;
+  src: url("../../../assets/fonts/noto/NotoSansArabic-Bold.ttf") format("truetype");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: "Kiln Arabic Serif";
+  font-style: normal;
+  font-weight: 100 549;
+  font-display: swap;
+  src: url("../../../assets/fonts/noto/NotoNaskhArabic-Regular.ttf") format("truetype");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: "Kiln Arabic Serif";
+  font-style: normal;
+  font-weight: 550 1000;
+  font-display: swap;
+  src: url("../../../assets/fonts/noto/NotoNaskhArabic-Bold.ttf") format("truetype");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
+}

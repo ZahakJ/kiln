@@ -1,0 +1,69 @@
+{
+  "type": "A11yTree",
+  "format": {
+    "TYPENAME": "A11yTree"
+  },
+  "values": [
+    {
+      "nodes": [],
+      "active": null,
+      "announce": null,
+      "caret": null
+    },
+    {
+      "nodes": [
+        {
+          "id": 1,
+          "role": "Document",
+          "name": "Scratch1",
+          "text": null,
+          "bounds": null,
+          "level": null,
+          "children": [
+            2,
+            3
+          ],
+          "objects": null,
+          "revisions": null
+        },
+        {
+          "id": 2,
+          "role": "Heading",
+          "name": null,
+          "text": "Résumé",
+          "bounds": {
+            "x": -12.5,
+            "y": 96.0,
+            "width": 0.75,
+            "height": 18.0
+          },
+          "level": 1,
+          "children": [],
+          "objects": [
+            "1"
+          ],
+          "revisions": [
+            {
+              "start": 0,
+              "end": 1,
+              "inserted": false,
+              "display": "Marked"
+            }
+          ]
+        }
+      ],
+      "active": 2,
+      "announce": "Bold on",
+      "caret": {
+        "block": 2,
+        "offset": 3
+      }
+    },
+    {
+      "nodes": [],
+      "active": null,
+      "announce": null,
+      "caret": null
+    }
+  ]
+}

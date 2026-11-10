@@ -1,0 +1,393 @@
+/* Collaboration and Version History: presence avatars, the others' name flags, the Share
+   and Join dialogs and the Version History pane. A person's colour is `--peer`. */
+
+/* ---------- presence (title bar) ---------- */
+
+.kiln-presence {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  -webkit-app-region: no-drag;
+}
+.kiln-presence__stack {
+  display: flex;
+  align-items: center;
+}
+.kiln-presence__avatar {
+  --peer: var(--app);
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--peer) 82%, white), var(--peer));
+  color: var(--peer-ink, #fff);
+  font: 700 11px / 1 var(--kiln-font-ui);
+  letter-spacing: 0.02em;
+  box-shadow:
+    0 0 0 2px var(--kiln-bg),
+    0 1px 2px rgb(0 0 0 / 0.18);
+  cursor: pointer;
+}
+.kiln-presence__stack .kiln-presence__avatar + .kiln-presence__avatar {
+  margin-inline-start: -7px;
+}
+.kiln-presence__avatar:hover {
+  transform: translateY(-1px);
+}
+.kiln-presence__avatar:focus-visible {
+  outline: var(--kiln-focus-width, 2px) solid var(--kiln-focus-ring, var(--app));
+  outline-offset: 2px;
+}
+.kiln-presence__more {
+  --peer: var(--kiln-muted);
+  cursor: default;
+}
+.kiln-presence__me {
+  box-shadow:
+    0 0 0 2px var(--kiln-bg),
+    0 0 0 3.5px var(--kiln-line-strong);
+}
+.kiln-presence__status {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: var(--kiln-muted);
+}
+.kiln-presence__status--offline,
+.kiln-presence__status--refused {
+  color: var(--kiln-warning);
+  background: color-mix(in srgb, var(--kiln-warning) 14%, transparent);
+}
+.kiln-presence__spin {
+  animation: kiln-presence-spin 1.1s linear infinite;
+}
+@keyframes kiln-presence-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kiln-presence__spin {
+    animation: none;
+  }
+}
+
+/* ---------- the others' name flags (over the document) ---------- */
+
+.kiln-remote-flags {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 3;
+}
+.kiln-remote-flag {
+  --peer: var(--app);
+  position: absolute;
+  transform: translate(-1px, -100%);
+  max-width: 180px;
+  padding: 2px 7px 3px;
+  border-radius: 6px 6px 6px 0;
+  background: var(--peer);
+  color: var(--peer-ink, #fff);
+  font: 600 11px / 1.25 var(--kiln-font-ui);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+}
+
+/* ---------- Share and Join ---------- */
+
+.kiln-share {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.kiln-share__form .kiln-field {
+  width: 100%;
+  margin-bottom: 8px;
+}
+.kiln-share__label {
+  font-size: var(--kiln-text-sm, 12px);
+  font-weight: var(--kiln-weight-semibold, 600);
+  color: var(--kiln-fg);
+}
+.kiln-share__link {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.kiln-share__link-field {
+  flex: 1;
+  gap: 6px;
+  color: var(--kiln-muted);
+}
+.kiln-share__link-field input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--kiln-fg);
+  font: inherit;
+}
+.kiln-share__status {
+  margin: 6px 0 0;
+  padding-inline-start: 16px;
+  position: relative;
+  color: var(--kiln-fg);
+}
+.kiln-share__status::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 2px;
+  top: 0.45em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--kiln-muted);
+}
+.kiln-share__status--online::before {
+  background: var(--kiln-success);
+}
+.kiln-share__status--offline::before,
+.kiln-share__status--refused::before {
+  background: var(--kiln-warning);
+}
+.kiln-share__people {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.kiln-share__people li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.kiln-share__avatar {
+  width: 24px;
+  height: 24px;
+  font-size: 10px;
+  cursor: default;
+}
+.kiln-share__note {
+  margin: 4px 0 0;
+  color: var(--kiln-muted);
+  font-size: var(--kiln-text-sm, 12px);
+}
+.kiln-share__error {
+  margin: 0;
+  color: var(--kiln-danger);
+}
+
+/* ---------- Version History ---------- */
+
+.kiln-versions {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.kiln-versions--empty {
+  align-items: center;
+  gap: 10px;
+  padding: 18px 14px;
+  text-align: center;
+  color: var(--kiln-muted);
+}
+.kiln-versions__empty-icon {
+  color: var(--app-text);
+}
+.kiln-versions__list {
+  margin: 0;
+  padding: 2px 0 12px;
+  list-style: none;
+}
+.kiln-versions__item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  padding-block: 8px;
+  padding-inline: 14px 10px;
+  border: 0;
+  border-inline-start: 3px solid transparent;
+  border-start-start-radius: 0;
+  border-start-end-radius: 8px;
+  border-end-end-radius: 8px;
+  border-end-start-radius: 0;
+  background: transparent;
+  color: var(--kiln-fg);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.kiln-versions__item:hover {
+  background: var(--kiln-bg-hover);
+}
+.kiln-versions__item.is-selected {
+  border-inline-start-color: var(--app);
+  background: var(--app-tint);
+}
+.kiln-versions__item:focus-visible {
+  outline: var(--kiln-focus-width, 2px) solid var(--kiln-focus-ring, var(--app));
+  outline-offset: -2px;
+}
+.kiln-versions__time {
+  font-weight: var(--kiln-weight-semibold, 600);
+}
+.kiln-versions__meta {
+  color: var(--kiln-muted);
+  font-size: var(--kiln-text-sm, 12px);
+}
+.kiln-versions__meta strong {
+  color: var(--kiln-fg);
+  font-weight: var(--kiln-weight-semibold, 600);
+}
+.kiln-versions__detail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-block: 6px 12px;
+  padding-inline: 17px 12px;
+}
+.kiln-versions__hint {
+  margin: 0;
+  color: var(--kiln-muted);
+  font-size: var(--kiln-text-sm, 12px);
+}
+.kiln-versions__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.kiln-versions__rename {
+  display: flex;
+  gap: 6px;
+}
+.kiln-versions__rename .kiln-field {
+  flex: 1;
+}
+.kiln-versions__diff {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 360px;
+  overflow: auto;
+  padding: 8px 10px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 8px;
+  background: var(--kiln-page, var(--kiln-raised));
+  font-size: var(--kiln-text-sm, 12px);
+  line-height: 1.45;
+}
+.kiln-versions__para {
+  margin: 0;
+}
+.kiln-versions__diff ins,
+.kiln-versions__hint ins {
+  color: var(--kiln-success);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+}
+.kiln-versions__diff del,
+.kiln-versions__hint del {
+  color: var(--kiln-danger);
+  text-decoration: line-through;
+}
+.kiln-versions__para--added {
+  border-inline-start: 2px solid var(--kiln-success);
+  padding-inline-start: 6px;
+}
+.kiln-versions__para--removed {
+  border-inline-start: 2px solid var(--kiln-danger);
+  padding-inline-start: 6px;
+}
+.kiln-versions__slides {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kiln-versions__slides li {
+  position: relative;
+  padding: 3px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 8px;
+  background: var(--kiln-raised);
+}
+.kiln-versions__slides li.is-marked {
+  border-color: var(--app);
+  box-shadow: 0 0 0 1px var(--app);
+}
+.kiln-versions__thumb {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+.kiln-versions__slide-no {
+  position: absolute;
+  inset-inline-start: 7px;
+  bottom: 6px;
+  padding: 0 4px;
+  border-radius: 4px;
+  background: rgb(0 0 0 / 0.45);
+  color: #fff;
+  font: 600 10px / 1.5 var(--kiln-font-ui);
+}
+.kiln-versions__mark {
+  position: absolute;
+  inset-inline-end: 6px;
+  top: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--app-solid);
+  color: var(--app-on-solid);
+  font: 700 10px / 1.5 var(--kiln-font-ui);
+}
+
+/* ---------- a version shown in place of the document ---------- */
+
+.kiln-version-bar {
+  position: absolute;
+  inset-inline-start: 16px;
+  inset-inline-end: 16px;
+  top: 10px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  max-width: calc(100% - 32px);
+  margin-inline: auto;
+  padding-block: 7px;
+  padding-inline: 14px 8px;
+  border: 1px solid color-mix(in srgb, var(--kiln-warning) 45%, var(--kiln-line));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--kiln-warning) 12%, var(--kiln-raised));
+  color: var(--kiln-fg);
+  box-shadow: var(--kiln-shadow-2, 0 4px 14px rgb(0 0 0 / 0.12));
+  font-size: var(--kiln-text-sm, 12.5px);
+}
+.kiln-version-bar strong {
+  font-weight: var(--kiln-weight-semibold, 600);
+}
+.kiln-version-bar > span {
+  min-width: 0;
+}
+.kiln-version-bar > .kiln-btn {
+  flex: none;
+  white-space: nowrap;
+}

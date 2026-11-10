@@ -1,0 +1,14 @@
+{
+  "type": "Outcome",
+  "format": {
+    "TYPENAME": "Outcome"
+  },
+  "values": [
+    "Applied",
+    "Unchanged",
+    {
+      "Pending": 4
+    },
+    "Applied"
+  ]
+}

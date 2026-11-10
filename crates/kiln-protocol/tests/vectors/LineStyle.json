@@ -1,0 +1,12 @@
+{
+  "type": "LineStyle",
+  "format": {
+    "TYPENAME": "LineStyle"
+  },
+  "values": [
+    "Solid",
+    "Dashed",
+    "Solid",
+    "Dotted"
+  ]
+}

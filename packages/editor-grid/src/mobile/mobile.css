@@ -1,0 +1,430 @@
+/*
+ * Kiln Grid on a phone or a tablet: a finger pans the sheet, the range handles,
+ * the formula bar at a finger's size (pinned on the on-screen keyboard with ✕, ✓ and the quick
+ * keys), the sheet tabs as a chip strip above the bottom toolbar with the selection's statistics,
+ * and the pick list as a bottom sheet. Every target is at least 44 × 44 CSS px.
+ */
+
+/* A finger pans the sheet natively (with its momentum); the pinch is the sheet's own zoom. A
+   selected chart or picture takes the finger instead, to be moved and sized. */
+@media (pointer: coarse) {
+  .kiln-grid-surface,
+  .kiln-grid-surface__scroller {
+    touch-action: pan-x pan-y;
+  }
+  .kiln-grid-surface[data-touch-drawing],
+  .kiln-grid-surface[data-touch-drawing] .kiln-grid-surface__scroller {
+    touch-action: none;
+  }
+}
+
+/* The range handles at the selection's corners. --------------------------------------------- */
+
+.kiln-grid-touch {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+.kiln-grid-touch__handle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  pointer-events: auto;
+  touch-action: none;
+}
+.kiln-grid-touch__handle[hidden] {
+  display: none;
+}
+.kiln-grid-touch__handle::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  box-sizing: border-box;
+  border: 3px solid var(--kiln-grid-fill, var(--app-solid));
+  border-radius: 50%;
+  background: var(--kiln-page);
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 0.28),
+    0 0 0 1.5px color-mix(in srgb, var(--kiln-page) 70%, transparent);
+}
+.kiln-grid-touch__handle:active::after {
+  transform: scale(1.18);
+}
+
+/* The formula bar on a phone: a finger's size. ------------------------------------------------- */
+
+.kiln-grid-quick {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .kiln-grid .kiln-formulabar {
+    align-items: center;
+    gap: 6px;
+  }
+  /* Their borders inside: every control in them is 44 px high. */
+  .kiln-grid .kiln-namebox {
+    width: auto;
+    height: 46px;
+    border-radius: 12px;
+  }
+  .kiln-grid .kiln-namebox__input {
+    width: 62px;
+    flex: none;
+    font-size: 15px;
+  }
+  .kiln-grid .kiln-namebox__menu {
+    width: 40px;
+    min-width: 44px;
+  }
+  .kiln-grid .kiln-formulabar__field {
+    align-items: center;
+    min-height: 46px;
+    border-radius: 12px;
+  }
+  .kiln-grid .kiln-formulabar__fx {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    font-size: 17px;
+  }
+  .kiln-grid .kiln-formulabar__expand {
+    width: 44px;
+    height: 44px;
+  }
+  .kiln-grid .kiln-formulabox {
+    height: 44px;
+  }
+  .kiln-grid .kiln-formulabox--expanded {
+    height: 96px;
+  }
+  .kiln-grid .kiln-formulabox__mirror,
+  .kiln-grid .kiln-formulabox__input {
+    padding-block: 13px;
+    font-size: 16px;
+    line-height: 18px;
+  }
+  .kiln-grid .kiln-formulabar__buttons .kiln-btn {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    border-radius: 12px;
+  }
+
+  /* The sheet chips above the bottom toolbar, with the selection's statistics. */
+  .kiln-grid-phone__tabs {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    height: 56px;
+    margin-inline: -6px;
+    padding-inline: 6px;
+  }
+  .kiln-grid-phone__tabs .kiln-sheettabs {
+    flex: 1;
+    gap: 6px;
+    min-width: 0;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    /* A chip cut at the end edge reads as more to scroll. */
+    mask-image: linear-gradient(to right, #000 calc(100% - 20px), transparent);
+  }
+  [dir="rtl"] .kiln-grid-phone__tabs .kiln-sheettabs {
+    mask-image: linear-gradient(to left, #000 calc(100% - 20px), transparent);
+  }
+  .kiln-grid-phone__tabs .kiln-sheettabs__list {
+    gap: 6px;
+    padding-inline-end: 20px;
+  }
+  .kiln-grid-phone__tabs .kiln-sheettabs__add {
+    flex: none;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    border: 1px solid var(--kiln-line);
+    border-radius: 50%;
+    background: var(--kiln-raised);
+  }
+  .kiln-grid-phone__tabs .kiln-sheettab {
+    flex: none;
+    height: 44px;
+    padding-inline: 16px;
+    border: 1px solid var(--kiln-line);
+    border-radius: 999px;
+    background: var(--kiln-raised);
+    font-size: 14px;
+    font-weight: 600;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .kiln-grid-phone__tabs .kiln-sheettab--active,
+  .kiln-grid-phone__tabs .kiln-sheettab--active:hover {
+    border-color: transparent;
+    background: var(--app-solid);
+    color: var(--app-on-solid);
+    box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.14);
+  }
+  .kiln-grid-phone__tabs .kiln-sheettab--active .kiln-sheettab__name {
+    color: inherit;
+  }
+  .kiln-grid-phone__tabs .kiln-sheettab__rename {
+    height: 32px;
+    font-size: 15px;
+  }
+  .kiln-grid-stats {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 6px;
+    max-width: 46%;
+    height: 44px;
+    padding-inline: 12px 14px;
+    border: 1px solid var(--kiln-line);
+    border-radius: 999px;
+    background: var(--kiln-panel);
+    color: var(--kiln-fg);
+    font: 500 13px / 1 var(--kiln-font-ui);
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .kiln-grid-stats .kiln-icon {
+    flex: none;
+    color: var(--app-text, var(--kiln-grid-text));
+  }
+  .kiln-grid-stats__label {
+    color: var(--kiln-muted);
+  }
+  .kiln-grid-stats b {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 700;
+  }
+  .kiln-grid-stats:focus-visible {
+    outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* The pick list is a bottom sheet on a phone (below). */
+  .kiln-autocomplete:has(> .kiln-autocomplete__list) {
+    display: none;
+  }
+}
+
+/* On the on-screen keyboard: the formula bar is pinned on it with ✕ and ✓, the quick keys under
+   it; the sheet chips and the bottom toolbar make way. ----------------------------------------- */
+
+.kiln-appframe[data-form-factor="phone"][data-keyboard="open"] .kiln-grid {
+  padding-bottom: 0;
+}
+.kiln-appframe[data-form-factor="phone"][data-keyboard="open"] .kiln-grid > .kiln-formulabar {
+  order: 10;
+  margin-inline: -6px;
+  padding: 6px 6px 4px;
+  border-top: 1px solid var(--kiln-line);
+  background: var(--kiln-panel);
+}
+.kiln-appframe[data-form-factor="phone"][data-keyboard="open"] .kiln-grid .kiln-namebox,
+.kiln-appframe[data-form-factor="phone"][data-keyboard="open"] .kiln-grid .kiln-formulabar__expand,
+.kiln-appframe[data-form-factor="phone"][data-keyboard="open"] .kiln-grid-phone__tabs,
+.kiln-appframe[data-form-factor="phone"][data-keyboard="open"][data-app="grid"] > .kiln-bottombar {
+  display: none;
+}
+/* ✕ before the field, ✓ after it. */
+.kiln-appframe[data-form-factor="phone"][data-keyboard="open"] .kiln-grid .kiln-formulabar__buttons {
+  display: contents;
+}
+.kiln-appframe[data-form-factor="phone"][data-keyboard="open"]
+  .kiln-grid
+  .kiln-formulabar__buttons
+  > :first-child {
+  order: 0;
+}
+.kiln-appframe[data-form-factor="phone"][data-keyboard="open"] .kiln-grid .kiln-formulabar__field {
+  order: 1;
+}
+.kiln-appframe[data-form-factor="phone"][data-keyboard="open"]
+  .kiln-grid
+  .kiln-formulabar__buttons
+  > :last-child {
+  order: 2;
+  background: var(--kiln-grid-fill, var(--app-solid));
+  color: var(--app-on-solid, #fff);
+}
+.kiln-appframe[data-form-factor="phone"][data-keyboard="open"]
+  .kiln-grid
+  .kiln-formulabar__buttons
+  > :last-child:is(:disabled, [aria-disabled="true"]) {
+  background: var(--kiln-sunken);
+  color: var(--kiln-fg-disabled);
+}
+.kiln-appframe[data-form-factor="phone"][data-keyboard="open"] .kiln-grid-quick {
+  display: flex;
+  order: 11;
+  align-items: center;
+  gap: 8px;
+  /* Flush under the formula bar (the editor's 6 px gap). */
+  margin-top: -6px;
+  margin-inline: -6px;
+  padding: 2px 6px 6px;
+  overflow-x: auto;
+  background: var(--kiln-panel);
+  scrollbar-width: none;
+}
+.kiln-grid-quick__modes {
+  display: flex;
+  flex: none;
+  padding: 2px;
+  border-radius: 12px;
+  background: var(--kiln-sunken);
+}
+.kiln-grid-quick__mode,
+.kiln-grid-quick__key {
+  flex: none;
+  min-width: 44px;
+  height: 44px;
+  padding-inline: 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--kiln-fg);
+  font: 650 15px / 1 var(--kiln-font-ui);
+  -webkit-tap-highlight-color: transparent;
+}
+.kiln-grid-quick__mode[data-testid="grid-quick-fx"] {
+  color: var(--kiln-grid-text);
+  font: italic 700 17px / 1 var(--kiln-font-display, serif);
+}
+.kiln-grid-quick__mode[aria-pressed="true"] {
+  background: var(--kiln-raised);
+  color: var(--app-text, var(--kiln-grid-text));
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.16);
+}
+.kiln-grid-quick__keys {
+  display: flex;
+  gap: 4px;
+}
+.kiln-grid-quick__key {
+  border: 1px solid var(--kiln-line);
+  background: var(--kiln-raised);
+  font-family: var(--kiln-font-mono, ui-monospace, monospace);
+  font-size: 17px;
+}
+.kiln-grid-quick__mode:active,
+.kiln-grid-quick__key:active {
+  background: var(--kiln-bg-pressed);
+}
+.kiln-grid-quick__mode:focus-visible,
+.kiln-grid-quick__key:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: -2px;
+}
+
+/* The selection's figures and the pick list (bottom sheets). ---------------------------------- */
+
+.kiln-grid-stats__list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0 16px 20px;
+}
+.kiln-grid-stats__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 48px;
+  padding-inline: 4px;
+  border-bottom: 1px solid var(--kiln-line);
+  font-size: 15px;
+}
+.kiln-grid-stats__row:last-child {
+  border-bottom: 0;
+}
+.kiln-grid-stats__row dt {
+  color: var(--kiln-muted);
+}
+.kiln-grid-stats__row dd {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.kiln-grid-pick {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 10px 18px;
+}
+.kiln-grid-pick__item {
+  min-height: 48px;
+  padding-inline: 14px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--kiln-fg);
+  font: 500 16px / 1.2 var(--kiln-font-ui);
+  text-align: start;
+}
+.kiln-grid-pick__item[aria-current="true"] {
+  background: var(--app-tint);
+  color: var(--app-text);
+  font-weight: 650;
+}
+.kiln-grid-pick__item:active {
+  background: var(--kiln-bg-pressed);
+}
+
+/* The AutoFilter menu as a bottom sheet on a phone. ------------------------------------------- */
+
+.kiln-grid-filter-sheet .kiln-gfx__filter {
+  position: static;
+  width: auto;
+  max-height: none;
+  margin: 0;
+  padding: 0 10px 16px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.kiln-grid-filter-sheet .kiln-gfx__fitem {
+  min-height: 48px;
+  border-radius: 12px;
+  font-size: 15px;
+}
+.kiln-grid-filter-sheet .kiln-gfx__fsearch {
+  min-height: 44px;
+  border-radius: 12px;
+}
+.kiln-grid-filter-sheet .kiln-gfx__fsearch input {
+  font-size: 16px;
+}
+.kiln-grid-filter-sheet .kiln-gfx__flist {
+  max-height: 32vh;
+}
+.kiln-grid-filter-sheet .kiln-griddlg__check {
+  min-height: 44px;
+  font-size: 15px;
+}
+.kiln-grid-filter-sheet .kiln-griddlg__check input {
+  width: 20px;
+  height: 20px;
+}
+.kiln-grid-filter-sheet .kiln-gfx__ffoot .kiln-btn {
+  min-height: 44px;
+  padding-inline: 20px;
+  border-radius: 12px;
+  font-size: 15px;
+}

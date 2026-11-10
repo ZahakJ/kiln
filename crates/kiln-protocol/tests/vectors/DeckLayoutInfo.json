@@ -1,0 +1,16 @@
+{
+  "type": "DeckLayoutInfo",
+  "format": {
+    "TYPENAME": "DeckLayoutInfo"
+  },
+  "values": [
+    {
+      "id": 5,
+      "name": "Title Slide"
+    },
+    {
+      "id": 0,
+      "name": ""
+    }
+  ]
+}

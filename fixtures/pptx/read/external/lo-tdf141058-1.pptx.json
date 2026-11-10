@@ -1,0 +1,85 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 1,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 5,
+   "shapes": [
+    {
+     "kind": "picture",
+     "name": "Picture 6"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 7",
+     "text": ""
+    },
+    {
+     "kind": "diagram",
+     "name": "Content Placeholder 5"
+    },
+    {
+     "children": [
+      {
+       "kind": "connector",
+       "name": "Connector: Elbow 9"
+      },
+      {
+       "kind": "connector",
+       "name": "Connector: Elbow 11"
+      },
+      {
+       "kind": "connector",
+       "name": "Connector: Elbow 14"
+      },
+      {
+       "kind": "connector",
+       "name": "Connector: Elbow 17"
+      },
+      {
+       "kind": "connector",
+       "name": "Straight Arrow Connector 21"
+      },
+      {
+       "kind": "connector",
+       "name": "Straight Arrow Connector 22"
+      },
+      {
+       "kind": "connector",
+       "name": "Straight Arrow Connector 23"
+      }
+     ],
+     "kind": "group",
+     "name": "Group 24"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": ""
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,667 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Titelfolie",
+    "Titel und Inhalt",
+    "Abschnitts-\nüberschrift",
+    "Zwei Inhalte",
+    "Vergleich",
+    "Nur Titel",
+    "Leer",
+    "Inhalt mit Überschrift",
+    "Bild mit Überschrift",
+    "Titel und vertikaler Text",
+    "Vertikaler Titel und Text",
+    "Titel, ClipArt und Text",
+    "Titel, Text und Inhalt"
+   ]
+  }
+ ],
+ "slide_count": 23,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Titelfolie",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "Government-University Identity Management Opportunities"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "Peter Alterman, Ph.D.\nChair, U.S. Federal PKI Policy Authority and\nAssistant CIO/E-Authentication, NIH"
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "2"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "Current State of Affairs (60 years old now)"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "You apply to the application owner for a password\nYou use the password to access the system\nYou forget the password\nThe application owner gives you a new password\nYou use the new password to access the system\nYou forget the password\n<infinite do loop>\nNo identity proofing\nNo way to know who is actually on the system (Your secretary? Your postdoc? Your dog? Osama?)\n\n"
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "3"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "Foundational Assumption"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "Government online services shall trust externally-issued electronic identity credentials at known levels of assurance (LOA)\n\nOnline applications shall determine required credential LOA using a standard methodology based on:\nRisk assessment using standard tool,\nOMB M-04-04 determines required authN LOA\nNIST SP 800-63 translates required LOA to credential technology\n"
+    }
+   ]
+  },
+  {
+   "layout": "Titel, ClipArt und Text",
+   "notes": null,
+   "shape_count": 8,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 6",
+     "text": "4"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "E-Authentication LOA and What They Mean"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "Little or no assurance of identity; assertion-based identity authentication\n\nSome assurance of identity; assertion-based identity authentication or policy-thin PKI\n\nSubstantial assurance of identity; cryptographically-based identity authentication\n\nHigh assurance of identity; cryptographically-based identity authentication"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 4",
+     "text": "Level 1"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 5",
+     "text": "Level 2"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 6",
+     "text": "Level 3"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 7",
+     "text": "Level 4"
+    },
+    {
+     "kind": "textbox",
+     "name": "Text Box 8",
+     "text": "* Codified in OMB Memorandum 04-04"
+    }
+   ]
+  },
+  {
+   "layout": "Titel, ClipArt und Text",
+   "notes": null,
+   "shape_count": 8,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 6",
+     "text": "5"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "E-Authentication LOA and What They Service**"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 7",
+     "text": "Online applications with little or no risk of harm from fraud, hacking; low risk\n\nOnline applications with risk of some harm from fraud, hacking; some risks\n\n\nOnline applications where there is risk of significant harm from fraud, hacking; significant risks\n\n\nOnline applications where there is risk of substantial harm from fraud, hacking; substantial risks"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 8",
+     "text": "Level 1"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 13",
+     "text": "Level 2"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 14",
+     "text": "Level 3"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 15",
+     "text": "Level 4"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rectangle 16",
+     "text": "** Codified in NIST SP 800-63"
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "6"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "General Considerations for Determining LOA of an Electronic Identity Credential (EIC)"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "Identity Proofing – how sure are you that the person is who he or she claims to be?\n\nIdentity Binding – how sure are you that the person proffering the EIC is the person to whom the credential was issued?\n\nCredential integrity – how well does the technology and its implementation resist hacking, fraud, etc.?"
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "7"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "Summary of Lower-Level Identity Credentials"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "Level 1: UserID/Password, SAML assertion (XML text)\n\nLevel 2: “High entropy” UserID/Password; “policy-lite” PKI, e.g., Fed PKI Citizen and Commerce Class & Federal PKI Rudimentary, TAGPMA Classic Plus (in development)"
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "8"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "Summary of Cryptographic-Based Identity Credentials"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "\nLevel 3: One-time Password; Substantial assurance PKI at FPKI Basic, Medium\n\nLevel 4: High assurance PKI at FPKI Medium Hardware, High"
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "9"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "A Little Complication"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "The government has TWO LOA classifications:\nFederal PKI LOA codified in the Certificate Policies of the Federal PKI Policy Authority\nE-Authentication LOA codified in OMB M-04-04"
+    }
+   ]
+  },
+  {
+   "layout": "Nur Titel",
+   "notes": null,
+   "shape_count": 9,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 4",
+     "text": "10"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "LOA Mapping E-Auth to Fed PKI"
+    },
+    {
+     "children": [
+      {
+       "kind": "autoshape",
+       "name": "Rectangle 4",
+       "text": "\nE-Auth Level 1"
+      },
+      {
+       "kind": "autoshape",
+       "name": "Rectangle 5",
+       "text": "E-Auth Level 2"
+      },
+      {
+       "kind": "autoshape",
+       "name": "Rectangle 6",
+       "text": "E-Auth Level 3"
+      },
+      {
+       "kind": "autoshape",
+       "name": "Rectangle 7",
+       "text": "E-Auth Level 4"
+      }
+     ],
+     "kind": "group",
+     "name": "Group 3"
+    },
+    {
+     "children": [
+      {
+       "kind": "autoshape",
+       "name": "Rectangle 9",
+       "text": "FPKI Rudimentary;\nC4"
+      },
+      {
+       "kind": "autoshape",
+       "name": "Rectangle 10",
+       "text": "FPKI Medium/HW &\nMedium/HW-cbp"
+      },
+      {
+       "kind": "autoshape",
+       "name": "Rectangle 11",
+       "text": "FPKI Basic"
+      },
+      {
+       "kind": "autoshape",
+       "name": "Rectangle 12",
+       "text": "FPKI Medium & \nMedium-cbp"
+      },
+      {
+       "kind": "autoshape",
+       "name": "Rectangle 13",
+       "text": "\u000bFPKI High \n(governments only)"
+      }
+     ],
+     "kind": "group",
+     "name": "Group 8"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Line 14",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Line 15",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Line 16",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Line 17",
+     "text": ""
+    },
+    {
+     "kind": "autoshape",
+     "name": "Line 18",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "11"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "How Can A School Credential be Trusted and Used by a Government Application? "
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "Preferred path - School joins an Identity Federation that has policy and technology interoperability agreements with E-Authentication Federation\nRequirements – Each Federation agrees to ensure its members operate according to minimum requirements for members of the other’s Federation.\nPresumes substantive policy, technology and management commonality\nAlternate path 1 – School becomes a member Credential Service Provider (CSP) of the E-Authentication Federation directly, signing on to the Federation’s technology, business, operating and legal requirements\nAlternate path 2 – One-to-one relationships (sssh!)\n"
+    }
+   ]
+  },
+  {
+   "layout": "Leer",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 3",
+     "text": "12"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "US Government E-Authentication Interfederation Model"
+    },
+    {
+     "kind": "picture",
+     "name": "Picture 6"
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "13"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "E-Authentication Federation Membership Requirements"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "Credential service providers [CSP] submit to credential assessment and evaluation of LOA\n\nBoth Application providers and CSPs sign on to Federation business and operating “standards,” legal agreements."
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "14"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "E-Authentication – InCommon Interfederation Status"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "Candor requires this disclaimer: they’re still trying to figure it out after two years and two tries\n\nCurrent status: Said to be getting close with inCommon.  Policy-grounded MOA on the table and molding; technical interoperability targeted for SAML 2.0; USPerson profile analog of eduPerson profile in 2.0 version but still pretty much generic.\n\ninCommon needs to up its policy, procedures, documentation and audit requirements to play long-term\n\nE-Authentication needs to up its privacy protections"
+    }
+   ]
+  },
+  {
+   "layout": "Leer",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 3",
+     "text": "15"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "Fed PKI “Interfederation” Model"
+    },
+    {
+     "kind": "picture",
+     "name": "Picture 17"
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "16"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "Fed PKI Cross Certification Process "
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "Application - LOA?\nPolicy Mapping\nMapping Matrices online\nCert Policy WG mapping review\nCollegial back and forth discussions\nTechnical Interoperability Testing\nTesting Protocol online\nDirectory and profiles tested (LDAP and/or X.500)\nReview of summary of independent audit results\nMap CP –> CPS and CPS -> PKI Operations\nIndependent auditors, not FPKI auditors\nWhole process laid out in “Criteria & Methodology” document online"
+    },
+    {
+     "kind": "picture",
+     "name": "Picture 4"
+    }
+   ]
+  },
+  {
+   "layout": "Titel, Text und Inhalt",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 6",
+     "text": "17"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "FPKI Does Interfederate"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 7",
+     "text": "Cross-certified (test) with Higher Education PKI Bridge, 01/2002\n\nCross-certified (production) with CertiPath – Aerospace Industry PKI Bridge at Medium Hardware (EAuth Level 4), 07/2006\n\nCross-certification under way with SAFE-Biopharma PKI Bridge, Medium and Medium Hardware\n\nProcesses and procedures spelled out in “Criteria and Methodology” Document online\n"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Picture 9"
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "18"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "Current Model for Assertion-Based Interfederation (still a work in progress)"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "For E-Authentication Federation and InCommon to interfederate at LOA 1 (!), E-Auth is requiring InC to:\nupgrade its policy, audit and management infrastructure to comply with EAuth model, e.g., compliance with Credential Assessment Framework for LOA 1, signing Business and Operating Standards and sign Legal Agreement\nSatisfy technical interoperability testing using SAML 1.0 technology, though work is proceeding to migrate to SAML 2.0 technology\nInCommon has designated this state of operation “InCommon Bronze”\nCompatibility with E-Authentication requirements for LOA 2 is called “InCommon Silver”\n"
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "19"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "What about Level 3 Government Apps Today?"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "Universities issuing PKI-based electronic credentials may cross-certify with the Federal PKI at Basic Assurance or above\nEx. MIT Lincoln Lab, University of Texas System (in process)\nUsually 3 – 6 months\nOr acquire digital certificates from a vendor currently cross-certified with the Federal Bridge at Basic assurance or above\nMany options"
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "20"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "Seeded Questions"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "Q: What about the recent DOD notice that PKI individual certs are required for access to their web resources.  Will DOD sites ever trust university-issued certificates for access or will we have to shell out $$ to get to them?\nA: If you think YOU are fussing about this, imagine how furious State Dep’t. and NASA are.  Imagine how furious their contractors are.\nA: We (Fed PKI) have been talking to DOD about this issue and we hope to see progress in 2007.\nQ:  What the heck is “password entropy?”\nA: See next slide\n"
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "21"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "Password Entropy (Copied From Bill Burr)*"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "Entropy is measure of randomness in a password\nStated in bits, a password with 24 bits of entropy is as hard to guess as a 24 bit random number\nThe more entropy required in the password, the more trials the system can allow\u000b\nIt’s easy to calculate the entropy of a system-generated, random password \u000b—But users can’t remember these\n\nMuch harder to estimate the entropy of user-chosen passwords\nComposition rules and dictionary rules may increase entropy"
+    },
+    {
+     "kind": "textbox",
+     "name": "Text Box 4",
+     "text": "*NIST KBA Symposium, Feb. 9, 2004"
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "22"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "Resources"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "www.cio.gov/eauthentication\nwww.cio.gov/fpkipa\nhttp://csrc.nist.gov\nwww.cio.gov/ficc\n"
+    }
+   ]
+  },
+  {
+   "layout": "Titel und Inhalt",
+   "notes": null,
+   "shape_count": 3,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Foliennummernplatzhalter 5",
+     "text": "23"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 2",
+     "text": "\u000b\u000bNotes"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Rectangle 3",
+     "text": "1.) How does your institution issue IDs? Is there a signature station\u000brequiring photo ID? What about non-resident scientists from Japan?\u000b\u000b2.) What is password entropy? Complex vs. long passwords. How often must\u000bthey be changed? Can they be re-used? Pass dictionary test?\u000b\u000b3.) How secure is the authentication infrastructure? Can one person\u000bjeopardize the process? How are ID records stored?\u000b\u000b4.) How is the process documented? Are there templates to use as a\u000bframework that will pass Federal standards?\u000b"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+{
+  "type": "Caret",
+  "format": {
+    "TYPENAME": "Caret"
+  },
+  "values": [
+    {
+      "rect": {
+        "x": -12.5,
+        "y": 96.0,
+        "width": 0.75,
+        "height": 18.0
+      },
+      "rtl": false
+    },
+    {
+      "rect": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.0,
+        "height": 0.0
+      },
+      "rtl": false
+    }
+  ]
+}

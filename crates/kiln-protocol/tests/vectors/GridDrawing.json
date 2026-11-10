@@ -1,0 +1,95 @@
+{
+  "type": "GridDrawing",
+  "format": {
+    "TYPENAME": "GridDrawing"
+  },
+  "values": [
+    {
+      "index": 0,
+      "name": "Chart 1",
+      "x": 1008.5,
+      "y": 550.0,
+      "width": 400.0,
+      "height": 268.0,
+      "kind": "Chart",
+      "chart": {
+        "kind": null,
+        "style": null,
+        "color_set": 7,
+        "color_sets": [],
+        "title": null,
+        "legend": null,
+        "data_labels": null,
+        "elements": [],
+        "data_range": "",
+        "series": [],
+        "categories": [],
+        "has_cells": false,
+        "axes": [],
+        "blanks": "Gap",
+        "show_hidden": false,
+        "categories_range": "",
+        "chart_area": {
+          "fill": null,
+          "no_fill": false,
+          "line": null,
+          "no_line": false,
+          "line_width": 0.0,
+          "shadow": false,
+          "rounded": false
+        },
+        "plot_area": {
+          "fill": null,
+          "no_fill": false,
+          "line": null,
+          "no_line": false,
+          "line_width": 0.0,
+          "shadow": false,
+          "rounded": false
+        }
+      },
+      "object": null
+    },
+    {
+      "index": 0,
+      "name": "Chart 1",
+      "x": 1008.5,
+      "y": 550.0,
+      "width": 400.0,
+      "height": 268.0,
+      "kind": "Shape",
+      "chart": null,
+      "object": {
+        "preset": "roundRect",
+        "fill": "C2481C",
+        "line": "none",
+        "line_width": 1.0,
+        "text": "Firing",
+        "text_color": "FFFFFF",
+        "text_size": 11.0,
+        "crop": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "lock_aspect": false,
+        "alt_text": "A kiln",
+        "placement": "Move",
+        "natural_width": 0.0,
+        "natural_height": 0.0
+      }
+    },
+    {
+      "index": 0,
+      "name": "",
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0,
+      "kind": "Picture",
+      "chart": null,
+      "object": null
+    }
+  ]
+}

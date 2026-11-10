@@ -1,0 +1,88 @@
+/* A window that could not load part of Kiln: the update, offline and failure states. */
+
+.kiln-load-problem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  width: min(420px, calc(100vw - 32px));
+  padding: 28px 28px 22px;
+  overflow: hidden;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-lg);
+  background:
+    radial-gradient(
+      120% 80% at 50% 0%,
+      color-mix(in srgb, var(--kiln-ember) 12%, transparent),
+      transparent 62%
+    ),
+    var(--kiln-panel);
+  box-shadow: var(--kiln-shadow-3);
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-ui);
+  text-align: center;
+  animation: kiln-load-problem-in 320ms var(--kiln-ease) both;
+}
+/* The ember edge of a suite-level notice (the update card's). */
+.kiln-load-problem::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--kiln-ember) 30%, transparent),
+    var(--kiln-ember),
+    color-mix(in srgb, var(--kiln-ember) 30%, transparent)
+  );
+}
+@keyframes kiln-load-problem-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+.kiln-load-problem .kiln-app-tile {
+  margin-block-end: 6px;
+  filter: drop-shadow(0 6px 14px color-mix(in srgb, var(--kiln-ember) 28%, transparent));
+}
+.kiln-load-problem__title {
+  font-family: var(--kiln-font-display);
+  font-size: var(--kiln-text-xl);
+  font-weight: 700;
+}
+.kiln-load-problem__text {
+  margin: 0;
+  color: var(--kiln-muted);
+  font-size: var(--kiln-text-base);
+  line-height: 1.5;
+}
+.kiln-load-problem__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-block-start: 12px;
+}
+.kiln-load-problem__actions a {
+  color: var(--kiln-ember-text);
+  font-size: var(--kiln-text-base);
+  font-weight: 600;
+}
+@media (prefers-reduced-motion: reduce) {
+  .kiln-load-problem {
+    animation: none;
+  }
+}
+
+/* The whole window, when the app frame's own code is what did not load. */
+.kiln-load-screen {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-height: 100dvh;
+  padding: 16px;
+  background: var(--kiln-bg);
+}

@@ -1,0 +1,18 @@
+{
+  "type": "DeckSectionInfo",
+  "format": {
+    "TYPENAME": "DeckSectionInfo"
+  },
+  "values": [
+    {
+      "name": "Open studio",
+      "start": 0,
+      "count": 1
+    },
+    {
+      "name": "",
+      "start": 0,
+      "count": 0
+    }
+  ]
+}

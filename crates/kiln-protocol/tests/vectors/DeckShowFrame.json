@@ -1,0 +1,182 @@
+{
+  "type": "DeckShowFrame",
+  "format": {
+    "TYPENAME": "DeckShowFrame"
+  },
+  "values": [
+    {
+      "delta": {
+        "revision": 42,
+        "reset": false,
+        "scale": 2.0,
+        "extent": {
+          "x": 0.0,
+          "y": 0.0,
+          "w": 0.0,
+          "h": 0.0
+        },
+        "background": {
+          "Rgba": 0
+        },
+        "tiles": [],
+        "removed": [],
+        "atlas": [],
+        "images": [],
+        "overlay": null
+      },
+      "groups": [
+        {
+          "matrix": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          "opacity": 1.0,
+          "clip": null,
+          "ramp": null,
+          "layers": [
+            {
+              "tile": {
+                "layer": 0,
+                "index": 2049
+              },
+              "fill": null,
+              "matrix": [
+                1.0,
+                0.0,
+                0.0,
+                1.0,
+                -640.0,
+                0.0
+              ],
+              "opacity": 0.5,
+              "clip": {
+                "verbs": [
+                  0,
+                  1,
+                  1,
+                  1,
+                  4
+                ],
+                "coords": [
+                  0.0,
+                  0.0,
+                  320.0,
+                  0.0,
+                  320.0,
+                  720.0,
+                  0.0,
+                  720.0
+                ]
+              },
+              "ramp": {
+                "from": [
+                  640.0,
+                  360.0
+                ],
+                "to": [
+                  793.6,
+                  360.0
+                ],
+                "stops": [
+                  [
+                    0.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    0.0
+                  ]
+                ]
+              }
+            },
+            {
+              "tile": null,
+              "fill": {
+                "Rgba": 255
+              },
+              "matrix": [
+                1.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              "opacity": 1.0,
+              "clip": null,
+              "ramp": null
+            }
+          ]
+        }
+      ],
+      "ink": [],
+      "slide_width": 1280.0,
+      "slide_height": 720.0,
+      "animating": true,
+      "advance_in_ms": 1500,
+      "status": {
+        "running": true,
+        "mode": "Show",
+        "slide": 2,
+        "position": 3,
+        "count": 12,
+        "click": 1,
+        "clicks": 4,
+        "screen": "Slide",
+        "tool": "Pen",
+        "typed": "1",
+        "next": 3,
+        "on_click": true,
+        "kind": "Speaker",
+        "version": 9007199254740991
+      }
+    },
+    {
+      "delta": {
+        "revision": 0,
+        "reset": false,
+        "scale": 0.0,
+        "extent": {
+          "x": 0.0,
+          "y": 0.0,
+          "w": 0.0,
+          "h": 0.0
+        },
+        "background": {
+          "Rgba": 0
+        },
+        "tiles": [],
+        "removed": [],
+        "atlas": [],
+        "images": [],
+        "overlay": null
+      },
+      "groups": [],
+      "ink": [],
+      "slide_width": 0.0,
+      "slide_height": 0.0,
+      "animating": false,
+      "advance_in_ms": null,
+      "status": {
+        "running": false,
+        "mode": "Show",
+        "slide": 0,
+        "position": 0,
+        "count": 0,
+        "click": 0,
+        "clicks": 0,
+        "screen": "Slide",
+        "tool": "Arrow",
+        "typed": "",
+        "next": null,
+        "on_click": false,
+        "kind": "Speaker",
+        "version": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "CollabStatus",
+  "format": {
+    "TYPENAME": "CollabStatus"
+  },
+  "values": [
+    "Connecting",
+    "Online",
+    "Offline",
+    "Refused",
+    "Connecting"
+  ]
+}

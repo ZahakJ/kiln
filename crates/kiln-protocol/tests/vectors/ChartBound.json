@@ -1,0 +1,16 @@
+{
+  "type": "ChartBound",
+  "format": {
+    "TYPENAME": "ChartBound"
+  },
+  "values": [
+    "Auto",
+    {
+      "Fixed": 0.001
+    },
+    {
+      "Fixed": -2500000000.0
+    },
+    "Auto"
+  ]
+}

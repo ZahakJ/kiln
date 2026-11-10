@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-kiln-open-paths"
+description = "Enables the kiln_open_paths command without any pre-configured scope."
+commands.allow = ["kiln_open_paths"]
+
+[[permission]]
+identifier = "deny-kiln-open-paths"
+description = "Denies the kiln_open_paths command without any pre-configured scope."
+commands.deny = ["kiln_open_paths"]

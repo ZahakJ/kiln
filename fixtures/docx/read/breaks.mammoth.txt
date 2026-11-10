@@ -1,0 +1,22 @@
+Breaks and special characters
+
+Line oneLine two after a manual line break
+
+Before a page break.
+
+
+
+After the page break.
+
+Special characters: non breaking space, soft­hyphen, en – dash, em — dash, “quotes”, ‘single’, …, €, ©, ®, ™, ½, α β γ, 漢字, 😀.
+
+Tabs:	one	two	three
+
+Symbol characters: ☺α
+
+Ea aute veniam nisi aliqua laboris veniam dolore do laborum ullamco aute sit cupidatat dolore ipsum consequat aliqua eiusmod ea proident cupidatat magna ex esse nisi officia occaecat cillum cupidatat in et velit ea proident magna non non laborum minim.
+
+Aute nostrud minim id esse ex dolore sunt ea consequat nulla dolore officia ut ut quis cillum dolore do cupidatat in fugiat lorem occaecat consectetur laboris aliqua deserunt non ex enim excepteur ex velit nostrud dolore id magna ut deserunt.
+
+Ullamco consectetur amet esse voluptate veniam aute quis ad labore laboris ad sed occaecat amet non voluptate tempor est lorem dolore dolor et excepteur irure commodo do culpa id cillum amet lorem in in ut deserunt laborum id culpa laboris.
+

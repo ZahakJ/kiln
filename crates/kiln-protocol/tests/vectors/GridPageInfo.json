@@ -1,0 +1,92 @@
+{
+  "type": "GridPageInfo",
+  "format": {
+    "TYPENAME": "GridPageInfo"
+  },
+  "values": [
+    {
+      "landscape": true,
+      "paper": 9,
+      "margins": {
+        "left": 0.7,
+        "right": 0.7,
+        "top": 0.75,
+        "bottom": 0.75,
+        "header": 0.3,
+        "footer": 0.3
+      },
+      "scale": 100,
+      "fit": true,
+      "fit_width": 1,
+      "fit_height": 0,
+      "gridlines": false,
+      "headings": false,
+      "center_h": true,
+      "center_v": false,
+      "header": "&L&D&C&A&RPage &P of &N",
+      "footer": "",
+      "first_page": null,
+      "over_then_down": false,
+      "black_and_white": false,
+      "print_area": "$A$1:$F$40",
+      "title_rows": "$1:$1",
+      "title_cols": "",
+      "pages": 3,
+      "row_breaks": [
+        20
+      ],
+      "col_breaks": [],
+      "header_preview": [
+        "18/10/2026",
+        "Budget",
+        "Page 1 of 3"
+      ],
+      "footer_preview": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "landscape": false,
+      "paper": 0,
+      "margins": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0,
+        "header": 0.0,
+        "footer": 0.0
+      },
+      "scale": 0,
+      "fit": false,
+      "fit_width": 0,
+      "fit_height": 0,
+      "gridlines": false,
+      "headings": false,
+      "center_h": false,
+      "center_v": false,
+      "header": "",
+      "footer": "",
+      "first_page": null,
+      "over_then_down": false,
+      "black_and_white": false,
+      "print_area": "",
+      "title_rows": "",
+      "title_cols": "",
+      "pages": 0,
+      "row_breaks": [],
+      "col_breaks": [],
+      "header_preview": [
+        "",
+        "",
+        ""
+      ],
+      "footer_preview": [
+        "",
+        "",
+        ""
+      ]
+    }
+  ]
+}

@@ -1,0 +1,542 @@
+/* The Animation Pane, the stage preview and Set Up Show. */
+.kiln-animpane {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  width: 280px;
+  min-width: 240px;
+  border-inline-start: 1px solid var(--kiln-line);
+  background: var(--kiln-panel);
+  color: var(--kiln-fg);
+  font: 400 13px / 1.35 var(--kiln-font-ui, system-ui, sans-serif);
+  min-height: 0;
+}
+
+.kiln-animpane__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 6px;
+}
+
+.kiln-animpane__head h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.kiln-animpane__close,
+.kiln-animpane__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.kiln-animpane__close:hover,
+.kiln-animpane__icon:hover {
+  background: var(--kiln-bg-hover);
+}
+
+.kiln-animpane__play {
+  padding: 0 12px 8px;
+}
+
+.kiln-animpane__empty {
+  margin: 0;
+  padding: 12px;
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-animpane__list {
+  margin: 0;
+  padding: 2px 6px;
+  list-style: none;
+  overflow: auto;
+  outline: none;
+}
+
+.kiln-animpane__list:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--kiln-deck-fill);
+}
+
+.kiln-animpane__row {
+  display: grid;
+  grid-template-columns: 16px 14px 12px 1fr 64px;
+  align-items: center;
+  gap: 4px;
+  min-height: 30px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  cursor: default;
+}
+
+.kiln-animpane__row:hover {
+  background: var(--kiln-bg-hover);
+}
+
+.kiln-animpane__row[aria-selected="true"] {
+  background: color-mix(in srgb, var(--kiln-deck-fill) 16%, transparent);
+}
+
+.kiln-animpane__row[data-drop="before"] {
+  box-shadow: inset 0 2px 0 var(--kiln-deck-fill);
+}
+
+.kiln-animpane__row[data-drop="after"] {
+  box-shadow: inset 0 -2px 0 var(--kiln-deck-fill);
+}
+
+.kiln-animpane__num {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-animpane__start {
+  display: inline-flex;
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-animpane__star {
+  width: 10px;
+  height: 10px;
+  clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  background: #2e9d62;
+}
+
+.kiln-animpane__row[data-class="emphasis"] .kiln-animpane__star {
+  background: #d69a12;
+}
+
+.kiln-animpane__row[data-class="exit"] .kiln-animpane__star {
+  background: #c8463d;
+}
+
+.kiln-animpane__row[data-class="path"] .kiln-animpane__star {
+  background: #3159c6;
+}
+
+.kiln-animpane__name {
+  display: grid;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.kiln-animpane__effect {
+  font-size: 11px;
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-animpane__bar {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--kiln-bg-hover);
+}
+
+.kiln-animpane__bar > span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 4px;
+  background: #2e9d62;
+}
+
+.kiln-animpane__row[data-class="emphasis"] .kiln-animpane__bar > span {
+  background: #d69a12;
+}
+
+.kiln-animpane__row[data-class="exit"] .kiln-animpane__bar > span {
+  background: #c8463d;
+}
+
+.kiln-animpane__timing {
+  display: grid;
+  gap: 6px;
+  padding: 10px 12px 12px;
+  border-top: 1px solid var(--kiln-line);
+}
+
+.kiln-animpane__field {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+.kiln-animpane__actions {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.kiln-deck__preview {
+  position: absolute;
+  z-index: 4;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+.kiln-setupshow {
+  align-items: flex-start;
+}
+
+.kiln-setupshow fieldset {
+  flex: 1;
+}
+
+.kiln-setupshow__range {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Designer, Reuse Slides: side panes like the Animation Pane. */
+.kiln-sidepane {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  min-width: 240px;
+  border-inline-start: 1px solid var(--kiln-line);
+  background: var(--kiln-panel);
+  color: var(--kiln-fg);
+  font: 400 13px / 1.35 var(--kiln-font-ui, system-ui, sans-serif);
+  min-height: 0;
+}
+
+.kiln-sidepane__head,
+.kiln-outline__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 6px;
+}
+
+.kiln-sidepane__head h2,
+.kiln-outline__head h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.kiln-sidepane__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.kiln-sidepane__close:hover {
+  background: var(--kiln-bg-hover);
+}
+
+.kiln-sidepane__note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0 12px 8px;
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-sidepane__empty {
+  margin: 0;
+  padding: 12px;
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-designpane__list,
+.kiln-reusepane__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 16px 16px;
+  overflow: auto;
+  min-height: 0;
+  scrollbar-width: thin;
+}
+
+.kiln-designpane__list[aria-busy] {
+  opacity: 0.6;
+  transition: opacity 120ms linear;
+}
+
+.kiln-designpane__idea,
+.kiln-reusepane__slide {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.kiln-designpane__idea img,
+.kiln-reusepane__slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow:
+    0 0 0 1px var(--kiln-line),
+    0 1px 3px rgb(0 0 0 / 0.12);
+}
+
+.kiln-designpane__idea:hover img,
+.kiln-reusepane__slide:hover img {
+  box-shadow:
+    0 0 0 2px var(--kiln-accent),
+    0 2px 6px rgb(0 0 0 / 0.16);
+}
+
+.kiln-designpane__idea:focus-visible,
+.kiln-reusepane__slide:focus-visible {
+  outline: none;
+}
+
+.kiln-designpane__idea:focus-visible img,
+.kiln-reusepane__slide:focus-visible img {
+  box-shadow: 0 0 0 2px var(--kiln-focus, var(--kiln-accent));
+}
+
+.kiln-reusepane__open {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px 10px;
+  min-width: 0;
+}
+
+.kiln-reusepane__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-reusepane__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kiln-reusepane__all {
+  padding: 8px 12px 12px;
+  border-top: 1px solid var(--kiln-line);
+}
+
+/* Outline View: the outline in the rail's place. */
+.kiln-outline {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  width: 340px;
+  min-width: 0;
+  border-inline-end: 1px solid var(--kiln-line);
+  background: var(--kiln-panel);
+  color: var(--kiln-fg);
+  font: 400 13px / 1.45 var(--kiln-font-ui, system-ui, sans-serif);
+}
+
+.kiln-outline__body {
+  overflow: auto;
+  padding-block: 4px 24px;
+  padding-inline: 4px 8px;
+  min-height: 0;
+  scrollbar-width: thin;
+}
+
+.kiln-outline__slide {
+  display: grid;
+  grid-template-columns: 22px 18px 1fr;
+  align-items: start;
+  column-gap: 4px;
+  padding: 4px 0;
+}
+
+.kiln-outline__number {
+  padding-top: 2px;
+  text-align: end;
+  color: var(--kiln-fg-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.kiln-outline__slide[data-current] .kiln-outline__number {
+  color: var(--kiln-accent);
+  font-weight: 600;
+}
+
+.kiln-outline__slide[data-hidden] .kiln-outline__number {
+  text-decoration: line-through;
+}
+
+.kiln-outline__icon {
+  width: 16px;
+  height: 11px;
+  margin-top: 5px;
+  border: 1px solid var(--kiln-fg-muted);
+  border-radius: 2px;
+}
+
+.kiln-outline__slide[data-current] .kiln-outline__icon {
+  border-color: var(--kiln-accent);
+  background: color-mix(in srgb, var(--kiln-accent) 14%, transparent);
+}
+
+.kiln-outline__lines {
+  min-width: 0;
+}
+
+.kiln-outline__line {
+  padding: 1px 4px;
+  border-radius: 3px;
+  outline: none;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  cursor: text;
+}
+
+.kiln-outline__line[data-title] {
+  font-weight: 600;
+}
+
+.kiln-outline__line[data-level]::before {
+  content: "•";
+  display: inline-block;
+  width: 14px;
+  margin-inline-start: -14px;
+  color: var(--kiln-fg-muted);
+}
+
+.kiln-outline__line[data-title]:empty::before {
+  content: "Click to add title";
+  color: var(--kiln-fg-muted);
+  font-weight: 400;
+}
+
+.kiln-outline__line[contenteditable="false"][data-title]:empty::before {
+  content: "No title";
+}
+
+.kiln-outline__line:focus {
+  background: var(--kiln-bg-hover);
+}
+
+@media (max-width: 720px) {
+  .kiln-outline {
+    width: 100%;
+    max-height: 40vh;
+    border-inline-end: 0;
+    border-bottom: 1px solid var(--kiln-line);
+  }
+
+  .kiln-sidepane {
+    width: 100%;
+    border-inline-start: 0;
+    border-top: 1px solid var(--kiln-line);
+  }
+}
+
+/* Insert Equation. */
+.kiln-deck-math {
+  font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", serif;
+  font-size: 15px;
+}
+
+.kiln-deck-math__examples {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.kiln-deck-math__legend {
+  grid-column: 1 / -1;
+  margin-bottom: 4px;
+  padding: 0;
+  font-weight: 600;
+}
+
+.kiln-deck-math__example {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.kiln-deck-math__example:hover {
+  background: var(--kiln-bg-hover);
+}
+
+.kiln-deck-math__example code {
+  color: var(--kiln-fg-muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+/* Effect Options and Add Animation: PowerPoint's two-line labels with the arrow after the second
+   line (below it, the three rows would not fit the ribbon's height). */
+.kiln-ribbon__dropdown.kiln-btn--stacked:is(
+  [data-command="deck.transitions.effect_options"],
+  [data-command="deck.animations.effect_options"],
+  [data-command="deck.animations.add_animation"]
+) {
+  position: relative;
+}
+.kiln-ribbon__dropdown.kiln-btn--stacked:is(
+    [data-command="deck.transitions.effect_options"],
+    [data-command="deck.animations.effect_options"],
+    [data-command="deck.animations.add_animation"]
+  )
+  .kiln-btn__label {
+  padding-inline-end: 10px;
+}
+.kiln-ribbon__dropdown.kiln-btn--stacked:is(
+    [data-command="deck.transitions.effect_options"],
+    [data-command="deck.animations.effect_options"],
+    [data-command="deck.animations.add_animation"]
+  )
+  .kiln-btn__icon-after {
+  position: absolute;
+  inset-inline-end: 2px;
+  bottom: 5px;
+  margin: 0;
+}
+
+/* Design ideas and outline lines with the keys: their focus rings. */
+.kiln-designpane__idea:focus-visible {
+  outline: 2px solid var(--kiln-focus-ring);
+  outline-offset: 2px;
+}
+.kiln-outline [role="textbox"]:focus-visible {
+  outline: 2px solid var(--kiln-focus-ring);
+  outline-offset: 1px;
+}

@@ -1,0 +1,14 @@
+{
+  "type": "GridVAlign",
+  "format": {
+    "TYPENAME": "GridVAlign"
+  },
+  "values": [
+    "Top",
+    "Distributed",
+    "Top",
+    "Center",
+    "Bottom",
+    "Justify"
+  ]
+}

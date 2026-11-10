@@ -1,0 +1,11 @@
+{
+  "type": "GridSparkKind",
+  "format": {
+    "TYPENAME": "GridSparkKind"
+  },
+  "values": [
+    "Line",
+    "WinLoss",
+    "Line"
+  ]
+}

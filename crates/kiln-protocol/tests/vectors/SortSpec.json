@@ -1,0 +1,22 @@
+{
+  "type": "SortSpec",
+  "format": {
+    "TYPENAME": "SortSpec"
+  },
+  "values": [
+    {
+      "kind": "Text",
+      "descending": false,
+      "column": 0,
+      "header": false,
+      "case_sensitive": false
+    },
+    {
+      "kind": "Text",
+      "descending": false,
+      "column": 0,
+      "header": false,
+      "case_sensitive": false
+    }
+  ]
+}

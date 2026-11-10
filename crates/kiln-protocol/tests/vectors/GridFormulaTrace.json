@@ -1,0 +1,63 @@
+{
+  "type": "GridFormulaTrace",
+  "format": {
+    "TYPENAME": "GridFormulaTrace"
+  },
+  "values": [
+    {
+      "cell": "Sheet1!$B$1",
+      "formula": "=IF(SUM(A1:A3)>5,\"x\",\"y\")",
+      "value": "\"x\"",
+      "root": {
+        "kind": "call",
+        "label": "SUM",
+        "text": "SUM(A1:A3)",
+        "start": 4,
+        "end": 14,
+        "value": "6",
+        "evaluated": true,
+        "reference": null,
+        "summary": "Adds its arguments.",
+        "children": [
+          {
+            "kind": "reference",
+            "label": "A1:A3",
+            "text": "A1:A3",
+            "start": 8,
+            "end": 13,
+            "value": "{1;2;3}",
+            "evaluated": true,
+            "reference": "A1:A3",
+            "summary": null,
+            "children": []
+          }
+        ]
+      },
+      "steps": [
+        {
+          "text": "=IF(SUM(A1:A3)>5,\"x\",\"y\")",
+          "start": 8,
+          "end": 13,
+          "value": "{1;2;3}"
+        }
+      ],
+      "message": null
+    },
+    {
+      "cell": "Sheet1!$A$1",
+      "formula": "",
+      "value": "5",
+      "root": null,
+      "steps": [],
+      "message": "The cell holds a constant."
+    },
+    {
+      "cell": "",
+      "formula": "",
+      "value": "",
+      "root": null,
+      "steps": [],
+      "message": null
+    }
+  ]
+}

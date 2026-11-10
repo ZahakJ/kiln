@@ -1,0 +1,543 @@
+[
+  {
+    "name": "AND",
+    "category": "Logical",
+    "summary": "Returns TRUE if all of its arguments are TRUE.",
+    "syntax": "AND(logical1, [logical2], ...)",
+    "args": [
+      {
+        "name": "logical1",
+        "description": "A condition, logical value or range."
+      },
+      {
+        "name": "logical2",
+        "description": "Further conditions.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=AND(TRUE,1>2)",
+        "result": "FALSE"
+      },
+      {
+        "formula": "=AND(2>1,3>2)",
+        "result": "TRUE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "BYCOL",
+    "category": "Logical",
+    "summary": "Applies a LAMBDA to each column and returns an array of the results.",
+    "syntax": "BYCOL(array, lambda)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The array to process by column."
+      },
+      {
+        "name": "lambda",
+        "description": "A LAMBDA that takes a column."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BYCOL({1,2;3,4},LAMBDA(c,SUM(c)))",
+        "result": "{4,6}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "BYROW",
+    "category": "Logical",
+    "summary": "Applies a LAMBDA to each row and returns an array of the results.",
+    "syntax": "BYROW(array, lambda)",
+    "args": [
+      {
+        "name": "array",
+        "description": "The array to process by row."
+      },
+      {
+        "name": "lambda",
+        "description": "A LAMBDA that takes a row."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=BYROW({1,2;3,4},LAMBDA(r,SUM(r)))",
+        "result": "{3;7}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "FALSE",
+    "category": "Logical",
+    "summary": "Returns the logical value FALSE.",
+    "syntax": "FALSE()",
+    "args": [],
+    "examples": [
+      {
+        "formula": "=FALSE()",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IF",
+    "category": "Logical",
+    "summary": "Returns one value if a condition is TRUE and another if it is FALSE.",
+    "syntax": "IF(logical_test, value_if_true, [value_if_false])",
+    "args": [
+      {
+        "name": "logical_test",
+        "description": "The condition to check."
+      },
+      {
+        "name": "value_if_true",
+        "description": "Result when the condition is TRUE."
+      },
+      {
+        "name": "value_if_false",
+        "description": "Result when the condition is FALSE (FALSE if omitted).",
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IF(2>1,\"yes\",\"no\")",
+        "result": "\"yes\""
+      },
+      {
+        "formula": "=IF(1>2,\"yes\")",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IFERROR",
+    "category": "Logical",
+    "summary": "Returns a value you specify if a formula evaluates to an error; otherwise the formula result.",
+    "syntax": "IFERROR(value, value_if_error)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value or formula to check."
+      },
+      {
+        "name": "value_if_error",
+        "description": "Result when value is an error."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IFERROR(1/0,\"none\")",
+        "result": "\"none\""
+      },
+      {
+        "formula": "=IFERROR(10/2,\"none\")",
+        "result": "5"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "IFNA",
+    "category": "Logical",
+    "summary": "Returns a value you specify if a formula returns #N/A; otherwise the formula result.",
+    "syntax": "IFNA(value, value_if_na)",
+    "args": [
+      {
+        "name": "value",
+        "description": "The value or formula to check."
+      },
+      {
+        "name": "value_if_na",
+        "description": "Result when value is #N/A."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IFNA(MATCH(\"x\",{\"a\",\"b\"},0),\"Not found\")",
+        "result": "\"Not found\""
+      },
+      {
+        "formula": "=IFNA(1/0,\"x\")",
+        "result": "#DIV/0!"
+      }
+    ],
+    "since": "2013"
+  },
+  {
+    "name": "IFS",
+    "category": "Logical",
+    "summary": "Returns the value for the first condition that is TRUE.",
+    "syntax": "IFS(logical_test1, value_if_true1, [logical_test2, value_if_true2], ...)",
+    "args": [
+      {
+        "name": "logical_test1",
+        "description": "The first condition."
+      },
+      {
+        "name": "value_if_true1",
+        "description": "Result when logical_test1 is TRUE."
+      },
+      {
+        "name": "logical_test2, value_if_true2",
+        "description": "Further pairs.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=IFS(1>2,\"a\",TRUE,\"b\")",
+        "result": "\"b\""
+      },
+      {
+        "formula": "=IFS(85>=90,\"A\",85>=80,\"B\",TRUE,\"C\")",
+        "result": "\"B\""
+      }
+    ],
+    "since": "2019"
+  },
+  {
+    "name": "ISOMITTED",
+    "category": "Logical",
+    "summary": "Checks whether a LAMBDA argument was omitted.",
+    "syntax": "ISOMITTED(argument)",
+    "args": [
+      {
+        "name": "argument",
+        "description": "A LAMBDA parameter."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LAMBDA(a,b,IF(ISOMITTED(b),a,a+b))(1)",
+        "result": "1"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "LAMBDA",
+    "category": "Logical",
+    "summary": "Creates a reusable function with parameters.",
+    "syntax": "LAMBDA([parameter], ..., calculation)",
+    "args": [
+      {
+        "name": "parameter",
+        "description": "A parameter name.",
+        "repeating": true,
+        "optional": true
+      },
+      {
+        "name": "calculation",
+        "description": "The formula to evaluate using the parameters."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LAMBDA(x,x*2)(21)",
+        "result": "42"
+      },
+      {
+        "formula": "=LAMBDA(a,b,a^b)(2,10)",
+        "result": "1024"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "LET",
+    "category": "Logical",
+    "summary": "Assigns names to calculation results so they can be reused in a formula.",
+    "syntax": "LET(name1, value1, [name2, value2], ..., calculation)",
+    "args": [
+      {
+        "name": "name1",
+        "description": "A name for the first value."
+      },
+      {
+        "name": "value1",
+        "description": "The value or calculation to name."
+      },
+      {
+        "name": "name2, value2",
+        "description": "Further names and values.",
+        "repeating": true,
+        "optional": true
+      },
+      {
+        "name": "calculation",
+        "description": "The result, which can use the names."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=LET(x,5,y,x*2,x+y)",
+        "result": "15"
+      }
+    ],
+    "since": "2021"
+  },
+  {
+    "name": "MAKEARRAY",
+    "category": "Logical",
+    "summary": "Returns an array of the given size whose values are calculated by a LAMBDA.",
+    "syntax": "MAKEARRAY(rows, columns, lambda)",
+    "args": [
+      {
+        "name": "rows",
+        "description": "Number of rows."
+      },
+      {
+        "name": "columns",
+        "description": "Number of columns."
+      },
+      {
+        "name": "lambda",
+        "description": "LAMBDA(row, column) returning each value."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MAKEARRAY(2,2,LAMBDA(r,c,r*c))",
+        "result": "{1,2;2,4}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "MAP",
+    "category": "Logical",
+    "summary": "Returns an array formed by applying a LAMBDA to each value of the arrays.",
+    "syntax": "MAP(array1, [array2], ..., lambda)",
+    "args": [
+      {
+        "name": "array1",
+        "description": "An array to map."
+      },
+      {
+        "name": "array2",
+        "description": "Further arrays.",
+        "repeating": true,
+        "optional": true
+      },
+      {
+        "name": "lambda",
+        "description": "A LAMBDA taking one parameter per array."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=MAP({1,2,3},LAMBDA(x,x*x))",
+        "result": "{1,4,9}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "NOT",
+    "category": "Logical",
+    "summary": "Reverses a logical value.",
+    "syntax": "NOT(logical)",
+    "args": [
+      {
+        "name": "logical",
+        "description": "A value or condition that is TRUE or FALSE."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=NOT(TRUE)",
+        "result": "FALSE"
+      },
+      {
+        "formula": "=NOT(1+1=3)",
+        "result": "TRUE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "OR",
+    "category": "Logical",
+    "summary": "Returns TRUE if any argument is TRUE.",
+    "syntax": "OR(logical1, [logical2], ...)",
+    "args": [
+      {
+        "name": "logical1",
+        "description": "A condition, logical value or range."
+      },
+      {
+        "name": "logical2",
+        "description": "Further conditions.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=OR(FALSE,1<2)",
+        "result": "TRUE"
+      },
+      {
+        "formula": "=OR(1>2,2>3)",
+        "result": "FALSE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "REDUCE",
+    "category": "Logical",
+    "summary": "Reduces an array to an accumulated value by applying a LAMBDA to each value.",
+    "syntax": "REDUCE([initial_value], array, lambda)",
+    "args": [
+      {
+        "name": "initial_value",
+        "description": "Starting value of the accumulator.",
+        "optional": true
+      },
+      {
+        "name": "array",
+        "description": "The array to reduce."
+      },
+      {
+        "name": "lambda",
+        "description": "LAMBDA(accumulator, value)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=REDUCE(0,{1,2,3,4},LAMBDA(a,v,a+v))",
+        "result": "10"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "SCAN",
+    "category": "Logical",
+    "summary": "Scans an array by applying a LAMBDA to each value, returning every intermediate value.",
+    "syntax": "SCAN([initial_value], array, lambda)",
+    "args": [
+      {
+        "name": "initial_value",
+        "description": "Starting value of the accumulator.",
+        "optional": true
+      },
+      {
+        "name": "array",
+        "description": "The array to scan."
+      },
+      {
+        "name": "lambda",
+        "description": "LAMBDA(accumulator, value)."
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SCAN(0,{1,2,3},LAMBDA(a,v,a+v))",
+        "result": "{1,3,6}"
+      }
+    ],
+    "since": "2024"
+  },
+  {
+    "name": "SWITCH",
+    "category": "Logical",
+    "summary": "Compares a value with a list of values and returns the result for the first match.",
+    "syntax": "SWITCH(expression, value1, result1, [default_or_value2, result2], ...)",
+    "args": [
+      {
+        "name": "expression",
+        "description": "The value to compare."
+      },
+      {
+        "name": "value1",
+        "description": "The first value to compare with."
+      },
+      {
+        "name": "result1",
+        "description": "The result when expression matches value1."
+      },
+      {
+        "name": "default_or_value2, result2",
+        "description": "Further value/result pairs and an optional default.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=SWITCH(2,1,\"Sunday\",2,\"Monday\",\"Other\")",
+        "result": "\"Monday\""
+      },
+      {
+        "formula": "=SWITCH(9,1,\"a\",2,\"b\")",
+        "result": "#N/A"
+      },
+      {
+        "formula": "=SWITCH(9,1,\"a\",\"none\")",
+        "result": "\"none\""
+      }
+    ],
+    "since": "2019"
+  },
+  {
+    "name": "TRUE",
+    "category": "Logical",
+    "summary": "Returns the logical value TRUE.",
+    "syntax": "TRUE()",
+    "args": [],
+    "examples": [
+      {
+        "formula": "=TRUE()",
+        "result": "TRUE"
+      }
+    ],
+    "since": "2007"
+  },
+  {
+    "name": "XOR",
+    "category": "Logical",
+    "summary": "Returns TRUE when an odd number of arguments are TRUE.",
+    "syntax": "XOR(logical1, [logical2], ...)",
+    "args": [
+      {
+        "name": "logical1",
+        "description": "A condition, logical value or range."
+      },
+      {
+        "name": "logical2",
+        "description": "Further conditions.",
+        "repeating": true,
+        "optional": true
+      }
+    ],
+    "examples": [
+      {
+        "formula": "=XOR(3>0,2<9)",
+        "result": "FALSE"
+      },
+      {
+        "formula": "=XOR(3>12,4>6)",
+        "result": "FALSE"
+      },
+      {
+        "formula": "=XOR(TRUE,FALSE,FALSE)",
+        "result": "TRUE"
+      }
+    ],
+    "since": "2013"
+  }
+]

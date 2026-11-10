@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Kiln's own document types (zip archives with a manifest), for the shared MIME database. -->
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-kiln-write">
+    <comment>Kiln Write document</comment>
+    <comment xml:lang="de">Kiln Write-Dokument</comment>
+    <comment xml:lang="ar">مستند Kiln Write</comment>
+    <sub-class-of type="application/zip"/>
+    <generic-icon name="x-office-document"/>
+    <glob pattern="*.kwrite"/>
+  </mime-type>
+  <mime-type type="application/x-kiln-grid">
+    <comment>Kiln Grid workbook</comment>
+    <comment xml:lang="de">Kiln Grid-Arbeitsmappe</comment>
+    <comment xml:lang="ar">مصنف Kiln Grid</comment>
+    <sub-class-of type="application/zip"/>
+    <generic-icon name="x-office-spreadsheet"/>
+    <glob pattern="*.kgrid"/>
+  </mime-type>
+  <mime-type type="application/x-kiln-deck">
+    <comment>Kiln Deck presentation</comment>
+    <comment xml:lang="de">Kiln Deck-Präsentation</comment>
+    <comment xml:lang="ar">عرض تقديمي Kiln Deck</comment>
+    <sub-class-of type="application/zip"/>
+    <generic-icon name="x-office-presentation"/>
+    <glob pattern="*.kdeck"/>
+  </mime-type>
+</mime-info>

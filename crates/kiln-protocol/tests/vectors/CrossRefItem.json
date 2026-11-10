@@ -1,0 +1,28 @@
+{
+  "type": "CrossRefItem",
+  "format": {
+    "TYPENAME": "CrossRefItem"
+  },
+  "values": [
+    {
+      "target": {
+        "Heading": {
+          "para": 9
+        }
+      },
+      "label": "1.2 Glazes — «Ünïcödé»",
+      "category": "Heading",
+      "level": 2
+    },
+    {
+      "target": {
+        "Heading": {
+          "para": 0
+        }
+      },
+      "label": "",
+      "category": "",
+      "level": 0
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "GridFilterOp",
+  "format": {
+    "TYPENAME": "GridFilterOp"
+  },
+  "values": [
+    "Contains",
+    "LessThanOrEqual",
+    "Equal",
+    "NotEqual",
+    "GreaterThan",
+    "GreaterThanOrEqual",
+    "LessThan",
+    "LessThanOrEqual",
+    "BeginsWith",
+    "EndsWith",
+    "Contains",
+    "NotContains"
+  ]
+}

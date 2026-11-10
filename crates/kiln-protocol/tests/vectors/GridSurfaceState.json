@@ -1,0 +1,33 @@
+{
+  "type": "GridSurfaceState",
+  "format": {
+    "TYPENAME": "GridSurfaceState"
+  },
+  "values": [
+    {
+      "select_mode": "Add",
+      "drag": {
+        "target": "D4:E9",
+        "occupied": true,
+        "copy": false,
+        "insert": "Rows"
+      },
+      "error": {
+        "rule": "ErrorValue",
+        "error": "#DIV/0!",
+        "title": "Divide by Zero Error",
+        "help": "The formula or function divides by zero or by an empty cell."
+      }
+    },
+    {
+      "select_mode": "Normal",
+      "drag": null,
+      "error": null
+    },
+    {
+      "select_mode": "Normal",
+      "drag": null,
+      "error": null
+    }
+  ]
+}

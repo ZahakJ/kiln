@@ -1,0 +1,19 @@
+{
+  "type": "RevisionKindInfo",
+  "format": {
+    "TYPENAME": "RevisionKindInfo"
+  },
+  "values": [
+    "Inserted",
+    "RowDeleted",
+    "Inserted",
+    "Deleted",
+    "MovedFrom",
+    "MovedTo",
+    "Formatted",
+    "ParagraphFormatted",
+    "ParagraphInserted",
+    "ParagraphDeleted",
+    "RowInserted"
+  ]
+}

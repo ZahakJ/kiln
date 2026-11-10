@@ -1,0 +1,28 @@
+{
+  "type": "GridSpellingHit",
+  "format": {
+    "TYPENAME": "GridSpellingHit"
+  },
+  "values": [
+    {
+      "sheet": 0,
+      "row": 3,
+      "col": 0,
+      "word": "glazze",
+      "offset": 5,
+      "text": "Blue glazze",
+      "suggestions": [
+        "glaze"
+      ]
+    },
+    {
+      "sheet": 0,
+      "row": 0,
+      "col": 0,
+      "word": "",
+      "offset": 0,
+      "text": "",
+      "suggestions": []
+    }
+  ]
+}

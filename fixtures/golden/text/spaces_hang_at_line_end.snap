@@ -1,0 +1,7 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 3 | glyphs 52 | height 45.31 | rtl false
+ 0 wrap      g=24  x=0       w=128.02  top=0       h=15.1   base=11.1    |Word        word|
+ 1 wrap      g=24  x=0       w=128.02  top=15.1    h=15.1   base=26.2    |word        word|
+ 2 end       g=4   x=0       w=32.01   top=30.21   h=15.1   base=41.31   |word|

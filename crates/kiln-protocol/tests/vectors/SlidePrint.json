@@ -1,0 +1,22 @@
+{
+  "type": "SlidePrint",
+  "format": {
+    "TYPENAME": "SlidePrint"
+  },
+  "values": [
+    {
+      "layout": "FullPage",
+      "per_page": 6,
+      "vertical": false,
+      "frame": false,
+      "hidden": false
+    },
+    {
+      "layout": "FullPage",
+      "per_page": 0,
+      "vertical": false,
+      "frame": false,
+      "hidden": false
+    }
+  ]
+}

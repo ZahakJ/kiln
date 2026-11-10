@@ -1,0 +1,16 @@
+[package]
+name = "kiln-search"
+description = "An in-memory inverted index and fuzzy matcher for command-palette synonyms, Kiln Notes search and Find"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[dependencies]
+kiln-common.workspace = true
+
+[lints]
+workspace = true

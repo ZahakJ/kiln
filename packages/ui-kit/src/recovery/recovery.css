@@ -1,0 +1,161 @@
+/* Document Recovery: Office's pane, in the kit's task pane style. */
+.kiln-recovery {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  padding: 4px 14px 14px;
+}
+.kiln-recovery__intro {
+  margin: 0;
+  color: var(--kiln-muted);
+  font-size: var(--kiln-text-sm, 12px);
+  line-height: 1.45;
+}
+.kiln-recovery__label {
+  margin: 4px 0 0;
+  color: var(--kiln-muted);
+  font-size: 11px;
+  font-weight: var(--kiln-weight-semibold, 600);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.kiln-recovery__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kiln-recovery__item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--kiln-line);
+  border-inline-start: 3px solid var(--app);
+  border-radius: 8px;
+  background: var(--kiln-raised, var(--kiln-bg));
+}
+.kiln-recovery__head {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.kiln-recovery__name {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.kiln-recovery__name strong {
+  overflow: hidden;
+  font-weight: var(--kiln-weight-semibold, 600);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kiln-recovery__ext {
+  color: var(--kiln-muted);
+  font-weight: var(--kiln-weight-regular, 400);
+}
+.kiln-recovery__meta {
+  color: var(--kiln-muted);
+  font-size: var(--kiln-text-sm, 12px);
+}
+.kiln-recovery__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.kiln-recovery__foot {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--kiln-line);
+}
+.kiln-recovery__foot p {
+  margin: 0;
+  color: var(--kiln-muted);
+  font-size: var(--kiln-text-sm, 12px);
+}
+
+/* ---------- the message bar: notices docked under the ribbon, full width, pushing the document
+   down (Office's message bar), so they never cover the grid or its active cell ---------- */
+
+.kiln-messagebar {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  border-block-end: 1px solid color-mix(in srgb, var(--kiln-warning) 40%, var(--kiln-line));
+  background: color-mix(in srgb, var(--kiln-warning) 10%, var(--kiln-raised));
+  color: var(--kiln-fg);
+  font-size: var(--kiln-text-sm, 12.5px);
+}
+.kiln-messagebar__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding-block: 6px;
+  padding-inline: 16px 10px;
+}
+.kiln-messagebar__row + .kiln-messagebar__row {
+  border-block-start: 1px solid color-mix(in srgb, var(--kiln-warning) 25%, var(--kiln-line));
+}
+.kiln-messagebar__icon {
+  flex: none;
+  color: color-mix(in srgb, var(--kiln-warning) 70%, var(--kiln-fg));
+}
+.kiln-messagebar__body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+}
+.kiln-messagebar__message {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+/* The text of an entry that could not go back: shown whole, to select and copy. */
+.kiln-messagebar__text {
+  flex: 1 1 100%;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--kiln-fg) 6%, transparent);
+  font-family: var(--kiln-font-mono, ui-monospace, monospace);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.kiln-messagebar__status {
+  flex: 1 1 100%;
+  color: var(--kiln-muted);
+}
+.kiln-messagebar__actions {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.kiln-messagebar__actions > .kiln-btn {
+  white-space: nowrap;
+}
+/* A phone: the answers go under the words. */
+@media (max-width: 640px) {
+  .kiln-messagebar__row {
+    flex-wrap: wrap;
+    padding-inline: 12px;
+  }
+  .kiln-messagebar__actions {
+    flex: 1 1 100%;
+    justify-content: flex-start;
+  }
+}

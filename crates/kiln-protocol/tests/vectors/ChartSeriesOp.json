@@ -1,0 +1,50 @@
+{
+  "type": "ChartSeriesOp",
+  "format": {
+    "TYPENAME": "ChartSeriesOp"
+  },
+  "values": [
+    {
+      "Add": {
+        "name": "=Budget!$E$1",
+        "values": "=Budget!$E$2:$E$9"
+      }
+    },
+    {
+      "Edit": {
+        "series": 3,
+        "name": "Kiln «hire»",
+        "values": "Budget!$F$2:$F$9"
+      }
+    },
+    {
+      "Remove": {
+        "series": 70000
+      }
+    },
+    {
+      "Move": {
+        "series": 0,
+        "up": false
+      }
+    },
+    {
+      "Categories": {
+        "range": "='Q1 sales'!$A$2:$A$9"
+      }
+    },
+    {
+      "Add": {
+        "name": "",
+        "values": ""
+      }
+    },
+    {
+      "Edit": {
+        "series": 0,
+        "name": "",
+        "values": ""
+      }
+    }
+  ]
+}

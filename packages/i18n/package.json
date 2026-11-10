@@ -1,0 +1,43 @@
+{
+  "name": "@kiln/i18n",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Interface languages for Kiln: i18next with ICU messages, the en, de and ar locales, the language preference, right-to-left direction and locale-aware number and date formatting for the chrome.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./react": "./src/react.tsx",
+    "./fonts.css": "./src/fonts.css",
+    "./locales/*": "./locales/*"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "extract": "tsx scripts/extract.ts",
+    "extract:check": "tsx scripts/extract.ts --check"
+  },
+  "dependencies": {
+    "i18next": "catalog:",
+    "i18next-icu": "catalog:",
+    "intl-messageformat": "catalog:",
+    "react-i18next": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "react": "catalog:",
+    "rolldown": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

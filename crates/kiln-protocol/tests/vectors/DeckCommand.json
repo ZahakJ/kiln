@@ -1,0 +1,1636 @@
+{
+  "type": "DeckCommand",
+  "format": {
+    "TYPENAME": "DeckCommand"
+  },
+  "values": [
+    {
+      "NewSlide": {
+        "layout": null
+      }
+    },
+    {
+      "NewSlide": {
+        "layout": 42
+      }
+    },
+    "Duplicate",
+    "DeleteSlides",
+    {
+      "MoveSlides": {
+        "to": 3
+      }
+    },
+    {
+      "SelectSlide": {
+        "index": 2,
+        "extend": true,
+        "toggle": false
+      }
+    },
+    "PreviousSlide",
+    "NextSlide",
+    {
+      "SetLayout": {
+        "layout": 7
+      }
+    },
+    "ResetSlides",
+    {
+      "HideSlides": {
+        "hidden": null
+      }
+    },
+    {
+      "AddSection": {
+        "name": "Rückblick «2026»"
+      }
+    },
+    {
+      "RenameSection": {
+        "index": 1,
+        "name": "Plans"
+      }
+    },
+    {
+      "RemoveSection": {
+        "index": 0,
+        "with_slides": false
+      }
+    },
+    {
+      "MoveSection": {
+        "index": 1,
+        "delta": -1
+      }
+    },
+    {
+      "SetNotes": {
+        "text": "Start with the number.\nThen the jade slice."
+      }
+    },
+    {
+      "InsertShape": {
+        "preset": "rightArrow",
+        "rect": {
+          "x": 120.5,
+          "y": -8.0,
+          "width": 240.0,
+          "height": 135.0
+        }
+      }
+    },
+    {
+      "InsertTextBox": {
+        "rect": null
+      }
+    },
+    {
+      "InsertPicture": {
+        "name": "kiln.png",
+        "bytes": [
+          137,
+          80,
+          78,
+          71
+        ],
+        "rect": null
+      }
+    },
+    {
+      "InsertTable": {
+        "rows": 3,
+        "cols": 4
+      }
+    },
+    "InsertSlideNumber",
+    {
+      "SetHeaderFooter": {
+        "date": true,
+        "fixed_date": null,
+        "slide_number": true,
+        "footer": "Kiln Co-op",
+        "not_on_title": true,
+        "all": true
+      }
+    },
+    {
+      "Link": {
+        "url": "https://kiln.example/"
+      }
+    },
+    {
+      "PointerDown": {
+        "x": 480.0,
+        "y": 270.5,
+        "shift": false,
+        "ctrl": true,
+        "alt": false,
+        "clicks": 2
+      }
+    },
+    {
+      "PointerMove": {
+        "x": 500.0,
+        "y": 280.0,
+        "shift": true,
+        "ctrl": false,
+        "alt": true
+      }
+    },
+    {
+      "PointerUp": {
+        "x": 500.0,
+        "y": 280.0,
+        "shift": false,
+        "ctrl": false,
+        "alt": false
+      }
+    },
+    {
+      "ArmInsert": {
+        "preset": "ellipse"
+      }
+    },
+    {
+      "SelectShapes": {
+        "ids": [
+          9,
+          10
+        ]
+      }
+    },
+    "SelectAll",
+    "Escape",
+    {
+      "CycleSelection": {
+        "backward": true
+      }
+    },
+    {
+      "Nudge": {
+        "direction": "Left",
+        "fine": true
+      }
+    },
+    {
+      "Resize": {
+        "direction": "Down",
+        "fine": false
+      }
+    },
+    {
+      "SetTransform": {
+        "x": 72.0,
+        "y": null,
+        "width": 144.5,
+        "height": null,
+        "rotation": 15.0,
+        "lock_aspect": true
+      }
+    },
+    {
+      "Rotate": {
+        "degrees": 90.0
+      }
+    },
+    {
+      "Flip": {
+        "horizontal": false
+      }
+    },
+    {
+      "Align": {
+        "how": "Middle"
+      }
+    },
+    {
+      "Distribute": {
+        "horizontal": true
+      }
+    },
+    "Group",
+    "Ungroup",
+    {
+      "Order": {
+        "order": "Back"
+      }
+    },
+    "Delete",
+    {
+      "SetFill": {
+        "fill": {
+          "Solid": {
+            "color": "accent2",
+            "brightness": 40.0,
+            "transparency": null
+          }
+        }
+      }
+    },
+    {
+      "SetFill": {
+        "fill": {
+          "Gradient": {
+            "from": "E2622A",
+            "to": "F7B500",
+            "angle": 45.0
+          }
+        }
+      }
+    },
+    {
+      "SetFill": {
+        "fill": {
+          "Pattern": {
+            "preset": "ltUpDiag",
+            "fg": "1B1411",
+            "bg": "FFF7EE"
+          }
+        }
+      }
+    },
+    {
+      "SetFill": {
+        "fill": {
+          "Picture": {
+            "name": "clay.jpg",
+            "bytes": [
+              255,
+              216
+            ]
+          }
+        }
+      }
+    },
+    {
+      "SetFill": {
+        "fill": "None"
+      }
+    },
+    {
+      "SetOutline": {
+        "outline": {
+          "Weight": {
+            "points": 2.25
+          }
+        }
+      }
+    },
+    {
+      "SetOutline": {
+        "outline": {
+          "Arrows": {
+            "head": "none",
+            "tail": "triangle"
+          }
+        }
+      }
+    },
+    {
+      "SetEffect": {
+        "effect": {
+          "Shadow": {
+            "distance": 3.0,
+            "blur": 4.0,
+            "angle": 45.0
+          }
+        }
+      }
+    },
+    {
+      "QuickStyle": {
+        "index": 41
+      }
+    },
+    {
+      "ChangeShape": {
+        "preset": "roundRect"
+      }
+    },
+    {
+      "SetAltText": {
+        "text": "Kiln at night"
+      }
+    },
+    {
+      "Crop": {
+        "left": 10.0,
+        "top": 0.0,
+        "right": 5.5,
+        "bottom": 0.0
+      }
+    },
+    "ResetPicture",
+    {
+      "AlignText": {
+        "anchor": "Bottom"
+      }
+    },
+    {
+      "TextDirection": {
+        "direction": "Rotate270"
+      }
+    },
+    {
+      "Columns": {
+        "count": 2,
+        "spacing": 12.0
+      }
+    },
+    {
+      "Autofit": {
+        "mode": "Shrink"
+      }
+    },
+    {
+      "CharacterSpacing": {
+        "points": -0.5
+      }
+    },
+    {
+      "TextShadow": {
+        "on": true
+      }
+    },
+    "CopyFormat",
+    "PasteFormat",
+    "EditText",
+    {
+      "InsertText": {
+        "text": "Ünïcödé ✓"
+      }
+    },
+    {
+      "DeleteText": {
+        "forward": true,
+        "word": true
+      }
+    },
+    "NewParagraph",
+    "LineBreak",
+    {
+      "Tab": {
+        "shift": true
+      }
+    },
+    {
+      "MoveCaret": {
+        "motion": "WordForward",
+        "extend": true
+      }
+    },
+    {
+      "SetComposition": {
+        "text": "にほん"
+      }
+    },
+    {
+      "SelectText": {
+        "shape": 7,
+        "anchor_para": 0,
+        "anchor_offset": 2,
+        "head_para": 1,
+        "head_offset": 0
+      }
+    },
+    "Promote",
+    "Demote",
+    {
+      "ApplyTheme": {
+        "name": "Tenmoku"
+      }
+    },
+    {
+      "ApplyVariant": {
+        "index": 3
+      }
+    },
+    {
+      "SlideSize": {
+        "size": {
+          "Custom": {
+            "width_in": 11.0,
+            "height_in": 8.5
+          }
+        },
+        "mode": "EnsureFit"
+      }
+    },
+    {
+      "SetBackground": {
+        "fill": {
+          "Solid": {
+            "color": "FFF7EE",
+            "brightness": null,
+            "transparency": 20.0
+          }
+        },
+        "all": true
+      }
+    },
+    {
+      "HideBackgroundGraphics": {
+        "hide": true
+      }
+    },
+    "ToggleGuides",
+    "ToggleGridlines",
+    "ToggleNotes",
+    {
+      "Find": {
+        "text": "kiln",
+        "match_case": false,
+        "whole_word": true,
+        "backward": false
+      }
+    },
+    {
+      "Replace": {
+        "text": "kiln",
+        "with": "Kiln",
+        "match_case": true,
+        "whole_word": false,
+        "all": true
+      }
+    },
+    {
+      "ReplaceFont": {
+        "from": "Calibri",
+        "to": "Figtree"
+      }
+    },
+    {
+      "SetTransition": {
+        "effect": "push"
+      }
+    },
+    {
+      "TransitionOption": {
+        "option": "fromBottom"
+      }
+    },
+    {
+      "TransitionDuration": {
+        "ms": 1250
+      }
+    },
+    {
+      "AdvanceOnClick": {
+        "on": null
+      }
+    },
+    {
+      "AdvanceAfter": {
+        "ms": 5000
+      }
+    },
+    "ApplyTransitionToAll",
+    {
+      "SetAnimation": {
+        "effect": "flyIn"
+      }
+    },
+    {
+      "AddAnimation": {
+        "effect": "pulse"
+      }
+    },
+    {
+      "AnimationOption": {
+        "option": "byParagraph"
+      }
+    },
+    {
+      "AnimationStart": {
+        "start": "WithPrevious"
+      }
+    },
+    {
+      "AnimationDuration": {
+        "ms": 750
+      }
+    },
+    {
+      "AnimationDelay": {
+        "ms": 250
+      }
+    },
+    {
+      "AnimationRepeat": {
+        "count": 3
+      }
+    },
+    "RemoveAnimations",
+    {
+      "MoveAnimation": {
+        "id": 31,
+        "to": 0
+      }
+    },
+    {
+      "ReorderAnimation": {
+        "earlier": true
+      }
+    },
+    {
+      "SelectAnimations": {
+        "ids": [
+          31
+        ]
+      }
+    },
+    "CopyAnimation",
+    "PasteAnimation",
+    {
+      "MotionBadges": {
+        "on": true
+      }
+    },
+    {
+      "SetShowSettings": {
+        "settings": {
+          "kind": "Kiosk",
+          "loop_show": true,
+          "no_narration": false,
+          "no_animation": true,
+          "from": 2,
+          "to": 5,
+          "manual": false,
+          "presenter_view": true
+        }
+      }
+    },
+    {
+      "ShowStart": {
+        "from": 2,
+        "mode": "Rehearse",
+        "reduced_motion": true
+      }
+    },
+    "ShowNext",
+    "ShowPrevious",
+    "ShowFirst",
+    "ShowLast",
+    {
+      "ShowDigit": {
+        "digit": 7
+      }
+    },
+    "ShowGoToTyped",
+    {
+      "ShowGoTo": {
+        "index": 4
+      }
+    },
+    "ShowBlack",
+    "ShowWhite",
+    "ShowLaser",
+    "ShowPen",
+    "ShowHighlighter",
+    "ShowEraser",
+    "ShowArrow",
+    "ShowErase",
+    {
+      "ShowPointer": {
+        "phase": "Move",
+        "x": 640.5,
+        "y": 360.0,
+        "touch": true
+      }
+    },
+    "ShowEnd",
+    "ShowKeepTimings",
+    {
+      "ApplyDesignIdea": {
+        "id": "panelLeft"
+      }
+    },
+    {
+      "EditOutline": {
+        "edit": {
+          "Split": {
+            "slide": 1,
+            "line": 2,
+            "offset": 5
+          }
+        }
+      }
+    },
+    {
+      "ReuseSlides": {
+        "bytes": [
+          80,
+          75,
+          3,
+          4
+        ],
+        "slides": [
+          0,
+          2
+        ]
+      }
+    },
+    {
+      "InsertMedia": {
+        "kind": "Video",
+        "name": "kiln.mp4",
+        "mime": "video/mp4",
+        "bytes": [
+          0,
+          0,
+          0,
+          24
+        ],
+        "poster": [
+          137,
+          80,
+          78,
+          71
+        ],
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "InsertEquation": {
+        "linear": "x=(-b\\pm\\sqrt(b^2-4ac))/(2a)"
+      }
+    },
+    {
+      "SetChartData": {
+        "cells": [
+          [
+            "",
+            "Series 1"
+          ],
+          [
+            "Category 1",
+            "4.3"
+          ]
+        ]
+      }
+    },
+    {
+      "NewComment": {
+        "text": "Can we show last year here?",
+        "author": "Zoë Okafor",
+        "initials": "ZO"
+      }
+    },
+    {
+      "ReplyComment": {
+        "id": 40,
+        "text": "Added it.",
+        "author": "Sam Price"
+      }
+    },
+    {
+      "EditComment": {
+        "id": 41,
+        "text": "Added it on slide 3."
+      }
+    },
+    {
+      "ResolveComment": {
+        "id": 40,
+        "resolved": true
+      }
+    },
+    {
+      "DeleteComment": {
+        "id": null,
+        "scope": "Slide"
+      }
+    },
+    {
+      "SelectComment": {
+        "id": 40
+      }
+    },
+    {
+      "NextComment": {
+        "backward": true
+      }
+    },
+    "SpellCheck",
+    {
+      "SpellChange": {
+        "with": "glaze",
+        "all": false
+      }
+    },
+    {
+      "SpellIgnore": {
+        "all": true,
+        "add": false
+      }
+    },
+    {
+      "LoadDictionary": {
+        "aff": "SET UTF-8",
+        "dic": "1\nkiln"
+      }
+    },
+    {
+      "SetUserDictionary": {
+        "words": [
+          "Tenmoku"
+        ]
+      }
+    },
+    {
+      "SetThemeColors": {
+        "scheme": "Cobalt"
+      }
+    },
+    {
+      "SetThemeFonts": {
+        "scheme": "Office"
+      }
+    },
+    {
+      "SetThemeEffects": {
+        "scheme": "Raku"
+      }
+    },
+    {
+      "SetBackgroundStyle": {
+        "style": 10
+      }
+    },
+    {
+      "ApplyThemeFile": {
+        "bytes": [
+          80,
+          75,
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "MasterView": {
+        "on": true
+      }
+    },
+    {
+      "SelectMasterItem": {
+        "id": 3
+      }
+    },
+    "InsertSlideMaster",
+    "InsertLayout",
+    "DeleteMasterItem",
+    {
+      "RenameMasterItem": {
+        "name": "Quote"
+      }
+    },
+    {
+      "PreserveMaster": {
+        "on": true
+      }
+    },
+    {
+      "InsertPlaceholder": {
+        "kind": "Picture"
+      }
+    },
+    {
+      "LayoutTitle": {
+        "on": null
+      }
+    },
+    {
+      "LayoutFooters": {
+        "on": true
+      }
+    },
+    {
+      "AddGuide": {
+        "horizontal": false,
+        "pos": 212.5
+      }
+    },
+    {
+      "MoveGuide": {
+        "index": 1,
+        "pos": 640.0
+      }
+    },
+    {
+      "RemoveGuide": {
+        "index": 0
+      }
+    },
+    {
+      "ParagraphIndent": {
+        "left": 36.0,
+        "first_line": -18.0
+      }
+    },
+    {
+      "PastePicture": {
+        "data": null
+      }
+    },
+    {
+      "InsertIcon": {
+        "name": "Flame",
+        "paths": [
+          "M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-4 3-6 3-9"
+        ]
+      }
+    },
+    {
+      "InsertCodeBlock": {
+        "code": "let kiln = 1240;",
+        "language": "rust"
+      }
+    },
+    {
+      "InsertSymbol": {
+        "text": "→",
+        "font": "Wingdings"
+      }
+    },
+    {
+      "ConvertToDiagram": {
+        "layout": "Process"
+      }
+    },
+    {
+      "CropMode": {
+        "on": true
+      }
+    },
+    {
+      "CropTo": {
+        "fit": {
+          "Aspect": {
+            "width": 4,
+            "height": 3
+          }
+        }
+      }
+    },
+    {
+      "SelectCells": {
+        "range": {
+          "row": 0,
+          "col": 0,
+          "rows": 2,
+          "cols": 1
+        }
+      }
+    },
+    {
+      "CellMargins": {
+        "left": 3.6,
+        "top": 3.6,
+        "right": 3.6,
+        "bottom": 3.6
+      }
+    },
+    {
+      "NewSlide": {
+        "layout": 0
+      }
+    },
+    "Duplicate",
+    "DeleteSlides",
+    {
+      "MoveSlides": {
+        "to": 0
+      }
+    },
+    {
+      "SelectSlide": {
+        "index": 0,
+        "extend": false,
+        "toggle": false
+      }
+    },
+    "PreviousSlide",
+    "NextSlide",
+    {
+      "SetLayout": {
+        "layout": 0
+      }
+    },
+    "ResetSlides",
+    {
+      "HideSlides": {
+        "hidden": false
+      }
+    },
+    {
+      "AddSection": {
+        "name": ""
+      }
+    },
+    {
+      "RenameSection": {
+        "index": 0,
+        "name": ""
+      }
+    },
+    {
+      "RemoveSection": {
+        "index": 0,
+        "with_slides": false
+      }
+    },
+    {
+      "MoveSection": {
+        "index": 0,
+        "delta": 0
+      }
+    },
+    {
+      "SetNotes": {
+        "text": ""
+      }
+    },
+    {
+      "InsertShape": {
+        "preset": "",
+        "rect": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.0,
+          "height": 0.0
+        }
+      }
+    },
+    {
+      "InsertTextBox": {
+        "rect": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.0,
+          "height": 0.0
+        }
+      }
+    },
+    {
+      "InsertPicture": {
+        "name": "",
+        "bytes": [
+          0
+        ],
+        "rect": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.0,
+          "height": 0.0
+        }
+      }
+    },
+    {
+      "InsertTable": {
+        "rows": 0,
+        "cols": 0
+      }
+    },
+    "InsertSlideNumber",
+    {
+      "SetHeaderFooter": {
+        "date": false,
+        "fixed_date": "",
+        "slide_number": false,
+        "footer": "",
+        "not_on_title": false,
+        "all": false
+      }
+    },
+    {
+      "Link": {
+        "url": ""
+      }
+    },
+    {
+      "PointerDown": {
+        "x": 0.0,
+        "y": 0.0,
+        "shift": false,
+        "ctrl": false,
+        "alt": false,
+        "clicks": 0
+      }
+    },
+    {
+      "PointerMove": {
+        "x": 0.0,
+        "y": 0.0,
+        "shift": false,
+        "ctrl": false,
+        "alt": false
+      }
+    },
+    {
+      "PointerUp": {
+        "x": 0.0,
+        "y": 0.0,
+        "shift": false,
+        "ctrl": false,
+        "alt": false
+      }
+    },
+    {
+      "ArmInsert": {
+        "preset": ""
+      }
+    },
+    {
+      "SelectShapes": {
+        "ids": [
+          0
+        ]
+      }
+    },
+    "SelectAll",
+    "Escape",
+    {
+      "CycleSelection": {
+        "backward": false
+      }
+    },
+    {
+      "Nudge": {
+        "direction": "Up",
+        "fine": false
+      }
+    },
+    {
+      "Resize": {
+        "direction": "Up",
+        "fine": false
+      }
+    },
+    {
+      "SetTransform": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.0,
+        "height": 0.0,
+        "rotation": 0.0,
+        "lock_aspect": false
+      }
+    },
+    {
+      "Rotate": {
+        "degrees": 0.0
+      }
+    },
+    {
+      "Flip": {
+        "horizontal": false
+      }
+    },
+    {
+      "Align": {
+        "how": "Left"
+      }
+    },
+    {
+      "Distribute": {
+        "horizontal": false
+      }
+    },
+    "Group",
+    "Ungroup",
+    {
+      "Order": {
+        "order": "Front"
+      }
+    },
+    "Delete",
+    {
+      "SetFill": {
+        "fill": {
+          "Solid": {
+            "color": "",
+            "brightness": 0.0,
+            "transparency": 0.0
+          }
+        }
+      }
+    },
+    {
+      "SetOutline": {
+        "outline": "None"
+      }
+    },
+    {
+      "SetEffect": {
+        "effect": "None"
+      }
+    },
+    {
+      "QuickStyle": {
+        "index": 0
+      }
+    },
+    {
+      "ChangeShape": {
+        "preset": ""
+      }
+    },
+    {
+      "SetAltText": {
+        "text": ""
+      }
+    },
+    {
+      "Crop": {
+        "left": 0.0,
+        "top": 0.0,
+        "right": 0.0,
+        "bottom": 0.0
+      }
+    },
+    "ResetPicture",
+    {
+      "AlignText": {
+        "anchor": "Top"
+      }
+    },
+    {
+      "TextDirection": {
+        "direction": "Horizontal"
+      }
+    },
+    {
+      "Columns": {
+        "count": 0,
+        "spacing": 0.0
+      }
+    },
+    {
+      "Autofit": {
+        "mode": "Off"
+      }
+    },
+    {
+      "CharacterSpacing": {
+        "points": 0.0
+      }
+    },
+    {
+      "TextShadow": {
+        "on": false
+      }
+    },
+    "CopyFormat",
+    "PasteFormat",
+    "EditText",
+    {
+      "InsertText": {
+        "text": ""
+      }
+    },
+    {
+      "DeleteText": {
+        "forward": false,
+        "word": false
+      }
+    },
+    "NewParagraph",
+    "LineBreak",
+    {
+      "Tab": {
+        "shift": false
+      }
+    },
+    {
+      "MoveCaret": {
+        "motion": "Backward",
+        "extend": false
+      }
+    },
+    {
+      "SetComposition": {
+        "text": ""
+      }
+    },
+    {
+      "SelectText": {
+        "shape": 0,
+        "anchor_para": 0,
+        "anchor_offset": 0,
+        "head_para": 0,
+        "head_offset": 0
+      }
+    },
+    "Promote",
+    "Demote",
+    {
+      "ApplyTheme": {
+        "name": ""
+      }
+    },
+    {
+      "ApplyVariant": {
+        "index": 0
+      }
+    },
+    {
+      "SlideSize": {
+        "size": "Widescreen",
+        "mode": "Maximize"
+      }
+    },
+    {
+      "SetBackground": {
+        "fill": "None",
+        "all": false
+      }
+    },
+    {
+      "HideBackgroundGraphics": {
+        "hide": false
+      }
+    },
+    "ToggleGuides",
+    "ToggleGridlines",
+    "ToggleNotes",
+    {
+      "Find": {
+        "text": "",
+        "match_case": false,
+        "whole_word": false,
+        "backward": false
+      }
+    },
+    {
+      "Replace": {
+        "text": "",
+        "with": "",
+        "match_case": false,
+        "whole_word": false,
+        "all": false
+      }
+    },
+    {
+      "ReplaceFont": {
+        "from": "",
+        "to": ""
+      }
+    },
+    {
+      "SetTransition": {
+        "effect": ""
+      }
+    },
+    {
+      "TransitionOption": {
+        "option": ""
+      }
+    },
+    {
+      "TransitionDuration": {
+        "ms": 0
+      }
+    },
+    {
+      "AdvanceOnClick": {
+        "on": false
+      }
+    },
+    {
+      "AdvanceAfter": {
+        "ms": 0
+      }
+    },
+    "ApplyTransitionToAll",
+    {
+      "SetAnimation": {
+        "effect": ""
+      }
+    },
+    {
+      "AddAnimation": {
+        "effect": ""
+      }
+    },
+    {
+      "AnimationOption": {
+        "option": ""
+      }
+    },
+    {
+      "AnimationStart": {
+        "start": "OnClick"
+      }
+    },
+    {
+      "AnimationDuration": {
+        "ms": 0
+      }
+    },
+    {
+      "AnimationDelay": {
+        "ms": 0
+      }
+    },
+    {
+      "AnimationRepeat": {
+        "count": 0
+      }
+    },
+    "RemoveAnimations",
+    {
+      "MoveAnimation": {
+        "id": 0,
+        "to": 0
+      }
+    },
+    {
+      "ReorderAnimation": {
+        "earlier": false
+      }
+    },
+    {
+      "SelectAnimations": {
+        "ids": [
+          0
+        ]
+      }
+    },
+    "CopyAnimation",
+    "PasteAnimation",
+    {
+      "MotionBadges": {
+        "on": false
+      }
+    },
+    {
+      "SetShowSettings": {
+        "settings": {
+          "kind": "Window",
+          "loop_show": false,
+          "no_narration": false,
+          "no_animation": false,
+          "from": null,
+          "to": null,
+          "manual": false,
+          "presenter_view": false
+        }
+      }
+    },
+    {
+      "ShowStart": {
+        "from": 0,
+        "mode": "PreviewTransition",
+        "reduced_motion": false
+      }
+    },
+    "ShowNext",
+    "ShowPrevious",
+    "ShowFirst",
+    "ShowLast",
+    {
+      "ShowDigit": {
+        "digit": 0
+      }
+    },
+    "ShowGoToTyped",
+    {
+      "ShowGoTo": {
+        "index": 0
+      }
+    },
+    "ShowBlack",
+    "ShowWhite",
+    "ShowLaser",
+    "ShowPen",
+    "ShowHighlighter",
+    "ShowEraser",
+    "ShowArrow",
+    "ShowErase",
+    {
+      "ShowPointer": {
+        "phase": "Down",
+        "x": 0.0,
+        "y": 0.0,
+        "touch": false
+      }
+    },
+    "ShowEnd",
+    "ShowKeepTimings",
+    {
+      "ApplyDesignIdea": {
+        "id": ""
+      }
+    },
+    {
+      "EditOutline": {
+        "edit": {
+          "Text": {
+            "slide": 0,
+            "line": 0,
+            "text": ""
+          }
+        }
+      }
+    },
+    {
+      "ReuseSlides": {
+        "bytes": [],
+        "slides": [
+          0
+        ]
+      }
+    },
+    {
+      "InsertMedia": {
+        "kind": "Audio",
+        "name": "",
+        "mime": "",
+        "bytes": [],
+        "poster": [],
+        "width": 0,
+        "height": 0
+      }
+    },
+    {
+      "InsertEquation": {
+        "linear": ""
+      }
+    },
+    {
+      "SetChartData": {
+        "cells": [
+          [
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "NewComment": {
+        "text": "",
+        "author": "",
+        "initials": ""
+      }
+    },
+    {
+      "ReplyComment": {
+        "id": 0,
+        "text": "",
+        "author": ""
+      }
+    },
+    {
+      "EditComment": {
+        "id": 0,
+        "text": ""
+      }
+    },
+    {
+      "ResolveComment": {
+        "id": 0,
+        "resolved": false
+      }
+    },
+    {
+      "DeleteComment": {
+        "id": 0,
+        "scope": "One"
+      }
+    },
+    {
+      "SelectComment": {
+        "id": 0
+      }
+    },
+    {
+      "NextComment": {
+        "backward": false
+      }
+    },
+    "SpellCheck",
+    {
+      "SpellChange": {
+        "with": "",
+        "all": false
+      }
+    },
+    {
+      "SpellIgnore": {
+        "all": false,
+        "add": false
+      }
+    },
+    {
+      "LoadDictionary": {
+        "aff": "",
+        "dic": ""
+      }
+    },
+    {
+      "SetUserDictionary": {
+        "words": [
+          ""
+        ]
+      }
+    },
+    {
+      "SetThemeColors": {
+        "scheme": ""
+      }
+    },
+    {
+      "SetThemeFonts": {
+        "scheme": ""
+      }
+    },
+    {
+      "SetThemeEffects": {
+        "scheme": ""
+      }
+    },
+    {
+      "SetBackgroundStyle": {
+        "style": 0
+      }
+    },
+    {
+      "ApplyThemeFile": {
+        "bytes": []
+      }
+    },
+    {
+      "MasterView": {
+        "on": false
+      }
+    },
+    {
+      "SelectMasterItem": {
+        "id": 0
+      }
+    },
+    "InsertSlideMaster",
+    "InsertLayout",
+    "DeleteMasterItem",
+    {
+      "RenameMasterItem": {
+        "name": ""
+      }
+    },
+    {
+      "PreserveMaster": {
+        "on": false
+      }
+    },
+    {
+      "InsertPlaceholder": {
+        "kind": "Content"
+      }
+    },
+    {
+      "LayoutTitle": {
+        "on": false
+      }
+    },
+    {
+      "LayoutFooters": {
+        "on": false
+      }
+    },
+    {
+      "AddGuide": {
+        "horizontal": false,
+        "pos": 0.0
+      }
+    },
+    {
+      "MoveGuide": {
+        "index": 0,
+        "pos": 0.0
+      }
+    },
+    {
+      "RemoveGuide": {
+        "index": 0
+      }
+    },
+    {
+      "ParagraphIndent": {
+        "left": 0.0,
+        "first_line": 0.0
+      }
+    },
+    {
+      "PastePicture": {
+        "data": {
+          "text": "",
+          "html": null,
+          "kiln": null
+        }
+      }
+    }
+  ]
+}

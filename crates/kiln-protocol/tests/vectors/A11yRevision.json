@@ -1,0 +1,20 @@
+{
+  "type": "A11yRevision",
+  "format": {
+    "TYPENAME": "A11yRevision"
+  },
+  "values": [
+    {
+      "start": 2,
+      "end": 5,
+      "inserted": true,
+      "display": "Plain"
+    },
+    {
+      "start": 0,
+      "end": 0,
+      "inserted": false,
+      "display": "Hidden"
+    }
+  ]
+}

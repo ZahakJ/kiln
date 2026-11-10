@@ -1,0 +1,54 @@
+[package]
+name = "kiln-cli"
+description = "The kiln-cli command line (installed as kiln by the Linux packages)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "kiln-cli"
+path = "src/main.rs"
+
+[dependencies]
+kiln-common.workspace = true
+# Documents, commands and frames: the same facade the apps use.
+kiln-protocol.workspace = true
+kiln-session.workspace = true
+# `convert` to and from .kwrite, .kgrid and .kdeck.
+kiln-storage.workspace = true
+kiln-scene.workspace = true
+kiln-raster.workspace = true
+# `inspect`, `repack`.
+kiln-ooxml.workspace = true
+kiln-io-docx.workspace = true
+# `inspect --pptx`.
+kiln-io-pptx.workspace = true
+# `convert` of workbooks, CSV/TSV and JSON.
+kiln-io-xlsx.workspace = true
+kiln-io-csv.workspace = true
+kiln-sheet.workspace = true
+# `render` of workbooks, with their charts.
+kiln-sheet-layout.workspace = true
+kiln-charts.workspace = true
+# `render` of presentations.
+kiln-deck.workspace = true
+kiln-deck-layout.workspace = true
+kiln-text.workspace = true
+# `convert` to and from OpenDocument.
+kiln-io-odf.workspace = true
+# `convert … out.pdf`.
+kiln-io-pdf.workspace = true
+kiln-doc-layout.workspace = true
+# `eval`.
+kiln-formula.workspace = true
+# `repack` comparison and `fidelity` (the scorer and its adapter registry).
+kiln-testing.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true

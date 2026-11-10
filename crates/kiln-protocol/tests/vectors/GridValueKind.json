@@ -1,0 +1,11 @@
+{
+  "type": "GridValueKind",
+  "format": {
+    "TYPENAME": "GridValueKind"
+  },
+  "values": [
+    "Text",
+    "Date",
+    "Text"
+  ]
+}

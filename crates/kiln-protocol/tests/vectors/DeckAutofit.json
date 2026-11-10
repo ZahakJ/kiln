@@ -1,0 +1,11 @@
+{
+  "type": "DeckAutofit",
+  "format": {
+    "TYPENAME": "DeckAutofit"
+  },
+  "values": [
+    "Off",
+    "ResizeShape",
+    "Off"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "@kiln/commands",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The command system: a registry over the core's generated catalog, keymaps, ribbon definitions, Key Tips, synonyms and search.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "shortcuts:doc": "node scripts/shortcuts-doc.ts",
+    "shortcuts:check": "node scripts/shortcuts-doc.ts --check",
+    "desktop:menu": "node --experimental-transform-types --no-warnings scripts/desktop-menu.ts",
+    "desktop:menu:check": "node --experimental-transform-types --no-warnings scripts/desktop-menu.ts --check"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  },
+  "dependencies": {
+    "@kiln/i18n": "workspace:*",
+    "@kiln/protocol": "workspace:*"
+  }
+}

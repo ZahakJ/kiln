@@ -1,0 +1,190 @@
+/* The installable web app's notices: the update and install cards, the network badge. */
+
+.kiln-pwa-region {
+  position: fixed;
+  inset-inline-end: 16px;
+  bottom: 44px;
+  z-index: var(--kiln-z-toast);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  pointer-events: none;
+  font-family: var(--kiln-font-ui);
+}
+
+.kiln-pwa-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  box-sizing: border-box;
+  width: min(392px, calc(100vw - 32px));
+  padding: 16px 16px 14px;
+  overflow: hidden;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-lg);
+  background:
+    radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--kiln-ember) 9%, transparent), transparent 60%),
+    var(--kiln-panel);
+  box-shadow: var(--kiln-shadow-3);
+  color: var(--kiln-fg);
+  font-size: var(--kiln-text-base);
+  pointer-events: auto;
+  animation: kiln-pwa-in 320ms var(--kiln-ease) both;
+}
+/* The ember edge of a suite-level notice. */
+.kiln-pwa-card::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    var(--kiln-ember),
+    color-mix(in srgb, var(--kiln-ember) 30%, transparent)
+  );
+}
+.kiln-pwa-card--warning::before {
+  background: var(--kiln-warning);
+}
+@keyframes kiln-pwa-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+.kiln-pwa-card__art {
+  position: relative;
+  flex: none;
+  width: 40px;
+  height: 40px;
+}
+.kiln-pwa-card__art .kiln-app-tile {
+  display: block;
+  filter: drop-shadow(0 4px 10px color-mix(in srgb, var(--kiln-ember) 28%, transparent));
+}
+.kiln-pwa-card__spin {
+  position: absolute;
+  inset-inline-end: -6px;
+  bottom: -6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--kiln-panel);
+  border-radius: var(--kiln-radius-full);
+  background: var(--kiln-ember);
+  color: var(--kiln-on-ember);
+  animation: kiln-pwa-turn 2.4s var(--kiln-ease) infinite;
+}
+@keyframes kiln-pwa-turn {
+  0%,
+  60% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.kiln-pwa-card__icon {
+  flex: none;
+  display: inline-flex;
+  padding-top: 2px;
+  color: var(--kiln-warning);
+}
+
+.kiln-pwa-card__body {
+  flex: 1;
+  min-width: 0;
+  line-height: var(--kiln-leading-normal);
+}
+.kiln-pwa-card__title {
+  font-family: var(--kiln-font-display);
+  font-size: var(--kiln-text-md);
+  font-weight: var(--kiln-weight-bold);
+  letter-spacing: -0.01em;
+}
+.kiln-pwa-card__text {
+  margin-top: 2px;
+  color: var(--kiln-muted);
+  font-size: var(--kiln-text-sm);
+}
+.kiln-pwa-card__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.kiln-pwa-card__close {
+  position: absolute;
+  top: 8px;
+  inset-inline-end: 8px;
+  color: var(--kiln-muted);
+}
+.kiln-pwa-card--install .kiln-pwa-card__body,
+.kiln-pwa-card--warning .kiln-pwa-card__body {
+  padding-inline-end: 22px;
+}
+
+/* The network badge: a pill above the notices. */
+.kiln-pwa-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding-inline: 12px 14px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-full);
+  background: var(--kiln-panel);
+  box-shadow: var(--kiln-shadow-2);
+  color: var(--kiln-success);
+  font-size: var(--kiln-text-sm);
+  pointer-events: auto;
+  animation: kiln-pwa-in 240ms var(--kiln-ease) both;
+}
+.kiln-pwa-badge--offline {
+  color: var(--kiln-fg);
+}
+.kiln-pwa-badge--offline > svg {
+  color: var(--kiln-warning);
+}
+.kiln-pwa-badge__label {
+  font-weight: var(--kiln-weight-semibold);
+}
+.kiln-pwa-badge__detail {
+  padding-inline-start: 8px;
+  border-inline-start: 1px solid var(--kiln-line);
+  color: var(--kiln-muted);
+}
+
+/* A phone: across the bottom, above the app bar and the home indicator. */
+@media (max-width: 639px) {
+  .kiln-pwa-region {
+    inset-inline: 12px;
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    align-items: stretch;
+  }
+  .kiln-pwa-card {
+    width: 100%;
+  }
+  .kiln-pwa-badge {
+    align-self: center;
+  }
+  .kiln-pwa-card__actions .kiln-btn {
+    min-height: 44px;
+    flex: 1;
+  }
+}
+
+/* Last, so it overrides every animation above. */
+@media (prefers-reduced-motion: reduce) {
+  .kiln-pwa-card,
+  .kiln-pwa-badge {
+    animation: none;
+  }
+  .kiln-pwa-card__spin {
+    animation: none;
+  }
+}

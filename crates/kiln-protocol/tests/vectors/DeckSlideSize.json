@@ -1,0 +1,11 @@
+{
+  "type": "DeckSlideSize",
+  "format": {
+    "TYPENAME": "DeckSlideSize"
+  },
+  "values": [
+    "Widescreen",
+    "Standard",
+    "Widescreen"
+  ]
+}

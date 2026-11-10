@@ -1,0 +1,19 @@
+{
+  "type": "OutlineIssueKind",
+  "format": {
+    "TYPENAME": "OutlineIssueKind"
+  },
+  "values": [
+    {
+      "SkippedLevel": {
+        "expected": 2
+      }
+    },
+    "Empty",
+    {
+      "SkippedLevel": {
+        "expected": 0
+      }
+    }
+  ]
+}

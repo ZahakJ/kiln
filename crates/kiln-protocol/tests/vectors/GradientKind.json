@@ -1,0 +1,31 @@
+{
+  "type": "GradientKind",
+  "format": {
+    "TYPENAME": "GradientKind"
+  },
+  "values": [
+    {
+      "Linear": {
+        "x0": 0.0,
+        "y0": 1.0,
+        "x1": 2.0,
+        "y1": 3.0
+      }
+    },
+    {
+      "Radial": {
+        "cx": 1.0,
+        "cy": 2.0,
+        "r": 3.5
+      }
+    },
+    {
+      "Linear": {
+        "x0": 0.0,
+        "y0": 0.0,
+        "x1": 0.0,
+        "y1": 0.0
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+# Only what the relay's build reads.
+*
+!Cargo.toml
+!Cargo.lock
+!crates
+!xtask
+!apps/desktop/src-tauri
+!assets/themes
+**/target

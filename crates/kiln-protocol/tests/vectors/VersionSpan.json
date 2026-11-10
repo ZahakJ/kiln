@@ -1,0 +1,16 @@
+{
+  "type": "VersionSpan",
+  "format": {
+    "TYPENAME": "VersionSpan"
+  },
+  "values": [
+    {
+      "change": "Added",
+      "text": "Ünïcödé"
+    },
+    {
+      "change": "Same",
+      "text": ""
+    }
+  ]
+}

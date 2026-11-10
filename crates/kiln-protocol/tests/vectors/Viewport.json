@@ -1,0 +1,41 @@
+{
+  "type": "Viewport",
+  "format": {
+    "TYPENAME": "Viewport"
+  },
+  "values": [
+    {
+      "width_px": 0.0,
+      "height_px": 0.0,
+      "scroll": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "zoom": 1.0,
+      "dpr": 1.0,
+      "mode": "PrintLayout"
+    },
+    {
+      "width_px": 1440.0,
+      "height_px": 900.0,
+      "scroll": {
+        "x": 0.0,
+        "y": 12345.5
+      },
+      "zoom": 1.1,
+      "dpr": 2.0,
+      "mode": "Normal"
+    },
+    {
+      "width_px": 0.0,
+      "height_px": 0.0,
+      "scroll": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "zoom": 0.0,
+      "dpr": 0.0,
+      "mode": "PrintLayout"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-kiln-clipboard-text"
+description = "Enables the kiln_clipboard_text command without any pre-configured scope."
+commands.allow = ["kiln_clipboard_text"]
+
+[[permission]]
+identifier = "deny-kiln-clipboard-text"
+description = "Denies the kiln_clipboard_text command without any pre-configured scope."
+commands.deny = ["kiln_clipboard_text"]

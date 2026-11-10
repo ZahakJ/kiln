@@ -1,0 +1,11 @@
+{
+  "type": "GridDragInsert",
+  "format": {
+    "TYPENAME": "GridDragInsert"
+  },
+  "values": [
+    "Rows",
+    "Columns",
+    "Rows"
+  ]
+}

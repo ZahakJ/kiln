@@ -1,0 +1,86 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 3,
+ "slide_size": [
+  9144000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title and Content",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Four by three"
+    },
+    {
+     "kind": "placeholder",
+     "name": "Content Placeholder 2",
+     "text": "Minim ex ex irure incididunt excepteur nostrud ipsum.\nExcepteur cillum et dolore in et sed amet.\nDolor in nisi commodo officia consectetur exercitation amet.\nEu in sed ut nisi aliqua dolore labore.\nLorem amet dolore ullamco laboris veniam irure in."
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 4,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Shapes on a 4:3 slide"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Oval 2",
+     "text": "Shape"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Chevron 3",
+     "text": "Shape"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Donut 4",
+     "text": "Shape"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "Chart on a 4:3 slide"
+    },
+    {
+     "kind": "chart",
+     "name": "Chart 2"
+    }
+   ]
+  }
+ ]
+}

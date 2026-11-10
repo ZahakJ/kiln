@@ -1,0 +1,22 @@
+{
+  "type": "DeckCursor",
+  "format": {
+    "TYPENAME": "DeckCursor"
+  },
+  "values": [
+    "Default",
+    {
+      "Resize": 3
+    },
+    "Rotate",
+    "Text",
+    "Default",
+    "Move",
+    "Text",
+    {
+      "Resize": 0
+    },
+    "Rotate",
+    "Crosshair"
+  ]
+}

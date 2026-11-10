@@ -1,0 +1,28 @@
+{
+  "type": "GridCfStyle",
+  "format": {
+    "TYPENAME": "GridCfStyle"
+  },
+  "values": [
+    {
+      "fill": null,
+      "font_color": null,
+      "bold": true,
+      "italic": false,
+      "underline": false,
+      "strike": false,
+      "border": "000000",
+      "number_format": "0.0%"
+    },
+    {
+      "fill": null,
+      "font_color": null,
+      "bold": false,
+      "italic": false,
+      "underline": false,
+      "strike": false,
+      "border": null,
+      "number_format": null
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "type": "DeckFill",
+  "format": {
+    "TYPENAME": "DeckFill"
+  },
+  "values": [
+    "None",
+    {
+      "Solid": {
+        "color": "accent1",
+        "brightness": -25.0,
+        "transparency": null
+      }
+    },
+    "None",
+    {
+      "Solid": {
+        "color": "",
+        "brightness": 0.0,
+        "transparency": 0.0
+      }
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+[package]
+name = "kiln-session"
+description = "The facade over the whole core and the only API the shells use"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[features]
+default = ["odf", "collab"]
+# OpenDocument (.odt, .ods) open and save through kiln-io-odf.
+odf = ["dep:kiln-io-odf"]
+# Collaboration and Version History with the engine linked in: native builds. The web
+# core leaves it out (budget B12) and loads the collaboration module when a document is shared.
+collab = ["kiln-collab/crdt", "dep:tokio", "dep:tokio-tungstenite", "dep:futures-util"]
+# Grid recalculation on the rayon pool on the web too (the threads artefact of the web core,
+# built with atomics and run with a pool of Workers). Native builds always have it.
+parallel = ["kiln-io-xlsx/parallel", "kiln-sheet/parallel"]
+# Checking cores: every journal record of Kiln Grid is replayed onto a shadow copy as it is made
+# and compared with the document (always on in tests; e2e builds of the web cores turn it on).
+journal-check = []
+# Tests only, never a shipped build. `ownership-plants` adds review 5's bypasses of Kiln Grid's
+# ledger, written as a command module would; `cargo xtask verify` checks that each one fails to
+# compile. `ownership-escape` does the same bypasses at run time, through doors the types keep
+# shut, so the release build's stamp guard is seen to catch them (`tests/ownership_runtime.rs`).
+ownership-plants = []
+ownership-escape = []
+
+[dependencies]
+kiln-common.workspace = true
+kiln-doc.workspace = true
+kiln-doc-layout.workspace = true
+kiln-io-docx.workspace = true
+# Print, print preview and PDF export.
+kiln-io-pdf.workspace = true
+# Saving Write documents: the original package, the passthrough and package properties.
+kiln-ooxml.workspace = true
+kiln-protocol.workspace = true
+kiln-scene.workspace = true
+# Spelling as you type in Kiln Write.
+kiln-spell.workspace = true
+# Grid workbooks: the model and its file formats; no rayon or ICU data on the web
+# (native builds turn the parallel recalculation on below).
+kiln-sheet = { workspace = true, default-features = false }
+kiln-io-xlsx = { workspace = true, default-features = false }
+kiln-io-csv.workspace = true
+# Text files in legacy encodings (Windows-1251, Shift-JIS, GB18030). The XML reader already
+# links every decoder.
+encoding_rs.workspace = true
+# OpenDocument open and save, behind the `odf` feature: the web core leaves it out to stay
+# within its size budget.
+kiln-io-odf = { workspace = true, optional = true }
+# The Grid surface and editor: sheet layout and painting, formula tokens and docs.
+kiln-sheet-layout.workspace = true
+kiln-formula = { workspace = true, default-features = false }
+# Charts on Grid sheets (the model, editor and renderer) and their DrawingML theme.
+kiln-charts.workspace = true
+# Kiln Deck: the presentation model, slide rendering and the .pptx format.
+kiln-deck.workspace = true
+kiln-deck-layout.workspace = true
+kiln-io-pptx.workspace = true
+# Slides exported as pictures, Design Ideas and Reuse Slides thumbnails, and a .zip of a
+# folder of pictures.
+kiln-raster.workspace = true
+zip.workspace = true
+kurbo.workspace = true
+# Layout of the scratch document. The web core gets no default features (no system fonts, no
+# hyphenation dictionaries, no embedded font: the page registers the document fonts,
+# apps/scratch/fonts.rs).
+kiln-text = { path = "../kiln-text", default-features = false }
+rustc-hash.workspace = true
+unicode-segmentation.workspace = true
+# The Write editor: Find and Replace, Kiln's clipboard format, picture headers (WebP
+# joins the formats kiln-doc-layout decodes).
+regex.workspace = true
+# Kiln's clipboard format in the compact binary form the model is stored in.
+postcard.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+image = { workspace = true, features = ["png", "jpeg", "gif", "bmp", "webp"] }
+# Protect Sheet and Protect Workbook: SHA-512 password hashes with a random salt.
+sha2.workspace = true
+base64.workspace = true
+getrandom.workspace = true
+# the collaboration engine (feature `collab`). Without it, the word-level
+# comparison and the changed slides of local Version History.
+kiln-collab = { workspace = true, default-features = false }
+# native bundles, the autosave journal, recents and local Version History.
+kiln-storage.workspace = true
+
+# The session thread and its channels exist only on native targets; the web build runs the
+# session directly inside a Web Worker.
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+flume.workspace = true
+# the WebSocket of a shared document (feature `collab`).
+tokio = { workspace = true, optional = true, features = ["rt", "net", "time", "sync", "macros"] }
+tokio-tungstenite = { workspace = true, optional = true }
+futures-util = { workspace = true, optional = true }
+kiln-io-xlsx = { workspace = true, features = ["parallel"] }
+kiln-text = { path = "../kiln-text", default-features = false, features = ["bundled-fonts", "system-fonts"] }
+
+[dev-dependencies]
+# The LibreOffice oracle of the protection tests.
+kiln-testing.workspace = true
+# A sample of every command: the journal tests replay each one.
+kiln-protocol = { workspace = true, features = ["schema"] }
+proptest.workspace = true
+serde_json.workspace = true
+
+# shared documents through the real relay, natively.
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
+kiln-collab-server = { path = "../kiln-collab-server" }
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "net", "sync", "time"] }
+
+[[test]]
+name = "ownership_runtime"
+required-features = ["ownership-escape"]
+
+[lints]
+workspace = true

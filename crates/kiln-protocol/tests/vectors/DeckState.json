@@ -1,0 +1,387 @@
+{
+  "type": "DeckState",
+  "format": {
+    "TYPENAME": "DeckState"
+  },
+  "values": [
+    {
+      "slides": [
+        {
+          "id": 3,
+          "title": "Every ticket fires the next kiln.",
+          "hidden": false,
+          "layout": "Title and Content",
+          "notes": true,
+          "motion": true,
+          "version": 9007199254740991
+        }
+      ],
+      "sections": [
+        {
+          "name": "Open studio",
+          "start": 0,
+          "count": 1
+        }
+      ],
+      "current": 0,
+      "selected": [
+        0
+      ],
+      "slide_width": 1280.0,
+      "slide_height": 720.0,
+      "size_kind": "widescreen",
+      "shapes": [
+        {
+          "id": 9,
+          "name": "Title 1",
+          "kind": "placeholder",
+          "hidden": false
+        }
+      ],
+      "selection": [
+        9
+      ],
+      "editing": true,
+      "contexts": [
+        "shape"
+      ],
+      "format": {
+        "font_family": "Figtree",
+        "font_size": 18.0,
+        "bold": true,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "superscript": false,
+        "subscript": false,
+        "shadow": false,
+        "color": "1B1411",
+        "align": "left",
+        "bullets": true,
+        "numbering": false,
+        "anchor": "Top",
+        "direction": "Horizontal",
+        "autofit": "Shrink",
+        "columns": 1,
+        "spacing": 0.0,
+        "fill": "E2622A",
+        "fill_kind": "solid",
+        "outline": null,
+        "outline_width": 0.75,
+        "indent_left": 27.0,
+        "indent_first": -27.0
+      },
+      "selection_box": {
+        "x": 72.0,
+        "y": 40.5,
+        "width": 600.0,
+        "height": 96.0,
+        "rotation": 0.0
+      },
+      "alt_text": null,
+      "theme": "Kiln",
+      "themes": [
+        "Kiln",
+        "Porcelain"
+      ],
+      "layouts": [
+        {
+          "id": 5,
+          "name": "Title Slide"
+        }
+      ],
+      "layout": 5,
+      "notes": "Start with the number.",
+      "guides": false,
+      "gridlines": true,
+      "notes_visible": true,
+      "header_footer": {
+        "date": false,
+        "slide_number": true,
+        "footer": "Kiln Co-op"
+      },
+      "background": "FFF7EE",
+      "hide_graphics": false,
+      "armed": null,
+      "find_done": false,
+      "caret": {
+        "x": 300.0,
+        "y": 60.0,
+        "width": 1.0,
+        "height": 40.0
+      },
+      "motion": {
+        "transition": {
+          "effect": "push",
+          "option": "fromBottom",
+          "options": [
+            {
+              "id": "fromBottom",
+              "label": "From Bottom",
+              "group": "Direction"
+            }
+          ],
+          "duration_ms": 1000,
+          "on_click": true,
+          "after_ms": 5000,
+          "kept": false
+        },
+        "animations": [
+          {
+            "id": 31,
+            "shape": 9,
+            "shape_name": "Title 1",
+            "paragraphs": [
+              0,
+              2
+            ],
+            "effect": "flyIn",
+            "name": "Fly In",
+            "class": "entrance",
+            "option": "fromBottom",
+            "start": "AfterPrevious",
+            "duration_ms": 500,
+            "delay_ms": 250,
+            "repeat": 1,
+            "click": 2,
+            "begin_ms": 250,
+            "end_ms": 750,
+            "playable": true
+          }
+        ],
+        "selected": [
+          31
+        ],
+        "options": [
+          {
+            "id": "fromBottom",
+            "label": "From Bottom",
+            "group": "Direction"
+          }
+        ],
+        "option": "fromBottom",
+        "painter": false,
+        "badges": true,
+        "settings": {
+          "kind": "Kiosk",
+          "loop_show": true,
+          "no_narration": false,
+          "no_animation": true,
+          "from": 2,
+          "to": 5,
+          "manual": false,
+          "presenter_view": true
+        },
+        "show": {
+          "running": true,
+          "mode": "Show",
+          "slide": 2,
+          "position": 3,
+          "count": 12,
+          "click": 1,
+          "clicks": 4,
+          "screen": "Slide",
+          "tool": "Pen",
+          "typed": "1",
+          "next": 3,
+          "on_click": true,
+          "kind": "Speaker",
+          "version": 9007199254740991
+        }
+      },
+      "chart": null,
+      "comments": [
+        {
+          "id": 40,
+          "author": "Zoë Okafor",
+          "initials": "ZO",
+          "date": "2026-10-22T09:30:00Z",
+          "text": "Can we show last year here?",
+          "resolved": false,
+          "shape": 12,
+          "shape_name": "Title 1",
+          "x": 1020.0,
+          "y": 64.0,
+          "color": "C44D27",
+          "replies": [
+            {
+              "id": 41,
+              "author": "Sam Price",
+              "date": "2026-10-22T10:02:00Z",
+              "text": "Added it."
+            }
+          ]
+        }
+      ],
+      "comment_total": 3,
+      "comment": 40,
+      "spelling": {
+        "slide": 2,
+        "notes": true,
+        "word": "glazze",
+        "suggestions": [
+          "glaze",
+          "glazes"
+        ]
+      },
+      "spell_done": false,
+      "master_view": {
+        "items": [
+          {
+            "id": 2,
+            "name": "Kiln",
+            "master": true,
+            "preserved": true,
+            "used": 4,
+            "version": 7
+          },
+          {
+            "id": 3,
+            "name": "Title Slide",
+            "master": false,
+            "preserved": false,
+            "used": 1,
+            "version": 9
+          }
+        ],
+        "current": 3,
+        "title": true,
+        "footers": false
+      },
+      "guide_list": [
+        {
+          "horizontal": true,
+          "pos": 360.0
+        }
+      ],
+      "text_area": {
+        "x": 120.5,
+        "y": -8.0,
+        "width": 240.0,
+        "height": 135.0
+      },
+      "cropping": false,
+      "cells": {
+        "row": 0,
+        "col": 1,
+        "rows": 2,
+        "cols": 2
+      }
+    },
+    {
+      "slides": [],
+      "sections": [],
+      "current": 0,
+      "selected": [],
+      "slide_width": 0.0,
+      "slide_height": 0.0,
+      "size_kind": "",
+      "shapes": [],
+      "selection": [],
+      "editing": false,
+      "contexts": [],
+      "format": null,
+      "selection_box": null,
+      "alt_text": "",
+      "theme": "",
+      "themes": [],
+      "layouts": [],
+      "layout": null,
+      "notes": "",
+      "guides": false,
+      "gridlines": false,
+      "notes_visible": false,
+      "header_footer": {
+        "date": false,
+        "slide_number": false,
+        "footer": null
+      },
+      "background": null,
+      "hide_graphics": false,
+      "armed": "",
+      "find_done": false,
+      "caret": null,
+      "motion": {
+        "transition": null,
+        "animations": [],
+        "selected": [],
+        "options": [],
+        "option": null,
+        "painter": false,
+        "badges": false,
+        "settings": {
+          "kind": "Speaker",
+          "loop_show": false,
+          "no_narration": false,
+          "no_animation": false,
+          "from": null,
+          "to": null,
+          "manual": false,
+          "presenter_view": false
+        },
+        "show": {
+          "running": false,
+          "mode": "Show",
+          "slide": 0,
+          "position": 0,
+          "count": 0,
+          "click": 0,
+          "clicks": 0,
+          "screen": "Black",
+          "tool": "Laser",
+          "typed": "",
+          "next": null,
+          "on_click": false,
+          "kind": "Speaker",
+          "version": 0
+        }
+      },
+      "chart": {
+        "kind": null,
+        "style": null,
+        "color_set": 0,
+        "color_sets": [],
+        "title": null,
+        "legend": null,
+        "data_labels": null,
+        "elements": [],
+        "data_range": "",
+        "series": [],
+        "categories": [],
+        "has_cells": false,
+        "axes": [],
+        "blanks": "Gap",
+        "show_hidden": false,
+        "categories_range": "",
+        "chart_area": {
+          "fill": null,
+          "no_fill": false,
+          "line": null,
+          "no_line": false,
+          "line_width": 0.0,
+          "shadow": false,
+          "rounded": false
+        },
+        "plot_area": {
+          "fill": null,
+          "no_fill": false,
+          "line": null,
+          "no_line": false,
+          "line_width": 0.0,
+          "shadow": false,
+          "rounded": false
+        }
+      },
+      "comments": [],
+      "comment_total": 0,
+      "comment": null,
+      "spelling": null,
+      "spell_done": false,
+      "master_view": null,
+      "guide_list": [],
+      "text_area": null,
+      "cropping": false,
+      "cells": null
+    }
+  ]
+}

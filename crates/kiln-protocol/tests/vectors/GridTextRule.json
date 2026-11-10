@@ -1,0 +1,13 @@
+{
+  "type": "GridTextRule",
+  "format": {
+    "TYPENAME": "GridTextRule"
+  },
+  "values": [
+    "Contains",
+    "EndsWith",
+    "Contains",
+    "NotContains",
+    "BeginsWith"
+  ]
+}

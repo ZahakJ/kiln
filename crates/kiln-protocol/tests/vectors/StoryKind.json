@@ -1,0 +1,15 @@
+{
+  "type": "StoryKind",
+  "format": {
+    "TYPENAME": "StoryKind"
+  },
+  "values": [
+    "Body",
+    "TextBox",
+    "Body",
+    "Header",
+    "Footer",
+    "Note",
+    "Comment"
+  ]
+}

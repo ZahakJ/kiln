@@ -1,0 +1,10 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "identifier": "io.github.zahakj.kiln",
+  "bundle": {
+    "fileAssociations": null,
+    "android": {
+      "minSdkVersion": 26
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "type": "DeckOutlineEdit",
+  "format": {
+    "TYPENAME": "DeckOutlineEdit"
+  },
+  "values": [
+    {
+      "Text": {
+        "slide": 0,
+        "line": 0,
+        "text": "Firing schedule"
+      }
+    },
+    {
+      "Split": {
+        "slide": 1,
+        "line": 2,
+        "offset": 5
+      }
+    },
+    {
+      "Indent": {
+        "slide": 2,
+        "line": 0,
+        "by": 1
+      }
+    },
+    {
+      "Join": {
+        "slide": 2,
+        "line": 1
+      }
+    },
+    {
+      "Text": {
+        "slide": 0,
+        "line": 0,
+        "text": ""
+      }
+    }
+  ]
+}

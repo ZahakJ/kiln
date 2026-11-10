@@ -1,0 +1,11 @@
+{
+  "type": "FillRule",
+  "format": {
+    "TYPENAME": "FillRule"
+  },
+  "values": [
+    "NonZero",
+    "EvenOdd",
+    "NonZero"
+  ]
+}

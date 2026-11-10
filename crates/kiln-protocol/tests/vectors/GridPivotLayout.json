@@ -1,0 +1,11 @@
+{
+  "type": "GridPivotLayout",
+  "format": {
+    "TYPENAME": "GridPivotLayout"
+  },
+  "values": [
+    "Compact",
+    "Outline",
+    "Compact"
+  ]
+}

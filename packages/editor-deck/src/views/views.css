@@ -1,0 +1,196 @@
+/* Reading View, Notes Page view, the rulers and the guides' handles. */
+.kiln-deckreading {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: var(--kiln-bg);
+}
+
+.kiln-decknotespage {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  background: var(--kiln-bg);
+}
+
+.kiln-decknotespage__page {
+  position: relative;
+  flex: none;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px var(--kiln-line),
+    var(--kiln-shadow-2);
+}
+
+.kiln-decknotespage__slide {
+  position: absolute;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 22%);
+}
+
+.kiln-decknotespage__body {
+  position: absolute;
+  display: flex;
+}
+
+.kiln-decknotespage__text {
+  flex: 1;
+  padding: 0.4em;
+  border: 1px dashed transparent;
+  background: transparent;
+  color: #1b1411;
+  font: inherit;
+  font-family: var(--kiln-font-ui, system-ui, sans-serif);
+  line-height: 1.35;
+  resize: none;
+}
+
+.kiln-decknotespage__text:hover,
+.kiln-decknotespage__text:focus {
+  border-color: #b9aea4;
+  outline: none;
+}
+
+.kiln-deckruler {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.kiln-deckruler__top {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 0;
+  height: 20px;
+  border-bottom: 1px solid var(--kiln-line);
+}
+
+.kiln-deckruler__left {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  border-right: 1px solid var(--kiln-line);
+}
+
+.kiln-deckruler__corner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background: var(--kiln-sunken);
+}
+
+.kiln-deckruler__h,
+.kiln-deckruler__v {
+  display: block;
+}
+
+.kiln-deckruler__indents {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+}
+
+.kiln-deckruler__marker {
+  position: absolute;
+  width: 10px;
+  margin-left: -5px;
+  background: var(--kiln-fg-muted);
+  cursor: ew-resize;
+}
+
+/* First line: a triangle pointing down at the top. */
+.kiln-deckruler__marker--first {
+  top: 0;
+  height: 7px;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+/* Hanging indent: a triangle pointing up above the left indent's box. */
+.kiln-deckruler__marker--hanging {
+  top: 7px;
+  height: 7px;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.kiln-deckruler__marker--left {
+  top: 14px;
+  height: 5px;
+}
+
+.kiln-deckguides {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.kiln-deckguide {
+  position: absolute;
+  width: 9px;
+  pointer-events: auto;
+  cursor: ew-resize;
+}
+
+.kiln-deckguide[data-horizontal] {
+  width: auto;
+  height: 9px;
+  cursor: ns-resize;
+}
+
+.kiln-deckguide:active {
+  background: linear-gradient(
+    to right,
+    transparent 4px,
+    color-mix(in srgb, var(--kiln-accent) 70%, transparent) 4px,
+    color-mix(in srgb, var(--kiln-accent) 70%, transparent) 5px,
+    transparent 5px
+  );
+}
+
+.kiln-deckguide[data-horizontal]:active {
+  background: linear-gradient(
+    to bottom,
+    transparent 4px,
+    color-mix(in srgb, var(--kiln-accent) 70%, transparent) 4px,
+    color-mix(in srgb, var(--kiln-accent) 70%, transparent) 5px,
+    transparent 5px
+  );
+}
+
+.kiln-deckguide[data-off] {
+  opacity: 0.4;
+}
+
+.kiln-deckguide__label {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--kiln-fg);
+  color: var(--kiln-bg);
+  font: 500 11px / 1.4 var(--kiln-font-ui, system-ui, sans-serif);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.kiln-deckguide[data-horizontal] .kiln-deckguide__label {
+  top: 10px;
+  left: 8px;
+}
+
+/* A guide with the keys: the focus ring along it. */
+.kiln-deckguide:focus-visible {
+  outline: 2px solid var(--kiln-focus-ring);
+  outline-offset: 1px;
+}

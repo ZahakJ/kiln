@@ -1,0 +1,32 @@
+{
+  "type": "PagesInfo",
+  "format": {
+    "TYPENAME": "PagesInfo"
+  },
+  "values": [
+    {
+      "count": 0,
+      "complete": false,
+      "current": 0,
+      "rects": [],
+      "extent": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.0,
+        "height": 0.0
+      }
+    },
+    {
+      "count": 0,
+      "complete": false,
+      "current": 0,
+      "rects": [],
+      "extent": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.0,
+        "height": 0.0
+      }
+    }
+  ]
+}

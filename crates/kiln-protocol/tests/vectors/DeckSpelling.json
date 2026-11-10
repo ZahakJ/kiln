@@ -1,0 +1,23 @@
+{
+  "type": "DeckSpelling",
+  "format": {
+    "TYPENAME": "DeckSpelling"
+  },
+  "values": [
+    {
+      "slide": 2,
+      "notes": true,
+      "word": "glazze",
+      "suggestions": [
+        "glaze",
+        "glazes"
+      ]
+    },
+    {
+      "slide": 0,
+      "notes": false,
+      "word": "",
+      "suggestions": []
+    }
+  ]
+}

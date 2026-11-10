@@ -1,0 +1,29 @@
+{
+  "type": "FindQuery",
+  "format": {
+    "TYPENAME": "FindQuery"
+  },
+  "values": [
+    {
+      "text": "<(K)iln>",
+      "match_case": true,
+      "whole_word": false,
+      "wildcards": true,
+      "regex": false
+    },
+    {
+      "text": "",
+      "match_case": false,
+      "whole_word": false,
+      "wildcards": false,
+      "regex": false
+    },
+    {
+      "text": "",
+      "match_case": false,
+      "whole_word": false,
+      "wildcards": false,
+      "regex": false
+    }
+  ]
+}

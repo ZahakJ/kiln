@@ -1,0 +1,20 @@
+{
+  "type": "ExecValue",
+  "format": {
+    "TYPENAME": "ExecValue"
+  },
+  "values": [
+    "None",
+    {
+      "Pong": {
+        "version": "0.1.0",
+        "protocol": 1,
+        "target": "wasm32"
+      }
+    },
+    {
+      "Echo": "hi"
+    },
+    "None"
+  ]
+}

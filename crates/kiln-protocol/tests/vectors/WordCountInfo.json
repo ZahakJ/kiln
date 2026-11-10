@@ -1,0 +1,26 @@
+{
+  "type": "WordCountInfo",
+  "format": {
+    "TYPENAME": "WordCountInfo"
+  },
+  "values": [
+    {
+      "pages": 0,
+      "words": 0,
+      "characters": 0,
+      "characters_with_spaces": 0,
+      "paragraphs": 0,
+      "lines": 0,
+      "selection": false
+    },
+    {
+      "pages": 0,
+      "words": 0,
+      "characters": 0,
+      "characters_with_spaces": 0,
+      "paragraphs": 0,
+      "lines": 0,
+      "selection": false
+    }
+  ]
+}

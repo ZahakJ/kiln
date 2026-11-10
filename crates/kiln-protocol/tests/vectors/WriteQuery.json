@@ -1,0 +1,117 @@
+{
+  "type": "WriteQuery",
+  "format": {
+    "TYPENAME": "WriteQuery"
+  },
+  "values": [
+    "Format",
+    "Rulers",
+    "Styles",
+    "Headings",
+    "Pages",
+    {
+      "FindAll": {
+        "query": {
+          "text": "<(K)iln>",
+          "match_case": true,
+          "whole_word": false,
+          "wildcards": true,
+          "regex": false
+        }
+      }
+    },
+    {
+      "WordCount": {
+        "include_notes": true
+      }
+    },
+    "Properties",
+    "Clipboard",
+    "PageSetup",
+    "Bookmarks",
+    "CommandLog",
+    "Comments",
+    "Revisions",
+    "CrossRefTargets",
+    "Objects",
+    {
+      "SpellingAt": {
+        "pos": {
+          "block": 9,
+          "offset": 4
+        }
+      }
+    },
+    {
+      "NextMisspelling": {
+        "from": null
+      }
+    },
+    "OutlineIssues",
+    {
+      "SymbolTable": {
+        "font": "Wingdings"
+      }
+    },
+    "TableProperties",
+    "RevisionBalloons",
+    {
+      "DropPoint": {
+        "x": 120,
+        "y": -4
+      }
+    },
+    {
+      "ObjectPicture": {
+        "id": 4
+      }
+    },
+    "TextEncoding",
+    "Format",
+    "Rulers",
+    "Styles",
+    "Headings",
+    "Pages",
+    {
+      "FindAll": {
+        "query": {
+          "text": "",
+          "match_case": false,
+          "whole_word": false,
+          "wildcards": false,
+          "regex": false
+        }
+      }
+    },
+    {
+      "WordCount": {
+        "include_notes": false
+      }
+    },
+    "Properties",
+    "Clipboard",
+    "PageSetup",
+    "Bookmarks",
+    "CommandLog",
+    "Comments",
+    "Revisions",
+    "CrossRefTargets",
+    "Objects",
+    {
+      "SpellingAt": {
+        "pos": {
+          "block": 0,
+          "offset": 0
+        }
+      }
+    },
+    {
+      "NextMisspelling": {
+        "from": {
+          "block": 0,
+          "offset": 0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "CrossRefShow",
+  "format": {
+    "TYPENAME": "CrossRefShow"
+  },
+  "values": [
+    "Text",
+    "PageNumber",
+    "Number",
+    "Text"
+  ]
+}

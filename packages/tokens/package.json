@@ -1,0 +1,34 @@
+{
+  "name": "@kiln/tokens",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Design tokens generated from the Kiln brand kit.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./index.css": "./index.css",
+    "./tokens.css": "./tokens.css",
+    "./theme.css": "./theme.css",
+    "./fonts.css": "./fonts.css",
+    "./fonts/*": "./fonts/*"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "generate": "tsx scripts/generate.ts",
+    "fetch-fonts": "node scripts/fetch-fonts.mjs",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "node scripts/fetch-fonts.mjs --check && vitest run"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@types/node": "catalog:",
+    "jsdom": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "SymbolChar",
+  "format": {
+    "TYPENAME": "SymbolChar"
+  },
+  "values": [
+    {
+      "code": 61514,
+      "text": "☺"
+    },
+    {
+      "code": 0,
+      "text": ""
+    }
+  ]
+}

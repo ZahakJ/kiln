@@ -1,0 +1,28 @@
+[package]
+name = "kiln-storage"
+description = "Native bundles, the autosave journal, recovery, recents, local version history and app storage"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[dependencies]
+kiln-common.workspace = true
+# The app storage operations (`HostOp::Store*`), the kinds, formats and recent files.
+kiln-protocol.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+postcard.workspace = true
+# Bundles are zip archives, deflated as the Office formats are.
+zip = { workspace = true, features = ["deflate-flate2-zlib-rs"] }
+crc32fast.workspace = true
+
+# App storage and file watching exist natively only; the web keeps them in the browser.
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+notify.workspace = true
+
+[lints]
+workspace = true

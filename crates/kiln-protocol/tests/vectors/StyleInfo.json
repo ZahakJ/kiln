@@ -1,0 +1,42 @@
+{
+  "type": "StyleInfo",
+  "format": {
+    "TYPENAME": "StyleInfo"
+  },
+  "values": [
+    {
+      "id": "Heading1",
+      "name": "Heading 1",
+      "kind": "Linked",
+      "quick": true,
+      "hidden": false,
+      "priority": 9,
+      "based_on": "Normal",
+      "next": "Normal",
+      "font": "Carlito",
+      "size": 16.0,
+      "bold": false,
+      "italic": false,
+      "color": "2F5496",
+      "current": true,
+      "in_use": true
+    },
+    {
+      "id": "",
+      "name": "",
+      "kind": "Paragraph",
+      "quick": false,
+      "hidden": false,
+      "priority": 0,
+      "based_on": null,
+      "next": null,
+      "font": "",
+      "size": 0.0,
+      "bold": false,
+      "italic": false,
+      "color": null,
+      "current": false,
+      "in_use": false
+    }
+  ]
+}

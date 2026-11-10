@@ -1,0 +1,315 @@
+{
+ "masters": [
+  {
+   "layouts": [
+    "Title Slide",
+    "Title and Content",
+    "Section Header",
+    "Two Content",
+    "Comparison",
+    "Title Only",
+    "Blank",
+    "Content with Caption",
+    "Picture with Caption",
+    "Title and Vertical Text",
+    "Vertical Title and Text"
+   ]
+  }
+ ],
+ "slide_count": 17,
+ "slide_size": [
+  12192000,
+  6858000
+ ],
+ "slides": [
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "entr: Appear"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Appear"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "entr: Fade"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Fade"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "entr: Fly In"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Fly In"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "entr: Float In"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Float In"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "entr: Split"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Split"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "entr: Wipe"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Wipe"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "entr: Zoom"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Zoom"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "entr: Grow & Turn"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Grow & Turn"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "emph: Pulse"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Pulse"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "emph: Colour Pulse"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Colour Pulse"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "emph: Teeter"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Teeter"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "emph: Spin"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Spin"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "emph: Grow/Shrink"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Grow/Shrink"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "exit: Disappear"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Disappear"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "exit: Fade Out"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Fade Out"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "exit: Fly Out"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Fly Out"
+    }
+   ]
+  },
+  {
+   "layout": "Title Only",
+   "notes": null,
+   "shape_count": 2,
+   "shapes": [
+    {
+     "kind": "placeholder",
+     "name": "Title 1",
+     "text": "exit: Zoom Out"
+    },
+    {
+     "kind": "autoshape",
+     "name": "Rounded Rectangle 2",
+     "text": "Zoom Out"
+    }
+   ]
+  }
+ ]
+}

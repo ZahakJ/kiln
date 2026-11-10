@@ -1,0 +1,13 @@
+{
+  "type": "DeckShowScreen",
+  "format": {
+    "TYPENAME": "DeckShowScreen"
+  },
+  "values": [
+    "Black",
+    "End",
+    "Slide",
+    "Black",
+    "White"
+  ]
+}

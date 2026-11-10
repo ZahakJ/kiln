@@ -1,0 +1,5 @@
+# kiln-collab-server
+
+The self-hosted collaboration relay: an `axum` 0.8 and `tokio` WebSocket server. Each shared document is a room at `/rooms/{room}` speaking `kiln_collab::protocol`; each update is stored in redb (`rooms.redb` in the data directory) before it is merged into the room's state and relayed (an update that cannot be stored is neither, and the sender is told to send it again), presence is relayed as is, and a room's updates are folded into a snapshot every 256 updates and when its last client leaves, which also drops the room from memory. A client's messages are at most 512 KB (large updates come in parts), and a client more than 1,024 messages behind is closed. Storage is the `store::Storage` trait (`Relay::with_storage`). `GET /health` answers `ok`.
+
+Authentication is one shared token (`SharedToken`), which is not production-grade: implement `Authenticate` for anything more. Run it with `cargo run -p kiln-collab-server -- --token <TOKEN> [--bind <ADDR>] [--data <DIR>]`; `apps/collab-server/` has the Dockerfile and a compose file.

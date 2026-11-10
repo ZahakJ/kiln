@@ -1,0 +1,12 @@
+{
+  "type": "TextBoxDesign",
+  "format": {
+    "TYPENAME": "TextBoxDesign"
+  },
+  "values": [
+    "Simple",
+    "Sidebar",
+    "Quote",
+    "Simple"
+  ]
+}

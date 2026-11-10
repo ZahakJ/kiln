@@ -1,0 +1,11 @@
+{
+  "type": "GridSubtotalPlace",
+  "format": {
+    "TYPENAME": "GridSubtotalPlace"
+  },
+  "values": [
+    "Top",
+    "Off",
+    "Top"
+  ]
+}

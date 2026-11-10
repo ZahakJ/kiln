@@ -1,0 +1,26 @@
+{
+  "type": "GridFindHit",
+  "format": {
+    "TYPENAME": "GridFindHit"
+  },
+  "values": [
+    {
+      "sheet": 0,
+      "sheet_name": "Budget",
+      "row": 6,
+      "col": 1,
+      "cell": "$B$7",
+      "value": "Kiln",
+      "formula": null
+    },
+    {
+      "sheet": 0,
+      "sheet_name": "",
+      "row": 0,
+      "col": 0,
+      "cell": "",
+      "value": "",
+      "formula": null
+    }
+  ]
+}

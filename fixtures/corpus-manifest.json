@@ -1,0 +1,1594 @@
+{
+ "version": 1,
+ "description": "Real-world files for the fidelity corpus. tools/fetch-corpus.sh downloads each url to fixtures/<file> and checks its SHA-256; nothing here is executed.",
+ "selection": "Candidates of 8 KB to 4 MB from each source, ordered by SHA-256 of a fixed seed and the path, taken in that order before any tool scored them. Skipped: files that are not readable zips, have no main part, unpack past 120 MB, come from fuzzers, or hold an email address outside example or project domains.",
+ "files": [
+  {
+   "file": "external/docx/lo-2129393649.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/2129393649.docx",
+   "sha256": "e4f1d701032a333e3f413be0ec9cd5d3edc54b7d4aee8edb7d237137f35ec728",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-TOC_field_b.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/TOC_field_b.docx",
+   "sha256": "c629322a22daa3716dd631e68af6173573bf9243348da671845f998fefa08f68",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-chart-size.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/chart-size.docx",
+   "sha256": "3ff36705fd033b17d9869bbbd8ca4cdf9845e2cc92255406cc317eb2368f1350",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-clearing-break.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/clearing-break.docx",
+   "sha256": "0b075cb430a4e93b153f57ea825e7d1d45c0ee48a3b77849351bce64e34b7232",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-dashed_line_custdash_1000th_of_percent.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/dashed_line_custdash_1000th_of_percent.docx",
+   "sha256": "fb70f15604e330a40517c2bba11f05d1873f3d930d1755a6dbb9f88c2141b039",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-fdo76586.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/fdo76586.docx",
+   "sha256": "d4d2250ee798e7d1ea03859eb33603a29b7c1bbf65acedebd87f855d292bdfc2",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-fdo80997.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/fdo80997.docx",
+   "sha256": "55fbf03e6032068309524d34eee862c500235da17c16e0ae1a0f40f9321334f9",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-floating-table-position.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/floating-table-position.docx",
+   "sha256": "6e4ea74b6c749d5db5efbe30e5cd77d7db175307a1aa65f617c0316e2351e8fc",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-grabbag.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/grabbag.docx",
+   "sha256": "28457bca2b115956c9480912f2120904e9457ffb70abdcd3960a92c789549772",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-n652364.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/n652364.docx",
+   "sha256": "a033b5e052e18a851704f4fe4304b3d111df0b6cd008e1e9a11e27fcd0c0ea3a",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-n816593.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/n816593.docx",
+   "sha256": "5be8ca31e2cec2848cb01856586ae23d93a2c1c8554a708ef3529f73027c3010",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-numbering1.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/numbering1.docx",
+   "sha256": "2bf7f3873d8b756ccacb028563743d7ba858c5e26f6848b484208f150856430b",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-para-auto-spacing.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/para-auto-spacing.docx",
+   "sha256": "6dd9280c9185897ac0a58f96c030f5a60b5790c1cca0cc1ddc6c5d750a0cfc05",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-table-rtl.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/table-rtl.docx",
+   "sha256": "97fe9822a1b5d1a5a9fbcc21a166b9a61306c732ff537c730819f8565250abe7",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-tdf126590.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/tdf126590.docx",
+   "sha256": "eb15a512a8e03836c18bb4fd342389903fd894af68c618a6ea00f90bc841c724",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-tdf143476_lockedCanvas_position.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlimport/data/tdf143476_lockedCanvas_position.docx",
+   "sha256": "1911a0e5d44978909719bc6872fb9c7ebd0b0b4f6a13fbbf1decc45cbee7e33d",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-tdf159158_zOrder_1and0equalB.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/tdf159158_zOrder_1and0equalB.docx",
+   "sha256": "963d9e62e758b59733c0b4231624e702d94bd83820999098854a90cb89c4b017",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-tdf170003_bottomSpacing.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/tdf170003_bottomSpacing.docx",
+   "sha256": "88d4ede4491008c134f0d10e251cb8d2edfd1fdf63a2cbc33fdc63d2c111f9fc",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-tdf48658_transparentOLEheader.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlimport/data/tdf48658_transparentOLEheader.docx",
+   "sha256": "373ee508c2db232e83358f441d8e4452ef46551db1233caf1b72b4e133537a4c",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/lo-test_msword_hang.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sw/qa/extras/ooxmlexport/data/test_msword_hang.docx",
+   "sha256": "d201dc287487aa99dee1efd552d09012edb084f1e22891eb25c67d3a1978e4af",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/docx/poi-55966.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/55966.docx",
+   "sha256": "4409a5e95d229c5ab94fb24aac1a53ee47d0d66c9e75b7f39d80f10c218abedb",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-58067.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/58067.docx",
+   "sha256": "719b5076b736e6208be4b10fd268e9e3b7e0029c819d485d53ca14700fc98fc5",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-Bug54771b.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/Bug54771b.docx",
+   "sha256": "8721295e024cf07671ba7db0430db2a94f9a6f12dd3ba2aa36f3011d5885021b",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-Bug55142.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/Bug55142.docx",
+   "sha256": "69828bfe8887125db7d7e5b29405111927807b849d262d42c351ccec3b3cdb83",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-Bug60337.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/Bug60337.docx",
+   "sha256": "87f983bdd93b3b5b8469104a5b09ccff41e0f5c144060e13fd4db07bfd2e39da",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-ComplexNumberedLists.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/ComplexNumberedLists.docx",
+   "sha256": "297a085a7d433af2eeee7661e8db21539452cb585096484774a1e9f5f258b0b6",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-EnforcedWith.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/EnforcedWith.docx",
+   "sha256": "0727ecf6523dd8026c53129255b11dec8de4437060f2927643d99cd77e82a41b",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-FieldCodes.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/FieldCodes.docx",
+   "sha256": "9247f85ab90b15f11d0cf14d0070fdcb5cdf47c65d6bc77cc32cb7ee682aad24",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-FldSimple.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/FldSimple.docx",
+   "sha256": "6cf7364676d465e702cbbac44ca92331c525476e36a29c26f780cb9d7643b631",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-Headers.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/Headers.docx",
+   "sha256": "bdf91038f9a5454355e6393b7b74fd819a4adc480b4a7011a86e878403952b5b",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-Numbering.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/Numbering.docx",
+   "sha256": "776a59dcf0e290f1988602e6305e2d9cb2e31f631dc4aa751593c23cddbaad4d",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-OPCCompliance_CoreProperties_SUCCESS.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/openxml4j/OPCCompliance_CoreProperties_SUCCESS.docx",
+   "sha256": "e2e8b6c95a034bbcb6f9239ce1519b7814e45d165d261775ac2ff58eef0a2b60",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-OPCCompliance_CoreProperties_UnauthorizedXMLLangAttributeFAIL.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/openxml4j/OPCCompliance_CoreProperties_UnauthorizedXMLLangAttributeFAIL.docx",
+   "sha256": "5266327422483db156b75ca5e9a0b2e76998bc40711adc831dadb2d5f6eed7d1",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-OPCCompliance_DerivedPartNameFAIL.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/openxml4j/OPCCompliance_DerivedPartNameFAIL.docx",
+   "sha256": "a57fe168c5dcd49a877b4c41ec453571181c3a0644b5b305c76c6ff385b39c29",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-Office2010-SP1-XAdES-X-L.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/xmldsign/Office2010-SP1-XAdES-X-L.docx",
+   "sha256": "832ae159e95be7326cfe95bcbd23a9d32905f1b5e5cda90accd8beb8fc50773e",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-SampleDoc.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/SampleDoc.docx",
+   "sha256": "ea2c517bd7be4628887eb97f630334b93b894f4522d2c0adae263e602d76df92",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-Styles.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/Styles.docx",
+   "sha256": "63f3fe4c3b4fbdc211eca8fa7fd31a799ff4438afbf4ca6e771b3aef107c732e",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-ThreeColHeadFoot.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/ThreeColHeadFoot.docx",
+   "sha256": "c2d16e89c23a8c1f7366f3b65ab33c6e14fcf00f916dfecfd8af1a3e7797f73d",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-bug56075-changeTracking_on.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/bug56075-changeTracking_on.docx",
+   "sha256": "9c837e12aaf3deac10ac20ac1bc08dc6bebdec14b553698063742b9bc12f8920",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-bug65738.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/bug65738.docx",
+   "sha256": "67797f5691cb5346201f1c40000a959f9f08d05d0b4493b4291e8d5f16e81e65",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-deep-table-cell.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/deep-table-cell.docx",
+   "sha256": "31c5bfe1f68c98699cb356891de2e02fe223f633706d666c430ca79fd2cdf6bb",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-documentProtection_no_protection.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/documentProtection_no_protection.docx",
+   "sha256": "5d1cce05b576fc527981c56dd9844df3b6669967bcd9b981adfc043bd516f62c",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-endnotes.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/endnotes.docx",
+   "sha256": "6e2e1b2dabb0ae6b9b26ddd613dca446ba0710ecc8b4008722abc4ed592934e3",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-footnotes.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/footnotes.docx",
+   "sha256": "9070094b27ff5201477f4de4b2c027730c66cb889106a1609c5adeed207a59c1",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-headerPic.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/headerPic.docx",
+   "sha256": "50d9b17f7575c8a91129fd8a3e6a70feec886480ab9f089e29a7f8ac7e5ed51a",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-issue_51265_2.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/issue_51265_2.docx",
+   "sha256": "f06f14a64bd7bb58cc93a832059f722c7af0c7854e0f3bebe5945e7d23e149ae",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-sample.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/sample.docx",
+   "sha256": "be4fc1bf778ad8183f714e09b9df40669de34e9ecbc3adecfc8953f00749036f",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-stress005.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/integration/stress005.docx",
+   "sha256": "0c58de6a757f69fef210440bf0e0f95dc018d908401aee866cfbfeca1309d43c",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-stress018.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/integration/stress018.docx",
+   "sha256": "51272c835875c822b1f92a465c7dce34ca217374261f2fb180e1a67cda81c649",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/docx/poi-testComment.docx",
+   "format": "docx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/document/testComment.docx",
+   "sha256": "06b63b13f0b78a7179151af52c2282557c1ed204899feee9fcef4ca575344f97",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/lo-bnc870233_2.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/bnc870233_2.pptx",
+   "sha256": "58beb580053c4923c93c39877b8ded112700e22a09557149a93a0f86d435369f",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-bnc910045.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/bnc910045.pptx",
+   "sha256": "a003b023031469747a94438aa8100f2ef385251ac3c292787e220c8301ed95f8",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-fill-color-list.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/fill-color-list.pptx",
+   "sha256": "ec13cd6c4e797af58a20010530a9d4847c63d4a7d1faf48f34c9055ef9c73aea",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-paraMarginAndIndentation.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/paraMarginAndIndentation.pptx",
+   "sha256": "4396f23fe526a7717195915f7fa5b021418b7c4fc46b2f21237d8b5d9422f96e",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-smartart-background-drawingml-fallback.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/smartart-background-drawingml-fallback.pptx",
+   "sha256": "ee60357bcf324a099d796347ecb3ab64ce1f4849be3c0d8e1027e75c3eff6a36",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-smartart-background.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/smartart-background.pptx",
+   "sha256": "55b034bcc0f484a49fd0ae2d98c277d2c31f249cfe4758b500ec29de824a4f6c",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-smartart-cnt.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/smartart-cnt.pptx",
+   "sha256": "42363e3ed1f8c0f06ec566de4de0177b998f4433b260d17a1bca29b3a565ceb3",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-smartart-multidirectional.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/smartart-multidirectional.pptx",
+   "sha256": "d1e608a650dd52a219c530df66dceb824da625dcbb94062df2bf8348369b2876",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-tdf100926_ODP.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/tdf100926_ODP.pptx",
+   "sha256": "8f36e29aca24b30781edf52d9a356381610760380970e5185e1d25c22682a07b",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-tdf103792.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/tdf103792.pptx",
+   "sha256": "2437442e60a045962709ae9447dedf0a8cf4d7b69baa84978bbfddd8d75fef61",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-tdf112089.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/tdf112089.pptx",
+   "sha256": "76a2c841fa085e991c53ba5ddcc4a206ee93a98ca87f13c656ab6408bfb4c6c1",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-tdf113818-swivel.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/tdf113818-swivel.pptx",
+   "sha256": "c06c477481ebb9f6cc6c06a8f1964b7dd419f8969775f2a9f2d352caf4dfd32c",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-tdf125360_1.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/tdf125360_1.pptx",
+   "sha256": "c53caa418bba5d413a8657f135f454d28cf55389616f08aba9ddbab71dbf4c8a",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-tdf132302_SmartArt_rightArrow.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/tdf132302_SmartArt_rightArrow.pptx",
+   "sha256": "87c36c601e14acd106ceb92a1c1b4142a74cd1a799b426144774566348a81366",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-tdf141058-1.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/tdf141058-1.pptx",
+   "sha256": "83d5afc8e580c30e922a1a1e685e93bc7ea98edfe657ac3aa538d47a193fac23",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-tdf142590.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/tdf142590.pptx",
+   "sha256": "4c6d534123a6c063a7635314dd493e99f53eae8eeba3dc241d9ef8955751b1ce",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-tdf142915.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/tdf142915.pptx",
+   "sha256": "9742bf386264674e66e14581208b9db3477b5587ae68aa231ec1718ffcf1b72f",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-tdf143624.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/tdf143624.pptx",
+   "sha256": "e6bdf3ba3af350217a63180389a025aafbc8440c2d2b057ff3154362d83fbc13",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-tdf152335.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/tdf152335.pptx",
+   "sha256": "aaca7453397a46fd0f3a204334459d1d7488c879b807c3afb8b4b2658dd09769",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/lo-tdf90626.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sd/qa/unit/data/pptx/tdf90626.pptx",
+   "sha256": "aa3a90f87e470ccdf8e7e397a4ce4290b231358b5137a4d05817b6d671526a9f",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/pptx/poi-51187.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/51187.pptx",
+   "sha256": "a1728e7e6c4cf6470fd2d5cf044b6db008ddb75f512c390ab5bc71bbcf37a909",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-60042.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/60042.pptx",
+   "sha256": "d72533cdc38a93dd87c5fa7268b185d3b871daf4c4693627a09bc0dc80a04f04",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-SampleShow.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/SampleShow.pptx",
+   "sha256": "bfb4b2f07c9233afd2f32aa5781d849d0c7d225bf03721a10becf487b481d828",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-SmartArt.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/SmartArt.pptx",
+   "sha256": "b97e4c6d2ee1dd4094f50f9043820610268dd452d7717c537f5456636adcc353",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-alterman_security.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/alterman_security.pptx",
+   "sha256": "71000335a83a16ded97f6d43c1e49ccfee71becf3338cb9b87296466be9ebbd4",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-aptia.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/aptia.pptx",
+   "sha256": "c212ee4e7f66b2aaf42eef65babfafea62d9022e7fdc9739c8ea9593f20f0b70",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-backgrounds.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/backgrounds.pptx",
+   "sha256": "6d1e661c87b072a701e02e28f9d2c9bb43c6bfe0ad5acd02811a0382bab769b7",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-bar-chart.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/bar-chart.pptx",
+   "sha256": "79e1d218bfb2903e8dc8425a6b1997d9c1976f5a5f025bada85b0c47b5777969",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-bug60993.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/bug60993.pptx",
+   "sha256": "ad54b71b1deeec29d9e5e6d8d81ae4590b5ffafb906ea738aebe347336189364",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-bug64693.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/bug64693.pptx",
+   "sha256": "8cfe77cee329d0186fcb2827b5ad49371b3b7833ab6181e63de6b923e96ec275",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-bug65523.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/bug65523.pptx",
+   "sha256": "a37c15125aa21ac5226bac07f4459a200cf8070040c06093c1dc1db19e28c12c",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-bug68703.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/bug68703.pptx",
+   "sha256": "f232d0dc390c741855b4395f74a11d2610243fffd8699f72dd3185ad5f930852",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-chart-picture-bg.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/chart-picture-bg.pptx",
+   "sha256": "97bad7041fa5f23408eea513cd85bf7fed47a8ba218d8791a59be14cb53fdaa5",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-crop-to-0.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/crop-to-0.pptx",
+   "sha256": "5d6aa3a226c6257592e3d97d4a4a4e4832c16411116d97e70676f38dc5a525c5",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-hello-world-signed.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/xmldsign/hello-world-signed.pptx",
+   "sha256": "d119d8160dc912d639cbe8047c526c6dc58ca9dcd6b51bd5870c247d64413163",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-hello-world-unsigned.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/xmldsign/hello-world-unsigned.pptx",
+   "sha256": "13738e3ed8cc14aadbc982d4c00e7bea9c154aab0387fd3d15d966285ad9e838",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-highlight-test-case.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/highlight-test-case.pptx",
+   "sha256": "b1c38080db134799830ee3e01ca2fcd292feb1c1ba0abd3187f3a3807aac34d6",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-layouts.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/layouts.pptx",
+   "sha256": "9c3d53afa3115de2ba72ec77637a616aeed505a6ff3b30a46db871c4edd32be5",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-ms-office-2010-signed.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/xmldsign/ms-office-2010-signed.pptx",
+   "sha256": "4d925d282dcca86e62b6716647a458246f8b9ea0eae0ec6664bbbf5a3f91bce1",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-pptx2svg.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/pptx2svg.pptx",
+   "sha256": "7cd49d4a9d6004e4de9c6a3e01a76119f1c8045ae91c9fc534d411347babdd3d",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-radar-chart.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/radar-chart.pptx",
+   "sha256": "faf631199e44a1eb5dae48527d233b3231e67ea0345e93fd0c9306ce5261b570",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-sample.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/sample.pptx",
+   "sha256": "108d7219130a8460298896f45ff777dfe52b8b5527a4b4628b10731ed01d6a8e",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-scatter-chart.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/scatter-chart.pptx",
+   "sha256": "946d17760f23822950d97a02aeeedbac773fe8ba5afd61bb26a9ee5fd8db53be",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-shapes.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/shapes.pptx",
+   "sha256": "19fde9b87e33dd1a95fdbba0cf6abc2278bf03874f4665c7f8b88b6afe4a2571",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-smartart-simple.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/smartart-simple.pptx",
+   "sha256": "238ff6433dac00b2722edb9a29d97f56ab4f3c9c37f33a73d6f53baf494916aa",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-stress021.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/integration/stress021.pptx",
+   "sha256": "443016bb8dfe45d080cce2db36f21f8727c86477f72698aa4086c32a41a16160",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-table_test.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/table_test.pptx",
+   "sha256": "b9c3eb4b198ef3e53a4ff1a5ef4118a5ce6ba1760592c553abf665b37dcac5f8",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-themes.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/themes.pptx",
+   "sha256": "3ea86e4ee84a8bca6b99fe3a9f2a9a9186c0655df28ff92a2d02da24926c64ba",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-tika-2605.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/tika-2605.pptx",
+   "sha256": "0b8ce6084798af3e3a70a72fada352a5fdcc479d4e310421738128062cb27449",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/pptx/poi-with_japanese.pptx",
+   "format": "pptx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/slideshow/with_japanese.pptx",
+   "sha256": "f0b1efbfbd70f7ee2395dc2505639f99449971ba404a6ec8cf1b97d82cf45c10",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/lo-PivotTable_CachedDefinitionAndDataInSync.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/PivotTable_CachedDefinitionAndDataInSync.xlsx",
+   "sha256": "b549617019d5d67ad50c25181c0a11c3a179f437e9b75a4756e10ffe86772a7a",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-autofilter-colors-fg.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/autofilter-colors-fg.xlsx",
+   "sha256": "9bc60d29e03245b0ec94233986eccf0cf6a78d898fbfcd3685024fb445ee5424",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-cond_format_theme_color3.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/cond_format_theme_color3.xlsx",
+   "sha256": "321ad1afc41632105a36926db9719f5dc3bf7fc0c418b9777e79579b44d31842",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-conditional_fmt_origin.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/conditional_fmt_origin.xlsx",
+   "sha256": "12a3a7241e225299181a7e3de9721015ee4adf319b144f5158dcef507d0af116",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-hiddenButton.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/hiddenButton.xlsx",
+   "sha256": "89bddd9805b122a198c5667652426890ab273af599f58362f7ea2f65ffdf1aca",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-hyperlinks.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/hyperlinks.xlsx",
+   "sha256": "246be6934c5bf339f3d2fafd253347b1eca963fe137af17442049dcff6f30061",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-named-ranges-hidden.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/named-ranges-hidden.xlsx",
+   "sha256": "b75f70ff0effa118fa3d4648369fb7167b20db35e5599fd52bddb238fefe5190",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-pivot_table_first_header_row.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/pivot_table_first_header_row.xlsx",
+   "sha256": "460252815a4641de5520959e7e622b5e164383bd2405340ec234d05dd5323215",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-pivottable_date_field_filter.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/pivottable_date_field_filter.xlsx",
+   "sha256": "da01cf11e3fbd532c9d71a686ced3d8634eff582649aea6b06f079cfcd321996",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-tdf110440.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/tdf110440.xlsx",
+   "sha256": "0353bbdc7853fd8f5ac8b4d70222c61a2cb82dbb60b6146cdef236dbdeb5ac82",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-tdf115159.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/tdf115159.xlsx",
+   "sha256": "98053ff4bab193b5cc1a8a86e0f00fad72321988507efbf1f70b173f0c19a533",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-tdf136721_letter_sized_paper.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/tdf136721_letter_sized_paper.xlsx",
+   "sha256": "42d2513d9cb37c6d154fccdcde4e59321eddc6934e6498690203af494fbd8a58",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-tdf148820.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/tdf148820.xlsx",
+   "sha256": "50566febc9332b5e4599d1f5fe392815fffdfccdf1a3df0717ee3fb606db48bc",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-tdf161365.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/tdf161365.xlsx",
+   "sha256": "5c5ec45c1dd5db0a911e74d0e7e6cde5bf713b5ef38fcf84483903ddad583957",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-tdf169379.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/tdf169379.xlsx",
+   "sha256": "0d837fde065d7e77ad6e76927b27626952552e5ec08146a0121a1a48bb00df99",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-tdf58243.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/tdf58243.xlsx",
+   "sha256": "442be369ae4f768d9fe50f02c1a4cd7ed51583f6b4fcc8aac7108e44e6859437",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-tdf79972.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/tdf79972.xlsx",
+   "sha256": "e77807c9124583284a4f08dab5cd6e68fd56f56bb3ce18e14feb73d40017361b",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-tdf83779.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/tdf83779.xlsx",
+   "sha256": "18fd8c72ff855decaa6d8101cc3cbd765e63a4ece1b1dc1443b664027eadbaa2",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-tdf91332.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/tdf91332.xlsx",
+   "sha256": "5d65bb68c1c82e70013245d1d133d9eb4034953f1a5a5bba99ea7b4cb1e89800",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/lo-twoCellAnchor_editAs_oneCell.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/LibreOffice/core/4cce0ff55763d4ddfaf4c96e5df8b7e7e92411f0/sc/qa/unit/data/xlsx/twoCellAnchor_editAs_oneCell.xlsx",
+   "sha256": "a0d66316612804fe0100f438a923f6f161110bc24967e9669e846f9531aba73c",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data"
+  },
+  {
+   "file": "external/xlsx/poi-47813.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/47813.xlsx",
+   "sha256": "24ee6b9018780f1159126e1c7ed7e987fbe719b91c0da9a7a23286aea1d391cd",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-49872.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/49872.xlsx",
+   "sha256": "e44c7518a4ad65bc1b30d22492c88aec0af2ef5cabd61978ed612e8420b03f91",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-50867_with_table.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/50867_with_table.xlsx",
+   "sha256": "142c5e3e48bde3adb5378f7c143b7374f24177d949b6117e4cbfd7ab1e7bae1a",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-51222.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/51222.xlsx",
+   "sha256": "46d53bfaed203e900bfcc734b3988c6136549e629a0ddcce9940d249877577e7",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-54436.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/54436.xlsx",
+   "sha256": "658dd3273ddb40f1984c38bd587973546b7adffaab1135c0c8bb47035bba0e52",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-55814.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/55814.xlsx",
+   "sha256": "95ecf8b64c84e749f29689e8bb72a2c8faf192932cd8e7bed294e2242d5fd217",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-55924.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/55924.xlsx",
+   "sha256": "25189a83c958e37c236cf4324705f2de965f3bded911794834027c2f9e1b3daa",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-56730.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/56730.xlsx",
+   "sha256": "18fafdf037da3cc9651bfbcbdf22d75d14e17db6abd0171630e9c72f6de79b45",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-57482-OnlyNumeric.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/57482-OnlyNumeric.xlsx",
+   "sha256": "c2e538a986540f9ebb3056284a04cd9e58403a1141be2d3ab195db50166fdec7",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-58315.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/58315.xlsx",
+   "sha256": "434fabc617abf29b62bfbc1634e9f5bb0e59658b996ef218f1a92ceee4d793a1",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-59106.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/59106.xlsx",
+   "sha256": "e89fb8a826a64aefd457b225d8fe875d26ecc5c08f979707cc7d7b92b4cac80d",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-61652.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/61652.xlsx",
+   "sha256": "187d6ca93dd8c063f7a15c5b4f62e368254a727b731faa9a844941dfa87d1dab",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-64450.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/64450.xlsx",
+   "sha256": "203eaf3275f3d4edaf000728defcece4bc44306852f27b59c9371e52d2338dec",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-65016.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/65016.xlsx",
+   "sha256": "c66bdc4ea8135da1b05679ec2814952d10a01e35756fc0e768bcb1a199f13b03",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-ExcelTables.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/ExcelTables.xlsx",
+   "sha256": "1e43011440eb39000d1751abaf9ded42d37b26f91b4f586a94bf91ce8ecbe9e5",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-Formatting.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/Formatting.xlsx",
+   "sha256": "5a0aa7c36c53b22cd26e3eeb2ee49bf16f7e4101aafa8b1503a0778f4010ddbc",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-SampleSS.strict.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/SampleSS.strict.xlsx",
+   "sha256": "cbfff2096b33055de1686ae99ff649f78f3cc97d7271c242840be6b40837f6e6",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-SampleSS.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/SampleSS.xlsx",
+   "sha256": "44f1b6ef310c370d4902ee3452e6174da25a67bdb09f47850d51b3287cb3db71",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-Themes.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/Themes.xlsx",
+   "sha256": "675234ce15443e36e8bb41869cfc700143b1ac7152ebb7531fc49a92789b3be4",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-Themes2.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/Themes2.xlsx",
+   "sha256": "f1c6597315e27b30cadcfa7bd4494a2a52e8a5a17a1a91dcc83fc29922d24c00",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-WidthsAndHeights.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/WidthsAndHeights.xlsx",
+   "sha256": "72a84c23b2939f31fa6357867e6b34d3454efb84c830739c10797f767de1007e",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-WithChart.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/WithChart.xlsx",
+   "sha256": "51f27aabf7417f5aaa0542857b6bb56a92d4afbabdc5c63f084c06f92b67429d",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-WithConditionalFormatting.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/WithConditionalFormatting.xlsx",
+   "sha256": "ead4aad13d2b975f795b50e7c8b7da443fb1525a8f9fa7347a5f09041a3ed426",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-WithDrawing.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/WithDrawing.xlsx",
+   "sha256": "97b1ab359d6aecbe37864f30c85106e386f0a19bea8f290103927362a2701066",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-bug62181.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/bug62181.xlsx",
+   "sha256": "f818f27a244f8527a055a56f7a8f838f517615aa6abca16f586d89bf70183a3a",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-comments.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/comments.xlsx",
+   "sha256": "6c0b2e28e42d80115d88ac70bf5a610a61bc325d5886a6689ddeee34eefe7a2d",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-sample-beta.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/sample-beta.xlsx",
+   "sha256": "c5c9700749e90709ed38841129ca6e31a9e3d5414f4b6ce5f163a30994e96e37",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-shared_formulas.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/shared_formulas.xlsx",
+   "sha256": "31612d513b5ea5aaa69764779f87ac52588687770f3ccbf4b420ec21bc70561f",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-stress002.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/integration/stress002.xlsx",
+   "sha256": "eb94a2e12821f8876d506b907f9f0230e3af1d6dfffe6e3af9748fd73fd4a838",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  },
+  {
+   "file": "external/xlsx/poi-styles.xlsx",
+   "format": "xlsx",
+   "url": "https://raw.githubusercontent.com/apache/poi/ebf602f1bc748f9ec9b29553070ff62170e3243b/test-data/spreadsheet/styles.xlsx",
+   "sha256": "4b544c197c391a8eb1711e9c6a962fd6371a96815dded21aa2461d71e27a046c",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data"
+  }
+ ],
+ "derived": [
+  {
+   "file": "pptx/read/external/lo-bnc870233_2.pptx.json",
+   "from": "external/pptx/lo-bnc870233_2.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-bnc910045.pptx.json",
+   "from": "external/pptx/lo-bnc910045.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-fill-color-list.pptx.json",
+   "from": "external/pptx/lo-fill-color-list.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-paraMarginAndIndentation.pptx.json",
+   "from": "external/pptx/lo-paraMarginAndIndentation.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-smartart-background-drawingml-fallback.pptx.json",
+   "from": "external/pptx/lo-smartart-background-drawingml-fallback.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-smartart-background.pptx.json",
+   "from": "external/pptx/lo-smartart-background.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-smartart-cnt.pptx.json",
+   "from": "external/pptx/lo-smartart-cnt.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-smartart-multidirectional.pptx.json",
+   "from": "external/pptx/lo-smartart-multidirectional.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-tdf100926_ODP.pptx.json",
+   "from": "external/pptx/lo-tdf100926_ODP.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-tdf103792.pptx.json",
+   "from": "external/pptx/lo-tdf103792.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-tdf112089.pptx.json",
+   "from": "external/pptx/lo-tdf112089.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-tdf113818-swivel.pptx.json",
+   "from": "external/pptx/lo-tdf113818-swivel.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-tdf125360_1.pptx.json",
+   "from": "external/pptx/lo-tdf125360_1.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-tdf132302_SmartArt_rightArrow.pptx.json",
+   "from": "external/pptx/lo-tdf132302_SmartArt_rightArrow.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-tdf141058-1.pptx.json",
+   "from": "external/pptx/lo-tdf141058-1.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-tdf142590.pptx.json",
+   "from": "external/pptx/lo-tdf142590.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-tdf142915.pptx.json",
+   "from": "external/pptx/lo-tdf142915.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-tdf143624.pptx.json",
+   "from": "external/pptx/lo-tdf143624.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-tdf152335.pptx.json",
+   "from": "external/pptx/lo-tdf152335.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/lo-tdf90626.pptx.json",
+   "from": "external/pptx/lo-tdf90626.pptx",
+   "licence": "MPL-2.0",
+   "source": "LibreOffice core test data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-51187.pptx.json",
+   "from": "external/pptx/poi-51187.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-60042.pptx.json",
+   "from": "external/pptx/poi-60042.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-SampleShow.pptx.json",
+   "from": "external/pptx/poi-SampleShow.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-SmartArt.pptx.json",
+   "from": "external/pptx/poi-SmartArt.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-alterman_security.pptx.json",
+   "from": "external/pptx/poi-alterman_security.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-aptia.pptx.json",
+   "from": "external/pptx/poi-aptia.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-backgrounds.pptx.json",
+   "from": "external/pptx/poi-backgrounds.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-bar-chart.pptx.json",
+   "from": "external/pptx/poi-bar-chart.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-bug60993.pptx.json",
+   "from": "external/pptx/poi-bug60993.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-bug64693.pptx.json",
+   "from": "external/pptx/poi-bug64693.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-bug65523.pptx.json",
+   "from": "external/pptx/poi-bug65523.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-bug68703.pptx.json",
+   "from": "external/pptx/poi-bug68703.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-chart-picture-bg.pptx.json",
+   "from": "external/pptx/poi-chart-picture-bg.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-crop-to-0.pptx.json",
+   "from": "external/pptx/poi-crop-to-0.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-hello-world-signed.pptx.json",
+   "from": "external/pptx/poi-hello-world-signed.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-hello-world-unsigned.pptx.json",
+   "from": "external/pptx/poi-hello-world-unsigned.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-highlight-test-case.pptx.json",
+   "from": "external/pptx/poi-highlight-test-case.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-layouts.pptx.json",
+   "from": "external/pptx/poi-layouts.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-ms-office-2010-signed.pptx.json",
+   "from": "external/pptx/poi-ms-office-2010-signed.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-pptx2svg.pptx.json",
+   "from": "external/pptx/poi-pptx2svg.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-radar-chart.pptx.json",
+   "from": "external/pptx/poi-radar-chart.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-sample.pptx.json",
+   "from": "external/pptx/poi-sample.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-scatter-chart.pptx.json",
+   "from": "external/pptx/poi-scatter-chart.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-shapes.pptx.json",
+   "from": "external/pptx/poi-shapes.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-smartart-simple.pptx.json",
+   "from": "external/pptx/poi-smartart-simple.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-stress021.pptx.json",
+   "from": "external/pptx/poi-stress021.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-table_test.pptx.json",
+   "from": "external/pptx/poi-table_test.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-themes.pptx.json",
+   "from": "external/pptx/poi-themes.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-tika-2605.pptx.json",
+   "from": "external/pptx/poi-tika-2605.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  },
+  {
+   "file": "pptx/read/external/poi-with_japanese.pptx.json",
+   "from": "external/pptx/poi-with_japanese.pptx",
+   "licence": "Apache-2.0",
+   "source": "Apache POI test-data",
+   "made_by": "python3 -I tools/make-fixtures.py --dump-pptx"
+  }
+ ],
+ "derived_note": "Committed files made from the downloaded ones: python-pptx dumps of each deck, text included, for the reader test. They carry the licence of the deck they come from.",
+ "skipped": [
+  {
+   "file": "poi-clusterfuzz-testcase-minimized-POIXWPFFuzzer-6120975439364096.docx",
+   "reason": "not a readable zip (BadZipFile)"
+  },
+  {
+   "file": "poi-clusterfuzz-testcase-minimized-POIXWPFFuzzer-6733884933668864.docx",
+   "reason": "not a readable zip (BadZipFile)"
+  },
+  {
+   "file": "poi-clusterfuzz-testcase-minimized-POIXSSFFuzzer-5185049589579776.xlsx",
+   "reason": "not a readable zip (BadZipFile)"
+  },
+  {
+   "file": "poi-45540_form_Footer.xlsx",
+   "reason": "email address in xl/sharedStrings.xml"
+  },
+  {
+   "file": "poi-crash-57308ca363f5b71763c489d1b432aff009d4bc4f.pptx",
+   "reason": "not a readable zip (BadZipFile)"
+  },
+  {
+   "file": "poi-45541_Footer.pptx",
+   "reason": "email address in docProps/custom.xml"
+  },
+  {
+   "file": "poi-clusterfuzz-testcase-minimized-POIXSLFFuzzer-6435650376957952.pptx",
+   "reason": "not a readable zip (BadZipFile)"
+  },
+  {
+   "file": "poi-clusterfuzz-testcase-minimized-POIXSLFFuzzer-6071540680032256.pptx",
+   "reason": "not a readable zip (BadZipFile)"
+  }
+ ]
+}

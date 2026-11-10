@@ -1,0 +1,633 @@
+{
+  "type": "GridState",
+  "format": {
+    "TYPENAME": "GridState"
+  },
+  "values": [
+    {
+      "sheets": [
+        {
+          "name": "Budget",
+          "color": "1D8A60",
+          "hidden": false,
+          "chart": false
+        },
+        {
+          "name": "Firings «Ü»",
+          "color": null,
+          "hidden": true,
+          "chart": true
+        }
+      ],
+      "active_sheet": 0,
+      "name_box": "G10",
+      "formula": "=SUM(G5:G9)",
+      "mode": "Edit",
+      "editor": {
+        "text": "=SUM(G5:G9)",
+        "start": 11,
+        "end": 11,
+        "refs": [
+          {
+            "start": 5,
+            "end": 10,
+            "color": "1D8A60"
+          }
+        ],
+        "completions": [
+          {
+            "label": "SUMIFS",
+            "kind": "Function",
+            "detail": "Adds the cells that meet several criteria.",
+            "syntax": "SUMIFS(sum_range, criteria_range1, criteria1, …)"
+          }
+        ],
+        "completion_index": 0,
+        "inline_completion": "na",
+        "hint": {
+          "function": "XLOOKUP",
+          "syntax": "XLOOKUP(lookup_value, lookup_array, return_array, …)",
+          "summary": "Looks up a value.",
+          "args": [
+            {
+              "name": "lookup_value",
+              "description": "What to find.",
+              "optional": false
+            }
+          ],
+          "current": 0,
+          "since": "365"
+        },
+        "rect": {
+          "x": 320.5,
+          "y": 250.0,
+          "width": 92.0,
+          "height": 28.0
+        },
+        "caret": {
+          "x": 400.0,
+          "y": 254.0,
+          "width": 1.5,
+          "height": 18.0
+        },
+        "pick_list": [
+          "apple",
+          "cherry"
+        ],
+        "formula_bar": false
+      },
+      "format": {
+        "font_family": "Calibri",
+        "font_size": 11.0,
+        "bold": true,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "font_color": "C00000",
+        "fill_color": null,
+        "h_align": "Right",
+        "v_align": "Bottom",
+        "wrap": false,
+        "merged": false,
+        "indent": 1,
+        "rotation": 45,
+        "number_format": "#,##0.00 \"£\"",
+        "number_format_name": "Custom"
+      },
+      "layout": {
+        "header_w": 44.0,
+        "header_h": 24.0,
+        "freeze_rows": 1,
+        "freeze_cols": 0,
+        "frozen_h": 20.0,
+        "frozen_w": 0.0,
+        "content_w": 1048576.0,
+        "content_h": 20971520.0,
+        "sheet_zoom": 1.25,
+        "split": false,
+        "rtl": false
+      },
+      "gridlines": true,
+      "headings": true,
+      "show_formulas": false,
+      "reveal": {
+        "seq": 7,
+        "x": 0.0,
+        "y": 1200.5
+      },
+      "copy_marked": true,
+      "multi": false,
+      "whole_rows": false,
+      "whole_columns": true,
+      "stats": {
+        "average": "£1,590.00",
+        "count": 5,
+        "numerical_count": 5,
+        "min": "£380.00",
+        "max": null,
+        "sum": "£7,950.00"
+      },
+      "names": [
+        "SalesTax",
+        "Q1_Total"
+      ],
+      "drawing": {
+        "index": 0,
+        "name": "Chart 1",
+        "x": 1008.5,
+        "y": 550.0,
+        "width": 400.0,
+        "height": 268.0,
+        "kind": "Chart",
+        "chart": {
+          "kind": null,
+          "style": null,
+          "color_set": 7,
+          "color_sets": [],
+          "title": null,
+          "legend": null,
+          "data_labels": null,
+          "elements": [],
+          "data_range": "",
+          "series": [],
+          "categories": [],
+          "has_cells": false,
+          "axes": [],
+          "blanks": "Gap",
+          "show_hidden": false,
+          "categories_range": "",
+          "chart_area": {
+            "fill": null,
+            "no_fill": false,
+            "line": null,
+            "no_line": false,
+            "line_width": 0.0,
+            "shadow": false,
+            "rounded": false
+          },
+          "plot_area": {
+            "fill": null,
+            "no_fill": false,
+            "line": null,
+            "no_line": false,
+            "line_width": 0.0,
+            "shadow": false,
+            "rounded": false
+          }
+        },
+        "object": null
+      },
+      "features": {
+        "filter": false,
+        "filtered": false,
+        "table": null,
+        "link": null,
+        "note": false,
+        "comment": false,
+        "any_comments": false,
+        "cards": [],
+        "prompt": null,
+        "alert": null,
+        "dropdown": false,
+        "calc": null,
+        "calc_pending": false,
+        "iterative": [
+          false,
+          0,
+          0.0
+        ],
+        "date1904": false,
+        "circular": [],
+        "arrows": false,
+        "circles": false,
+        "pages": 0,
+        "print_gridlines": false,
+        "print_headings": false,
+        "landscape": false,
+        "print_area": false,
+        "outline_symbols": false,
+        "lab": false,
+        "watches": [],
+        "message": null,
+        "cell_rect": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "analysis": {
+        "pivot": {
+          "name": "PivotTable1",
+          "source": "Sales!$A$1:$G$401",
+          "range": {
+            "r0": 0,
+            "c0": 0,
+            "r1": 12,
+            "c1": 3
+          },
+          "fields": [
+            {
+              "name": "Region",
+              "numeric": false,
+              "area": "Rows",
+              "values": 0,
+              "filtered": true,
+              "settings": {
+                "caption": "Area",
+                "subtotals": {
+                  "Custom": [
+                    "Max"
+                  ]
+                },
+                "sort": "Descending",
+                "sort_by_value": 0,
+                "hidden": [
+                  "(blank)"
+                ],
+                "label_filter": {
+                  "op": "BeginsWith",
+                  "value": "E",
+                  "value2": ""
+                },
+                "value_filter": {
+                  "value": 0,
+                  "top": [
+                    10,
+                    false
+                  ],
+                  "op": "GreaterThan",
+                  "a": 0.0,
+                  "b": 0.0
+                }
+              }
+            }
+          ],
+          "rows": [
+            0,
+            -1
+          ],
+          "cols": [
+            1
+          ],
+          "pages": [
+            [
+              2,
+              "Q1"
+            ]
+          ],
+          "values": [
+            {
+              "field": 4,
+              "name": "Sum of Units",
+              "function": "Sum",
+              "show_as": "PercentOfParentRow",
+              "base_field": 0,
+              "base_item": "(previous)",
+              "num_fmt": "0.0%"
+            }
+          ],
+          "options": {
+            "layout": "Tabular",
+            "subtotals": "Bottom",
+            "row_totals": true,
+            "col_totals": false,
+            "repeat_labels": true,
+            "blank_rows": false,
+            "empty_text": "0",
+            "style": "PivotStyleMedium9",
+            "row_headers": true,
+            "col_headers": true,
+            "row_stripes": true,
+            "col_stripes": false
+          },
+          "active_field": 0,
+          "active_value": null,
+          "on_value": true
+        },
+        "sparkline": {
+          "options": {
+            "kind": "Column",
+            "high": true,
+            "low": false,
+            "first": false,
+            "last": true,
+            "negative": true,
+            "markers": false,
+            "show_axis": true,
+            "line_weight": 0.75,
+            "empty": "Span",
+            "show_hidden": false,
+            "min": "Group",
+            "max": {
+              "Custom": 100.0
+            },
+            "right_to_left": false,
+            "colors": [
+              "376092",
+              "D00000"
+            ]
+          },
+          "data": "A2:E9",
+          "location": "F2:F9",
+          "count": 8
+        },
+        "goal_seek": {
+          "cell": "B5",
+          "found": true,
+          "target": "100",
+          "current": "100"
+        },
+        "flash": [
+          {
+            "row": 2,
+            "col": 3,
+            "text": "Ana",
+            "rect": [
+              120.0,
+              40.0,
+              64.0,
+              20.0
+            ]
+          }
+        ],
+        "flash_count": 9,
+        "sheet_protected": true,
+        "sheet_password": true,
+        "permissions": {
+          "select_locked": true,
+          "select_unlocked": true,
+          "format_cells": false,
+          "format_columns": false,
+          "format_rows": false,
+          "insert_columns": false,
+          "insert_rows": false,
+          "insert_hyperlinks": false,
+          "delete_columns": false,
+          "delete_rows": false,
+          "sort": true,
+          "auto_filter": false,
+          "pivot_tables": false,
+          "edit_objects": false,
+          "edit_scenarios": false
+        },
+        "workbook_protected": false,
+        "workbook_password": false,
+        "locked": true,
+        "alert": "The cell or chart you're trying to change is on a protected sheet.",
+        "alert_seq": 3,
+        "theme": "Kiln",
+        "placeholder": [
+          "PivotTable1",
+          [
+            44.0,
+            64.0,
+            192.0,
+            360.0
+          ]
+        ]
+      },
+      "home": {
+        "pen": {
+          "mode": "Grid",
+          "style": "Dashed",
+          "color": "C8352B"
+        },
+        "auto_fill": {
+          "x": 320.0,
+          "y": 188.5,
+          "choices": [
+            {
+              "Fill": "Copy"
+            },
+            {
+              "Fill": "Series"
+            },
+            "FlashFill"
+          ],
+          "current": {
+            "Fill": "Series"
+          }
+        },
+        "pen_preview": {
+          "r0": 1,
+          "c0": 1,
+          "r1": 4,
+          "c1": 3
+        },
+        "series_columns": true
+      },
+      "surface": {
+        "select_mode": "Add",
+        "drag": {
+          "target": "D4:E9",
+          "occupied": true,
+          "copy": false,
+          "insert": "Rows"
+        },
+        "error": {
+          "rule": "ErrorValue",
+          "error": "#DIV/0!",
+          "title": "Divide by Zero Error",
+          "help": "The formula or function divides by zero or by an empty cell."
+        }
+      }
+    },
+    {
+      "sheets": [],
+      "active_sheet": 0,
+      "name_box": "",
+      "formula": "",
+      "mode": "Ready",
+      "editor": null,
+      "format": {
+        "font_family": "",
+        "font_size": 0.0,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "font_color": null,
+        "fill_color": null,
+        "h_align": "General",
+        "v_align": "Top",
+        "wrap": false,
+        "merged": false,
+        "indent": 0,
+        "rotation": 0,
+        "number_format": "",
+        "number_format_name": ""
+      },
+      "layout": {
+        "header_w": 0.0,
+        "header_h": 0.0,
+        "freeze_rows": 0,
+        "freeze_cols": 0,
+        "frozen_h": 0.0,
+        "frozen_w": 0.0,
+        "content_w": 0.0,
+        "content_h": 0.0,
+        "sheet_zoom": 0.0,
+        "split": false,
+        "rtl": false
+      },
+      "gridlines": false,
+      "headings": false,
+      "show_formulas": false,
+      "reveal": null,
+      "copy_marked": false,
+      "multi": false,
+      "whole_rows": false,
+      "whole_columns": false,
+      "stats": null,
+      "names": [],
+      "drawing": null,
+      "features": {
+        "filter": false,
+        "filtered": false,
+        "table": {
+          "name": "",
+          "range": {
+            "r0": 0,
+            "c0": 0,
+            "r1": 0,
+            "c1": 0
+          },
+          "reference": "",
+          "style": "",
+          "options": {
+            "header_row": false,
+            "total_row": false,
+            "banded_rows": false,
+            "banded_columns": false,
+            "first_column": false,
+            "last_column": false,
+            "filter_button": false
+          },
+          "columns": [
+            {
+              "name": "",
+              "totals": "None",
+              "formula": ""
+            }
+          ],
+          "column": 0
+        },
+        "link": {
+          "target": "",
+          "location": "",
+          "display": "",
+          "tooltip": ""
+        },
+        "note": false,
+        "comment": false,
+        "any_comments": false,
+        "cards": [
+          {
+            "row": 0,
+            "col": 0,
+            "author": "",
+            "text": "",
+            "x": 0.0,
+            "y": 0.0,
+            "thread": false,
+            "replies": 0
+          }
+        ],
+        "prompt": [
+          "",
+          ""
+        ],
+        "alert": [
+          "Stop",
+          "",
+          ""
+        ],
+        "dropdown": false,
+        "calc": "Automatic",
+        "calc_pending": false,
+        "iterative": [
+          false,
+          0,
+          0.0
+        ],
+        "date1904": false,
+        "circular": [
+          ""
+        ],
+        "arrows": false,
+        "circles": false,
+        "pages": 0,
+        "print_gridlines": false,
+        "print_headings": false,
+        "landscape": false,
+        "print_area": false,
+        "outline_symbols": false,
+        "lab": false,
+        "watches": [
+          {
+            "sheet": "",
+            "cell": "",
+            "sheet_index": 0,
+            "row": 0,
+            "col": 0,
+            "name": "",
+            "value": "",
+            "formula": ""
+          }
+        ],
+        "message": "",
+        "cell_rect": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "analysis": {
+        "pivot": null,
+        "sparkline": null,
+        "goal_seek": null,
+        "flash": [],
+        "flash_count": 0,
+        "sheet_protected": false,
+        "sheet_password": false,
+        "permissions": {
+          "select_locked": false,
+          "select_unlocked": false,
+          "format_cells": false,
+          "format_columns": false,
+          "format_rows": false,
+          "insert_columns": false,
+          "insert_rows": false,
+          "insert_hyperlinks": false,
+          "delete_columns": false,
+          "delete_rows": false,
+          "sort": false,
+          "auto_filter": false,
+          "pivot_tables": false,
+          "edit_objects": false,
+          "edit_scenarios": false
+        },
+        "workbook_protected": false,
+        "workbook_password": false,
+        "locked": false,
+        "alert": null,
+        "alert_seq": 0,
+        "theme": "",
+        "placeholder": null
+      },
+      "home": {
+        "pen": null,
+        "auto_fill": null,
+        "pen_preview": null,
+        "series_columns": false
+      },
+      "surface": {
+        "select_mode": "Normal",
+        "drag": null,
+        "error": null
+      }
+    }
+  ]
+}

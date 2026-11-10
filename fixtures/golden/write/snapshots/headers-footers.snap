@@ -1,0 +1,10 @@
+---
+source: crates/kiln-doc-layout/tests/fixtures.rs
+expression: summary(&l)
+---
+pages: 5
+  1 [s1 #1] Eiusmod … dolor (534 words)
+  2 [s1 #2] velit … lorem. (516 words)
+  3 [s1 #3] Et … ipsum (528 words)
+  4 [s1 #4] nisi … eiusmod (505 words)
+  5 [s1 #5] commodo … anim. (17 words)

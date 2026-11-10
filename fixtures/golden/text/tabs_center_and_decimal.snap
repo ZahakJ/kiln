@@ -1,0 +1,5 @@
+---
+source: crates/kiln-text/tests/layout_snapshots.rs
+---
+lines 1 | glyphs 39 | height 14.9 | rtl false
+ 0 end       g=39  x=0       w=318.54  top=0       h=14.9   base=12.07   |Item→Centred→1234.56|

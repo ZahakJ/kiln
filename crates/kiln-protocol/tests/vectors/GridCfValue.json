@@ -1,0 +1,18 @@
+{
+  "type": "GridCfValue",
+  "format": {
+    "TYPENAME": "GridCfValue"
+  },
+  "values": [
+    {
+      "kind": "Percentile",
+      "value": "50",
+      "gte": false
+    },
+    {
+      "kind": "Min",
+      "value": "",
+      "gte": false
+    }
+  ]
+}

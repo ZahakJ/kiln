@@ -1,0 +1,10 @@
+{
+  "type": "ImageId",
+  "format": {
+    "TYPENAME": "ImageId"
+  },
+  "values": [
+    7,
+    7
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "type": "VersionSlide",
+  "format": {
+    "TYPENAME": "VersionSlide"
+  },
+  "values": [
+    {
+      "slide": 3,
+      "mark": "Changed"
+    },
+    {
+      "slide": 0,
+      "mark": "Same"
+    }
+  ]
+}

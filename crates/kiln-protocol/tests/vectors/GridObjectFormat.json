@@ -1,0 +1,45 @@
+{
+  "type": "GridObjectFormat",
+  "format": {
+    "TYPENAME": "GridObjectFormat"
+  },
+  "values": [
+    {
+      "name": null,
+      "alt_text": null,
+      "width": 240.0,
+      "height": null,
+      "lock_aspect": true,
+      "crop": [
+        10.0,
+        0.0,
+        5.0,
+        0.0
+      ],
+      "placement": null,
+      "preset": null,
+      "fill": "scheme:accent1",
+      "line": null,
+      "line_width": null,
+      "text": "Kiln",
+      "text_color": null,
+      "text_size": null
+    },
+    {
+      "name": null,
+      "alt_text": null,
+      "width": null,
+      "height": null,
+      "lock_aspect": null,
+      "crop": null,
+      "placement": null,
+      "preset": null,
+      "fill": null,
+      "line": null,
+      "line_width": null,
+      "text": null,
+      "text_color": null,
+      "text_size": null
+    }
+  ]
+}

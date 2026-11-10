@@ -1,0 +1,4 @@
+Document properties
+
+Core properties are set; custom properties are added below.
+

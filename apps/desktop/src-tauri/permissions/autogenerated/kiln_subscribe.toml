@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-kiln-subscribe"
+description = "Enables the kiln_subscribe command without any pre-configured scope."
+commands.allow = ["kiln_subscribe"]
+
+[[permission]]
+identifier = "deny-kiln-subscribe"
+description = "Denies the kiln_subscribe command without any pre-configured scope."
+commands.deny = ["kiln_subscribe"]

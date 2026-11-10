@@ -1,0 +1,18 @@
+{
+  "type": "GridPageLine",
+  "format": {
+    "TYPENAME": "GridPageLine"
+  },
+  "values": [
+    {
+      "index": 0,
+      "at": 0.0,
+      "size": 20.0
+    },
+    {
+      "index": 0,
+      "at": 0.0,
+      "size": 0.0
+    }
+  ]
+}

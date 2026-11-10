@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-kiln-share"
+description = "Enables the kiln_share command without any pre-configured scope."
+commands.allow = ["kiln_share"]
+
+[[permission]]
+identifier = "deny-kiln-share"
+description = "Denies the kiln_share command without any pre-configured scope."
+commands.deny = ["kiln_share"]

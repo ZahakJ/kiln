@@ -1,0 +1,40 @@
+.kiln-keytips {
+  position: fixed;
+  inset: 0;
+  z-index: var(--kiln-z-tooltip);
+  pointer-events: none;
+}
+.kiln-keytip {
+  position: fixed;
+  transform: translate(-50%, -30%);
+  min-width: 16px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: var(--kiln-bg-tooltip);
+  color: var(--kiln-fg-tooltip);
+  box-shadow: var(--kiln-shadow-1);
+  font-family: var(--kiln-font-ui);
+  font-size: var(--kiln-text-xs);
+  font-weight: var(--kiln-weight-semibold);
+  line-height: 14px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  animation: kiln-keytip-in 90ms var(--kiln-ease-out);
+}
+.kiln-keytip[data-disabled] {
+  opacity: 0.55;
+}
+.kiln-keytip__typed {
+  opacity: 0.45;
+}
+@keyframes kiln-keytip-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kiln-keytip {
+    animation: none;
+  }
+}

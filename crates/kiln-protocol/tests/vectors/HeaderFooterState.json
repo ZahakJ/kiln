@@ -1,0 +1,22 @@
+{
+  "type": "HeaderFooterState",
+  "format": {
+    "TYPENAME": "HeaderFooterState"
+  },
+  "values": [
+    {
+      "different_first": true,
+      "different_odd_even": false,
+      "linked": false,
+      "has_previous": true,
+      "label": "First Page Header -Section 2-"
+    },
+    {
+      "different_first": false,
+      "different_odd_even": false,
+      "linked": false,
+      "has_previous": false,
+      "label": ""
+    }
+  ]
+}

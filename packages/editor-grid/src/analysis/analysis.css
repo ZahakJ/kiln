@@ -1,0 +1,357 @@
+/* Kiln Grid analysis features: the PivotTable Fields pane, field menus, the empty
+   PivotTable's prompt, Flash Fill's suggestions and the analysis dialogs. Brand tokens only, so
+   light, dark and high contrast follow the chrome. */
+
+.kiln-gan__layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.kiln-gan__layer > * {
+  pointer-events: auto;
+}
+
+/* The empty PivotTable's prompt, inside its placeholder. */
+.kiln-gan__placeholder {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  box-sizing: border-box;
+  border: 1px dashed var(--kiln-line-strong, var(--kiln-line));
+  border-radius: 4px;
+  background: var(--kiln-raised);
+  color: var(--kiln-fg-muted);
+  font: inherit;
+  font-size: var(--kiln-text-sm, 12px);
+  text-align: center;
+  cursor: pointer;
+}
+
+.kiln-gan__placeholder strong {
+  color: var(--kiln-fg);
+  font-family: var(--kiln-font-display, var(--kiln-font-ui));
+  font-size: var(--kiln-text-md, 14px);
+  font-weight: var(--kiln-weight-semibold, 600);
+}
+
+/* Flash Fill's suggestions, greyed in their cells. */
+.kiln-gan__ghost {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 0 4px;
+  overflow: hidden;
+  color: var(--kiln-fg-muted);
+  font-size: 13px;
+  line-height: 20px;
+  white-space: nowrap;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.kiln-gan__flash-tip {
+  position: absolute;
+  padding: 4px 8px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-sm, 6px);
+  background: var(--kiln-raised);
+  box-shadow: var(--kiln-shadow-1);
+  color: var(--kiln-fg);
+  font-size: var(--kiln-text-xs, 11px);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* The PivotTable Fields pane. */
+.kiln-gan__pane {
+  flex-basis: 300px;
+}
+
+/* The body scrolls when the pane is short (a phone): its parts keep their heights. */
+.kiln-gan__pane .kiln-gpane__body > * {
+  flex-shrink: 0;
+}
+
+.kiln-gan__fields {
+  max-height: 220px;
+  margin: 0;
+  padding: 4px 0;
+  overflow-y: auto;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-sm, 6px);
+  background: var(--kiln-page);
+  list-style: none;
+}
+
+.kiln-gan__field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  cursor: grab;
+}
+
+.kiln-gan__field:hover {
+  background: var(--kiln-bg-hover);
+}
+
+.kiln-gan__field label {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.kiln-gan__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kiln-gan__name--filtered::after {
+  content: " ⏷";
+  color: var(--kiln-grid-text, var(--kiln-fg));
+}
+
+.kiln-gan__grip {
+  color: var(--kiln-fg-muted);
+  opacity: 0.6;
+}
+
+.kiln-gan__areas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.kiln-gan__area {
+  display: flex;
+  flex-direction: column;
+  min-height: 96px;
+  padding: 6px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-sm, 6px);
+  background: var(--kiln-page);
+}
+
+.kiln-gan__area--over {
+  border-color: var(--kiln-grid-fill, var(--kiln-line-strong));
+  background: var(--kiln-grid-tint, var(--kiln-bg-hover));
+}
+
+.kiln-gan__area h3 {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 4px;
+  color: var(--kiln-fg-muted);
+  font-size: var(--kiln-text-xs, 11px);
+  font-weight: var(--kiln-weight-semibold, 600);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.kiln-gan__area ul {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kiln-gan__chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  width: 100%;
+  min-height: 24px;
+  padding: 2px 6px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 6px;
+  background: var(--kiln-raised);
+  color: var(--kiln-fg);
+  font: inherit;
+  font-size: var(--kiln-text-sm, 12px);
+  text-align: start;
+  cursor: grab;
+}
+
+.kiln-gan__chip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kiln-gan__chip:hover,
+.kiln-gan__chip:focus-visible {
+  border-color: var(--kiln-grid-fill, var(--kiln-line-strong));
+}
+
+.kiln-gan__insert {
+  display: block;
+  height: 2px;
+  margin: 1px 0;
+  border-radius: 1px;
+  background: var(--kiln-grid-fill, var(--kiln-fg));
+}
+
+/* Menus: a field's in the pane, a field button's on the sheet. */
+.kiln-gan__menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+}
+
+.kiln-gan__menu,
+.kiln-gan__fmenu {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  padding: 4px;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-md, 10px);
+  background: var(--kiln-raised);
+  box-shadow: var(--kiln-shadow-2);
+  color: var(--kiln-fg);
+  font-size: var(--kiln-text-sm, 12px);
+}
+
+.kiln-gan__menu button,
+.kiln-gan__mitem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.kiln-gan__menu button:hover:not(:disabled),
+.kiln-gan__menu button:focus-visible,
+.kiln-gan__mitem:hover,
+.kiln-gan__mitem:focus-visible {
+  background: var(--kiln-bg-hover);
+}
+
+.kiln-gan__menu button:disabled {
+  color: var(--kiln-fg-muted);
+  cursor: default;
+  opacity: 0.6;
+}
+
+.kiln-gan__menu hr,
+.kiln-gan__fmenu hr {
+  width: 100%;
+  margin: 4px 0;
+  border: 0;
+  border-top: 1px solid var(--kiln-line);
+}
+
+.kiln-gan__fmenu {
+  gap: 4px;
+  width: 260px;
+  padding: 8px;
+}
+
+.kiln-gan__select {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 4px 6px;
+}
+
+.kiln-gan__fmenu-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.kiln-gan__items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 180px;
+  padding: 6px 8px;
+  overflow-y: auto;
+  border: 1px solid var(--kiln-line);
+  border-radius: var(--kiln-radius-sm, 6px);
+  background: var(--kiln-page);
+}
+
+.kiln-gan__items--menu {
+  max-height: 200px;
+}
+
+/* Dialogs. */
+.kiln-gan__tab {
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  color: var(--kiln-fg-muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.kiln-gan__tab--on {
+  border-color: var(--kiln-line);
+  background: var(--kiln-page);
+  color: var(--kiln-fg);
+  font-weight: var(--kiln-weight-semibold, 600);
+}
+
+.kiln-gan__list {
+  max-height: 210px;
+}
+
+.kiln-gan__cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 20px;
+}
+
+.kiln-gan__checks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px 12px;
+}
+
+.kiln-gan__status {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  margin: 0;
+}
+
+.kiln-gan__status dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  .kiln-gan__cols,
+  .kiln-gan__checks {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .kiln-gan__fmenu {
+    max-width: calc(100vw - 16px);
+  }
+}

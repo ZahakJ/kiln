@@ -1,0 +1,23 @@
+{
+  "type": "GridLineStyle",
+  "format": {
+    "TYPENAME": "GridLineStyle"
+  },
+  "values": [
+    "Thin",
+    "SlantDashDot",
+    "None",
+    "Thin",
+    "Medium",
+    "Thick",
+    "Double",
+    "Dotted",
+    "Dashed",
+    "Hair",
+    "MediumDashed",
+    "DashDot",
+    "MediumDashDot",
+    "DashDotDot",
+    "MediumDashDotDot"
+  ]
+}

@@ -1,0 +1,89 @@
+/* The empty canvas of each app until its editor mounts (mockups: the page on the ember glow). */
+
+.kiln-slot {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100%;
+  padding: 24px 24px 48px;
+}
+.kiln-slot__page {
+  width: min(720px, 100%);
+  aspect-ratio: 210 / 297;
+  border-radius: 2px;
+  background: var(--kiln-page);
+  box-shadow: var(--kiln-shadow-page);
+}
+[data-theme="dark"] .kiln-slot__page {
+  box-shadow:
+    0 40px 120px -30px rgb(255 106 38 / 0.3),
+    0 0 0 1px rgb(255 255 255 / 0.04),
+    0 2px 12px rgb(0 0 0 / 0.5);
+}
+.kiln-slot--grid,
+.kiln-slot--deck {
+  padding: 0;
+  align-items: stretch;
+}
+.kiln-slot__sheet {
+  flex: 1;
+  border: 1px solid var(--kiln-line);
+  border-radius: 14px 14px 0 0;
+  background-color: var(--kiln-page);
+  background-image:
+    linear-gradient(var(--kiln-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--kiln-line) 1px, transparent 1px);
+  background-size: 100px 28px;
+  background-position: 46px 30px;
+}
+.kiln-slot--deck {
+  align-items: center;
+  padding: 24px;
+}
+.kiln-slot__slide {
+  width: min(880px, 100%);
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  background: var(--kiln-page);
+  box-shadow: var(--kiln-shadow-page);
+}
+.kiln-slot {
+  position: relative;
+}
+.kiln-slot[data-problem] > :not(.kiln-slot__problem) {
+  opacity: 0.55;
+}
+.kiln-slot__problem {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+}
+
+/* File Conversion (plain text files). */
+.kiln-file-conversion {
+  display: grid;
+  gap: 6px;
+}
+.kiln-file-conversion select {
+  width: 100%;
+  border: 1px solid var(--kiln-line);
+  background: var(--kiln-page);
+  color: inherit;
+  font: inherit;
+}
+.kiln-file-conversion__preview {
+  margin: 0;
+  height: 160px;
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid var(--kiln-line);
+  background: var(--kiln-page);
+  white-space: pre-wrap;
+  font: inherit;
+}
+.kiln-file-conversion__lost {
+  font-size: 1.25em;
+  letter-spacing: 0.2em;
+  overflow-wrap: anywhere;
+}

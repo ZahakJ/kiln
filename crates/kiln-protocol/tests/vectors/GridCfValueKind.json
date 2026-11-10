@@ -1,0 +1,15 @@
+{
+  "type": "GridCfValueKind",
+  "format": {
+    "TYPENAME": "GridCfValueKind"
+  },
+  "values": [
+    "Min",
+    "Formula",
+    "Min",
+    "Max",
+    "Number",
+    "Percent",
+    "Percentile"
+  ]
+}

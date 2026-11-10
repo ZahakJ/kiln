@@ -1,0 +1,32 @@
+{
+  "type": "GridAutoFillOptions",
+  "format": {
+    "TYPENAME": "GridAutoFillOptions"
+  },
+  "values": [
+    {
+      "x": 320.0,
+      "y": 188.5,
+      "choices": [
+        {
+          "Fill": "Copy"
+        },
+        {
+          "Fill": "Series"
+        },
+        "FlashFill"
+      ],
+      "current": {
+        "Fill": "Series"
+      }
+    },
+    {
+      "x": 0.0,
+      "y": 0.0,
+      "choices": [],
+      "current": {
+        "Fill": "Auto"
+      }
+    }
+  ]
+}

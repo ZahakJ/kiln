@@ -1,0 +1,23 @@
+{
+  "name": "@kiln/e2e",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Kiln end-to-end tests (Playwright, Chromium headless) with reviewed screenshots, and the desktop smoke test (tauri-driver).",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "scripts": {
+    "e2e": "node run.mjs",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "tauri-smoke": "node tauri/smoke.ts"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "catalog:",
+    "@biomejs/biome": "catalog:",
+    "@playwright/test": "catalog:",
+    "@types/node": "catalog:",
+    "lighthouse": "catalog:",
+    "pixelmatch": "catalog:",
+    "typescript": "catalog:"
+  }
+}
