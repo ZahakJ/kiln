@@ -50,7 +50,7 @@ catalog:
   vite-plugin-pwa: 2.0.0
   workbox-window: 7.4.1
   # Data and i18n
-  i18next: 26.4.6
+  i18next: 27.0.1
   react-i18next: 17.0.18
   # ICU message format for i18next (MIT; intl-messageformat BSD-3-Clause)
   i18next-icu: 2.5.0
