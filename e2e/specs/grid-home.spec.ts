@@ -7,7 +7,6 @@
  * Excel names. Keys are typed with `page.keyboard`, results are read from the core, and the keys
  * must come back to the sheet after every dialog and menu.
  */
-import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { expect, type Page, test } from '@playwright/test';
 import {
@@ -27,6 +26,7 @@ import {
   value,
   values,
 } from './grid-helpers.ts';
+import { zipEntry } from './zip.ts';
 
 interface Home {
   pen: { mode: string; style: string; color: string | null } | null;
@@ -240,7 +240,7 @@ test.describe('grid home', () => {
     const dir = repo('target/scratch/e2e');
     mkdirSync(dir, { recursive: true });
     writeFileSync(`${dir}/rich-text.xlsx`, saved);
-    const strings = execFileSync('unzip', ['-p', `${dir}/rich-text.xlsx`, 'xl/sharedStrings.xml']).toString();
+    const strings = zipEntry(Buffer.from(saved), 'xl/sharedStrings.xml').toString();
     expect(strings).toMatch(/<r><rPr><b\/>.*?<\/rPr><t[^>]*>Grid<\/t><\/r>/);
     expect(strings).toMatch(/<t xml:space="preserve">Kiln <\/t>|<t>Kiln <\/t>/);
   });

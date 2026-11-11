@@ -937,6 +937,9 @@ test.describe('Kiln Write gate', () => {
   // paragraph styled Heading 1, a comment on it, a table row), saves and reopens with them.
   for (const name of readdirSync(repo('fixtures/docx/features')).filter((f) => f.endsWith('.docx'))) {
     test(`office file loop: ${name} opens, is edited, saves and reopens`, async ({ page }) => {
+      // The search for the first table's last cell visits every paragraph, one query each: the
+      // large table's file takes about two minutes here and over two and a half on a CI runner.
+      if (name === 'large-table.docx') test.slow();
       await openFile(page, { name, buffer: readFileSync(repo(`fixtures/docx/features/${name}`)) });
       await clearSaved(page);
       const before = await paragraphs(page);

@@ -57,17 +57,19 @@ function Frame({
 }) {
   const features = featuresOf(model);
   const notice = useWrite(model, (s) => s.notice);
-  const close = () => {
-    features.closeDialog();
-    // Back to the page, as in Word: typing goes on where the dialog was opened.
-    setTimeout(() => model.controller?.focus(), 0);
-  };
+  const close = () => features.closeDialog();
   return (
     <Dialog open onOpenChange={(o) => (o ? undefined : close())}>
       <DialogContent
         title={title}
         size={size}
         data-testid={testId}
+        // Back to the page, as in Word: typing goes on where the dialog was opened. Done as the
+        // dialog lets go of the focus, not on a timer that a slower machine can run too early.
+        onCloseAutoFocus={(e) => {
+          e.preventDefault();
+          model.controller?.focus();
+        }}
         footer={
           <>
             <Button onClick={close}>{t('Cancel')}</Button>

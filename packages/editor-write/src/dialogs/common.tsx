@@ -132,6 +132,13 @@ export function WriteDialogFrame({
         title={title}
         size={size ?? 'md'}
         data-testid={testId}
+        // Back to the page, as in Word. Done as the dialog lets go of the focus: before that its
+        // focus trap keeps it, and after it the dialog would give it to the ribbon button that
+        // opened it, which on a slower machine came after the editor had taken it.
+        onCloseAutoFocus={(e) => {
+          e.preventDefault();
+          model.controller?.focus();
+        }}
         footerStart={footerStart}
         footer={
           onOk ? (
