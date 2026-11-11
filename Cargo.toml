@@ -119,7 +119,7 @@ usvg = "=0.48.1"
 
 # --- File formats ---
 quick-xml = "=0.42.0"
-zip = { version = "=9.0.3", default-features = false }
+zip = { version = "=9.0.5", default-features = false }
 encoding_rs = "=0.8.42"
 csv = "=1.4.0"
 krilla = "=0.8.2"
