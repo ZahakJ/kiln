@@ -263,11 +263,13 @@ jobs:
       RUSTC_WRAPPER: ''
     steps:
       - uses: actions/checkout@v7
-      # poppler-utils: the print tests read the PDF; a C toolchain for the relay's build.
+      # poppler-utils: the print tests read the PDF; a C toolchain for the relay's build;
+      # python3-venv: tools/make-fixtures.py makes the large Write, Grid and Deck fixtures of the
+      # budgets in a virtualenv of its own (the image has no ensurepip).
       - name: Tools the tests use
         run: |
           apt-get update
-          apt-get install -y --no-install-recommends poppler-utils build-essential pkg-config
+          apt-get install -y --no-install-recommends poppler-utils build-essential pkg-config python3-venv
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:

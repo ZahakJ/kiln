@@ -519,13 +519,15 @@ test('a file shared to a window with unsaved work opens there, and the work stay
   // The browser may ask before the navigation starts; the worker then ends it.
   page.on('dialog', (d) => void d.accept());
   await submitShare(page, 'Shared list.csv', 'Name,Kiln\nAda,1\n');
+  // Playwright still counts the navigation the worker ended as pending, so its locators can wait
+  // for ever from here: the page is read directly.
   await expect(page).toHaveURL(/#\/grid\?doc=/, { timeout: CORE_START });
-  await expect(page.getByTestId('document-title')).toContainText('Shared list', { timeout: CORE_START });
+  const title = () =>
+    page.evaluate(() => document.querySelector('[data-testid="document-title"]')?.textContent ?? '');
+  await expect.poll(title, { timeout: CORE_START }).toContain('Shared list');
   expect(await page.evaluate(() => (window as unknown as { __sameWindow?: boolean }).__sameWindow)).toBe(
     true,
   );
-  // Playwright still counts the navigation the worker ended as pending, so its locators wait for
-  // ever from here: the page is read directly.
   await page.evaluate(() => history.back());
   await expect
     .poll(() => page.evaluate(() => document.querySelector('[data-testid="document-title"]')?.textContent), {
