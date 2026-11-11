@@ -99,6 +99,11 @@ export interface AppFrameProps {
    * and Kiln Home shows). Without it the app bar has no Back button.
    */
   onBack?: () => void;
+  /**
+   * The app mark at the start of the title bar becomes a button to Kiln Home (the web build: the
+   * document stays open in the tab). Without it the mark is a picture.
+   */
+  onHome?: () => void;
   /** Phones: the app's entries in the app bar's overflow menu (Write's Print layout). */
   phoneMenu?: readonly MenuEntry[];
   /** Phones: Share ▸ send or download a copy of the document. */
@@ -170,6 +175,7 @@ function AppFrameInner({
   onExecuted,
   textView,
   onBack,
+  onHome,
   phoneMenu,
   shareCopy,
   children,
@@ -506,12 +512,30 @@ function AppFrameInner({
       ) : (
         <header className="kiln-titlebar">
           <div className="kiln-titlebar__start">
-            <span className="kiln-titlebar__brand">
-              <AppMark app={app} size={20} label={appName} />
-              <span className="kiln-titlebar__appname" aria-hidden="true">
-                {APP_SHORT_NAMES[app]}
+            {onHome ? (
+              <span className="kiln-titlebar__brand">
+                <button
+                  type="button"
+                  className="kiln-titlebar__home"
+                  aria-label={t('Kiln Home')}
+                  title={t('Kiln Home')}
+                  data-testid="titlebar-home"
+                  onClick={onHome}
+                >
+                  <AppMark app={app} size={20} label="" />
+                </button>
+                <span className="kiln-titlebar__appname" aria-hidden="true">
+                  {APP_SHORT_NAMES[app]}
+                </span>
               </span>
-            </span>
+            ) : (
+              <span className="kiln-titlebar__brand">
+                <AppMark app={app} size={20} label={appName} />
+                <span className="kiln-titlebar__appname" aria-hidden="true">
+                  {APP_SHORT_NAMES[app]}
+                </span>
+              </span>
+            )}
             <TitleBarCommand command="suite.file.save" icon={Save} label={t('Save')} keyTip="3" />
             <TitleBarCommand command="suite.edit.undo" icon={Undo2} label={t('Undo')} keyTip="1" />
             <TitleBarCommand command="suite.edit.redo" icon={Redo2} label={t('Redo')} keyTip="2" />

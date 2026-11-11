@@ -96,6 +96,36 @@ export function appHash(app: AppId, doc?: number | null): string {
   return doc ? `#/${app}?doc=${doc}` : `#/${app}`;
 }
 
+/**
+ * The frames that created their document and then took its address (`#/write?new=…` becomes
+ * `#/write?doc=N`): the frame keeps its key, so the window does not open the document again.
+ */
+const adopted = new Map<string, string>();
+
+function frameKey(route: Extract<Route, { kind: 'app' }>): string {
+  const own = `${route.app}:${route.doc ?? route.share?.room ?? route.template ?? 'new'}:${route.nonce ?? ''}`;
+  return (route.doc !== null && adopted.get(`${route.app}:${route.doc}`)) || own;
+}
+
+/**
+ * Gives a new document's frame the document's own address, in place (Back and Forward, and Kiln
+ * Home's Open in this window, then come back to this document, not to another new one). The
+ * address keeps its other parameters.
+ */
+export function adoptAddress(app: AppId, doc: number): void {
+  const route = parseRoute(window.location.hash);
+  // A shared document keeps its link (`doc` is the room there), which opens it again on a reload.
+  if (route.kind !== 'app' || route.app !== app || route.doc !== null || route.share) return;
+  const [path, query = ''] = window.location.hash.split('?');
+  const params = new URLSearchParams(query);
+  params.delete('new');
+  params.delete('template');
+  params.delete('doc');
+  const rest = params.toString();
+  adopted.set(`${app}:${doc}`, frameKey(route));
+  window.history.replaceState(window.history.state, '', `${path}?doc=${doc}${rest ? `&${rest}` : ''}`);
+}
+
 function subscribeHash(onChange: () => void) {
   window.addEventListener('hashchange', onChange);
   return () => window.removeEventListener('hashchange', onChange);
@@ -160,7 +190,7 @@ export function App() {
         <LoadBoundary app={app} hash={hash}>
           <Suspense fallback={null}>
             <AppFrameRoute
-              key={`${route.app}:${route.doc ?? route.share?.room ?? route.template ?? 'new'}:${route.nonce ?? ''}`}
+              key={frameKey(route)}
               app={route.app}
               doc={route.doc}
               template={route.template}

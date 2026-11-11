@@ -8,7 +8,7 @@
  * banner, the tour, the shared documents).
  */
 
-import { type HomeApp, type HomeStorage, KilnHome, kindApp } from '@kiln/home';
+import { type HomeApp, type HomeOpenDocument, type HomeStorage, KilnHome, kindApp } from '@kiln/home';
 import { t } from '@kiln/i18n';
 import { isTauri, type KilnClient, KilnError, type RecentFile } from '@kiln/protocol';
 import {
@@ -56,6 +56,7 @@ function HomeScreen({ prefs }: { prefs: UiPrefs }) {
   const [storage, setStorage] = useState<HomeStorage | null>(null);
   const [dismissed, setDismissed] = useState(prefs.switcherDismissed);
   const [shared, setShared] = useState<SharedRoom[]>([]);
+  const [openDocs, setOpenDocs] = useState<HomeOpenDocument[]>([]);
   // The welcome tour shows once, on the first visit (or again from the banner's button).
   const [tour, setTour] = useState(!prefs.tourSeen);
   const [view, setView] = useState<'home' | 'templates'>('home');
@@ -86,6 +87,23 @@ function HomeScreen({ prefs }: { prefs: UiPrefs }) {
         stop = client.subscribe((e) => {
           if (typeof e === 'object' && 'Recents' in e) setRecent(e.Recents.files);
         });
+        // The documents still open in this tab (the browser's Back and the title bar's app mark
+        // come here without closing them).
+        if (!isTauri())
+          void client
+            .query(null, 'Documents')
+            .then((r) => {
+              if (!live || !('Documents' in r)) return;
+              setOpenDocs(
+                r.Documents.map((d) => ({
+                  app: kindApp(d.kind),
+                  doc: d.doc,
+                  title: d.title,
+                  unsaved: d.dirty,
+                })).filter((d) => d.app !== 'notes'),
+              );
+            })
+            .catch(() => undefined);
         return loadRecents(client).then((r) => live && setRecent(r));
       })
       .catch(() => live && setRecent([]));
@@ -168,6 +186,10 @@ function HomeScreen({ prefs }: { prefs: UiPrefs }) {
         initialView={view}
         openDocument={isTauri()}
         recent={recent}
+        openDocuments={openDocs}
+        onOpenDocument={(d) => {
+          window.location.hash = appHash(d.app, d.doc);
+        }}
         shared={shared.length > 0 ? sharedRows(shared) : null}
         templates={TEMPLATES}
         storage={storage}

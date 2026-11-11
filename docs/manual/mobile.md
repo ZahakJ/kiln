@@ -17,8 +17,8 @@ blank documents; the page fades out under it, and scrolls up clear of it at its 
 
 A document on a phone has one bar at the top:
 
-- **Back** (the arrow) closes the document, asking about unsaved changes as Close does, and goes
-  back to Kiln Home.
+- **Back** (the arrow) goes back to Kiln Home. On the web the document stays open in the tab, under
+  **Open in this window**; in the Android app it closes, asking about unsaved changes as Close does.
 - **The document's name**, with its extension. Tap it to rename the document.
 - **Undo** and **Redo**.
 - **Search** finds any command by its name, as Search does on the desktop (Alt+Q).
@@ -51,8 +51,9 @@ tab you were on.
 ## Back
 
 Back closes what is open first: the ribbon, Share, a menu, a dialog or the File menu. With
-nothing open, it closes the document (asking about unsaved changes) and shows Kiln Home. The
-browser's Back button does the same in Kiln on the web.
+nothing open, it shows Kiln Home. In Kiln on the web the browser's Back button does the same, and
+the document stays open in the tab with its changes: Forward, or the document under **Open in
+this window** on Kiln Home, brings it back.
 
 ## Share
 

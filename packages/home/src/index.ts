@@ -9,6 +9,7 @@ export { DOOR_MASK, DOOR_PATH } from './door-path.ts';
 export { greeting } from './greeting.ts';
 export {
   type HomeList,
+  type HomeOpenDocument,
   type HomeStorage,
   type HomeView,
   KilnHome,

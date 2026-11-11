@@ -73,6 +73,28 @@
 .kiln-titlebar__brand .kiln-appmark {
   display: block;
 }
+/* The web build's app mark: a button to Kiln Home. */
+.kiln-titlebar__home {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin-inline: -6px -2px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.kiln-titlebar__home:hover {
+  background: var(--kiln-bg-hover);
+}
+.kiln-titlebar__home:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: 1px;
+}
 .kiln-titlebar__appname {
   font: 800 16px / 1 var(--kiln-font-display);
   font-variation-settings: "SOFT" 40;

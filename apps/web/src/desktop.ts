@@ -83,10 +83,12 @@ export type BackStep = 'layer' | 'document' | 'home' | 'none';
 
 /**
  * One press of Back, the same for Android's Back button, the browser's Back and the phone's app
- * bar: the topmost layer closes first (Escape, as with a keyboard), then the document (through
- * `suite.file.close`, which asks about unsaved changes), then Kiln Home shows.
+ * bar: the topmost layer closes first (Escape, as with a keyboard), then the document, then Kiln
+ * Home shows. In the Android app the document closes (through `suite.file.close`, which asks
+ * about unsaved changes); in the browser (`closeDocument` false) it stays open in the tab, and
+ * the caller shows Kiln Home, from where Forward or Open in this window come back to it.
  */
-export function backStep(): BackStep {
+export function backStep(closeDocument = true): BackStep {
   const layers = [...document.querySelectorAll(LAYERS)].filter((l) => l !== lastEscaped);
   const top = layers.at(-1);
   if (top || state.app === 'present') {
@@ -106,7 +108,7 @@ export function backStep(): BackStep {
   }
   lastEscaped = null;
   if (backFrame) {
-    backFrame();
+    if (closeDocument) backFrame();
     return 'document';
   }
   if (state.app !== 'home') {
@@ -151,23 +153,44 @@ function pushGuard(): void {
   );
 }
 
-/** Leaves the document's history entries: back past them, or to Kiln Home when there is nothing before. */
+/**
+ * Leaves the document's history entries for the page before them (Kiln Home, as a rule), so
+ * Forward comes back to the document; when there is nothing before (opened straight from a link),
+ * Kiln Home is a new entry after it.
+ */
 function leaveDocument(): void {
-  const href = window.location.href;
+  // Any move of the address means Back went somewhere (the document's own address can come
+  // back soon after, from Kiln Home's Open in this window, so the address is not compared).
+  let moved = false;
+  const move = () => {
+    moved = true;
+  };
+  window.addEventListener('popstate', move, { once: true });
+  window.addEventListener('hashchange', move, { once: true });
   window.history.go(guarded() ? -2 : -1);
-  // Opened straight from a link: there is no page of Kiln before it.
   setTimeout(() => {
-    if (window.location.href === href) window.location.replace('#/home');
+    window.removeEventListener('popstate', move);
+    window.removeEventListener('hashchange', move);
+    if (!moved) window.location.hash = '#/home';
   }, 400);
 }
 
 /**
- * The app bar's Back on a phone (and anywhere else the web build offers Back): one `backStep`;
- * when it closed the document, Kiln Home shows once the document has gone.
+ * The app bar's Back on a phone (and anywhere else the web build offers Back): one `backStep`.
+ * In the browser the document stays open in the tab and Kiln Home shows; in the Android app the
+ * document closes, as Android's own Back does.
  */
 export function goBack(): void {
-  const step = backStep();
-  if (step === 'document' && !isTauri()) afterClose = leaveDocument;
+  const step = backStep(isTauri());
+  if (step === 'document' && !isTauri()) leaveDocument();
+}
+
+/**
+ * The app mark of a document's title bar (the web build): Kiln Home, as a new history entry, so
+ * Back returns to the document. The document stays open in the tab.
+ */
+export function goHome(): void {
+  window.location.hash = '#/home';
 }
 
 /**
@@ -204,10 +227,11 @@ export function useWebBack(doc: number | null): void {
         enter();
         return;
       }
-      // Back to the document's own entry: Back was pressed here.
-      const step = backStep();
-      if (step === 'layer' || step === 'document') pushGuard();
-      if (step === 'document') afterClose = leaveDocument;
+      // Back to the document's own entry: Back was pressed here. A layer closes; otherwise Kiln
+      // Home shows and the document stays open in the tab (Forward comes back to it).
+      const step = backStep(false);
+      if (step === 'layer') pushGuard();
+      if (step === 'document') leaveDocument();
     };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);

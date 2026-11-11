@@ -76,9 +76,21 @@ export interface HomeStorage {
 
 export type HomeList = 'recent' | 'pinned' | 'shared';
 
+/** A document still open in this window (the web build): back to it in one click. */
+export interface HomeOpenDocument {
+  app: HomeApp;
+  doc: number;
+  title: string;
+  /** It has changes not saved to a file (they are in its recovery copy). */
+  unsaved: boolean;
+}
+
 export interface KilnHomeProps {
   /** Recent files (the pinned ones are flagged); `null` while loading. */
   recent: readonly RecentFile[] | null;
+  /** The documents still open in this window, shown above the files when there are any. */
+  openDocuments?: readonly HomeOpenDocument[];
+  onOpenDocument?: (doc: HomeOpenDocument) => void;
   /**
    * Documents others shared with the user through a collaboration server (the rooms joined from a
    * link); `null` when there are none to show.
@@ -219,6 +231,8 @@ export function KilnHome(props: KilnHomeProps) {
 
 function HomeInner({
   recent,
+  openDocuments = [],
+  onOpenDocument,
   shared = null,
   templates = [],
   initialView = 'home',
@@ -574,6 +588,34 @@ function HomeInner({
                 </div>
               </section>
             )}
+
+            {openDocuments.length > 0 && onOpenDocument ? (
+              <section className="kiln-home__open" aria-labelledby="kiln-home-open">
+                <h2 id="kiln-home-open" className="kiln-home__section-title">
+                  {t('Open in this window')}
+                </h2>
+                <ul className="kiln-home__open-list">
+                  {openDocuments.map((d) => (
+                    <li key={`${d.app}:${d.doc}`}>
+                      <button
+                        type="button"
+                        className="kiln-home__open-doc"
+                        data-testid="home-open-document"
+                        onClick={() => onOpenDocument(d)}
+                      >
+                        <AppTile app={d.app} size={22} />
+                        <span className="kiln-home__open-name" dir="auto">
+                          {d.title}
+                        </span>
+                        {d.unsaved ? (
+                          <span className="kiln-home__open-state">{t('Unsaved changes')}</span>
+                        ) : null}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
 
             <div className="kiln-home__lower" data-templates={shownTemplates.length > 0 || undefined}>
               <section ref={listRef} className="kiln-home__files" aria-label={t('Files')}>

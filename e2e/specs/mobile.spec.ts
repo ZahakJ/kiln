@@ -422,7 +422,7 @@ test.describe('mobile', () => {
     }
   });
 
-  test('mobile: Back on a tablet closes the File menu, then the document, then shows Kiln Home', async ({
+  test('mobile: Back on a tablet closes the File menu, then shows Kiln Home with the document kept', async ({
     page,
   }) => {
     test.skip(isPhone(page), 'the tablet layout');
@@ -437,9 +437,10 @@ test.describe('mobile', () => {
     await expect(page.locator('.kiln-ribbon')).toBeVisible();
     await page.evaluate(() => history.back());
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByTestId('home-open-document')).toHaveCount(1);
   });
 
-  test('mobile: Back closes the sheet, then the document (asking about changes), then shows Kiln Home', async ({
+  test('mobile: Back closes the sheet, then shows Kiln Home with the document kept; Forward and the app bar', async ({
     page,
   }) => {
     test.skip(!isPhone(page), 'the phone layout');
@@ -452,28 +453,24 @@ test.describe('mobile', () => {
     await page.evaluate(() => history.back());
     await expect(page.getByTestId('ribbon-sheet')).toBeHidden();
     await expect(page.getByTestId('app-bar')).toBeVisible();
-    // Unsaved changes: Back asks, and Back again cancels the question and keeps the document.
+    // Unsaved changes: Back shows Kiln Home and asks nothing; the document stays open in the tab.
     await page.locator('.kiln-write__surface').tap({ position: { x: 60, y: 40 } });
     await page.keyboard.type('Keep me');
     await expect.poll(() => writeParagraphs(page)).toContain('Keep me');
     await page.evaluate(() => history.back());
-    const ask = page.getByTestId('save-changes');
-    await expect(ask).toBeVisible();
-    await page.evaluate(() => history.back());
-    await expect(ask).toBeHidden();
-    await expect(page.getByTestId('app-bar')).toBeVisible();
-    expect(await writeParagraphs(page)).toContain('Keep me');
-    // The app bar's Back: the question again; Don't Save closes, and Kiln Home shows.
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByTestId('save-changes')).toHaveCount(0);
+    await expect(page.getByTestId('home-open-document')).toHaveCount(1);
+    // Forward: the document, as it was.
+    await page.evaluate(() => history.forward());
+    await expect(page.getByTestId('app-bar')).toBeVisible({ timeout: 15_000 });
+    await expect.poll(() => writeParagraphs(page)).toContain('Keep me');
+    // The app bar's Back: Kiln Home too, and the document is one tap away.
     await page.getByTestId('app-bar-back').tap();
-    await expect(ask).toBeVisible();
-    await page.getByTestId('save-changes-discard').tap();
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 15_000 });
-    await expect(page).toHaveURL(/#\/home|#\/?$|\/$/);
-
-    // A document with nothing to save closes at once on the browser's Back.
-    await openApp(page, 'deck');
-    await page.evaluate(() => history.back());
-    await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 15_000 });
+    await page.getByTestId('home-open-document').tap();
+    await expect(page.getByTestId('app-bar')).toBeVisible({ timeout: 15_000 });
+    await expect.poll(() => writeParagraphs(page)).toContain('Keep me');
   });
 
   test('mobile: Share in the overflow menu sends a PDF, and explains why an unsaved file cannot go', async ({
@@ -682,7 +679,7 @@ test.describe('mobile', () => {
     // Next slide from the bar.
     await bar.getByRole('button', { name: 'Next Slide' }).tap();
     await expect.poll(async () => (await deckState(page))?.current).toBe(2);
-    // Back: the list first, then the presentation closes (asking about the new slide).
+    // Back: the slide list first (the slide is a screen of its own over it).
     await page.evaluate(() => history.back());
     await expect(list).toBeVisible();
     await expect(page.getByTestId('deck-stage')).toBeHidden();

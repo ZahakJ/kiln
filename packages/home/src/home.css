@@ -1027,3 +1027,53 @@
     transition: none;
   }
 }
+
+/* The documents still open in this window (the web build). */
+.kiln-home__open {
+  margin: 0 0 22px;
+}
+.kiln-home__section-title {
+  margin: 0 0 10px;
+  font: 800 19px / 1 var(--kiln-font-display);
+  font-variation-settings: "SOFT" 40;
+}
+.kiln-home__open-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kiln-home__open-doc {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 320px;
+  min-height: 44px;
+  padding: 8px 14px 8px 10px;
+  border: 1px solid var(--kiln-line);
+  border-radius: 12px;
+  background: var(--kiln-raised);
+  color: var(--kiln-fg);
+  font: inherit;
+  cursor: pointer;
+}
+.kiln-home__open-doc:hover {
+  background: var(--kiln-bg-hover);
+}
+.kiln-home__open-doc:focus-visible {
+  outline: var(--kiln-focus-width) solid var(--kiln-focus-ring);
+  outline-offset: 2px;
+}
+.kiln-home__open-name {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kiln-home__open-state {
+  flex: none;
+  color: var(--kiln-muted);
+  font-size: 12px;
+}

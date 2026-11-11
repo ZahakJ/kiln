@@ -43,6 +43,7 @@ In the gallery, type in **Search templates** to find a template by its name or w
 
 The list under the doors has three tabs:
 
+- **Open in this window** (Kiln on the web): the documents still open in the tab, saved or not. Select one to go back to it as you left it.
 - **Recent**: the files you opened or saved last, newest first, with where they are and when you opened them. Select a file to open it in its app. **Pin** keeps a file at the top; **Remove from list** takes it off the list (the file itself stays where it is).
 - **Pinned**: the files you pinned.
 - **Shared with me**: documents other people shared with you through a Kiln collaboration server. Open the link someone sent you once, and the document is listed here from then on, with the server it is shared through; select it to join it again. See [Collaboration and version history](collaboration.md).

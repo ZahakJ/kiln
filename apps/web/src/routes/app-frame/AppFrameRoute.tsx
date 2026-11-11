@@ -63,10 +63,10 @@ import {
   useTheme,
 } from '@kiln/ui-kit';
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { appHash } from '../../App.tsx';
+import { adoptAddress, appHash } from '../../App.tsx';
 import { CORE_APPS, type CoreApp } from '../../client/cores.ts';
 import { useClient } from '../../client/useClient.ts';
-import { goBack, isAndroid, showRoute, useDesktopFrame, useWebBack } from '../../desktop.ts';
+import { goBack, goHome, isAndroid, showRoute, useDesktopFrame, useWebBack } from '../../desktop.ts';
 import { classifyFailure } from '../../LoadProblem.tsx';
 import { newFromTemplate, TEMPLATES, templateByFile } from '../../templates.ts';
 import { useDeckParts } from '../deck/index.tsx';
@@ -364,6 +364,8 @@ export function AppFrameRoute({
             // The route follows the address: a recovered document that is given the old number
             // next must count as a new address, or the window stays on this one.
             window.dispatchEvent(new HashChangeEvent('hashchange'));
+          } else if (live) {
+            adoptAddress(app, summary.doc);
           }
         }
         if (!live) return;
@@ -819,6 +821,7 @@ export function AppFrameRoute({
         }
         // The desktop app keeps a document in its own window: no Back there.
         onBack={isTauri() && !isAndroid() ? undefined : goBack}
+        onHome={isTauri() ? undefined : goHome}
         phoneMenu={writeEditor?.phoneMenu}
         shareCopy={shareCopy}
         textView={

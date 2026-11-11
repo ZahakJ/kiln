@@ -497,7 +497,7 @@ test('a file launched into a window with unsaved work opens there, and the work 
 
   // A New command of the icon menu in the running window: the route moves, nothing reloads.
   await page.evaluate(() => (window as unknown as LaunchHandle).__target('#/deck'));
-  await expect(page).toHaveURL(/#\/deck\?new=/, { timeout: CORE_START });
+  await expect(page).toHaveURL(/#\/deck\?(new|doc)=/, { timeout: CORE_START });
   await expect(page.getByTestId('document-title')).not.toContainText(/Opening|Document/, {
     timeout: CORE_START,
   });

@@ -131,7 +131,7 @@ test.describe('home', () => {
   test('the Write door asks the core for a new document and opens the Write frame', async ({ page }) => {
     await openHome(page);
     await page.getByRole('button', { name: /^New document in Kiln Write:/ }).click();
-    await expect(page).toHaveURL(/#\/write$/);
+    await expect(page).toHaveURL(/#\/write(\?doc=\d+)?$/);
     await expect(page.getByTestId('document-title')).toContainText('Document', { timeout: CORE_START });
     await expect(page.locator('.kiln-appframe')).toHaveAttribute('data-app', 'write');
   });
@@ -143,7 +143,7 @@ test.describe('home', () => {
     await expect(items).toHaveCount(3);
     await expect(page.getByRole('menuitem', { name: /Blank deck/ })).toBeEnabled();
     await page.getByRole('menuitem', { name: /Blank workbook/ }).click();
-    await expect(page).toHaveURL(/#\/grid$/);
+    await expect(page).toHaveURL(/#\/grid(\?doc=\d+)?$/);
     await expect(page.getByTestId('document-title')).toContainText('Book', { timeout: CORE_START });
   });
 

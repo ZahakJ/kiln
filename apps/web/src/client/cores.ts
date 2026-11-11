@@ -269,6 +269,16 @@ export class CoreRouter implements KilnClient {
       const reply = await this.host.handle('Recents');
       return { Recents: typeof reply === 'object' && 'Recents' in reply ? reply.Recents : [] };
     }
+    // The documents open in this page: every core already started has its own (Kiln Home lists
+    // them under Open in this window); no core is started to ask.
+    if (doc === null && query === 'Documents') {
+      const lists = await Promise.all(
+        [...this.cores.values()].map((core) =>
+          core.then((c) => c.query(null, 'Documents')).catch(() => ({ Documents: [] }) as QueryResult),
+        ),
+      );
+      return { Documents: lists.flatMap((r) => ('Documents' in r ? r.Documents : [])) };
+    }
     return (await this.coreFor(doc)).query(doc, query);
   }
 
