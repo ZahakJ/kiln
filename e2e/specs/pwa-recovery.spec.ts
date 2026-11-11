@@ -510,11 +510,46 @@ for (const rows of [10_000, 50_000])
     await again('210');
   });
 
+/**
+ * After a crash in the second an entry takes to reach the recovery copy while a large one is
+ * written (docs/manual/files.md, Document Recovery): the cell has the value, or the message offers
+ * it back for the same cell and Put it back enters it. Anything else fails: another value, the
+ * value in another cell, or neither the value nor the message.
+ */
+async function valueOrPutBack(page: Page, value: string): Promise<'value' | 'notice'> {
+  let path: 'value' | 'notice' | null = null;
+  await expect
+    .poll(
+      async () => {
+        if ((await notice(page).count()) > 0) path = 'notice';
+        else {
+          await onGrid(page, CELL);
+          if ((await bar(page).inputValue()) === value) path = 'value';
+        }
+        return path;
+      },
+      { timeout: 30_000 },
+    )
+    .not.toBeNull();
+  if (path === 'notice') {
+    await expect(notice(page)).toContainText(
+      `“\u2068${value}\u2069” was being typed in \u2068Sheet1!F8\u2069`,
+    );
+    await notice(page).getByRole('button', { name: 'Put it back' }).click();
+    await expect(bar(page)).toHaveValue(value, { timeout: 15_000 });
+    await proxy(page).focus();
+    await page.keyboard.press('Enter');
+    await cellShows(page, value);
+  }
+  return path ?? 'value';
+}
+
 test(`Grid: ${ROUNDS} crashes during a large checkpoint`, async ({ page: first, context }) => {
   test.setTimeout(120_000 + ROUNDS * 30_000);
   let page = first;
   await newWorkbook(page);
   await pasteSheet(page, 10_000);
+  let offered = 0;
   for (let i = 0; i < ROUNDS; i += 1) {
     const value = String(3000 + i);
     await test.step(`round ${i + 1} of ${ROUNDS}`, async () => {
@@ -525,8 +560,40 @@ test(`Grid: ${ROUNDS} crashes during a large checkpoint`, async ({ page: first, 
       await expect(bar(page)).toHaveValue(value, { timeout: 30_000 });
       page = await crash(context, page);
       await recoverOnly(page);
-      await cellShows(page, value);
+      if ((await valueOrPutBack(page, value)) === 'notice') offered += 1;
     });
+  }
+  // How many rounds came back through the message: a drift shows in the logs.
+  console.log(`large checkpoint: ${offered} of ${ROUNDS} entries came back through Put it back`);
+  test.info().annotations.push({ type: 'put-it-back', description: `${offered} of ${ROUNDS}` });
+});
+
+test('Grid: an entry the page crashes on at once, while a large checkpoint is written, comes back', async ({
+  page: first,
+  context,
+}) => {
+  // The known window (docs/manual/files.md, Document Recovery): keys the core has not reached
+  // when the page goes are not in the copy. Expected to fail until the page logs the commands it
+  // sends; it then passes, and this line goes.
+  test.fail(true, 'an entry made just before a crash while the core is busy is not kept yet');
+  test.setTimeout(120_000 + 5 * 30_000);
+  let page = first;
+  await newWorkbook(page);
+  await pasteSheet(page, 10_000);
+  await onGrid(page, CELL);
+  await page.keyboard.type('4999\n');
+  await onGrid(page, CELL);
+  await expect(bar(page)).toHaveValue('4999', { timeout: 30_000 });
+  for (let i = 0; i < 5; i += 1) {
+    const value = String(5000 + i);
+    // Each recovered document writes a checkpoint as it opens: the core is busy.
+    page = await crash(context, page);
+    await recoverOnly(page);
+    await onGrid(page, CELL);
+    await page.keyboard.type(`${value}\n`);
+    page = await crash(context, page);
+    await recoverOnly(page);
+    await valueOrPutBack(page, value);
   }
 });
 
