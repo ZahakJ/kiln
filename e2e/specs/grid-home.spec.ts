@@ -20,6 +20,7 @@ import {
   gridState,
   openGrid,
   repo,
+  ribbonButton,
   select,
   shot,
   until,
@@ -287,7 +288,7 @@ test.describe('grid home', () => {
     await page.keyboard.press('Enter');
     await page.keyboard.press('ArrowUp');
     for (let i = 0; i < 7; i++) await page.keyboard.press('Shift+ArrowDown');
-    await page.getByRole('button', { name: 'Fill', exact: true }).click();
+    await (await ribbonButton(page, 'Fill', true)).click();
     await page.getByRole('menuitem', { name: 'Series…' }).click();
     const dialog = page.getByRole('dialog', { name: 'Series' });
     await expect(dialog).toBeVisible();
@@ -305,7 +306,7 @@ test.describe('grid home', () => {
     await page.keyboard.press('Enter');
     await select(page, 10, 0, 10, 4);
     await focusSheet(page);
-    await page.getByRole('button', { name: 'Fill', exact: true }).click();
+    await (await ribbonButton(page, 'Fill', true)).click();
     await page.getByRole('menuitem', { name: 'Series…' }).click();
     await expect(dialog.getByRole('radio', { name: 'Rows' })).toBeChecked();
     await dialog.getByRole('radio', { name: 'Growth' }).check();
@@ -316,7 +317,7 @@ test.describe('grid home', () => {
 
   test('fill handle: a custom list continues, and Auto Fill Options changes the fill', async ({ page }) => {
     await openGrid(page);
-    await page.getByRole('button', { name: 'Fill', exact: true }).click();
+    await (await ribbonButton(page, 'Fill', true)).click();
     await page.getByRole('menuitem', { name: 'Edit Custom Lists…' }).click();
     const lists = page.getByRole('dialog', { name: 'Custom Lists' });
     await expect(lists).toBeVisible();

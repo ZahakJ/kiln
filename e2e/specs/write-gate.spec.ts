@@ -321,6 +321,12 @@ async function snap(page: Page, name: string): Promise<void> {
   await page.screenshot({ path: shot(name) });
 }
 
+/**
+ * How soon the keys must be back in the document after a picker, menu or dialog closes: at once on
+ * a development machine; a CI runner, several times slower, gets three times as long.
+ */
+const KEYS_BACK = process.env.CI ? 3000 : 1000;
+
 test.describe('Kiln Write gate', () => {
   test.describe.configure({ timeout: 150_000 });
 
@@ -766,7 +772,7 @@ test.describe('Kiln Write gate', () => {
     await page.getByRole('button', { name: 'Insert a table of 3 by 2' }).click();
     // No click in the document: the keys are back in it (at once, not on the Table button), and
     // the next ones type in the new table's first cell.
-    await expect(page.getByTestId('kiln-input-proxy')).toBeFocused({ timeout: 1000 });
+    await expect(page.getByTestId('kiln-input-proxy')).toBeFocused({ timeout: KEYS_BACK });
     await page.keyboard.type('Month');
     await page.keyboard.press('Tab');
     await page.keyboard.type('Gas');
@@ -785,7 +791,7 @@ test.describe('Kiln Write gate', () => {
       .first()
       .click();
     await page.locator('.kiln-popover button[aria-label]').nth(5).click();
-    await expect(page.getByTestId('kiln-input-proxy')).toBeFocused({ timeout: 1000 });
+    await expect(page.getByTestId('kiln-input-proxy')).toBeFocused({ timeout: KEYS_BACK });
     await page.keyboard.press('End');
     await page.keyboard.type(' bill');
     await until(
@@ -797,7 +803,7 @@ test.describe('Kiln Write gate', () => {
     await page.getByRole('tab', { name: 'Home', exact: true }).click();
     await page.locator('[data-command="write.paragraph.borders"]').first().click();
     await page.getByRole('menuitem', { name: 'Bottom Border' }).click();
-    await expect(page.getByTestId('kiln-input-proxy')).toBeFocused({ timeout: 1000 });
+    await expect(page.getByTestId('kiln-input-proxy')).toBeFocused({ timeout: KEYS_BACK });
     await page.keyboard.type('!');
     await until(
       () => paragraphs(page),
@@ -811,11 +817,11 @@ test.describe('Kiln Write gate', () => {
     await expect(symbols).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(symbols).toHaveCount(0);
-    await expect(page.getByTestId('kiln-input-proxy')).toBeFocused({ timeout: 1000 });
+    await expect(page.getByTestId('kiln-input-proxy')).toBeFocused({ timeout: KEYS_BACK });
     // Insert ▸ Shapes ▾: choosing a shape arms drawing, with the keys in the document.
     await page.locator('[data-command="suite.insert.shapes"]').first().click();
     await page.getByRole('menuitem', { name: 'Rectangle' }).first().click();
-    await expect(page.getByTestId('kiln-input-proxy')).toBeFocused({ timeout: 1000 });
+    await expect(page.getByTestId('kiln-input-proxy')).toBeFocused({ timeout: KEYS_BACK });
   });
 
   test('font dialog previews the selected text, cut to its first line', async ({ page }) => {

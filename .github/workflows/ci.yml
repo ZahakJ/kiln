@@ -6,7 +6,7 @@
 #   measure   the performance budgets and the round-trip fidelity of the fixture corpus
 #   web       Biome, TypeScript, Vitest, the licence check, the notices and the web build
 #   site      the GitHub Pages artefact (landing page, manual, installable web app) and its checks
-#   e2e       Playwright in headless Chromium, split into shards, with that artefact
+#   e2e       Playwright in headless Chromium, in the pinned Playwright image, in 16 shards
 #   desktop   the Tauri shell: its tests, the start-up probe and the tauri-driver smoke test
 #
 # The end-to-end suite runs one test at a time per shard (--workers=1), as it does locally: many
@@ -247,20 +247,38 @@ jobs:
   e2e:
     needs: [wasm, site]
     runs-on: ubuntu-latest
-    # The shards split the tests, not their time: the one with the keyboard walks of every catalog
-    # command (about 55 minutes of the suite on 4 CPUs) runs longest.
+    # The suite runs in the Playwright image of the pinned Playwright version: the same browser
+    # and fonts wherever it runs, so the screenshot baselines (made in this image, as
+    # CONTRIBUTING.md says) compare like with like.
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --ipc=host
     timeout-minutes: 150
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+    env:
+      # The collaboration tests start the relay with `cargo run`; no sccache in this job.
+      RUSTC_WRAPPER: ''
     steps:
       - uses: actions/checkout@v7
+      # poppler-utils: the print tests read the PDF; a C toolchain for the relay's build.
+      - name: Tools the tests use
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends poppler-utils build-essential pkg-config
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: pnpm
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.1
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: kiln-e2e
       - name: Install
         run: pnpm install --frozen-lockfile
       - uses: actions/download-artifact@v8
@@ -278,19 +296,23 @@ jobs:
       # The check-core site from the artefact and the check cores, as tools/check-site.sh makes it.
       - name: Grid check-core site
         run: bash tools/check-site.sh --from-built
-      # The browser build matches the Playwright version pinned in the e2e package.
-      - name: Install Chromium for Playwright
-        run: pnpm --filter @kiln/e2e exec playwright install --with-deps chromium
+      # The collaboration tests start the relay with `cargo run`; built here, it starts at once.
+      - name: Collaboration relay
+        run: cargo build -p kiln-collab-server
       # Turbo would hold the output of a task until it ends (it groups logs on CI): the web build
       # the suite needs runs first, then Playwright with its output streamed.
       - name: Web build
         run: pnpm --filter @kiln/web build
       - name: End-to-end tests
-        run: pnpm --filter @kiln/e2e e2e --workers=1 --shard=${{ matrix.shard }}/12
+        run: pnpm --filter @kiln/e2e e2e --workers=1 --shard=${{ matrix.shard }}/16
         env:
           # The runner has no LibreOffice: Grid's Office file loop is skipped (and says so) here;
           # it runs wherever LibreOffice is installed, and fails there if it cannot use it.
           KILN_E2E_NO_LIBREOFFICE: '1'
+          # Frame-time and open-time budgets in a browser on a shared runner measure the runner:
+          # reported here (e2e/run.mjs). The measure job keeps the core's budgets as a gate, scaled
+          # by the machine's calibration, and a release checks the browser budgets on known hardware.
+          KILN_BUDGETS_REPORT_ONLY: '1'
       # Screenshots are reviewed by people, so keep them whether or not the run passed.
       - name: Upload screenshots and report
         if: always()

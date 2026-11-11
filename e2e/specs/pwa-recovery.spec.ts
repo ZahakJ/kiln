@@ -456,7 +456,10 @@ for (const rows of [10_000, 50_000])
     page: first,
     context,
   }) => {
-    test.setTimeout(900_000);
+    // Check cores replay every journal write, and a CI runner is slower still: 210 commits on a
+    // sheet of 50,000 rows took over 300 s there, about 3 s each.
+    const slow = (test.info().project.name === 'pwa-check' ? 2 : 1) * (process.env.CI ? 2 : 1);
+    test.setTimeout(900_000 * slow);
     let page = first;
     await context.addInitScript(stallScript);
     await newWorkbook(page);
@@ -503,7 +506,7 @@ for (const rows of [10_000, 50_000])
       await page.keyboard.press('ArrowUp');
     }
     // A commit on a sheet this size takes the core a while (about a second at 50,000 rows).
-    await expect(bar(page)).toHaveValue('210', { timeout: 300_000 });
+    await expect(bar(page)).toHaveValue('210', { timeout: 300_000 * slow });
     await again('210');
   });
 

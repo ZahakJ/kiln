@@ -4,7 +4,8 @@
  * Keyboard remapping with conflicts, export, import and reset, and screenshots of the dialog in
  * light and dark, desktop and phone, and Arabic.
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { expect, type Page, test } from '@playwright/test';
 import { expectNoSeriousA11yViolations } from '../../packages/testing/src/playwright/a11y.ts';
@@ -273,6 +274,8 @@ test.describe('options', () => {
     await expect(again.getByText(/Shortcuts imported: 2 commands changed/)).toBeVisible();
     // A file that maps two commands to one key shows the clash, with a way to each.
     const clash = repo('target/scratch/clash.json');
+    // The folder is not in a fresh checkout.
+    mkdirSync(dirname(clash), { recursive: true });
     writeFileSync(
       clash,
       JSON.stringify({

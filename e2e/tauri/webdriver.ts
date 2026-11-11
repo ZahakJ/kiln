@@ -140,7 +140,8 @@ export async function until<T>(
   probe: () => Promise<T>,
   timeoutMs = 30_000,
 ): Promise<NonNullable<T>> {
-  const end = Date.now() + timeoutMs;
+  // A CI runner starts the debug build's windows several times slower than a development machine.
+  const end = Date.now() + timeoutMs * (process.env.CI ? 3 : 1);
   let last: unknown = null;
   while (Date.now() < end) {
     try {

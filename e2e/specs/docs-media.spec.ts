@@ -96,6 +96,9 @@ async function scroll(page: Page, by: number, x = DESKTOP.width / 2, y = 500): P
 
 test.describe('docs-media', () => {
   test.describe.configure({ mode: 'serial', timeout: 240_000 });
+  // These render the pictures and the recording in docs/media (FFmpeg makes demo.gif): a step of
+  // the release checklist, not a check, so they run only when asked for.
+  test.skip(process.env.KILN_DOCS_MEDIA !== '1', 'renders docs/media; set KILN_DOCS_MEDIA=1');
   test.beforeAll(async () => {
     mkdirSync(OUT, { recursive: true });
     const built = await fetch(new URL('/__kiln/health', BASE)).then(

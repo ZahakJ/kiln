@@ -4,7 +4,7 @@
  * check that the keys came back to the sheet, and save screenshots.
  */
 import { fileURLToPath } from 'node:url';
-import { expect, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 export const repo = (p: string) => fileURLToPath(new URL(`../../${p}`, import.meta.url));
 export const shot = (name: string) => repo(`e2e/screenshots/grid/${name}`);
@@ -204,13 +204,30 @@ export async function tab(page: Page, name: string): Promise<void> {
   await page.getByRole('tab', { name, exact: true }).click();
 }
 
+/**
+ * A ribbon button, from a folded group when there is one: a ribbon narrower than its groups folds
+ * the last of them into one button each, as Office does, and where that happens depends on how the
+ * machine's text rendering rounds the labels. The folded group opens like a user opens it.
+ */
+export async function ribbonButton(page: Page, name: string | RegExp, exact = false): Promise<Locator> {
+  const button = page.getByRole('button', { name, exact }).first();
+  if (await button.isVisible()) return button;
+  const folded = page.locator('[data-ribbon-group][data-collapsed="true"] > button');
+  for (let i = 0; i < (await folded.count()); i += 1) {
+    await folded.nth(i).click();
+    if (await button.isVisible().catch(() => false)) return button;
+    await page.keyboard.press('Escape');
+  }
+  return button;
+}
+
 /** Clicks a menu path from a ribbon button (`['Data Bars', 'Blue Data Bar']`). */
 export async function menu(
   page: Page,
   button: string | RegExp,
   path: readonly (string | RegExp)[],
 ): Promise<void> {
-  await page.getByRole('button', { name: button }).first().click();
+  await (await ribbonButton(page, button)).click();
   for (const item of path) {
     const exact = typeof item === 'string';
     const m = page

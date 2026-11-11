@@ -78,7 +78,20 @@ reviewers check the rest.
   (`src/**/*.test.ts`).
 - **End-to-end tests** in `e2e/specs/` drive the real application in Chromium.
   User-visible changes take a screenshot in the light and dark themes. Look at
-  the screenshots before you open the pull request; a reviewer will.
+  the screenshots before you open the pull request; a reviewer will. CI runs
+  them in the Playwright image of the pinned version
+  (`mcr.microsoft.com/playwright:v1.64.1-noble`), and the screenshot baselines
+  in `e2e/screenshots/baseline/` are made in that image too, so that fonts and
+  rendering match:
+
+  ```sh
+  docker run --rm --ipc=host -v "$PWD:/work" -w /work/e2e \
+    -e KILN_UPDATE_BASELINES=1 mcr.microsoft.com/playwright:v1.64.1-noble \
+    npx playwright test --project=chromium --workers=1 specs/deck-gate.spec.ts specs/grid-gate.spec.ts
+  ```
+
+  (with Node 24 and the dependencies installed in the checkout, and the web
+  cores built).
 - **Fidelity tests** (`cargo xtask fidelity`) round-trip the fixture corpus of
   `.docx`, `.xlsx` and `.pptx` files and compare the result with LibreOffice and
   with the original. A change to a reader or writer must not lower a score in

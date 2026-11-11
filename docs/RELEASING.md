@@ -85,7 +85,8 @@ desktop smoke test (`tauri-driver`) on every push; check it is green for the sam
 ## Checklist
 
 1. `main` is green in CI and `cargo xtask verify`, `pnpm verify` and `pnpm e2e`
-   pass locally.
+   pass locally. Locally the browser's timed budgets (`@budget`) fail the run; CI's
+   shared runners only report them.
 2. Set the version everywhere: `[workspace.package] version` in `Cargo.toml`,
    `version` in `apps/desktop/src-tauri/tauri.conf.json`,
    `pnpm -r exec npm version X.Y.Z --no-git-tag-version` and the root
@@ -99,7 +100,7 @@ desktop smoke test (`tauri-driver`) on every push; check it is green for the sam
    `https://github.com/ZahakJ/kiln/releases/download/vX.Y.Z/<file>`. Update the
    Platforms cell of Kiln in `docs/qa/compare-facts.json`, then run
    `cargo xtask site` for the numbers.
-5. If the interface changed: `pnpm e2e --grep docs-media --workers=1`, then
+5. If the interface changed: `KILN_DOCS_MEDIA=1 pnpm e2e --grep docs-media --workers=1` (FFmpeg on the `PATH`), then
    `pnpm media:render --screenshots`, and commit `docs/media/`. If the icon or
    banner changed: `pnpm media:render` too.
 6. Commit (`chore(release): vX.Y.Z`), push, and wait for CI:

@@ -23,6 +23,7 @@ import {
   openGrid,
   origin,
   repo,
+  ribbonButton,
   run,
   select,
   shot,
@@ -599,7 +600,7 @@ test.describe('Kiln Grid features', () => {
     await tab(page, 'Home');
     await menu(page, 'Sort & Filter', [/Sort A to Z/]);
     await expect.poll(() => values(page, 1, 0, 6, 0)).toBe('Clay\nGas\nGlaze\nKiln hire\nOpen day\nShelves');
-    await page.getByRole('button', { name: 'Sort & Filter' }).first().click();
+    await (await ribbonButton(page, 'Sort & Filter')).click();
     await page.getByRole('menuitemcheckbox', { name: /^Filter/ }).click();
     await until(page, (s) => s.features.filter, 'filter on');
     await expectSheetFocused(page);

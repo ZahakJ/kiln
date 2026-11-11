@@ -20,4 +20,11 @@ const suite = run([
   '--project=pwa-check',
 ]);
 const budgets = run(['--project=budgets', '--pass-with-no-tests']);
+// The timed budgets measure frame intervals and open times in the browser. On a shared CI runner
+// they measure the runner as much as Kiln, so there (KILN_BUDGETS_REPORT_ONLY=1) they are reported
+// and do not fail the run; on a known machine, as for a release, they are the gate.
+if (budgets && process.env.KILN_BUDGETS_REPORT_ONLY === '1') {
+  console.log('::warning::e2e budgets missed on this runner (reported only; see the budgets results above)');
+  process.exit(suite);
+}
 process.exit(suite || budgets);
