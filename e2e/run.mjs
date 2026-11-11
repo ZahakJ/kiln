@@ -3,10 +3,11 @@
 import { spawnSync } from 'node:child_process';
 
 const args = process.argv.slice(2);
-const run = (extra) =>
+const run = (extra, env = {}) =>
   spawnSync('playwright', ['test', ...extra, ...args], {
     stdio: 'inherit',
     shell: process.platform === 'win32',
+    env: { ...process.env, ...env },
   }).status ?? 1;
 
 if (args.some((a) => a === '--project' || a.startsWith('--project='))) process.exit(run([]));
@@ -19,7 +20,11 @@ const suite = run([
   '--project=pwa',
   '--project=pwa-check',
 ]);
-const budgets = run(['--project=budgets', '--pass-with-no-tests']);
+// The budgets' HTML report goes to a folder of its own, so the suite's report (and its traces)
+// is kept.
+const budgets = run(['--project=budgets', '--pass-with-no-tests'], {
+  PLAYWRIGHT_HTML_OUTPUT_DIR: 'playwright-report-budgets',
+});
 // The timed budgets measure frame intervals and open times in the browser. On a shared CI runner
 // they measure the runner as much as Kiln, so there (KILN_BUDGETS_REPORT_ONLY=1) they are reported
 // and do not fail the run; on a known machine, as for a release, they are the gate.

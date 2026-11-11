@@ -319,9 +319,12 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: e2e-${{ github.run_id }}-${{ matrix.shard }}
+          # The failures' traces and screenshots are under e2e/screenshots/.results*.
+          include-hidden-files: true
           path: |
             e2e/screenshots
             e2e/playwright-report
+            e2e/playwright-report-budgets
           if-no-files-found: ignore
           retention-days: 14
 

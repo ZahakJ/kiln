@@ -22,6 +22,7 @@ e2e/screenshots/**
 !e2e/screenshots/baseline/
 !e2e/screenshots/baseline/**
 playwright-report/
+playwright-report-budgets/
 test-results/
 blob-report/
 
