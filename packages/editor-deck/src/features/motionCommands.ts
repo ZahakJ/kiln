@@ -136,8 +136,10 @@ export function registerMotionUi(model: DeckEditorModel): Disposable {
       id: 'deck.show.presenter_view',
       title: msg('Use Presenter View'),
       isChecked: () => motion()?.settings.presenter_view ?? false,
-      run: () => {
-        const s = motion()?.settings;
+      // A click before the window has the show's settings (just after it opens) asks the core for
+      // them first, so the switch is never lost.
+      run: async () => {
+        const s = motion()?.settings ?? (await model.fetch())?.motion.settings;
         if (!s) return undefined;
         return model.core('deck.show.settings', { settings: { ...s, presenter_view: !s.presenter_view } });
       },

@@ -269,13 +269,16 @@ async function presenterView(app: string, work: string): Promise<void> {
       60_000,
     );
     await s.click(tab);
-    const use = await until('Use Presenter View', () =>
-      s.findX("//button[@aria-label='Use Presenter View' or normalize-space()='Use Presenter View']"),
-    );
+    // As a person does: the buttons once they are ready (a ribbon button is greyed out until its
+    // command has loaded), and From Beginning once Use Presenter View shows it is on.
+    const ready = (name: string, more = '') =>
+      `//button[(@aria-label='${name}' or normalize-space()='${name}') and not(@aria-disabled='true')${more}]`;
+    const use = await until('Use Presenter View', () => s.findX(ready('Use Presenter View')));
     await s.click(use);
-    const begin = await until('From Beginning', () =>
-      s.findX("//button[@aria-label='From Beginning' or normalize-space()='From Beginning']"),
+    await until('Use Presenter View to be on', () =>
+      s.findX(ready('Use Presenter View', " and @aria-pressed='true'")),
     );
+    const begin = await until('From Beginning', () => s.findX(ready('From Beginning')));
     await s.click(begin);
     await until('Presenter View', () => s.find('[data-testid="deck-presenter"]'), 30_000);
     const handles = await until('the audience window', async () => {
@@ -307,8 +310,29 @@ async function presenterView(app: string, work: string): Promise<void> {
     await until('the audience window to close', async () => (await s.handles()).length === 1);
     check(true, 'ending the show closes the audience window');
     await editorRoute(s, 'deck');
+  } catch (error) {
+    await explain(s, 'presenter');
+    throw error;
   } finally {
     await s.end();
+  }
+}
+
+/** On a failure: every window's address, what it shows and a picture of it, for the CI log. */
+async function explain(s: Session, name: string): Promise<void> {
+  try {
+    const handles = await s.handles();
+    console.error(`  windows: ${handles.length}`);
+    for (const [i, h] of handles.entries()) {
+      await s.switchTo(h);
+      const where = await s.run<string>(
+        'return window.location.hash + " | " + (document.activeElement?.getAttribute("aria-label") ?? document.activeElement?.tagName ?? "") + " | " + (document.body?.innerText ?? "").replace(/\\s+/g, " ").slice(0, 300)',
+      );
+      console.error(`  window ${i}: ${where}`);
+      await shot(s, `failed-${name}-${i}.png`);
+    }
+  } catch (error) {
+    console.error(`  (no more to show: ${error instanceof Error ? error.message : String(error)})`);
   }
 }
 
