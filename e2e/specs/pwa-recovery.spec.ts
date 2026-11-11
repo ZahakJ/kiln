@@ -86,14 +86,14 @@ async function recoverOnly(page: Page): Promise<void> {
   });
 }
 
-async function cellShows(page: Page, value: string, at = CELL): Promise<void> {
+async function cellShows(page: Page, value: string, at = CELL, timeout = 30_000): Promise<void> {
   await expect
     .poll(
       async () => {
         await onGrid(page, at);
         return bar(page).inputValue();
       },
-      { timeout: 30_000 },
+      { timeout },
     )
     .toBe(value);
 }
@@ -664,7 +664,11 @@ for (const threads of [true, false])
         await page.waitForTimeout(110);
       }
       if (!enter) await page.keyboard.press('Enter');
-      for (const { at, value: v } of wanted) await cellShows(page, v, at);
+      // Each entry in column F recalculates the 3000 formulas over it: about 5 s in the check
+      // build on one core (all four took 21 s at 1 and at 2 CPUs), slower on a CI runner. The keys
+      // still wait their turn and land in their cells, as checked here.
+      const slow = (test.info().project.name === 'pwa-check' ? 2 : 1) * (process.env.CI ? 2 : 1);
+      for (const { at, value: v } of wanted) await cellShows(page, v, at, 30_000 * slow);
     }
     await context.close();
   });
