@@ -197,17 +197,19 @@ workflow's `publish` job recomputes `SHA256SUMS.txt` over its own files.
   gh secret set ANDROID_KEY_PASSWORD --body "$KEY_PW"          # only when it differs
   ```
 
-  On a tag (`v*`) the android job stops with an error when the keystore secrets are missing,
-  and checks each APK with `tools/verify-apk.sh --release`, which fails an APK signed with the
-  debug key: a release is never signed with it. A run started by hand without the secrets (a
+  On a tag (`v*`) without the keystore secrets the android job builds nothing and says so, and
+  the release goes out without APKs; with them it checks each APK with
+  `tools/verify-apk.sh --release`, which fails an APK signed with the debug key: a release is
+  never signed with it. A run started by hand without the secrets (a
   test run, a fork) signs with a throwaway debug key and prints a warning; such an APK installs,
   but it cannot update an install signed with the real key. Locally, Gradle stops when
   `KILN_KEYSTORE` names a file that is not there or `KILN_KEYSTORE_PASSWORD` is empty, and uses
   the debug key only when `KILN_KEYSTORE` is not set. `tools/verify-apk.sh` prints the signer's name and the
   certificate's SHA-256 digest, to compare with
   `keytool -list -v -keystore ~/.kiln-keys/release.jks`.
-- **macOS.** Without certificates the `.dmg` is unsigned and Gatekeeper warns on
-  first launch. With a Developer ID certificate the build is signed, and with an
+- **macOS.** Without certificates the app is signed ad hoc (Apple silicon runs no unsigned
+  code), not by an identified developer: macOS asks the user to allow it once (System Settings,
+  Privacy & Security, Open Anyway). With a Developer ID certificate the build is signed, and with an
   Apple ID also notarised:
 
   ```sh

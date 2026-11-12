@@ -520,14 +520,67 @@ mod tests {
         }
     }
 
-    /// A tagged release is never signed with the debug key: the workflow stops without the
-    /// key's secrets and checks the APKs with `--release`, which fails a debug signer.
+    /// A tagged release never carries an APK signed with the debug key. In the release workflow's
+    /// Android job: with the key's secrets the APKs are signed with it and a tag checks them with
+    /// `--release` (which fails a debug signer); on a tag without them every step after the key
+    /// step is skipped, so no APK is built or uploaded and the job, and the release, go on; only a
+    /// run that is not a tag builds with the debug key.
     #[test]
-    fn a_tagged_release_needs_the_release_key() {
+    fn a_tagged_release_has_release_signed_apks_or_none() {
         let workflow = include_str!("../../../../../.github/workflows/release.yml");
-        assert!(workflow.contains("a tagged release is never signed with a debug key"));
-        assert!(workflow.contains("refs/tags/v*) release=--release"));
-        assert!(workflow.contains("bash tools/verify-apk.sh $release"));
+        let job = &workflow[workflow.find("\n  android:\n").expect("the android job")..];
+        let job = &job[..job[1..].find("\n  web:\n").expect("the job after it") + 1];
+        let steps: Vec<&str> = job.split("\n      - ").skip(1).collect();
+        let key = steps
+            .iter()
+            .position(|s| s.starts_with("name: Signing key"))
+            .expect("the key step");
+        let step = steps[key];
+        assert!(
+            step.contains("\n        id: key\n"),
+            "the key step has an id"
+        );
+        // With the secrets: the release keystore, which Gradle signs with.
+        let with_key = &step[step
+            .find("if [ -n \"$ANDROID_KEYSTORE_B64\" ]")
+            .expect("the key branch")..];
+        let on_tag = with_key
+            .find("elif [[ \"$GITHUB_REF\" == refs/tags/v* ]]")
+            .expect("the tag branch");
+        let debug = with_key.find("else\n").expect("the debug branch");
+        assert!(with_key[..on_tag].contains("echo \"KILN_KEYSTORE=$ks\""));
+        // A tag without them: nothing is built, and nothing fails.
+        let tag_branch = &with_key[on_tag..debug];
+        assert!(
+            tag_branch.contains("echo \"skip=true\" >> \"$GITHUB_OUTPUT\""),
+            "{tag_branch}"
+        );
+        assert!(
+            !tag_branch.contains("exit 1") && !tag_branch.contains("KILN_KEYSTORE"),
+            "{tag_branch}"
+        );
+        // The debug key only after the tag branch, so never on a tag.
+        assert!(with_key[debug..].contains("throwaway debug key"));
+        for later in &steps[key + 1..] {
+            assert!(
+                later.contains("\n        if: steps.key.outputs.skip != 'true'"),
+                "a step after the key step runs on a tag without the key: {}",
+                later.lines().next().unwrap_or_default()
+            );
+        }
+        assert!(
+            steps[key + 1..]
+                .iter()
+                .any(|s| s.contains("pnpm tauri android build"))
+        );
+        assert!(
+            steps[key + 1..]
+                .iter()
+                .any(|s| s.contains("actions/upload-artifact"))
+        );
+        // With the key, a tag's APKs are checked as a release's.
+        assert!(job.contains("refs/tags/v*) release=--release"));
+        assert!(job.contains("bash tools/verify-apk.sh $release"));
         let verify = include_str!("../../../../../tools/verify-apk.sh");
         assert!(verify.contains("a release is signed with the release key"));
     }
