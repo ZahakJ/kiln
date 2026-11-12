@@ -52,8 +52,8 @@ Check that:
    `windows` (`Kiln_X.Y.Z_x64-setup.exe`, `Kiln_X.Y.Z_x64_en-US.msi`), `macos-arm64` and
    `macos-x64` (`Kiln_X.Y.Z_aarch64.dmg`, `Kiln_X.Y.Z_x64.dmg`), and `android`
    (`kiln-X.Y.Z-arm64-v8a.apk`, `kiln-X.Y.Z-armeabi-v7a.apk`, `kiln-X.Y.Z-x86_64.apk`);
-3. the downloaded files are within B13: AppImage under 130 MB, `.deb`, `.exe` and `.msi` under
-   30 MB, `.dmg` and each APK under 35 MB:
+3. the downloaded files are within B13: AppImage under 130 MB, `.exe` under 30 MB, `.deb`, `.msi`
+   and `.dmg` under 35 MB, and each APK under 40 MB:
 
    ```sh
    for f in */*; do printf '%5d MB  %s\n' $(( ($(wc -c < "$f") + 1048575) / 1048576 )) "$f"; done

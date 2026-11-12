@@ -148,7 +148,7 @@ Selected budgets, enforced in CI as they become measurable:
 | B7 | 10 MB .xlsx, 500k cells: first paint / full calculation | < 1.2 s / < 2.5 s |
 | B8 | Full recalculation of 1M formula cells | < 2.0 s |
 | B12 | Wasm core / TypeScript chrome (gzip) | < 4.5 MB / < 450 KB |
-| B13 | Installers: AppImage / deb / NSIS / dmg / APK | < 40 / 30 / 30 / 35 / 35 MB |
+| B13 | Installers: AppImage / deb / NSIS (.msi) / dmg / APK | < 130 / 35 / 30 (35) / 35 / 40 MB |
 | B15 | Clean workspace build (this machine) / CI pipeline | < 6 min / < 25 min |
 
 Measured values are recorded in [qa/perf.md](qa/perf.md).

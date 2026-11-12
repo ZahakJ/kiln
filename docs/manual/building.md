@@ -61,7 +61,7 @@ xvfb-run -a pnpm --filter @kiln/e2e tauri-smoke    # the desktop smoke test
   binary inside the AppImage, checks that the desktop file opens files (`kiln %F`) and registers
   all sixteen document types, that the `.deb` installs the MIME database entry for `.kwrite`,
   `.kgrid` and `.kdeck` and an icon for every document type, and that the bundles are within the
-  size budgets (AppImage under 130 MB, `.deb` under 30 MB).
+  size budgets (AppImage under 130 MB, `.deb` under 35 MB).
 - `--startup-probe` starts Kiln, waits for Kiln Home's first paint, and prints the time since the
   process started (`startup-ms`, budget B1: under 700 ms) and, after a moment at rest, the memory
   of Kiln and the WebKit processes it started: `pss-mb`, which counts shared memory once (budget
@@ -120,7 +120,7 @@ package (`io.github.zahakj.kiln`), the label, the SDK levels, the version and th
 with `aapt2 dump xmltree` that VIEW, EDIT and SEND take every document type the desktop
 registers, by MIME type and by extension, `adjustResize` and the FileProvider; with `apksigner`
 the signature and whose key it is; with `unzip -l` the library, the web interface inside it
-and the adaptive launcher icon; and the size, under 35 MB (B13).
+and the adaptive launcher icon; and the size, under 40 MB (B13).
 
 `pnpm tauri android init` regenerates only the files missing from `gen/android`; the generated
 project's build outputs, `tauri.properties`, the Gradle files the CLI writes and the copied

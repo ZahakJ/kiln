@@ -71,7 +71,13 @@ test.describe('the site around the web app', () => {
     await expect(section.getByRole('link', { name: 'Open in browser' })).toBeVisible();
     await expect(section.getByRole('link', { name: 'Build from source' })).toBeVisible();
     await expect(section.locator('[data-release-card]')).toHaveCount(4);
-    await expect(section.locator('[data-release-card]:visible')).toHaveCount(0);
+    // Linux, Windows and macOS have a release; Android has none yet.
+    await expect(section.locator('[data-release-card]:visible')).toHaveCount(3);
+    for (const link of await section.locator('[data-release-card]:visible a[data-release-file]').all())
+      await expect(link).toHaveAttribute(
+        'href',
+        /^https:\/\/github\.com\/ZahakJ\/kiln\/releases\/download\/v0\.1\.0\/Kiln_0\.1\.0_/,
+      );
     await expect(page.locator('#download')).not.toContainText(/releases page|checksums/);
   });
 

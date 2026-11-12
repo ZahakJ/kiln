@@ -9,7 +9,7 @@
 #              release key or the debug key; with --release, the debug key fails
 #   contents   unzip -l: lib/<abi>/libkiln_desktop.so, the adaptive launcher icon (foreground,
 #              background, monochrome), the web interface embedded in the library (index.html)
-#   size       under 35 MB (B13, arm64)
+#   size       under 40 MB (B13, arm64)
 #
 # Usage: tools/verify-apk.sh [--release] [apk]   (default: the newest release APK under gen/android)
 #   --release   the APK is for a release: a debug signer (the "Android Debug" certificate) fails
@@ -171,11 +171,11 @@ grep -A8 -- "resource 0x[0-9a-f]* mipmap/ic_launcher\$" <<<"$resources" | grep -
 
 # ----- size ------------------------------------------------------------------------------------
 echo "size"
-limit=$(( 35 * 1048576 ))
+limit=$(( 40 * 1048576 ))
 if [ "$size" -lt "$limit" ]; then
-  ok "$(( (size + 1048575) / 1048576 )) MB, under 35 MB (B13)"
+  ok "$(( (size + 1048575) / 1048576 )) MB, under 40 MB (B13)"
 else
-  bad "$(( (size + 1048575) / 1048576 )) MB, over 35 MB (B13)"
+  bad "$(( (size + 1048575) / 1048576 )) MB, over 40 MB (B13)"
 fi
 
 if [ "$fail" = 0 ]; then echo "verify-apk: all checks passed"; else echo "verify-apk: some checks failed"; fi

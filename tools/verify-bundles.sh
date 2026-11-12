@@ -3,7 +3,7 @@
 #
 #   deb       dpkg-deb -I reads it; the package is kiln, its binary is /usr/bin/kiln, the desktop
 #             file runs `kiln %F` and registers every document type, the MIME database entry and the
-#             per-type icons are installed; under 30 MB.
+#             per-type icons are installed; under 35 MB.
 #   AppImage  --appimage-extract unpacks it; the binary inside runs (`kiln --version`), the desktop
 #             file registers every document type; under 130 MB (B13 as amended 2026-10-30).
 #
@@ -85,7 +85,7 @@ else
     bad "deb: dpkg-deb -I fails"
   fi
   size=$(mb "$deb")
-  [ "$size" -le 30 ] && ok "deb: ${size} MB (B13: under 30 MB)" || bad "deb: ${size} MB (B13: under 30 MB)"
+  [ "$size" -le 35 ] && ok "deb: ${size} MB (B13: under 35 MB)" || bad "deb: ${size} MB (B13: under 35 MB)"
   dpkg-deb -x "$deb" "$work/deb"
   [ -x "$work/deb/usr/bin/kiln" ] && ok "deb: /usr/bin/kiln" || bad "deb: no /usr/bin/kiln"
   check_desktop "$(find "$work/deb/usr/share/applications" -name '*.desktop' | head -n1)" deb

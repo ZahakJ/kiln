@@ -35,7 +35,7 @@
 </p>
 
 Kiln runs in your browser with nothing to install, keeps your documents on your device and
-works offline once it has loaded. On Linux it is also a desktop app you build from source.
+works offline once it has loaded. It is also a desktop app for Linux, Windows and macOS.
 
 ## Three apps
 
@@ -117,8 +117,10 @@ works offline once it has loaded. On Linux it is also a desktop app you build fr
 
 - **In the browser:** <https://zahakj.github.io/kiln/app/>. Chrome and Edge offer
   **Install Kiln**, which gives Kiln a window of its own ([the manual](docs/manual/web.md)).
-- **On Linux:** build the desktop app from source; [Building from source](docs/manual/building.md)
-  makes an AppImage and a .deb that register Kiln for your document types.
+- **On the desktop:** [Kiln 0.1.0](https://github.com/ZahakJ/kiln/releases/tag/v0.1.0) for Linux
+  (.deb or AppImage), Windows (installer or .msi) and macOS (Apple silicon or Intel), an early,
+  unsigned build: Windows asks before it runs the installer, and macOS asks you to allow Kiln
+  once. You can also [build it from source](docs/manual/building.md).
 
 ## Building from source
 

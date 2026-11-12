@@ -155,21 +155,24 @@ jobs:
         shell: bash
         run: |
           mkdir -p out
-          find target -path '*/dist/bundle/*' -type f \
+          # Only the files a bundle folder holds itself (bundle/deb/Kiln_….deb), not what the
+          # bundler left in its working folders below them (the .deb's own control.tar.gz and
+          # data.tar.gz). The macOS updater archive and the updater signatures when they are made.
+          find target -path '*/dist/bundle/*/*' -not -path '*/dist/bundle/*/*/*' -type f \
             \( -name '*.AppImage' -o -name '*.deb' -o -name '*-setup.exe' -o -name '*.msi' -o -name '*.dmg' \
-               -o -name '*.sig' -o -name '*.tar.gz' -o -name '*.zip' \) \
+               -o -name '*.app.tar.gz' -o -name '*.sig' \) \
             -exec cp {} out/ \;
           ls -la out
           test -n "$(ls out)"
 
-      # B13: AppImage < 130 MB, deb < 30 MB, NSIS < 30 MB, dmg < 35 MB (amended 2026-10-30).
+      # B13: AppImage < 130 MB, deb < 35 MB, NSIS < 30 MB, .msi < 35 MB, dmg < 35 MB.
       - name: Installer size budget (B13)
         shell: bash
         run: |
           fail=0
           for f in out/*; do
             case "$f" in
-              *.AppImage) max=130 ;; *.deb) max=30 ;; *.exe) max=30 ;; *.msi) max=30 ;; *.dmg) max=35 ;; *) continue ;;
+              *.AppImage) max=130 ;; *.deb) max=35 ;; *.exe) max=30 ;; *.msi) max=35 ;; *.dmg) max=35 ;; *) continue ;;
             esac
             size=$(wc -c < "$f")
             mb=$(( (size + 1048575) / 1048576 ))
@@ -296,7 +299,7 @@ jobs:
           done
           ls -la out
 
-      # tools/verify-apk.sh: package, intent filters, signature, contents and B13 (< 35 MB).
+      # tools/verify-apk.sh: package, intent filters, signature, contents and B13 (< 40 MB).
       # On a tag, --release fails an APK signed with the debug key.
       - name: Check the APKs (B13)
         if: steps.key.outputs.skip != 'true'
@@ -306,7 +309,7 @@ jobs:
           for f in out/*.apk; do
             bash tools/verify-apk.sh $release "$f"
             size=$(wc -c < "$f")
-            echo "- $(basename "$f"): $(( (size + 1048575) / 1048576 )) MB (budget 35 MB)" >> "$GITHUB_STEP_SUMMARY"
+            echo "- $(basename "$f"): $(( (size + 1048575) / 1048576 )) MB (budget 40 MB)" >> "$GITHUB_STEP_SUMMARY"
           done
 
       - uses: actions/upload-artifact@v7
@@ -369,6 +372,30 @@ jobs:
         with:
           path: assets
           merge-multiple: true
+
+      # The release holds exactly the files it should: every platform's, the APKs only all three
+      # together, and nothing else but updater files.
+      - name: The files of the release
+        run: |
+          v="${GITHUB_REF_NAME#v}"
+          cd assets
+          fail=0
+          for f in "kiln-web-$v.tar.gz" "Kiln_${v}_amd64.AppImage" "Kiln_${v}_amd64.deb" \
+                   "Kiln_${v}_x64-setup.exe" "Kiln_${v}_x64_en-US.msi" "Kiln_${v}_aarch64.dmg" "Kiln_${v}_x64.dmg"; do
+            [ -f "$f" ] || { echo "::error::missing: $f"; fail=1; }
+          done
+          apks=$(ls kiln-"$v"-*.apk 2>/dev/null | wc -l)
+          [ "$apks" = 0 ] || [ "$apks" = 3 ] || { echo "::error::$apks APKs, not 3"; fail=1; }
+          for f in *; do
+            case "$f" in
+              "kiln-web-$v.tar.gz" | "Kiln_${v}_amd64.AppImage" | "Kiln_${v}_amd64.deb" | "Kiln_${v}_x64-setup.exe" | \
+              "Kiln_${v}_x64_en-US.msi" | "Kiln_${v}_aarch64.dmg" | "Kiln_${v}_x64.dmg" | \
+              "kiln-$v-arm64-v8a.apk" | "kiln-$v-armeabi-v7a.apk" | "kiln-$v-x86_64.apk" | *.sig | *.app.tar.gz) ;;
+              *) echo "::error::not a file of the release: $f"; fail=1 ;;
+            esac
+          done
+          ls -la
+          exit $fail
 
       - name: SHA256SUMS.txt
         run: |

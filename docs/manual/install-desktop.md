@@ -1,6 +1,6 @@
 # Kiln on Linux
 
-The desktop app is the same suite as the [web app](web.md), in a window of its own: Kiln Home, Kiln Write, Kiln Grid and Kiln Deck on the native core, with OpenDocument files and Presenter View in a second window. You build it from source: [Building from source](building.md#the-desktop-app) has the steps.
+The desktop app is the same suite as the [web app](web.md), in a window of its own: Kiln Home, Kiln Write, Kiln Grid and Kiln Deck on the native core, with OpenDocument files and Presenter View in a second window. [Kiln 0.1.0](https://github.com/ZahakJ/kiln/releases/tag/v0.1.0) has a .deb and an AppImage for Linux, an installer and an .msi for Windows, and a disk image for Macs with Apple silicon or Intel, with `SHA256SUMS.txt` to check them against. They are early builds: the Windows installers are not signed, so Windows asks before it runs them (More info, then Run anyway), and the macOS app is signed ad hoc, so macOS asks you to allow it once (System Settings, Privacy & Security, Open Anyway). You can also build it from source: [Building from source](building.md#the-desktop-app) has the steps.
 
 ## What the build makes
 

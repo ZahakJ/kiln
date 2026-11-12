@@ -48,22 +48,22 @@
           "read": "2026-11-01"
         },
         "formats": {
-          "text": ".docx, .xlsx and .pptx read and written directly; its own .kwrite, .kgrid and .kdeck; OpenDocument in the Linux build",
+          "text": ".docx, .xlsx and .pptx read and written directly; its own .kwrite, .kgrid and .kdeck; OpenDocument in the desktop app",
           "urls": [
             "manual/?p=formats"
           ],
           "read": "2026-11-01"
         },
         "platforms": {
-          "text": "Linux and the web",
+          "text": "Linux, Windows, macOS and the web",
           "urls": [
             "manual/?p=web",
             "manual/?p=install-desktop"
           ],
-          "read": "2026-11-01"
+          "read": "2026-11-12"
         },
         "offline": {
-          "text": "The installed web app and the Linux build",
+          "text": "The installed web app and the desktop app",
           "urls": [
             "manual/?p=web"
           ],
