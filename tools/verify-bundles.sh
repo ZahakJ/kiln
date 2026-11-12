@@ -19,6 +19,8 @@ if [ -z "$dir" ]; then
   done
 fi
 [ -n "$dir" ] && [ -d "$dir" ] || { echo "verify-bundles: no bundle directory (build with pnpm --filter @kiln/desktop tauri build)"; exit 1; }
+# An absolute path: the AppImage check runs it from a directory of its own.
+dir="$(cd "$dir" && pwd)"
 command -v dpkg-deb >/dev/null || { echo "verify-bundles: dpkg-deb is missing (install dpkg)"; exit 1; }
 
 # The document types every bundle registers (apps/desktop/src-tauri/src/files.rs).

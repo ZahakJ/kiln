@@ -150,11 +150,8 @@ jobs:
           tauriScript: pnpm tauri
           args: ${{ matrix.args }} --config ${{ env.KILN_RELEASE_CONFIG }} -- --profile dist
 
-      - name: Check the Linux bundles
-        if: runner.os == 'Linux'
-        run: bash tools/verify-bundles.sh target/dist/bundle
-
       - name: Collect the bundles
+        id: collect
         shell: bash
         run: |
           mkdir -p out
@@ -182,11 +179,18 @@ jobs:
           done
           exit $fail
 
+      # Uploaded whatever the checks after the build say, so a failed one can be looked into; the
+      # job still fails, and a release is published only when every job passed.
       - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() && steps.collect.outcome == 'success' }}
         with:
           name: ${{ matrix.name }}
           path: out/*
           if-no-files-found: error
+
+      - name: Check the Linux bundles
+        if: runner.os == 'Linux'
+        run: bash tools/verify-bundles.sh target/dist/bundle
 
   android:
     runs-on: ubuntu-latest
