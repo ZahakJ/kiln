@@ -60,10 +60,10 @@ catalog:
   workbox-window: 7.4.1
   # Data and i18n
   i18next: 27.0.1
-  react-i18next: 18.0.0
+  react-i18next: 18.0.1
   # ICU message format for i18next (MIT; intl-messageformat BSD-3-Clause)
   i18next-icu: 2.7.0
-  intl-messageformat: 12.1.4
+  intl-messageformat: 12.1.5
   zod: 4.6.7
   # Tauri 2 (desktop + Android shell, TauriClient)
   '@tauri-apps/cli': 2.12.4
