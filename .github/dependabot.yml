@@ -1,7 +1,9 @@
 # Dependency updates, batched: each ecosystem gets at most one pull request a week for minor and
 # patch versions and one for major versions, and no more than two open at a time, so every update
 # runs the whole of CI once. Versions are pinned once: npm in the `catalog:` of pnpm-workspace.yaml,
-# Rust in [workspace.dependencies] of Cargo.toml. Security updates are not held to this schedule.
+# Rust in [workspace.dependencies] of Cargo.toml. Security updates are not held to this schedule,
+# but they come together, one pull request per ecosystem. Playwright moves only with the pinned
+# Playwright image of CI and the screenshot baselines made in it, by hand.
 version: 2
 updates:
   - package-ecosystem: cargo
@@ -15,6 +17,9 @@ updates:
         update-types: [minor, patch]
       cargo-major:
         update-types: [major]
+      cargo-security:
+        applies-to: security-updates
+        patterns: ["*"]
     commit-message:
       prefix: build
       include: scope
@@ -30,6 +35,12 @@ updates:
         update-types: [minor, patch]
       npm-major:
         update-types: [major]
+      npm-security:
+        applies-to: security-updates
+        patterns: ["*"]
+    ignore:
+      - dependency-name: "@playwright/test"
+      - dependency-name: playwright
     commit-message:
       prefix: build
       include: scope
@@ -42,7 +53,7 @@ updates:
     open-pull-requests-limit: 1
     groups:
       actions:
-        patterns: ['*']
+        patterns: ["*"]
     commit-message:
       prefix: ci
 
@@ -54,6 +65,6 @@ updates:
     open-pull-requests-limit: 1
     groups:
       gradle:
-        patterns: ['*']
+        patterns: ["*"]
     commit-message:
       prefix: build

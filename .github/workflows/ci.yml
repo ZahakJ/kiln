@@ -31,7 +31,7 @@ env:
   CARGO_TERM_COLOR: always
   TURBO_TELEMETRY_DISABLED: 1
   # sccache is the rustc wrapper in .cargo/config.toml; on CI it uses the GitHub Actions cache.
-  SCCACHE_GHA_ENABLED: 'true'
+  SCCACHE_GHA_ENABLED: "true"
   RUSTC_WRAPPER: sccache
   # The Tauri shell's build dependencies on Linux, for every job that compiles kiln-desktop.
   TAURI_APT: >-
@@ -44,19 +44,19 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
-      - uses: dtolnay/rust-toolchain@master
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
         with:
           toolchain: 1.99.1
           components: rustfmt, clippy
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
         with:
           shared-key: kiln-lint
-      - uses: mozilla-actions/sccache-action@v0.0.11
+      - uses: mozilla-actions/sccache-action@fc920bf0ec8de6ee65d409111f7ec508035751ba # v0.0.11
       - name: Tauri Linux libraries
         run: |
           sudo apt-get update
           sudo apt-get install -y $TAURI_APT
-      - uses: taiki-e/install-action@v2
+      - uses: taiki-e/install-action@cfdb7ed4ccc7c7dce37759eae89dc5674b469b39 # v2.90.3
         with:
           tool: cargo-deny@0.20.2
       - name: Format
@@ -77,13 +77,13 @@ jobs:
     timeout-minutes: 70
     steps:
       - uses: actions/checkout@v7
-      - uses: dtolnay/rust-toolchain@master
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
         with:
           toolchain: 1.99.1
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
         with:
           shared-key: kiln-test
-      - uses: mozilla-actions/sccache-action@v0.0.11
+      - uses: mozilla-actions/sccache-action@fc920bf0ec8de6ee65d409111f7ec508035751ba # v0.0.11
       # poppler-utils: the PDF tests render pages with pdftoppm. The CJK and emoji fonts are the
       # platform fallbacks the native text tests lay out with; KILN_REQUIRE_SYSTEM_FONTS makes a
       # missing one a failure instead of a skipped test.
@@ -91,13 +91,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y poppler-utils fonts-noto-cjk fonts-noto-color-emoji
-      - uses: taiki-e/install-action@v2
+      - uses: taiki-e/install-action@cfdb7ed4ccc7c7dce37759eae89dc5674b469b39 # v2.90.3
         with:
           tool: cargo-nextest@0.9.148
       - name: Tests
         run: cargo nextest run --workspace --exclude kiln-desktop
         env:
-          KILN_REQUIRE_SYSTEM_FONTS: '1'
+          KILN_REQUIRE_SYSTEM_FONTS: "1"
 
   wasm:
     runs-on: ubuntu-latest
@@ -106,16 +106,16 @@ jobs:
       - uses: actions/checkout@v7
       # rust-src for the Grid core's threads module, which rebuilds the standard library with
       # atomics.
-      - uses: dtolnay/rust-toolchain@master
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
         with:
           toolchain: 1.99.1
           components: rust-src
           targets: wasm32-unknown-unknown
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
         with:
           shared-key: kiln-wasm
-      - uses: mozilla-actions/sccache-action@v0.0.11
-      - uses: taiki-e/install-action@v2
+      - uses: mozilla-actions/sccache-action@fc920bf0ec8de6ee65d409111f7ec508035751ba # v0.0.11
+      - uses: taiki-e/install-action@cfdb7ed4ccc7c7dce37759eae89dc5674b469b39 # v2.90.3
         with:
           tool: wasm-bindgen@0.2.129
       - name: binaryen (wasm-opt, version_133)
@@ -148,13 +148,13 @@ jobs:
     timeout-minutes: 50
     steps:
       - uses: actions/checkout@v7
-      - uses: dtolnay/rust-toolchain@master
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
         with:
           toolchain: 1.99.1
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
         with:
           shared-key: kiln-measure
-      - uses: mozilla-actions/sccache-action@v0.0.11
+      - uses: mozilla-actions/sccache-action@fc920bf0ec8de6ee65d409111f7ec508035751ba # v0.0.11
       # The budgets scale with this machine's calibration and add the CI tolerance (x1.5).
       - name: Performance budgets
         run: cargo xtask budgets --ci
@@ -176,7 +176,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       # Installs the pnpm version named in package.json's packageManager field.
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
@@ -195,13 +195,13 @@ jobs:
         run: pnpm test -- --coverage
       - name: Licence check
         run: pnpm licenses:check
-      - uses: dtolnay/rust-toolchain@master
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
         with:
           toolchain: 1.99.1
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
         with:
           shared-key: kiln-web
-      - uses: mozilla-actions/sccache-action@v0.0.11
+      - uses: mozilla-actions/sccache-action@fc920bf0ec8de6ee65d409111f7ec508035751ba # v0.0.11
       - name: Third-party notices are up to date
         run: cargo xtask notices --check
       - name: Build
@@ -217,7 +217,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
@@ -228,13 +228,13 @@ jobs:
         with:
           name: wasm-${{ github.run_id }}
           path: apps/web/src/wasm
-      - uses: dtolnay/rust-toolchain@master
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
         with:
           toolchain: 1.99.1
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
         with:
           shared-key: kiln-site
-      - uses: mozilla-actions/sccache-action@v0.0.11
+      - uses: mozilla-actions/sccache-action@fc920bf0ec8de6ee65d409111f7ec508035751ba # v0.0.11
       - name: GitHub Pages artefact
         run: bash tools/pages-build.sh
       - uses: actions/upload-artifact@v7
@@ -260,7 +260,7 @@ jobs:
         shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
     env:
       # The collaboration tests start the relay with `cargo run`; no sccache in this job.
-      RUSTC_WRAPPER: ''
+      RUSTC_WRAPPER: ""
     steps:
       - uses: actions/checkout@v7
       # poppler-utils: the print tests read the PDF; a C toolchain for the relay's build;
@@ -270,15 +270,15 @@ jobs:
         run: |
           apt-get update
           apt-get install -y --no-install-recommends poppler-utils build-essential pkg-config python3-venv
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: pnpm
-      - uses: dtolnay/rust-toolchain@master
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
         with:
           toolchain: 1.99.1
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
         with:
           shared-key: kiln-e2e
       - name: Install
@@ -310,11 +310,11 @@ jobs:
         env:
           # The runner has no LibreOffice: Grid's Office file loop is skipped (and says so) here;
           # it runs wherever LibreOffice is installed, and fails there if it cannot use it.
-          KILN_E2E_NO_LIBREOFFICE: '1'
+          KILN_E2E_NO_LIBREOFFICE: "1"
           # Frame-time and open-time budgets in a browser on a shared runner measure the runner:
           # reported here (e2e/run.mjs). The measure job keeps the core's budgets as a gate, scaled
           # by the machine's calibration, and a release checks the browser budgets on known hardware.
-          KILN_BUDGETS_REPORT_ONLY: '1'
+          KILN_BUDGETS_REPORT_ONLY: "1"
       # Screenshots are reviewed by people, so keep them whether or not the run passed.
       - name: Upload screenshots and report
         if: always()
@@ -335,13 +335,13 @@ jobs:
     timeout-minutes: 50
     steps:
       - uses: actions/checkout@v7
-      - uses: dtolnay/rust-toolchain@master
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
         with:
           toolchain: 1.99.1
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
         with:
           shared-key: kiln-desktop
-      - uses: mozilla-actions/sccache-action@v0.0.11
+      - uses: mozilla-actions/sccache-action@fc920bf0ec8de6ee65d409111f7ec508035751ba # v0.0.11
       # webkitgtk-webdriver is WebKitWebDriver, which tauri-driver runs the app under;
       # python3-xlib closes a window the way a window manager would (e2e/tauri/smoke.ts).
       - name: Tauri Linux libraries, WebKitWebDriver and a virtual display
@@ -349,7 +349,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y $TAURI_APT xvfb webkitgtk-webdriver python3-xlib \
             fonts-noto-cjk fonts-noto-color-emoji
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
@@ -364,7 +364,7 @@ jobs:
           pnpm --filter @kiln/desktop frontend
       - name: Build the desktop shell
         run: cargo build -p kiln-desktop --features custom-protocol
-      - uses: taiki-e/install-action@v2
+      - uses: taiki-e/install-action@cfdb7ed4ccc7c7dce37759eae89dc5674b469b39 # v2.90.3
         with:
           tool: cargo-nextest@0.9.148
       - name: Desktop shell tests

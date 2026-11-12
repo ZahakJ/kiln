@@ -11,29 +11,38 @@ packages:
 allowBuilds:
   esbuild: true
 
+# Security fixes in dependencies of dependencies (Dependabot alerts): the patched releases, until
+# the packages that bring them in move on. Build and test tools only: none of them ships in Kiln.
+overrides:
+  'undici@>=8.0.0 <8.12.4': 8.12.4
+  'minimatch@>=7.0.0 <11.0.1': ^11.0.1
+  'glob@>=9.0.0 <14.0.2': ^14.0.2
+  'image-size@>=0.6.3 <2.0.3': ^2.0.3
+  'uuid@<11.1.1': ^11.1.1
+
 catalog:
   # Language, build, test
   typescript: 7.0.2
-  vite: 8.3.4
-  '@vitejs/plugin-react': 6.1.2
-  vitest: 5.0.5
-  '@vitest/coverage-v8': 5.0.5
+  vite: 8.3.6
+  '@vitejs/plugin-react': 6.2.1
+  vitest: 5.1.0
+  '@vitest/coverage-v8': 5.1.0
   '@playwright/test': 1.64.1
   playwright: 1.64.1
-  turbo: 2.11.8
-  '@biomejs/biome': 2.5.15
+  turbo: 2.11.10
+  '@biomejs/biome': 2.6.6
   tsx: 4.23.15
   '@types/node': 24.19.2
   '@types/react': 19.3.0
   '@types/react-dom': 19.3.0
-  jsdom: 30.1.3
+  jsdom: 31.0.0
   '@testing-library/react': 16.3.3
   '@testing-library/dom': 10.4.2
   '@testing-library/user-event': 14.6.8
   # UI
   react: 19.3.1
   react-dom: 19.3.1
-  zustand: 5.0.15
+  zustand: 5.1.0
   '@radix-ui/react-dropdown-menu': 2.2.1
   '@radix-ui/react-popover': 1.3.1
   '@radix-ui/react-dialog': 1.3.1
@@ -42,29 +51,29 @@ catalog:
   '@radix-ui/react-toolbar': 1.2.1
   '@radix-ui/react-select': 2.4.1
   '@radix-ui/react-direction': 1.2.0
-  lucide-react: 1.57.0
+  lucide-react: 1.70.0
   cmdk: 1.1.1
   react-colorful: 5.8.1
-  tailwindcss: 4.3.3
-  '@tailwindcss/vite': 4.3.3
+  tailwindcss: 4.3.5
+  '@tailwindcss/vite': 4.3.5
   vite-plugin-pwa: 2.0.0
   workbox-window: 7.4.1
   # Data and i18n
-  i18next: 26.4.6
-  react-i18next: 17.0.18
+  i18next: 27.0.1
+  react-i18next: 18.0.0
   # ICU message format for i18next (MIT; intl-messageformat BSD-3-Clause)
-  i18next-icu: 2.5.0
-  intl-messageformat: 12.1.3
+  i18next-icu: 2.7.0
+  intl-messageformat: 12.1.4
   zod: 4.6.7
   # Tauri 2 (desktop + Android shell, TauriClient)
-  '@tauri-apps/cli': 2.12.3
+  '@tauri-apps/cli': 2.12.4
   '@tauri-apps/api': 2.12.4
   '@tauri-apps/plugin-fs': 2.7.1
-  '@tauri-apps/plugin-dialog': 2.8.3
+  '@tauri-apps/plugin-dialog': 2.8.4
   '@tauri-apps/plugin-opener': 2.7.2
   '@tauri-apps/plugin-store': 2.5.0
   '@tauri-apps/plugin-window-state': 2.5.0
-  '@tauri-apps/plugin-updater': 2.14.0
+  '@tauri-apps/plugin-updater': 2.14.1
   '@tauri-apps/plugin-os': 2.4.0
   '@tauri-apps/plugin-process': 2.4.0
   '@tauri-apps/plugin-clipboard-manager': 2.5.0
@@ -76,11 +85,11 @@ catalog:
   '@axe-core/playwright': 4.14.0
   pixelmatch: 8.0.0
   # Dev-only: Lighthouse CLI for the web app's B12 time to interactive (Apache-2.0)
-  lighthouse: 13.5.0
+  lighthouse: 13.6.0
   # Dev-only test oracles (never shipped)
   exceljs: 4.4.0
   mammoth: 1.13.0
-  docx: 9.11.0
+  docx: 9.15.3
   pptxgenjs: 4.0.1
   docx-preview: 0.4.1
   # DOCX reader: w:sym symbol-font characters → Unicode (BSD-2-Clause; also a mammoth dependency)
@@ -88,7 +97,7 @@ catalog:
   # Dev-only number-format oracle for conformance/numfmt (tools/gen-numfmt-cases.mjs; MIT)
   numfmt: 3.2.6
   # Dev-only TSX parser for the hard-coded string guard of @kiln/i18n (MIT; the version Vite already uses)
-  rolldown: 1.2.14
+  rolldown: 1.3.0
 
 # Catalog versions newer than pnpm's minimum release age, accepted deliberately.
 minimumReleaseAgeExclude:

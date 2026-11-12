@@ -59,7 +59,7 @@
  * so each is a 24 px pointer target with its neighbours a full target away (WCAG 2.5.8).
  */
 :where([role="dialog"], [role="alertdialog"], aside, .kiln-taskpane, .kiln-backstage)
-:where(input[type="checkbox"]:not([class]), input[type="radio"]:not([class])) {
+  :where(input[type="checkbox"]:not([class]), input[type="radio"]:not([class])) {
   width: 16px;
   height: 16px;
   margin: 4px;

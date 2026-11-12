@@ -4,7 +4,7 @@ The document surface (`docs/adr/0003-rendering.md`): paints the Rust core's Scen
 Presentation only — it never lays out text or decides what a command does.
 
 ```tsx
-<Surface client={client} doc={doc} label="Report.docx" theme="system" />
+<Surface client={client} doc={doc} label="Report.docx" theme="system" />;
 ```
 
 - **`SceneCache`** mirrors what the core's `DeltaTracker` believes the painter holds: tiles by `TileId`,

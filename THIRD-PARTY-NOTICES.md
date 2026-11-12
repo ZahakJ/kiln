@@ -20,7 +20,7 @@ third-party software listed below, each under its own licence. This file is gene
 | append-only-bytes | 0.1.12 | MIT |
 | approx | 0.5.1 | Apache-2.0 |
 | arbitrary | 1.5.0 | MIT OR Apache-2.0 |
-| arboard | 3.6.1 | MIT OR Apache-2.0 |
+| arboard | 3.7.0 | MIT OR Apache-2.0 |
 | arrayref | 0.3.9 | BSD-2-Clause |
 | arrayvec | 0.7.8 | MIT OR Apache-2.0 |
 | arref | 0.1.0 | MIT |
@@ -50,6 +50,7 @@ third-party software listed below, each under its own licence. This file is gene
 | bitflags | 2.13.2 | MIT OR Apache-2.0 |
 | bitmaps | 2.1.0 | MPL-2.0+ |
 | block-buffer | 0.10.4 | MIT OR Apache-2.0 |
+| block-buffer | 0.12.1 | MIT OR Apache-2.0 |
 | block2 | 0.6.2 | MIT |
 | blocking | 1.7.0 | Apache-2.0 OR MIT |
 | brotli | 9.0.0 | BSD-3-Clause AND MIT |
@@ -69,6 +70,7 @@ third-party software listed below, each under its own licence. This file is gene
 | cesu8 | 1.1.0 | Apache-2.0/MIT |
 | cfb | 0.14.0 | MIT |
 | cfg-if | 1.0.5 | MIT OR Apache-2.0 |
+| chacha20 | 0.10.2 | MIT OR Apache-2.0 |
 | chrono | 0.4.45 | MIT OR Apache-2.0 |
 | clipboard-win | 5.4.3 | BSL-1.0 |
 | cobs | 0.3.0 | MIT OR Apache-2.0 |
@@ -76,6 +78,7 @@ third-party software listed below, each under its own licence. This file is gene
 | combine | 4.6.9 | MIT |
 | concurrent-queue | 2.5.0 | Apache-2.0 OR MIT |
 | console_error_panic_hook | 0.1.7 | Apache-2.0/MIT |
+| const-oid | 0.10.3 | Apache-2.0 OR MIT |
 | cookie | 0.18.2 | MIT OR Apache-2.0 |
 | core-foundation | 0.10.1 | MIT OR Apache-2.0 |
 | core-foundation-sys | 0.8.7 | MIT OR Apache-2.0 |
@@ -83,13 +86,15 @@ third-party software listed below, each under its own licence. This file is gene
 | core-graphics-types | 0.2.0 | MIT OR Apache-2.0 |
 | core_detect | 1.0.0 | MIT/Apache-2.0 |
 | cpufeatures | 0.2.17 | MIT OR Apache-2.0 |
-| crc32fast | 1.5.2 | MIT OR Apache-2.0 |
+| cpufeatures | 0.3.1 | MIT OR Apache-2.0 |
+| crc32fast | 1.5.4 | MIT OR Apache-2.0 |
 | critical-section | 1.2.0 | MIT OR Apache-2.0 |
 | crossbeam-channel | 0.5.17 | MIT OR Apache-2.0 |
 | crossbeam-deque | 0.8.8 | MIT OR Apache-2.0 |
 | crossbeam-epoch | 0.9.21 | MIT OR Apache-2.0 |
 | crossbeam-utils | 0.8.23 | MIT OR Apache-2.0 |
 | crypto-common | 0.1.7 | MIT OR Apache-2.0 |
+| crypto-common | 0.2.2 | MIT OR Apache-2.0 |
 | cssparser | 0.37.0 | MPL-2.0 |
 | cssparser-macros | 0.7.1 | MPL-2.0 |
 | ctor | 1.0.13 | Apache-2.0 OR MIT |
@@ -110,6 +115,7 @@ third-party software listed below, each under its own licence. This file is gene
 | derive_more-impl | 2.1.1 | MIT |
 | diff | 0.1.13 | MIT OR Apache-2.0 |
 | digest | 0.10.7 | MIT OR Apache-2.0 |
+| digest | 0.11.3 | MIT OR Apache-2.0 |
 | dirs | 7.0.0 | MIT OR Apache-2.0 |
 | dirs-sys | 0.5.0 | MIT OR Apache-2.0 |
 | dispatch2 | 0.3.1 | Zlib OR Apache-2.0 OR MIT |
@@ -127,7 +133,7 @@ third-party software listed below, each under its own licence. This file is gene
 | embed_plist | 1.2.2 | MIT OR Apache-2.0 |
 | embedded-io | 0.4.0 | MIT OR Apache-2.0 |
 | embedded-io | 0.6.1 | MIT OR Apache-2.0 |
-| encoding_rs | 0.8.42 | (Apache-2.0 OR MIT) AND BSD-3-Clause |
+| encoding_rs | 0.8.44 | (Apache-2.0 OR MIT) AND BSD-3-Clause |
 | endi | 1.1.1 | MIT |
 | ensure-cov | 0.1.0 | MIT OR Apache-2.0 |
 | enum-as-inner | 0.5.1 | MIT/Apache-2.0 |
@@ -162,7 +168,6 @@ third-party software listed below, each under its own licence. This file is gene
 | foreign-types-shared | 0.1.1 | MIT/Apache-2.0 |
 | foreign-types-shared | 0.3.1 | MIT/Apache-2.0 |
 | form_urlencoded | 1.2.2 | MIT OR Apache-2.0 |
-| fsevent-sys | 4.1.0 | MIT |
 | fst | 0.4.7 | Unlicense/MIT |
 | futures-channel | 0.3.34 | MIT OR Apache-2.0 |
 | futures-core | 0.3.34 | MIT OR Apache-2.0 |
@@ -221,6 +226,7 @@ third-party software listed below, each under its own licence. This file is gene
 | http-body-util | 0.1.5 | MIT |
 | httparse | 1.10.1 | MIT OR Apache-2.0 |
 | httpdate | 1.0.3 | MIT OR Apache-2.0 |
+| hybrid-array | 0.4.15 | MIT OR Apache-2.0 |
 | hyper | 1.12.0 | MIT |
 | hyper-tls | 0.6.0 | MIT/Apache-2.0 |
 | hyper-util | 0.1.21 | MIT |
@@ -232,7 +238,7 @@ third-party software listed below, each under its own licence. This file is gene
 | icu_collator | 2.3.1 | Unicode-3.0 |
 | icu_collator_data | 2.3.0 | Unicode-3.0 |
 | icu_collections | 2.3.0 | Unicode-3.0 |
-| icu_locale_core | 2.3.0 | Unicode-3.0 |
+| icu_locale_core | 2.4.0 | Unicode-3.0 |
 | icu_locale_fallback | 2.3.0 | Unicode-3.0 |
 | icu_locale_fallback_data | 2.3.0 | Unicode-3.0 |
 | icu_normalizer | 2.3.0 | Unicode-3.0 |
@@ -294,10 +300,10 @@ third-party software listed below, each under its own licence. This file is gene
 | lock_api | 0.4.14 | MIT OR Apache-2.0 |
 | log | 0.4.34 | MIT OR Apache-2.0 |
 | loom | 0.7.2 | MIT |
-| loro | 1.16.2 | MIT |
+| loro | 1.17.1 | MIT |
 | loro-common | 1.17.0 | MIT |
 | loro-delta | 1.13.0 | MIT |
-| loro-internal | 1.16.2 | MIT |
+| loro-internal | 1.17.1 | MIT |
 | loro-kv-store | 1.17.0 | MIT |
 | loro-rle | 1.6.0 | MIT |
 | loro-thunderdome | 0.6.2 | MIT OR Apache-2.0 |
@@ -327,7 +333,7 @@ third-party software listed below, each under its own licence. This file is gene
 | new_debug_unreachable | 1.0.6 | MIT |
 | nix | 0.31.3 | MIT |
 | nonmax | 0.5.5 | MIT OR Apache-2.0 |
-| notify | 8.2.0 | CC0-1.0 |
+| notify | 8.2.1 | CC0-1.0 |
 | notify-types | 2.1.0 | MIT OR Apache-2.0 |
 | nu-ansi-term | 0.50.3 | MIT |
 | num | 0.4.3 | MIT OR Apache-2.0 |
@@ -348,6 +354,7 @@ third-party software listed below, each under its own licence. This file is gene
 | objc2-core-graphics | 0.3.2 | Zlib OR Apache-2.0 OR MIT |
 | objc2-core-image | 0.3.2 | Zlib OR Apache-2.0 OR MIT |
 | objc2-core-location | 0.3.2 | Zlib OR Apache-2.0 OR MIT |
+| objc2-core-services | 0.3.2 | Zlib OR Apache-2.0 OR MIT |
 | objc2-core-text | 0.3.2 | Zlib OR Apache-2.0 OR MIT |
 | objc2-encode | 4.1.0 | MIT |
 | objc2-exception-helper | 0.1.1 | Zlib OR Apache-2.0 OR MIT |
@@ -431,7 +438,7 @@ third-party software listed below, each under its own licence. This file is gene
 | rayon-core | 1.13.0 | MIT OR Apache-2.0 |
 | read-fonts | 0.39.2 | MIT OR Apache-2.0 |
 | read-fonts | 0.41.0 | MIT OR Apache-2.0 |
-| redb | 4.4.0 | MIT OR Apache-2.0 |
+| redb | 4.5.0 | MIT OR Apache-2.0 |
 | redox_syscall | 0.5.18 | MIT |
 | redox_users | 0.5.3 | MIT |
 | ref-cast | 1.0.27 | MIT OR Apache-2.0 |
@@ -440,7 +447,7 @@ third-party software listed below, each under its own licence. This file is gene
 | regex-automata | 0.4.18 | MIT OR Apache-2.0 |
 | regex-syntax | 0.8.11 | MIT OR Apache-2.0 |
 | reqwest | 0.13.5 | MIT OR Apache-2.0 |
-| rfd | 0.16.0 | MIT |
+| rfd | 0.17.2 | MIT |
 | ropey | 1.6.1 | MIT |
 | roxmltree | 0.21.1 | MIT OR Apache-2.0 |
 | rust_decimal | 1.43.0 | MIT |
@@ -482,7 +489,9 @@ third-party software listed below, each under its own licence. This file is gene
 | serialize-to-javascript-impl | 0.1.2 | MIT OR Apache-2.0 |
 | servo_arc | 0.4.3 | MIT OR Apache-2.0 |
 | sha1 | 0.10.7 | MIT OR Apache-2.0 |
+| sha1 | 0.11.0 | MIT OR Apache-2.0 |
 | sha2 | 0.10.9 | MIT OR Apache-2.0 |
+| sha2 | 0.11.1 | MIT OR Apache-2.0 |
 | sharded-slab | 0.1.7 | MIT |
 | signal-hook-registry | 1.4.8 | MIT OR Apache-2.0 |
 | simba | 0.10.2 | Apache-2.0 |
@@ -493,7 +502,7 @@ third-party software listed below, each under its own licence. This file is gene
 | skrifa | 0.42.1 | MIT OR Apache-2.0 |
 | skrifa | 0.44.0 | MIT OR Apache-2.0 |
 | slab | 0.4.12 | MIT |
-| smallvec | 1.16.3 | MIT OR Apache-2.0 |
+| smallvec | 1.16.5 | MIT OR Apache-2.0 |
 | socket2 | 0.6.5 | MIT OR Apache-2.0 |
 | softbuffer | 0.4.8 | MIT OR Apache-2.0 |
 | soup3 | 0.5.0 | MIT |
@@ -521,7 +530,7 @@ third-party software listed below, each under its own licence. This file is gene
 | tauri | 2.12.4 | Apache-2.0 OR MIT |
 | tauri-codegen | 2.7.3 | Apache-2.0 OR MIT |
 | tauri-macros | 2.7.3 | Apache-2.0 OR MIT |
-| tauri-plugin-dialog | 2.8.3 | Apache-2.0 OR MIT |
+| tauri-plugin-dialog | 2.8.4 | Apache-2.0 OR MIT |
 | tauri-plugin-fs | 2.7.1 | Apache-2.0 OR MIT |
 | tauri-plugin-opener | 2.7.2 | Apache-2.0 OR MIT |
 | tauri-plugin-process | 2.4.0 | Apache-2.0 OR MIT |
@@ -544,21 +553,22 @@ third-party software listed below, each under its own licence. This file is gene
 | time-macros | 0.2.32 | MIT OR Apache-2.0 |
 | tiny-skia | 0.12.0 | BSD-3-Clause |
 | tiny-skia-path | 0.12.0 | BSD-3-Clause |
-| tinystr | 0.8.4 | Unicode-3.0 |
+| tinystr | 0.8.5 | Unicode-3.0 |
 | tinyvec | 1.13.3 | Zlib OR Apache-2.0 OR MIT |
-| tokio | 1.53.3 | MIT |
+| tokio | 1.54.1 | MIT |
 | tokio-macros | 2.7.2 | MIT |
 | tokio-native-tls | 0.3.1 | MIT |
 | tokio-tungstenite | 0.29.0 | MIT |
+| tokio-tungstenite | 0.30.0 | MIT |
 | tokio-util | 0.7.20 | MIT |
-| toml | 1.1.8+spec-1.1.0 | MIT OR Apache-2.0 |
+| toml | 1.2.0+spec-1.1.0 | MIT OR Apache-2.0 |
 | toml_datetime | 0.6.3 | MIT OR Apache-2.0 |
 | toml_datetime | 1.1.2+spec-1.1.0 | MIT OR Apache-2.0 |
 | toml_edit | 0.19.15 | MIT OR Apache-2.0 |
 | toml_edit | 0.20.2 | MIT OR Apache-2.0 |
 | toml_edit | 0.25.17+spec-1.1.0 | MIT OR Apache-2.0 |
 | toml_parser | 1.1.5+spec-1.1.0 | MIT OR Apache-2.0 |
-| toml_writer | 1.1.3+spec-1.1.0 | MIT OR Apache-2.0 |
+| toml_writer | 1.2.0+spec-1.1.0 | MIT OR Apache-2.0 |
 | tower | 0.5.3 | MIT |
 | tower-http | 0.6.11 | MIT |
 | tower-layer | 0.3.3 | MIT |
@@ -573,8 +583,9 @@ third-party software listed below, each under its own licence. This file is gene
 | ts-rs | 12.0.1 | MIT |
 | ts-rs-macros | 12.0.1 | MIT |
 | tungstenite | 0.29.0 | MIT OR Apache-2.0 |
+| tungstenite | 0.30.0 | MIT OR Apache-2.0 |
 | twox-hash | 2.1.5 | MIT |
-| typed-path | 0.12.3 | MIT OR Apache-2.0 |
+| typed-path | 0.13.0 | MIT OR Apache-2.0 |
 | typeid | 1.0.3 | MIT OR Apache-2.0 |
 | typenum | 1.20.1 | MIT OR Apache-2.0 |
 | ucd-trie | 0.1.7 | MIT OR Apache-2.0 |
@@ -625,27 +636,17 @@ third-party software listed below, each under its own licence. This file is gene
 | windows-result | 0.4.1 | MIT OR Apache-2.0 |
 | windows-strings | 0.5.1 | MIT OR Apache-2.0 |
 | windows-sys | 0.45.0 | MIT OR Apache-2.0 |
-| windows-sys | 0.60.2 | MIT OR Apache-2.0 |
 | windows-sys | 0.61.2 | MIT OR Apache-2.0 |
 | windows-targets | 0.42.2 | MIT OR Apache-2.0 |
-| windows-targets | 0.53.5 | MIT OR Apache-2.0 |
 | windows-threading | 0.2.1 | MIT OR Apache-2.0 |
 | windows-version | 0.1.7 | MIT OR Apache-2.0 |
 | windows_aarch64_gnullvm | 0.42.2 | MIT OR Apache-2.0 |
-| windows_aarch64_gnullvm | 0.53.1 | MIT OR Apache-2.0 |
 | windows_aarch64_msvc | 0.42.2 | MIT OR Apache-2.0 |
-| windows_aarch64_msvc | 0.53.1 | MIT OR Apache-2.0 |
 | windows_i686_gnu | 0.42.2 | MIT OR Apache-2.0 |
-| windows_i686_gnu | 0.53.1 | MIT OR Apache-2.0 |
-| windows_i686_gnullvm | 0.53.1 | MIT OR Apache-2.0 |
 | windows_i686_msvc | 0.42.2 | MIT OR Apache-2.0 |
-| windows_i686_msvc | 0.53.1 | MIT OR Apache-2.0 |
 | windows_x86_64_gnu | 0.42.2 | MIT OR Apache-2.0 |
-| windows_x86_64_gnu | 0.53.1 | MIT OR Apache-2.0 |
 | windows_x86_64_gnullvm | 0.42.2 | MIT OR Apache-2.0 |
-| windows_x86_64_gnullvm | 0.53.1 | MIT OR Apache-2.0 |
 | windows_x86_64_msvc | 0.42.2 | MIT OR Apache-2.0 |
-| windows_x86_64_msvc | 0.53.1 | MIT OR Apache-2.0 |
 | winnow | 0.5.40 | MIT |
 | winnow | 1.0.4 | MIT |
 | wit-bindgen | 0.57.1 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
@@ -663,7 +664,7 @@ third-party software listed below, each under its own licence. This file is gene
 | yansi | 1.0.1 | MIT OR Apache-2.0 |
 | yazi | 0.2.1 | Apache-2.0 OR MIT |
 | yeslogic-fontconfig-sys | 6.0.1 | MIT |
-| yoke | 0.8.3 | Unicode-3.0 |
+| yoke | 0.8.4 | Unicode-3.0 |
 | yoke-derive | 0.8.4 | Unicode-3.0 |
 | zbus | 5.19.0 | MIT |
 | zbus_macros | 5.19.0 | MIT |
@@ -676,9 +677,9 @@ third-party software listed below, each under its own licence. This file is gene
 | zerofrom-derive | 0.1.8 | Unicode-3.0 |
 | zeroize | 1.9.1 | Apache-2.0 OR MIT |
 | zerotrie | 0.2.5 | Unicode-3.0 |
-| zerovec | 0.11.8 | Unicode-3.0 |
-| zerovec-derive | 0.11.6 | Unicode-3.0 |
-| zip | 9.0.3 | MIT |
+| zerovec | 0.11.9 | Unicode-3.0 |
+| zerovec-derive | 0.11.7 | Unicode-3.0 |
+| zip | 9.4.1 | MIT |
 | zlib-rs | 0.6.8 | Zlib |
 | zmij | 1.0.23 | MIT |
 | zune-core | 0.5.3 | MIT OR Apache-2.0 OR Zlib |
@@ -751,7 +752,7 @@ third-party software listed below, each under its own licence. This file is gene
 - Repository: https://github.com/rust-fuzz/arbitrary/
 - Licence files: [text 4](#rust-licence-text-4), [text 15](#rust-licence-text-15)
 
-### arboard 3.6.1
+### arboard 3.7.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/1Password/arboard
@@ -930,6 +931,12 @@ third-party software listed below, each under its own licence. This file is gene
 - Repository: https://github.com/RustCrypto/utils
 - Licence files: [text 35](#rust-licence-text-35), [text 36](#rust-licence-text-36)
 
+### block-buffer 0.12.1
+
+- Licence: MIT OR Apache-2.0
+- Repository: https://github.com/RustCrypto/utils
+- Licence files: [text 35](#rust-licence-text-35), [text 37](#rust-licence-text-37)
+
 ### block2 0.6.2
 
 - Licence: MIT
@@ -945,7 +952,7 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: BSD-3-Clause AND MIT
 - Repository: https://github.com/dropbox/rust-brotli
-- Licence files: [text 8](#rust-licence-text-8), [text 37](#rust-licence-text-37)
+- Licence files: [text 8](#rust-licence-text-8), [text 38](#rust-licence-text-38)
 
 ### brotli-decompressor 6.0.1
 
@@ -957,25 +964,25 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/Nullus157/bs58-rs
-- Licence files: [text 4](#rust-licence-text-4), [text 38](#rust-licence-text-38)
+- Licence files: [text 4](#rust-licence-text-4), [text 39](#rust-licence-text-39)
 
 ### bumpalo 3.20.3
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/fitzgen/bumpalo
-- Licence files: [text 4](#rust-licence-text-4), [text 39](#rust-licence-text-39)
+- Licence files: [text 4](#rust-licence-text-4), [text 40](#rust-licence-text-40)
 
 ### bytemuck 1.25.2
 
 - Licence: Zlib OR Apache-2.0 OR MIT
 - Repository: https://github.com/Lokathor/bytemuck
-- Licence files: [text 40](#rust-licence-text-40), [text 41](#rust-licence-text-41), [text 42](#rust-licence-text-42)
+- Licence files: [text 41](#rust-licence-text-41), [text 42](#rust-licence-text-42), [text 43](#rust-licence-text-43)
 
 ### bytemuck_derive 1.12.1
 
 - Licence: Zlib OR Apache-2.0 OR MIT
 - Repository: https://github.com/Lokathor/bytemuck
-- Licence files: [text 40](#rust-licence-text-40), [text 41](#rust-licence-text-41), [text 42](#rust-licence-text-42)
+- Licence files: [text 41](#rust-licence-text-41), [text 42](#rust-licence-text-42), [text 43](#rust-licence-text-43)
 
 ### byteorder 1.5.0
 
@@ -993,7 +1000,7 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/tokio-rs/bytes
-- Licence files: [text 43](#rust-licence-text-43)
+- Licence files: [text 44](#rust-licence-text-44)
 
 ### cairo-rs 0.18.5
 
@@ -1034,19 +1041,25 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/mdsteele/rust-cfb
-- Licence files: [text 44](#rust-licence-text-44)
+- Licence files: [text 45](#rust-licence-text-45)
 
 ### cfg-if 1.0.5
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/cfg-if
-- Licence files: [text 4](#rust-licence-text-4), [text 45](#rust-licence-text-45)
+- Licence files: [text 4](#rust-licence-text-4), [text 46](#rust-licence-text-46)
+
+### chacha20 0.10.2
+
+- Licence: MIT OR Apache-2.0
+- Repository: https://github.com/RustCrypto/stream-ciphers
+- Licence files: [text 35](#rust-licence-text-35), [text 47](#rust-licence-text-47)
 
 ### chrono 0.4.45
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/chronotope/chrono
-- Licence files: [text 46](#rust-licence-text-46)
+- Licence files: [text 48](#rust-licence-text-48)
 
 ### clipboard-win 5.4.3
 
@@ -1057,19 +1070,19 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/jamesmunns/cobs.rs
-- Licence files: [text 47](#rust-licence-text-47), [text 48](#rust-licence-text-48)
+- Licence files: [text 49](#rust-licence-text-49), [text 50](#rust-licence-text-50)
 
 ### color_quant 1.1.0
 
 - Licence: MIT
 - Repository: https://github.com/image-rs/color_quant.git
-- Licence files: [text 49](#rust-licence-text-49)
+- Licence files: [text 51](#rust-licence-text-51)
 
 ### combine 4.6.9
 
 - Licence: MIT
 - Repository: https://github.com/Marwes/combine
-- Licence files: [text 50](#rust-licence-text-50)
+- Licence files: [text 52](#rust-licence-text-52)
 
 ### concurrent-queue 2.5.0
 
@@ -1081,181 +1094,199 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: Apache-2.0/MIT
 - Repository: https://github.com/rustwasm/console_error_panic_hook
-- Licence files: [text 51](#rust-licence-text-51), [text 52](#rust-licence-text-52)
+- Licence files: [text 53](#rust-licence-text-53), [text 54](#rust-licence-text-54)
+
+### const-oid 0.10.3
+
+- Licence: Apache-2.0 OR MIT
+- Repository: https://github.com/RustCrypto/formats
+- Licence files: [text 35](#rust-licence-text-35), [text 55](#rust-licence-text-55)
 
 ### cookie 0.18.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/SergioBenitez/cookie-rs
-- Licence files: [text 53](#rust-licence-text-53), [text 54](#rust-licence-text-54)
+- Licence files: [text 56](#rust-licence-text-56), [text 57](#rust-licence-text-57)
 
 ### core-foundation 0.10.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/core-foundation-rs
-- Licence files: [text 4](#rust-licence-text-4), [text 55](#rust-licence-text-55)
+- Licence files: [text 4](#rust-licence-text-4), [text 58](#rust-licence-text-58)
 
 ### core-foundation-sys 0.8.7
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/core-foundation-rs
-- Licence files: [text 4](#rust-licence-text-4), [text 55](#rust-licence-text-55)
+- Licence files: [text 4](#rust-licence-text-4), [text 58](#rust-licence-text-58)
 
 ### core-graphics 0.25.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/core-foundation-rs
-- Licence files: [text 4](#rust-licence-text-4), [text 55](#rust-licence-text-55)
+- Licence files: [text 4](#rust-licence-text-4), [text 58](#rust-licence-text-58)
 
 ### core-graphics-types 0.2.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/core-foundation-rs
-- Licence files: [text 4](#rust-licence-text-4), [text 55](#rust-licence-text-55)
+- Licence files: [text 4](#rust-licence-text-4), [text 58](#rust-licence-text-58)
 
 ### core_detect 1.0.0
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/thomcc/core_detect
-- Licence files: [text 4](#rust-licence-text-4), [text 56](#rust-licence-text-56)
+- Licence files: [text 4](#rust-licence-text-4), [text 59](#rust-licence-text-59)
 
 ### cpufeatures 0.2.17
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/RustCrypto/utils
-- Licence files: [text 35](#rust-licence-text-35), [text 57](#rust-licence-text-57)
+- Licence files: [text 35](#rust-licence-text-35), [text 60](#rust-licence-text-60)
 
-### crc32fast 1.5.2
+### cpufeatures 0.3.1
+
+- Licence: MIT OR Apache-2.0
+- Repository: https://github.com/RustCrypto/utils
+- Licence files: [text 35](#rust-licence-text-35), [text 55](#rust-licence-text-55)
+
+### crc32fast 1.5.4
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/srijs/rust-crc32fast
-- Licence files: [text 47](#rust-licence-text-47), [text 58](#rust-licence-text-58)
+- Licence files: [text 49](#rust-licence-text-49), [text 61](#rust-licence-text-61)
 
 ### critical-section 1.2.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-embedded/critical-section
-- Licence files: [text 4](#rust-licence-text-4), [text 59](#rust-licence-text-59)
+- Licence files: [text 4](#rust-licence-text-4), [text 62](#rust-licence-text-62)
 
 ### crossbeam-channel 0.5.17
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/crossbeam-rs/crossbeam
-- Licence files: [text 4](#rust-licence-text-4), [text 60](#rust-licence-text-60), [text 61](#rust-licence-text-61)
+- Licence files: [text 4](#rust-licence-text-4), [text 63](#rust-licence-text-63), [text 64](#rust-licence-text-64)
 
 ### crossbeam-deque 0.8.8
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/crossbeam-rs/crossbeam
-- Licence files: [text 4](#rust-licence-text-4), [text 60](#rust-licence-text-60)
+- Licence files: [text 4](#rust-licence-text-4), [text 63](#rust-licence-text-63)
 
 ### crossbeam-epoch 0.9.21
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/crossbeam-rs/crossbeam
-- Licence files: [text 4](#rust-licence-text-4), [text 60](#rust-licence-text-60)
+- Licence files: [text 4](#rust-licence-text-4), [text 63](#rust-licence-text-63)
 
 ### crossbeam-utils 0.8.23
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/crossbeam-rs/crossbeam
-- Licence files: [text 4](#rust-licence-text-4), [text 60](#rust-licence-text-60)
+- Licence files: [text 4](#rust-licence-text-4), [text 63](#rust-licence-text-63)
 
 ### crypto-common 0.1.7
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/RustCrypto/traits
-- Licence files: [text 35](#rust-licence-text-35), [text 62](#rust-licence-text-62)
+- Licence files: [text 35](#rust-licence-text-35), [text 65](#rust-licence-text-65)
+
+### crypto-common 0.2.2
+
+- Licence: MIT OR Apache-2.0
+- Repository: https://github.com/RustCrypto/traits
+- Licence files: [text 35](#rust-licence-text-35), [text 66](#rust-licence-text-66)
 
 ### cssparser 0.37.0
 
 - Licence: MPL-2.0
 - Repository: https://github.com/servo/rust-cssparser
-- Licence files: [text 63](#rust-licence-text-63)
+- Licence files: [text 67](#rust-licence-text-67)
 
 ### cssparser-macros 0.7.1
 
 - Licence: MPL-2.0
 - Repository: https://github.com/servo/rust-cssparser
-- Licence files: [text 63](#rust-licence-text-63)
+- Licence files: [text 67](#rust-licence-text-67)
 
 ### ctor 1.0.13
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/mmastrac/linktime
-- Licence files: [text 47](#rust-licence-text-47), [text 64](#rust-licence-text-64)
+- Licence files: [text 49](#rust-licence-text-49), [text 68](#rust-licence-text-68)
 
 ### darling 0.20.11
 
 - Licence: MIT
 - Repository: https://github.com/TedDriggs/darling
-- Licence files: [text 65](#rust-licence-text-65)
+- Licence files: [text 69](#rust-licence-text-69)
 
 ### darling 0.24.1
 
 - Licence: MIT
 - Repository: https://github.com/TedDriggs/darling
-- Licence files: [text 65](#rust-licence-text-65)
+- Licence files: [text 69](#rust-licence-text-69)
 
 ### darling_core 0.20.11
 
 - Licence: MIT
 - Repository: https://github.com/TedDriggs/darling
-- Licence files: [text 65](#rust-licence-text-65)
+- Licence files: [text 69](#rust-licence-text-69)
 
 ### darling_core 0.24.1
 
 - Licence: MIT
 - Repository: https://github.com/TedDriggs/darling
-- Licence files: [text 65](#rust-licence-text-65)
+- Licence files: [text 69](#rust-licence-text-69)
 
 ### darling_macro 0.20.11
 
 - Licence: MIT
 - Repository: https://github.com/TedDriggs/darling
-- Licence files: [text 65](#rust-licence-text-65)
+- Licence files: [text 69](#rust-licence-text-69)
 
 ### darling_macro 0.24.1
 
 - Licence: MIT
 - Repository: https://github.com/TedDriggs/darling
-- Licence files: [text 65](#rust-licence-text-65)
+- Licence files: [text 69](#rust-licence-text-69)
 
 ### data-encoding 2.11.1
 
 - Licence: MIT
 - Repository: https://github.com/ia0/data-encoding
-- Licence files: [text 66](#rust-licence-text-66)
+- Licence files: [text 70](#rust-licence-text-70)
 
 ### dbus 0.9.12
 
 - Licence: Apache-2.0/MIT
 - Repository: https://github.com/diwic/dbus-rs
-- Licence files: [text 67](#rust-licence-text-67), [text 68](#rust-licence-text-68)
+- Licence files: [text 71](#rust-licence-text-71), [text 72](#rust-licence-text-72)
 
 ### defmt 1.2.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/knurling-rs/defmt
-- Licence files: [text 31](#rust-licence-text-31), [text 69](#rust-licence-text-69)
+- Licence files: [text 31](#rust-licence-text-31), [text 73](#rust-licence-text-73)
 
 ### defmt-macros 1.2.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/knurling-rs/defmt
-- Licence files: [text 31](#rust-licence-text-31), [text 69](#rust-licence-text-69)
+- Licence files: [text 31](#rust-licence-text-31), [text 73](#rust-licence-text-73)
 
 ### defmt-parser 1.1.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/knurling-rs/defmt
-- Licence files: [text 31](#rust-licence-text-31), [text 69](#rust-licence-text-69)
+- Licence files: [text 31](#rust-licence-text-31), [text 73](#rust-licence-text-73)
 
 ### deranged 0.5.9
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/jhpratt/deranged
-- Licence files: [text 70](#rust-licence-text-70), [text 71](#rust-licence-text-71)
+- Licence files: [text 74](#rust-licence-text-74), [text 75](#rust-licence-text-75)
 
 ### derive_arbitrary 1.5.0
 
@@ -1267,37 +1298,43 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/JelteF/derive_more
-- Licence files: [text 72](#rust-licence-text-72)
+- Licence files: [text 76](#rust-licence-text-76)
 
 ### derive_more-impl 2.1.1
 
 - Licence: MIT
 - Repository: https://github.com/JelteF/derive_more
-- Licence files: [text 72](#rust-licence-text-72)
+- Licence files: [text 76](#rust-licence-text-76)
 
 ### diff 0.1.13
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/utkarshkukreti/diff.rs
-- Licence files: [text 47](#rust-licence-text-47), [text 73](#rust-licence-text-73)
+- Licence files: [text 49](#rust-licence-text-49), [text 77](#rust-licence-text-77)
 
 ### digest 0.10.7
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/RustCrypto/traits
-- Licence files: [text 35](#rust-licence-text-35), [text 74](#rust-licence-text-74)
+- Licence files: [text 35](#rust-licence-text-35), [text 78](#rust-licence-text-78)
+
+### digest 0.11.3
+
+- Licence: MIT OR Apache-2.0
+- Repository: https://github.com/RustCrypto/traits
+- Licence files: [text 35](#rust-licence-text-35), [text 79](#rust-licence-text-79)
 
 ### dirs 7.0.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://codeberg.org/dirs/dirs-rs
-- Licence files: [text 75](#rust-licence-text-75), [text 76](#rust-licence-text-76)
+- Licence files: [text 80](#rust-licence-text-80), [text 81](#rust-licence-text-81)
 
 ### dirs-sys 0.5.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/dirs-dev/dirs-sys-rs
-- Licence files: [text 75](#rust-licence-text-75), [text 76](#rust-licence-text-76)
+- Licence files: [text 80](#rust-licence-text-80), [text 81](#rust-licence-text-81)
 
 ### dispatch2 0.3.1
 
@@ -1314,7 +1351,7 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/elinorbgr/dlib
-- Licence files: [text 77](#rust-licence-text-77)
+- Licence files: [text 82](#rust-licence-text-82)
 
 ### dlopen2 0.8.2
 
@@ -1330,13 +1367,13 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/niklak/dom_query
-- Licence files: [text 78](#rust-licence-text-78)
+- Licence files: [text 83](#rust-licence-text-83)
 
 ### dpi 0.1.2
 
 - Licence: Apache-2.0 AND MIT
 - Repository: https://github.com/rust-windowing/winit
-- Licence files: [text 47](#rust-licence-text-47), [text 79](#rust-licence-text-79)
+- Licence files: [text 49](#rust-licence-text-49), [text 84](#rust-licence-text-84)
 
 ### dtoa 1.0.11
 
@@ -1348,13 +1385,13 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MPL-2.0
 - Repository: https://github.com/upsuper/dtoa-short
-- Licence files: [text 80](#rust-licence-text-80)
+- Licence files: [text 85](#rust-licence-text-85)
 
 ### dunce 1.0.5
 
 - Licence: CC0-1.0 OR MIT-0 OR Apache-2.0
 - Repository: https://gitlab.com/kornelski/dunce
-- Licence files: [text 81](#rust-licence-text-81)
+- Licence files: [text 86](#rust-licence-text-86)
 
 ### dyn-clone 1.0.20
 
@@ -1366,31 +1403,31 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rayon-rs/either
-- Licence files: [text 4](#rust-licence-text-4), [text 82](#rust-licence-text-82)
+- Licence files: [text 4](#rust-licence-text-4), [text 87](#rust-licence-text-87)
 
 ### embed_plist 1.2.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/nvzqz/embed-plist-rs
-- Licence files: [text 83](#rust-licence-text-83), [text 84](#rust-licence-text-84)
+- Licence files: [text 88](#rust-licence-text-88), [text 89](#rust-licence-text-89)
 
 ### embedded-io 0.4.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/embassy-rs/embedded-io
-- Licence files: [text 4](#rust-licence-text-4), [text 85](#rust-licence-text-85)
+- Licence files: [text 4](#rust-licence-text-4), [text 90](#rust-licence-text-90)
 
 ### embedded-io 0.6.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-embedded/embedded-hal
-- Licence files: [text 4](#rust-licence-text-4), [text 86](#rust-licence-text-86)
+- Licence files: [text 4](#rust-licence-text-4), [text 91](#rust-licence-text-91)
 
-### encoding_rs 0.8.42
+### encoding_rs 0.8.44
 
 - Licence: (Apache-2.0 OR MIT) AND BSD-3-Clause
 - Repository: https://github.com/hsivonen/encoding_rs
-- Licence files: [text 83](#rust-licence-text-83), [text 87](#rust-licence-text-87), [text 88](#rust-licence-text-88)
+- Licence files: [text 88](#rust-licence-text-88), [text 92](#rust-licence-text-92), [text 93](#rust-licence-text-93)
 
 ### endi 1.1.1
 
@@ -1402,43 +1439,43 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/zxch3n/ensure-cov
-- Licence files: [text 89](#rust-licence-text-89), [text 90](#rust-licence-text-90)
+- Licence files: [text 94](#rust-licence-text-94), [text 95](#rust-licence-text-95)
 
 ### enum-as-inner 0.5.1
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/bluejekyll/enum-as-inner
-- Licence files: [text 47](#rust-licence-text-47), [text 91](#rust-licence-text-91)
+- Licence files: [text 49](#rust-licence-text-49), [text 96](#rust-licence-text-96)
 
 ### enum-as-inner 0.6.1
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/bluejekyll/enum-as-inner
-- Licence files: [text 47](#rust-licence-text-47), [text 91](#rust-licence-text-91)
+- Licence files: [text 49](#rust-licence-text-49), [text 96](#rust-licence-text-96)
 
 ### enum_dispatch 0.3.13
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://gitlab.com/antonok/enum_dispatch
-- Licence files: [text 92](#rust-licence-text-92)
+- Licence files: [text 97](#rust-licence-text-97)
 
 ### enumflags2 0.7.12
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/meithecatte/enumflags2
-- Licence files: [text 93](#rust-licence-text-93), [text 94](#rust-licence-text-94)
+- Licence files: [text 98](#rust-licence-text-98), [text 99](#rust-licence-text-99)
 
 ### enumflags2_derive 0.7.12
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/meithecatte/enumflags2
-- Licence files: [text 95](#rust-licence-text-95), [text 96](#rust-licence-text-96)
+- Licence files: [text 100](#rust-licence-text-100), [text 101](#rust-licence-text-101)
 
 ### equivalent 1.0.3
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/indexmap-rs/equivalent
-- Licence files: [text 4](#rust-licence-text-4), [text 97](#rust-licence-text-97)
+- Licence files: [text 4](#rust-licence-text-4), [text 102](#rust-licence-text-102)
 
 ### erased-discriminant 1.0.1
 
@@ -1456,19 +1493,19 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/lambda-fairy/rust-errno
-- Licence files: [text 4](#rust-licence-text-4), [text 98](#rust-licence-text-98)
+- Licence files: [text 4](#rust-licence-text-4), [text 103](#rust-licence-text-103)
 
 ### error-code 3.4.0
 
 - Licence: BSL-1.0
 - Repository: https://github.com/DoumanAsh/error-code
-- Licence files: [text 99](#rust-licence-text-99)
+- Licence files: [text 104](#rust-licence-text-104)
 
 ### euclid 0.22.14
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/euclid
-- Licence files: [text 4](#rust-licence-text-4), [text 55](#rust-licence-text-55)
+- Licence files: [text 4](#rust-licence-text-4), [text 58](#rust-licence-text-58)
 
 ### event-listener 5.4.2
 
@@ -1486,7 +1523,7 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/fancy-regex/fancy-regex
-- Licence files: [text 100](#rust-licence-text-100)
+- Licence files: [text 105](#rust-licence-text-105)
 
 ### fastrand 2.5.0
 
@@ -1498,109 +1535,103 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/image-rs/fdeflate
-- Licence files: [text 16](#rust-licence-text-16), [text 101](#rust-licence-text-101)
+- Licence files: [text 16](#rust-licence-text-16), [text 106](#rust-licence-text-106)
 
 ### field-offset 0.3.6
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/Diggsey/rust-field-offset
-- Licence files: [text 16](#rust-licence-text-16), [text 102](#rust-licence-text-102)
+- Licence files: [text 16](#rust-licence-text-16), [text 107](#rust-licence-text-107)
 
 ### filetime 0.2.29
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/alexcrichton/filetime
-- Licence files: [text 4](#rust-licence-text-4), [text 45](#rust-licence-text-45)
+- Licence files: [text 4](#rust-licence-text-4), [text 46](#rust-licence-text-46)
 
 ### flate2 1.1.10
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/flate2-rs
-- Licence files: [text 4](#rust-licence-text-4), [text 103](#rust-licence-text-103)
+- Licence files: [text 4](#rust-licence-text-4), [text 108](#rust-licence-text-108)
 
 ### float-cmp 0.9.0
 
 - Licence: MIT
 - Repository: https://github.com/mikedilger/float-cmp
-- Licence files: [text 104](#rust-licence-text-104)
+- Licence files: [text 109](#rust-licence-text-109)
 
 ### flume 0.12.0
 
 - Licence: Apache-2.0/MIT
 - Repository: https://github.com/zesterer/flume
-- Licence files: [text 83](#rust-licence-text-83), [text 3](#rust-licence-text-3)
+- Licence files: [text 88](#rust-licence-text-88), [text 3](#rust-licence-text-3)
 
 ### fnv 1.0.7
 
 - Licence: Apache-2.0 / MIT
 - Repository: https://github.com/servo/rust-fnv
-- Licence files: [text 4](#rust-licence-text-4), [text 105](#rust-licence-text-105)
+- Licence files: [text 4](#rust-licence-text-4), [text 110](#rust-licence-text-110)
 
 ### foldhash 0.2.0
 
 - Licence: Zlib
 - Repository: https://github.com/orlp/foldhash
-- Licence files: [text 106](#rust-licence-text-106)
+- Licence files: [text 111](#rust-licence-text-111)
 
 ### font-types 0.11.3
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/googlefonts/fontations
-- Licence files: [text 107](#rust-licence-text-107), [text 108](#rust-licence-text-108)
+- Licence files: [text 112](#rust-licence-text-112), [text 113](#rust-licence-text-113)
 
 ### font-types 0.12.7
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/googlefonts/fontations
-- Licence files: [text 109](#rust-licence-text-109), [text 110](#rust-licence-text-110)
+- Licence files: [text 114](#rust-licence-text-114), [text 115](#rust-licence-text-115)
 
 ### fontique 0.12.0
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/linebender/parley
-- Licence files: [text 4](#rust-licence-text-4), [text 111](#rust-licence-text-111)
+- Licence files: [text 4](#rust-licence-text-4), [text 116](#rust-licence-text-116)
 
 ### foreign-types 0.3.2
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/sfackler/foreign-types
-- Licence files: [text 47](#rust-licence-text-47), [text 112](#rust-licence-text-112)
+- Licence files: [text 49](#rust-licence-text-49), [text 117](#rust-licence-text-117)
 
 ### foreign-types 0.5.0
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/sfackler/foreign-types
-- Licence files: [text 47](#rust-licence-text-47), [text 112](#rust-licence-text-112)
+- Licence files: [text 49](#rust-licence-text-49), [text 117](#rust-licence-text-117)
 
 ### foreign-types-macros 0.2.4
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/sfackler/foreign-types
-- Licence files: [text 47](#rust-licence-text-47), [text 112](#rust-licence-text-112)
+- Licence files: [text 49](#rust-licence-text-49), [text 117](#rust-licence-text-117)
 
 ### foreign-types-shared 0.1.1
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/sfackler/foreign-types
-- Licence files: [text 47](#rust-licence-text-47), [text 112](#rust-licence-text-112)
+- Licence files: [text 49](#rust-licence-text-49), [text 117](#rust-licence-text-117)
 
 ### foreign-types-shared 0.3.1
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/sfackler/foreign-types
-- Licence files: [text 47](#rust-licence-text-47), [text 112](#rust-licence-text-112)
+- Licence files: [text 49](#rust-licence-text-49), [text 117](#rust-licence-text-117)
 
 ### form_urlencoded 1.2.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/rust-url
-- Licence files: [text 4](#rust-licence-text-4), [text 113](#rust-licence-text-113)
-
-### fsevent-sys 4.1.0
-
-- Licence: MIT
-- Repository: https://github.com/octplane/fsevent-rust/tree/master/fsevent-sys
-- Licence files: [text 114](#rust-licence-text-114)
+- Licence files: [text 4](#rust-licence-text-4), [text 118](#rust-licence-text-118)
 
 ### fst 0.4.7
 
@@ -1612,25 +1643,25 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/futures-rs
-- Licence files: [text 115](#rust-licence-text-115), [text 116](#rust-licence-text-116)
+- Licence files: [text 119](#rust-licence-text-119), [text 120](#rust-licence-text-120)
 
 ### futures-core 0.3.34
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/futures-rs
-- Licence files: [text 115](#rust-licence-text-115), [text 116](#rust-licence-text-116)
+- Licence files: [text 119](#rust-licence-text-119), [text 120](#rust-licence-text-120)
 
 ### futures-executor 0.3.34
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/futures-rs
-- Licence files: [text 115](#rust-licence-text-115), [text 116](#rust-licence-text-116)
+- Licence files: [text 119](#rust-licence-text-119), [text 120](#rust-licence-text-120)
 
 ### futures-io 0.3.34
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/futures-rs
-- Licence files: [text 115](#rust-licence-text-115), [text 116](#rust-licence-text-116)
+- Licence files: [text 119](#rust-licence-text-119), [text 120](#rust-licence-text-120)
 
 ### futures-lite 2.6.1
 
@@ -1642,25 +1673,25 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/futures-rs
-- Licence files: [text 115](#rust-licence-text-115), [text 116](#rust-licence-text-116)
+- Licence files: [text 119](#rust-licence-text-119), [text 120](#rust-licence-text-120)
 
 ### futures-sink 0.3.34
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/futures-rs
-- Licence files: [text 115](#rust-licence-text-115), [text 116](#rust-licence-text-116)
+- Licence files: [text 119](#rust-licence-text-119), [text 120](#rust-licence-text-120)
 
 ### futures-task 0.3.34
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/futures-rs
-- Licence files: [text 115](#rust-licence-text-115), [text 116](#rust-licence-text-116)
+- Licence files: [text 119](#rust-licence-text-119), [text 120](#rust-licence-text-120)
 
 ### futures-util 0.3.34
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/futures-rs
-- Licence files: [text 115](#rust-licence-text-115), [text 116](#rust-licence-text-116)
+- Licence files: [text 119](#rust-licence-text-119), [text 120](#rust-licence-text-120)
 
 ### gdk 0.18.2
 
@@ -1708,13 +1739,13 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/Xudong-Huang/generator-rs.git
-- Licence files: [text 117](#rust-licence-text-117), [text 118](#rust-licence-text-118)
+- Licence files: [text 121](#rust-licence-text-121), [text 122](#rust-licence-text-122)
 
 ### generic-array 0.14.7
 
 - Licence: MIT
 - Repository: https://github.com/fizyk20/generic-array.git
-- Licence files: [text 119](#rust-licence-text-119)
+- Licence files: [text 123](#rust-licence-text-123)
 
 ### generic-btree 0.10.7
 
@@ -1731,25 +1762,25 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-random/getrandom
-- Licence files: [text 120](#rust-licence-text-120), [text 121](#rust-licence-text-121)
+- Licence files: [text 124](#rust-licence-text-124), [text 125](#rust-licence-text-125)
 
 ### getrandom 0.3.4
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-random/getrandom
-- Licence files: [text 120](#rust-licence-text-120), [text 122](#rust-licence-text-122)
+- Licence files: [text 124](#rust-licence-text-124), [text 126](#rust-licence-text-126)
 
 ### getrandom 0.4.3
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-random/getrandom
-- Licence files: [text 120](#rust-licence-text-120), [text 123](#rust-licence-text-123)
+- Licence files: [text 124](#rust-licence-text-124), [text 127](#rust-licence-text-127)
 
 ### gif 0.14.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/image-rs/image-gif
-- Licence files: [text 4](#rust-licence-text-4), [text 124](#rust-licence-text-124)
+- Licence files: [text 4](#rust-licence-text-4), [text 128](#rust-licence-text-128)
 
 ### gio 0.18.4
 
@@ -1767,25 +1798,25 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/bitshifter/glam-rs
-- Licence files: [text 125](#rust-licence-text-125), [text 3](#rust-licence-text-3)
+- Licence files: [text 129](#rust-licence-text-129), [text 3](#rust-licence-text-3)
 
 ### glam 0.31.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/bitshifter/glam-rs
-- Licence files: [text 125](#rust-licence-text-125), [text 3](#rust-licence-text-3)
+- Licence files: [text 129](#rust-licence-text-129), [text 3](#rust-licence-text-3)
 
 ### glam 0.32.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/bitshifter/glam-rs
-- Licence files: [text 125](#rust-licence-text-125), [text 3](#rust-licence-text-3)
+- Licence files: [text 129](#rust-licence-text-129), [text 3](#rust-licence-text-3)
 
 ### glam 0.33.12
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/bitshifter/glam-rs
-- Licence files: [text 125](#rust-licence-text-125), [text 3](#rust-licence-text-3)
+- Licence files: [text 129](#rust-licence-text-129), [text 3](#rust-licence-text-3)
 
 ### glib 0.18.5
 
@@ -1839,67 +1870,67 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/harfbuzz/harfrust
-- Licence files: [text 126](#rust-licence-text-126)
+- Licence files: [text 130](#rust-licence-text-130)
 
 ### hash32 0.2.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/japaric/hash32
-- Licence files: [text 4](#rust-licence-text-4), [text 127](#rust-licence-text-127)
+- Licence files: [text 4](#rust-licence-text-4), [text 131](#rust-licence-text-131)
 
 ### hash32 0.3.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/japaric/hash32
-- Licence files: [text 4](#rust-licence-text-4), [text 127](#rust-licence-text-127)
+- Licence files: [text 4](#rust-licence-text-4), [text 131](#rust-licence-text-131)
 
 ### hashbrown 0.12.3
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/hashbrown
-- Licence files: [text 4](#rust-licence-text-4), [text 128](#rust-licence-text-128)
+- Licence files: [text 4](#rust-licence-text-4), [text 132](#rust-licence-text-132)
 
 ### hashbrown 0.16.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/hashbrown
-- Licence files: [text 4](#rust-licence-text-4), [text 128](#rust-licence-text-128)
+- Licence files: [text 4](#rust-licence-text-4), [text 132](#rust-licence-text-132)
 
 ### hashbrown 0.17.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/hashbrown
-- Licence files: [text 4](#rust-licence-text-4), [text 128](#rust-licence-text-128)
+- Licence files: [text 4](#rust-licence-text-4), [text 132](#rust-licence-text-132)
 
 ### heapless 0.7.17
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/japaric/heapless
-- Licence files: [text 4](#rust-licence-text-4), [text 129](#rust-licence-text-129)
+- Licence files: [text 4](#rust-licence-text-4), [text 133](#rust-licence-text-133)
 
 ### heapless 0.8.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-embedded/heapless
-- Licence files: [text 4](#rust-licence-text-4), [text 129](#rust-licence-text-129)
+- Licence files: [text 4](#rust-licence-text-4), [text 133](#rust-licence-text-133)
 
 ### heapless 0.9.3
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-embedded/heapless
-- Licence files: [text 4](#rust-licence-text-4), [text 129](#rust-licence-text-129)
+- Licence files: [text 4](#rust-licence-text-4), [text 133](#rust-licence-text-133)
 
 ### heck 0.4.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/withoutboats/heck
-- Licence files: [text 4](#rust-licence-text-4), [text 130](#rust-licence-text-130)
+- Licence files: [text 4](#rust-licence-text-4), [text 134](#rust-licence-text-134)
 
 ### heck 0.5.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/withoutboats/heck
-- Licence files: [text 4](#rust-licence-text-4), [text 130](#rust-licence-text-130)
+- Licence files: [text 4](#rust-licence-text-4), [text 134](#rust-licence-text-134)
 
 ### hermit-abi 0.5.3
 
@@ -1911,67 +1942,73 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/KokaKiwi/rust-hex
-- Licence files: [text 47](#rust-licence-text-47), [text 131](#rust-licence-text-131)
+- Licence files: [text 49](#rust-licence-text-49), [text 135](#rust-licence-text-135)
 
 ### html5ever 0.39.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/html5ever
-- Licence files: [text 4](#rust-licence-text-4), [text 132](#rust-licence-text-132)
+- Licence files: [text 4](#rust-licence-text-4), [text 136](#rust-licence-text-136)
 
 ### http 1.5.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/hyperium/http
-- Licence files: [text 133](#rust-licence-text-133), [text 134](#rust-licence-text-134)
+- Licence files: [text 137](#rust-licence-text-137), [text 138](#rust-licence-text-138)
 
 ### http-body 1.1.0
 
 - Licence: MIT
 - Repository: https://github.com/hyperium/http-body
-- Licence files: [text 135](#rust-licence-text-135)
+- Licence files: [text 139](#rust-licence-text-139)
 
 ### http-body-util 0.1.5
 
 - Licence: MIT
 - Repository: https://github.com/hyperium/http-body
-- Licence files: [text 135](#rust-licence-text-135)
+- Licence files: [text 139](#rust-licence-text-139)
 
 ### httparse 1.10.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/seanmonstar/httparse
-- Licence files: [text 4](#rust-licence-text-4), [text 136](#rust-licence-text-136)
+- Licence files: [text 4](#rust-licence-text-4), [text 140](#rust-licence-text-140)
 
 ### httpdate 1.0.3
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/pyfisch/httpdate
-- Licence files: [text 137](#rust-licence-text-137), [text 138](#rust-licence-text-138)
+- Licence files: [text 141](#rust-licence-text-141), [text 142](#rust-licence-text-142)
+
+### hybrid-array 0.4.15
+
+- Licence: MIT OR Apache-2.0
+- Repository: https://github.com/RustCrypto/hybrid-array
+- Licence files: [text 35](#rust-licence-text-35), [text 143](#rust-licence-text-143)
 
 ### hyper 1.12.0
 
 - Licence: MIT
 - Repository: https://github.com/hyperium/hyper
-- Licence files: [text 139](#rust-licence-text-139)
+- Licence files: [text 144](#rust-licence-text-144)
 
 ### hyper-tls 0.6.0
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/hyperium/hyper-tls
-- Licence files: [text 4](#rust-licence-text-4), [text 140](#rust-licence-text-140)
+- Licence files: [text 4](#rust-licence-text-4), [text 145](#rust-licence-text-145)
 
 ### hyper-util 0.1.21
 
 - Licence: MIT
 - Repository: https://github.com/hyperium/hyper-util
-- Licence files: [text 141](#rust-licence-text-141)
+- Licence files: [text 146](#rust-licence-text-146)
 
 ### hyphenation 0.8.4
 
 - Licence: Apache-2.0/MIT
 - Repository: https://github.com/tapeinosyne/hyphenation
-- Licence files: [text 142](#rust-licence-text-142), [text 143](#rust-licence-text-143)
+- Licence files: [text 147](#rust-licence-text-147), [text 148](#rust-licence-text-148)
 
 ### hyphenation_commons 0.8.4
 
@@ -1982,115 +2019,115 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/strawlab/iana-time-zone
-- Licence files: [text 144](#rust-licence-text-144), [text 145](#rust-licence-text-145)
+- Licence files: [text 149](#rust-licence-text-149), [text 150](#rust-licence-text-150)
 
 ### iana-time-zone-haiku 0.1.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/strawlab/iana-time-zone
-- Licence files: [text 144](#rust-licence-text-144), [text 145](#rust-licence-text-145)
+- Licence files: [text 149](#rust-licence-text-149), [text 150](#rust-licence-text-150)
 
 ### ico 0.5.0
 
 - Licence: MIT
 - Repository: https://github.com/mdsteele/rust-ico
-- Licence files: [text 146](#rust-licence-text-146)
+- Licence files: [text 151](#rust-licence-text-151)
 
 ### icu_collator 2.3.1
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### icu_collator_data 2.3.0
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### icu_collections 2.3.0
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
-### icu_locale_core 2.3.0
+### icu_locale_core 2.4.0
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### icu_locale_fallback 2.3.0
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### icu_locale_fallback_data 2.3.0
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### icu_normalizer 2.3.0
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### icu_normalizer_data 2.3.0
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### icu_properties 2.3.0
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### icu_properties_data 2.3.0
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### icu_provider 2.3.1
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### icu_segmenter 2.3.0
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### icu_segmenter_data 2.3.0
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### ident_case 1.0.1
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/TedDriggs/ident_case
-- Licence files: [text 148](#rust-licence-text-148)
+- Licence files: [text 153](#rust-licence-text-153)
 
 ### idna 1.1.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/rust-url/
-- Licence files: [text 4](#rust-licence-text-4), [text 149](#rust-licence-text-149)
+- Licence files: [text 4](#rust-licence-text-4), [text 154](#rust-licence-text-154)
 
 ### idna_adapter 1.2.2
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/hsivonen/idna_adapter
-- Licence files: [text 4](#rust-licence-text-4), [text 150](#rust-licence-text-150)
+- Licence files: [text 4](#rust-licence-text-4), [text 155](#rust-licence-text-155)
 
 ### im 15.1.0
 
@@ -2102,79 +2139,79 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/image-rs/image
-- Licence files: [text 16](#rust-licence-text-16), [text 101](#rust-licence-text-101)
+- Licence files: [text 16](#rust-licence-text-16), [text 106](#rust-licence-text-106)
 
 ### image-webp 0.2.4
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/image-rs/image-webp
-- Licence files: [text 16](#rust-licence-text-16), [text 101](#rust-licence-text-101)
+- Licence files: [text 16](#rust-licence-text-16), [text 106](#rust-licence-text-106)
 
 ### imagesize 0.14.0
 
 - Licence: MIT
 - Repository: https://github.com/Roughsketch/imagesize
-- Licence files: [text 151](#rust-licence-text-151)
+- Licence files: [text 156](#rust-licence-text-156)
 
 ### indexmap 1.9.3
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/bluss/indexmap
-- Licence files: [text 4](#rust-licence-text-4), [text 152](#rust-licence-text-152)
+- Licence files: [text 4](#rust-licence-text-4), [text 157](#rust-licence-text-157)
 
 ### indexmap 2.14.2
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/indexmap-rs/indexmap
-- Licence files: [text 4](#rust-licence-text-4), [text 152](#rust-licence-text-152)
+- Licence files: [text 4](#rust-licence-text-4), [text 157](#rust-licence-text-157)
 
 ### infer 0.22.0
 
 - Licence: MIT
 - Repository: https://github.com/bojand/infer
-- Licence files: [text 153](#rust-licence-text-153)
+- Licence files: [text 158](#rust-licence-text-158)
 
 ### inotify 0.11.5
 
 - Licence: ISC
 - Repository: https://github.com/hannobraun/inotify-rs
-- Licence files: [text 154](#rust-licence-text-154)
+- Licence files: [text 159](#rust-licence-text-159)
 
 ### inotify-sys 0.1.8
 
 - Licence: ISC
 - Repository: https://github.com/hannobraun/inotify-sys
-- Licence files: [text 154](#rust-licence-text-154)
+- Licence files: [text 159](#rust-licence-text-159)
 
 ### ipnet 2.12.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/krisprice/ipnet
-- Licence files: [text 155](#rust-licence-text-155), [text 156](#rust-licence-text-156)
+- Licence files: [text 160](#rust-licence-text-160), [text 161](#rust-licence-text-161)
 
 ### is-docker 0.2.0
 
 - Licence: MIT
 - Repository: https://github.com/TheLarkInn/is-docker
-- Licence files: [text 157](#rust-licence-text-157)
+- Licence files: [text 162](#rust-licence-text-162)
 
 ### is-wsl 0.4.0
 
 - Licence: MIT
 - Repository: https://github.com/TheLarkInn/is-wsl
-- Licence files: [text 157](#rust-licence-text-157)
+- Licence files: [text 162](#rust-licence-text-162)
 
 ### itertools 0.11.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-itertools/itertools
-- Licence files: [text 4](#rust-licence-text-4), [text 82](#rust-licence-text-82)
+- Licence files: [text 4](#rust-licence-text-4), [text 87](#rust-licence-text-87)
 
 ### itertools 0.12.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-itertools/itertools
-- Licence files: [text 4](#rust-licence-text-4), [text 82](#rust-licence-text-82)
+- Licence files: [text 4](#rust-licence-text-4), [text 87](#rust-licence-text-87)
 
 ### itoa 1.0.18
 
@@ -2186,13 +2223,13 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/tauri-apps/javascriptcore-rs
-- Licence files: [text 158](#rust-licence-text-158)
+- Licence files: [text 163](#rust-licence-text-163)
 
 ### javascriptcore-rs-sys 1.1.1
 
 - Licence: MIT
 - Repository: https://github.com/tauri-apps/javascriptcore-rs
-- Licence files: [text 159](#rust-licence-text-159)
+- Licence files: [text 164](#rust-licence-text-164)
 
 ### jiff 0.2.38
 
@@ -2228,19 +2265,19 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/jni-rs/jni-rs
-- Licence files: [text 4](#rust-licence-text-4), [text 160](#rust-licence-text-160)
+- Licence files: [text 4](#rust-licence-text-4), [text 165](#rust-licence-text-165)
 
 ### jni-sys 0.3.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/jni-rs/jni-sys
-- Licence files: [text 47](#rust-licence-text-47), [text 161](#rust-licence-text-161)
+- Licence files: [text 49](#rust-licence-text-49), [text 166](#rust-licence-text-166)
 
 ### jni-sys 0.4.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/jni-rs/jni-sys
-- Licence files: [text 47](#rust-licence-text-47), [text 161](#rust-licence-text-161)
+- Licence files: [text 49](#rust-licence-text-49), [text 166](#rust-licence-text-166)
 
 ### jni-sys-macros 0.4.1
 
@@ -2251,37 +2288,37 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/js-sys
-- Licence files: [text 4](#rust-licence-text-4), [text 45](#rust-licence-text-45)
+- Licence files: [text 4](#rust-licence-text-4), [text 46](#rust-licence-text-46)
 
 ### json-patch 4.2.0
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/idubrov/json-patch
-- Licence files: [text 47](#rust-licence-text-47), [text 162](#rust-licence-text-162)
+- Licence files: [text 49](#rust-licence-text-49), [text 167](#rust-licence-text-167)
 
 ### jsonptr 0.7.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/chanced/jsonptr
-- Licence files: [text 163](#rust-licence-text-163), [text 164](#rust-licence-text-164)
+- Licence files: [text 168](#rust-licence-text-168), [text 169](#rust-licence-text-169)
 
 ### keyboard-types 0.8.3
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-windowing/keyboard-types
-- Licence files: [text 4](#rust-licence-text-4), [text 165](#rust-licence-text-165)
+- Licence files: [text 4](#rust-licence-text-4), [text 170](#rust-licence-text-170)
 
 ### kqueue 1.2.1
 
 - Licence: MIT
 - Repository: https://gitlab.com/rust-kqueue/rust-kqueue
-- Licence files: [text 166](#rust-licence-text-166)
+- Licence files: [text 171](#rust-licence-text-171)
 
 ### kqueue-sys 1.1.2
 
 - Licence: MIT
 - Repository: https://gitlab.com/rust-kqueue/rust-kqueue-sys
-- Licence files: [text 166](#rust-licence-text-166)
+- Licence files: [text 171](#rust-licence-text-171)
 
 ### krilla 0.8.2
 
@@ -2292,7 +2329,7 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/linebender/kurbo
-- Licence files: [text 83](#rust-licence-text-83), [text 167](#rust-licence-text-167)
+- Licence files: [text 88](#rust-licence-text-88), [text 172](#rust-licence-text-172)
 
 ### lazy_static 1.5.1
 
@@ -2304,12 +2341,12 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/gimli-rs/leb128
-- Licence files: [text 4](#rust-licence-text-4), [text 130](#rust-licence-text-130)
+- Licence files: [text 4](#rust-licence-text-4), [text 134](#rust-licence-text-134)
 
 ### libappindicator 0.9.0
 
 - Licence: Apache-2.0 OR MIT
-- Licence files: [text 4](#rust-licence-text-4), [text 168](#rust-licence-text-168)
+- Licence files: [text 4](#rust-licence-text-4), [text 173](#rust-licence-text-173)
 
 ### libappindicator-sys 0.9.0
 
@@ -2319,55 +2356,55 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/libc
-- Licence files: [text 13](#rust-licence-text-13), [text 169](#rust-licence-text-169)
+- Licence files: [text 13](#rust-licence-text-13), [text 174](#rust-licence-text-174)
 
 ### libdbus-sys 0.2.7
 
 - Licence: Apache-2.0/MIT
 - Repository: https://github.com/diwic/dbus-rs
-- Licence files: [text 67](#rust-licence-text-67), [text 68](#rust-licence-text-68)
+- Licence files: [text 71](#rust-licence-text-71), [text 72](#rust-licence-text-72)
 
 ### libloading 0.7.4
 
 - Licence: ISC
 - Repository: https://github.com/nagisa/rust_libloading/
-- Licence files: [text 170](#rust-licence-text-170)
+- Licence files: [text 175](#rust-licence-text-175)
 
 ### libm 0.2.16
 
 - Licence: MIT
 - Repository: https://github.com/rust-lang/compiler-builtins
-- Licence files: [text 171](#rust-licence-text-171)
+- Licence files: [text 176](#rust-licence-text-176)
 
 ### libredox 0.1.25
 
 - Licence: MIT
 - Repository: https://gitlab.redox-os.org/redox-os/libredox.git
-- Licence files: [text 172](#rust-licence-text-172)
+- Licence files: [text 177](#rust-licence-text-177)
 
 ### linebender_resource_handle 0.1.1
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/linebender/raw_resource_handle
-- Licence files: [text 16](#rust-licence-text-16), [text 148](#rust-licence-text-148)
+- Licence files: [text 16](#rust-licence-text-16), [text 153](#rust-licence-text-153)
 
 ### linux-raw-sys 0.12.1
 
 - Licence: Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
 - Repository: https://github.com/sunfishcode/linux-raw-sys
-- Licence files: [text 4](#rust-licence-text-4), [text 173](#rust-licence-text-173), [text 3](#rust-licence-text-3)
+- Licence files: [text 4](#rust-licence-text-4), [text 178](#rust-licence-text-178), [text 3](#rust-licence-text-3)
 
 ### litemap 0.8.3
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### lock_api 0.4.14
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/Amanieu/parking_lot
-- Licence files: [text 4](#rust-licence-text-4), [text 174](#rust-licence-text-174)
+- Licence files: [text 4](#rust-licence-text-4), [text 179](#rust-licence-text-179)
 
 ### log 0.4.34
 
@@ -2379,27 +2416,27 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/tokio-rs/loom
-- Licence files: [text 175](#rust-licence-text-175)
+- Licence files: [text 180](#rust-licence-text-180)
 
-### loro 1.16.2
+### loro 1.17.1
 
 - Licence: MIT
 - Repository: https://github.com/loro-dev/loro/
-- Licence files: [text 176](#rust-licence-text-176)
+- Licence files: [text 181](#rust-licence-text-181)
 
 ### loro-common 1.17.0
 
 - Licence: MIT
 - Repository: https://github.com/loro-dev/loro
-- Licence files: [text 176](#rust-licence-text-176)
+- Licence files: [text 181](#rust-licence-text-181)
 
 ### loro-delta 1.13.0
 
 - Licence: MIT
 - Repository: https://github.com/loro-dev/loro/
-- Licence files: [text 177](#rust-licence-text-177)
+- Licence files: [text 182](#rust-licence-text-182)
 
-### loro-internal 1.16.2
+### loro-internal 1.17.1
 
 - Licence: MIT
 - Repository: https://github.com/loro-dev/loro/
@@ -2408,61 +2445,61 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/loro-dev/loro/
-- Licence files: [text 178](#rust-licence-text-178)
+- Licence files: [text 183](#rust-licence-text-183)
 
 ### loro-rle 1.6.0
 
 - Licence: MIT
 - Repository: https://github.com/loro-dev/loro/
-- Licence files: [text 176](#rust-licence-text-176)
+- Licence files: [text 181](#rust-licence-text-181)
 
 ### loro-thunderdome 0.6.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/LPGhatguy/thunderdome
-- Licence files: [text 179](#rust-licence-text-179), [text 180](#rust-licence-text-180)
+- Licence files: [text 184](#rust-licence-text-184), [text 185](#rust-licence-text-185)
 
 ### loro_fractional_index 1.13.0
 
 - Licence: MIT
 - Repository: https://github.com/loro-dev/loro/
-- Licence files: [text 181](#rust-licence-text-181)
+- Licence files: [text 186](#rust-licence-text-186)
 
 ### lz4_flex 0.11.6
 
 - Licence: MIT
 - Repository: https://github.com/pseitz/lz4_flex
-- Licence files: [text 182](#rust-licence-text-182)
+- Licence files: [text 187](#rust-licence-text-187)
 
 ### markup5ever 0.39.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/html5ever
-- Licence files: [text 4](#rust-licence-text-4), [text 132](#rust-licence-text-132)
+- Licence files: [text 4](#rust-licence-text-4), [text 136](#rust-licence-text-136)
 
 ### matchers 0.2.0
 
 - Licence: MIT
 - Repository: https://github.com/hawkw/matchers
-- Licence files: [text 183](#rust-licence-text-183)
+- Licence files: [text 188](#rust-licence-text-188)
 
 ### matchit 0.8.4
 
 - Licence: MIT AND BSD-3-Clause
 - Repository: https://github.com/ibraheemdev/matchit
-- Licence files: [text 184](#rust-licence-text-184), [text 185](#rust-licence-text-185)
+- Licence files: [text 189](#rust-licence-text-189), [text 190](#rust-licence-text-190)
 
 ### matrixmultiply 0.3.11
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/bluss/matrixmultiply/
-- Licence files: [text 4](#rust-licence-text-4), [text 186](#rust-licence-text-186)
+- Licence files: [text 4](#rust-licence-text-4), [text 191](#rust-licence-text-191)
 
 ### md5 0.7.0
 
 - Licence: Apache-2.0/MIT
 - Repository: https://github.com/stainless-steel/md5
-- Licence files: [text 187](#rust-licence-text-187)
+- Licence files: [text 192](#rust-licence-text-192)
 
 ### memchr 2.8.3
 
@@ -2474,73 +2511,73 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/RazrFalcon/memmap2-rs
-- Licence files: [text 188](#rust-licence-text-188), [text 189](#rust-licence-text-189)
+- Licence files: [text 193](#rust-licence-text-193), [text 194](#rust-licence-text-194)
 
 ### memoffset 0.9.1
 
 - Licence: MIT
 - Repository: https://github.com/Gilnaa/memoffset
-- Licence files: [text 190](#rust-licence-text-190)
+- Licence files: [text 195](#rust-licence-text-195)
 
 ### mime 0.3.17
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/hyperium/mime
-- Licence files: [text 4](#rust-licence-text-4), [text 191](#rust-licence-text-191)
+- Licence files: [text 4](#rust-licence-text-4), [text 196](#rust-licence-text-196)
 
 ### minisign-verify 0.3.0
 
 - Licence: MIT
 - Repository: https://github.com/jedisct1/rust-minisign-verify
-- Licence files: [text 192](#rust-licence-text-192)
+- Licence files: [text 197](#rust-licence-text-197)
 
 ### miniz_oxide 0.8.9
 
 - Licence: MIT OR Zlib OR Apache-2.0
 - Repository: https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide
-- Licence files: [text 193](#rust-licence-text-193), [text 16](#rust-licence-text-16), [text 194](#rust-licence-text-194), [text 195](#rust-licence-text-195)
+- Licence files: [text 198](#rust-licence-text-198), [text 16](#rust-licence-text-16), [text 199](#rust-licence-text-199), [text 200](#rust-licence-text-200)
 
 ### miniz_oxide 0.9.1
 
 - Licence: MIT OR Zlib OR Apache-2.0
 - Repository: https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide
-- Licence files: [text 193](#rust-licence-text-193), [text 16](#rust-licence-text-16), [text 194](#rust-licence-text-194), [text 195](#rust-licence-text-195)
+- Licence files: [text 198](#rust-licence-text-198), [text 16](#rust-licence-text-16), [text 199](#rust-licence-text-199), [text 200](#rust-licence-text-200)
 
 ### mio 1.2.4
 
 - Licence: MIT
 - Repository: https://github.com/tokio-rs/mio
-- Licence files: [text 196](#rust-licence-text-196)
+- Licence files: [text 201](#rust-licence-text-201)
 
 ### moxcms 0.8.1
 
 - Licence: BSD-3-Clause OR Apache-2.0
 - Repository: https://github.com/awxkee/moxcms.git
-- Licence files: [text 197](#rust-licence-text-197), [text 198](#rust-licence-text-198)
+- Licence files: [text 202](#rust-licence-text-202), [text 203](#rust-licence-text-203)
 
 ### muda 0.20.0
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/muda
-- Licence files: [text 4](#rust-licence-text-4), [text 199](#rust-licence-text-199), [text 200](#rust-licence-text-200)
+- Licence files: [text 4](#rust-licence-text-4), [text 204](#rust-licence-text-204), [text 205](#rust-licence-text-205)
 
 ### multiversion_no_op 1.0.0
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/hsivonen/multiversion_no_op
-- Licence files: [text 83](#rust-licence-text-83), [text 87](#rust-licence-text-87)
+- Licence files: [text 88](#rust-licence-text-88), [text 92](#rust-licence-text-92)
 
 ### nalgebra 0.35.0
 
 - Licence: Apache-2.0
 - Repository: https://github.com/dimforge/nalgebra
-- Licence files: [text 201](#rust-licence-text-201)
+- Licence files: [text 206](#rust-licence-text-206)
 
 ### native-tls 0.2.18
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-native-tls/rust-native-tls
-- Licence files: [text 47](#rust-licence-text-47), [text 202](#rust-licence-text-202)
+- Licence files: [text 49](#rust-licence-text-49), [text 207](#rust-licence-text-207)
 
 ### ndk 0.9.0
 
@@ -2561,37 +2598,37 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/mbrubeck/rust-debug-unreachable
-- Licence files: [text 203](#rust-licence-text-203)
+- Licence files: [text 208](#rust-licence-text-208)
 
 ### nix 0.31.3
 
 - Licence: MIT
 - Repository: https://github.com/nix-rust/nix
-- Licence files: [text 204](#rust-licence-text-204)
+- Licence files: [text 209](#rust-licence-text-209)
 
 ### nonmax 0.5.5
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/LPGhatguy/nonmax
-- Licence files: [text 179](#rust-licence-text-179), [text 180](#rust-licence-text-180)
+- Licence files: [text 184](#rust-licence-text-184), [text 185](#rust-licence-text-185)
 
-### notify 8.2.0
+### notify 8.2.1
 
 - Licence: CC0-1.0
 - Repository: https://github.com/notify-rs/notify.git
-- Licence files: [text 205](#rust-licence-text-205)
+- Licence files: [text 210](#rust-licence-text-210)
 
 ### notify-types 2.1.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/notify-rs/notify.git
-- Licence files: [text 206](#rust-licence-text-206), [text 207](#rust-licence-text-207)
+- Licence files: [text 211](#rust-licence-text-211), [text 212](#rust-licence-text-212)
 
 ### nu-ansi-term 0.50.3
 
 - Licence: MIT
 - Repository: https://github.com/nushell/nu-ansi-term
-- Licence files: [text 208](#rust-licence-text-208)
+- Licence files: [text 213](#rust-licence-text-213)
 
 ### num 0.4.3
 
@@ -2615,7 +2652,7 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/jhpratt/num-conv
-- Licence files: [text 16](#rust-licence-text-16), [text 209](#rust-licence-text-209)
+- Licence files: [text 16](#rust-licence-text-16), [text 214](#rust-licence-text-214)
 
 ### num-integer 0.1.47
 
@@ -2645,13 +2682,13 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: BSD-3-Clause OR MIT OR Apache-2.0
 - Repository: https://github.com/illicitonion/num_enum
-- Licence files: [text 13](#rust-licence-text-13), [text 210](#rust-licence-text-210), [text 3](#rust-licence-text-3)
+- Licence files: [text 13](#rust-licence-text-13), [text 215](#rust-licence-text-215), [text 3](#rust-licence-text-3)
 
 ### num_enum_derive 0.7.6
 
 - Licence: BSD-3-Clause OR MIT OR Apache-2.0
 - Repository: https://github.com/illicitonion/num_enum
-- Licence files: [text 13](#rust-licence-text-13), [text 210](#rust-licence-text-210), [text 3](#rust-licence-text-3)
+- Licence files: [text 13](#rust-licence-text-13), [text 215](#rust-licence-text-215), [text 3](#rust-licence-text-3)
 
 ### objc2 0.6.5
 
@@ -2689,6 +2726,11 @@ third-party software listed below, each under its own licence. This file is gene
 - Repository: https://github.com/madsmtm/objc2
 
 ### objc2-core-location 0.3.2
+
+- Licence: Zlib OR Apache-2.0 OR MIT
+- Repository: https://github.com/madsmtm/objc2
+
+### objc2-core-services 0.3.2
 
 - Licence: Zlib OR Apache-2.0 OR MIT
 - Repository: https://github.com/madsmtm/objc2
@@ -2753,36 +2795,36 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/Byron/open-rs
-- Licence files: [text 211](#rust-licence-text-211)
+- Licence files: [text 216](#rust-licence-text-216)
 
 ### openssl 0.10.81
 
 - Licence: Apache-2.0
 - Repository: https://github.com/rust-openssl/rust-openssl
-- Licence files: [text 212](#rust-licence-text-212), [text 47](#rust-licence-text-47)
+- Licence files: [text 217](#rust-licence-text-217), [text 49](#rust-licence-text-49)
 
 ### openssl-macros 0.1.1
 
 - Licence: MIT/Apache-2.0
-- Licence files: [text 47](#rust-licence-text-47), [text 213](#rust-licence-text-213)
+- Licence files: [text 49](#rust-licence-text-49), [text 218](#rust-licence-text-218)
 
 ### openssl-probe 0.2.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rustls/openssl-probe
-- Licence files: [text 4](#rust-licence-text-4), [text 45](#rust-licence-text-45)
+- Licence files: [text 4](#rust-licence-text-4), [text 46](#rust-licence-text-46)
 
 ### openssl-sys 0.9.117
 
 - Licence: MIT
 - Repository: https://github.com/rust-openssl/rust-openssl
-- Licence files: [text 45](#rust-licence-text-45)
+- Licence files: [text 46](#rust-licence-text-46)
 
 ### option-ext 0.2.0
 
 - Licence: MPL-2.0
 - Repository: https://github.com/soc/option-ext.git
-- Licence files: [text 214](#rust-licence-text-214)
+- Licence files: [text 219](#rust-licence-text-219)
 
 ### ordered-stream 0.2.0
 
@@ -2794,7 +2836,7 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/mdevils/rust-osakit
-- Licence files: [text 13](#rust-licence-text-13), [text 215](#rust-licence-text-215)
+- Licence files: [text 13](#rust-licence-text-13), [text 220](#rust-licence-text-220)
 
 ### pango 0.18.3
 
@@ -2812,61 +2854,61 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/smol-rs/parking
-- Licence files: [text 4](#rust-licence-text-4), [text 3](#rust-licence-text-3), [text 216](#rust-licence-text-216)
+- Licence files: [text 4](#rust-licence-text-4), [text 3](#rust-licence-text-3), [text 221](#rust-licence-text-221)
 
 ### parking_lot 0.12.5
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/Amanieu/parking_lot
-- Licence files: [text 4](#rust-licence-text-4), [text 174](#rust-licence-text-174)
+- Licence files: [text 4](#rust-licence-text-4), [text 179](#rust-licence-text-179)
 
 ### parking_lot_core 0.9.12
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/Amanieu/parking_lot
-- Licence files: [text 4](#rust-licence-text-4), [text 174](#rust-licence-text-174)
+- Licence files: [text 4](#rust-licence-text-4), [text 179](#rust-licence-text-179)
 
 ### parlance 0.1.1
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/linebender/parley
-- Licence files: [text 4](#rust-licence-text-4), [text 217](#rust-licence-text-217)
+- Licence files: [text 4](#rust-licence-text-4), [text 222](#rust-licence-text-222)
 
 ### parley 0.12.0
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/linebender/parley
-- Licence files: [text 4](#rust-licence-text-4), [text 217](#rust-licence-text-217)
+- Licence files: [text 4](#rust-licence-text-4), [text 222](#rust-licence-text-222)
 
 ### parley_data 0.12.0
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/linebender/parley
-- Licence files: [text 4](#rust-licence-text-4), [text 217](#rust-licence-text-217)
+- Licence files: [text 4](#rust-licence-text-4), [text 222](#rust-licence-text-222)
 
 ### parley_emoji 0.12.0
 
 - Licence: MIT
 - Repository: https://github.com/linebender/parley
-- Licence files: [text 218](#rust-licence-text-218)
+- Licence files: [text 223](#rust-licence-text-223)
 
 ### parley_engine 0.12.0
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/linebender/parley
-- Licence files: [text 13](#rust-licence-text-13), [text 219](#rust-licence-text-219)
+- Licence files: [text 13](#rust-licence-text-13), [text 224](#rust-licence-text-224)
 
 ### pdf-writer 0.15.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/typst/pdf-writer
-- Licence files: [text 13](#rust-licence-text-13), [text 148](#rust-licence-text-148)
+- Licence files: [text 13](#rust-licence-text-13), [text 153](#rust-licence-text-153)
 
 ### percent-encoding 2.3.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/rust-url/
-- Licence files: [text 4](#rust-licence-text-4), [text 149](#rust-licence-text-149)
+- Licence files: [text 4](#rust-licence-text-4), [text 154](#rust-licence-text-154)
 
 ### pest 2.9.4
 
@@ -2896,25 +2938,25 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/rust-phf/rust-phf
-- Licence files: [text 220](#rust-licence-text-220)
+- Licence files: [text 225](#rust-licence-text-225)
 
 ### phf_generator 0.13.1
 
 - Licence: MIT
 - Repository: https://github.com/rust-phf/rust-phf
-- Licence files: [text 220](#rust-licence-text-220)
+- Licence files: [text 225](#rust-licence-text-225)
 
 ### phf_macros 0.13.1
 
 - Licence: MIT
 - Repository: https://github.com/rust-phf/rust-phf
-- Licence files: [text 220](#rust-licence-text-220)
+- Licence files: [text 225](#rust-licence-text-225)
 
 ### phf_shared 0.13.1
 
 - Licence: MIT
 - Repository: https://github.com/rust-phf/rust-phf
-- Licence files: [text 220](#rust-licence-text-220)
+- Licence files: [text 225](#rust-licence-text-225)
 
 ### pin-project-lite 0.2.17
 
@@ -2932,19 +2974,19 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/ebarnard/rust-plist/
-- Licence files: [text 221](#rust-licence-text-221)
+- Licence files: [text 226](#rust-licence-text-226)
 
 ### png 0.17.16
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/image-rs/image-png
-- Licence files: [text 4](#rust-licence-text-4), [text 222](#rust-licence-text-222)
+- Licence files: [text 4](#rust-licence-text-4), [text 227](#rust-licence-text-227)
 
 ### png 0.18.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/image-rs/image-png
-- Licence files: [text 4](#rust-licence-text-4), [text 222](#rust-licence-text-222)
+- Licence files: [text 4](#rust-licence-text-4), [text 227](#rust-licence-text-227)
 
 ### polling 3.11.0
 
@@ -2956,7 +2998,7 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/linebender/kurbo
-- Licence files: [text 83](#rust-licence-text-83), [text 167](#rust-licence-text-167)
+- Licence files: [text 88](#rust-licence-text-88), [text 172](#rust-licence-text-172)
 
 ### portable-atomic 1.15.0
 
@@ -2974,37 +3016,37 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/jamesmunns/postcard
-- Licence files: [text 4](#rust-licence-text-4), [text 223](#rust-licence-text-223)
+- Licence files: [text 4](#rust-licence-text-4), [text 228](#rust-licence-text-228)
 
 ### potential_utf 0.1.6
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### powerfmt 0.2.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/jhpratt/powerfmt
-- Licence files: [text 224](#rust-licence-text-224), [text 225](#rust-licence-text-225)
+- Licence files: [text 229](#rust-licence-text-229), [text 230](#rust-licence-text-230)
 
 ### ppv-lite86 0.2.21
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/cryptocorrosion/cryptocorrosion
-- Licence files: [text 226](#rust-licence-text-226), [text 227](#rust-licence-text-227)
+- Licence files: [text 231](#rust-licence-text-231), [text 232](#rust-licence-text-232)
 
 ### precomputed-hash 0.1.1
 
 - Licence: MIT
 - Repository: https://github.com/emilio/precomputed-hash
-- Licence files: [text 228](#rust-licence-text-228)
+- Licence files: [text 233](#rust-licence-text-233)
 
 ### pretty_assertions 1.4.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-pretty-assertions/rust-pretty-assertions
-- Licence files: [text 47](#rust-licence-text-47), [text 229](#rust-licence-text-229)
+- Licence files: [text 49](#rust-licence-text-49), [text 234](#rust-licence-text-234)
 
 ### proc-macro-crate 1.3.1
 
@@ -3028,13 +3070,13 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://gitlab.com/CreepySkeleton/proc-macro-error
-- Licence files: [text 230](#rust-licence-text-230), [text 231](#rust-licence-text-231)
+- Licence files: [text 235](#rust-licence-text-235), [text 236](#rust-licence-text-236)
 
 ### proc-macro-error-attr 1.0.4
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://gitlab.com/CreepySkeleton/proc-macro-error
-- Licence files: [text 232](#rust-licence-text-232), [text 231](#rust-licence-text-231)
+- Licence files: [text 237](#rust-licence-text-237), [text 236](#rust-licence-text-236)
 
 ### proc-macro2 1.0.107
 
@@ -3046,31 +3088,31 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/stacker/
-- Licence files: [text 233](#rust-licence-text-233), [text 234](#rust-licence-text-234)
+- Licence files: [text 238](#rust-licence-text-238), [text 239](#rust-licence-text-239)
 
 ### pxfm 0.1.30
 
 - Licence: BSD-3-Clause OR Apache-2.0
 - Repository: https://github.com/awxkee/pxfm
-- Licence files: [text 197](#rust-licence-text-197), [text 198](#rust-licence-text-198)
+- Licence files: [text 202](#rust-licence-text-202), [text 203](#rust-licence-text-203)
 
 ### quick-error 2.0.1
 
 - Licence: MIT/Apache-2.0
 - Repository: http://github.com/tailhook/quick-error
-- Licence files: [text 47](#rust-licence-text-47), [text 235](#rust-licence-text-235)
+- Licence files: [text 49](#rust-licence-text-49), [text 240](#rust-licence-text-240)
 
 ### quick-xml 0.42.0
 
 - Licence: MIT
 - Repository: https://github.com/tafia/quick-xml
-- Licence files: [text 236](#rust-licence-text-236)
+- Licence files: [text 241](#rust-licence-text-241)
 
 ### quick_cache 0.6.24
 
 - Licence: MIT
 - Repository: https://github.com/arthurprs/quick-cache
-- Licence files: [text 237](#rust-licence-text-237)
+- Licence files: [text 242](#rust-licence-text-242)
 
 ### quote 1.0.47
 
@@ -3092,109 +3134,109 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-random/rand
-- Licence files: [text 238](#rust-licence-text-238), [text 239](#rust-licence-text-239)
+- Licence files: [text 243](#rust-licence-text-243), [text 244](#rust-licence-text-244)
 
 ### rand 0.8.8
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-random/rand
-- Licence files: [text 238](#rust-licence-text-238), [text 239](#rust-licence-text-239)
+- Licence files: [text 243](#rust-licence-text-243), [text 244](#rust-licence-text-244)
 
 ### rand 0.9.5
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-random/rand
-- Licence files: [text 238](#rust-licence-text-238), [text 239](#rust-licence-text-239)
+- Licence files: [text 243](#rust-licence-text-243), [text 244](#rust-licence-text-244)
 
 ### rand_chacha 0.3.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-random/rand
-- Licence files: [text 120](#rust-licence-text-120), [text 239](#rust-licence-text-239)
+- Licence files: [text 124](#rust-licence-text-124), [text 244](#rust-licence-text-244)
 
 ### rand_chacha 0.9.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-random/rand
-- Licence files: [text 238](#rust-licence-text-238), [text 239](#rust-licence-text-239)
+- Licence files: [text 243](#rust-licence-text-243), [text 244](#rust-licence-text-244)
 
 ### rand_core 0.10.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-random/rand_core
-- Licence files: [text 240](#rust-licence-text-240), [text 241](#rust-licence-text-241)
+- Licence files: [text 245](#rust-licence-text-245), [text 246](#rust-licence-text-246)
 
 ### rand_core 0.6.4
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-random/rand
-- Licence files: [text 240](#rust-licence-text-240), [text 239](#rust-licence-text-239)
+- Licence files: [text 245](#rust-licence-text-245), [text 244](#rust-licence-text-244)
 
 ### rand_core 0.9.5
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-random/rand
-- Licence files: [text 240](#rust-licence-text-240), [text 239](#rust-licence-text-239)
+- Licence files: [text 245](#rust-licence-text-245), [text 244](#rust-licence-text-244)
 
 ### rand_xoshiro 0.6.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-random/rngs
-- Licence files: [text 4](#rust-licence-text-4), [text 242](#rust-licence-text-242)
+- Licence files: [text 4](#rust-licence-text-4), [text 247](#rust-licence-text-247)
 
 ### raw-window-handle 0.6.2
 
 - Licence: MIT OR Apache-2.0 OR Zlib
 - Repository: https://github.com/rust-windowing/raw-window-handle
-- Licence files: [text 16](#rust-licence-text-16), [text 243](#rust-licence-text-243), [text 244](#rust-licence-text-244)
+- Licence files: [text 16](#rust-licence-text-16), [text 248](#rust-licence-text-248), [text 249](#rust-licence-text-249)
 
 ### rawpointer 0.2.1
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/bluss/rawpointer/
-- Licence files: [text 4](#rust-licence-text-4), [text 82](#rust-licence-text-82)
+- Licence files: [text 4](#rust-licence-text-4), [text 87](#rust-licence-text-87)
 
 ### rayon 1.12.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rayon-rs/rayon
-- Licence files: [text 4](#rust-licence-text-4), [text 245](#rust-licence-text-245)
+- Licence files: [text 4](#rust-licence-text-4), [text 250](#rust-licence-text-250)
 
 ### rayon-core 1.13.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rayon-rs/rayon
-- Licence files: [text 4](#rust-licence-text-4), [text 245](#rust-licence-text-245)
+- Licence files: [text 4](#rust-licence-text-4), [text 250](#rust-licence-text-250)
 
 ### read-fonts 0.39.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/googlefonts/fontations
-- Licence files: [text 107](#rust-licence-text-107), [text 108](#rust-licence-text-108)
+- Licence files: [text 112](#rust-licence-text-112), [text 113](#rust-licence-text-113)
 
 ### read-fonts 0.41.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/googlefonts/fontations
-- Licence files: [text 109](#rust-licence-text-109), [text 110](#rust-licence-text-110)
+- Licence files: [text 114](#rust-licence-text-114), [text 115](#rust-licence-text-115)
 
-### redb 4.4.0
+### redb 4.5.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/cberner/redb
-- Licence files: [text 83](#rust-licence-text-83), [text 246](#rust-licence-text-246)
+- Licence files: [text 88](#rust-licence-text-88), [text 251](#rust-licence-text-251)
 
 ### redox_syscall 0.5.18
 
 - Licence: MIT
 - Repository: https://gitlab.redox-os.org/redox-os/syscall
-- Licence files: [text 247](#rust-licence-text-247)
+- Licence files: [text 252](#rust-licence-text-252)
 
 ### redox_users 0.5.3
 
 - Licence: MIT
 - Repository: https://gitlab.redox-os.org/redox-os/users
-- Licence files: [text 248](#rust-licence-text-248)
+- Licence files: [text 253](#rust-licence-text-253)
 
 ### ref-cast 1.0.27
 
@@ -3230,31 +3272,31 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/seanmonstar/reqwest
-- Licence files: [text 249](#rust-licence-text-249), [text 250](#rust-licence-text-250)
+- Licence files: [text 254](#rust-licence-text-254), [text 255](#rust-licence-text-255)
 
-### rfd 0.16.0
+### rfd 0.17.2
 
 - Licence: MIT
 - Repository: https://github.com/PolyMeilex/rfd
-- Licence files: [text 251](#rust-licence-text-251)
+- Licence files: [text 256](#rust-licence-text-256)
 
 ### ropey 1.6.1
 
 - Licence: MIT
 - Repository: https://github.com/cessen/ropey
-- Licence files: [text 252](#rust-licence-text-252)
+- Licence files: [text 257](#rust-licence-text-257)
 
 ### roxmltree 0.21.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/RazrFalcon/roxmltree
-- Licence files: [text 4](#rust-licence-text-4), [text 253](#rust-licence-text-253)
+- Licence files: [text 4](#rust-licence-text-4), [text 258](#rust-licence-text-258)
 
 ### rust_decimal 1.43.0
 
 - Licence: MIT
 - Repository: https://github.com/paupino/rust-decimal
-- Licence files: [text 254](#rust-licence-text-254)
+- Licence files: [text 259](#rust-licence-text-259)
 
 ### rustc-hash 2.1.3
 
@@ -3266,13 +3308,13 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
 - Repository: https://github.com/bytecodealliance/rustix
-- Licence files: [text 4](#rust-licence-text-4), [text 173](#rust-licence-text-173), [text 3](#rust-licence-text-3)
+- Licence files: [text 4](#rust-licence-text-4), [text 178](#rust-licence-text-178), [text 3](#rust-licence-text-3)
 
 ### rustls-pki-types 1.15.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rustls/pki-types
-- Licence files: [text 255](#rust-licence-text-255), [text 256](#rust-licence-text-256)
+- Licence files: [text 260](#rust-licence-text-260), [text 261](#rust-licence-text-261)
 
 ### rustversion 1.0.23
 
@@ -3284,73 +3326,73 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: Apache-2.0 OR BSL-1.0
 - Repository: https://github.com/dtolnay/ryu
-- Licence files: [text 13](#rust-licence-text-13), [text 99](#rust-licence-text-99)
+- Licence files: [text 13](#rust-licence-text-13), [text 104](#rust-licence-text-104)
 
 ### safe_arch 1.2.0
 
 - Licence: Zlib OR Apache-2.0 OR MIT
 - Repository: https://github.com/Lokathor/safe_arch
-- Licence files: [text 40](#rust-licence-text-40), [text 257](#rust-licence-text-257), [text 258](#rust-licence-text-258)
+- Licence files: [text 41](#rust-licence-text-41), [text 262](#rust-licence-text-262), [text 263](#rust-licence-text-263)
 
 ### same-file 1.0.6
 
 - Licence: Unlicense/MIT
 - Repository: https://github.com/BurntSushi/same-file
-- Licence files: [text 6](#rust-licence-text-6), [text 259](#rust-licence-text-259)
+- Licence files: [text 6](#rust-licence-text-6), [text 264](#rust-licence-text-264)
 
 ### schannel 0.1.30
 
 - Licence: MIT
 - Repository: https://github.com/steffengy/schannel-rs
-- Licence files: [text 260](#rust-licence-text-260)
+- Licence files: [text 265](#rust-licence-text-265)
 
 ### schemars 0.8.22
 
 - Licence: MIT
 - Repository: https://github.com/GREsau/schemars
-- Licence files: [text 261](#rust-licence-text-261)
+- Licence files: [text 266](#rust-licence-text-266)
 
 ### schemars 0.9.0
 
 - Licence: MIT
 - Repository: https://github.com/GREsau/schemars
-- Licence files: [text 261](#rust-licence-text-261)
+- Licence files: [text 266](#rust-licence-text-266)
 
 ### schemars 1.2.3
 
 - Licence: MIT
 - Repository: https://github.com/GREsau/schemars
-- Licence files: [text 261](#rust-licence-text-261)
+- Licence files: [text 266](#rust-licence-text-266)
 
 ### schemars_derive 0.8.22
 
 - Licence: MIT
 - Repository: https://github.com/GREsau/schemars
-- Licence files: [text 261](#rust-licence-text-261)
+- Licence files: [text 266](#rust-licence-text-266)
 
 ### scoped-tls 1.0.1
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/alexcrichton/scoped-tls
-- Licence files: [text 4](#rust-licence-text-4), [text 45](#rust-licence-text-45)
+- Licence files: [text 4](#rust-licence-text-4), [text 46](#rust-licence-text-46)
 
 ### scopeguard 1.2.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/bluss/scopeguard
-- Licence files: [text 4](#rust-licence-text-4), [text 262](#rust-licence-text-262)
+- Licence files: [text 4](#rust-licence-text-4), [text 267](#rust-licence-text-267)
 
 ### security-framework 3.7.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/kornelski/rust-security-framework
-- Licence files: [text 4](#rust-licence-text-4), [text 263](#rust-licence-text-263)
+- Licence files: [text 4](#rust-licence-text-4), [text 268](#rust-licence-text-268)
 
 ### security-framework-sys 2.17.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/kornelski/rust-security-framework
-- Licence files: [text 4](#rust-licence-text-4), [text 263](#rust-licence-text-263)
+- Licence files: [text 4](#rust-licence-text-4), [text 268](#rust-licence-text-268)
 
 ### selectors 0.38.0
 
@@ -3429,43 +3471,43 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/toml-rs/toml
-- Licence files: [text 47](#rust-licence-text-47), [text 264](#rust-licence-text-264)
+- Licence files: [text 49](#rust-licence-text-49), [text 269](#rust-licence-text-269)
 
 ### serde_spanned 1.1.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/toml-rs/toml
-- Licence files: [text 265](#rust-licence-text-265), [text 264](#rust-licence-text-264)
+- Licence files: [text 270](#rust-licence-text-270), [text 269](#rust-licence-text-269)
 
 ### serde_urlencoded 0.7.1
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/nox/serde_urlencoded
-- Licence files: [text 13](#rust-licence-text-13), [text 266](#rust-licence-text-266)
+- Licence files: [text 13](#rust-licence-text-13), [text 271](#rust-licence-text-271)
 
 ### serde_with 3.24.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/jonasbb/serde_with/
-- Licence files: [text 4](#rust-licence-text-4), [text 82](#rust-licence-text-82)
+- Licence files: [text 4](#rust-licence-text-4), [text 87](#rust-licence-text-87)
 
 ### serde_with_macros 3.24.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/jonasbb/serde_with/
-- Licence files: [text 4](#rust-licence-text-4), [text 82](#rust-licence-text-82)
+- Licence files: [text 4](#rust-licence-text-4), [text 87](#rust-licence-text-87)
 
 ### serialize-to-javascript 0.1.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/chippers/serialize-to-javascript
-- Licence files: [text 83](#rust-licence-text-83), [text 267](#rust-licence-text-267)
+- Licence files: [text 88](#rust-licence-text-88), [text 272](#rust-licence-text-272)
 
 ### serialize-to-javascript-impl 0.1.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/chippers/serialize-to-javascript
-- Licence files: [text 83](#rust-licence-text-83), [text 267](#rust-licence-text-267)
+- Licence files: [text 88](#rust-licence-text-88), [text 272](#rust-licence-text-272)
 
 ### servo_arc 0.4.3
 
@@ -3477,49 +3519,61 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/RustCrypto/hashes
-- Licence files: [text 35](#rust-licence-text-35), [text 268](#rust-licence-text-268)
+- Licence files: [text 35](#rust-licence-text-35), [text 273](#rust-licence-text-273)
+
+### sha1 0.11.0
+
+- Licence: MIT OR Apache-2.0
+- Repository: https://github.com/RustCrypto/hashes
+- Licence files: [text 35](#rust-licence-text-35), [text 274](#rust-licence-text-274)
 
 ### sha2 0.10.9
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/RustCrypto/hashes
-- Licence files: [text 35](#rust-licence-text-35), [text 268](#rust-licence-text-268)
+- Licence files: [text 35](#rust-licence-text-35), [text 273](#rust-licence-text-273)
+
+### sha2 0.11.1
+
+- Licence: MIT OR Apache-2.0
+- Repository: https://github.com/RustCrypto/hashes
+- Licence files: [text 35](#rust-licence-text-35), [text 274](#rust-licence-text-274)
 
 ### sharded-slab 0.1.7
 
 - Licence: MIT
 - Repository: https://github.com/hawkw/sharded-slab
-- Licence files: [text 269](#rust-licence-text-269)
+- Licence files: [text 275](#rust-licence-text-275)
 
 ### signal-hook-registry 1.4.8
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/vorner/signal-hook
-- Licence files: [text 4](#rust-licence-text-4), [text 270](#rust-licence-text-270)
+- Licence files: [text 4](#rust-licence-text-4), [text 276](#rust-licence-text-276)
 
 ### simba 0.10.2
 
 - Licence: Apache-2.0
 - Repository: https://github.com/dimforge/simba
-- Licence files: [text 201](#rust-licence-text-201)
+- Licence files: [text 206](#rust-licence-text-206)
 
 ### simd-adler32 0.3.10
 
 - Licence: MIT
 - Repository: https://github.com/mcountryman/simd-adler32
-- Licence files: [text 271](#rust-licence-text-271)
+- Licence files: [text 277](#rust-licence-text-277)
 
 ### simdutf8 0.1.5
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rusticstuff/simdutf8
-- Licence files: [text 16](#rust-licence-text-16), [text 148](#rust-licence-text-148)
+- Licence files: [text 16](#rust-licence-text-16), [text 153](#rust-licence-text-153)
 
 ### siphasher 1.0.4
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/jedisct1/rust-siphash
-- Licence files: [text 272](#rust-licence-text-272), [text 83](#rust-licence-text-83), [text 23](#rust-licence-text-23)
+- Licence files: [text 278](#rust-licence-text-278), [text 88](#rust-licence-text-88), [text 23](#rust-licence-text-23)
 
 ### sized-chunks 0.6.5
 
@@ -3531,121 +3585,121 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/googlefonts/fontations
-- Licence files: [text 107](#rust-licence-text-107), [text 108](#rust-licence-text-108)
+- Licence files: [text 112](#rust-licence-text-112), [text 113](#rust-licence-text-113)
 
 ### skrifa 0.44.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/googlefonts/fontations
-- Licence files: [text 109](#rust-licence-text-109), [text 110](#rust-licence-text-110)
+- Licence files: [text 114](#rust-licence-text-114), [text 115](#rust-licence-text-115)
 
 ### slab 0.4.12
 
 - Licence: MIT
 - Repository: https://github.com/tokio-rs/slab
-- Licence files: [text 175](#rust-licence-text-175)
+- Licence files: [text 180](#rust-licence-text-180)
 
-### smallvec 1.16.3
+### smallvec 1.16.5
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/rust-smallvec
-- Licence files: [text 4](#rust-licence-text-4), [text 273](#rust-licence-text-273)
+- Licence files: [text 4](#rust-licence-text-4), [text 279](#rust-licence-text-279)
 
 ### socket2 0.6.5
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/socket2
-- Licence files: [text 4](#rust-licence-text-4), [text 45](#rust-licence-text-45)
+- Licence files: [text 4](#rust-licence-text-4), [text 46](#rust-licence-text-46)
 
 ### softbuffer 0.4.8
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-windowing/softbuffer
-- Licence files: [text 274](#rust-licence-text-274), [text 275](#rust-licence-text-275)
+- Licence files: [text 280](#rust-licence-text-280), [text 281](#rust-licence-text-281)
 
 ### soup3 0.5.0
 
 - Licence: MIT
 - Repository: https://gitlab.gnome.org/World/Rust/soup3-rs
-- Licence files: [text 159](#rust-licence-text-159)
+- Licence files: [text 164](#rust-licence-text-164)
 
 ### soup3-sys 0.5.0
 
 - Licence: MIT
 - Repository: https://gitlab.gnome.org/World/Rust/soup3-rs
-- Licence files: [text 159](#rust-licence-text-159)
+- Licence files: [text 164](#rust-licence-text-164)
 
 ### spellbook 0.4.2
 
 - Licence: MPL-2.0
 - Repository: https://github.com/helix-editor/spellbook
-- Licence files: [text 80](#rust-licence-text-80)
+- Licence files: [text 85](#rust-licence-text-85)
 
 ### spin 0.9.9
 
 - Licence: MIT
 - Repository: https://github.com/mvdnes/spin-rs.git
-- Licence files: [text 276](#rust-licence-text-276)
+- Licence files: [text 282](#rust-licence-text-282)
 
 ### stable_deref_trait 1.2.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/storyyeller/stable_deref_trait
-- Licence files: [text 4](#rust-licence-text-4), [text 277](#rust-licence-text-277)
+- Licence files: [text 4](#rust-licence-text-4), [text 283](#rust-licence-text-283)
 
 ### stacker 0.1.25
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/rust-lang/stacker
-- Licence files: [text 4](#rust-licence-text-4), [text 45](#rust-licence-text-45)
+- Licence files: [text 4](#rust-licence-text-4), [text 46](#rust-licence-text-46)
 
 ### statrs 0.19.1
 
 - Licence: MIT
 - Repository: https://github.com/statrs-dev/statrs
-- Licence files: [text 278](#rust-licence-text-278)
+- Licence files: [text 284](#rust-licence-text-284)
 
 ### str_indices 0.4.4
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/cessen/str_indices
-- Licence files: [text 279](#rust-licence-text-279), [text 148](#rust-licence-text-148)
+- Licence files: [text 285](#rust-licence-text-285), [text 153](#rust-licence-text-153)
 
 ### strict-num 0.1.1
 
 - Licence: MIT
 - Repository: https://github.com/RazrFalcon/strict-num
-- Licence files: [text 280](#rust-licence-text-280)
+- Licence files: [text 286](#rust-licence-text-286)
 
 ### string_cache 0.9.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/string-cache
-- Licence files: [text 4](#rust-licence-text-4), [text 55](#rust-licence-text-55)
+- Licence files: [text 4](#rust-licence-text-4), [text 58](#rust-licence-text-58)
 
 ### strsim 0.11.1
 
 - Licence: MIT
 - Repository: https://github.com/rapidfuzz/strsim-rs
-- Licence files: [text 281](#rust-licence-text-281)
+- Licence files: [text 287](#rust-licence-text-287)
 
 ### subsetter 0.2.6
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/typst/subsetter
-- Licence files: [text 13](#rust-licence-text-13), [text 148](#rust-licence-text-148)
+- Licence files: [text 13](#rust-licence-text-13), [text 153](#rust-licence-text-153)
 
 ### swash 0.2.10
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/dfrg/swash
-- Licence files: [text 4](#rust-licence-text-4), [text 282](#rust-licence-text-282)
+- Licence files: [text 4](#rust-licence-text-4), [text 288](#rust-licence-text-288)
 
 ### swift-rs 1.0.9
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/Brendonovich/swift-rs
-- Licence files: [text 283](#rust-licence-text-283), [text 284](#rust-licence-text-284)
+- Licence files: [text 289](#rust-licence-text-289), [text 290](#rust-licence-text-290)
 
 ### syn 1.0.109
 
@@ -3675,115 +3729,115 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/mystor/synstructure
-- Licence files: [text 285](#rust-licence-text-285)
+- Licence files: [text 291](#rust-licence-text-291)
 
 ### tao 0.37.1
 
 - Licence: Apache-2.0
 - Repository: https://github.com/tauri-apps/tao
-- Licence files: [text 47](#rust-licence-text-47), [text 286](#rust-licence-text-286)
+- Licence files: [text 49](#rust-licence-text-49), [text 292](#rust-licence-text-292)
 
 ### tao-macros 0.1.4
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/tauri-apps/tao
-- Licence files: [text 4](#rust-licence-text-4), [text 287](#rust-licence-text-287), [text 288](#rust-licence-text-288)
+- Licence files: [text 4](#rust-licence-text-4), [text 293](#rust-licence-text-293), [text 294](#rust-licence-text-294)
 
 ### tar 0.4.46
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/composefs/tar-rs
-- Licence files: [text 4](#rust-licence-text-4), [text 289](#rust-licence-text-289)
+- Licence files: [text 4](#rust-licence-text-4), [text 295](#rust-licence-text-295)
 
 ### tauri 2.12.4
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/tauri
-- Licence files: [text 16](#rust-licence-text-16), [text 290](#rust-licence-text-290)
+- Licence files: [text 16](#rust-licence-text-16), [text 296](#rust-licence-text-296)
 
 ### tauri-codegen 2.7.3
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/tauri
-- Licence files: [text 16](#rust-licence-text-16), [text 290](#rust-licence-text-290)
+- Licence files: [text 16](#rust-licence-text-16), [text 296](#rust-licence-text-296)
 
 ### tauri-macros 2.7.3
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/tauri
-- Licence files: [text 16](#rust-licence-text-16), [text 290](#rust-licence-text-290)
+- Licence files: [text 16](#rust-licence-text-16), [text 296](#rust-licence-text-296)
 
-### tauri-plugin-dialog 2.8.3
+### tauri-plugin-dialog 2.8.4
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/plugins-workspace
-- Licence files: [text 291](#rust-licence-text-291), [text 16](#rust-licence-text-16), [text 290](#rust-licence-text-290)
+- Licence files: [text 297](#rust-licence-text-297), [text 16](#rust-licence-text-16), [text 296](#rust-licence-text-296)
 
 ### tauri-plugin-fs 2.7.1
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/plugins-workspace
-- Licence files: [text 291](#rust-licence-text-291), [text 16](#rust-licence-text-16), [text 290](#rust-licence-text-290)
+- Licence files: [text 297](#rust-licence-text-297), [text 16](#rust-licence-text-16), [text 296](#rust-licence-text-296)
 
 ### tauri-plugin-opener 2.7.2
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/plugins-workspace
-- Licence files: [text 291](#rust-licence-text-291), [text 16](#rust-licence-text-16), [text 290](#rust-licence-text-290)
+- Licence files: [text 297](#rust-licence-text-297), [text 16](#rust-licence-text-16), [text 296](#rust-licence-text-296)
 
 ### tauri-plugin-process 2.4.0
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/plugins-workspace
-- Licence files: [text 291](#rust-licence-text-291), [text 16](#rust-licence-text-16), [text 290](#rust-licence-text-290)
+- Licence files: [text 297](#rust-licence-text-297), [text 16](#rust-licence-text-16), [text 296](#rust-licence-text-296)
 
 ### tauri-plugin-single-instance 2.5.5
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/plugins-workspace
-- Licence files: [text 291](#rust-licence-text-291), [text 16](#rust-licence-text-16), [text 292](#rust-licence-text-292)
+- Licence files: [text 297](#rust-licence-text-297), [text 16](#rust-licence-text-16), [text 298](#rust-licence-text-298)
 
 ### tauri-plugin-updater 2.14.1
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/plugins-workspace
-- Licence files: [text 291](#rust-licence-text-291), [text 16](#rust-licence-text-16), [text 290](#rust-licence-text-290)
+- Licence files: [text 297](#rust-licence-text-297), [text 16](#rust-licence-text-16), [text 296](#rust-licence-text-296)
 
 ### tauri-plugin-window-state 2.5.0
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/plugins-workspace
-- Licence files: [text 291](#rust-licence-text-291), [text 16](#rust-licence-text-16), [text 290](#rust-licence-text-290)
+- Licence files: [text 297](#rust-licence-text-297), [text 16](#rust-licence-text-16), [text 296](#rust-licence-text-296)
 
 ### tauri-runtime 2.12.2
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/tauri
-- Licence files: [text 16](#rust-licence-text-16), [text 290](#rust-licence-text-290)
+- Licence files: [text 16](#rust-licence-text-16), [text 296](#rust-licence-text-296)
 
 ### tauri-runtime-wry 2.12.2
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/tauri
-- Licence files: [text 16](#rust-licence-text-16), [text 290](#rust-licence-text-290)
+- Licence files: [text 16](#rust-licence-text-16), [text 296](#rust-licence-text-296)
 
 ### tauri-utils 2.10.2
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/tauri
-- Licence files: [text 16](#rust-licence-text-16), [text 290](#rust-licence-text-290)
+- Licence files: [text 16](#rust-licence-text-16), [text 296](#rust-licence-text-296)
 
 ### tempfile 3.27.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/Stebalien/tempfile
-- Licence files: [text 4](#rust-licence-text-4), [text 293](#rust-licence-text-293)
+- Licence files: [text 4](#rust-licence-text-4), [text 299](#rust-licence-text-299)
 
 ### tendril 0.5.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/html5ever
-- Licence files: [text 4](#rust-licence-text-4), [text 294](#rust-licence-text-294)
+- Licence files: [text 4](#rust-licence-text-4), [text 300](#rust-licence-text-300)
 
 ### termcolor 1.4.1
 
@@ -3819,193 +3873,199 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/Amanieu/thread_local-rs
-- Licence files: [text 4](#rust-licence-text-4), [text 174](#rust-licence-text-174)
+- Licence files: [text 4](#rust-licence-text-4), [text 179](#rust-licence-text-179)
 
 ### time 0.3.55
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/time-rs/time
-- Licence files: [text 16](#rust-licence-text-16), [text 295](#rust-licence-text-295)
+- Licence files: [text 16](#rust-licence-text-16), [text 301](#rust-licence-text-301)
 
 ### time-core 0.1.9
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/time-rs/time
-- Licence files: [text 16](#rust-licence-text-16), [text 295](#rust-licence-text-295)
+- Licence files: [text 16](#rust-licence-text-16), [text 301](#rust-licence-text-301)
 
 ### time-macros 0.2.32
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/time-rs/time
-- Licence files: [text 16](#rust-licence-text-16), [text 295](#rust-licence-text-295)
+- Licence files: [text 16](#rust-licence-text-16), [text 301](#rust-licence-text-301)
 
 ### tiny-skia 0.12.0
 
 - Licence: BSD-3-Clause
 - Repository: https://github.com/linebender/tiny-skia
-- Licence files: [text 296](#rust-licence-text-296)
+- Licence files: [text 302](#rust-licence-text-302)
 
 ### tiny-skia-path 0.12.0
 
 - Licence: BSD-3-Clause
 - Repository: https://github.com/linebender/tiny-skia/tree/master/path
-- Licence files: [text 296](#rust-licence-text-296)
+- Licence files: [text 302](#rust-licence-text-302)
 
-### tinystr 0.8.4
+### tinystr 0.8.5
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### tinyvec 1.13.3
 
 - Licence: Zlib OR Apache-2.0 OR MIT
 - Repository: https://github.com/Lokathor/tinyvec
-- Licence files: [text 83](#rust-licence-text-83), [text 64](#rust-licence-text-64), [text 42](#rust-licence-text-42)
+- Licence files: [text 88](#rust-licence-text-88), [text 68](#rust-licence-text-68), [text 43](#rust-licence-text-43)
 
-### tokio 1.53.3
+### tokio 1.54.1
 
 - Licence: MIT
 - Repository: https://github.com/tokio-rs/tokio
-- Licence files: [text 297](#rust-licence-text-297)
+- Licence files: [text 303](#rust-licence-text-303)
 
 ### tokio-macros 2.7.2
 
 - Licence: MIT
 - Repository: https://github.com/tokio-rs/tokio
-- Licence files: [text 298](#rust-licence-text-298)
+- Licence files: [text 304](#rust-licence-text-304)
 
 ### tokio-native-tls 0.3.1
 
 - Licence: MIT
 - Repository: https://github.com/tokio-rs/tls
-- Licence files: [text 299](#rust-licence-text-299)
+- Licence files: [text 305](#rust-licence-text-305)
 
 ### tokio-tungstenite 0.29.0
 
 - Licence: MIT
 - Repository: https://github.com/snapview/tokio-tungstenite
-- Licence files: [text 300](#rust-licence-text-300)
+- Licence files: [text 306](#rust-licence-text-306)
+
+### tokio-tungstenite 0.30.0
+
+- Licence: MIT
+- Repository: https://github.com/snapview/tokio-tungstenite
+- Licence files: [text 306](#rust-licence-text-306)
 
 ### tokio-util 0.7.20
 
 - Licence: MIT
 - Repository: https://github.com/tokio-rs/tokio
-- Licence files: [text 297](#rust-licence-text-297)
+- Licence files: [text 303](#rust-licence-text-303)
 
-### toml 1.1.8+spec-1.1.0
+### toml 1.2.0+spec-1.1.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/toml-rs/toml
-- Licence files: [text 265](#rust-licence-text-265), [text 264](#rust-licence-text-264)
+- Licence files: [text 270](#rust-licence-text-270), [text 269](#rust-licence-text-269)
 
 ### toml_datetime 0.6.3
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/toml-rs/toml
-- Licence files: [text 4](#rust-licence-text-4), [text 45](#rust-licence-text-45)
+- Licence files: [text 4](#rust-licence-text-4), [text 46](#rust-licence-text-46)
 
 ### toml_datetime 1.1.2+spec-1.1.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/toml-rs/toml
-- Licence files: [text 265](#rust-licence-text-265), [text 264](#rust-licence-text-264)
+- Licence files: [text 270](#rust-licence-text-270), [text 269](#rust-licence-text-269)
 
 ### toml_edit 0.19.15
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/toml-rs/toml
-- Licence files: [text 47](#rust-licence-text-47), [text 264](#rust-licence-text-264)
+- Licence files: [text 49](#rust-licence-text-49), [text 269](#rust-licence-text-269)
 
 ### toml_edit 0.20.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/toml-rs/toml
-- Licence files: [text 47](#rust-licence-text-47), [text 264](#rust-licence-text-264)
+- Licence files: [text 49](#rust-licence-text-49), [text 269](#rust-licence-text-269)
 
 ### toml_edit 0.25.17+spec-1.1.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/toml-rs/toml
-- Licence files: [text 265](#rust-licence-text-265), [text 264](#rust-licence-text-264)
+- Licence files: [text 270](#rust-licence-text-270), [text 269](#rust-licence-text-269)
 
 ### toml_parser 1.1.5+spec-1.1.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/toml-rs/toml
-- Licence files: [text 265](#rust-licence-text-265), [text 264](#rust-licence-text-264)
+- Licence files: [text 270](#rust-licence-text-270), [text 269](#rust-licence-text-269)
 
-### toml_writer 1.1.3+spec-1.1.0
+### toml_writer 1.2.0+spec-1.1.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/toml-rs/toml
-- Licence files: [text 265](#rust-licence-text-265), [text 264](#rust-licence-text-264)
+- Licence files: [text 270](#rust-licence-text-270), [text 269](#rust-licence-text-269)
 
 ### tower 0.5.3
 
 - Licence: MIT
 - Repository: https://github.com/tower-rs/tower
-- Licence files: [text 301](#rust-licence-text-301)
+- Licence files: [text 307](#rust-licence-text-307)
 
 ### tower-http 0.6.11
 
 - Licence: MIT
 - Repository: https://github.com/tower-rs/tower-http
-- Licence files: [text 302](#rust-licence-text-302)
+- Licence files: [text 308](#rust-licence-text-308)
 
 ### tower-layer 0.3.3
 
 - Licence: MIT
 - Repository: https://github.com/tower-rs/tower
-- Licence files: [text 301](#rust-licence-text-301)
+- Licence files: [text 307](#rust-licence-text-307)
 
 ### tower-service 0.3.3
 
 - Licence: MIT
 - Repository: https://github.com/tower-rs/tower
-- Licence files: [text 301](#rust-licence-text-301)
+- Licence files: [text 307](#rust-licence-text-307)
 
 ### tracing 0.1.44
 
 - Licence: MIT
 - Repository: https://github.com/tokio-rs/tracing
-- Licence files: [text 299](#rust-licence-text-299)
+- Licence files: [text 305](#rust-licence-text-305)
 
 ### tracing-attributes 0.1.31
 
 - Licence: MIT
 - Repository: https://github.com/tokio-rs/tracing
-- Licence files: [text 299](#rust-licence-text-299)
+- Licence files: [text 305](#rust-licence-text-305)
 
 ### tracing-core 0.1.36
 
 - Licence: MIT
 - Repository: https://github.com/tokio-rs/tracing
-- Licence files: [text 299](#rust-licence-text-299)
+- Licence files: [text 305](#rust-licence-text-305)
 
 ### tracing-log 0.2.0
 
 - Licence: MIT
 - Repository: https://github.com/tokio-rs/tracing
-- Licence files: [text 299](#rust-licence-text-299)
+- Licence files: [text 305](#rust-licence-text-305)
 
 ### tracing-subscriber 0.3.23
 
 - Licence: MIT
 - Repository: https://github.com/tokio-rs/tracing
-- Licence files: [text 299](#rust-licence-text-299)
+- Licence files: [text 305](#rust-licence-text-305)
 
 ### tray-icon 0.25.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/tauri-apps/tray-icon
-- Licence files: [text 4](#rust-licence-text-4), [text 199](#rust-licence-text-199), [text 303](#rust-licence-text-303)
+- Licence files: [text 4](#rust-licence-text-4), [text 204](#rust-licence-text-204), [text 309](#rust-licence-text-309)
 
 ### try-lock 0.2.5
 
 - Licence: MIT
 - Repository: https://github.com/seanmonstar/try-lock
-- Licence files: [text 304](#rust-licence-text-304)
+- Licence files: [text 310](#rust-licence-text-310)
 
 ### ts-rs 12.0.1
 
@@ -4021,15 +4081,21 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/snapview/tungstenite-rs
-- Licence files: [text 4](#rust-licence-text-4), [text 305](#rust-licence-text-305)
+- Licence files: [text 4](#rust-licence-text-4), [text 311](#rust-licence-text-311)
+
+### tungstenite 0.30.0
+
+- Licence: MIT OR Apache-2.0
+- Repository: https://github.com/snapview/tungstenite-rs
+- Licence files: [text 4](#rust-licence-text-4), [text 311](#rust-licence-text-311)
 
 ### twox-hash 2.1.5
 
 - Licence: MIT
 - Repository: https://github.com/shepmaster/twox-hash
-- Licence files: [text 306](#rust-licence-text-306)
+- Licence files: [text 312](#rust-licence-text-312)
 
-### typed-path 0.12.3
+### typed-path 0.13.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/chipsenkbeil/typed-path
@@ -4045,7 +4111,7 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/paholg/typenum
-- Licence files: [text 307](#rust-licence-text-307), [text 308](#rust-licence-text-308), [text 309](#rust-licence-text-309)
+- Licence files: [text 313](#rust-licence-text-313), [text 314](#rust-licence-text-314), [text 315](#rust-licence-text-315)
 
 ### ucd-trie 0.1.7
 
@@ -4057,61 +4123,61 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/haraldh/rust_uds_windows
-- Licence files: [text 310](#rust-licence-text-310)
+- Licence files: [text 316](#rust-licence-text-316)
 
 ### unicode-bidi 0.3.18
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/unicode-bidi
-- Licence files: [text 4](#rust-licence-text-4), [text 130](#rust-licence-text-130)
+- Licence files: [text 4](#rust-licence-text-4), [text 134](#rust-licence-text-134)
 
 ### unicode-ident 1.0.27
 
 - Licence: (MIT OR Apache-2.0) AND Unicode-3.0
 - Repository: https://github.com/dtolnay/unicode-ident
-- Licence files: [text 13](#rust-licence-text-13), [text 3](#rust-licence-text-3), [text 311](#rust-licence-text-311)
+- Licence files: [text 13](#rust-licence-text-13), [text 3](#rust-licence-text-3), [text 317](#rust-licence-text-317)
 
 ### unicode-linebreak 0.1.5
 
 - Licence: Apache-2.0
 - Repository: https://github.com/axelf4/unicode-linebreak
-- Licence files: [text 83](#rust-licence-text-83)
+- Licence files: [text 88](#rust-licence-text-88)
 
 ### unicode-segmentation 1.13.3
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/unicode-rs/unicode-segmentation
-- Licence files: [text 4](#rust-licence-text-4), [text 130](#rust-licence-text-130)
+- Licence files: [text 4](#rust-licence-text-4), [text 134](#rust-licence-text-134)
 
 ### url 2.5.8
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/rust-url
-- Licence files: [text 4](#rust-licence-text-4), [text 149](#rust-licence-text-149)
+- Licence files: [text 4](#rust-licence-text-4), [text 154](#rust-licence-text-154)
 
 ### urlpattern 0.6.0
 
 - Licence: MIT
 - Repository: https://github.com/denoland/rust-urlpattern
-- Licence files: [text 312](#rust-licence-text-312)
+- Licence files: [text 318](#rust-licence-text-318)
 
 ### utf16_iter 1.0.5
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/hsivonen/utf16_iter
-- Licence files: [text 83](#rust-licence-text-83), [text 87](#rust-licence-text-87)
+- Licence files: [text 88](#rust-licence-text-88), [text 92](#rust-licence-text-92)
 
 ### utf8_iter 1.0.4
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/hsivonen/utf8_iter
-- Licence files: [text 83](#rust-licence-text-83), [text 87](#rust-licence-text-87)
+- Licence files: [text 88](#rust-licence-text-88), [text 92](#rust-licence-text-92)
 
 ### uuid 1.28.0
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/uuid-rs/uuid
-- Licence files: [text 4](#rust-licence-text-4), [text 313](#rust-licence-text-313)
+- Licence files: [text 4](#rust-licence-text-4), [text 319](#rust-licence-text-319)
 
 ### valuable 0.1.1
 
@@ -4128,49 +4194,49 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT
 - Repository: https://github.com/seanmonstar/want
-- Licence files: [text 314](#rust-licence-text-314)
+- Licence files: [text 320](#rust-licence-text-320)
 
 ### wasi 0.11.1+wasi-snapshot-preview1
 
 - Licence: Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
 - Repository: https://github.com/bytecodealliance/wasi
-- Licence files: [text 4](#rust-licence-text-4), [text 173](#rust-licence-text-173), [text 3](#rust-licence-text-3)
+- Licence files: [text 4](#rust-licence-text-4), [text 178](#rust-licence-text-178), [text 3](#rust-licence-text-3)
 
 ### wasip2 1.0.4+wasi-0.2.12
 
 - Licence: Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
 - Repository: https://github.com/bytecodealliance/wasi-rs
-- Licence files: [text 4](#rust-licence-text-4), [text 173](#rust-licence-text-173), [text 3](#rust-licence-text-3)
+- Licence files: [text 4](#rust-licence-text-4), [text 178](#rust-licence-text-178), [text 3](#rust-licence-text-3)
 
 ### wasm-bindgen 0.2.129
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/wasm-bindgen/wasm-bindgen
-- Licence files: [text 4](#rust-licence-text-4), [text 45](#rust-licence-text-45)
+- Licence files: [text 4](#rust-licence-text-4), [text 46](#rust-licence-text-46)
 
 ### wasm-bindgen-futures 0.4.79
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/futures
-- Licence files: [text 4](#rust-licence-text-4), [text 45](#rust-licence-text-45)
+- Licence files: [text 4](#rust-licence-text-4), [text 46](#rust-licence-text-46)
 
 ### wasm-bindgen-macro 0.2.129
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/macro
-- Licence files: [text 4](#rust-licence-text-4), [text 45](#rust-licence-text-45)
+- Licence files: [text 4](#rust-licence-text-4), [text 46](#rust-licence-text-46)
 
 ### wasm-bindgen-macro-support 0.2.129
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/wasm-bindgen/wasm-bindgen/tree/main/crates/macro-support
-- Licence files: [text 4](#rust-licence-text-4), [text 45](#rust-licence-text-45)
+- Licence files: [text 4](#rust-licence-text-4), [text 46](#rust-licence-text-46)
 
 ### wasm-bindgen-shared 0.2.129
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/shared
-- Licence files: [text 4](#rust-licence-text-4), [text 45](#rust-licence-text-45)
+- Licence files: [text 4](#rust-licence-text-4), [text 46](#rust-licence-text-46)
 
 ### wasm-streams 0.5.0
 
@@ -4182,31 +4248,31 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/web-sys
-- Licence files: [text 4](#rust-licence-text-4), [text 45](#rust-licence-text-45)
+- Licence files: [text 4](#rust-licence-text-4), [text 46](#rust-licence-text-46)
 
 ### web-time 1.1.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/daxpedda/web-time
-- Licence files: [text 315](#rust-licence-text-315), [text 316](#rust-licence-text-316)
+- Licence files: [text 321](#rust-licence-text-321), [text 322](#rust-licence-text-322)
 
 ### web_atoms 0.2.6
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/servo/html5ever
-- Licence files: [text 4](#rust-licence-text-4), [text 132](#rust-licence-text-132)
+- Licence files: [text 4](#rust-licence-text-4), [text 136](#rust-licence-text-136)
 
 ### webkit2gtk 2.0.2
 
 - Licence: MIT
 - Repository: https://github.com/tauri-apps/webkit2gtk-rs
-- Licence files: [text 317](#rust-licence-text-317)
+- Licence files: [text 323](#rust-licence-text-323)
 
 ### webkit2gtk-sys 2.0.2
 
 - Licence: MIT
 - Repository: https://github.com/tauri-apps/webkit2gtk-rs
-- Licence files: [text 318](#rust-licence-text-318)
+- Licence files: [text 324](#rust-licence-text-324)
 
 ### webview2-com 0.39.1
 
@@ -4227,19 +4293,19 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/image-rs/weezl
-- Licence files: [text 4](#rust-licence-text-4), [text 319](#rust-licence-text-319)
+- Licence files: [text 4](#rust-licence-text-4), [text 325](#rust-licence-text-325)
 
 ### wide 1.7.1
 
 - Licence: Zlib OR Apache-2.0 OR MIT
 - Repository: https://github.com/Lokathor/wide
-- Licence files: [text 320](#rust-licence-text-320), [text 321](#rust-licence-text-321), [text 322](#rust-licence-text-322)
+- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327), [text 328](#rust-licence-text-328)
 
 ### winapi 0.3.9
 
 - Licence: MIT/Apache-2.0
 - Repository: https://github.com/retep998/winapi-rs
-- Licence files: [text 47](#rust-licence-text-47), [text 323](#rust-licence-text-323)
+- Licence files: [text 49](#rust-licence-text-49), [text 329](#rust-licence-text-329)
 
 ### winapi-i686-pc-windows-gnu 0.4.0
 
@@ -4250,7 +4316,7 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: Unlicense OR MIT
 - Repository: https://github.com/BurntSushi/winapi-util
-- Licence files: [text 6](#rust-licence-text-6), [text 259](#rust-licence-text-259)
+- Licence files: [text 6](#rust-licence-text-6), [text 264](#rust-licence-text-264)
 
 ### winapi-x86_64-pc-windows-gnu 0.4.0
 
@@ -4261,241 +4327,181 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/tauri-plugin-vibrancy
-- Licence files: [text 4](#rust-licence-text-4), [text 324](#rust-licence-text-324), [text 325](#rust-licence-text-325)
+- Licence files: [text 4](#rust-licence-text-4), [text 330](#rust-licence-text-330), [text 331](#rust-licence-text-331)
 
 ### windows 0.62.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows-collections 0.3.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows-core 0.62.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows-future 0.3.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows-implement 0.60.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows-interface 0.59.3
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows-link 0.2.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows-numerics 0.3.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows-result 0.4.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows-strings 0.5.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows-sys 0.45.0
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
-
-### windows-sys 0.60.2
-
-- Licence: MIT OR Apache-2.0
-- Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows-sys 0.61.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows-targets 0.42.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
-
-### windows-targets 0.53.5
-
-- Licence: MIT OR Apache-2.0
-- Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows-threading 0.2.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows-version 0.1.7
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows_aarch64_gnullvm 0.42.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
-
-### windows_aarch64_gnullvm 0.53.1
-
-- Licence: MIT OR Apache-2.0
-- Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows_aarch64_msvc 0.42.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
-
-### windows_aarch64_msvc 0.53.1
-
-- Licence: MIT OR Apache-2.0
-- Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows_i686_gnu 0.42.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
-
-### windows_i686_gnu 0.53.1
-
-- Licence: MIT OR Apache-2.0
-- Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
-
-### windows_i686_gnullvm 0.53.1
-
-- Licence: MIT OR Apache-2.0
-- Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows_i686_msvc 0.42.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
-
-### windows_i686_msvc 0.53.1
-
-- Licence: MIT OR Apache-2.0
-- Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows_x86_64_gnu 0.42.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
-
-### windows_x86_64_gnu 0.53.1
-
-- Licence: MIT OR Apache-2.0
-- Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows_x86_64_gnullvm 0.42.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
-
-### windows_x86_64_gnullvm 0.53.1
-
-- Licence: MIT OR Apache-2.0
-- Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### windows_x86_64_msvc 0.42.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
-
-### windows_x86_64_msvc 0.53.1
-
-- Licence: MIT OR Apache-2.0
-- Repository: https://github.com/microsoft/windows-rs
-- Licence files: [text 326](#rust-licence-text-326), [text 327](#rust-licence-text-327)
+- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
 
 ### winnow 0.5.40
 
 - Licence: MIT
 - Repository: https://github.com/winnow-rs/winnow
-- Licence files: [text 328](#rust-licence-text-328)
+- Licence files: [text 334](#rust-licence-text-334)
 
 ### winnow 1.0.4
 
 - Licence: MIT
 - Repository: https://github.com/winnow-rs/winnow
-- Licence files: [text 328](#rust-licence-text-328)
+- Licence files: [text 334](#rust-licence-text-334)
 
 ### wit-bindgen 0.57.1
 
 - Licence: Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
 - Repository: https://github.com/bytecodealliance/wit-bindgen
-- Licence files: [text 4](#rust-licence-text-4), [text 173](#rust-licence-text-173), [text 3](#rust-licence-text-3)
+- Licence files: [text 4](#rust-licence-text-4), [text 178](#rust-licence-text-178), [text 3](#rust-licence-text-3)
 
 ### write-fonts 0.48.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/googlefonts/fontations
-- Licence files: [text 107](#rust-licence-text-107), [text 108](#rust-licence-text-108)
+- Licence files: [text 112](#rust-licence-text-112), [text 113](#rust-licence-text-113)
 
 ### write16 1.0.0
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/hsivonen/write16
-- Licence files: [text 83](#rust-licence-text-83), [text 87](#rust-licence-text-87)
+- Licence files: [text 88](#rust-licence-text-88), [text 92](#rust-licence-text-92)
 
 ### writeable 0.6.4
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### wry 0.57.0
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/tauri-apps/wry
-- Licence files: [text 4](#rust-licence-text-4), [text 329](#rust-licence-text-329), [text 330](#rust-licence-text-330)
+- Licence files: [text 4](#rust-licence-text-4), [text 335](#rust-licence-text-335), [text 336](#rust-licence-text-336)
 
 ### x11 2.21.0
 
@@ -4513,151 +4519,151 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/psychon/x11rb
-- Licence files: [text 83](#rust-licence-text-83), [text 331](#rust-licence-text-331)
+- Licence files: [text 88](#rust-licence-text-88), [text 337](#rust-licence-text-337)
 
 ### x11rb-protocol 0.13.2
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/psychon/x11rb
-- Licence files: [text 83](#rust-licence-text-83), [text 331](#rust-licence-text-331)
+- Licence files: [text 88](#rust-licence-text-88), [text 337](#rust-licence-text-337)
 
 ### xattr 1.6.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/Stebalien/xattr
-- Licence files: [text 4](#rust-licence-text-4), [text 293](#rust-licence-text-293)
+- Licence files: [text 4](#rust-licence-text-4), [text 299](#rust-licence-text-299)
 
 ### xmp-writer 0.3.3
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/typst/xmp-writer
-- Licence files: [text 13](#rust-licence-text-13), [text 148](#rust-licence-text-148)
+- Licence files: [text 13](#rust-licence-text-13), [text 153](#rust-licence-text-153)
 
 ### xxhash-rust 0.8.19
 
 - Licence: BSL-1.0
 - Repository: https://github.com/DoumanAsh/xxhash-rust
-- Licence files: [text 99](#rust-licence-text-99)
+- Licence files: [text 104](#rust-licence-text-104)
 
 ### yansi 1.0.1
 
 - Licence: MIT OR Apache-2.0
 - Repository: https://github.com/SergioBenitez/yansi
-- Licence files: [text 332](#rust-licence-text-332), [text 333](#rust-licence-text-333)
+- Licence files: [text 338](#rust-licence-text-338), [text 339](#rust-licence-text-339)
 
 ### yazi 0.2.1
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/dfrg/yazi
-- Licence files: [text 22](#rust-licence-text-22), [text 334](#rust-licence-text-334)
+- Licence files: [text 22](#rust-licence-text-22), [text 340](#rust-licence-text-340)
 
 ### yeslogic-fontconfig-sys 6.0.1
 
 - Licence: MIT
 - Repository: https://github.com/yeslogic/fontconfig-rs
-- Licence files: [text 335](#rust-licence-text-335)
+- Licence files: [text 341](#rust-licence-text-341)
 
-### yoke 0.8.3
+### yoke 0.8.4
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### yoke-derive 0.8.4
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### zbus 5.19.0
 
 - Licence: MIT
 - Repository: https://github.com/z-galaxy/zbus/
-- Licence files: [text 336](#rust-licence-text-336)
+- Licence files: [text 342](#rust-licence-text-342)
 
 ### zbus_macros 5.19.0
 
 - Licence: MIT
 - Repository: https://github.com/z-galaxy/zbus/
-- Licence files: [text 336](#rust-licence-text-336)
+- Licence files: [text 342](#rust-licence-text-342)
 
 ### zbus_names 4.3.4
 
 - Licence: MIT
 - Repository: https://github.com/z-galaxy/zbus/
-- Licence files: [text 336](#rust-licence-text-336)
+- Licence files: [text 342](#rust-licence-text-342)
 
 ### zcheapstr 1.1.0
 
 - Licence: MIT
 - Repository: https://github.com/z-galaxy/zcheapstr/
-- Licence files: [text 337](#rust-licence-text-337)
+- Licence files: [text 343](#rust-licence-text-343)
 
 ### zeno 0.3.3
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/dfrg/zeno
-- Licence files: [text 22](#rust-licence-text-22), [text 338](#rust-licence-text-338)
+- Licence files: [text 22](#rust-licence-text-22), [text 344](#rust-licence-text-344)
 
 ### zerocopy 0.8.63
 
 - Licence: BSD-2-Clause OR Apache-2.0 OR MIT
 - Repository: https://github.com/google/zerocopy
-- Licence files: [text 339](#rust-licence-text-339), [text 340](#rust-licence-text-340), [text 341](#rust-licence-text-341)
+- Licence files: [text 345](#rust-licence-text-345), [text 346](#rust-licence-text-346), [text 347](#rust-licence-text-347)
 
 ### zerocopy-derive 0.8.63
 
 - Licence: BSD-2-Clause OR Apache-2.0 OR MIT
 - Repository: https://github.com/google/zerocopy
-- Licence files: [text 339](#rust-licence-text-339), [text 340](#rust-licence-text-340), [text 341](#rust-licence-text-341)
+- Licence files: [text 345](#rust-licence-text-345), [text 346](#rust-licence-text-346), [text 347](#rust-licence-text-347)
 
 ### zerofrom 0.1.8
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### zerofrom-derive 0.1.8
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
 ### zeroize 1.9.1
 
 - Licence: Apache-2.0 OR MIT
 - Repository: https://github.com/RustCrypto/utils
-- Licence files: [text 83](#rust-licence-text-83), [text 342](#rust-licence-text-342)
+- Licence files: [text 88](#rust-licence-text-88), [text 348](#rust-licence-text-348)
 
 ### zerotrie 0.2.5
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
-### zerovec 0.11.8
-
-- Licence: Unicode-3.0
-- Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
-
-### zerovec-derive 0.11.6
+### zerovec 0.11.9
 
 - Licence: Unicode-3.0
 - Repository: https://github.com/unicode-org/icu4x
-- Licence files: [text 147](#rust-licence-text-147)
+- Licence files: [text 152](#rust-licence-text-152)
 
-### zip 9.0.3
+### zerovec-derive 0.11.7
+
+- Licence: Unicode-3.0
+- Repository: https://github.com/unicode-org/icu4x
+- Licence files: [text 152](#rust-licence-text-152)
+
+### zip 9.4.1
 
 - Licence: MIT
 - Repository: https://github.com/zip-rs/zip2
-- Licence files: [text 276](#rust-licence-text-276)
+- Licence files: [text 282](#rust-licence-text-282)
 
 ### zlib-rs 0.6.8
 
 - Licence: Zlib
 - Repository: https://github.com/trifectatechfoundation/zlib-rs
-- Licence files: [text 343](#rust-licence-text-343)
+- Licence files: [text 349](#rust-licence-text-349)
 
 ### zmij 1.0.23
 
@@ -4669,25 +4675,25 @@ third-party software listed below, each under its own licence. This file is gene
 
 - Licence: MIT OR Apache-2.0 OR Zlib
 - Repository: https://github.com/etemesi254/zune-image
-- Licence files: [text 83](#rust-licence-text-83), [text 344](#rust-licence-text-344), [text 345](#rust-licence-text-345)
+- Licence files: [text 88](#rust-licence-text-88), [text 350](#rust-licence-text-350), [text 351](#rust-licence-text-351)
 
 ### zune-jpeg 0.5.15
 
 - Licence: MIT OR Apache-2.0 OR Zlib
 - Repository: https://github.com/etemesi254/zune-image/tree/dev/crates/zune-jpeg
-- Licence files: [text 83](#rust-licence-text-83), [text 344](#rust-licence-text-344), [text 345](#rust-licence-text-345)
+- Licence files: [text 88](#rust-licence-text-88), [text 350](#rust-licence-text-350), [text 351](#rust-licence-text-351)
 
 ### zvariant 5.15.0
 
 - Licence: MIT
 - Repository: https://github.com/z-galaxy/zbus/
-- Licence files: [text 336](#rust-licence-text-336)
+- Licence files: [text 342](#rust-licence-text-342)
 
 ### zvariant_derive 5.15.0
 
 - Licence: MIT
 - Repository: https://github.com/z-galaxy/zbus/
-- Licence files: [text 336](#rust-licence-text-336)
+- Licence files: [text 342](#rust-licence-text-342)
 
 ### zvariant_utils 4.2.0
 
@@ -7708,6 +7714,36 @@ DEALINGS IN THE SOFTWARE.
 ### Rust licence text 37
 
 ```text
+Copyright (c) 2018-2025 The RustCrypto Project Developers
+
+Permission is hereby granted, free of charge, to any
+person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the
+Software without restriction, including without
+limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software
+is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice
+shall be included in all copies or substantial portions
+of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+```
+
+### Rust licence text 38
+
+```text
 Copyright (c) 2009, 2010, 2013-2016 by the Brotli Authors.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -7729,7 +7765,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 38
+### Rust licence text 39
 
 ```text
 MIT License
@@ -7754,7 +7790,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 39
+### Rust licence text 40
 
 ```text
 Copyright (c) 2019 Nick Fitzgerald
@@ -7784,7 +7820,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 40
+### Rust licence text 41
 
 ```text
 Apache License
@@ -7850,7 +7886,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 41
+### Rust licence text 42
 
 ```text
 MIT License
@@ -7864,7 +7900,7 @@ The above copyright notice and this permission notice (including the next paragr
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 42
+### Rust licence text 43
 
 ```text
 Copyright (c) 2019 Daniel "Lokathor" Gee.
@@ -7880,7 +7916,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 3. This notice may not be removed or altered from any source distribution.
 ```
 
-### Rust licence text 43
+### Rust licence text 44
 
 ```text
 Copyright (c) 2018 Carl Lerche
@@ -7910,7 +7946,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 44
+### Rust licence text 45
 
 ```text
 MIT License
@@ -7936,7 +7972,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 45
+### Rust licence text 46
 
 ```text
 Copyright (c) 2014 Alex Crichton
@@ -7966,7 +8002,37 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 46
+### Rust licence text 47
+
+```text
+Copyright (c) 2019-2026 The RustCrypto Project Developers
+
+Permission is hereby granted, free of charge, to any
+person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the
+Software without restriction, including without
+limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software
+is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice
+shall be included in all copies or substantial portions
+of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+```
+
+### Rust licence text 48
 
 ```text
 Rust-chrono is dual-licensed under The MIT License [1] and
@@ -8210,7 +8276,7 @@ limitations under the License.
 ~~~~
 ```
 
-### Rust licence text 47
+### Rust licence text 49
 
 ```text
 Apache License
@@ -8416,7 +8482,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 48
+### Rust licence text 50
 
 ```text
 Copyright (c) 2015 The cobs.rs Developers
@@ -8440,7 +8506,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 49
+### Rust licence text 51
 
 ```text
 The MIT License (MIT)
@@ -8466,7 +8532,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 50
+### Rust licence text 52
 
 ```text
 The MIT License (MIT)
@@ -8492,7 +8558,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 51
+### Rust licence text 53
 
 ```text
 Apache License
@@ -8698,7 +8764,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 52
+### Rust licence text 54
 
 ```text
 Copyright (c) 2018 Nick Fitzgerald
@@ -8728,7 +8794,37 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 53
+### Rust licence text 55
+
+```text
+Copyright (c) 2020-2026 The RustCrypto Project Developers
+
+Permission is hereby granted, free of charge, to any
+person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the
+Software without restriction, including without
+limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software
+is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice
+shall be included in all copies or substantial portions
+of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+```
+
+### Rust licence text 56
 
 ```text
 Apache License
@@ -8935,7 +9031,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 54
+### Rust licence text 57
 
 ```text
 Copyright (c) 2017 Sergio Benitez
@@ -8966,7 +9062,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 55
+### Rust licence text 58
 
 ```text
 Copyright (c) 2012-2013 Mozilla Foundation
@@ -8996,7 +9092,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 56
+### Rust licence text 59
 
 ```text
 Copyright (c) 2017-2020 The Rust Project Developers
@@ -9026,7 +9122,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 57
+### Rust licence text 60
 
 ```text
 Copyright (c) 2020-2025 The RustCrypto Project Developers
@@ -9056,7 +9152,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 58
+### Rust licence text 61
 
 ```text
 MIT License
@@ -9082,7 +9178,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 59
+### Rust licence text 62
 
 ```text
 Copyright (c) 2022 The critical-section authors
@@ -9112,7 +9208,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 60
+### Rust licence text 63
 
 ```text
 The MIT License (MIT)
@@ -9144,7 +9240,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 61
+### Rust licence text 64
 
 ```text
 ===============================================================================
@@ -9742,7 +9838,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 62
+### Rust licence text 65
 
 ```text
 Copyright (c) 2021 RustCrypto Developers
@@ -9772,7 +9868,37 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 63
+### Rust licence text 66
+
+```text
+Copyright (c) 2021-2026 RustCrypto Developers
+
+Permission is hereby granted, free of charge, to any
+person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the
+Software without restriction, including without
+limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software
+is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice
+shall be included in all copies or substantial portions
+of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+```
+
+### Rust licence text 67
 
 ```text
 Mozilla Public License Version 2.0
@@ -10150,7 +10276,7 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
   defined by the Mozilla Public License, v. 2.0.
 ```
 
-### Rust licence text 64
+### Rust licence text 68
 
 ```text
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -10160,7 +10286,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 65
+### Rust licence text 69
 
 ```text
 MIT License
@@ -10186,7 +10312,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 66
+### Rust licence text 70
 
 ```text
 The MIT License (MIT)
@@ -10213,7 +10339,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 67
+### Rust licence text 71
 
 ```text
 Apache License
@@ -10419,7 +10545,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 68
+### Rust licence text 72
 
 ```text
 Copyright (c) 2014-2018 David Henningsson <diwic@ubuntu.com> and other contributors
@@ -10443,7 +10569,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 69
+### Rust licence text 73
 
 ```text
 Copyright (c) Ferrous Systems
@@ -10473,7 +10599,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 70
+### Rust licence text 74
 
 ```text
 Apache License
@@ -10679,7 +10805,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 71
+### Rust licence text 75
 
 ```text
 Copyright (c) 2024 Jacob Pratt et al.
@@ -10703,7 +10829,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 72
+### Rust licence text 76
 
 ```text
 The MIT License (MIT)
@@ -10729,7 +10855,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 73
+### Rust licence text 77
 
 ```text
 MIT License
@@ -10755,7 +10881,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 74
+### Rust licence text 78
 
 ```text
 Copyright (c) 2017 Artyom Pavlov
@@ -10785,7 +10911,38 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 75
+### Rust licence text 79
+
+```text
+Copyright (c) 2017-2025 RustCrypto Developers
+Copyright (c) 2017 Artyom Pavlov
+
+Permission is hereby granted, free of charge, to any
+person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the
+Software without restriction, including without
+limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software
+is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice
+shall be included in all copies or substantial portions
+of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+```
+
+### Rust licence text 80
 
 ```text
 Apache License
@@ -10964,7 +11121,7 @@ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
    of your accepting any such warranty or additional liability.
 ```
 
-### Rust licence text 76
+### Rust licence text 81
 
 ```text
 Copyright (c) 2018-2019 dirs-rs contributors
@@ -10988,7 +11145,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 77
+### Rust licence text 82
 
 ```text
 Copyright (c) 2015 Victor Berger
@@ -11012,7 +11169,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 78
+### Rust licence text 83
 
 ```text
 MIT License
@@ -11044,7 +11201,7 @@ derived from the "nipper" project (https://github.com/importcjj/nipper),
 developed by Chen Jiaju, licensed under the MIT License and the Apache License 2.0 (dual licensed).
 ```
 
-### Rust licence text 79
+### Rust licence text 84
 
 ```text
 rust-lang/libm as a whole is available for use under the MIT license:
@@ -11100,7 +11257,7 @@ have been licensed under extremely permissive terms.
 ------------------------------------------------------------------------------
 ```
 
-### Rust licence text 80
+### Rust licence text 85
 
 ```text
 Mozilla Public License Version 2.0
@@ -11478,7 +11635,7 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
   defined by the Mozilla Public License, v. 2.0.
 ```
 
-### Rust licence text 81
+### Rust licence text 86
 
 ```text
 Creative Commons Legal Code
@@ -11604,7 +11761,7 @@ express Statement of Purpose.
     this CC0 or use of the Work.
 ```
 
-### Rust licence text 82
+### Rust licence text 87
 
 ```text
 Copyright (c) 2015
@@ -11634,7 +11791,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 83
+### Rust licence text 88
 
 ```text
 Apache License
@@ -11840,7 +11997,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 84
+### Rust licence text 89
 
 ```text
 MIT License
@@ -11866,7 +12023,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 85
+### Rust licence text 90
 
 ```text
 Copyright (c) 2022 The embedded-io authors
@@ -11896,7 +12053,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 86
+### Rust licence text 91
 
 ```text
 Copyright (c) 2023 The embedded-io authors
@@ -11926,7 +12083,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 87
+### Rust licence text 92
 
 ```text
 Copyright Mozilla Foundation
@@ -11956,7 +12113,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 88
+### Rust licence text 93
 
 ```text
 Copyright © WHATWG (Apple, Google, Mozilla, Microsoft).
@@ -11987,7 +12144,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
-### Rust licence text 89
+### Rust licence text 94
 
 ```text
 Apache License
@@ -12193,7 +12350,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 90
+### Rust licence text 95
 
 ```text
 MIT License
@@ -12218,7 +12375,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 91
+### Rust licence text 96
 
 ```text
 Copyright (c) 2015 The trust-dns Developers
@@ -12243,7 +12400,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 92
+### Rust licence text 97
 
 ```text
 MIT License
@@ -12269,7 +12426,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 93
+### Rust licence text 98
 
 ```text
 Apache License
@@ -12342,7 +12499,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 94
+### Rust licence text 99
 
 ```text
 Copyright (c) 2017-2023 Maik Klein, Maja Kądziołka
@@ -12372,7 +12529,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 95
+### Rust licence text 100
 
 ```text
 Apache License
@@ -12445,7 +12602,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 96
+### Rust licence text 101
 
 ```text
 Copyright (c) 2017 Maik Klein
@@ -12475,7 +12632,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 97
+### Rust licence text 102
 
 ```text
 Copyright (c) 2016--2023
@@ -12505,7 +12662,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 98
+### Rust licence text 103
 
 ```text
 Copyright (c) 2014 Chris Wong
@@ -12535,7 +12692,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 99
+### Rust licence text 104
 
 ```text
 Boost Software License - Version 1.0 - August 17th, 2003
@@ -12563,7 +12720,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 100
+### Rust licence text 105
 
 ```text
 The MIT License
@@ -12589,7 +12746,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 101
+### Rust licence text 106
 
 ```text
 MIT License
@@ -12619,7 +12776,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 102
+### Rust licence text 107
 
 ```text
 MIT License
@@ -12645,7 +12802,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 103
+### Rust licence text 108
 
 ```text
 Copyright (c) 2014-2026 Alex Crichton
@@ -12675,7 +12832,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 104
+### Rust licence text 109
 
 ```text
 Copyright (c) 2014-2020 Optimal Computing (NZ) Ltd
@@ -12699,7 +12856,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
 ```
 
-### Rust licence text 105
+### Rust licence text 110
 
 ```text
 Copyright (c) 2017 Contributors
@@ -12729,7 +12886,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 106
+### Rust licence text 111
 
 ```text
 Copyright (c) 2024 Orson Peters
@@ -12753,7 +12910,7 @@ the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 ```
 
-### Rust licence text 107
+### Rust licence text 112
 
 ```text
 Apache License
@@ -12825,7 +12982,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 108
+### Rust licence text 113
 
 ```text
 Copyright (c) 2019 Colin Rothfels
@@ -12855,7 +13012,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 109
+### Rust licence text 114
 
 ```text
 Apache License
@@ -12927,7 +13084,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 110
+### Rust licence text 115
 
 ```text
 Copyright (c) 2019 Fontations Developers
@@ -12957,7 +13114,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 111
+### Rust licence text 116
 
 ```text
 Copyright 2024 the Parley Authors
@@ -12987,7 +13144,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 112
+### Rust licence text 117
 
 ```text
 Copyright (c) 2017 The foreign-types Developers
@@ -13011,7 +13168,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 113
+### Rust licence text 118
 
 ```text
 Copyright (c) 2013-2016 The rust-url developers
@@ -13041,33 +13198,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 114
-
-```text
-The MIT License (MIT)
-
-Copyright (c) 2015 Pierre Baillet
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-### Rust licence text 115
+### Rust licence text 119
 
 ```text
 Apache License
@@ -13274,7 +13405,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 116
+### Rust licence text 120
 
 ```text
 Copyright (c) 2016 Alex Crichton
@@ -13305,7 +13436,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 117
+### Rust licence text 121
 
 ```text
 Apache License
@@ -13511,7 +13642,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 118
+### Rust licence text 122
 
 ```text
 Copyright (c) 2017 Xudong Huang
@@ -13541,7 +13672,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 119
+### Rust licence text 123
 
 ```text
 The MIT License (MIT)
@@ -13567,7 +13698,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 120
+### Rust licence text 124
 
 ```text
 Apache License
@@ -13773,7 +13904,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 121
+### Rust licence text 125
 
 ```text
 Copyright (c) 2018-2024 The rust-random Project Developers
@@ -13804,7 +13935,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 122
+### Rust licence text 126
 
 ```text
 Copyright (c) 2018-2025 The rust-random Project Developers
@@ -13835,7 +13966,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 123
+### Rust licence text 127
 
 ```text
 Copyright (c) 2018-2026 The rust-random Project Developers
@@ -13866,7 +13997,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 124
+### Rust licence text 128
 
 ```text
 The MIT License (MIT)
@@ -13892,7 +14023,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 125
+### Rust licence text 129
 
 ```text
 Apache License
@@ -14098,7 +14229,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 126
+### Rust licence text 130
 
 ```text
 The MIT License (MIT)
@@ -14125,7 +14256,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 127
+### Rust licence text 131
 
 ```text
 Copyright (c) 2018 Jorge Aparicio
@@ -14155,7 +14286,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 128
+### Rust licence text 132
 
 ```text
 Copyright (c) 2016 Amanieu d'Antras
@@ -14185,7 +14316,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 129
+### Rust licence text 133
 
 ```text
 Copyright (c) 2017 Jorge Aparicio
@@ -14215,7 +14346,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 130
+### Rust licence text 134
 
 ```text
 Copyright (c) 2015 The Rust Project Developers
@@ -14245,7 +14376,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 131
+### Rust licence text 135
 
 ```text
 Copyright (c) 2013-2014 The Rust Project Developers.
@@ -14270,7 +14401,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 132
+### Rust licence text 136
 
 ```text
 Copyright (c) 2014 The html5ever Project Developers
@@ -14300,7 +14431,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 133
+### Rust licence text 137
 
 ```text
 Apache License
@@ -14506,7 +14637,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 134
+### Rust licence text 138
 
 ```text
 Copyright (c) 2017 http-rs authors
@@ -14536,7 +14667,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 135
+### Rust licence text 139
 
 ```text
 Copyright (c) 2019-2026 Sean McArthur & Hyper Contributors
@@ -14566,7 +14697,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 136
+### Rust licence text 140
 
 ```text
 Copyright (c) 2015-2025 Sean McArthur
@@ -14590,7 +14721,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 137
+### Rust licence text 141
 
 ```text
 Apache License
@@ -14796,7 +14927,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 138
+### Rust licence text 142
 
 ```text
 Copyright (c) 2016 Pyfisch
@@ -14820,7 +14951,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 139
+### Rust licence text 143
+
+```text
+Copyright (c) 2022-2026 The RustCrypto Project Developers
+
+Permission is hereby granted, free of charge, to any
+person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the
+Software without restriction, including without
+limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software
+is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice
+shall be included in all copies or substantial portions
+of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+```
+
+### Rust licence text 144
 
 ```text
 Copyright (c) 2014-2026 Sean McArthur
@@ -14844,7 +15005,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 140
+### Rust licence text 145
 
 ```text
 Copyright (c) 2017 Sean McArthur
@@ -14868,7 +15029,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 141
+### Rust licence text 146
 
 ```text
 Copyright (c) 2023-2025 Sean McArthur
@@ -14892,7 +15053,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 142
+### Rust licence text 147
 
 ```text
 Apache License
@@ -15098,7 +15259,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 143
+### Rust licence text 148
 
 ```text
 The MIT License (MIT)
@@ -15124,7 +15285,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 144
+### Rust licence text 149
 
 ```text
 Apache License
@@ -15330,7 +15491,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 145
+### Rust licence text 150
 
 ```text
 Copyright (c) 2020 Andrew D. Straw
@@ -15360,7 +15521,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 146
+### Rust licence text 151
 
 ```text
 MIT License
@@ -15386,7 +15547,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 147
+### Rust licence text 152
 
 ```text
 UNICODE LICENSE V3
@@ -15437,7 +15598,7 @@ Portions of ICU4X may have been adapted from ICU4C and/or ICU4J.
 ICU 1.8.1 to ICU 57.1 © 1995-2016 International Business Machines Corporation and others.
 ```
 
-### Rust licence text 148
+### Rust licence text 153
 
 ```text
 MIT License
@@ -15461,7 +15622,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 149
+### Rust licence text 154
 
 ```text
 Copyright (c) 2013-2025 The rust-url developers
@@ -15491,7 +15652,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 150
+### Rust licence text 155
 
 ```text
 Copyright (c) The rust-url developers
@@ -15521,7 +15682,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 151
+### Rust licence text 156
 
 ```text
 MIT License
@@ -15547,7 +15708,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 152
+### Rust licence text 157
 
 ```text
 Copyright (c) 2016--2017
@@ -15577,7 +15738,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 153
+### Rust licence text 158
 
 ```text
 MIT License
@@ -15603,7 +15764,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 154
+### Rust licence text 159
 
 ```text
 Copyright (c) Hanno Braun and contributors
@@ -15621,7 +15782,7 @@ TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
 THIS SOFTWARE.
 ```
 
-### Rust licence text 155
+### Rust licence text 160
 
 ```text
 Apache License
@@ -15827,7 +15988,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 156
+### Rust licence text 161
 
 ```text
 Copyright 2017 Juniper Networks, Inc.
@@ -15839,7 +16000,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 157
+### Rust licence text 162
 
 ```text
 MIT License
@@ -15865,7 +16026,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 158
+### Rust licence text 163
 
 ```text
 The MIT License (MIT)
@@ -15892,7 +16053,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 159
+### Rust licence text 164
 
 ```text
 The MIT License (MIT)
@@ -15918,7 +16079,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 160
+### Rust licence text 165
 
 ```text
 The MIT License (MIT)
@@ -15944,7 +16105,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 161
+### Rust licence text 166
 
 ```text
 Copyright (c) 2015 The rust-jni-sys Developers
@@ -15968,7 +16129,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 162
+### Rust licence text 167
 
 ```text
 MIT License
@@ -15994,7 +16155,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 163
+### Rust licence text 168
 
 ```text
 Apache License
@@ -16200,7 +16361,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 164
+### Rust licence text 169
 
 ```text
 MIT License
@@ -16226,7 +16387,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 165
+### Rust licence text 170
 
 ```text
 Copyright (c) 2017 Pyfisch
@@ -16250,7 +16411,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 166
+### Rust licence text 171
 
 ```text
 Copyright (c) 2016 William Orr <will@worrbase.com>
@@ -16274,7 +16435,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 167
+### Rust licence text 172
 
 ```text
 Copyright (c) 2018 Raph Levien
@@ -16304,7 +16465,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 168
+### Rust licence text 173
 
 ```text
 MIT License
@@ -16331,7 +16492,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 169
+### Rust licence text 174
 
 ```text
 Copyright (c) The Rust Project Developers
@@ -16361,7 +16522,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 170
+### Rust licence text 175
 
 ```text
 Copyright © 2015, Simonas Kazlauskas
@@ -16378,7 +16539,7 @@ NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE US
 THIS SOFTWARE.
 ```
 
-### Rust licence text 171
+### Rust licence text 176
 
 ```text
 rust-lang/libm as a whole is available for use under the MIT license:
@@ -16641,7 +16802,7 @@ have been licensed under extremely permissive terms.
 Copyright notices are retained in src/* files where relevant.
 ```
 
-### Rust licence text 172
+### Rust licence text 177
 
 ```text
 MIT License
@@ -16667,7 +16828,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 173
+### Rust licence text 178
 
 ```text
 Apache License
@@ -16890,7 +17051,7 @@ the License, but only in their entirety and only with respect to the Combined
 Software.
 ```
 
-### Rust licence text 174
+### Rust licence text 179
 
 ```text
 Copyright (c) 2016 The Rust Project Developers
@@ -16920,7 +17081,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 175
+### Rust licence text 180
 
 ```text
 Copyright (c) 2019 Carl Lerche
@@ -16950,7 +17111,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 176
+### Rust licence text 181
 
 ```text
 MIT License Copyright (c) 2023 Zixuan Chen
@@ -16976,7 +17137,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 177
+### Rust licence text 182
 
 ```text
 MIT License
@@ -17002,7 +17163,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 178
+### Rust licence text 183
 
 ```text
 MIT License Copyright (c) 2024 Zixuan Chen
@@ -17028,7 +17189,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 179
+### Rust licence text 184
 
 ```text
 i                                 Apache License
@@ -17234,7 +17395,7 @@ i                                 Apache License
    limitations under the License.
 ```
 
-### Rust licence text 180
+### Rust licence text 185
 
 ```text
 Copyright (c) 2020 Lucien Greathouse
@@ -17258,7 +17419,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 181
+### Rust licence text 186
 
 ```text
 MIT License Copyright (c) 2024 Loro
@@ -17284,7 +17445,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 182
+### Rust licence text 187
 
 ```text
 The MIT License (MIT)
@@ -17309,7 +17470,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 183
+### Rust licence text 188
 
 ```text
 Copyright (c) 2019 Eliza Weisman
@@ -17333,7 +17494,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 184
+### Rust licence text 189
 
 ```text
 MIT License
@@ -17359,7 +17520,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 185
+### Rust licence text 190
 
 ```text
 BSD 3-Clause License
@@ -17393,7 +17554,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
-### Rust licence text 186
+### Rust licence text 191
 
 ```text
 Copyright (c) 2016 - 2023 Ulrik Sverdrup "bluss"
@@ -17425,7 +17586,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 187
+### Rust licence text 192
 
 ```text
 # License
@@ -17479,7 +17640,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 '''
 ```
 
-### Rust licence text 188
+### Rust licence text 193
 
 ```text
 Apache License
@@ -17685,7 +17846,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 189
+### Rust licence text 194
 
 ```text
 Copyright (c) 2020 Yevhenii Reizner
@@ -17716,7 +17877,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 190
+### Rust licence text 195
 
 ```text
 Copyright (c) 2017 Gilad Naaman
@@ -17740,7 +17901,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 191
+### Rust licence text 196
 
 ```text
 Copyright (c) 2014 Sean McArthur
@@ -17764,7 +17925,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 192
+### Rust licence text 197
 
 ```text
 Copyright (c) 2019-2025 Frank Denis
@@ -17828,7 +17989,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 193
+### Rust licence text 198
 
 ```text
 MIT License
@@ -17858,7 +18019,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 194
+### Rust licence text 199
 
 ```text
 MIT License
@@ -17887,7 +18048,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 195
+### Rust licence text 200
 
 ```text
 Copyright 2013-2014 RAD Game Tools and Valve Software
@@ -17906,7 +18067,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 3. This notice may not be removed or altered from any source distribution.
 ```
 
-### Rust licence text 196
+### Rust licence text 201
 
 ```text
 Copyright (c) 2014 Carl Lerche and other MIO contributors
@@ -17930,7 +18091,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 197
+### Rust licence text 202
 
 ```text
 Apache License
@@ -18136,7 +18297,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 198
+### Rust licence text 203
 
 ```text
 Copyright (c) Radzivon Bartoshyk. All rights reserved.
@@ -18167,7 +18328,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
-### Rust licence text 199
+### Rust licence text 204
 
 ```text
 MIT License
@@ -18193,7 +18354,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 200
+### Rust licence text 205
 
 ```text
 SPDXVersion: SPDX-2.1
@@ -18217,7 +18378,7 @@ PackageDownloadLocation: git+ssh://github.com/tauri-apps/muda.git
 Creator: Person: Daniel Thompson-Yvetot
 ```
 
-### Rust licence text 201
+### Rust licence text 206
 
 ```text
 Apache License
@@ -18423,7 +18584,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 202
+### Rust licence text 207
 
 ```text
 Copyright (c) 2016 The rust-native-tls Developers
@@ -18447,7 +18608,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 203
+### Rust licence text 208
 
 ```text
 Copyright (c) 2015 Jonathan Reem
@@ -18477,7 +18638,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 204
+### Rust licence text 209
 
 ```text
 The MIT License (MIT)
@@ -18503,7 +18664,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 205
+### Rust licence text 210
 
 ```text
 Creative Commons CC0 1.0 Universal
@@ -18549,7 +18710,7 @@ For these and/or other purposes and motivations, and without any expectation of 
      d. Affirmer understands and acknowledges that Creative Commons is not a party to this document and has no duty or obligation with respect to this CC0 or use of the Work.
 ```
 
-### Rust licence text 206
+### Rust licence text 211
 
 ```text
 Apache License
@@ -18755,7 +18916,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 207
+### Rust licence text 212
 
 ```text
 Copyright (c) 2023 Notify Contributors
@@ -18785,7 +18946,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 208
+### Rust licence text 213
 
 ```text
 The MIT License (MIT)
@@ -18812,7 +18973,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 209
+### Rust licence text 214
 
 ```text
 Copyright (c) Jacob Pratt
@@ -18836,7 +18997,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 210
+### Rust licence text 215
 
 ```text
 Copyright (c) 2018, Daniel Wagner-Hall
@@ -18868,7 +19029,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
-### Rust licence text 211
+### Rust licence text 216
 
 ```text
 The MIT License (MIT)
@@ -18898,7 +19059,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 212
+### Rust licence text 217
 
 ```text
 Copyright 2011-2017 Google Inc.
@@ -18918,7 +19079,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 213
+### Rust licence text 218
 
 ```text
 Copyright (c) 2022 Steven Fackler
@@ -18942,7 +19103,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 214
+### Rust licence text 219
 
 ```text
 Mozilla Public License Version 2.0
@@ -19320,7 +19481,7 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
   defined by the Mozilla Public License, v. 2.0.
 ```
 
-### Rust licence text 215
+### Rust licence text 220
 
 ```text
 Copyright (c) 2024 Marat Dulin
@@ -19350,7 +19511,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 216
+### Rust licence text 221
 
 ```text
 ===============================================================================
@@ -19364,7 +19525,7 @@ option. All files in the project carrying such notice may not be
 copied, modified, or distributed except according to those terms.
 ```
 
-### Rust licence text 217
+### Rust licence text 222
 
 ```text
 Copyright 2020 the Parley Authors
@@ -19394,7 +19555,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 218
+### Rust licence text 223
 
 ```text
 Copyright 2020 the Parley Authors
@@ -19426,7 +19587,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 219
+### Rust licence text 224
 
 ```text
 Copyright 2025 the Parley Authors
@@ -19456,7 +19617,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 220
+### Rust licence text 225
 
 ```text
 The MIT License (MIT)
@@ -19481,7 +19642,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 221
+### Rust licence text 226
 
 ```text
 Copyright (c) 2015 Edward Barnard
@@ -19505,7 +19666,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 222
+### Rust licence text 227
 
 ```text
 Copyright (c) 2015 nwin
@@ -19535,7 +19696,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 223
+### Rust licence text 228
 
 ```text
 Copyright (c) 2019 Anthony James Munns
@@ -19565,7 +19726,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 224
+### Rust licence text 229
 
 ```text
 Apache License
@@ -19771,7 +19932,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 225
+### Rust licence text 230
 
 ```text
 Copyright (c) 2023 Jacob Pratt et al.
@@ -19795,7 +19956,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 226
+### Rust licence text 231
 
 ```text
 Apache License
@@ -20001,7 +20162,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 227
+### Rust licence text 232
 
 ```text
 Copyright (c) 2019 The CryptoCorrosion Contributors
@@ -20031,7 +20192,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 228
+### Rust licence text 233
 
 ```text
 MIT License
@@ -20057,7 +20218,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 229
+### Rust licence text 234
 
 ```text
 The MIT License (MIT)
@@ -20083,7 +20244,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 230
+### Rust licence text 235
 
 ```text
 Apache License
@@ -20289,7 +20450,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 231
+### Rust licence text 236
 
 ```text
 MIT License
@@ -20315,7 +20476,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 232
+### Rust licence text 237
 
 ```text
 Apache License
@@ -20521,7 +20682,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 233
+### Rust licence text 238
 
 ```text
 Apache License
@@ -20727,7 +20888,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 234
+### Rust licence text 239
 
 ```text
 Copyright © 2018, Simonas Kazlauskas
@@ -20748,7 +20909,7 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 235
+### Rust licence text 240
 
 ```text
 Copyright (c) 2015 The quick-error Developers
@@ -20772,7 +20933,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 236
+### Rust licence text 241
 
 ```text
 The MIT License (MIT)
@@ -20800,7 +20961,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 237
+### Rust licence text 242
 
 ```text
 MIT License
@@ -20826,7 +20987,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 238
+### Rust licence text 243
 
 ```text
 Apache License
@@ -21007,7 +21168,7 @@ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 END OF TERMS AND CONDITIONS
 ```
 
-### Rust licence text 239
+### Rust licence text 244
 
 ```text
 Copyright 2018 Developers of the Rand project
@@ -21038,7 +21199,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 240
+### Rust licence text 245
 
 ```text
 Apache License
@@ -21230,7 +21391,7 @@ APPENDIX: How to apply the Apache License to your work.
    identification within third-party archives.
 ```
 
-### Rust licence text 241
+### Rust licence text 246
 
 ```text
 Copyright (c) 2018-2026 The Rand Project Developers
@@ -21260,7 +21421,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 242
+### Rust licence text 247
 
 ```text
 Copyright (c) 2018 Developers of the Rand project
@@ -21290,7 +21451,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 243
+### Rust licence text 248
 
 ```text
 MIT License
@@ -21316,7 +21477,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 244
+### Rust licence text 249
 
 ```text
 Copyright (c) 2020 Osspial
@@ -21332,7 +21493,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 3. This notice may not be removed or altered from any source distribution.
 ```
 
-### Rust licence text 245
+### Rust licence text 250
 
 ```text
 Copyright (c) 2010 The Rust Project Developers
@@ -21362,7 +21523,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 246
+### Rust licence text 251
 
 ```text
 Copyright (c) 2021 Christopher Berner
@@ -21386,7 +21547,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 247
+### Rust licence text 252
 
 ```text
 Copyright (c) 2017 Redox OS Developers
@@ -21413,7 +21574,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 248
+### Rust licence text 253
 
 ```text
 The MIT License (MIT)
@@ -21439,7 +21600,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 249
+### Rust licence text 254
 
 ```text
 Apache License
@@ -21645,7 +21806,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 250
+### Rust licence text 255
 
 ```text
 Copyright (c) 2016-2026 Sean McArthur
@@ -21669,7 +21830,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 251
+### Rust licence text 256
 
 ```text
 MIT License
@@ -21695,7 +21856,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 252
+### Rust licence text 257
 
 ```text
 Copyright (c) 2017 Nathan Vegdahl
@@ -21719,7 +21880,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 253
+### Rust licence text 258
 
 ```text
 The MIT License (MIT)
@@ -21745,7 +21906,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 254
+### Rust licence text 259
 
 ```text
 MIT License
@@ -21771,7 +21932,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 255
+### Rust licence text 260
 
 ```text
 Apache License
@@ -21977,7 +22138,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 256
+### Rust licence text 261
 
 ```text
 Copyright (c) 2023 Dirkjan Ochtman <dirkjan@ochtman.nl>
@@ -22007,7 +22168,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 257
+### Rust licence text 262
 
 ```text
 MIT License
@@ -22021,7 +22182,7 @@ The above copyright notice and this permission notice (including the next paragr
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 258
+### Rust licence text 263
 
 ```text
 Copyright (c) 2020 Daniel "Lokathor" Gee.
@@ -22037,7 +22198,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 3. This notice may not be removed or altered from any source distribution.
 ```
 
-### Rust licence text 259
+### Rust licence text 264
 
 ```text
 The MIT License (MIT)
@@ -22063,7 +22224,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 260
+### Rust licence text 265
 
 ```text
 Copyright (c) 2015 steffengy
@@ -22075,7 +22236,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 261
+### Rust licence text 266
 
 ```text
 MIT License
@@ -22101,7 +22262,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 262
+### Rust licence text 267
 
 ```text
 Copyright (c) 2016-2019 Ulrik Sverdrup "bluss" and scopeguard developers
@@ -22131,7 +22292,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 263
+### Rust licence text 268
 
 ```text
 The MIT License (MIT)
@@ -22156,7 +22317,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 264
+### Rust licence text 269
 
 ```text
 Copyright (c) Individual contributors
@@ -22180,7 +22341,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 265
+### Rust licence text 270
 
 ```text
 Apache License
@@ -22386,7 +22547,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 266
+### Rust licence text 271
 
 ```text
 Copyright (c) 2016 Anthony Ramine
@@ -22416,7 +22577,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 267
+### Rust licence text 272
 
 ```text
 MIT License
@@ -22442,7 +22603,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 268
+### Rust licence text 273
 
 ```text
 Copyright (c) 2006-2009 Graydon Hoare
@@ -22474,7 +22635,40 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 269
+### Rust licence text 274
+
+```text
+Copyright (c) 2016-2026 The RustCrypto Project Developers
+Copyright (c) 2016 Artyom Pavlov
+Copyright (c) 2009-2013 Mozilla Foundation
+Copyright (c) 2006-2009 Graydon Hoare
+
+Permission is hereby granted, free of charge, to any
+person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the
+Software without restriction, including without
+limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software
+is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice
+shall be included in all copies or substantial portions
+of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+```
+
+### Rust licence text 275
 
 ```text
 Copyright (c) 2019 Eliza Weisman
@@ -22498,7 +22692,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 270
+### Rust licence text 276
 
 ```text
 Copyright (c) 2017 tokio-jsonrpc developers
@@ -22528,7 +22722,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 271
+### Rust licence text 277
 
 ```text
 MIT License
@@ -22554,7 +22748,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 272
+### Rust licence text 278
 
 ```text
 Copyright 2012-2016 The Rust Project Developers.
@@ -22566,7 +22760,7 @@ http://www.apache.org/licenses/LICENSE-2.0> or the MIT license
 option.
 ```
 
-### Rust licence text 273
+### Rust licence text 279
 
 ```text
 Copyright (c) 2018 The Servo Project Developers
@@ -22596,7 +22790,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 274
+### Rust licence text 280
 
 ```text
 Apache License
@@ -22802,7 +22996,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 275
+### Rust licence text 281
 
 ```text
 Copyright 2022 Kirill Chibisov
@@ -22826,7 +23020,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 276
+### Rust licence text 282
 
 ```text
 The MIT License (MIT)
@@ -22852,7 +23046,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 277
+### Rust licence text 283
 
 ```text
 Copyright (c) 2017 Robert Grosse
@@ -22882,7 +23076,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 278
+### Rust licence text 284
 
 ```text
 MIT License
@@ -22908,7 +23102,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 279
+### Rust licence text 285
 
 ```text
 Apache License
@@ -23114,7 +23308,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 280
+### Rust licence text 286
 
 ```text
 Copyright (c) 2022 Yevhenii Reizner
@@ -23138,7 +23332,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 281
+### Rust licence text 287
 
 ```text
 The MIT License (MIT)
@@ -23166,7 +23360,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 282
+### Rust licence text 288
 
 ```text
 Copyright (c) 2020 Chad Brokaw
@@ -23196,7 +23390,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 283
+### Rust licence text 289
 
 ```text
 Apache License
@@ -23402,7 +23596,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 284
+### Rust licence text 290
 
 ```text
 Copyright (c) 2023 The swift-rs Developers
@@ -23426,7 +23620,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 285
+### Rust licence text 291
 
 ```text
 Copyright 2016 Nika Layzell
@@ -23438,7 +23632,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 286
+### Rust licence text 292
 
 ```text
 SPDXVersion: SPDX-2.1
@@ -23461,7 +23655,7 @@ PackageDownloadLocation: git+ssh://github.com/tauri-apps/tao.git
 Creator: Person: Daniel Thompson-Yvetot
 ```
 
-### Rust licence text 287
+### Rust licence text 293
 
 ```text
 MIT License
@@ -23487,7 +23681,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 288
+### Rust licence text 294
 
 ```text
 SPDXVersion: SPDX-2.1
@@ -23511,7 +23705,7 @@ PackageDownloadLocation: git+ssh://github.com/tauri-apps/tao.git
 Creator: Person: Daniel Thompson-Yvetot
 ```
 
-### Rust licence text 289
+### Rust licence text 295
 
 ```text
 Copyright (c) The tar-rs Project Contributors
@@ -23541,7 +23735,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 290
+### Rust licence text 296
 
 ```text
 MIT License
@@ -23567,7 +23761,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 291
+### Rust licence text 297
 
 ```text
 SPDXVersion: SPDX-2.1
@@ -23592,7 +23786,7 @@ PackageDownloadLocation: git+ssh://github.com/tauri-apps/tauri.git
 Creator: Person: Daniel Thompson-Yvetot
 ```
 
-### Rust licence text 292
+### Rust licence text 298
 
 ```text
 MIT License
@@ -23618,7 +23812,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 293
+### Rust licence text 299
 
 ```text
 Copyright (c) 2015 Steven Allen
@@ -23648,7 +23842,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 294
+### Rust licence text 300
 
 ```text
 Copyright (c) 2015 Keegan McAllister
@@ -23678,7 +23872,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 295
+### Rust licence text 301
 
 ```text
 Copyright (c) Jacob Pratt et al.
@@ -23702,7 +23896,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 296
+### Rust licence text 302
 
 ```text
 Copyright (c) 2011 Google Inc. All rights reserved.
@@ -23737,7 +23931,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
-### Rust licence text 297
+### Rust licence text 303
 
 ```text
 MIT License
@@ -23763,7 +23957,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 298
+### Rust licence text 304
 
 ```text
 MIT License
@@ -23790,7 +23984,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 299
+### Rust licence text 305
 
 ```text
 Copyright (c) 2019 Tokio Contributors
@@ -23820,7 +24014,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 300
+### Rust licence text 306
 
 ```text
 Copyright (c) 2017 Daniel Abramov
@@ -23845,7 +24039,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 301
+### Rust licence text 307
 
 ```text
 Copyright (c) 2019 Tower Contributors
@@ -23875,7 +24069,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 302
+### Rust licence text 308
 
 ```text
 Copyright (c) 2019-2021 Tower Contributors
@@ -23905,7 +24099,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 303
+### Rust licence text 309
 
 ```text
 SPDXVersion: SPDX-2.1
@@ -23929,7 +24123,7 @@ PackageDownloadLocation: git+ssh://github.com/tauri-apps/tray-icon.git
 Creator: Person: Daniel Thompson-Yvetot
 ```
 
-### Rust licence text 304
+### Rust licence text 310
 
 ```text
 Copyright (c) 2018-2023 Sean McArthur
@@ -23954,7 +24148,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 305
+### Rust licence text 311
 
 ```text
 Copyright (c) 2017 Alexey Galakhov
@@ -23979,7 +24173,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 306
+### Rust licence text 312
 
 ```text
 The MIT License (MIT)
@@ -24005,13 +24199,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 307
+### Rust licence text 313
 
 ```text
 MIT OR Apache-2.0
 ```
 
-### Rust licence text 308
+### Rust licence text 314
 
 ```text
 Apache License
@@ -24217,7 +24411,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 309
+### Rust licence text 315
 
 ```text
 The MIT License (MIT)
@@ -24243,7 +24437,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 310
+### Rust licence text 316
 
 ```text
 MIT License
@@ -24269,7 +24463,7 @@ MIT License
     SOFTWARE
 ```
 
-### Rust licence text 311
+### Rust licence text 317
 
 ```text
 UNICODE LICENSE V3
@@ -24313,7 +24507,7 @@ dealings in these Data Files or Software without prior written
 authorization of the copyright holder.
 ```
 
-### Rust licence text 312
+### Rust licence text 318
 
 ```text
 MIT License
@@ -24339,7 +24533,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 313
+### Rust licence text 319
 
 ```text
 Copyright (c) 2014 The Rust Project Developers
@@ -24370,7 +24564,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 314
+### Rust licence text 320
 
 ```text
 Copyright (c) 2018-2019 Sean McArthur
@@ -24394,7 +24588,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 315
+### Rust licence text 321
 
 ```text
 Apache License
@@ -24600,7 +24794,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 316
+### Rust licence text 322
 
 ```text
 MIT License
@@ -24626,7 +24820,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 317
+### Rust licence text 323
 
 ```text
 Copyright (c) 2016 Boucher, Antoni <bouanto@zoho.com>
@@ -24651,7 +24845,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 318
+### Rust licence text 324
 
 ```text
 Copyright (c) 2016 Boucher, Antoni <bouanto@zoho.com>
@@ -24674,7 +24868,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 319
+### Rust licence text 325
 
 ```text
 The MIT License (MIT)
@@ -24700,7 +24894,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 320
+### Rust licence text 326
 
 ```text
 Apache License
@@ -24906,7 +25100,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 321
+### Rust licence text 327
 
 ```text
 MIT License
@@ -24932,7 +25126,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 322
+### Rust licence text 328
 
 ```text
 Copyright (c) 2020 Daniel "Lokathor" Gee.
@@ -24954,7 +25148,7 @@ misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 ```
 
-### Rust licence text 323
+### Rust licence text 329
 
 ```text
 Copyright (c) 2015-2018 The winapi-rs Developers
@@ -24978,7 +25172,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 324
+### Rust licence text 330
 
 ```text
 MIT License
@@ -25004,7 +25198,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 325
+### Rust licence text 331
 
 ```text
 SPDXVersion: SPDX-2.1
@@ -25028,7 +25222,7 @@ PackageDownloadLocation: git+ssh://github.com/tauri-apps/window-vibrancy.git
 Creator: Person: Daniel Thompson-Yvetot
 ```
 
-### Rust licence text 326
+### Rust licence text 332
 
 ```text
 Apache License
@@ -25234,7 +25428,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 327
+### Rust licence text 333
 
 ```text
 MIT License
@@ -25260,7 +25454,7 @@ MIT License
     SOFTWARE
 ```
 
-### Rust licence text 328
+### Rust licence text 334
 
 ```text
 Permission is hereby granted, free of charge, to any person obtaining
@@ -25283,7 +25477,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 329
+### Rust licence text 335
 
 ```text
 MIT License
@@ -25309,7 +25503,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 330
+### Rust licence text 336
 
 ```text
 SPDXVersion: SPDX-2.1
@@ -25334,7 +25528,7 @@ PackageDownloadLocation: git+ssh://github.com/tauri-apps/wry.git
 Creator: Person: Daniel Thompson-Yvetot
 ```
 
-### Rust licence text 331
+### Rust licence text 337
 
 ```text
 Copyright 2019 x11rb Contributers
@@ -25364,7 +25558,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 332
+### Rust licence text 338
 
 ```text
 Apache License
@@ -25570,7 +25764,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Rust licence text 333
+### Rust licence text 339
 
 ```text
 The MIT License (MIT)
@@ -25594,7 +25788,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 334
+### Rust licence text 340
 
 ```text
 Copyright (c) 2020 Chad Brokaw
@@ -25618,7 +25812,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### Rust licence text 335
+### Rust licence text 341
 
 ```text
 The MIT License (MIT)
@@ -25647,7 +25841,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 336
+### Rust licence text 342
 
 ```text
 Copyright (c) 2024 Zeeshan Ali Khan & zbus contributors
@@ -25677,7 +25871,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 337
+### Rust licence text 343
 
 ```text
 Copyright (c) 2026 Zeeshan Ali Khan & zcheapstr contributors
@@ -25707,7 +25901,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 338
+### Rust licence text 344
 
 ```text
 Copyright (c) 2020 Chad Brokaw
@@ -25737,7 +25931,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 339
+### Rust licence text 345
 
 ```text
 Apache License
@@ -25943,7 +26137,7 @@ Apache License
    limitations under the License.
 ```
 
-### Rust licence text 340
+### Rust licence text 346
 
 ```text
 Copyright 2019 The Fuchsia Authors.
@@ -25972,7 +26166,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
-### Rust licence text 341
+### Rust licence text 347
 
 ```text
 Copyright 2023 The Fuchsia Authors
@@ -26002,7 +26196,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 342
+### Rust licence text 348
 
 ```text
 Copyright (c) 2018-2026 The RustCrypto Project Developers
@@ -26032,7 +26226,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
 
-### Rust licence text 343
+### Rust licence text 349
 
 ```text
 (C) 2024 Trifecta Tech Foundation 
@@ -26056,7 +26250,7 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 ```
 
-### Rust licence text 344
+### Rust licence text 350
 
 ```text
 MIT License
@@ -26082,7 +26276,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Rust licence text 345
+### Rust licence text 351
 
 ```text
 zlib License
@@ -26110,13 +26304,12 @@ freely, subject to the following restrictions:
 
 | Package | Version | Licence |
 |---|---|---|
-| @babel/runtime | 7.29.10 | MIT |
 | @floating-ui/core | 1.8.0 | MIT |
 | @floating-ui/dom | 1.8.0 | MIT |
 | @floating-ui/react-dom | 2.1.9 | MIT |
 | @floating-ui/utils | 0.2.12 | MIT |
 | @formatjs/fast-memoize | 3.1.7 | MIT |
-| @formatjs/icu-messageformat-parser | 3.5.21 | MIT |
+| @formatjs/icu-messageformat-parser | 3.5.22 | MIT |
 | @formatjs/icu-skeleton-parser | 2.1.12 | MIT |
 | @radix-ui/number | 1.1.3 | MIT |
 | @radix-ui/primitive | 1.2.0 | MIT |
@@ -26156,7 +26349,7 @@ freely, subject to the following restrictions:
 | @radix-ui/react-visually-hidden | 1.2.13 | MIT |
 | @radix-ui/rect | 1.1.3 | MIT |
 | @tauri-apps/api | 2.12.4 | Apache-2.0 OR MIT |
-| @tauri-apps/plugin-dialog | 2.8.3 | MIT OR Apache-2.0 |
+| @tauri-apps/plugin-dialog | 2.8.4 | MIT OR Apache-2.0 |
 | @tauri-apps/plugin-opener | 2.7.2 | MIT OR Apache-2.0 |
 | aria-hidden | 1.2.6 | MIT |
 | Caladea | git 336a529cfad3d103d6527752686f8331d13e820a | OFL-1.1 |
@@ -26167,11 +26360,11 @@ freely, subject to the following restrictions:
 | Fraunces | variable (brand kit) | OFL-1.1 |
 | get-nonce | 1.0.1 | MIT |
 | html-parse-stringify | 4.0.1 | MIT |
-| i18next | 26.4.6 | MIT |
-| i18next-icu | 2.5.0 | MIT |
-| intl-messageformat | 12.1.3 | BSD-3-Clause |
+| i18next | 27.0.1 | MIT |
+| i18next-icu | 2.7.0 | MIT |
+| intl-messageformat | 12.1.4 | BSD-3-Clause |
 | Liberation Fonts (Sans, Serif, Mono) | 2.1.5 | OFL-1.1 |
-| lucide-react | 1.57.0 | ISC |
+| lucide-react | 1.70.0 | ISC |
 | Noto Emoji (emoji in documents, monochrome) | 3.002 (googlefonts/noto-emoji) | OFL-1.1 |
 | Noto Naskh Arabic, Noto Sans Symbols 2, Noto Sans Math | Noto release 2026.08.01 (Naskh Arabic 2.021, Symbols 2 2.008, Math 3.000) | OFL-1.1 |
 | Noto Sans Arabic (interface text in Arabic) | Noto release 2026.08.01 (Noto Sans Arabic 2.013) | OFL-1.1 |
@@ -26179,7 +26372,7 @@ freely, subject to the following restrictions:
 | react | 19.3.1 | MIT |
 | react-colorful | 5.8.1 | MIT |
 | react-dom | 19.3.1 | MIT |
-| react-i18next | 17.0.18 | MIT |
+| react-i18next | 18.0.0 | MIT |
 | react-remove-scroll | 2.7.2 | MIT |
 | react-remove-scroll-bar | 2.3.8 | MIT |
 | react-style-singleton | 2.2.3 | MIT |
@@ -26187,39 +26380,7 @@ freely, subject to the following restrictions:
 | tslib | 2.8.1 | 0BSD |
 | use-callback-ref | 1.3.3 | MIT |
 | use-sidecar | 1.1.3 | MIT |
-| use-sync-external-store | 1.7.0 | MIT |
-| zustand | 5.0.15 | MIT |
-
-### @babel/runtime 7.29.10
-
-- Licence: MIT
-- Author: The Babel Team
-- Homepage: https://babel.dev/docs/en/next/babel-runtime
-
-```text
-MIT License
-
-Copyright (c) 2014-present Sebastian McKenzie and other contributors
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-```
+| zustand | 5.1.0 | MIT |
 
 ### @floating-ui/core 1.8.0
 
@@ -26355,7 +26516,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @formatjs/icu-messageformat-parser 3.5.21
+### @formatjs/icu-messageformat-parser 3.5.22
 
 - Licence: MIT
 - Homepage: https://github.com/formatjs/formatjs#readme
@@ -27467,7 +27628,7 @@ SOFTWARE.
 - Licence: Apache-2.0 OR MIT
 - Homepage: https://github.com/tauri-apps/tauri#readme
 
-### @tauri-apps/plugin-dialog 2.8.3
+### @tauri-apps/plugin-dialog 2.8.4
 
 - Licence: MIT OR Apache-2.0
 - Homepage: https://github.com/tauri-apps/plugins-workspace#readme
@@ -28037,7 +28198,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### i18next 26.4.6
+### i18next 27.0.1
 
 - Licence: MIT
 - Author: Jan Mühlemann
@@ -28067,7 +28228,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### i18next-icu 2.5.0
+### i18next-icu 2.7.0
 
 - Licence: MIT
 - Author: Jan Mühlemann
@@ -28097,7 +28258,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### intl-messageformat 12.1.3
+### intl-messageformat 12.1.4
 
 - Licence: BSD-3-Clause
 - Author: Eric Ferraiuolo
@@ -28249,7 +28410,7 @@ FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER
 DEALINGS IN THE FONT SOFTWARE.
 ```
 
-### lucide-react 1.57.0
+### lucide-react 1.70.0
 
 - Licence: ISC
 - Author: Eric Fennis
@@ -28813,7 +28974,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### react-i18next 17.0.18
+### react-i18next 18.0.0
 
 - Licence: MIT
 - Author: Jan Mühlemann
@@ -29018,36 +29179,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### use-sync-external-store 1.7.0
-
-- Licence: MIT
-- Homepage: https://github.com/react/react#readme
-
-```text
-MIT License
-
-Copyright (c) Meta Platforms, Inc. and affiliates.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-### zustand 5.0.15
+### zustand 5.1.0
 
 - Licence: MIT
 - Author: Paul Henschel

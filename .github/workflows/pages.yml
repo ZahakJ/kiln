@@ -10,14 +10,14 @@ on:
   push:
     branches: [main]
     paths:
-      - 'docs/**'
-      - 'apps/web/**'
-      - 'crates/**'
-      - 'packages/**'
-      - 'assets/**'
-      - 'tools/pages-*'
-      - 'xtask/**'
-      - '.github/workflows/pages.yml'
+      - "docs/**"
+      - "apps/web/**"
+      - "crates/**"
+      - "packages/**"
+      - "assets/**"
+      - "tools/pages-*"
+      - "xtask/**"
+      - ".github/workflows/pages.yml"
   release:
     types: [published]
   workflow_dispatch:
@@ -40,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
@@ -49,15 +49,15 @@ jobs:
 
       # The web app runs the cores as WebAssembly; rust-src for the Grid core's
       # threads module, which rebuilds the standard library with atomics.
-      - uses: dtolnay/rust-toolchain@master
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
         with:
           toolchain: 1.99.1
           components: rust-src
           targets: wasm32-unknown-unknown
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
         with:
           shared-key: kiln-pages
-      - uses: taiki-e/install-action@v2
+      - uses: taiki-e/install-action@cfdb7ed4ccc7c7dce37759eae89dc5674b469b39 # v2.90.3
         with:
           tool: wasm-bindgen@0.2.129
       - name: binaryen
@@ -67,8 +67,8 @@ jobs:
 
       - name: Build the site
         env:
-          RUSTC_WRAPPER: ''
-          CARGO_BUILD_RUSTC_WRAPPER: ''
+          RUSTC_WRAPPER: ""
+          CARGO_BUILD_RUSTC_WRAPPER: ""
         run: bash tools/pages-build.sh --wasm
 
       - uses: actions/upload-pages-artifact@v5

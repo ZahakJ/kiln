@@ -180,7 +180,7 @@ export type MessageValues = Readonly<Record<string, string | number | boolean | 
  * text; an unknown key is returned as it is (so an English key reads as English).
  */
 export function t(key: string, values?: MessageValues): string {
-  const out = i18n.t(key, values as Record<string, unknown> | undefined);
+  const out = values ? i18n.t(key, values as Record<string, unknown>) : i18n.t(key);
   return typeof out === 'string' ? out : key;
 }
 
