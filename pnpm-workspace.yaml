@@ -23,8 +23,8 @@ overrides:
 catalog:
   # Language, build, test
   typescript: 7.0.2
-  vite: 8.3.6
-  '@vitejs/plugin-react': 6.2.1
+  vite: 8.3.7
+  '@vitejs/plugin-react': 6.3.0
   vitest: 5.1.0
   '@vitest/coverage-v8': 5.1.0
   '@playwright/test': 1.64.1
@@ -97,7 +97,7 @@ catalog:
   # Dev-only number-format oracle for conformance/numfmt (tools/gen-numfmt-cases.mjs; MIT)
   numfmt: 3.2.6
   # Dev-only TSX parser for the hard-coded string guard of @kiln/i18n (MIT; the version Vite already uses)
-  rolldown: 1.3.0
+  rolldown: 1.3.1
 
 # Catalog versions newer than pnpm's minimum release age, accepted deliberately.
 minimumReleaseAgeExclude:
