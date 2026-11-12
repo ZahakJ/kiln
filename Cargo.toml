@@ -60,7 +60,7 @@ kiln-session = { path = "crates/kiln-session" }
 kiln-testing = { path = "crates/kiln-testing" }
 
 # --- Shell: Tauri 2 (desktop + Android) ---
-tauri = "=2.12.4"
+tauri = "=2.12.5"
 tauri-build = "=2.7.4"
 tauri-plugin-fs = "=2.7.1"
 tauri-plugin-dialog = "=2.8.4"
@@ -119,7 +119,7 @@ usvg = "=0.48.1"
 
 # --- File formats ---
 quick-xml = "=0.42.0"
-zip = { version = "=9.4.1", default-features = false }
+zip = { version = "=9.5.0", default-features = false }
 encoding_rs = "=0.8.44"
 csv = "=1.4.0"
 krilla = "=0.8.2"
@@ -177,7 +177,7 @@ criterion = "=0.8.2"
 
 # --- Benchmarks ---
 # bench/budgets.toml, the performance budgets (already in Cargo.lock through Tauri).
-toml = { version = "=1.2.0", default-features = false, features = ["std", "serde", "parse"] }
+toml = { version = "=1.2.1", default-features = false, features = ["std", "serde", "parse"] }
 
 # --- Formula library ---
 # REGEXTEST/REGEXEXTRACT/REGEXREPLACE: look-around and back-references as in Excel's PCRE2, with a
@@ -194,4 +194,4 @@ icu_locale_core = "=2.4.0"
 # Checksums of autosave journal records (zip already links it).
 crc32fast = "=1.5.4"
 # Native file watching for the "changed by another program" prompt.
-notify = { version = "=8.2.1", default-features = false, features = ["macos_fsevent"] }
+notify = { version = "=8.2.2", default-features = false, features = ["macos_fsevent"] }
