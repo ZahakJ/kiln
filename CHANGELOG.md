@@ -6,6 +6,29 @@ All notable changes to Kiln (called Officina at first) are recorded here. The fo
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-12
+
+The first public release of Kiln, an office suite of three apps: Kiln Write for documents, Kiln
+Grid for workbooks and Kiln Deck for presentations, with Kiln Home to open them. It opens and saves
+Word, Excel and PowerPoint files as they are. It runs in the browser at
+<https://zahakj.github.io/kiln/app/>, where it installs as an app and works offline, and as a
+desktop app for Linux (AppImage and .deb), Windows (installer and .msi) and macOS (Apple silicon
+and Intel). The interface is in English, German and Arabic, mirrored right to left in Arabic.
+Documents stay on your device: there is no account and no telemetry.
+
+### Known limitations
+
+- The desktop installers are early builds. The Windows installers are not signed, so Windows asks
+  before it runs them (More info, then Run anyway). The macOS app is signed ad hoc, not by an
+  identified developer, so macOS asks you to allow it once (System Settings, Privacy & Security,
+  Open Anyway). The desktop app does not update itself: install a new version over this one.
+- This release has no Android package; on a phone, Kiln runs in the browser.
+- If the page crashes within a fraction of a second of an entry while Kiln is writing the
+  recovery copy of a large document, that entry comes back as a message with Put it back, or in
+  rare cases not at all (Document Recovery in the manual).
+- In the browser Kiln opens and saves Office files, CSV, text and Markdown; OpenDocument files open
+  and save in the desktop app.
+
 ### Added
 
 - The fidelity corpus and side-by-side scores.
@@ -427,4 +450,5 @@ All notable changes to Kiln (called Officina at first) are recorded here. The fo
 - Numbers display exactly as Excel shows them: the General format's 11-character rule with automatic scientific notation, rounding half away from zero, dates and times (including elapsed `[h]:mm`), percentages, fractions, scientific, accounting layouts with the currency symbol pinned left, `[Red]`/`[Color n]` colours, conditional sections and localised separators and month names.
 - Workbook snapshots as plain JSON (gzip-compressed for storage) for version history, crash journals and background workers.
 
-[Unreleased]: https://github.com/ZahakJ/kiln/commits/main
+[Unreleased]: https://github.com/ZahakJ/kiln/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/ZahakJ/kiln/releases/tag/v0.1.0
