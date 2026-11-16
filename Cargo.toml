@@ -64,7 +64,7 @@ tauri = "=2.12.5"
 tauri-build = "=2.7.4"
 tauri-plugin-fs = "=2.7.1"
 tauri-plugin-dialog = "=2.8.4"
-tauri-plugin-opener = "=2.7.2"
+tauri-plugin-opener = "=2.7.3"
 tauri-plugin-store = "=2.5.0"
 tauri-plugin-window-state = "=2.5.0"
 tauri-plugin-updater = "=2.14.1"
@@ -119,7 +119,7 @@ usvg = "=0.48.1"
 
 # --- File formats ---
 quick-xml = "=0.42.0"
-zip = { version = "=9.5.0", default-features = false }
+zip = { version = "=9.5.1", default-features = false }
 encoding_rs = "=0.8.44"
 csv = "=1.4.0"
 krilla = "=0.8.2"
@@ -192,6 +192,6 @@ icu_locale_core = "=2.4.0"
 
 # --- Storage ---
 # Checksums of autosave journal records (zip already links it).
-crc32fast = "=1.5.4"
+crc32fast = "=1.5.5"
 # Native file watching for the "changed by another program" prompt.
 notify = { version = "=8.2.2", default-features = false, features = ["macos_fsevent"] }
