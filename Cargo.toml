@@ -93,11 +93,11 @@ ts-rs = "=12.0.1"
 serde-reflection = "=0.6.0"
 
 # --- Text layout, shaping, fonts ---
-parley = "=0.12.0"
-fontique = "=0.12.0"
+parley = "=0.13.0"
+fontique = "=0.13.0"
 harfrust = "=0.14.0"
 # The version parley 0.12 and swash 0.2.10 use, so one copy of skrifa/read-fonts is linked (B12).
-skrifa = "=0.44.0"
+skrifa = "=0.49.0"
 swash = "=0.2.10"
 fontdb = "=0.24.0"
 
@@ -182,7 +182,7 @@ toml = { version = "=1.2.1", default-features = false, features = ["std", "serde
 # --- Formula library ---
 # REGEXTEST/REGEXEXTRACT/REGEXREPLACE: look-around and back-references as in Excel's PCRE2, with a
 # backtracking limit so no pattern can hang a recalculation.
-fancy-regex = "=0.19.2"
+fancy-regex = "=0.20.2"
 
 # --- Sheet model ---
 # Locale-aware sort order for Data ▸ Sort (Unicode collation, case-sensitive option); optional in
